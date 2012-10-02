@@ -1,0 +1,1601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PeriodicT</class>
+ <widget class="QMainWindow" name="PeriodicT">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>590</width>
+    <height>312</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Periodic Table</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0" colspan="2">
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <property name="margin">
+        <number>3</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0" colspan="2">
+          <layout class="QGridLayout" name="gridLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="PB001">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>H</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="17">
+            <widget class="QPushButton" name="PB002">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>He</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="PB003">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Li</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="PB004">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Be</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="12">
+            <widget class="QPushButton" name="PB005">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>B</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="13">
+            <widget class="QPushButton" name="PB006">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>C</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="14">
+            <widget class="QPushButton" name="PB007">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>N</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="15">
+            <widget class="QPushButton" name="PB008">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>O</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="16">
+            <widget class="QPushButton" name="PB009">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>F</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="17">
+            <widget class="QPushButton" name="PB010">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ne</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="PB011">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Na</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="PB012">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Mg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="12">
+            <widget class="QPushButton" name="PB013">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Al</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="13">
+            <widget class="QPushButton" name="PB014">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Si</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="14">
+            <widget class="QPushButton" name="PB015">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>P</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="15">
+            <widget class="QPushButton" name="PB016">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>S</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="16">
+            <widget class="QPushButton" name="PB017">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cl</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="17">
+            <widget class="QPushButton" name="PB018">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QPushButton" name="PB019">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>K</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QPushButton" name="PB020">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ca</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QPushButton" name="PB021">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sc</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QPushButton" name="PB022">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ti</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="4">
+            <widget class="QPushButton" name="PB023">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>V</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="5">
+            <widget class="QPushButton" name="PB024">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="6">
+            <widget class="QPushButton" name="PB025">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Mn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="7">
+            <widget class="QPushButton" name="PB026">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Fe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="8">
+            <widget class="QPushButton" name="PB027">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Co</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="9">
+            <widget class="QPushButton" name="PB028">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ni</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="10">
+            <widget class="QPushButton" name="PB029">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cu</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="11">
+            <widget class="QPushButton" name="PB030">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Zn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="12">
+            <widget class="QPushButton" name="PB031">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ga</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="13">
+            <widget class="QPushButton" name="PB032">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ge</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="14">
+            <widget class="QPushButton" name="PB033">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>As</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="15">
+            <widget class="QPushButton" name="PB034">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Se</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="16">
+            <widget class="QPushButton" name="PB035">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Br</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="17">
+            <widget class="QPushButton" name="PB036">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Kr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QPushButton" name="PB037">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rb</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QPushButton" name="PB038">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QPushButton" name="PB039">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <widget class="QPushButton" name="PB040">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Zr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="4">
+            <widget class="QPushButton" name="PB041">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Nb</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="5">
+            <widget class="QPushButton" name="PB042">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Mo</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="6">
+            <widget class="QPushButton" name="PB043">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Tc</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="7">
+            <widget class="QPushButton" name="PB044">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ru</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="8">
+            <widget class="QPushButton" name="PB045">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rh</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="9">
+            <widget class="QPushButton" name="PB046">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pd</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="10">
+            <widget class="QPushButton" name="PB047">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ag</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="11">
+            <widget class="QPushButton" name="PB048">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cd</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="12">
+            <widget class="QPushButton" name="PB049">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>In</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="13">
+            <widget class="QPushButton" name="PB050">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="14">
+            <widget class="QPushButton" name="PB051">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sb</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="15">
+            <widget class="QPushButton" name="PB052">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Te</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="16">
+            <widget class="QPushButton" name="PB053">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>I</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="17">
+            <widget class="QPushButton" name="PB054">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Xe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QPushButton" name="PB055">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cs</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QPushButton" name="PB056">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ba</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QPushButton" name="pushButton_60">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*1</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="3">
+            <widget class="QPushButton" name="PB072">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Hf</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="4">
+            <widget class="QPushButton" name="PB073">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ta</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="5">
+            <widget class="QPushButton" name="PB074">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>W</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="6">
+            <widget class="QPushButton" name="PB075">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Re</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="7">
+            <widget class="QPushButton" name="PB076">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Os</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="8">
+            <widget class="QPushButton" name="PB077">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ir</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="9">
+            <widget class="QPushButton" name="PB078">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pt</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="10">
+            <widget class="QPushButton" name="PB079">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Au</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="11">
+            <widget class="QPushButton" name="PB080">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Hg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="12">
+            <widget class="QPushButton" name="PB081">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Tl</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="13">
+            <widget class="QPushButton" name="PB082">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pb</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="14">
+            <widget class="QPushButton" name="PB083">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Bi</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="15">
+            <widget class="QPushButton" name="PB084">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Po</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="16">
+            <widget class="QPushButton" name="PB085">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>At</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="17">
+            <widget class="QPushButton" name="PB086">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QPushButton" name="PB087">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Fr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QPushButton" name="PB088">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ra</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2">
+            <widget class="QPushButton" name="pushButton_79">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*2</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="3">
+            <widget class="QPushButton" name="PB104">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rf</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="4">
+            <widget class="QPushButton" name="PB105">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Db</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="5">
+            <widget class="QPushButton" name="PB106">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="6">
+            <widget class="QPushButton" name="PB107">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Bh</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="7">
+            <widget class="QPushButton" name="PB108">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Hs</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="8">
+            <widget class="QPushButton" name="PB109">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Mt</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="9">
+            <widget class="QPushButton" name="PB110">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ds</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="10">
+            <widget class="QPushButton" name="PB111">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="11">
+            <widget class="QPushButton" name="PB112">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cn</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>44</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="1">
+          <layout class="QGridLayout" name="gridLayout_2">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>*1</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="PB057">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>La</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="PB058">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ce</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="PB059">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4">
+            <widget class="QPushButton" name="PB060">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Nd</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="5">
+            <widget class="QPushButton" name="PB061">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="6">
+            <widget class="QPushButton" name="PB062">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Sm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="7">
+            <widget class="QPushButton" name="PB063">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Eu</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="8">
+            <widget class="QPushButton" name="PB064">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Gd</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="9">
+            <widget class="QPushButton" name="PB065">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Tb</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="10">
+            <widget class="QPushButton" name="PB066">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Dy</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="11">
+            <widget class="QPushButton" name="PB067">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ho</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="12">
+            <widget class="QPushButton" name="PB068">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Er</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="13">
+            <widget class="QPushButton" name="PB069">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Tm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="14">
+            <widget class="QPushButton" name="PB070">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Yb</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="15">
+            <widget class="QPushButton" name="PB071">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Lu</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>*2</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="PB089">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Ac</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="PB090">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Th</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QPushButton" name="PB091">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pa</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4">
+            <widget class="QPushButton" name="PB092">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>U</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="5">
+            <widget class="QPushButton" name="PB093">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Np</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="6">
+            <widget class="QPushButton" name="PB094">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Pu</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="7">
+            <widget class="QPushButton" name="PB095">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Am</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="8">
+            <widget class="QPushButton" name="PB096">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="9">
+            <widget class="QPushButton" name="PB097">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Bk</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="10">
+            <widget class="QPushButton" name="PB098">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Cf</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="11">
+            <widget class="QPushButton" name="PB099">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Es</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="12">
+            <widget class="QPushButton" name="PB100">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Fm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="13">
+            <widget class="QPushButton" name="PB101">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Md</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="14">
+            <widget class="QPushButton" name="PB102">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>No</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="15">
+            <widget class="QPushButton" name="PB103">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Lr</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>644</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="Close">
+      <property name="text">
+       <string>Close</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
