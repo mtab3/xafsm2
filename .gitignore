@@ -1,3 +1,9 @@
-Log*.dat
 XafsM2
-
+*.[oa]
+*~
+ui_*
+moc_*
+qrc_*
+*.pro.user
+Log*.dat
+*.core

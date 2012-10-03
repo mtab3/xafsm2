@@ -13,6 +13,7 @@
 #include "Atoms.h"
 #include "Stars.h"
 #include "PeriodicT.h"
+#include "AUnit.h"
 
 class QFileDialog;
 
@@ -41,13 +42,24 @@ public:
 
 private:
 
+  /* ReadDef */
+  QVector<AUnit *> AMotors;
+  QVector<AUnit *> ASensors;
+  void ReadDef( QString fname );
+  QString nextItem( QString start, QString &item );
+
   /* cfg. */
-  void ReadCfgFile( void );
   SelMC *selMC;
   StarsSV *starsSV;
   /* cfg. */
 
-  Stars *sks;
+  /* Special Units */
+  AUnit *MMainTh;               // main Th ax
+  AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
+  void IdentifyMotors();
+  void IdentifySensors();
+
+  Stars *s;
   double MonoCryD;
 
   AtomNo SelectedA;
@@ -62,6 +74,7 @@ private:
   void setupCommonArea( void );
   void setupSetupArea( void );
   void setupMeasArea( void );
+
 
   /* InterFace.cpp */ /**********************************************/
 
