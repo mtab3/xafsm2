@@ -1,0 +1,106 @@
+# XAFS-M setting file : Edited 2012/10/03
+
+# define Moveable units
+
+MOTOR PM "THETA" "Theta" "pm16c04-1" "ch3" "deg" 0.0000277777777777 0
+
+# The parameters following the identifier 'MOTOR' are
+#   PM      : Unit type   PM : puls motor controlled via pm16c04
+#     "THETA"     : Identifier that this is the main axis of the monochromator
+#     "Theta"     : The name of the unit (only for display)
+#     "pm16c04-1" : Stars driver name
+#     "ch3"       : Node name in the stars driver
+#     "deg"       : Name of the metric unit (only for display)
+#     0.000027... : The metric unit / puls
+#     0           : Center position in puls
+
+MOTOR PM "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0
+MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
+MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120          # Need to check the range
+
+#   PZ      : Unit type   PZ : piezo actuator controlled via e665
+#     "DTH1P"     : Identifier that this is the dth1p
+#     "Dth1p"     : The name of the unit (only for display)
+#     "e665"      : Stars driver name
+#     ""          : Node name in the stars driver
+#     "um"        : Name of the metric unit (only for display)
+#     0.056       : The metric unit / Volt
+#     -10         : Minimum Voltage
+#     120         : Maximum Voltage
+
+#
+# Following definitions are temporal (not real)
+#
+
+MOTOR PM "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 0
+MOTOR PM "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 0
+MOTOR PM "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 0
+MOTOR PM "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 0
+MOTOR PM "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 0
+MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0 
+MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0 
+
+# define Sensor units
+
+SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC      : Unit type   ENC an encorder observed/controlled via nd287
+#     "ENCTH"      : Identifier that this is the main axis of the monochromator
+#     "Encoder Th" : The name of the unit (only for display)
+#     "nd287"      : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+
+SENSOR PAM "I0" "Keithley 6485-1" "m6485drv-1" "" "mA"
+SENSOR PAM "I1" "Keithley 6485-2" "m6485drv-2" "" "mA"
+
+# The parameters following the identifier 'SENSOR' are
+#   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
+#     "GENERAL"         : Identifier that this is a generally used sensor
+#     "Keithley 6485-1" : The name of the unit (only for display)
+#     "m6485drv-1"      : Stars driver name
+#     ""                : Node name in the stars driver
+#     "mA"              : Name of the metric unit (only for display)
+
+#
+# Following definitions are temporal (not real)
+#
+
+SENSOR CNT  "GENERAL" "Counter 1" "nct08-01b" "ch0"  "cps"
+SENSOR CNT  "GENERAL" "Counter 2" "nct08-01b" "ch1"  "cps"
+SENSOR CNT  "GENERAL" "Counter 3" "nct08-01b" "ch2"  "cps"
+SENSOR SSDP "SingleF" "SSD-ch01"  "SSD"       "ch01" "cps"
+SENSOR SSDP "SingleF" "SSD-ch02"  "SSD"       "ch02" "cps"
+SENSOR SSDP "SingleF" "SSD-ch03"  "SSD"       "ch03" "cps"
+SENSOR SSDP "SingleF" "SSD-ch04"  "SSD"       "ch04" "cps"
+SENSOR SSDP "SingleF" "SSD-ch05"  "SSD"       "ch05" "cps"
+SENSOR SSDP "SingleF" "SSD-ch06"  "SSD"       "ch06" "cps"
+SENSOR SSDP "SingleF" "SSD-ch07"  "SSD"       "ch07" "cps"
+SENSOR SSDP "SingleF" "SSD-ch08"  "SSD"       "ch08" "cps"
+SENSOR SSDP "SingleF" "SSD-ch09"  "SSD"       "ch09" "cps"
+SENSOR SSDP "SingleF" "SSD-ch10"  "SSD"       "ch10" "cps"
+SENSOR SSDP "SingleF" "SSD-ch11"  "SSD"       "ch11" "cps"
+SENSOR SSDP "SingleF" "SSD-ch12"  "SSD"       "ch12" "cps"
+SENSOR SSDP "SingleF" "SSD-ch13"  "SSD"       "ch13" "cps"
+SENSOR SSDP "SingleF" "SSD-ch14"  "SSD"       "ch14" "cps"
+SENSOR SSDP "SingleF" "SSD-ch15"  "SSD"       "ch15" "cps"
+SENSOR SSDP "SingleF" "SSD-ch16"  "SSD"       "ch16" "cps"
+SENSOR SSDP "SingleF" "SSD-ch17"  "SSD"       "ch17" "cps"
+SENSOR SSDP "SingleF" "SSD-ch18"  "SSD"       "ch18" "cps"
+SENSOR SSDP "SingleF" "SSD-ch19"  "SSD"       "ch19" "cps"
+SENSOR SSD  "TotalF"  "SSD"       "SSD"       "ch00" "cps"
+
+#
+# For any item you can use "" as you want.
+# For example, SENSOR and "SENSOR" cause no difference.
+# However, when the key-word includes 'space', the "" is necessary.
+# For example, "Keithley 6485" shoud not be writtern Keithley 6485.
+#
+

@@ -5,61 +5,78 @@
 #include <QStringList>
 #include <QString>
 
+#include "SMsg.h"
+
 #define ERROR   "Error!!"        // string を返す関数のエラー通知用
 
 // デバイス名の定義
-#define MYNAME      "XafsM"          // 自分が名乗る名前 config で変えられる様にするべき
-#define MONO1       "monochro1"      // 分光器 (1)
+//#define MYNAME      "BLC"       // 自分が名乗る名前 config で変えられる様にするべき
+
 
 #define STARSSERVER "localhost"      // config で変えられるようにするべき
 #define STARSPORT   ( 6057 )         // config で変えられるようにするべき
-
-#define SSMAXBUF    ( 4096 )
 
 class Stars : public QObject 
 {
   Q_OBJECT
 
+  QString MyNameOnStars;
+
   QString StarsServer;
   qint16  StarsSPort;
 
-  QString clName;
   QStringList keys;
   int MaxKeys;
   QTcpSocket *ss;
-
-  char ssWBuf[ SSMAXBUF ];  // 送信コマンド形成用
-  char ssRBuf[ SSMAXBUF ];  // 受信用
-  char ssIBuf[ SSMAXBUF ];  // 内部作業用
+  bool newSetting;
 
   void ReadHistory( void );
 
 public:
   Stars( void );
-  void ReadStarsKeys( QString CLName );
+  void ReadStarsKeys( QString SelectedName, QString DefaultName );
   QString GetKey( int nkey );
+
   bool MakeConnection( void );
-
-  bool SendCMD( const char *dev, const char *cmd1, const char *cmd2 ); // 内部用
-  char *AskAns( const char *dev, const char *cmd ); // 内部用
-
-  bool SetValue( const char *dev, const char *val );
-  bool SetValue( const char *dev, int num );
-  bool SetValue( const char *dev, double num );
-  bool SetSpeed( const char *dev, int num );
-  char *GetValue( const char *dev, int ch = -1 );
-  int IsBusy( const char *dev, int ch = -1 );
-  void StartMeas( const char *dev, double dwell, int ch = -1 );
-  void Stop( const char *dev );
+  bool SendCMD( QString dev, QString cmd1, QString cmd2 = "" );
+  bool SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 = "" );
 
 public slots:
   void SetNewSVAddress( const QString &item );
   void SetNewSVPort( const QString &item );
+  void ReceiveMessageFromStars( void );
+  void ReConnect( void );
 
 signals:
-  void aMessage( QString msg, int time );
+  void AskShowStat( QString msg, int time );
+  void AskRecord( QString msg );
   void RecordSSVHistoryA( const QString &item );
   void RecordSSVHistoryP( const QString &item );
+  void ReConnected( void );
+
+  void AnsRemote( SMsg msg );
+  void AnsGetValue( SMsg msg );
+  void AnsSetSpeed( SMsg msg );
+  void AnsGetSpeed( SMsg msg );
+  void AnsStop( SMsg msg );
+  void AnsReset( SMsg msg );
+  void AnsSetDataFormat( SMsg msg );
+  void AnsSetZeroCheck( SMsg msg );
+  void AnsSetAutoRange( SMsg msg );
+  void AnsSetNPLCycles( SMsg msg );
+  void AnsRun( SMsg msg );
+  void AnsScanCw( SMsg msg );
+  void AnsScanCcw( SMsg msg );
+  void AnsRead( SMsg msg );
+  void AnsIsBusy( SMsg msg );
+
+  void AnsSetAbsoluteVoltage( SMsg msg );
+  void AnsSetAbsolutePosition( SMsg msg );
+  void AnsSetRelativeVoltage( SMsg msg );
+  void AnsSetRelativePosition( SMsg msg );
+
+  void EvChangedValue( SMsg msg );
+  void EvIsBusy( SMsg msg );
 };
 
 #endif

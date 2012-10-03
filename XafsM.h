@@ -13,6 +13,7 @@ const MCCD mccd[ MCCS ] = {
   { "Ge(333)", 1.0887941, },
 };
 
+#if 0
 struct MOTORD {
   const int Mid;
   const char *MName;
@@ -25,9 +26,9 @@ struct MOTORD {
   int SPSstart;
   int SPSend;
 };
+
 enum MONOTR { MONOCHRO1, MOTOR1, MOTOR2, MOTOR3, MOTOR4, MOTORS };
 extern MOTORD Motors[ MOTORS ];
-
 
 struct MDEVD {
   int MDid;
@@ -72,8 +73,9 @@ const MDEVD MDevs[ MEASDEVICES ] = {
   { AUXCH0,  "Aux Ch 0",   "aux-in",  0,  0 },
   { AUXCH1,  "Aux Ch 1",   "aux-in",  1,  1 },
 };
+#endif
 
-struct SPSMODED {
+struct SPSMODED {   // Scan or Peak Search
   int SPSMid;
   const char *SPSMName;
 };

@@ -103,7 +103,6 @@ int MainWindow::isFinishedMeasAUX( int devNo )
   return 1 - rv;                   // ¡‚Ì–ß‚è’l 0 : Busy, 1: Ready, 2: Error
 }
 
-
 void MainWindow::ReadOutTransData( double NowKeV ) // “§‰ß–@‚Ì‘ª’èŒ‹‰Ê‚ð“¾‚Ä‹L˜^‚·‚é
 {
   double I0 = atof( sks->GetValue( "ion-ch", IONCH0 - IONCH0 ) );
