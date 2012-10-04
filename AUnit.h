@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+#include "XafsM.h"
 #include "Stars.h"
 
 class AUnit : public QObject

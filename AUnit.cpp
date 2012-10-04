@@ -1,6 +1,5 @@
 #include <QtGui>
 
-#include "XafsM.h"
 #include "AUnit.h"
 
 AUnit::AUnit( QObject *parent ) : QObject( parent )

@@ -275,11 +275,7 @@ private slots:
   void GoToPosKeV4( void ) { MoveCurThPosKeV( GoPosKeV[3] ); }
   void NewMotor( void );
   void GoMAt( void );
-  void GoMUp( void );
-  void GoMDown( void );
   void GoMStop( void );
-  void NewGMU( void );
-  void NewGMD( void );
   void SPSAS( void );
   void SPSRS( void );
   void Monitor( void );

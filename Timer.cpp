@@ -78,6 +78,11 @@ void MainWindow::MotorMove( void )
 }
 #endif
 
+
+#if 0   // 以下 file end まで仮に止めておく
+        // 他のファイルを先に触りたいため。(make した時に Timer.cpp より後になるファイル)
+
+
 void MainWindow::MeasSequence( void )
 {
   switch( MeasStage ) {
@@ -95,11 +100,11 @@ void MainWindow::MeasSequence( void )
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
-    MeasR = 0;
+    MeasR = 0;    // Measurement Repeat count
     break;
   case 1:
-    MeasB = 0;
-    MeasS = 0;
+    MeasB = 0;    // Measurement Block count
+    MeasS = 0;    // Measurement Step count in each block
     statusbar->showMessage( tr( "Writing Header." ) );
     WriteHeader( MeasR );
     statusbar->showMessage( tr( "Going to initial position." ) );
@@ -339,3 +344,5 @@ void MainWindow::MonSequence( void )
     break;
   }
 }
+
+#endif
