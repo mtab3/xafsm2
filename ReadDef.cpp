@@ -55,7 +55,7 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); NewUnit->setUnit( item );
 	NewUnit->setDevCh();
 	if ( type == "PM" ) {
-	  next = nextItem( next, item ); NewUnit->setPPU( item );
+	  next = nextItem( next, item ); NewUnit->setUPP( item );
 	  next = nextItem( next, item ); NewUnit->setCenter( item );
 	} else if ( type == "PZ" ) {
 	  next = nextItem( next, item ); NewUnit->setMinV( item );

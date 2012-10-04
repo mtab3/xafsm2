@@ -13,10 +13,7 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
 
   SelectedA = Fe;
   SelectedE = Kedge;
-  CurPosKeV = 0;
-  ShowCurPos();
   ShowTAE();
-  WatchCurPosID = startTimer( 500 );   // 500ms 間隔で位置の移動を監視
 
   for ( int i = 0; i < ATOMS; i++ ) {
     buf = QString( "%1 %2" ).arg( i, 2 ).arg( A[i].AName );
@@ -39,16 +36,6 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( ManTEkeV, SIGNAL( editingFinished() ), SLOT( ManSelTEkeV() ) );
   connect( ShowPT, SIGNAL( clicked() ), PT, SLOT( show() ) );
   connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( AtomSelectedByPT( int ) ) );
-}
-
-void MainWindow::ShowCurPos( void )
-{
-  QString buf;
-
-  buf.sprintf( UnitName[KEV].form, CurPosKeV );
-  CurrentEnergy->setText( buf );
-  buf.sprintf( UnitName[DEG].form, keV2deg( CurPosKeV ) );
-  CurrentAngle->setText( buf );
 }
 
 void MainWindow::NewSelA( int i )

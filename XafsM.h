@@ -110,11 +110,11 @@ const MSCALED MScales[ MSCALES ] = {
 
 enum MEASMODE{ TRANS, FLUO, AUX, MEASMODES };
 
+enum MSPEED { LOW, MIDIUM, HIGH, MSPEEDS };
 struct MSPEEDD {
-  int MSid;
+  MSPEED MSid;
   const char *MSName;
 };
-enum MSPEED { LOW, MIDIUM, HIGH, MSPEEDS };
 const MSPEEDD MSpeeds[ MSPEEDS ] = {
   { LOW,    "Low" },
   { MIDIUM, "Midium" },
@@ -134,5 +134,7 @@ const UNITNAME UnitName[ UNITS ] = {
 };
 
 enum ONFIN { RETURN, STAY, ONFINS };
+
+enum RELABS { REL, ABS };
 
 #endif

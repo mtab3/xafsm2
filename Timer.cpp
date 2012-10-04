@@ -8,6 +8,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
 {
   int Id = event->timerId();
 
+#if 0
   if ( Id == WatchCurPosID ) { /* 定常的な角度監視 */ 
                                /* 本当に監視しつづけるのが良いかどうかはまた別 */
     WatchPos();
@@ -15,6 +16,8 @@ void MainWindow::timerEvent( QTimerEvent *event )
   if ( Id == MoveID ) { /* 軸移動中の軸の値の監視 */
     MotorMove();
   }
+#endif
+
   if ( Id == MeasID ) { /* 測定ステップの進行 */
     MeasSequence();
   }
@@ -26,16 +29,12 @@ void MainWindow::timerEvent( QTimerEvent *event )
   }
 }
 
+#if 0     // 現在全く不要のはず
 void MainWindow::WatchPos( void )
 {
   QString buf;
 
   double newv;
-  newv = GetCurPosKeV();
-  if ( newv != CurPosKeV ) {
-    CurPosKeV = newv;
-    ShowCurPos();
-  }
   
   if ( inMove == 1 ) {
     if ( isFinishedCurMove() ) {
@@ -57,7 +56,9 @@ void MainWindow::WatchPos( void )
   }
   return;
 }
+#endif
 
+#if 0    // 現在全く不要のはず
 void MainWindow::MotorMove( void )
 {
   char *now = NULL;
@@ -75,6 +76,7 @@ void MainWindow::MotorMove( void )
       ->setText( sks->GetValue( Motors[ MovingM ].devName ) );
   }
 }
+#endif
 
 void MainWindow::MeasSequence( void )
 {
@@ -101,7 +103,7 @@ void MainWindow::MeasSequence( void )
     statusbar->showMessage( tr( "Writing Header." ) );
     WriteHeader( MeasR );
     statusbar->showMessage( tr( "Going to initial position." ) );
-    MoveCurPosKeV( GoToKeV = SBlockStart[0] );
+    MoveCurThPosKeV( GoToKeV = SBlockStart[0] );
     MeasStage = 2;
     break;
   case 2:

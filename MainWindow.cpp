@@ -25,12 +25,13 @@ MainWindow::MainWindow() : QMainWindow()
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
-  ReadDef( "XAFSM.def" );
-  IdentifyMotors();
-  IdentifySensors();
-
-  s = new Stars;
+  s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( "XafsM2", "XafsM2" ); // Stars とのコネクション確立の準備
+
+  ReadDef( "XAFSM.def" );
+  InitAndIdentifyMotors();
+  InitAndIdentifySensors();
+
   setupCommonArea();
   setupSetupArea();
   setupMeasArea();
@@ -38,7 +39,6 @@ MainWindow::MainWindow() : QMainWindow()
 
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
-  NewLogMsg( QString( "Mono: at %1 keV\n" ).arg( GetCurPosKeV() ) );
 
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
 	     .arg( mccd[ selMC->MC() ].MCName ).arg( mccd[ selMC->MC() ].d ) );
@@ -67,18 +67,52 @@ void MainWindow::ShowMessageOnSBar( QString msg, int time )
   statusbar->showMessage( msg, time );
 }
 
-void MainWindow::IdentifyMotors( void )
+void MainWindow::InitAndIdentifyMotors( void )
 {
+  AUnit *am;
   for ( int i = 0; i < AMotors.count(); i++ ) {
-    if ( AMotors.value(i)->getID() == "THETA" ) { MMainTh = AMotors.value(i); }
+    am = AMotors.value(i);
+    am->setStars( s );
+    am->setUniqID( QString::number( i ) );
+    if ( am->getID() == "THETA" ) {
+      MMainTh = am;
+    }
+    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
+    connect( s, SIGNAL( EvChangedIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
+    connect( s, SIGNAL( EvChangedValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
+    am->AskIsBusy();
+    am->GetValue();
   }
+  connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
+  connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
+  MMainTh->AskIsBusy();
+  MMainTh->GetValue();
 }
 
-void MainWindow::IdentifySensors( void )
+void MainWindow::InitAndIdentifySensors( void )
 {
   for ( int i = 0; i < ASensors.count(); i++ ) {
+    ASensors.value(i)->setStars( s );
     if ( ASensors.value(i)->getID() == "I0" ) { SI0 = ASensors.value(i); }
     if ( ASensors.value(i)->getID() == "I1" ) { SI1 = ASensors.value(i); }
     if ( ASensors.value(i)->getID() == "TotalF" ) { SFluo = ASensors.value(i); }
+  }
+}
+
+void MainWindow::ShowCurThPos( SMsg msg )
+{
+  QString buf;
+  double deg;
+
+  if ( ( msg.From() == MMainTh->getDevCh() )
+       && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) ) ) {
+    deg = ( msg.Val().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
+    buf.sprintf( UnitName[KEV].form, deg );
+    CurrentAngle->setText( buf );
+    buf.sprintf( UnitName[DEG].form, CurPosKeV = deg2keV( deg ) );
+    CurrentEnergy->setText( buf );
+
+    NewLogMsg( tr( "Current Position [%1] keV" ).arg( buf ) );
   }
 }
