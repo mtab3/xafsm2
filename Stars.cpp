@@ -227,6 +227,7 @@ void Stars::ReceiveMessageFromStars( void )
   }
 }
 
+#if 0
 bool Stars::SendCMD( QString dev, QString cmd1, QString cmd2 )
 {
   if ( MakeConnection() == false ) {
@@ -244,6 +245,7 @@ bool Stars::SendCMD( QString dev, QString cmd1, QString cmd2 )
 
   return true;
 }
+#endif
 
 bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
 {

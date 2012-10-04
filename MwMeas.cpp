@@ -487,7 +487,7 @@ void MainWindow::ClearNowView( void )
 
 void MainWindow::StartMeasurement( void )
 {
-  if ( ( inMeas == 0 )&&( inMove == 1 ) ) {
+  if ( ( inMeas == 0 )&&( MMainTh->getIsBusy() ) ) {
     statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
     return;
   }
@@ -496,7 +496,8 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( ( TP > 0 ) && ( TT0 > 0 ) ) {
-      NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) ).arg( CurPosKeV ) );
+      NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
+		 .arg( CurPosKeV ) );
       InitialKeV = CurPosKeV;
       inMeas = 1;
       MeasStart->setText( tr( "Stop" ) );
@@ -536,7 +537,7 @@ void MainWindow::SurelyStop( void )
   MeasPause->setStyleSheet( "" );
   MeasPause->setEnabled( false );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
-    MoveCurPosKeV( InitialKeV );
+    MoveCurThPosKeV( InitialKeV );
   }
 }
 

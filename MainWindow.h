@@ -53,11 +53,13 @@ private:
   StarsSV *starsSV;
   /* cfg. */
 
+  double CurPosKeV;
+
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
-  void IdentifyMotors();
-  void IdentifySensors();
+  void InitAndIdentifyMotors();
+  void InitAndIdentifySensors();
 
   Stars *s;
   double MonoCryD;
@@ -65,7 +67,7 @@ private:
   AtomNo SelectedA;
   PeriodicTable *PT;
   AbEN SelectedE;
-  double CurPosKeV;      // Current Position of MonoChro in Energy (keV)
+  //  double CurPosKeV;      // Current Position of MonoChro in Energy (keV)
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
@@ -78,9 +80,9 @@ private:
 
   /* InterFace.cpp */ /**********************************************/
 
+  void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
+#if 0
   double GetCurPosKeV( void );   // Read out current Pos. of Mon. in keV
-  void MoveCurPosKeV( double keV ); // Move current Pos. of Mon. in keV
-  void MoveCurPosManualKeV( double keV ); // Move current Pos. of Mon. in keV
   int isFinishedCurMove( void ); 
   void MeasureICH( int devNo, double dwell );
   void MeasureSSD( double dwell );
@@ -91,6 +93,7 @@ private:
   int isFinishedMeasICH( int devNo );
   int isFinishedMeasSSD( void );
   int isFinishedMeasAUX( int devNo );
+#endif
 
   /* Dummy Functions for Dummy Interface */
   void DummyDelayMotionStart( double keV );
@@ -98,7 +101,7 @@ private:
   /* InterFace.cpp */ /**********************************************/
 
   void timerEvent( QTimerEvent *event );
-  int WatchCurPosID;
+  //  int WatchCurPosID;
 
   double eV2deg( double eV ) {
     double tmp = eV2a( eV )/( 2.* MonoCryD );
@@ -133,22 +136,24 @@ private:
     return 0;
   }
 
-  void GoMAt0( int Pos );
-  void GoMStop0( char *now );
-  void ShowCurPos( void );
+  void GoMAtPuls( int Pos );
+  void GoMStop0( void );
   void ShowTAE( void );
   void GetNewGo( int i );
   void ShowGo( int i );
   void SetNewGos( void );
   void SPSStart( int AbsRel );
   void SPSStop0( void );
-  void ReadOutScanData( int NowP );
+  void ReadOutScanData( void ); // ( int NowP );
+  void MMRel( void );
+  void MMAbs( void );
+  void ShowRelAbs( void );
 
-  QPushButton *GoMB;
   int inMMove;
   int MoveID;            // Timer ID
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
+  RELABS RelAbs;
   int SPSMon;            // SPS-ing monitor
   int SPSID;             // Timer ID
   int inSPSing;
@@ -157,6 +162,10 @@ private:
   double ScanDW;
   int NowScanP;
   XView *SPSView;
+  QString RadioBOn;
+  QString RadioBOff;
+
+  bool setupMDispFirstTime;
 
   int inMonitor;
   int MonID;
@@ -211,7 +220,7 @@ private:
   int TP;
   double TT0;
   int inMeas, inPause, SinPause;
-  int inMove;
+  int inMoveTh;
   int MeasStage, SMeasStage;
   int MeasID;
   int MeasR, MeasB, MeasS;
@@ -248,6 +257,9 @@ private slots:
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
 
+  void ShowCurThPos( SMsg msg );
+  void ShowCurMotorPos( SMsg msg );
+
   void NewSelA( int i );
   void OpenPT( void );
   void AtomSelectedByPT( int i );
@@ -257,10 +269,10 @@ private slots:
   void SetAllGoUnits( int i );
   void ShowAllGos( void );
   void GetNewGos( void );
-  void GoToPosKeV1( void ) { MoveCurPosManualKeV( GoPosKeV[0] ); }
-  void GoToPosKeV2( void ) { MoveCurPosManualKeV( GoPosKeV[1] ); }
-  void GoToPosKeV3( void ) { MoveCurPosManualKeV( GoPosKeV[2] ); }
-  void GoToPosKeV4( void ) { MoveCurPosManualKeV( GoPosKeV[3] ); }
+  void GoToPosKeV1( void ) { MoveCurThPosKeV( GoPosKeV[0] ); }
+  void GoToPosKeV2( void ) { MoveCurThPosKeV( GoPosKeV[1] ); }
+  void GoToPosKeV3( void ) { MoveCurThPosKeV( GoPosKeV[2] ); }
+  void GoToPosKeV4( void ) { MoveCurThPosKeV( GoPosKeV[3] ); }
   void NewMotor( void );
   void GoMAt( void );
   void GoMUp( void );
