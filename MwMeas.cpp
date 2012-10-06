@@ -494,6 +494,7 @@ void MainWindow::StartMeasurement( void )
   if ( inMeas == 0 ) {
     if ( GetDFName0() == 0 ) {
       return;
+      statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
     }
     if ( ( TP > 0 ) && ( TT0 > 0 ) ) {
       NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )

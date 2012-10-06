@@ -145,8 +145,6 @@ private:
   void SPSStart( int AbsRel );
   void SPSStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
-  void MMRel( void );
-  void MMAbs( void );
   void ShowRelAbs( void );
 
   int inMMove;
@@ -259,6 +257,9 @@ private slots:
 
   void ShowCurThPos( SMsg msg );
   void ShowCurMotorPos( SMsg msg );
+
+  void MMRel( void );
+  void MMAbs( void );
 
   void NewSelA( int i );
   void OpenPT( void );

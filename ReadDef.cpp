@@ -43,10 +43,11 @@ void MainWindow::ReadDef( QString fname )
       next = nextItem( aline.simplified(), item );
       NewUnit = new AUnit;
       if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
-	if ( item == "MOTOR" )
+	if ( item == "MOTOR" )  // Motor か
 	  AMotors << NewUnit;
 	else
-	  ASensors << NewUnit;
+	  ASensors << NewUnit;  // Sensor か
+	// 全 motor, sensor に共通の項目
 	next = nextItem( next, item ); NewUnit->setType( type = item );
 	next = nextItem( next, item ); NewUnit->setID( item );
 	next = nextItem( next, item ); NewUnit->setName( item );
@@ -54,22 +55,24 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); NewUnit->setCh( item );
 	next = nextItem( next, item ); NewUnit->setUnit( item );
 	NewUnit->setDevCh();
+	// 以下、各 motor, sensor に依存する項目
 	if ( type == "PM" ) {
 	  next = nextItem( next, item ); NewUnit->setUPP( item );
 	  next = nextItem( next, item ); NewUnit->setCenter( item );
 	} else if ( type == "PZ" ) {
 	  next = nextItem( next, item ); NewUnit->setMinV( item );
 	  next = nextItem( next, item ); NewUnit->setMaxV( item );
+	} else if ( type == "ENC" ) {
 	} else if ( type == "PAM" ) {
 	} else if ( type == "CNT" ) {
 	} else if ( type == "SSDP" ) {
 	} else if ( type == "SSD" ) {
 	} else {
-	  qDebug() << tr( "Undefined Unit type [%1]" ).arg( item );
+	  qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	}
-	NewUnit->show();
+	//	NewUnit->show();
       } else if ( item == "#" ) {
-	qDebug() << "Comment line"; // do nothing but not an error
+	// qDebug() << "Comment line"; // do nothing but not an error
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

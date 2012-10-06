@@ -79,12 +79,14 @@ void MainWindow::MotorMove( void )
 #endif
 
 
-#if 0   // 以下 file end まで仮に止めておく
-        // 他のファイルを先に触りたいため。(make した時に Timer.cpp より後になるファイル)
 
 
 void MainWindow::MeasSequence( void )
 {
+#if 0
+  if ( isBusyMotor() || isBusySensor() )
+    return;
+
   switch( MeasStage ) {
     /* 
        0: 測定開始
@@ -101,7 +103,8 @@ void MainWindow::MeasSequence( void )
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
     MeasR = 0;    // Measurement Repeat count
-    break;
+    //break;        MeasStage == 0 の内容には、レスポンスを待たないといけない
+    //              モノがないので break せず MeasStage == 1 に移行する
   case 1:
     MeasB = 0;    // Measurement Block count
     MeasS = 0;    // Measurement Step count in each block
@@ -202,10 +205,12 @@ void MainWindow::MeasSequence( void )
     }
     break;
   }
+#endif
 }
 
 void MainWindow::SPSSequence( void )
 {
+#if 0
   MCurPos
     ->setText( sks->GetValue( Motors[ MovingM ].devName ) );
 
@@ -282,10 +287,12 @@ void MainWindow::SPSSequence( void )
     SPSStop0();
     break;
   }
+#endif
 }
 
 void MainWindow::MonSequence( void )
 {
+#if 0
   switch( MonStage ) {
     /* 
        0: 測定開始
@@ -343,6 +350,6 @@ void MainWindow::MonSequence( void )
     ScanStage = 0;
     break;
   }
+#endif
 }
 
-#endif

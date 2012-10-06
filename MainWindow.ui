@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
+    <width>764</width>
     <height>909</height>
    </rect>
   </property>
@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(240, 240, 230);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_13">
     <item row="0" column="0">
@@ -28,6 +31,9 @@
         <horstretch>1</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(245, 235, 235);</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::Box</enum>
@@ -53,7 +59,7 @@
         <widget class="QComboBox" name="SelectTA">
          <property name="maximumSize">
           <size>
-           <width>80</width>
+           <width>60</width>
            <height>16777215</height>
           </size>
          </property>
@@ -62,6 +68,9 @@
          </property>
          <property name="whatsThis">
           <string>Select a Target Atom</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
         </widget>
        </item>
@@ -75,6 +84,9 @@
          </property>
          <property name="toolTip">
           <string>Select an absorption edge</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
         </widget>
        </item>
@@ -100,6 +112,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(255, 255, 255);</string>
+         </property>
         </widget>
        </item>
        <item row="0" column="5">
@@ -109,6 +124,9 @@
            <horstretch>1</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(255, 255, 255);</string>
          </property>
         </widget>
        </item>
@@ -123,9 +141,12 @@
         <widget class="QPushButton" name="ShowPT">
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
-           <height>21</height>
+           <width>70</width>
+           <height>10000</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="text">
           <string>PeriodicT</string>
@@ -142,7 +163,7 @@
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>50</width>
+        <width>5</width>
         <height>10</height>
        </size>
       </property>
@@ -150,6 +171,9 @@
     </item>
     <item row="0" column="2">
      <widget class="QFrame" name="frame_3">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(245, 240, 220);</string>
+      </property>
       <property name="frameShape">
        <enum>QFrame::Box</enum>
       </property>
@@ -189,6 +213,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="CurrentAngle">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(255, 255, 221);</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
          <property name="text">
           <string>10.0000</string>
          </property>
@@ -234,16 +264,10 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
-             <property name="topMargin">
-              <number>5</number>
+             <property name="margin">
+              <number>3</number>
              </property>
-             <property name="bottomMargin">
-              <number>5</number>
-             </property>
-             <property name="horizontalSpacing">
-              <number>5</number>
-             </property>
-             <property name="verticalSpacing">
+             <property name="spacing">
               <number>1</number>
              </property>
              <item row="0" column="0">
@@ -254,7 +278,14 @@
               </widget>
              </item>
              <item row="0" column="2">
-              <widget class="QComboBox" name="GoUnit0"/>
+              <widget class="QComboBox" name="GoUnit0">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_11">
@@ -286,14 +317,21 @@
               </widget>
              </item>
              <item row="1" column="2">
-              <widget class="QComboBox" name="GoUnit1"/>
+              <widget class="QComboBox" name="GoUnit1">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item row="1" column="3">
               <widget class="QPushButton" name="GoTo1">
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
-                 <height>20</height>
+                 <width>50</width>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -312,14 +350,21 @@
               <widget class="QLineEdit" name="GoPos2"/>
              </item>
              <item row="2" column="2">
-              <widget class="QComboBox" name="GoUnit2"/>
+              <widget class="QComboBox" name="GoUnit2">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item row="2" column="3">
               <widget class="QPushButton" name="GoTo2">
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
-                 <height>20</height>
+                 <width>50</width>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -338,14 +383,21 @@
               <widget class="QLineEdit" name="GoPos3"/>
              </item>
              <item row="3" column="2">
-              <widget class="QComboBox" name="GoUnit3"/>
+              <widget class="QComboBox" name="GoUnit3">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item row="3" column="3">
               <widget class="QPushButton" name="GoTo3">
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
-                 <height>20</height>
+                 <width>50</width>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -364,14 +416,21 @@
               <widget class="QLineEdit" name="GoPos4"/>
              </item>
              <item row="4" column="2">
-              <widget class="QComboBox" name="GoUnit4"/>
+              <widget class="QComboBox" name="GoUnit4">
+               <property name="maximumSize">
+                <size>
+                 <width>70</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item row="4" column="3">
               <widget class="QPushButton" name="GoTo4">
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
-                 <height>20</height>
+                 <width>50</width>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -472,7 +531,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
                 </size>
                </property>
               </widget>
@@ -506,7 +565,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
                 </size>
                </property>
               </widget>
@@ -529,7 +588,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>18</height>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -593,16 +652,6 @@
                </property>
               </widget>
              </item>
-             <item row="8" column="2" colspan="2">
-              <widget class="QComboBox" name="SelectD1">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </widget>
-             </item>
              <item row="9" column="0">
               <widget class="QLabel" name="label_24">
                <property name="text">
@@ -637,7 +686,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
                 </size>
                </property>
               </widget>
@@ -685,7 +734,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>100000</height>
                 </size>
                </property>
                <property name="text">
@@ -698,7 +747,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -727,7 +776,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>100000</height>
                 </size>
                </property>
                <property name="sizeIncrement">
@@ -759,7 +808,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -772,24 +821,11 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>100000</height>
                 </size>
                </property>
                <property name="text">
                 <string>Rel. Scn</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="5" colspan="5">
-              <widget class="QComboBox" name="SorPS">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="minimumContentsLength">
-                <number>0</number>
                </property>
               </widget>
              </item>
@@ -805,7 +841,30 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="10">
+              <widget class="QComboBox" name="SorPS">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="minimumContentsLength">
+                <number>0</number>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="2" colspan="8">
+              <widget class="QComboBox" name="SelectD1">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
                 </size>
                </property>
               </widget>
@@ -853,7 +912,7 @@
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>20</height>
+                 <height>10000</height>
                 </size>
                </property>
                <property name="text">
@@ -1248,12 +1307,12 @@
         <item row="0" column="1">
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <property name="spacing">
-           <number>-1</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_11">
             <property name="spacing">
-             <number>-1</number>
+             <number>6</number>
             </property>
             <item>
              <widget class="QFrame" name="frame_6">
@@ -1741,7 +1800,7 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <property name="spacing">
-              <number>-1</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
               <number>5</number>
@@ -1948,8 +2007,11 @@
         <height>500</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(245, 240, 220);</string>
+      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>9</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -1969,6 +2031,9 @@
             <width>0</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
          </widget>
         </item>
@@ -1993,6 +2058,9 @@
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -2015,6 +2083,9 @@
             <width>0</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
          </widget>
         </item>
@@ -2039,6 +2110,9 @@
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -2061,6 +2135,9 @@
             <width>0</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
          </widget>
         </item>
@@ -2085,6 +2162,9 @@
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -2107,6 +2187,9 @@
             <width>0</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
          </widget>
         </item>
@@ -2131,6 +2214,9 @@
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -2153,6 +2239,9 @@
             <width>0</width>
             <height>50</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
          </widget>
         </item>
@@ -2177,6 +2266,9 @@
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -2190,8 +2282,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>747</width>
-     <height>23</height>
+     <width>764</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

@@ -43,7 +43,7 @@ MainWindow::MainWindow() : QMainWindow()
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
 	     .arg( mccd[ selMC->MC() ].MCName ).arg( mccd[ selMC->MC() ].d ) );
 
-  connect( s, SIGNAL( aMessage( QString, int ) ),
+  connect( s, SIGNAL( AskShowStat( QString, int ) ),
 	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
   connect( action_SelMC, SIGNAL( triggered() ), selMC, SLOT( show() ) );
@@ -78,7 +78,7 @@ void MainWindow::InitAndIdentifyMotors( void )
       MMainTh = am;
     }
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
-    connect( s, SIGNAL( EvChangedIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
+    connect( s, SIGNAL( EvIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
     am->AskIsBusy();
