@@ -102,10 +102,11 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
 	   this, SLOT( SelectedWBFN( const QString & ) ) );
   connect( SelRBFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedRBFN( const QString & ) ) );
-
+#if 0
   connect( ModeTrans, SIGNAL( clicked() ), this, SLOT( Mode2Tr() ) );
   connect( ModeFluo, SIGNAL( clicked() ), this, SLOT( Mode2Fl() ) );
   connect( ModeAux, SIGNAL( clicked() ), this, SLOT( Mode2Au() ) );
+#endif
 
   connect( SSD[0],  SIGNAL( clicked() ), this, SLOT( SelSSDs00() ) );
   connect( SSD[1],  SIGNAL( clicked() ), this, SLOT( SelSSDs01() ) );

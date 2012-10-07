@@ -331,6 +331,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>V</string>
              </property>
@@ -343,6 +346,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Cr</string>
@@ -357,6 +363,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Mn</string>
              </property>
@@ -369,6 +378,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Fe</string>
@@ -383,6 +395,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Co</string>
              </property>
@@ -395,6 +410,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Ni</string>
@@ -409,6 +427,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Cu</string>
              </property>
@@ -421,6 +442,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Zn</string>
@@ -435,6 +459,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Ga</string>
              </property>
@@ -447,6 +474,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Ge</string>
@@ -461,6 +491,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>As</string>
              </property>
@@ -473,6 +506,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Se</string>
@@ -487,6 +523,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Br</string>
              </property>
@@ -499,6 +538,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Kr</string>
@@ -513,6 +555,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Rb</string>
              </property>
@@ -525,6 +570,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Sr</string>
@@ -539,6 +587,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Y</string>
              </property>
@@ -551,6 +602,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Zr</string>
@@ -565,6 +619,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
+             </property>
              <property name="text">
               <string>Nb</string>
              </property>
@@ -577,6 +634,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 127);</string>
              </property>
              <property name="text">
               <string>Mo</string>
@@ -747,6 +807,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Cs</string>
              </property>
@@ -759,6 +822,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Ba</string>
@@ -789,6 +855,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Hf</string>
              </property>
@@ -801,6 +870,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Ta</string>
@@ -815,6 +887,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>W</string>
              </property>
@@ -827,6 +902,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Re</string>
@@ -841,6 +919,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Os</string>
              </property>
@@ -853,6 +934,10 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);
+</string>
              </property>
              <property name="text">
               <string>Ir</string>
@@ -867,6 +952,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Pt</string>
              </property>
@@ -879,6 +967,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Au</string>
@@ -893,6 +984,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Hg</string>
              </property>
@@ -905,6 +999,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Tl</string>
@@ -919,6 +1016,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Pb</string>
              </property>
@@ -931,6 +1031,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Bi</string>
@@ -945,6 +1048,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Po</string>
              </property>
@@ -957,6 +1063,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>At</string>
@@ -971,6 +1080,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Rn</string>
              </property>
@@ -984,6 +1096,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Fr</string>
              </property>
@@ -996,6 +1111,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Ra</string>
@@ -1026,6 +1144,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Rf</string>
              </property>
@@ -1038,6 +1159,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Db</string>
@@ -1052,6 +1176,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Sg</string>
              </property>
@@ -1064,6 +1191,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Bh</string>
@@ -1078,6 +1208,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Hs</string>
              </property>
@@ -1090,6 +1223,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Mt</string>
@@ -1104,6 +1240,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Ds</string>
              </property>
@@ -1117,6 +1256,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Rg</string>
              </property>
@@ -1129,6 +1271,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Cn</string>
@@ -1177,6 +1322,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>La</string>
              </property>
@@ -1189,6 +1337,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Ce</string>
@@ -1203,6 +1354,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Pr</string>
              </property>
@@ -1215,6 +1369,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Nd</string>
@@ -1229,6 +1386,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Pm</string>
              </property>
@@ -1241,6 +1401,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Sm</string>
@@ -1255,6 +1418,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Eu</string>
              </property>
@@ -1267,6 +1433,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Gd</string>
@@ -1281,6 +1450,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Tb</string>
              </property>
@@ -1293,6 +1465,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Dy</string>
@@ -1307,6 +1482,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Ho</string>
              </property>
@@ -1319,6 +1497,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Er</string>
@@ -1333,6 +1514,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Tm</string>
              </property>
@@ -1346,6 +1530,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Yb</string>
              </property>
@@ -1358,6 +1545,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Lu</string>
@@ -1379,6 +1569,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Ac</string>
              </property>
@@ -1391,6 +1584,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>Th</string>
@@ -1405,6 +1601,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
+             </property>
              <property name="text">
               <string>Pa</string>
              </property>
@@ -1417,6 +1616,9 @@
                <width>31</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 170, 255);</string>
              </property>
              <property name="text">
               <string>U</string>
