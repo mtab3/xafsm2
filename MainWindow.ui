@@ -252,7 +252,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1020,6 +1020,15 @@
              </item>
              <item>
               <widget class="QLabel" name="DevCurV">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(250, 255, 240);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
                <property name="text">
                 <string>0.000</string>
                </property>

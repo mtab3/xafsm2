@@ -142,7 +142,7 @@ void MainWindow::ReadAux2( void )          // ダミー関数
 {
 }
 
-void MainWindow::MeasSequence( void )   // Pause の処理を省いた
+void MainWindow::MeasSequence( void )
 {
   double Delta;
 
@@ -172,7 +172,7 @@ void MainWindow::MeasSequence( void )   // Pause の処理を省いた
     //              モノがないので break せず MeasStage == 1 に移行する
   case 1:
     MeasB = 0;    // Measurement Block count
-    statusbar->showMessage( tr( "Writing Header." ) );
+    statusbar->showMessage( tr( "Writing Header." ), 2000 );
     WriteHeader( MeasR );
     MeasStage = 2;
     // break;       MeasStage == 1 の内容にもレスポンスを待つ必要なし
@@ -265,12 +265,12 @@ void MainWindow::SPSSequence( void )
     } else {
       SPSView->SetWindow( ScanEP, 0, ScanSP, 0 );
     }
-    statusbar->showMessage( tr( "Scan/Search Start!" ) );
+    statusbar->showMessage( tr( "Scan/Search Start!" ), 1000 );
     ScanStage = 1;
     break;
   case 1:
     NowScanP = ScanSP;
-    statusbar->showMessage( tr( "Going to initial position." ) );
+    statusbar->showMessage( tr( "Going to initial position." ), 1000 );
     sks->SetValue( Motors[ MovingM ].devName, ScanSP );
     ScanStage = 2;
     break;
