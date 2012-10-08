@@ -77,8 +77,8 @@ void MainWindow::InitAndIdentifyMotors( void )
     if ( am->getID() == "THETA" ) {
       MMainTh = am;
     }
-    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
-    connect( s, SIGNAL( EvIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), am, SLOT( SetIsBusyByMsg( SMsg ) ) );
+    connect( s, SIGNAL( EvIsBusy( SMsg ) ), am, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
     am->AskIsBusy();

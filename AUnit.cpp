@@ -78,7 +78,7 @@ void AUnit::SetCurPos( SMsg msg )
   }
 }
 
-void AUnit::SetIsBusy( SMsg msg )
+void AUnit::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {

@@ -531,6 +531,14 @@ void MainWindow::StartMeasurement( void )
       MeasStart->setText( tr( "Stop" ) );
       MeasStart->setStyleSheet( "background-color: yellow" );
       MeasPause->setEnabled( true );
+      MeasSensF1 = UseI1->isChecked();
+      MeasSensF2 = UseAux1->isChecked();
+      MeasSensF3 = UseAux2->isChecked();
+      MeasSensF4 = Use19chSSD->isChecked();
+      MeasSens0 = SelectI0->currentIndex();
+      MeasSens1 = SelectI1->currentIndex();
+      MeasSens2 = SelectAux1->currentIndex();
+      MeasSens3 = SelectAux2->currentIndex();
       CpBlock2SBlock();
       MeasStage = 0;
       ClearNowView();

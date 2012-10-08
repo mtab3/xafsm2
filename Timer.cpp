@@ -79,129 +79,166 @@ void MainWindow::MotorMove( void )
 #endif
 
 
-
-
-void MainWindow::MeasSequence( void )
+bool MainWindow::isBusyMotorInMeas( void )
 {
-  if ( isBusyMotor() || isBusySensor() )
+  return false;                               // !!!!!!!!!! ダミー
+  return MMainTh->getIsBusy();
+}
+
+bool MainWindow::isBusySensorInMeas( void )
+{
+  return false;                               // !!!!!!!!!! ダミー
+  bool isB0, isB1, isB2, isB3, isB4;
+  isB0 = ASensors.value( MeasSens0 )->getIsBusy();   // I0
+  isB1 = MeasSensF1 & ASensors.value( MeasSens1 )->getIsBusy();   // I1
+  isB2 = MeasSensF2 & ASensors.value( MeasSens2 )->getIsBusy();   // Aux1
+  isB3 = MeasSensF3 & ASensors.value( MeasSens3 )->getIsBusy();   // Aux2
+  isB4 = MeasSensF4 & SFluo->getIsBusy();
+  return ( isB0 | isB1 | isB2 | isB3 | isB4 );
+}
+
+void MainWindow::SetDwellTime( double dtime )       // ダミー関数
+{
+  
+}
+
+void MainWindow::MeasureI0( void )     // ダミー関数
+{
+}
+
+void MainWindow::MeasureI1( void )     // ダミー関数
+{
+}
+
+void MainWindow::Measure19chSSD( void )     // ダミー関数
+{
+}
+
+void MainWindow::MeasureAux1( void )     // ダミー関数
+{
+}
+
+void MainWindow::MeasureAux2( void )     // ダミー関数
+{
+}
+
+void MainWindow::ReadI0( void )          // ダミー関数
+{
+}
+
+void MainWindow::ReadI1( void )          // ダミー関数
+{
+}
+
+void MainWindow::Read19chSSD( void )          // ダミー関数
+{
+}
+
+void MainWindow::ReadAux1( void )          // ダミー関数
+{
+}
+
+void MainWindow::ReadAux2( void )          // ダミー関数
+{
+}
+
+void MainWindow::MeasSequence( void )   // Pause の処理を省いた
+{
+  double Delta;
+
+  if ( isBusyMotorInMeas() || isBusySensorInMeas() )
     return;
 
   switch( MeasStage ) {
     /* 
-       0: 測定開始
-       1: 測定の開始点に移動
-       2: 目的の角度になったら計測
-       3: 計測が終了したら次の角度に移動
-       --- 2 と 3 を繰り返す ---
-       4: 最終ブロックの最終点まで来たらリピート処理(1へ戻る)
-       リピートも終わったら後始末をして終了
-       5: pause の時用のステージ
+       0: 測定開始 Repeat = 0
+       1: Block = 0
+       2: Step = 0, setDwellTIme
+       3: Goto a Position with a Block and a Step
+       4: Triger Sensors
+       5: Read out Sensors
+          Step++; if ( Step < MaxStep ) goto 3
+          Block++; if ( Block < MaxBlock ) goto 2
+          Repeat++; if ( Repeat < MaxRepeat ) toto 1
+          when reach here, finish.
+       6: pause の時用のステージ
     */
   case 0:
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
-    MeasStage = 1;
     MeasR = 0;    // Measurement Repeat count
+    MeasStage = 1;
     //break;        MeasStage == 0 の内容には、レスポンスを待たないといけない
     //              モノがないので break せず MeasStage == 1 に移行する
   case 1:
     MeasB = 0;    // Measurement Block count
-    MeasS = 0;    // Measurement Step count in each block
     statusbar->showMessage( tr( "Writing Header." ) );
     WriteHeader( MeasR );
-    statusbar->showMessage( tr( "Going to initial position." ) );
-    MoveCurThPosKeV( GoToKeV = SBlockStart[0] );
     MeasStage = 2;
-    break;
-  case 2:
-    if ( isFinishedCurMove() == 1 ) {  // 目的の角度になったら
-      inMove = 0;
-      // 今の戻り値は Busy=0, Ready=1, Error=2
-      // なので Error の時は状態遷移が進まなくなる
-      switch( (int)SMeasMode ) {
-      case TRANS:
-	MeasureICH( 1, SBlockDwell[ MeasB ] );   // デバイスタイプごとに違う
-	break;                                    // インターフェイス関数にした方が
-      case FLUO:                                  // 多分実用的。
-	MeasureSSD( SBlockDwell[ MeasB ] ); // (SSD といえば 19チャンネル同時に
-	//  計測リクエストがかかるとか、
-	//  個別のデバイスの事情を考慮できる)
-	break;
-      case AUX:
-	MeasureAUX( 0, SBlockDwell[ MeasB ] );
-	break;
-      }
-      MeasureICH( 0, SBlockDwell[ MeasB ] ); // モードに関わらず I0 は必ず計測する
-      MeasStage = 3;
-    }
+    // break;       MeasStage == 1 の内容にもレスポンスを待つ必要なし
+  case 2: 
+    MeasS = 0;    // Measurement Step count in each block
+    SetDwellTime( SBlockDwell[0] );
+    MeasStage = 3;
     break;
   case 3:
-    if ( isFinishedMeasICH( IONCH0 ) == 1 ) {  // I0 チャンバの計測を最後に
-      // これが終了したら全部終了のはず
-      switch( (int)SMeasMode ) {
-      case TRANS:
-	ReadOutTransData( GoToKeV );                        // 面倒なので今はまだ
-	break;                                    // 野村ファイルフォーマットにはしない
-      case FLUO:
-	ReadOutSSDData( GoToKeV );
-	break;
-      case AUX:
-	ReadOutAUXData( AUXCH0, GoToKeV );
-	break;
-      }
-      NowView->ReDraw();
-      MeasS++;
-      if ( ( MeasB < SBlocks-1 ) && ( MeasS >= SBlockPoints[ MeasB ] ) ){
-	MeasS = 0;
-	MeasB++;
-      }
-      if ( ( MeasB >= SBlocks-1 ) && ( MeasS > SBlockPoints[ MeasB ] ) ){
-	MeasS = 0;
-	MeasB++;
-      }
-      if ( MeasB < Blocks ) {
-	double Delta = keV2any( SBLKUnit, SBlockStart[MeasB+1] )
-	  - keV2any( SBLKUnit, SBlockStart[MeasB] );
-	GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
-			   + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
-	MoveCurPosKeV( GoToKeV );
-	MeasStage = 2;
-	if ( inPause == 1 ) {
-	  SMeasStage = 2;
-	  MeasStage = 5;
-	}
-      } else {
-	MeasStage = 4;
-	if ( inPause == 1 ) {
-	  SMeasStage = 4;
-	  MeasStage = 5;
-	}
-      }
-    }
+    Delta = keV2any( SBLKUnit, SBlockStart[MeasB+1] )
+      - keV2any( SBLKUnit, SBlockStart[MeasB] );
+    GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
+		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
+    MoveCurThPosKeV( GoToKeV );     // 軸の移動
+    MeasStage = 4;
     break;
   case 4:
-    MeasR++;
-    if ( MeasR < SelRPT->value() ) {
-      MeasStage = 1;
-      NewLogMsg( QString( tr( "Meas: Repeat %1\n" ) ).arg( MeasR + 1 ) );
-      ClearNowView();
-    } else {
-      statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
-      NewLogMsg( QString( tr( "Meas: Finished\n" ) ) );
-      killTimer( MeasID );
-      inMeas = 0;
-      MeasStart->setText( tr( "Start" ) );
-      MeasStart->setStyleSheet( "" );
-      MeasPause->setEnabled( false );
-      if ( OnFinishP->currentIndex() == (int)RETURN ) {
-	MoveCurPosKeV( InitialKeV );
+    MeasureI0();
+    if ( UseI1->isChecked() ) MeasureI1();
+    if ( Use19chSSD->isChecked() ) Measure19chSSD();
+    if ( UseAux1->isChecked() ) MeasureAux1();
+    if ( UseAux2->isChecked() ) MeasureAux2();
+    MeasStage = 5;
+    break;
+  case 5:
+    ReadI0();
+    ReadI1();
+    Read19chSSD();
+    ReadAux1();
+    ReadAux2();
+    NowView->ReDraw();
+    MeasS++;
+    if ( inPause == 1 ) {
+      MeasStage = 7;          // PauseStage
+    }
+    // break;                 // case 6: はポーズごの復帰ポイント
+  case 6:
+    if ( inPause == 0 ) {
+      qDebug() << tr( "R=%1 B=%2 S=%3" ).arg( MeasR ).arg( MeasB ).arg( MeasS );
+      if ( MeasS < SBlockPoints[ MeasB ] ) {
+	MeasStage = 3;
+      } else if ( MeasB < SBlocks ) {
+	MeasB++;
+	MeasStage = 2;
+      } else if ( MeasR < SelRPT->value() ) {
+	NewLogMsg( QString( tr( "Meas: Repeat %1\n" ) ).arg( MeasR + 1 ) );
+	ClearNowView();
+	MeasR++;
+	MeasStage = 1;
+      } else {               // 終了
+	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
+	NewLogMsg( QString( tr( "Meas: Finished\n" ) ) );
+	killTimer( MeasID );
+	inMeas = 0;
+	MeasStart->setText( tr( "Start" ) );
+	MeasStart->setStyleSheet( "" );
+	MeasPause->setEnabled( false );
+	if ( OnFinishP->currentIndex() == (int)RETURN ) {
+	  MoveCurThPosKeV( InitialKeV );
+	}
       }
     }
     break;
-  case 5:
-    if ( inPause == 0 ) {
-      MeasStage = SMeasStage;
-    }
+  case 7:
+    if ( inPause == 0 )
+      MeasStage = 6;
     break;
   }
 }

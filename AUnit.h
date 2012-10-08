@@ -47,6 +47,7 @@ public:
       DevCh = Driver + "." + Ch;
   }
   void setUnit( QString unit ) { Unit = unit; };
+  void setIsBusy( bool busy ) { isBusy = busy; };
 
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
@@ -86,7 +87,7 @@ public:
 
 public slots:
   void SetCurPos( SMsg msg );
-  void SetIsBusy( SMsg msg );
+  void SetIsBusyByMsg( SMsg msg );
 };
 
 #endif
