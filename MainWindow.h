@@ -182,7 +182,7 @@ private:
   QVector<QLineEdit *> BLKpoints;
 
   QVector<QPushButton *> SSD;
-  MEASMODE MeasMode;
+  //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;
   QFileDialog *SelRBFND;
@@ -199,7 +199,7 @@ private:
   double SBlockStart[ MaxBLKs + 1 ];
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
-  int SMeasMode;
+  int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
 
   int SelectedSSD[ MaxSSDs ];
 
@@ -212,7 +212,7 @@ private:
   void WriteBF( void );
 
   void SelSSDs( int i );
-  void SetSSDactive( bool active );
+  //  void SetSSDactive( bool active );
 
   QString DFName0, DFName;
   int TP;
@@ -319,9 +319,11 @@ private slots:
   void SelectedWBFN( const QString &fname );
   void SelectedRBFN( const QString &fname );
 
+#if 0
   void Mode2Tr( void );
   void Mode2Fl( void );
   void Mode2Au( void );
+#endif
 
   void SelSSDs00( void );
   void SelSSDs01( void );

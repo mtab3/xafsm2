@@ -48,19 +48,11 @@ MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0
 
 # define Sensor units
 
-SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
-SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
+SENSOR CNT  "I0" "Counter 1 (I0)" "nct08-01b" "ch0"  "cps"
+SENSOR CNT  "I1" "Counter 2 (I1)" "nct08-01b" "ch1"  "cps"
 
-# The parameters following the identifier 'SENSOR' are
-#   ENC      : Unit type   ENC an encorder observed/controlled via nd287
-#     "ENCTH"      : Identifier that this is the main axis of the monochromator
-#     "Encoder Th" : The name of the unit (only for display)
-#     "nd287"      : Stars driver name
-#     ""           : Node name in the stars driver
-#     "deg"        : Name of the metric unit (only for display)
-
-SENSOR PAM "I0" "Keithley 6485-1" "m6485drv-1" "" "mA"
-SENSOR PAM "I1" "Keithley 6485-2" "m6485drv-2" "" "mA"
+SENSOR PAM "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA"
+SENSOR PAM "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA"
 
 # The parameters following the identifier 'SENSOR' are
 #   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
@@ -74,11 +66,7 @@ SENSOR PAM "I1" "Keithley 6485-2" "m6485drv-2" "" "mA"
 # Following definitions are temporal (not real)
 #
 
-SENSOR CNT  "GENERAL" "Counter 1 (I0)" "nct08-01b" "ch0"  "cps"
-SENSOR CNT  "GENERAL" "Counter 2 (I1)" "nct08-01b" "ch1"  "cps"
-SENSOR CNT  "GENERAL" "Counter 3"      "nct08-01b" "ch2"  "cps"
-SENSOR CNT  "GENERAL" "Counter 4"      "nct08-01b" "ch3"  "cps"
-SENSOR SSD  "TotalF"  "SSD"       "SSD"       "ch00" "cps"
+SENSOR SSD  "TotalF"  "SSD (19ch all)" "SSD"  "ch00" "cps"
 SENSOR SSDP "SingleF" "SSD-ch01"  "SSD"       "ch01" "cps"
 SENSOR SSDP "SingleF" "SSD-ch02"  "SSD"       "ch02" "cps"
 SENSOR SSDP "SingleF" "SSD-ch03"  "SSD"       "ch03" "cps"
@@ -98,6 +86,21 @@ SENSOR SSDP "SingleF" "SSD-ch16"  "SSD"       "ch16" "cps"
 SENSOR SSDP "SingleF" "SSD-ch17"  "SSD"       "ch17" "cps"
 SENSOR SSDP "SingleF" "SSD-ch18"  "SSD"       "ch18" "cps"
 SENSOR SSDP "SingleF" "SSD-ch19"  "SSD"       "ch19" "cps"
+
+SENSOR CNT  "GENERAL" "Counter 3"      "nct08-01b" "ch2"  "cps"
+SENSOR CNT  "GENERAL" "Counter 4"      "nct08-01b" "ch3"  "cps"
+
+SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
+SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC      : Unit type   ENC an encorder observed/controlled via nd287
+#     "ENCTH"      : Identifier that this is the main axis of the monochromator
+#     "Encoder Th" : The name of the unit (only for display)
+#     "nd287"      : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+
 
 #
 # For any item you can use "" (double quotation marks) as you want,

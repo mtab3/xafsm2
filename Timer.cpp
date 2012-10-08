@@ -83,7 +83,6 @@ void MainWindow::MotorMove( void )
 
 void MainWindow::MeasSequence( void )
 {
-#if 0
   if ( isBusyMotor() || isBusySensor() )
     return;
 
@@ -205,7 +204,6 @@ void MainWindow::MeasSequence( void )
     }
     break;
   }
-#endif
 }
 
 void MainWindow::SPSSequence( void )

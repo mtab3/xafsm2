@@ -1678,52 +1678,48 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QComboBox" name="comboBox"/>
+              <widget class="QComboBox" name="SelectI0"/>
              </item>
              <item row="2" column="0">
-              <widget class="QRadioButton" name="ModeAux">
+              <widget class="QRadioButton" name="UseI1">
                <property name="text">
                 <string>I</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QComboBox" name="comboBox_2"/>
+              <widget class="QComboBox" name="SelectI1"/>
              </item>
-             <item row="3" column="0">
-              <widget class="QRadioButton" name="ModeFluo">
-               <property name="maximumSize">
-                <size>
-                 <width>80</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>19ch SSD</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QRadioButton" name="ModeAux_2">
+             <item row="5" column="0">
+              <widget class="QRadioButton" name="UseAux1">
                <property name="text">
                 <string>Aux. 1</string>
                </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QComboBox" name="comboBox_3"/>
-             </item>
-             <item row="5" column="0">
-              <widget class="QRadioButton" name="ModeAux_3">
-               <property name="text">
-                <string>Aux. 2</string>
+               <property name="autoExclusive">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item row="5" column="1">
-              <widget class="QComboBox" name="comboBox_4"/>
+              <widget class="QComboBox" name="SelectAux1"/>
              </item>
-             <item row="6" column="0" colspan="2">
+             <item row="7" column="0">
+              <widget class="QRadioButton" name="UseAux2">
+               <property name="text">
+                <string>Aux. 2</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QComboBox" name="SelectAux2"/>
+             </item>
+             <item row="8" column="0" colspan="2">
               <widget class="QFrame" name="frame">
                <property name="minimumSize">
                 <size>
@@ -2053,6 +2049,22 @@
                </layout>
               </widget>
              </item>
+             <item row="4" column="0">
+              <widget class="QRadioButton" name="Use19chSSD">
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>19ch SSD</string>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -2240,11 +2252,7 @@
          </layout>
         </item>
        </layout>
-       <zorder>frame_5</zorder>
        <zorder></zorder>
-       <zorder>verticalSpacer_4</zorder>
-       <zorder>verticalSpacer_2</zorder>
-       <zorder>frame_11</zorder>
       </widget>
       <widget class="QWidget" name="tab_8">
        <attribute name="title">
@@ -2678,6 +2686,115 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>SelectTA</tabstop>
+  <tabstop>ShowPT</tabstop>
+  <tabstop>SelectTE</tabstop>
+  <tabstop>ManTEkeV</tabstop>
+  <tabstop>ManTEdeg</tabstop>
+  <tabstop>SelBLKs</tabstop>
+  <tabstop>SelBLKUnit</tabstop>
+  <tabstop>BLKs01</tabstop>
+  <tabstop>BLKstep01</tabstop>
+  <tabstop>BLKpoints01</tabstop>
+  <tabstop>BLKdwell01</tabstop>
+  <tabstop>BLKs02</tabstop>
+  <tabstop>BLKstep02</tabstop>
+  <tabstop>BLKpoints02</tabstop>
+  <tabstop>BLKdwell02</tabstop>
+  <tabstop>BLKs03</tabstop>
+  <tabstop>BLKstep03</tabstop>
+  <tabstop>BLKpoints03</tabstop>
+  <tabstop>BLKdwell03</tabstop>
+  <tabstop>BLKs04</tabstop>
+  <tabstop>BLKstep04</tabstop>
+  <tabstop>BLKpoints04</tabstop>
+  <tabstop>BLKdwell04</tabstop>
+  <tabstop>BLKs05</tabstop>
+  <tabstop>BLKstep05</tabstop>
+  <tabstop>BLKpoints05</tabstop>
+  <tabstop>BLKdwell05</tabstop>
+  <tabstop>BLKs06</tabstop>
+  <tabstop>BLKstep06</tabstop>
+  <tabstop>BLKpoints06</tabstop>
+  <tabstop>BLKdwell06</tabstop>
+  <tabstop>BLKs07</tabstop>
+  <tabstop>StdEXAFS</tabstop>
+  <tabstop>StdXANES</tabstop>
+  <tabstop>SaveBLKs</tabstop>
+  <tabstop>LoadBLKs</tabstop>
+  <tabstop>DwellAll</tabstop>
+  <tabstop>EditDFName</tabstop>
+  <tabstop>SelDFName</tabstop>
+  <tabstop>EditCMT</tabstop>
+  <tabstop>SelectI0</tabstop>
+  <tabstop>UseI1</tabstop>
+  <tabstop>SelectI1</tabstop>
+  <tabstop>UseAux1</tabstop>
+  <tabstop>SelectAux1</tabstop>
+  <tabstop>UseAux2</tabstop>
+  <tabstop>SelectAux2</tabstop>
+  <tabstop>SSDE01</tabstop>
+  <tabstop>SSDE02</tabstop>
+  <tabstop>SSDE03</tabstop>
+  <tabstop>SSDE04</tabstop>
+  <tabstop>SSDE05</tabstop>
+  <tabstop>SSDE06</tabstop>
+  <tabstop>SSDE07</tabstop>
+  <tabstop>SSDE08</tabstop>
+  <tabstop>SSDE09</tabstop>
+  <tabstop>SSDE10</tabstop>
+  <tabstop>SSDE11</tabstop>
+  <tabstop>SSDE12</tabstop>
+  <tabstop>SSDE13</tabstop>
+  <tabstop>SSDE14</tabstop>
+  <tabstop>SSDE15</tabstop>
+  <tabstop>SSDE16</tabstop>
+  <tabstop>SSDE17</tabstop>
+  <tabstop>SSDE18</tabstop>
+  <tabstop>SSDE19</tabstop>
+  <tabstop>OnFinishP</tabstop>
+  <tabstop>SelRPT</tabstop>
+  <tabstop>MeasStart</tabstop>
+  <tabstop>MeasPause</tabstop>
+  <tabstop>ViewTab</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>SelectScale</tabstop>
+  <tabstop>GoUnit1</tabstop>
+  <tabstop>SPSsP</tabstop>
+  <tabstop>GoPos2</tabstop>
+  <tabstop>GoUnit2</tabstop>
+  <tabstop>GoUnit3</tabstop>
+  <tabstop>GoTo3</tabstop>
+  <tabstop>GoTo4</tabstop>
+  <tabstop>GoMotor</tabstop>
+  <tabstop>SetUpMMRel</tabstop>
+  <tabstop>SPSAScan</tabstop>
+  <tabstop>SPSeP</tabstop>
+  <tabstop>SPSRScan</tabstop>
+  <tabstop>SPSdwell</tabstop>
+  <tabstop>GoTo1</tabstop>
+  <tabstop>GoPos1</tabstop>
+  <tabstop>GoPos3</tabstop>
+  <tabstop>GoUnit4</tabstop>
+  <tabstop>MotorS</tabstop>
+  <tabstop>MotorN</tabstop>
+  <tabstop>GoUnit0</tabstop>
+  <tabstop>GoTo2</tabstop>
+  <tabstop>GoPos4</tabstop>
+  <tabstop>GoMotorPosPuls</tabstop>
+  <tabstop>SetUpMMAbs</tabstop>
+  <tabstop>GoMotorPosUnit</tabstop>
+  <tabstop>SPSstep</tabstop>
+  <tabstop>MStart</tabstop>
+  <tabstop>SorPS</tabstop>
+  <tabstop>SelectD1</tabstop>
+  <tabstop>LogFileName</tabstop>
+  <tabstop>LogFileSelect</tabstop>
+  <tabstop>LogMsgs</tabstop>
+  <tabstop>LogComment</tabstop>
+  <tabstop>SelectD2</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

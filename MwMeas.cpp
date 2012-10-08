@@ -23,12 +23,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
-  MeasMode = TRANS;
+  //  MeasMode = TRANS;
   for ( int i = 0; i < MaxSSDs; i++ ) {
     SSD[i]->setStyleSheet( "background-color: #eeffee" );
     SSD[i]->setToolTip( tr( "Active" ) );
   }
-  SetSSDactive( false );
+  //  SetSSDactive( true );
 
   SelDFND = new QFileDialog;
   SelWBFND = new QFileDialog;
@@ -60,6 +60,28 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   StopP->setText( tr( "<h1><center>Stop ?</center></h1>" ) );
   StopP->setWindowTitle( tr( "Stop or Continue" ) );
   StopP->setDefaultButton( tmpB );
+
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    QString name = ASensors.value(i)->getName(); 
+    SelectI0->addItem( name );
+    SelectI1->addItem( name );
+    SelectAux1->addItem( name );
+    SelectAux2->addItem( name );
+    if ( ASensors.value(i)->getID() == "I0" )
+      SelectI0->setCurrentIndex( i );
+    if ( ASensors.value(i)->getID() == "I1" )
+      SelectI1->setCurrentIndex( i );
+    if ( ASensors.value(i)->getID() == "Aux1" )
+      SelectAux1->setCurrentIndex( i );
+    if ( ASensors.value(i)->getID() == "Aux2" )
+      SelectAux2->setCurrentIndex( i );
+  }
+#if 0
+  UseI1->setAutoExclusive( false );
+  Use19chSSD->setAutoExclusive( false );
+  UseAux1->setAutoExclusive( false );
+  UseAux2->setAutoExclusive( false );
+#endif
   
   connect( BLKstart[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart00()) );
   connect( BLKstart[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart01()) );
@@ -357,6 +379,7 @@ void MainWindow::SetDwells( void )
   ShowBLKs();
 }
 
+#if 0
 void MainWindow::Mode2Tr( void )
 {
   MeasMode = TRANS;
@@ -374,13 +397,16 @@ void MainWindow::Mode2Au( void )
   MeasMode = AUX;
   SetSSDactive( false );
 }
+#endif
 
+#if 0
 void MainWindow::SetSSDactive( bool active )
 {
   for ( int i = 0; i < MaxSSDs; i++ ) {
     SSD[i]->setEnabled( active );
   }
 }
+#endif
 
 void MainWindow::SelSSDs00( void ) { SelSSDs(  0 ); }
 void MainWindow::SelSSDs01( void ) { SelSSDs(  1 ); }
@@ -494,8 +520,8 @@ void MainWindow::StartMeasurement( void )
   }
   if ( inMeas == 0 ) {
     if ( GetDFName0() == 0 ) {
-      return;
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
+      return;
     }
     if ( ( TP > 0 ) && ( TT0 > 0 ) ) {
       NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
@@ -508,7 +534,6 @@ void MainWindow::StartMeasurement( void )
       CpBlock2SBlock();
       MeasStage = 0;
       ClearNowView();
-
       MeasID = startTimer( 100 );
     } else {
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
@@ -567,7 +592,6 @@ void MainWindow::CpBlock2SBlock( void )
     SBlockPoints[i] = BlockPoints[i];
     SBlockDwell[i] = BlockDwell[i];
   }
-  SMeasMode = MeasMode;
 }
 
 void MainWindow::PauseMeasurement( void )
