@@ -203,6 +203,14 @@ void Stars::ReceiveMessageFromStars( void )
       case SETSPEEDMIDDLE:
       case SETSPEEDLOW:
 	emit AnsSetSpeed( smsg ); break;
+      case SETSTOPMODE:
+	emit AnsSetStopMode( smsg ); break;
+      case SETTIMERPRESET:
+	emit AnsSetTimerPreset( smsg ); break;
+      case COUNTERRESET:
+	emit AnsCounterReset( smsg ); break;
+      case COUNTSTART:
+	emit AnsCountStart( smsg ); break;
       default:
 	break;
       }

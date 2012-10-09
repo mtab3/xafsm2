@@ -229,8 +229,10 @@ private:
   void ClearNowView( void );
   int GetDFName0( void );
   void SetDFName( int i );
-  int MeasSens0, MeasSens1, MeasSens2, MeasSens3;
-  bool MeasSensF1, MeasSensF2, MeasSensF3, MeasSensF4;
+  AUnit *MeasSens[ 5 ];
+  bool MeasSensF[ 5 ];
+  bool OneOfTheSensorIsCounter;
+  AUnit *TheCounter;
 
   void ShowTotal( void );
   void CpBlock2SBlock( void );
@@ -253,10 +255,12 @@ private:
   void MonSequence( void );
 
   bool isBusyMotorInMeas( void );
-  bool isBusySensorInMeas( void );   // ダミー関数
-  void SetDwellTime( double dtime );       // ダミー関数
-  void GetSensValues( void );     // ダミー関数
-  void ReadSensValues( void );          // ダミー関数
+  bool isBusySensorInMeas( void );
+  void ClearSensorStages( void );
+  bool InitSensors( void );
+  void SetDwellTime( double dtime );
+  bool GetSensValues( void );
+  void ReadSensValues( void );
 
 private slots:
   void ShowMessageOnSBar( QString msg, int time );

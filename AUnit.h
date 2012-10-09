@@ -29,7 +29,10 @@ class AUnit : public QObject
   double MinV;          // only for PZ
 
   bool isBusy;
+  bool isBusy2;
   QString Value;
+
+  int LocalStage;
 
 public:
   AUnit( QObject *parent = 0 );
@@ -83,7 +86,9 @@ public:
   void show( void );   // mainly for debugging
 
   // wrapper functions of stars communication
-  void GetValue( void );
+  void InitLocalStage( void );
+  bool InitSensor( void );
+  bool GetValue( void );
   void SetValue( double v );
   void AskIsBusy( void );
   void SetSpeed( MSPEED speed );
@@ -91,8 +96,9 @@ public:
   void Stop( void );
 
 public slots:
-  void SetCurPos( SMsg msg );
+  void RcvAns( SMsg msg );
   void SetIsBusyByMsg( SMsg msg );
+  void SetCurPos( SMsg msg );
 };
 
 #endif

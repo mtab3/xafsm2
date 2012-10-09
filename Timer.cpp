@@ -78,6 +78,27 @@ void MainWindow::MotorMove( void )
 }
 #endif
 
+void MainWindow::ClearSensorStages( void )
+{
+  for ( int i = 0; i < 5; i++ ) {
+    if ( MeasSensF[i] )
+      MeasSens[i]->InitLocalStage();
+  }
+}
+
+bool MainWindow::InitSensors( void )
+{
+  bool ff = false;
+
+  for ( int i = 0; i < 5; i++ ) {
+    if ( MeasSensF[i] ) {
+      ff |= MeasSens[i]->InitSensor();
+      qDebug() << tr( "Sensro %1 flag %2" ).arg( i ).arg( ff );
+    }
+  }
+
+  return ff;
+}
 
 bool MainWindow::isBusyMotorInMeas( void )
 {
@@ -86,57 +107,64 @@ bool MainWindow::isBusyMotorInMeas( void )
 
 bool MainWindow::isBusySensorInMeas( void )
 {
-  bool isB0, isB1, isB2, isB3, isB4;
-  isB0 = ASensors.value( MeasSens0 )->getIsBusy();   // I0
-  isB1 = MeasSensF1 & ASensors.value( MeasSens1 )->getIsBusy();   // I1
-  isB2 = MeasSensF2 & ASensors.value( MeasSens2 )->getIsBusy();   // Aux1
-  isB3 = MeasSensF3 & ASensors.value( MeasSens3 )->getIsBusy();   // Aux2
-  isB4 = MeasSensF4 & SFluo->getIsBusy();
-  return ( isB0 | isB1 | isB2 | isB3 | isB4 );
+  bool ff = false;
+
+  for ( int i = 0; i < 5; i++ ) {
+    if ( MeasSensF[i] )
+      ff |= MeasSens[i]->getIsBusy();
+  }
+
+  return ff;
 }
 
-void MainWindow::SetDwellTime( double dtime )
+void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にするべき
 {
-  ASensors.value( MeasSens0 )->SetTime( dtime );                   // I0
-  if ( MeasSensF1 ) ASensors.value( MeasSens1 )->SetTime( dtime ); // I1
-  if ( MeasSensF2 ) ASensors.value( MeasSens2 )->SetTime( dtime ); // Aux1
-  if ( MeasSensF3 ) ASensors.value( MeasSens3 )->SetTime( dtime ); // Aux2
-  if ( MeasSensF4 ) SFluo->SetTime( dtime );                       // SSD
+  for ( int i = 0; i < 5; i++ ) {
+    if ( MeasSensF[i] )
+      MeasSens[i]->SetTime( dtime );
+  }
 }
 
-void MainWindow::GetSensValues( void )
-{
-  ASensors.value( MeasSens0 )->setIsBusy( true );                   // I0
-  if ( MeasSensF1 ) ASensors.value( MeasSens1 )->setIsBusy( true ); // I1
-  if ( MeasSensF2 ) ASensors.value( MeasSens2 )->setIsBusy( true ); // Aux1
-  if ( MeasSensF3 ) ASensors.value( MeasSens3 )->setIsBusy( true ); // Aux2
-  if ( MeasSensF4 ) SFluo->setIsBusy( true );                       // SSD
 
-  ASensors.value( MeasSens0 )->GetValue();                   // I0
-  if ( MeasSensF1 ) ASensors.value( MeasSens1 )->GetValue(); // I1
-  if ( MeasSensF2 ) ASensors.value( MeasSens2 )->GetValue(); // Aux1
-  if ( MeasSensF3 ) ASensors.value( MeasSens3 )->GetValue(); // Aux2
-  if ( MeasSensF4 ) SFluo->GetValue();                       // SSD
+bool MainWindow::GetSensValues( void )
+{
+  bool ff = false;
+  bool FindACounter = false;
+
+  for ( int i = 0; i < 5; i++ ) {
+    if ( MeasSensF[i] ) {
+      if ( MeasSens[i]->getType() == "CNT" ) {
+	if ( !FindACounter ) {
+	  FindACounter = true;
+	  ff |= MeasSens[i]->GetValue();
+	}
+      } else {
+	ff |= MeasSens[i]->GetValue();
+      }
+    }
+  }
+
+  return ff;
 }
 
 void MainWindow::ReadSensValues( void )          // ダミー関数
 {
-  double I0, I1, A1, A2, S;
+  double I0, I1, A1, A2, SS;
 
-  I1 = A1 = A2 = S = 0;
+  I1 = A1 = A2 = SS = 0;
 
-  I0 = ASensors.value( MeasSens0 )->value().toDouble();   // I0
-  if ( MeasSensF1 )
-    I1 = ASensors.value( MeasSens1 )->value().toDouble(); // I1
-  if ( MeasSensF2 )
-    A1 = ASensors.value( MeasSens2 )->value().toDouble(); // Aux1
-  if ( MeasSensF3 )
-    A2 = ASensors.value( MeasSens3 )->value().toDouble(); // Aux2
-  if ( MeasSensF4 )
-    S = SFluo->value().toDouble();                        // SSD
+  I0 = MeasSens[0]->value().toDouble();   // I0
+  if ( MeasSensF[1] )
+    I1 = MeasSens[1]->value().toDouble(); // I1
+  if ( MeasSensF[2] )
+    SS = MeasSens[2]->value().toDouble();  // SSD
+  if ( MeasSensF[3] )
+    A1 = MeasSens[3]->value().toDouble(); // Aux1
+  if ( MeasSensF[4] )
+    A2 = MeasSens[4]->value().toDouble(); // Aux2
 
   NowView->NewPoint( 0, GoToKeV, I0 );
-  if ( MeasSensF1 ) 
+  if ( MeasSensF[1] ) 
     NowView->NewPoint( 1, GoToKeV, I1 );     // I1 ほんとは log とるべき
 #if 0
   if ( MeasSensF2 )
@@ -156,7 +184,7 @@ void MainWindow::MeasSequence( void )
   qDebug() << "In";
   if ( isBusyMotorInMeas() || isBusySensorInMeas() )
     return;
-  qDebug() << "Through";
+  qDebug() << "Through " << MeasStage;
 
   switch( MeasStage ) {
     /* 
@@ -176,9 +204,9 @@ void MainWindow::MeasSequence( void )
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasR = 0;    // Measurement Repeat count
-    MeasStage = 1;
-    //break;        MeasStage == 0 の内容には、レスポンスを待たないといけない
-    //              モノがないので break せず MeasStage == 1 に移行する
+    if ( InitSensors() == false )   // true :: initializing
+      MeasStage = 1;
+    break;
   case 1:
     MeasB = 0;    // Measurement Block count
     statusbar->showMessage( tr( "Writing Header." ), 2000 );
@@ -196,24 +224,28 @@ void MainWindow::MeasSequence( void )
     GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
 		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
+    ClearSensorStages();
     MeasStage = 4;
     break;
   case 4:
-    GetSensValues();
-    MeasStage = 5;
+    if ( GetSensValues() == false ) {  // true :: Getting
+      ClearSensorStages();
+      MeasStage = 5;
+    }
     break;
   case 5:
     ReadSensValues();
+    MeasStage = 6;
+    if ( inPause == 1 ) {
+      MeasStage = 99;          // PauseStage
+    }
+    // don't break
+  case 10:
     NowView->ReDraw();
     MeasS++;
-    if ( inPause == 1 ) {
-      MeasStage = 7;          // PauseStage
-    }
-    // break;                 // case 6: はポーズごの復帰ポイント
-  case 6:
     if ( inPause == 0 ) {
       qDebug() << tr( "R=%1 B=%2 S=%3" ).arg( MeasR ).arg( MeasB ).arg( MeasS );
-      if ( MeasS < SBlockPoints[ MeasB ]-1 ) {
+      if ( MeasS < SBlockPoints[ MeasB ] ) {
 	MeasStage = 3;
       } else if ( MeasB < SBlocks-1 ) {
 	MeasB++;
@@ -238,9 +270,9 @@ void MainWindow::MeasSequence( void )
       }
     }
     break;
-  case 7:
+  case 99:
     if ( inPause == 0 )
-      MeasStage = 6;
+      MeasStage = 10;
     break;
   }
 

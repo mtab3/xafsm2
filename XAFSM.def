@@ -49,6 +49,10 @@ MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0
 # define Sensor units
 
 SENSOR CNT  "I0" "Counter 1 (I0)" "nct0801" "ch0"  "cps"
+#
+# You can use any other sensor as I0, by selecting it after running the program.
+# Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
+#
 SENSOR CNT  "I1" "Counter 2 (I1)" "nct0801" "ch1"  "cps"
 
 SENSOR PAM "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA"

@@ -75,6 +75,11 @@ signals:
   void AnsSetRelativeVoltage( SMsg msg );
   void AnsSetRelativePosition( SMsg msg );
 
+  void AnsSetStopMode( SMsg msg );
+  void AnsSetTimerPreset( SMsg msg );
+  void AnsCounterReset( SMsg msg );
+  void AnsCountStart( SMsg msg );
+
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );
 };

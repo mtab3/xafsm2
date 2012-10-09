@@ -32,6 +32,11 @@ const QString MsgType[] = {
   "@SetSpeedMiddle",
   "@SetSpeedLow",
 
+  "@SetStopMode",
+  "@SetTimerPreset",
+  "@CounterReset",
+  "@CountStart",
+
   "_ChangedValue",
   "_ChangedIsBusy",
   "",
