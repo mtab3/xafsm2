@@ -2,7 +2,7 @@
 
 # define Moveable units
 
-MOTOR PM "THETA" "Theta" "pm16c04-1" "ch3" "deg" 0.0000277777777777 0
+MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 0
 
 # The parameters following the identifier 'MOTOR' are
 #   PM      : Unit type   PM : puls motor controlled via pm16c04
