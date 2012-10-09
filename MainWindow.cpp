@@ -72,17 +72,11 @@ void MainWindow::InitAndIdentifyMotors( void )
   AUnit *am;
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
-    am->setStars( s );
+    am->Initialize( s );
     am->setUniqID( QString::number( i ) );
     if ( am->getID() == "THETA" ) {
       MMainTh = am;
     }
-    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), am, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( EvIsBusy( SMsg ) ), am, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
-    connect( s, SIGNAL( EvChangedValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
-    am->AskIsBusy();
-    am->GetValue();
   }
   connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
@@ -92,11 +86,15 @@ void MainWindow::InitAndIdentifyMotors( void )
 
 void MainWindow::InitAndIdentifySensors( void )
 {
+  AUnit *as;
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    ASensors.value(i)->setStars( s );
-    if ( ASensors.value(i)->getID() == "I0" ) { SI0 = ASensors.value(i); }
-    if ( ASensors.value(i)->getID() == "I1" ) { SI1 = ASensors.value(i); }
-    if ( ASensors.value(i)->getID() == "TotalF" ) { SFluo = ASensors.value(i); }
+    as = ASensors.value(i);
+    as->Initialize( s );
+    as->setUniqID( QString::number( i ) );
+    if ( as->getID() == "I0" ) { SI0 = as; }
+    if ( as->getID() == "I1" ) { SI1 = as; }
+    if ( as->getID() == "TotalF" ) { SFluo = as; }
   }
 }
 

@@ -12,6 +12,7 @@ class AUnit : public QObject
 
   Stars *s;
 
+  QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
   QString ID;           // MainTh, StageX, General, ...
   QString UID;          // Uniq ID ( ID + number )
@@ -33,6 +34,8 @@ class AUnit : public QObject
 public:
   AUnit( QObject *parent = 0 );
 
+  void Initialize( Stars *S );
+  void setGType( QString gtype ) { GType = gtype; };
   void setStars( Stars *S ) { s = S; };
   void setType( QString type ) { Type = type; };
   void setID( QString id ) { ID = id; };
@@ -57,6 +60,7 @@ public:
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
   void setMinV( QString minv ) { MinV = minv.toDouble(); };
 
+  QString getGType( void ) { return GType; };
   QString getType( void ) { return Type; };
   QString getID( void ) { return ID; };
   QString getUID( void ) { return UID; };
@@ -83,6 +87,7 @@ public:
   void SetValue( double v );
   void AskIsBusy( void );
   void SetSpeed( MSPEED speed );
+  void SetTime( double dtime );   // in sec
   void Stop( void );
 
 public slots:

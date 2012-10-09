@@ -48,8 +48,8 @@ MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0
 
 # define Sensor units
 
-SENSOR CNT  "I0" "Counter 1 (I0)" "nct08-01b" "ch0"  "cps"
-SENSOR CNT  "I1" "Counter 2 (I1)" "nct08-01b" "ch1"  "cps"
+SENSOR CNT  "I0" "Counter 1 (I0)" "nct0801" "ch0"  "cps"
+SENSOR CNT  "I1" "Counter 2 (I1)" "nct0801" "ch1"  "cps"
 
 SENSOR PAM "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA"
 SENSOR PAM "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA"
@@ -87,8 +87,8 @@ SENSOR SSDP "SingleF" "SSD-ch17"  "SSD"       "ch17" "cps"
 SENSOR SSDP "SingleF" "SSD-ch18"  "SSD"       "ch18" "cps"
 SENSOR SSDP "SingleF" "SSD-ch19"  "SSD"       "ch19" "cps"
 
-SENSOR CNT  "GENERAL" "Counter 3"      "nct08-01b" "ch2"  "cps"
-SENSOR CNT  "GENERAL" "Counter 4"      "nct08-01b" "ch3"  "cps"
+SENSOR CNT  "GENERAL" "Counter 3"      "nct0801" "ch2"  "cps"
+SENSOR CNT  "GENERAL" "Counter 4"      "nct0801" "ch3"  "cps"
 
 SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
 SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"

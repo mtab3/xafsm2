@@ -81,13 +81,11 @@ void MainWindow::MotorMove( void )
 
 bool MainWindow::isBusyMotorInMeas( void )
 {
-  return false;                               // !!!!!!!!!! ダミー
   return MMainTh->getIsBusy();
 }
 
 bool MainWindow::isBusySensorInMeas( void )
 {
-  return false;                               // !!!!!!!!!! ダミー
   bool isB0, isB1, isB2, isB3, isB4;
   isB0 = ASensors.value( MeasSens0 )->getIsBusy();   // I0
   isB1 = MeasSensF1 & ASensors.value( MeasSens1 )->getIsBusy();   // I1
@@ -97,57 +95,68 @@ bool MainWindow::isBusySensorInMeas( void )
   return ( isB0 | isB1 | isB2 | isB3 | isB4 );
 }
 
-void MainWindow::SetDwellTime( double dtime )       // ダミー関数
+void MainWindow::SetDwellTime( double dtime )
 {
-  
+  ASensors.value( MeasSens0 )->SetTime( dtime );                   // I0
+  if ( MeasSensF1 ) ASensors.value( MeasSens1 )->SetTime( dtime ); // I1
+  if ( MeasSensF2 ) ASensors.value( MeasSens2 )->SetTime( dtime ); // Aux1
+  if ( MeasSensF3 ) ASensors.value( MeasSens3 )->SetTime( dtime ); // Aux2
+  if ( MeasSensF4 ) SFluo->SetTime( dtime );                       // SSD
 }
 
-void MainWindow::MeasureI0( void )     // ダミー関数
+void MainWindow::GetSensValues( void )
 {
+  ASensors.value( MeasSens0 )->setIsBusy( true );                   // I0
+  if ( MeasSensF1 ) ASensors.value( MeasSens1 )->setIsBusy( true ); // I1
+  if ( MeasSensF2 ) ASensors.value( MeasSens2 )->setIsBusy( true ); // Aux1
+  if ( MeasSensF3 ) ASensors.value( MeasSens3 )->setIsBusy( true ); // Aux2
+  if ( MeasSensF4 ) SFluo->setIsBusy( true );                       // SSD
+
+  ASensors.value( MeasSens0 )->GetValue();                   // I0
+  if ( MeasSensF1 ) ASensors.value( MeasSens1 )->GetValue(); // I1
+  if ( MeasSensF2 ) ASensors.value( MeasSens2 )->GetValue(); // Aux1
+  if ( MeasSensF3 ) ASensors.value( MeasSens3 )->GetValue(); // Aux2
+  if ( MeasSensF4 ) SFluo->GetValue();                       // SSD
 }
 
-void MainWindow::MeasureI1( void )     // ダミー関数
+void MainWindow::ReadSensValues( void )          // ダミー関数
 {
-}
+  double I0, I1, A1, A2, S;
 
-void MainWindow::Measure19chSSD( void )     // ダミー関数
-{
-}
+  I1 = A1 = A2 = S = 0;
 
-void MainWindow::MeasureAux1( void )     // ダミー関数
-{
-}
+  I0 = ASensors.value( MeasSens0 )->value().toDouble();   // I0
+  if ( MeasSensF1 )
+    I1 = ASensors.value( MeasSens1 )->value().toDouble(); // I1
+  if ( MeasSensF2 )
+    A1 = ASensors.value( MeasSens2 )->value().toDouble(); // Aux1
+  if ( MeasSensF3 )
+    A2 = ASensors.value( MeasSens3 )->value().toDouble(); // Aux2
+  if ( MeasSensF4 )
+    S = SFluo->value().toDouble();                        // SSD
 
-void MainWindow::MeasureAux2( void )     // ダミー関数
-{
-}
+  NowView->NewPoint( 0, GoToKeV, I0 );
+  if ( MeasSensF1 ) 
+    NowView->NewPoint( 1, GoToKeV, I1 );     // I1 ほんとは log とるべき
+#if 0
+  if ( MeasSensF2 )
+    NowView->NewPoint( 2, GoToKeV, A1 );
+  if ( MeasSensF3 )
+    NowView->NewPoint( 3, GoToKeV, A2 );
+  if ( MeasSensF4 )
+    NowView->NewPoint( 4, GoToKeV, S );
+#endif
 
-void MainWindow::ReadI0( void )          // ダミー関数
-{
-}
-
-void MainWindow::ReadI1( void )          // ダミー関数
-{
-}
-
-void MainWindow::Read19chSSD( void )          // ダミー関数
-{
-}
-
-void MainWindow::ReadAux1( void )          // ダミー関数
-{
-}
-
-void MainWindow::ReadAux2( void )          // ダミー関数
-{
 }
 
 void MainWindow::MeasSequence( void )
 {
   double Delta;
 
+  qDebug() << "In";
   if ( isBusyMotorInMeas() || isBusySensorInMeas() )
     return;
+  qDebug() << "Through";
 
   switch( MeasStage ) {
     /* 
@@ -190,19 +199,11 @@ void MainWindow::MeasSequence( void )
     MeasStage = 4;
     break;
   case 4:
-    MeasureI0();
-    if ( UseI1->isChecked() ) MeasureI1();
-    if ( Use19chSSD->isChecked() ) Measure19chSSD();
-    if ( UseAux1->isChecked() ) MeasureAux1();
-    if ( UseAux2->isChecked() ) MeasureAux2();
+    GetSensValues();
     MeasStage = 5;
     break;
   case 5:
-    ReadI0();
-    ReadI1();
-    Read19chSSD();
-    ReadAux1();
-    ReadAux2();
+    ReadSensValues();
     NowView->ReDraw();
     MeasS++;
     if ( inPause == 1 ) {
@@ -212,12 +213,12 @@ void MainWindow::MeasSequence( void )
   case 6:
     if ( inPause == 0 ) {
       qDebug() << tr( "R=%1 B=%2 S=%3" ).arg( MeasR ).arg( MeasB ).arg( MeasS );
-      if ( MeasS < SBlockPoints[ MeasB ] ) {
+      if ( MeasS < SBlockPoints[ MeasB ]-1 ) {
 	MeasStage = 3;
-      } else if ( MeasB < SBlocks ) {
+      } else if ( MeasB < SBlocks-1 ) {
 	MeasB++;
 	MeasStage = 2;
-      } else if ( MeasR < SelRPT->value() ) {
+      } else if ( MeasR < SelRPT->value()-1 ) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1\n" ) ).arg( MeasR + 1 ) );
 	ClearNowView();
 	MeasR++;
@@ -231,6 +232,7 @@ void MainWindow::MeasSequence( void )
 	MeasStart->setStyleSheet( "" );
 	MeasPause->setEnabled( false );
 	if ( OnFinishP->currentIndex() == (int)RETURN ) {
+	  qDebug() << tr( "InitialKeV = %1" ).arg( InitialKeV );
 	  MoveCurThPosKeV( InitialKeV );
 	}
       }
@@ -241,6 +243,8 @@ void MainWindow::MeasSequence( void )
       MeasStage = 6;
     break;
   }
+
+  qDebug() << "out";
 }
 
 void MainWindow::SPSSequence( void )

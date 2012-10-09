@@ -255,17 +255,8 @@ private:
   bool isBusyMotorInMeas( void );
   bool isBusySensorInMeas( void );   // ダミー関数
   void SetDwellTime( double dtime );       // ダミー関数
-  void MeasureI0( void );     // ダミー関数
-  void MeasureI1( void );     // ダミー関数
-  void Measure19chSSD( void );     // ダミー関数
-  void MeasureAux1( void );     // ダミー関数
-  void MeasureAux2( void );     // ダミー関数
-  void ReadI0( void );          // ダミー関数
-  void ReadI1( void );          // ダミー関数
-  void Read19chSSD( void );          // ダミー関数
-  void ReadAux1( void );          // ダミー関数
-  void ReadAux2( void );          // ダミー関数
-
+  void GetSensValues( void );     // ダミー関数
+  void ReadSensValues( void );          // ダミー関数
 
 private slots:
   void ShowMessageOnSBar( QString msg, int time );

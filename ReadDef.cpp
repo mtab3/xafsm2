@@ -43,10 +43,13 @@ void MainWindow::ReadDef( QString fname )
       next = nextItem( aline.simplified(), item );
       NewUnit = new AUnit;
       if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
-	if ( item == "MOTOR" )  // Motor か
+	if ( item == "MOTOR" ) { // Motor か
 	  AMotors << NewUnit;
-	else
+	  NewUnit->setGType( "MOTOR" );
+	} else {
 	  ASensors << NewUnit;  // Sensor か
+	  NewUnit->setGType( "SENSOR" );
+	}
 	// 全 motor, sensor に共通の項目
 	next = nextItem( next, item ); NewUnit->setType( type = item );
 	next = nextItem( next, item ); NewUnit->setID( item );

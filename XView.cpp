@@ -54,6 +54,7 @@ void XView::setY( int l, int p, double yy )
 
 void XView::NewPoint( int l, double xx, double yy )
 {
+  qDebug() << tr( "NewPoint %1 %2 %3" ).arg( l ).arg(xx).arg(yy);
   if ( l < MAXLINES ) {
     if ( points[l] < MAXPOINTS - 1 ) {
       x[l][ points[l] ] = xx;
