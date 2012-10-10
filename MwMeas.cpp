@@ -43,6 +43,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelWBFND->setFilter( "*.prm" );
   SelRBFND->setFilter( "*.prm" );
 
+  EditDFName->setText( "test.dat" );
+
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
   OnFinishP->setCurrentIndex( RETURN );
@@ -76,6 +78,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     if ( ASensors.value(i)->getID() == "Aux2" )
       SelectAux2->setCurrentIndex( i );
   }
+  UseI1->setChecked( true );
 #if 0
   UseI1->setAutoExclusive( false );
   Use19chSSD->setAutoExclusive( false );
@@ -542,6 +545,17 @@ void MainWindow::StartMeasurement( void )
       MeasSensF[2] = Use19chSSD->isChecked();
       MeasSensF[3] = UseAux1->isChecked();
       MeasSensF[4] = UseAux2->isChecked();
+
+      MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
+      MeasCntNo = 0;
+      for ( int i = 0; i < 4; i++ ) {
+	if ( MeasSensF[i] )
+	  if ( MeasSens[i]->getType() == "CNT" ) {
+	    MeasCntIs = true;
+	    MeasCntNo = i;
+	    break;
+	  }
+      }
 
       CpBlock2SBlock();
       MeasStage = 0;

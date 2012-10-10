@@ -4,38 +4,38 @@
 #include "MsgType.h"
 
 const QString MsgType[] = {
-  "@GetValue",
+  "@GetValue",                 // 0
   "@GetSpeedSelected",
   "@SpeedHigh",
   "@SpeedMiddle",
-  "@SpeedLow",
+  "@SpeedLow",                 // 4
   "@Stop",
   "@Remote",
   "@StopEmergency",
   "@Standby",
-  "@Reset",
+  "@Reset",                    // 9
   "@SetDataFormatElements",
   "@SetZeroCheckEnable",
   "@SetAutoRangeEnable",
   "@SetNPLCycles",
-  "@Run",
+  "@Run",                      // 14
   "@ScanCw",
   "@ScanCcw",
   "@Read",
   "@IsBusy",
 
-  "@SetAbsoluteVoltage",
+  "@SetAbsoluteVoltage",       // 19
   "@SetAbsolutePosition",
   "@SetRelativeVoltage",
   "@SetRelativePosition",
   "@SetSpeedHigh",
-  "@SetSpeedMiddle",
+  "@SetSpeedMiddle",           // 24
   "@SetSpeedLow",
 
   "@SetStopMode",
   "@SetTimerPreset",
   "@CounterReset",
-  "@CountStart",
+  "@CountStart",               // 29
 
   "_ChangedValue",
   "_ChangedIsBusy",
@@ -70,6 +70,11 @@ MSGTYPE MsgTypeV[] = {
   SETSPEEDHIGH,
   SETSPEEDMIDDLE,
   SETSPEEDLOW,
+
+  SETSTOPMODE,
+  SETTIMERPRESET,
+  COUNTERRESET,
+  COUNTSTART,
 
   EvCHANGEDVALUE,
   EvISBUSY,

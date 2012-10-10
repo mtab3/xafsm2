@@ -76,10 +76,21 @@ void MainWindow::ReadDef( QString fname )
 	//	NewUnit->show();
       } else if ( item == "#" ) {
 	// qDebug() << "Comment line"; // do nothing but not an error
+      } else if ( item == "STARSDRV" ) {
+	DRVDef *drv = new DRVDef;
+	next = nextItem( next, item );
+	drv->name = item;
+	next = nextItem( next, item );
+	drv->comment = item;
+	DriverList << drv;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
     }
+  }
+
+  for ( int i = 0; i < DriverList.count(); i++ ) {
+    qDebug() << "Driver " << DriverList.value(i)->name << DriverList.value(i)->comment;
   }
 
   f.close();

@@ -2367,7 +2367,7 @@
        <string notr="true">background-color: rgb(245, 240, 220);</string>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">

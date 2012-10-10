@@ -73,6 +73,7 @@ public:
   QString getDevCh( void ) { return DevCh; };
   QString getUnit( void ) { return Unit; };
   bool getIsBusy( void ) { return isBusy; };
+  bool getIsBusy2( void ) { return isBusy2; };
   QString value( void ) { return Value; };
 
   // only for PM
@@ -88,6 +89,7 @@ public:
   // wrapper functions of stars communication
   void InitLocalStage( void );
   bool InitSensor( void );
+  bool GetValue0( void );
   bool GetValue( void );
   void SetValue( double v );
   void AskIsBusy( void );
@@ -96,9 +98,12 @@ public:
   void Stop( void );
 
 public slots:
-  void RcvAns( SMsg msg );
+  void ClrBusy( SMsg msg );
   void SetIsBusyByMsg( SMsg msg );
   void SetCurPos( SMsg msg );
+
+signals:
+  void CountFinished( void );
 };
 
 #endif

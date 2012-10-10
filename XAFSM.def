@@ -1,5 +1,16 @@
 # XAFS-M setting file : Edited 2012/10/03
 
+#List of STARS drivers which requied by XafsM to have full function
+STARSDRV "pm16c04-1"  "PM controller"
+STARSDRV "pm16c04-2"  "PM controller"
+STARSDRV "e665"       "piezo actuator"
+STARSDRV "m6485drv-1" "Keithley Pico-an-mator"
+STARSDRV "m6485drv-2" "Keithley Pico-an-mator"
+STARSDRV "nct0801"    "8ch counter"
+STARSDRV "nd287"      "encoder: theter"
+STARSDRV "SSD"        "has not implemeted"
+
+
 # define Moveable units
 
 MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 0

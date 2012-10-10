@@ -33,6 +33,11 @@ const int MaxBLKs = 6;        // Max Blocks
 const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
+struct DRVDef {
+  QString name;
+  QString comment;
+};
+
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
   Q_OBJECT
@@ -77,6 +82,7 @@ private:
   void setupSetupArea( void );
   void setupMeasArea( void );
 
+  QVector<DRVDef *> DriverList;
 
   /* InterFace.cpp */ /**********************************************/
 
@@ -163,6 +169,8 @@ private:
   QString RadioBOn;
   QString RadioBOff;
 
+  bool MeasCntIs;
+  int MeasCntNo;
   bool setupMDispFirstTime;
 
   int inMonitor;
@@ -259,6 +267,7 @@ private:
   void ClearSensorStages( void );
   bool InitSensors( void );
   void SetDwellTime( double dtime );
+  bool GetSensValues0( void );
   bool GetSensValues( void );
   void ReadSensValues( void );
 

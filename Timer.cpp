@@ -93,7 +93,6 @@ bool MainWindow::InitSensors( void )
   for ( int i = 0; i < 5; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->InitSensor();
-      qDebug() << tr( "Sensro %1 flag %2" ).arg( i ).arg( ff );
     }
   }
 
@@ -102,7 +101,7 @@ bool MainWindow::InitSensors( void )
 
 bool MainWindow::isBusyMotorInMeas( void )
 {
-  return MMainTh->getIsBusy();
+  return MMainTh->getIsBusy() || MMainTh->getIsBusy2();
 }
 
 bool MainWindow::isBusySensorInMeas( void )
@@ -110,8 +109,9 @@ bool MainWindow::isBusySensorInMeas( void )
   bool ff = false;
 
   for ( int i = 0; i < 5; i++ ) {
-    if ( MeasSensF[i] )
-      ff |= MeasSens[i]->getIsBusy();
+    if ( MeasSensF[i] ) {
+      ff |= MeasSens[i]->getIsBusy() | MeasSens[i]->getIsBusy2();
+    }
   }
 
   return ff;
@@ -125,25 +125,21 @@ void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にす
   }
 }
 
+bool MainWindow::GetSensValues0( void )
+{
+  return MeasSens[ MeasCntNo ]->GetValue0();
+}
 
 bool MainWindow::GetSensValues( void )
 {
   bool ff = false;
-  bool FindACounter = false;
 
   for ( int i = 0; i < 5; i++ ) {
     if ( MeasSensF[i] ) {
-      if ( MeasSens[i]->getType() == "CNT" ) {
-	if ( !FindACounter ) {
-	  FindACounter = true;
-	  ff |= MeasSens[i]->GetValue();
-	}
-      } else {
-	ff |= MeasSens[i]->GetValue();
-      }
+      ff |= MeasSens[i]->GetValue();
     }
   }
-
+  
   return ff;
 }
 
@@ -165,7 +161,7 @@ void MainWindow::ReadSensValues( void )          // ダミー関数
 
   NowView->NewPoint( 0, GoToKeV, I0 );
   if ( MeasSensF[1] ) 
-    NowView->NewPoint( 1, GoToKeV, I1 );     // I1 ほんとは log とるべき
+    NowView->NewPoint( 1, GoToKeV, log( I0/I1 ) );     // I1 ほんとは log とるべき
 #if 0
   if ( MeasSensF2 )
     NowView->NewPoint( 2, GoToKeV, A1 );
@@ -181,10 +177,8 @@ void MainWindow::MeasSequence( void )
 {
   double Delta;
 
-  qDebug() << "In";
   if ( isBusyMotorInMeas() || isBusySensorInMeas() )
     return;
-  qDebug() << "Through " << MeasStage;
 
   switch( MeasStage ) {
     /* 
@@ -204,6 +198,7 @@ void MainWindow::MeasSequence( void )
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasR = 0;    // Measurement Repeat count
+    ClearSensorStages();
     if ( InitSensors() == false )   // true :: initializing
       MeasStage = 1;
     break;
@@ -225,17 +220,25 @@ void MainWindow::MeasSequence( void )
 		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
     ClearSensorStages();
-    MeasStage = 4;
+    if ( MeasCntIs )
+      MeasStage = 4;
+    else
+      MeasStage = 5;
     break;
   case 4:
-    if ( GetSensValues() == false ) {  // true :: Getting
+    if ( GetSensValues0() == false ) {  // true :: Getting
       ClearSensorStages();
       MeasStage = 5;
     }
     break;
   case 5:
+    if ( GetSensValues() == false ) { // only for counters
+      ClearSensorStages();
+      MeasStage = 6;
+    }
+  case 6:
     ReadSensValues();
-    MeasStage = 6;
+    MeasStage = 10;
     if ( inPause == 1 ) {
       MeasStage = 99;          // PauseStage
     }
@@ -244,7 +247,6 @@ void MainWindow::MeasSequence( void )
     NowView->ReDraw();
     MeasS++;
     if ( inPause == 0 ) {
-      qDebug() << tr( "R=%1 B=%2 S=%3" ).arg( MeasR ).arg( MeasB ).arg( MeasS );
       if ( MeasS < SBlockPoints[ MeasB ] ) {
 	MeasStage = 3;
       } else if ( MeasB < SBlocks-1 ) {
@@ -264,7 +266,6 @@ void MainWindow::MeasSequence( void )
 	MeasStart->setStyleSheet( "" );
 	MeasPause->setEnabled( false );
 	if ( OnFinishP->currentIndex() == (int)RETURN ) {
-	  qDebug() << tr( "InitialKeV = %1" ).arg( InitialKeV );
 	  MoveCurThPosKeV( InitialKeV );
 	}
       }
@@ -275,8 +276,6 @@ void MainWindow::MeasSequence( void )
       MeasStage = 10;
     break;
   }
-
-  qDebug() << "out";
 }
 
 void MainWindow::SPSSequence( void )

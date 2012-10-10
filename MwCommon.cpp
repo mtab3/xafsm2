@@ -11,7 +11,7 @@ void MainWindow::setupCommonArea( void )   /* ‹¤’ÊƒGƒŠƒA */
 
   MonoCryD = mccd[ selMC->MC() ].d;     // Si (111) 
 
-  SelectedA = Fe;
+  SelectedA = Cu;
   SelectedE = Kedge;
   ShowTAE();
 

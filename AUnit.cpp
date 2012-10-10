@@ -36,29 +36,29 @@ void AUnit::Initialize( Stars *S )
   connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ) );
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
 
-  s->SendCMD2( "Init", "System", "flgon", Driver );
-  s->SendCMD2( "Init", "System", "flgon", DevCh );
-  if ( Type != "CNT" ) 
+  if ( Type != "CNT" ) {
+    s->SendCMD2( "Init", "System", "flgon", DevCh );
     s->SendCMD2( "Init", DevCh, "IsBusy" );
-  else 
+  } else { 
+    s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "IsBusy" );
+  }
 
   if ( Type != "PAM" )
     s->SendCMD2( "Init", DevCh, "GetValue" );
   if ( Type == "PAM" ) {   // Keithley 6485
     connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
-    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetDataFormat( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
+    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetDataFormat( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
   }
   if ( Type == "CNT" ) {   // nct08
-    connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( RcvAns( SMsg ) ) );
-    isBusy = true;
+    connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", Driver, "SetStopMode", "T" );
   }
 }
@@ -74,15 +74,17 @@ void AUnit::show( void )
 
 bool AUnit::GetValue( void )
 {
-  bool rv = true;
+  bool rv = false;
 
   // Motor
   if ( GType == "MOTOR" ) {
     if ( Type == "PM" ) {
+      isBusy2 = true;
       s->SendCMD2( UID, DevCh, "GetValue" );
       rv = false;
     }
-  } 
+  }
+
   // Sensor
   if ( GType == "SENSOR" ) {
     if ( Type == "PAM" ) {    // Keithley
@@ -91,19 +93,33 @@ bool AUnit::GetValue( void )
       rv = false;
     }
     if ( Type == "CNT" ) {    // nct08
-      switch( LocalStage ) {
-      case 0:
-	isBusy2 = true;
-	s->SendCMD2( UID, Driver, "CounterReset" );
-	LocalStage++;
-	break;
-      case 1:
-	isBusy = true;
-	s->SendCMD2( UID, Driver, "CountStart" );
-	LocalStage++;
-	rv = false;
-	break;
-      }
+      isBusy2 = true;
+      s->SendCMD2( UID, DevCh, "GetValue" );
+      rv = false;
+    }
+  }
+
+  return rv;
+}
+
+bool AUnit::GetValue0( void )
+{
+  bool rv = false;
+
+  if ( Type == "CNT" ) {    // nct08
+    switch( LocalStage ) {
+    case 0:
+      isBusy2 = true;
+      s->SendCMD2( UID, Driver, "CounterReset" );
+      LocalStage++;
+      rv = true;
+      break;
+    case 1:
+      isBusy2 = true;
+      s->SendCMD2( UID, Driver, "CountStart" );
+      LocalStage++;
+      rv = false;
+      break;
     }
   }
 
@@ -113,6 +129,7 @@ bool AUnit::GetValue( void )
 
 void AUnit::SetValue( double v )
 {
+  //  isBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
   if ( Type == "PM" ) {
     s->SendCMD2( UID, DevCh, "SetValue", QString::number( (int)v ) );
   }
@@ -121,6 +138,8 @@ void AUnit::SetValue( double v )
 void AUnit::SetSpeed( MSPEED i )
 {
   QString cmd = "SpeedLow";
+
+  //  isBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
 
   if ( Type == "PM" ) {
     switch( i ) {
@@ -152,10 +171,7 @@ void AUnit::SetCurPos( SMsg msg )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
 	    || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Val();
-
-    if ( ( msg.Msgt() == READ )||( msg.Msgt() == GETVALUE ) ) {
-      isBusy = false;
-    }
+    isBusy2 = false;
   }
 }
 
@@ -176,8 +192,12 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
   }
 }
 
-void AUnit::RcvAns( SMsg msg )
+void AUnit::ClrBusy( SMsg msg )
 {
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) )
+    isBusy2 = false;
+
+#if 0
   if ( Type == "PAM" ) {
     if ( ( msg.From() == DevCh )
 	 && ( ( msg.Msgt() == RESET ) || ( msg.Msgt() == SETAUTORANGE )
@@ -194,6 +214,8 @@ void AUnit::RcvAns( SMsg msg )
       isBusy2 = false;
     }
   }
+#endif
+
 }
 
 void AUnit::Stop( void )
@@ -211,6 +233,7 @@ void AUnit::SetTime( double dtime )   // in sec
   if ( Type == "SSD" ) {
   }
   if ( Type == "PAM" ) {
+    isBusy2 = true;
     // 1 sec -> 1/60 sec
     time = dtime * 60;
     if ( time < 1 ) time = 1;
@@ -218,6 +241,7 @@ void AUnit::SetTime( double dtime )   // in sec
     s->SendCMD2( UID, DevCh, "SetNPLCycles", QString::number( time ) );
   }
   if ( Type == "CNT" ) {
+    isBusy2 = true;
     ltime = dtime * 1e6;
     s->SendCMD2( UID, Driver, "SetTimerPreset", QString::number( ltime ) );
   }
@@ -235,25 +259,25 @@ bool AUnit::InitSensor( void )
   if ( Type == "PAM" ) {         // Keithley 6845
     switch( LocalStage ) {
     case 0:
-      isBusy = true;
+      isBusy2 = true;
       s->SendCMD2( "Scan", DevCh, "Reset", "" );
       LocalStage++;
       rv = true;
       break;
     case 1:
-      isBusy = true;
+      isBusy2 = true;
       s->SendCMD2( "Scan", DevCh, "SetAutoRangeEnable", "1" );
       LocalStage++;
       rv = true;
       break;
     case 2:
-      isBusy = true;
+      isBusy2 = true;
       s->SendCMD2( "Scan", DevCh, "SetDataFormatElements", "READ" );
       LocalStage++;
       rv = true;
       break;
     case 3:
-      isBusy = true;
+      isBusy2 = true;
       s->SendCMD2( "Scan", DevCh, "SetZeroCheckEnable", "0" );
       rv = false;
       LocalStage++;

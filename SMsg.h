@@ -20,6 +20,7 @@ class SMsg {
   QStringList vals;
   MSGOREVENT MorE;
   MSGTYPE msgt;
+  QString fullMsg;
   
  public:
   SMsg();
@@ -33,6 +34,7 @@ class SMsg {
   QString Val( void ) { return val; };
   QStringList Vals( void ) { return vals; };
   MSGTYPE Msgt( void ) { return msgt; };
+  QString FullMsg( void ) { return fullMsg; };
 
   //  bool isDevCh( QString devch );
   //  bool isMsg0( QString Msg );
