@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>786</width>
+    <width>796</width>
     <height>963</height>
    </rect>
   </property>
@@ -1651,7 +1651,7 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>280</width>
+              <width>100000</width>
               <height>100000</height>
              </size>
             </property>
@@ -1668,7 +1668,7 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="0" column="0" colspan="2">
+             <item row="0" column="0" colspan="3">
               <widget class="QLabel" name="label_27">
                <property name="text">
                 <string>Detecotr Select</string>
@@ -1685,7 +1685,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="1" column="1" colspan="2">
               <widget class="QComboBox" name="SelectI0"/>
              </item>
              <item row="2" column="0">
@@ -1698,7 +1698,7 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
+             <item row="2" column="2">
               <widget class="QComboBox" name="SelectI1"/>
              </item>
              <item row="5" column="0">
@@ -1711,7 +1711,7 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="1">
+             <item row="5" column="2">
               <widget class="QComboBox" name="SelectAux1"/>
              </item>
              <item row="7" column="0">
@@ -1724,338 +1724,8 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="1">
+             <item row="7" column="2">
               <widget class="QComboBox" name="SelectAux2"/>
-             </item>
-             <item row="8" column="0" colspan="2">
-              <widget class="QFrame" name="frame">
-               <property name="minimumSize">
-                <size>
-                 <width>260</width>
-                 <height>148</height>
-                </size>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_13">
-                <property name="margin">
-                 <number>1</number>
-                </property>
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <layout class="QGridLayout" name="SSDSelectLayout">
-                  <property name="spacing">
-                   <number>1</number>
-                  </property>
-                  <item row="0" column="2" colspan="2">
-                   <widget class="QPushButton" name="SSDE01">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>46</width>
-                      <height>24</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>1</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>false</bool>
-                    </property>
-                    <property name="autoDefault">
-                     <bool>false</bool>
-                    </property>
-                    <property name="default">
-                     <bool>false</bool>
-                    </property>
-                    <property name="flat">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="4" colspan="2">
-                   <widget class="QPushButton" name="SSDE02">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>46</width>
-                      <height>24</height>
-                     </size>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true"/>
-                    </property>
-                    <property name="text">
-                     <string>2</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1" colspan="2">
-                   <widget class="QPushButton" name="SSDE04">
-                    <property name="text">
-                     <string>4</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="3" colspan="2">
-                   <widget class="QPushButton" name="SSDE05">
-                    <property name="text">
-                     <string>5</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="5" colspan="2">
-                   <widget class="QPushButton" name="SSDE06">
-                    <property name="text">
-                     <string>6</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="7" colspan="2">
-                   <widget class="QPushButton" name="SSDE07">
-                    <property name="text">
-                     <string>7</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0" colspan="2">
-                   <widget class="QPushButton" name="SSDE08">
-                    <property name="text">
-                     <string>8</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="2" colspan="2">
-                   <widget class="QPushButton" name="SSDE09">
-                    <property name="text">
-                     <string>9</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                    <property name="autoRepeat">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="4" colspan="2">
-                   <widget class="QPushButton" name="SSDE10">
-                    <property name="text">
-                     <string>10</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="6" colspan="2">
-                   <widget class="QPushButton" name="SSDE11">
-                    <property name="text">
-                     <string>11</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="8" colspan="2">
-                   <widget class="QPushButton" name="SSDE12">
-                    <property name="text">
-                     <string>12</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="1" colspan="2">
-                   <widget class="QPushButton" name="SSDE13">
-                    <property name="text">
-                     <string>13</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="3" colspan="2">
-                   <widget class="QPushButton" name="SSDE14">
-                    <property name="text">
-                     <string>14</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="5" colspan="2">
-                   <widget class="QPushButton" name="SSDE15">
-                    <property name="text">
-                     <string>15</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="7" colspan="2">
-                   <widget class="QPushButton" name="SSDE16">
-                    <property name="text">
-                     <string>16</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="4" column="2" colspan="2">
-                   <widget class="QPushButton" name="SSDE17">
-                    <property name="text">
-                     <string>17</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="4" column="4" colspan="2">
-                   <widget class="QPushButton" name="SSDE18">
-                    <property name="text">
-                     <string>18</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="4" column="6" colspan="2">
-                   <widget class="QPushButton" name="SSDE19">
-                    <property name="text">
-                     <string>19</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0" colspan="2">
-                   <widget class="QLabel" name="label_12">
-                    <property name="text">
-                     <string>SSD</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="6" colspan="2">
-                   <widget class="QPushButton" name="SSDE03">
-                    <property name="styleSheet">
-                     <string notr="true"/>
-                    </property>
-                    <property name="text">
-                     <string>3</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </widget>
              </item>
              <item row="4" column="0">
               <widget class="QRadioButton" name="Use19chSSD">
@@ -2073,10 +1743,26 @@
                </property>
               </widget>
              </item>
+             <item row="5" column="1">
+              <widget class="QComboBox" name="ModeA1"/>
+             </item>
+             <item row="7" column="1">
+              <widget class="QComboBox" name="ModeA2"/>
+             </item>
+             <item row="2" column="1">
+              <widget class="QComboBox" name="ModeI1">
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -2092,6 +1778,361 @@
             </property>
            </spacer>
           </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QFrame" name="frame">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>240</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_13">
+               <property name="margin">
+                <number>3</number>
+               </property>
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item row="0" column="0">
+                <layout class="QGridLayout" name="SSDSelectLayout">
+                 <property name="spacing">
+                  <number>1</number>
+                 </property>
+                 <item row="0" column="2" colspan="2">
+                  <widget class="QPushButton" name="SSDE01">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>46</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>false</bool>
+                   </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
+                   <property name="default">
+                    <bool>false</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4" colspan="2">
+                  <widget class="QPushButton" name="SSDE02">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>46</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string>2</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1" colspan="2">
+                  <widget class="QPushButton" name="SSDE04">
+                   <property name="text">
+                    <string>4</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3" colspan="2">
+                  <widget class="QPushButton" name="SSDE05">
+                   <property name="text">
+                    <string>5</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="5" colspan="2">
+                  <widget class="QPushButton" name="SSDE06">
+                   <property name="text">
+                    <string>6</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="7" colspan="2">
+                  <widget class="QPushButton" name="SSDE07">
+                   <property name="text">
+                    <string>7</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0" colspan="2">
+                  <widget class="QPushButton" name="SSDE08">
+                   <property name="text">
+                    <string>8</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2" colspan="2">
+                  <widget class="QPushButton" name="SSDE09">
+                   <property name="text">
+                    <string>9</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                   <property name="autoRepeat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4" colspan="2">
+                  <widget class="QPushButton" name="SSDE10">
+                   <property name="text">
+                    <string>10</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="6" colspan="2">
+                  <widget class="QPushButton" name="SSDE11">
+                   <property name="text">
+                    <string>11</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="8" colspan="2">
+                  <widget class="QPushButton" name="SSDE12">
+                   <property name="text">
+                    <string>12</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1" colspan="2">
+                  <widget class="QPushButton" name="SSDE13">
+                   <property name="text">
+                    <string>13</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="3" colspan="2">
+                  <widget class="QPushButton" name="SSDE14">
+                   <property name="text">
+                    <string>14</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="5" colspan="2">
+                  <widget class="QPushButton" name="SSDE15">
+                   <property name="text">
+                    <string>15</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="7" colspan="2">
+                  <widget class="QPushButton" name="SSDE16">
+                   <property name="text">
+                    <string>16</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="2" colspan="2">
+                  <widget class="QPushButton" name="SSDE17">
+                   <property name="text">
+                    <string>17</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="4" colspan="2">
+                  <widget class="QPushButton" name="SSDE18">
+                   <property name="text">
+                    <string>18</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="6" colspan="2">
+                  <widget class="QPushButton" name="SSDE19">
+                   <property name="text">
+                    <string>19</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QLabel" name="label_12">
+                   <property name="text">
+                    <string>SSD</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="6" colspan="2">
+                  <widget class="QPushButton" name="SSDE03">
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string>3</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+              <zorder></zorder>
+              <zorder></zorder>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
          </layout>
         </item>
         <item row="0" column="2">
@@ -2099,22 +2140,6 @@
           <property name="spacing">
            <number>1</number>
           </property>
-          <item row="0" column="0">
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Maximum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>10000000</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="1" column="0">
            <widget class="QFrame" name="frame_7">
             <property name="frameShape">
@@ -2181,81 +2206,81 @@
              <item>
               <widget class="QComboBox" name="OnFinishP"/>
              </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QFrame" name="frame_11">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_25">
-             <property name="margin">
-              <number>3</number>
-             </property>
-             <property name="spacing">
-              <number>1</number>
-             </property>
-             <item row="0" column="0">
-              <layout class="QVBoxLayout" name="verticalLayout">
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_10">
-                 <item>
-                  <widget class="QLabel" name="label_28">
-                   <property name="text">
-                    <string>Repeat</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QSpinBox" name="SelRPT">
-                   <property name="minimum">
-                    <number>1</number>
-                   </property>
-                   <property name="value">
-                    <number>1</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_4">
-                 <item>
-                  <widget class="QPushButton" name="MeasStart">
-                   <property name="maximumSize">
-                    <size>
-                     <width>50</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Start</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="MeasPause">
-                   <property name="maximumSize">
-                    <size>
-                     <width>50</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Pause</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
+             <item>
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_28">
+               <property name="text">
+                <string>Repeat</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="SelRPT">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="value">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="MeasStart">
+               <property name="maximumSize">
+                <size>
+                 <width>10000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Start</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="MeasPause">
+               <property name="maximumSize">
+                <size>
+                 <width>100000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Pause</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
+          </item>
+          <item row="0" column="0">
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Maximum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>10000000</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
@@ -2638,7 +2663,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>786</width>
+     <width>796</width>
      <height>21</height>
     </rect>
    </property>
@@ -2761,9 +2786,6 @@
   <tabstop>SSDE18</tabstop>
   <tabstop>SSDE19</tabstop>
   <tabstop>OnFinishP</tabstop>
-  <tabstop>SelRPT</tabstop>
-  <tabstop>MeasStart</tabstop>
-  <tabstop>MeasPause</tabstop>
   <tabstop>ViewTab</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>SelectScale</tabstop>
