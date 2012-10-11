@@ -123,6 +123,7 @@ void MainWindow::WriteHeader( int Rpt )
   file.close();
 }
 
+#if 0
 void MainWindow::RecordDataTrans( int device, double r )
 {
   printf( "Record Data: %d %g\n", device, r );
@@ -137,5 +138,5 @@ void MainWindow::RecordDataAUX( int device, double r )
 {
   printf( "Record Data: %d %g\n", device, r );
 }
-
+#endif
 

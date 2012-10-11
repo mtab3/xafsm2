@@ -1,4 +1,5 @@
 #include <QWidget>
+#include <QFile>
 
 #include "MainWindow.h"
 
@@ -160,8 +161,28 @@ void MainWindow::ReadSensValues( void )          // ƒ_ƒ~[ŠÖ”
     A2 = MeasSens[4]->value().toDouble(); // Aux2
 
   NowView->NewPoint( 0, GoToKeV, I0 );
-  if ( MeasSensF[1] ) 
-    NowView->NewPoint( 1, GoToKeV, log( I0/I1 ) );     // I1 ‚Ù‚ñ‚Æ‚Í log ‚Æ‚é‚×‚«
+  if ( MeasSensF[1] ) {
+    if ( I1 < 1e-10 )
+      I1 = 1e-10;
+    if ( ( I0 / I1 ) > 0 )
+      NowView->NewPoint( 1, GoToKeV, log( I0/I1 ) );     // I1 ‚Ù‚ñ‚Æ‚Í log ‚Æ‚é‚×‚«
+    else 
+      NowView->NewPoint( 1, GoToKeV, 0 );     // I1 ‚Ù‚ñ‚Æ‚Í log ‚Æ‚é‚×‚«
+
+
+    SetDFName( MeasR );
+    QFile file( DFName.toAscii() );
+    if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
+      QTextStream out(&file);
+      out << GoToKeV << " " << I0 << " " << I1 << " ";
+      if ( ( I0 / I1 ) > 0 )
+	out << log( I0/I1 ) << endl;
+      else 
+	out << 0 << endl;
+      file.close();
+    }
+    
+  }
 #if 0
   if ( MeasSensF2 )
     NowView->NewPoint( 2, GoToKeV, A1 );
