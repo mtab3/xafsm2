@@ -43,9 +43,13 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
   Q_OBJECT
 
 public:
-  MainWindow();
+  MainWindow( QString myname );
 
 private:
+
+  QString XAFSName;
+  QString XAFSKey;
+  QString XAFSTitle;
 
   /* ReadDef */
   QVector<AUnit *> AMotors;
@@ -63,8 +67,8 @@ private:
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
-  void InitAndIdentifyMotors();
-  void InitAndIdentifySensors();
+  void InitAndIdentifyMotors( void );
+  void InitAndIdentifySensors( void );
 
   Stars *s;
   double MonoCryD;
@@ -272,6 +276,8 @@ private:
   void ReadSensValues( void );
 
 private slots:
+  void InitializeUnitsAgain( void );
+
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
 

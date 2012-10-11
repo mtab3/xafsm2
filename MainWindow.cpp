@@ -16,19 +16,25 @@ MOTORD Motors[ MOTORS ] = {
 };
 #endif
 
-MainWindow::MainWindow() : QMainWindow()
+MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
+
+  XAFSName = myname;
+  XAFSKey = myname;
+  XAFSTitle = myname;
 
   starsSV = new StarsSV;
   selMC = new SelMC;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
-  s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
-  s->ReadStarsKeys( "XafsM2", "XafsM2" ); // Stars とのコネクション確立の準備
-
   ReadDef( "XAFSM.def" );
+  setWindowTitle( XAFSTitle );
+
+  s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
+  s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
+
   InitAndIdentifyMotors();
   InitAndIdentifySensors();
 
@@ -60,11 +66,29 @@ MainWindow::MainWindow() : QMainWindow()
 	   starsSV, SLOT( RecordSSVHistoryA( const QString & ) ) );
   connect( s, SIGNAL( RecordSSVHistoryP( const QString & ) ),
 	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ) );
+  connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
+  connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
+
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )
 {
   statusbar->showMessage( msg, time );
+}
+
+void MainWindow::InitializeUnitsAgain( void )
+{
+  AUnit *am, *as;
+
+  for ( int i = 0; i < AMotors.count(); i++ ) {
+    am = AMotors.value(i);
+    am->GetValue();
+  }
+
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    as = ASensors.value(i);
+    as->GetValue();
+  }
 }
 
 void MainWindow::InitAndIdentifyMotors( void )

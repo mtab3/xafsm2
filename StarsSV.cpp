@@ -6,15 +6,19 @@ StarsSV::StarsSV() : QDialog()
 {
   setupUi( this );
 
+  StarsSVA->addItem( "192.168.51.200" );
+  StarsSVA->addItem( "133.6.107.214" );
   StarsSVA->addItem( "localhost" );
   StarsSVP->addItem( "6057" );
-
-  ReadHistory();
+  StarsSVP->addItem( "6058" );
 
   connect( StarsSVA, SIGNAL( currentIndexChanged( const QString & ) ),
-	   this, SLOT( SSVAnewIndex( const QString & ) ) );
+	   this, SIGNAL( SSVNewAddress( const QString & ) ) );
   connect( StarsSVP, SIGNAL( currentIndexChanged( const QString & ) ),
-	   this, SLOT( SSVPnewIndex( const QString & ) ) );
+	   this, SIGNAL( SSVNewPort( const QString & ) ) );
+  connect( ReConnect, SIGNAL( clicked() ), this, SIGNAL( AskReConnect() ) );
+
+  ReadHistory();
 }
 
 void StarsSV::RecordSSVHistoryA( const QString &item )
@@ -41,8 +45,10 @@ void StarsSV::ReadHistory( void )
 {  
   QStringList rvs;
   QString item;
+  int fc;
 
   QFile f( SSVHISTORY );
+
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
     return;
 
@@ -52,25 +58,41 @@ void StarsSV::ReadHistory( void )
     if ( !item.isEmpty() ) {
       rvs = item.simplified().split( QChar( ' ' ) );
       if ( rvs[0] == "A:" ) {
-	if ( StarsSVA->findText( rvs[1] ) == -1 )
+	if ( ( fc = StarsSVA->findText( rvs[1] ) ) == -1 ) {
 	  StarsSVA->addItem( rvs[1] );
+	  StarsSVA->setCurrentIndex( StarsSVA->count()-1 );
+	} else {
+	  StarsSVA->setCurrentIndex( fc );
+	}
       }
       if ( rvs[0] == "P:" ) {
-	if ( StarsSVP->findText( rvs[1] ) == -1 )
+	if ( ( fc = StarsSVP->findText( rvs[1] ) ) == -1 ) {
 	  StarsSVP->addItem( rvs[1] );
+	  StarsSVP->setCurrentIndex( StarsSVP->count()-1 );
+	} else {
+	  StarsSVP->setCurrentIndex( fc );
+	}
       }
     }
   }
 
   f.close();
-}
 
-void StarsSV::SSVAnewIndex( const QString &item )
-{
-  emit SSVNewAddress( item );
-}
-
-void StarsSV::SSVPnewIndex( const QString &item )
-{
-  emit SSVNewPort( item );
+  // 記録ファイルは新しい入力があるたびにどんどん書き込まれて行くので
+  // 記録ファイルを読み込んだ直後の(同一アイテムを整理してしまった) ComboBox の
+  // 中身を書き出すことで整理する。
+  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
+    return;
+  QTextStream out( &f );
+  for ( int i = 0; i < StarsSVA->count(); i++ ) {
+    out << "A: " << StarsSVA->itemText( i ) << endl;
+  }
+  out << "A: " << StarsSVA->itemText( StarsSVA->currentIndex() ) << endl;
+  // 最後に書いたものが、次回デフォルトに選ばれる
+  for ( int i = 0; i < StarsSVP->count(); i++ ) {
+    out << "P: " << StarsSVP->itemText( i ) << endl;
+  }
+  out << "P: " << StarsSVP->itemText( StarsSVP->currentIndex() ) << endl;
+  // 最後に書いたものが、次回デフォルトに選ばれる
+  f.close();
 }

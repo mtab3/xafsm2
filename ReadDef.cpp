@@ -83,6 +83,15 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item );
 	drv->comment = item;
 	DriverList << drv;
+      } else if ( item == "XAFSName" ) {
+        next = nextItem( next, item );
+        XAFSName = item;
+      } else if ( item == "XAFSKey" ) {
+        next = nextItem( next, item );
+        XAFSKey = item;
+      } else if ( item == "XAFSTitle" ) {
+	next = nextItem( next, item );
+	XAFSTitle = item;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
