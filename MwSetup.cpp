@@ -48,7 +48,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	     this, SLOT( GetNewGos() ) );
   }
 
-  for ( int i = 1; i < AMotors.count(); i++ ) {
+  for ( int i = 0; i < AMotors.count(); i++ ) {
     MotorN->addItem( AMotors.value(i)->getName() );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
@@ -58,16 +58,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
 
   AMotors.value( MotorN->currentIndex() )->GetValue();
-#if 0
-  GoMotorPos
-    ->setText( sks->GetValue( Motors[ MotorN->currentIndex() + 1 ].devName ) );
-  MCurPos
-    ->setText( sks->GetValue( Motors[ MotorN->currentIndex() + 1 ].devName ) );
-  GoMUpStep->setText( QString( "%1" )
-		      .arg( Motors[ MotorN->currentIndex() + 1 ].upstep ) );
-  GoMDownStep->setText( QString( "%1" )
-			.arg( Motors[ MotorN->currentIndex() + 1 ].downstep ) );
-#endif
 
   for ( int i = 0; i < SPSMODES; i++ ) {
     SorPS->addItem( SPSModes[i].SPSMName );
@@ -76,13 +66,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectD1->addItem( ASensors.value(i)->getName() );
     SelectD2->addItem( ASensors.value(i)->getName() );
   }
-
-#if 0
-  SPSstep->setText( QString::number( Motors[ MotorN->currentIndex()+1 ].SPSstep ) );
-  SPSdwell->setText( QString::number( Motors[ MotorN->currentIndex()+1 ].SPSdwell ) );
-  SPSsP->setText( QString::number( Motors[ MotorN->currentIndex()+1 ].SPSstart ) );
-  SPSeP->setText( QString::number( Motors[ MotorN->currentIndex()+1 ].SPSend ) );
-#endif
 
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );

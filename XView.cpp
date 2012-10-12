@@ -144,12 +144,15 @@ void XView::DrawXYPlot( QPainter *p )
   double sy, dy;
   if ( SLineL >= 0 ) {                            // ç∂ÇÃ y é≤Ç…ä÷òAÇµÇΩï`âÊ
     UpDateYWindow( SLineL, ScaleTL );
+    qDebug() << "ScaleTL" << ScaleTL;
     pen1.setWidth( 1 );
     pen1.setColor( LC[ SLineL ] );
     p->setPen( pen1 );
     inc = 0;
 
     sy = dy = 0;
+    calcScale( 5, wminy, wmaxy, &sy, &dy );
+#if 0   
     for (;;) {
       sprintf( buf, "%7.5g", sy );
       sprintf( buf2, "%7.5g", sy + dy );
@@ -161,6 +164,7 @@ void XView::DrawXYPlot( QPainter *p )
       wmaxy += tmp * 5;
       wminy -= tmp * 5;
     }
+#endif
 
     for ( double yy = sy; yy < wmaxy; yy += dy ) {
       p->drawLine( LM, w2ry( yy ), width()-RM, w2ry( yy ) );   // â°ÇÃårê¸
@@ -448,7 +452,7 @@ void XView::UpDateYWindow( int l, SCALET s )
       nmaxy = y[l][i];
   }
   double dy = nmaxy - nminy;
-  switch( (int)s ) {
+  switch( s ) {
   case FULLSCALE:
     wminy = nminy - dy * 0.05;
     wmaxy = nmaxy + dy * 0.05;
@@ -457,7 +461,11 @@ void XView::UpDateYWindow( int l, SCALET s )
     wminy = nminy - dy * 5;
     wmaxy = nmaxy + dy * 1;
     break;
+  default:
+    qDebug() << "Unknown scale type";
+    break;
   }
+  qDebug() << "UpDateY " << nmaxy << nminy << wminy << wmaxy << s << FULLSCALE << I0TYPE;
 }
 
 void XView::UpDateYWindowRing( int LR )
