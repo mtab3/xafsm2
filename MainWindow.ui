@@ -252,7 +252,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1698,9 +1698,6 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
-              <widget class="QComboBox" name="SelectI1"/>
-             </item>
              <item row="5" column="0">
               <widget class="QRadioButton" name="UseAux1">
                <property name="text">
@@ -1744,20 +1741,27 @@
               </widget>
              </item>
              <item row="5" column="1">
-              <widget class="QComboBox" name="ModeA1"/>
-             </item>
-             <item row="7" column="1">
-              <widget class="QComboBox" name="ModeA2"/>
-             </item>
-             <item row="2" column="1">
-              <widget class="QComboBox" name="ModeI1">
+              <widget class="QComboBox" name="ModeA1">
                <property name="maximumSize">
                 <size>
-                 <width>80</width>
+                 <width>90</width>
                  <height>16777215</height>
                 </size>
                </property>
               </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QComboBox" name="ModeA2">
+               <property name="maximumSize">
+                <size>
+                 <width>90</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1" colspan="2">
+              <widget class="QComboBox" name="SelectI1"/>
              </item>
             </layout>
            </widget>

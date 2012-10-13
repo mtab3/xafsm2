@@ -23,7 +23,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
-  //  MeasMode = TRANS;
   for ( int i = 0; i < MaxSSDs; i++ ) {
     SSD[i]->setStyleSheet( "background-color: #eeffee" );
     SSD[i]->setToolTip( tr( "Active" ) );
@@ -85,6 +84,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   UseAux1->setAutoExclusive( false );
   UseAux2->setAutoExclusive( false );
 #endif
+
+  ModeA1->addItem( "log(I0/A1)" );
+  ModeA1->addItem( "A1/I0" );
+  ModeA2->addItem( "log(I0/A2)" );
+  ModeA2->addItem( "A2/I0" );
   
   connect( BLKstart[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart00()) );
   connect( BLKstart[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart01()) );
@@ -515,6 +519,35 @@ void MainWindow::ClearNowView( void )
   NowView->SetGType( XYPLOT );
 }
 
+bool MainWindow::CheckDetectorSelection( void )
+{
+  int NoOfSelectedSens = 0;
+
+  MeasFileType = EXTRA;    // 実質 AUX タイプは無い
+
+  if ( UseI1->isChecked() ) NoOfSelectedSens++;
+  if ( Use19chSSD->isChecked() ) NoOfSelectedSens++;
+  if ( UseAux1->isChecked() ) NoOfSelectedSens++;
+  if ( UseAux2->isChecked() ) NoOfSelectedSens++;
+
+  if ( NoOfSelectedSens == 0 )
+    return false;
+
+  if ( NoOfSelectedSens == 1 ) {
+    if ( ( UseI1->isChecked()
+	   && ( ASensors.value( SelectI1->currentIndex() )->getType() == "CNT" ) )
+	 || ( UseAux1->isChecked() && ModeA1->currentIndex() == 0 )
+	 || ( UseAux2->isChecked() && ModeA1->currentIndex() == 0 ) )
+      MeasFileType = TRANS;
+    if ( Use19chSSD->isChecked() 
+	 || ( UseAux1->isChecked() && ModeA1->currentIndex() == 1 )
+	 || ( UseAux2->isChecked() && ModeA1->currentIndex() == 1 ) )
+      MeasFileType = FLUO;
+  }
+
+  return true;
+}
+
 void MainWindow::StartMeasurement( void )
 {
   if ( ( inMeas == 0 )&&( MMainTh->getIsBusy() ) ) {
@@ -524,6 +557,10 @@ void MainWindow::StartMeasurement( void )
   if ( inMeas == 0 ) {
     if ( GetDFName0() == 0 ) {
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
+      return;
+    }
+    if ( CheckDetectorSelection() == false ) {
+      statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
     if ( ( TP > 0 ) && ( TT0 > 0 ) ) {
@@ -547,15 +584,20 @@ void MainWindow::StartMeasurement( void )
       MeasSensF[4] = UseAux2->isChecked();
 
       MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
-      MeasCntNo = 0;
-      for ( int i = 0; i < 4; i++ ) {
-	if ( MeasSensF[i] )
+      MeasCntNo = 0;       // そのデテクタの番号
+      MeasChNo = 0;        // 測定のチャンネル数
+      for ( int i = 0; i < 5; i++ ) {
+	if ( MeasSensF[i] ) {
+	  MeasChNo++;
 	  if ( MeasSens[i]->getType() == "CNT" ) {
 	    MeasCntIs = true;
 	    MeasCntNo = i;
 	    break;
 	  }
+	}
       }
+      if ( MeasSensF[2] )
+	MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
 
       CpBlock2SBlock();
       MeasStage = 0;
@@ -615,6 +657,7 @@ void MainWindow::CpBlock2SBlock( void )
   SBLKUnit = BLKUnit;
   for ( int i = 0; i < MaxBLKs; i++ ) {
     SBlockStart[i] = BlockStart[i];
+    SBlockStep[i] = BLKstep[i]->text().toDouble();
     SBlockPoints[i] = BlockPoints[i];
     SBlockDwell[i] = BlockDwell[i];
   }

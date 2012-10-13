@@ -144,7 +144,7 @@ bool MainWindow::GetSensValues( void )
   return ff;
 }
 
-void MainWindow::ReadSensValues( void )          // ƒ_ƒ~[ŠÖ”
+void MainWindow::ReadSensValues( void )          // ‚Ü‚¾‰¼‚Ìó‘Ô
 {
   double I0, I1, A1, A2, SS;
 
@@ -248,13 +248,13 @@ void MainWindow::MeasSequence( void )
       MeasStage = 5;
     break;
   case 4:
-    if ( GetSensValues0() == false ) {  // true :: Getting
+    if ( GetSensValues0() == false ) { // only for counters
       ClearSensorStages();
       MeasStage = 5;
     }
     break;
   case 5:
-    if ( GetSensValues() == false ) { // only for counters
+    if ( GetSensValues() == false ) {  // true :: Getting
       ClearSensorStages();
       MeasStage = 6;
     }
@@ -265,7 +265,7 @@ void MainWindow::MeasSequence( void )
       MeasStage = 99;          // PauseStage
     }
     // don't break
-  case 10:
+  case 10:                     // This label is resume point from pausing
     NowView->ReDraw();
     MeasS++;
     if ( inPause == 0 ) {

@@ -16,6 +16,14 @@ MOTORD Motors[ MOTORS ] = {
 };
 #endif
 
+const char *CMode[ MEASMODES + 1 ] = {
+  "Transmission",
+  "Fluorescence",
+  "Aux input",
+  "Extra mode",
+  NULL,
+};
+
 MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
@@ -26,6 +34,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   starsSV = new StarsSV;
   selMC = new SelMC;
+
+  nowCurrent = 0;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
@@ -69,6 +79,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
 
+  resize( 1, 1 );
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )

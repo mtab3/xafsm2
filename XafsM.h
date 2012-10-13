@@ -108,7 +108,8 @@ const MSCALED MScales[ MSCALES ] = {
   { H05, " 5 h/div",  5*60*60,   5, "[h]" },
 };
 
-enum MEASMODE{ TRANS, FLUO, AUX, MEASMODES };
+enum MEASMODE{ TRANS, FLUO, AUX, EXTRA, MEASMODES };
+extern const char *CMode[ MEASMODES + 1 ];
 
 enum MSPEED { LOW, MIDIUM, HIGH, MSPEEDS };
 struct MSPEEDD {

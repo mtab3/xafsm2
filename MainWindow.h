@@ -63,6 +63,7 @@ private:
   /* cfg. */
 
   double CurPosKeV;
+  double nowCurrent;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
@@ -72,6 +73,8 @@ private:
 
   Stars *s;
   double MonoCryD;
+
+  MEASMODE MeasFileType;
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -175,6 +178,7 @@ private:
 
   bool MeasCntIs;
   int MeasCntNo;
+  int MeasChNo;
   bool setupMDispFirstTime;
 
   int inMonitor;
@@ -209,6 +213,7 @@ private:
   UNIT SBLKUnit;
   int SBlocks;
   double SBlockStart[ MaxBLKs + 1 ];
+  double SBlockStep[ MaxBLKs + 1 ];
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
@@ -226,6 +231,7 @@ private:
   void SelSSDs( int i );
   //  void SetSSDactive( bool active );
 
+  QString fixS( QString s, int l );
   QString DFName0, DFName;
   int TP;
   double TT0;
@@ -265,6 +271,7 @@ private:
   void MeasSequence( void );
   void SPSSequence( void );
   void MonSequence( void );
+  bool CheckDetectorSelection( void );
 
   bool isBusyMotorInMeas( void );
   bool isBusySensorInMeas( void );
