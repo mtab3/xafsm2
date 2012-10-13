@@ -116,6 +116,7 @@ bool AUnit::GetValue0( void )
       break;
     case 1:
       isBusy2 = true;
+      isBusy = true;
       s->SendCMD2( UID, Driver, "CountStart" );
       LocalStage++;
       rv = false;

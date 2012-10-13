@@ -228,12 +228,13 @@ void MainWindow::MeasSequence( void )
     statusbar->showMessage( tr( "Writing Header." ), 2000 );
     WriteHeader( MeasR );
     MeasStage = 2;
-    // break;       MeasStage == 1 の内容にもレスポンスを待つ必要なし
+    // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
   case 2: 
     MeasS = 0;    // Measurement Step count in each block
     SetDwellTime( SBlockDwell[0] );
     MeasStage = 3;
-    break;
+    // break;       MeasStage == 2 もレスポンスを待つ必要なし
+    //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)
   case 3:
     Delta = keV2any( SBLKUnit, SBlockStart[MeasB+1] )
       - keV2any( SBLKUnit, SBlockStart[MeasB] );
