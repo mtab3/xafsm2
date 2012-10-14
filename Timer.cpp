@@ -144,14 +144,14 @@ bool MainWindow::GetSensValues( void )
   return ff;
 }
 
-void MainWindow::ReadSensValues( void )          // ‚Ü‚¾‰¼‚Ìó‘Ô
+void MainWindow::ReadSensValues( void )
 {
   double I0;
   double Val;
   int LineCount = 1;
 
   I0 = MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
-  NowView->NewPoint( 0, GoToKeV, I0 );    // I0 ‚Ì•\Ž¦
+  NowView->NewPoint( 0, GoToKeV, I0 );
   for ( int i = 1; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       Val = MeasVals[i] = MeasSens[i]->value().toDouble();
