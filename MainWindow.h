@@ -247,17 +247,18 @@ private:
   void ClearNowView( void );
   int GetDFName0( void );
   void SetDFName( int i );
-  AUnit *MeasSens[ 5 ];
-  bool MeasSensF[ 5 ];
+  double MeasVals[ MCHANNELS ];
+  MEASMODE MeasDispMode[ MCHANNELS ];
+  AUnit *MeasSens[ MCHANNELS ];
+  bool MeasSensF[ MCHANNELS ];
   bool OneOfTheSensorIsCounter;
   AUnit *TheCounter;
+  double NowDwell;
 
   void ShowTotal( void );
   void CpBlock2SBlock( void );
   void WriteHeader( int Rpt );
-  void RecordDataTrans( int devieNo, double r );
-  void RecordDataSSD( int devieNo, double r );
-  void RecordDataAUX( int devieNo, double r );
+  void RecordData( void );
 
   QString NewLFName( void );
 

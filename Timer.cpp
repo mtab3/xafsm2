@@ -146,52 +146,32 @@ bool MainWindow::GetSensValues( void )
 
 void MainWindow::ReadSensValues( void )          // まだ仮の状態
 {
-  double I0, I1, A1, A2, SS;
+  double I0;
+  double Val;
+  int LineCount = 1;
 
-  I1 = A1 = A2 = SS = 0;
-
-  I0 = MeasSens[0]->value().toDouble();   // I0
-  if ( MeasSensF[1] )
-    I1 = MeasSens[1]->value().toDouble(); // I1
-  if ( MeasSensF[2] )
-    SS = MeasSens[2]->value().toDouble();  // SSD
-  if ( MeasSensF[3] )
-    A1 = MeasSens[3]->value().toDouble(); // Aux1
-  if ( MeasSensF[4] )
-    A2 = MeasSens[4]->value().toDouble(); // Aux2
-
-  NowView->NewPoint( 0, GoToKeV, I0 );
-  if ( MeasSensF[1] ) {
-    if ( I1 < 1e-10 )
-      I1 = 1e-10;
-    if ( ( I0 / I1 ) > 0 )
-      NowView->NewPoint( 1, GoToKeV, log( I0/I1 ) );     // I1 ほんとは log とるべき
-    else 
-      NowView->NewPoint( 1, GoToKeV, 0 );     // I1 ほんとは log とるべき
-
-
-    SetDFName( MeasR );
-    QFile file( DFName.toAscii() );
-    if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
-      QTextStream out(&file);
-      out << GoToKeV << " " << I0 << " " << I1 << " ";
-      if ( ( I0 / I1 ) > 0 )
-	out << log( I0/I1 ) << endl;
-      else 
-	out << 0 << endl;
-      file.close();
+  I0 = MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
+  NowView->NewPoint( 0, GoToKeV, I0 );    // I0 の表示
+  for ( int i = 1; i < MCHANNELS; i++ ) {
+    if ( MeasSensF[i] ) {
+      Val = MeasVals[i] = MeasSens[i]->value().toDouble();
+      if ( MeasDispMode[i] == TRANS ) {
+	if ( Val < 1e-10 )
+	  Val = 1e-10;
+	if ( ( I0 / Val ) > 0 )
+	  NowView->NewPoint( LineCount, GoToKeV, log( I0/Val ) );
+	else 
+	  NowView->NewPoint( LineCount, GoToKeV, 0 );
+      } else {  // MeasDispMode == FLUO
+	if ( I0 < 1e-20 )
+	  I0 = 1e-20;
+	NowView->NewPoint( LineCount, GoToKeV, Val/I0 );
+      }
+      LineCount++;
     }
-    
   }
-#if 0
-  if ( MeasSensF2 )
-    NowView->NewPoint( 2, GoToKeV, A1 );
-  if ( MeasSensF3 )
-    NowView->NewPoint( 3, GoToKeV, A2 );
-  if ( MeasSensF4 )
-    NowView->NewPoint( 4, GoToKeV, S );
-#endif
 
+  RecordData();
 }
 
 void MainWindow::MeasSequence( void )
@@ -231,7 +211,7 @@ void MainWindow::MeasSequence( void )
     // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
   case 2: 
     MeasS = 0;    // Measurement Step count in each block
-    SetDwellTime( SBlockDwell[0] );
+    SetDwellTime( NowDwell = SBlockDwell[0] );
     MeasStage = 3;
     // break;       MeasStage == 2 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)

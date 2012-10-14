@@ -49,6 +49,8 @@ void MainWindow::WriteHeader( int Rpt )
 {
   SetDFName( Rpt );   // Generate a file name with repitation number
 
+  qDebug() << "In writing header";
+
   QFile file( DFName );
   if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
@@ -170,23 +172,27 @@ void MainWindow::WriteHeader( int Rpt )
   default:
     qDebug() << "Unknown Measuremet type";
   }
+
   file.close();
 }
 
-#if 0
-void MainWindow::RecordDataTrans( int device, double r )
+void MainWindow::RecordData( void )
 {
-  printf( "Record Data: %d %g\n", device, r );
-}
+  SetDFName( MeasR );
+  QFile file( DFName );
+  if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
+    QTextStream out( &file );
+    
+    out << keV2deg( GoToKeV ) << " " << keV2deg( GoToKeV ); // 本来2つめはエンコーダ
+    out << " " << NowDwell << " " << MeasVals[ MC_I0 ];
 
-void MainWindow::RecordDataSSD( int device, double r )
-{
-  printf( "Record Data: %d %g\n", device, r );
-}
+    for ( int i = 1; i < MCHANNELS; i++ ) {
+      if ( MeasSensF[i] ) {
+	out << " " << MeasVals[i];
+      }
+    }
+    file.close();
+  }
 
-void MainWindow::RecordDataAUX( int device, double r )
-{
-  printf( "Record Data: %d %g\n", device, r );
 }
-#endif
 

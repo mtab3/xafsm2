@@ -536,12 +536,12 @@ bool MainWindow::CheckDetectorSelection( void )
   if ( NoOfSelectedSens == 1 ) {
     if ( ( UseI1->isChecked()
 	   && ( ASensors.value( SelectI1->currentIndex() )->getType() == "CNT" ) )
-	 || ( UseAux1->isChecked() && ModeA1->currentIndex() == 0 )
-	 || ( UseAux2->isChecked() && ModeA1->currentIndex() == 0 ) )
+	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == TRANS ) )
+	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == TRANS ) ) )
       MeasFileType = TRANS;
     if ( Use19chSSD->isChecked() 
-	 || ( UseAux1->isChecked() && ModeA1->currentIndex() == 1 )
-	 || ( UseAux2->isChecked() && ModeA1->currentIndex() == 1 ) )
+	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == FLUO ) )
+	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == FLUO ) ) )
       MeasFileType = FLUO;
   }
 
@@ -559,6 +559,13 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
     }
+
+    MeasDispMode[ MC_I0 ] = TRANS;     // I0 にモードはないのでダミー
+    MeasDispMode[ MC_I1 ] = TRANS;     // I1 は TRANS に固定
+    MeasDispMode[ MC_SSD ] = FLUO;      // SSD は FLUO に固定
+    MeasDispMode[ MC_AUX1 ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
+    MeasDispMode[ MC_AUX2 ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
+
     if ( CheckDetectorSelection() == false ) {
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
@@ -572,16 +579,16 @@ void MainWindow::StartMeasurement( void )
       MeasStart->setStyleSheet( "background-color: yellow" );
       MeasPause->setEnabled( true );
 
-      MeasSens[0] = ASensors.value( SelectI0->currentIndex() );
-      MeasSens[1] = ASensors.value( SelectI1->currentIndex() );
-      MeasSens[2] = SFluo;
-      MeasSens[3] = ASensors.value( SelectAux1->currentIndex() );
-      MeasSens[4] = ASensors.value( SelectAux2->currentIndex() );
-      MeasSensF[0] = true;
-      MeasSensF[1] = UseI1->isChecked();
-      MeasSensF[2] = Use19chSSD->isChecked();
-      MeasSensF[3] = UseAux1->isChecked();
-      MeasSensF[4] = UseAux2->isChecked();
+      MeasSens[ MC_I0 ] = ASensors.value( SelectI0->currentIndex() );
+      MeasSens[ MC_I1 ] = ASensors.value( SelectI1->currentIndex() );
+      MeasSens[ MC_SSD ] = SFluo;
+      MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
+      MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
+      MeasSensF[ MC_I0 ] = true;
+      MeasSensF[ MC_I1 ] = UseI1->isChecked();
+      MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();
+      MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
+      MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
 
       MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
       MeasCntNo = 0;       // そのデテクタの番号
