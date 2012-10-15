@@ -584,6 +584,9 @@ void MainWindow::StartMeasurement( void )
       MeasSens[ MC_SSD ] = SFluo;
       MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
       MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
+
+      for ( int i = 0; i < MCHANNELS; i++ )
+	MeasSensF[i] = false;
       MeasSensF[ MC_I0 ] = true;
       MeasSensF[ MC_I1 ] = UseI1->isChecked();
       MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();

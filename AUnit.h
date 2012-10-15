@@ -55,6 +55,9 @@ public:
   void setUnit( QString unit ) { Unit = unit; };
   void setIsBusy( bool busy ) { isBusy = busy; };
 
+  double u2p( double u ) { return u / UPP + Center; };
+  double p2u( double p ) { return ( p - Center ) * UPP; };
+
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
   void setCenter( QString center ) { Center = center.toDouble(); };

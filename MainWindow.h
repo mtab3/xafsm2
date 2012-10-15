@@ -149,7 +149,7 @@ private:
     return 0;
   }
 
-  void GoMAtPuls( int Pos );
+  void GoMAtPuls( double Pos );
   void GoMStop0( void );
   void ShowTAE( void );
   void GetNewGo( int i );
@@ -183,13 +183,9 @@ private:
 
   int inMonitor;
   int MonID;
-  int MonStage;
+  int MonStage1, MonStage2;
   int MonDev;
   double MonMeasTime;
-  double NewMonV, OldMonV;
-  double NewMonV0, OldMonV0;
-  int MonUsedOldV;
-  int MonUsedOldV0;
   XView *MonView;
 
   QVector<QLineEdit *> BLKstart;
@@ -258,6 +254,7 @@ private:
   void ShowTotal( void );
   void CpBlock2SBlock( void );
   void WriteHeader( int Rpt );
+  void DispMeasDatas( void );
   void RecordData( void );
 
   QString NewLFName( void );
@@ -275,7 +272,7 @@ private:
   bool CheckDetectorSelection( void );
 
   bool isBusyMotorInMeas( void );
-  bool isBusySensorInMeas( void );
+  bool isBusySensors( void );
   void ClearSensorStages( void );
   bool InitSensors( void );
   void SetDwellTime( double dtime );
@@ -309,7 +306,9 @@ private slots:
   void GoToPosKeV3( void ) { MoveCurThPosKeV( GoPosKeV[2] ); }
   void GoToPosKeV4( void ) { MoveCurThPosKeV( GoPosKeV[3] ); }
   void NewMotor( void );
-  void GoMAt( void );
+  void NewGoMotorPosPuls( const QString &val );
+  void NewGoMotorPosUnit( const QString &val );
+  void GoMAtP( void );
   void GoMStop( void );
   void SPSAS( void );
   void SPSRS( void );

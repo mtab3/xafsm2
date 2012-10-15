@@ -548,23 +548,170 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="6" column="10">
-              <widget class="QPushButton" name="SetUpMMRel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             <item row="5" column="0" colspan="3">
+              <widget class="QFrame" name="MCurPosPulsF">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_21">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="MCurPosPuls">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(250, 255, 240);</string>
+                  </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="5" column="6">
+              <widget class="QLabel" name="label_21">
+               <property name="text">
+                <string>puls</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="10" colspan="2">
+              <widget class="QComboBox" name="MotorS">
                <property name="maximumSize">
                 <size>
-                 <width>40</width>
+                 <width>16777215</width>
                  <height>16777215</height>
                 </size>
                </property>
-               <property name="text">
-                <string>Rel</string>
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
+              </widget>
+             </item>
+             <item row="3" column="3" colspan="3">
+              <widget class="QLabel" name="label_41">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Move To</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="9" colspan="2">
+              <widget class="QLabel" name="label_44">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="3" colspan="2">
+              <widget class="QLineEdit" name="GoMotorPosUnit">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="6">
+              <widget class="QLabel" name="GoMotorUnit">
+               <property name="text">
+                <string>unit</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="3" colspan="2">
+              <widget class="QLineEdit" name="GoMotorPosPuls">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="8">
+              <widget class="QPushButton" name="GoMotor">
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               </property>
+               <property name="text">
+                <string>Go</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0" colspan="3">
+              <widget class="QFrame" name="MCurPosUnitF">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_24">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="MCurPosUnit">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(250, 255, 240);</string>
+                  </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
              <item row="3" column="0" colspan="3">
@@ -690,6 +837,12 @@
              </item>
              <item row="11" column="2" colspan="2">
               <widget class="QLineEdit" name="SPSstep">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -761,37 +914,6 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="0" colspan="3">
-              <widget class="QFrame" name="MCurPosPulsF">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_21">
-                <property name="margin">
-                 <number>0</number>
-                </property>
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="MCurPosPuls">
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(250, 255, 240);</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
              <item row="3" column="6">
               <widget class="QLabel" name="label_43">
                <property name="text">
@@ -848,148 +970,22 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="6">
-              <widget class="QLabel" name="label_21">
-               <property name="text">
-                <string>puls</string>
+             <item row="6" column="10">
+              <widget class="QPushButton" name="SetUpMMRel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-              </widget>
-             </item>
-             <item row="5" column="10" colspan="2">
-              <widget class="QComboBox" name="MotorS">
                <property name="maximumSize">
                 <size>
-                 <width>16777215</width>
+                 <width>40</width>
                  <height>16777215</height>
                 </size>
                </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="3" colspan="3">
-              <widget class="QLabel" name="label_41">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
                <property name="text">
-                <string>Move To</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="9" colspan="2">
-              <widget class="QLabel" name="label_44">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="8">
-              <widget class="QPushButton" name="GoMotorAtPuls">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Go at Puls</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0" colspan="3">
-              <widget class="QFrame" name="MCurPosUnitF">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_24">
-                <property name="margin">
-                 <number>0</number>
-                </property>
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="MCurPosUnit">
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(250, 255, 240);</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="6" column="3" colspan="2">
-              <widget class="QLineEdit" name="GoMotorPosUnit">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="6">
-              <widget class="QLabel" name="label_23">
-               <property name="text">
-                <string>unit</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="3" colspan="2">
-              <widget class="QLineEdit" name="GoMotorPosPuls">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="8">
-              <widget class="QPushButton" name="GoMotorAtUnit">
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Ga at Unit</string>
+                <string>Rel</string>
                </property>
               </widget>
              </item>
@@ -1007,29 +1003,44 @@
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_12">
-             <property name="topMargin">
-              <number>5</number>
+            <layout class="QGridLayout" name="gridLayout_25">
+             <property name="margin">
+              <number>3</number>
              </property>
-             <property name="bottomMargin">
-              <number>5</number>
+             <property name="spacing">
+              <number>1</number>
              </property>
-             <item>
-              <widget class="QLabel" name="label_38">
+             <item row="1" column="5">
+              <widget class="QPushButton" name="MStart">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               </property>
                <property name="text">
-                <string>Monitor</string>
+                <string>Mon. Start</string>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QComboBox" name="SelectD2">
+             <item row="0" column="5">
+              <widget class="QComboBox" name="SelectScale">
                <property name="styleSheet">
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QLabel" name="DevCurV">
+             <item row="0" column="4">
+              <widget class="QLabel" name="DevCurV21">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(250, 255, 240);</string>
                </property>
@@ -1044,26 +1055,57 @@
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QComboBox" name="SelectScale">
+             <item row="0" column="3">
+              <widget class="QComboBox" name="SelectD21">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QPushButton" name="MStart">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
+             <item row="1" column="3">
+              <widget class="QComboBox" name="SelectD22">
                <property name="styleSheet">
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QRadioButton" name="SelectD22Sel">
                <property name="text">
-                <string>Mon. Start</string>
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="2">
+              <widget class="QLabel" name="label_23">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="3">
+              <widget class="QLabel" name="label_38">
+               <property name="text">
+                <string>Monitor</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <widget class="QLabel" name="DevCurV22">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(250, 255, 240);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="text">
+                <string>0.000</string>
                </property>
               </widget>
              </item>
@@ -2824,14 +2866,13 @@
   <tabstop>GoPos4</tabstop>
   <tabstop>GoMotorPosPuls</tabstop>
   <tabstop>SPSstep</tabstop>
-  <tabstop>MStart</tabstop>
   <tabstop>SorPS</tabstop>
   <tabstop>SelectD1</tabstop>
   <tabstop>LogFileName</tabstop>
   <tabstop>LogFileSelect</tabstop>
   <tabstop>LogMsgs</tabstop>
   <tabstop>LogComment</tabstop>
-  <tabstop>SelectD2</tabstop>
+  <tabstop>SelectD21</tabstop>
  </tabstops>
  <resources/>
  <connections/>

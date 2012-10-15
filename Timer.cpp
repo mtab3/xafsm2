@@ -14,13 +14,13 @@ void MainWindow::timerEvent( QTimerEvent *event )
                                /* 本当に監視しつづけるのが良いかどうかはまた別 */
     WatchPos();
   }
-  if ( Id == MoveID ) { /* 軸移動中の軸の値の監視 */
-    MotorMove();
-  }
 #endif
 
   if ( Id == MeasID ) { /* 測定ステップの進行 */
     MeasSequence();
+  }
+  if ( Id == MoveID ) { /* 指定した軸の移動 */
+    MotorMove();
   }
   if ( Id == SPSID ) { /* スキャン/ピークサーチの進行 */
     SPSSequence();
@@ -59,29 +59,22 @@ void MainWindow::WatchPos( void )
 }
 #endif
 
-#if 0    // 現在全く不要のはず
 void MainWindow::MotorMove( void )
 {
-  char *now = NULL;
+  AUnit *am = AMotors.value( MotorN->currentIndex() );
   
-  if ( sks->IsBusy( Motors[ MovingM ].devName ) == 0 ) {
-    GoMStop0( now );
-    NewLogMsg( QString( tr( "Setup: %1 : Reached at %2\n" ) )
-	       .arg( Motors[ MotorN->currentIndex() + 1 ].MName )
-	       .arg( now ) );
-    statusbar->showMessage( QString( tr( "Setup: %1 : Reached at %2\n" ) )
-			    .arg( Motors[ MotorN->currentIndex() + 1 ].MName )
-			    .arg( now ), 1000 );
-  } else {
-    MCurPos
-      ->setText( sks->GetValue( Motors[ MovingM ].devName ) );
+  if ( !am->getIsBusy() ) {
+    GoMStop0();
+    NewLogMsg( tr( "Setup: %1 : Reached at %2\n" )
+	       .arg( am->getName() ).arg( am->value() ) );
+    statusbar->showMessage( tr( "Setup: %1 : Reached at %2\n" )
+			    .arg( am->getName() ).arg( am->value() ), 1000 );
   }
 }
-#endif
 
 void MainWindow::ClearSensorStages( void )
 {
-  for ( int i = 0; i < 5; i++ ) {
+  for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] )
       MeasSens[i]->InitLocalStage();
   }
@@ -91,7 +84,7 @@ bool MainWindow::InitSensors( void )
 {
   bool ff = false;
 
-  for ( int i = 0; i < 5; i++ ) {
+  for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->InitSensor();
     }
@@ -105,13 +98,13 @@ bool MainWindow::isBusyMotorInMeas( void )
   return MMainTh->getIsBusy() || MMainTh->getIsBusy2();
 }
 
-bool MainWindow::isBusySensorInMeas( void )
+bool MainWindow::isBusySensors( void )
 {
   bool ff = false;
 
-  for ( int i = 0; i < 5; i++ ) {
+  for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
-      ff |= MeasSens[i]->getIsBusy() | MeasSens[i]->getIsBusy2();
+      ff |= MeasSens[i]->getIsBusy() || MeasSens[i]->getIsBusy2();
     }
   }
 
@@ -120,7 +113,7 @@ bool MainWindow::isBusySensorInMeas( void )
 
 void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にするべき
 {
-  for ( int i = 0; i < 5; i++ ) {
+  for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] )
       MeasSens[i]->SetTime( dtime );
   }
@@ -135,7 +128,7 @@ bool MainWindow::GetSensValues( void )
 {
   bool ff = false;
 
-  for ( int i = 0; i < 5; i++ ) {
+  for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->GetValue();
     }
@@ -146,15 +139,25 @@ bool MainWindow::GetSensValues( void )
 
 void MainWindow::ReadSensValues( void )
 {
+  MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
+  for ( int i = 1; i < MCHANNELS; i++ ) {
+    if ( MeasSensF[i] ) {
+      MeasVals[i] = MeasSens[i]->value().toDouble();
+    }
+  }
+}
+
+void MainWindow::DispMeasDatas( void )
+{
   double I0;
   double Val;
   int LineCount = 1;
 
-  I0 = MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
+  I0 = MeasVals[ MC_I0 ];
   NowView->NewPoint( 0, GoToKeV, I0 );
   for ( int i = 1; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
-      Val = MeasVals[i] = MeasSens[i]->value().toDouble();
+      Val = MeasVals[i];
       if ( MeasDispMode[i] == TRANS ) {
 	if ( Val < 1e-10 )
 	  Val = 1e-10;
@@ -170,15 +173,13 @@ void MainWindow::ReadSensValues( void )
       LineCount++;
     }
   }
-
-  RecordData();
 }
 
 void MainWindow::MeasSequence( void )
 {
   double Delta;
 
-  if ( isBusyMotorInMeas() || isBusySensorInMeas() )
+  if ( isBusyMotorInMeas() || isBusySensors() )
     return;
 
   switch( MeasStage ) {
@@ -187,35 +188,40 @@ void MainWindow::MeasSequence( void )
        1: Block = 0
        2: Step = 0, setDwellTIme
        3: Goto a Position with a Block and a Step
-       4: Triger Sensors
-       5: Read out Sensors
+       4: prepare to triger Sensors (only for cnt08)
+       5: Triger Sensors (for all)
+       6: Read out Sensors
+       10: Draw (Resume point from 99:)
           Step++; if ( Step < MaxStep ) goto 3
           Block++; if ( Block < MaxBlock ) goto 2
           Repeat++; if ( Repeat < MaxRepeat ) toto 1
           when reach here, finish.
-       6: pause の時用のステージ
+       99: pause の時用のステージ
     */
   case 0:
+    ClearSensorStages();
+    MeasStage = 1;
+  case 1:
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasR = 0;    // Measurement Repeat count
-    ClearSensorStages();
     if ( InitSensors() == false )   // true :: initializing
-      MeasStage = 1;
+      MeasStage = 2;
     break;
-  case 1:
+  case 2:
     MeasB = 0;    // Measurement Block count
     statusbar->showMessage( tr( "Writing Header." ), 2000 );
     WriteHeader( MeasR );
-    MeasStage = 2;
-    // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
-  case 2: 
-    MeasS = 0;    // Measurement Step count in each block
-    SetDwellTime( NowDwell = SBlockDwell[0] );
     MeasStage = 3;
+    // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
+  case 3: 
+    MeasS = 0;    // Measurement Step count in each block
+    ClearSensorStages();
+    SetDwellTime( NowDwell = SBlockDwell[0] );
+    MeasStage = 4;
     // break;       MeasStage == 2 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)
-  case 3:
+  case 4:
     Delta = keV2any( SBLKUnit, SBlockStart[MeasB+1] )
       - keV2any( SBLKUnit, SBlockStart[MeasB] );
     GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
@@ -223,23 +229,26 @@ void MainWindow::MeasSequence( void )
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
     ClearSensorStages();
     if ( MeasCntIs )
-      MeasStage = 4;
+      MeasStage = 5;
     else
-      MeasStage = 5;
-    break;
-  case 4:
-    if ( GetSensValues0() == false ) { // only for counters
-      ClearSensorStages();
-      MeasStage = 5;
-    }
+      MeasStage = 6;
     break;
   case 5:
-    if ( GetSensValues() == false ) {  // true :: Getting
+    if ( GetSensValues0() == false ) { // only for counters
       ClearSensorStages();
       MeasStage = 6;
     }
+    break;
   case 6:
+    if ( GetSensValues() == false ) {  // true :: Getting
+      ClearSensorStages();
+      MeasStage = 7;
+    }
+    break;
+  case 7:
     ReadSensValues();
+    DispMeasDatas();
+    RecordData();
     MeasStage = 10;
     if ( inPause == 1 ) {
       MeasStage = 99;          // PauseStage
@@ -250,15 +259,15 @@ void MainWindow::MeasSequence( void )
     MeasS++;
     if ( inPause == 0 ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {
-	MeasStage = 3;
+	MeasStage = 4;
       } else if ( MeasB < SBlocks-1 ) {
 	MeasB++;
-	MeasStage = 2;
+	MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1\n" ) ).arg( MeasR + 1 ) );
 	ClearNowView();
 	MeasR++;
-	MeasStage = 1;
+	MeasStage = 2;
       } else {               // 終了
 	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
 	NewLogMsg( QString( tr( "Meas: Finished\n" ) ) );
@@ -276,6 +285,81 @@ void MainWindow::MeasSequence( void )
   case 99:
     if ( inPause == 0 )
       MeasStage = 10;
+    break;
+  }
+}
+
+void MainWindow::MonSequence( void )
+{
+  MonStage1++;
+  if ( MonStage1 == 4 ) {
+    for ( int i = 0; i < MCHANNELS; i++ ) {
+      if ( MeasSensF[i] ) {
+	qDebug() << MeasVals[i];
+      }
+    }
+    MonView->NewPointR( MeasVals[0], MeasVals[1] );
+    MonView->ReDraw();
+    MonStage1 = 0;
+  }
+
+  if ( isBusySensors() )
+    return;
+
+  switch( MonStage2 ) {
+    /* 
+       0: 値の読み出しと表示
+       1: nct08 を使う時: 計測開始の前準備
+          それ以外: 計測開始
+       2: nct08 を使う時: 計測開始
+    */
+  case 0:
+    ClearSensorStages();
+    MonStage2 = 1;
+    break;
+  case 1:
+    if ( InitSensors() == false )   // true :: initializing
+      ClearSensorStages();
+      MonStage2 = 2;
+    break;
+  case 2: 
+    ClearSensorStages();
+    SetDwellTime( MonMeasTime );
+    MonStage2 = 3;
+    // don't break;
+  case 3:
+    if ( OneOfTheSensorIsCounter ) {
+      if ( GetSensValues0() == false ) { // only for counters
+	ClearSensorStages();
+	MonStage2 = 4;
+      }
+    } else {
+      if ( GetSensValues() == false ) {  // true :: Getting
+	ClearSensorStages();
+	MonStage2 = 5;
+      }
+    }
+    break;
+  case 4:
+    if ( GetSensValues() == false ) {  // true :: Getting
+      ClearSensorStages();
+      MonStage2 = 5;
+    }
+    break;
+  case 5:
+    ReadSensValues();
+    MonStage2 = 10;
+#if 0
+    if ( inPause == 1 ) {
+      MonStage2 = 99;          // PauseStage
+    }
+#endif
+    // don't break
+  case 10:                     // This label is resume point from pausing
+    MonView->ReDraw();
+    if ( inPause == 0 ) {
+      MonStage2 = 3;
+    }
     break;
   }
 }
@@ -361,67 +445,3 @@ void MainWindow::SPSSequence( void )
   }
 #endif
 }
-
-void MainWindow::MonSequence( void )
-{
-#if 0
-  switch( MonStage ) {
-    /* 
-       0: 測定開始
-       1: 計測結果取得
-       このサイクルに自動的な終了は無い (明示的にストップの指示があるまで止まらない)
-    */
-  case 0:
-    if ( MonUsedOldV == 0 ) { // 前回測定が間に合ってなかったら次の測定はスタートしない
-      sks->StartMeas( MDevs[ MonDev ].devName, MonMeasTime, MDevs[ MonDev ].devCh2 );
-    } else {
-      MonUsedOldV = 0;
-    }
-    if ( MonUsedOldV0 == 0 ) { // 前回測定が間に合ってなかったら次の測定はスタートしない
-      sks->StartMeas( MDevs[ IONCH0 ].devName, MonMeasTime, MDevs[ IONCH0 ].devCh2 );
-    } else {
-      MonUsedOldV0 = 0;
-    }
-    MonStage = 1;
-    break;
-  case 1:
-    if ( sks->IsBusy( MDevs[ MonDev ].devName, MDevs[ MonDev ].devCh2 ) == 1 ) {
-      NewMonV = OldMonV;   // 万測定が間に合ってなかったら, 古い測定結果を流用
-      MonUsedOldV = 1;
-    } else {
-      if ( strcmp( MDevs[ MonDev ].devName, "SSD" ) == 0 ) {
-	QString rv = sks->GetValue( MDevs[ MonDev ].devName );
-	QStringList rvs = rv.simplified().split( QChar( ' ' ) );
-	if ( MDevs[ MonDev ].MDid == SSDALL ) {
-	  NewMonV = 0;
-	  for ( int i = 0; i < 19; i++ ) {
-	    NewMonV += rvs[ i ].toDouble();
-	  }
-	} else {
-	  NewMonV = rvs[ MDevs[ MonDev ].devCh ].toDouble();
-	}
-      } else {
-	NewMonV = atof( sks->GetValue( MDevs[ MonDev ].devName,
-				       MDevs[ MonDev ].devCh2 ) );
-      }
-    }
-
-    if ( sks->IsBusy( MDevs[ IONCH0 ].devName, MDevs[ IONCH0 ].devCh2 ) == 1 ) {
-      NewMonV0 = OldMonV0;   // 万測定が間に合ってなかったら, 古い測定結果を流用
-      MonUsedOldV0 = 1;
-    } else {
-	NewMonV0 = atof( sks->GetValue( MDevs[ IONCH0 ].devName,
-				       MDevs[ IONCH0 ].devCh2 ) );
-    }
-
-    MonView->NewPointR( NewMonV0, NewMonV );
-    MonView->ReDraw();
-
-    OldMonV = NewMonV;
-    OldMonV0 = NewMonV0;
-    ScanStage = 0;
-    break;
-  }
-#endif
-}
-

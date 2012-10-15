@@ -67,6 +67,7 @@ public:
   };
   void SetScaleT( SCALET s1, SCALET s2 ) { ScaleTR = s1; ScaleTL = s2; };
   int PeakSearch( int l );
+  int getMonScale( void ) { return MonScale; };
 
 public slots:
   void SetMonScale( int ms ) { MonScale = ms; };

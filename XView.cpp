@@ -144,7 +144,6 @@ void XView::DrawXYPlot( QPainter *p )
   double sy, dy;
   if ( SLineL >= 0 ) {                            // ç∂ÇÃ y é≤Ç…ä÷òAÇµÇΩï`âÊ
     UpDateYWindow( SLineL, ScaleTL );
-    qDebug() << "ScaleTL" << ScaleTL;
     pen1.setWidth( 1 );
     pen1.setColor( LC[ SLineL ] );
     p->setPen( pen1 );
@@ -465,7 +464,6 @@ void XView::UpDateYWindow( int l, SCALET s )
     qDebug() << "Unknown scale type";
     break;
   }
-  qDebug() << "UpDateY " << nmaxy << nminy << wminy << wmaxy << s << FULLSCALE << I0TYPE;
 }
 
 void XView::UpDateYWindowRing( int LR )

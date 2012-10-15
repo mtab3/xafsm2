@@ -17,7 +17,8 @@ STARSDRV "SSD"        "has not implemeted"
 
 # define Moveable units
 
-MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
+# MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
+#          # The definition for "Theta" located at the end of the list of motors.
 
 # The parameters following the identifier 'MOTOR' are
 #   PM      : Unit type   PM : puls motor controlled via pm16c04
@@ -29,9 +30,7 @@ MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
 #     0.000027... : The metric unit / puls
 #     0           : Center position in puls
 
-MOTOR PM "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0
-MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
-MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120          # Need to check the range
+MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0 INT
 
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
@@ -52,14 +51,18 @@ MOTOR PM "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 0
 MOTOR PM "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 0
 MOTOR PM "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 0
 MOTOR PM "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 0
-MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0 
-MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0 
+MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0
+MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0
 MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 0 
 MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 0 
 MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 0 
 MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0 
+
+MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
+MOTOR PM "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0 INT
+MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120 REAL     # Need to check the range
 
 # define Sensor units
 

@@ -183,14 +183,16 @@ void MainWindow::RecordData( void )
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
     QTextStream out( &file );
     
-    out << keV2deg( GoToKeV ) << " " << keV2deg( GoToKeV ); // 本来2つめはエンコーダ
-    out << " " << NowDwell << " " << MeasVals[ MC_I0 ];
+    out << GoToKeV               // 野村フォーマットだとホントはエネルギーは書かない
+	<< " " << keV2deg( GoToKeV ) << " " << keV2deg( GoToKeV ) // 本来2つめはエンコーダ
+	<< " " << NowDwell << " " << MeasVals[ MC_I0 ];
 
     for ( int i = 1; i < MCHANNELS; i++ ) {
       if ( MeasSensF[i] ) {
 	out << " " << MeasVals[i];
       }
     }
+    out << endl;
     file.close();
   }
 
