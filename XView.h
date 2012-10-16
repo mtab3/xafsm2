@@ -38,7 +38,7 @@ private:
 public:
   XView( QWidget *parent = NULL );
   void NewPoint( int l, double xx, double yy );
-  void NewPointR( double yy0, double yy );
+  void NewPointR( double yy0, double yy1, double yy2 );
   void Clear( void );
   void SetWindow( double x1, double y1, double x2, double y2 );
   void DrawXYPlot( QPainter *p );

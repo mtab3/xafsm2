@@ -293,12 +293,8 @@ void MainWindow::MonSequence( void )
 {
   MonStage1++;
   if ( MonStage1 == 4 ) {
-    for ( int i = 0; i < MCHANNELS; i++ ) {
-      if ( MeasSensF[i] ) {
-	qDebug() << MeasVals[i];
-      }
-    }
-    MonView->NewPointR( MeasVals[0], MeasVals[1] );
+    qDebug() << "Mon val " << MeasVals[0] << MeasVals[1] << MeasVals[2];
+    MonView->NewPointR( MeasVals[0], MeasVals[1], MeasVals[2] );
     MonView->ReDraw();
     MonStage1 = 0;
   }
@@ -318,9 +314,10 @@ void MainWindow::MonSequence( void )
     MonStage2 = 1;
     break;
   case 1:
-    if ( InitSensors() == false )   // true :: initializing
+    if ( InitSensors() == false ) {  // true :: initializing
       ClearSensorStages();
       MonStage2 = 2;
+    }
     break;
   case 2: 
     ClearSensorStages();

@@ -66,10 +66,11 @@ void XView::NewPoint( int l, double xx, double yy )
   }
 }
 
-void XView::NewPointR( double yy0, double yy )
+void XView::NewPointR( double yy0, double yy1, double yy2 )
 {
   mony[0][ points[0] ] = yy0;
-  mony[1][ points[0] ] = yy;
+  mony[1][ points[0] ] = yy1;
+  mony[2][ points[0] ] = yy2;
   points[0]++;
   if ( points[0] >= RingMax )
     points[0] = 0;
@@ -323,9 +324,9 @@ void XView::DrawMonitor( QPainter *p )
   pen1.setColor( LC[ 1 ] );
   p->setPen( pen1 );
 
-  int dx = MScales[ MonScale ].div / 10;
+  int dx = MScales[ MonScale ].div / (double)TicPDiv;
   int pp1, pp2;
-  for ( int i = 0; i < 60; i++ ) { // データプロット
+  for ( int i = 0; i < TicPDiv * 6; i++ ) { // データプロット
     pp1 = points[ 0 ] - 1 - i * dx;
     pp2 = points[ 0 ] - 1 - ( i + 1 ) * dx;
     if ( pp1 < 0 ) pp1 += RingMax;

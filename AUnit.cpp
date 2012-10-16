@@ -239,11 +239,13 @@ void AUnit::SetTime( double dtime )   // in sec
     time = dtime * 60;
     if ( time < 1 ) time = 1;
     if ( time > 40 ) time = 40;
+    qDebug() << "PAM SetTime " << time;
     s->SendCMD2( UID, DevCh, "SetNPLCycles", QString::number( time ) );
   }
   if ( Type == "CNT" ) {
     isBusy2 = true;
     ltime = dtime * 1e6;
+    qDebug() << "CNT SetTime " << ltime;
     s->SendCMD2( UID, Driver, "SetTimerPreset", QString::number( ltime ) );
   }
 }
@@ -257,7 +259,12 @@ bool AUnit::InitSensor( void )
 {
   bool rv = false;
 
+    qDebug() << "InitSensor ALL";
+
   if ( Type == "PAM" ) {         // Keithley 6845
+
+    qDebug() << "InitSensor PAM";
+
     switch( LocalStage ) {
     case 0:
       isBusy2 = true;

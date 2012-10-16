@@ -417,8 +417,8 @@ void MainWindow::Monitor( void )
       }
     }
 
-    /* 計測時間(MomMeasTime)はプロット間隔の 1/4 */
-    MonMeasTime = MScales[ SelectScale->currentIndex() ].div / TicPDiv * 1000 / 4.;
+    /* 計測時間 [s] (MomMeasTime)はプロット間隔の 1/4 */
+    MonMeasTime = MScales[ SelectScale->currentIndex() ].div / TicPDiv / 4.;
     if ( MonMeasTime > 10 )
       MonMeasTime = 10;
 
@@ -444,7 +444,7 @@ void MainWindow::Monitor( void )
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
 
-    /* 指定プロット間隔の 1/8 でタイマーセット */
+    /* 指定プロット間隔の 1/8 でタイマーセット [ms] */
     MonID = startTimer( MScales[ SelectScale->currentIndex() ].div / TicPDiv * 1000 / 8. );
 
   } else {

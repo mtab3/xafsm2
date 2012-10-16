@@ -85,7 +85,7 @@ const SPSMODED SPSModes[ SPSMODES ] = {
   { SCAN, "Scan" },
 };
 
-const int TicPDiv = 10;   // モニター時の 1罫線間に測定する回数
+const int TicPDiv = 50;   // モニター時の 1罫線間に測定する回数
 const int DivPScr = 6;    // この辺をかえるときは XView.h の RingMax にも注意
 struct MSCALED {
   int MSid;
