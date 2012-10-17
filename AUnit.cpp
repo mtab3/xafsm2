@@ -172,6 +172,7 @@ void AUnit::SetCurPos( SMsg msg )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
 	    || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Val();
+    emit newValue( Value );
     isBusy2 = false;
   }
 }

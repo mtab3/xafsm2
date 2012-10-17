@@ -178,9 +178,17 @@ void MainWindow::DispMeasDatas( void )
 void MainWindow::MeasSequence( void )
 {
   double Delta;
+  bool a1, a2;
 
-  if ( isBusyMotorInMeas() || isBusySensors() )
+  if ( AskingOverwrite )
     return;
+
+  //  qDebug() << "Before " << MeasStage;
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = isBusySensors() ) ) {
+    //    qDebug() << "isBusy " << a1 << a2;
+    return;
+  }
+  //  qDebug() << "After " << MeasStage;
 
   switch( MeasStage ) {
     /* 

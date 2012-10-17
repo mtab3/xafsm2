@@ -48,6 +48,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   OnFinishP->addItem( tr( "Stay" ) );
   OnFinishP->setCurrentIndex( RETURN );
 
+  QPushButton *tmpB;
   TP = 0;
   TT0 = 0;
   MeasID = 0;
@@ -56,11 +57,17 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MeasStage = 0;
   MeasPause->setEnabled( false );
   StopP = new QMessageBox;
-  QPushButton *tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   StopP->addButton( tr( "OK" ), QMessageBox::AcceptRole );
   StopP->setText( tr( "<h1><center>Stop ?</center></h1>" ) );
   StopP->setWindowTitle( tr( "Stop or Continue" ) );
   StopP->setDefaultButton( tmpB );
+
+  AskOverWrite = new QMessageBox;
+  tmpB = AskOverWrite->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  AskOverWrite->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  AskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
+  AskOverWrite->setDefaultButton( tmpB );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     QString name = ASensors.value(i)->getName(); 
@@ -166,6 +173,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ) );
   connect( StopP, SIGNAL( rejected() ), this, SLOT( GoingOn() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( NewRpt() ) );
+  connect( AskOverWrite, SIGNAL( accepted() ), this, SLOT( OkOverWrite() ) );
+  connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
 }
 
 void MainWindow::ClearBLKs( void )
@@ -550,14 +559,32 @@ bool MainWindow::CheckDetectorSelection( void )
 
 void MainWindow::StartMeasurement( void )
 {
-  if ( ( inMeas == 0 )&&( MMainTh->getIsBusy() ) ) {
-    statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
-    return;
-  }
   if ( inMeas == 0 ) {
+    if ( MMainTh->getIsBusy() ) {
+      statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
+      return;
+    }
+    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {
+      statusbar->showMessage( tr( "Invalid block data." ), 2000 );
+      return;
+    }
     if ( GetDFName0() == 0 ) {
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
+    }
+    if ( CheckDetectorSelection() == false ) {
+      statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
+      return;
+    }
+
+    QFileInfo CheckFile( DFName0 + ".dat" );
+    if ( CheckFile.exists() ) {
+      AskOverWrite->setText( tr( "<h1><center>File [%1] Over Write ?</center></h1>" )
+			     .arg( DFName ) );
+      AskOverWrite->show();
+      AskingOverwrite = true;
+    } else {
+      AskingOverwrite = false;
     }
 
     MeasDispMode[ MC_I0 ] = TRANS;     // I0 にモードはないのでダミー
@@ -566,56 +593,48 @@ void MainWindow::StartMeasurement( void )
     MeasDispMode[ MC_AUX1 ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
     MeasDispMode[ MC_AUX2 ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
 
-    if ( CheckDetectorSelection() == false ) {
-      statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
-      return;
-    }
-    if ( ( TP > 0 ) && ( TT0 > 0 ) ) {
-      NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
-		 .arg( CurPosKeV ) );
-      InitialKeV = CurPosKeV;
-      inMeas = 1;
-      MeasStart->setText( tr( "Stop" ) );
-      MeasStart->setStyleSheet( "background-color: yellow" );
-      MeasPause->setEnabled( true );
-
-      MeasSens[ MC_I0 ] = ASensors.value( SelectI0->currentIndex() );
-      MeasSens[ MC_I1 ] = ASensors.value( SelectI1->currentIndex() );
-      MeasSens[ MC_SSD ] = SFluo;
-      MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
-      MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
-
-      for ( int i = 0; i < MCHANNELS; i++ )
-	MeasSensF[i] = false;
-      MeasSensF[ MC_I0 ] = true;
-      MeasSensF[ MC_I1 ] = UseI1->isChecked();
-      MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();
-      MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
-      MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
-
-      MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
-      MeasCntNo = 0;       // そのデテクタの番号
-      MeasChNo = 0;        // 測定のチャンネル数
-      for ( int i = 0; i < 5; i++ ) {
-	if ( MeasSensF[i] ) {
-	  MeasChNo++;
-	  if ( MeasSens[i]->getType() == "CNT" ) {
-	    MeasCntIs = true;
-	    MeasCntNo = i;
-	    break;
-	  }
+    NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
+	       .arg( CurPosKeV ) );
+    InitialKeV = CurPosKeV;
+    inMeas = 1;
+    MeasStart->setText( tr( "Stop" ) );
+    MeasStart->setStyleSheet( "background-color: yellow" );
+    MeasPause->setEnabled( true );
+    
+    MeasSens[ MC_I0 ] = ASensors.value( SelectI0->currentIndex() );
+    MeasSens[ MC_I1 ] = ASensors.value( SelectI1->currentIndex() );
+    MeasSens[ MC_SSD ] = SFluo;
+    MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
+    MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
+    
+    for ( int i = 0; i < MCHANNELS; i++ )
+      MeasSensF[i] = false;
+    MeasSensF[ MC_I0 ] = true;
+    MeasSensF[ MC_I1 ] = UseI1->isChecked();
+    MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();
+    MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
+    MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
+    
+    MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
+    MeasCntNo = 0;       // そのデテクタの番号
+    MeasChNo = 0;        // 測定のチャンネル数
+    for ( int i = 0; i < 5; i++ ) {
+      if ( MeasSensF[i] ) {
+	MeasChNo++;
+	if ( MeasSens[i]->getType() == "CNT" ) {
+	  MeasCntIs = true;
+	  MeasCntNo = i;
+	  break;
 	}
       }
-      if ( MeasSensF[2] )
-	MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
-
-      CpBlock2SBlock();
-      MeasStage = 0;
-      ClearNowView();
-      MeasID = startTimer( 100 );
-    } else {
-      statusbar->showMessage( tr( "Invalid block data." ), 2000 );
     }
+    if ( MeasSensF[2] )
+      MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
+    
+    CpBlock2SBlock();
+    MeasStage = 0;
+    ClearNowView();
+    MeasID = startTimer( 100 );
   } else {
     StopP->show();
     SinPause = inPause;
@@ -688,3 +707,7 @@ void MainWindow::PauseMeasurement( void )
   }
 }
 
+void MainWindow::OkOverWrite( void )
+{
+  AskingOverwrite = false;
+}

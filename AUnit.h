@@ -106,7 +106,8 @@ public slots:
   void SetCurPos( SMsg msg );
 
 signals:
-  void CountFinished( void );
+  //  void CountFinished( void );
+  void newValue( QString value );
 };
 
 #endif

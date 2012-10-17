@@ -240,6 +240,8 @@ private:
   double InitialKeV;
   double r[ 100 ];
   QMessageBox *StopP;
+  QMessageBox *AskOverWrite;
+  bool AskingOverwrite;
   void ClearNowView( void );
   int GetDFName0( void );
   void SetDFName( int i );
@@ -385,6 +387,7 @@ private slots:
   void PauseMeasurement( void );
   void SurelyStop( void );
   void GoingOn( void );
+  void OkOverWrite( void );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

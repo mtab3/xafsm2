@@ -12,12 +12,12 @@ int MainWindow::GetDFName0()
     return 0;
   }
 
-  printf( "DFName00 = [%s]\n", DFName0.toAscii().data() );
+  qDebug() << tr( "DFName00 = [%1]" ).arg( DFName0 );
   if ( DFName0.toUpper().lastIndexOf( ".DAT" ) == DFName0.length() - 4 ) {
     DFName0 = DFName0.left( DFName0.length() - 4 );
-    printf( "trans DFName0 = [%s]\n", DFName0.toAscii().data() );
+    qDebug() << tr( "trans DFName0 = [%1]" ).arg( DFName0 );
   }
-  printf( "DFName0 = [%s]\n", DFName0.toAscii().data() );
+  qDebug() << tr( "DFName0 = [%1]" ).arg( DFName0 );
 
   return 1;
 }
