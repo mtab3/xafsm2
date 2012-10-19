@@ -93,11 +93,13 @@ void MainWindow::InitializeUnitsAgain( void )
 
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
-    am->GetValue();
+    am->Initialize( s );
+    //    am->GetValue();
   }
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
+    as->Initialize( s );
     as->GetValue();
   }
 }
