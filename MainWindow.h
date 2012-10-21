@@ -283,6 +283,7 @@ private:
   void ReadSensValues( void );
 
 private slots:
+  void Initialize( void );
   void InitializeUnitsAgain( void );
 
   void ShowMessageOnSBar( QString msg, int time );

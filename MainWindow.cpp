@@ -45,9 +45,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
 
-  InitAndIdentifyMotors();
-  InitAndIdentifySensors();
-
   setupCommonArea();
   setupSetupArea();
   setupMeasArea();
@@ -79,6 +76,16 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
 
+  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+  s->MakeConnection();
+}
+
+void MainWindow::Initialize( void )
+{
+  qDebug() << "First Init Again";
+
+  InitAndIdentifyMotors();
+  InitAndIdentifySensors();
   resize( 1, 1 );
 }
 
@@ -89,19 +96,25 @@ void MainWindow::ShowMessageOnSBar( QString msg, int time )
 
 void MainWindow::InitializeUnitsAgain( void )
 {
-  AUnit *am, *as;
+  qDebug() << "Init Again";
 
+  s->MakeConnection();
+  
+#if 0
+  AUnit *am, *as;
+  
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
     am->Initialize( s );
     //    am->GetValue();
   }
-
+  
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
     as->Initialize( s );
     as->GetValue();
   }
+#endif
 }
 
 void MainWindow::InitAndIdentifyMotors( void )

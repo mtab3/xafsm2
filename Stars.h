@@ -13,6 +13,8 @@
 //#define MYNAME      "BLC"       // ©•ª‚ª–¼æ‚é–¼‘O config ‚Å•Ï‚¦‚ç‚ê‚é—l‚É‚·‚é‚×‚«
 
 
+enum CONNECTIONSTAGE { CSTAGE0, CSTAGE1, CSTAGEEND };
+
 #define STARSSERVER "localhost"      // config ‚Å•Ï‚¦‚ç‚ê‚é‚æ‚¤‚É‚·‚é‚×‚«
 #define STARSPORT   ( 6057 )         // config ‚Å•Ï‚¦‚ç‚ê‚é‚æ‚¤‚É‚·‚é‚×‚«
 
@@ -21,6 +23,8 @@ class Stars : public QObject
   Q_OBJECT
 
   QString MyNameOnStars;
+
+  CONNECTIONSTAGE ConnectionStage;
 
   QString StarsServer;
   qint16  StarsSPort;
@@ -37,7 +41,7 @@ public:
   void ReadStarsKeys( QString SelectedName, QString DefaultName );
   QString GetKey( int nkey );
 
-  bool MakeConnection( void );
+  void MakeConnection( void );
   bool SendCMD( QString dev, QString cmd1, QString cmd2 = "" );
   bool SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 = "" );
 
@@ -48,6 +52,7 @@ public slots:
   void ReConnect( void );
 
 signals:
+  void ConnectionIsReady( void );
   void AskShowStat( QString msg, int time );
   void AskRecord( QString msg );
   void RecordSSVHistoryA( const QString &item );

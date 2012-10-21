@@ -56,7 +56,6 @@ void MainWindow::setupSetupArea( void )   /* İ’èƒGƒŠƒA */
   for ( int i = 0; i < MSPEEDS; i++ ) {
     MotorS->addItem( MSpeeds[i].MSName );
   }
-
   AMotors.value( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
 

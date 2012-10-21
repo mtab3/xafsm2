@@ -1,4 +1,14 @@
-○改造中
+オフラインで触ったので要チェック
+○ Stars.cpp 接続開始をイベントドリブンに
+○ show は Initialize の後にしたいけど今はやってない。
+○ Stars.cpp ConnectionStage は enum にする。
+   (SendCMD 等で最終ステージに着てるかどうかをちぇっくする)
+○ ConnectionStage の 2段階目で Stars からの応答をチェックするべき。
+○ MainWindow.cpp で s->MakeConnection の後に直接 Initialize を呼んでる
+
+○ 相手を変えて ReConnect 正しい相手にして ReConnect しないと繋がらない
+
+改造中
 
 ○ 分光器：測定中はマニュアルで動かないようにロックする
             その為のフラグ立ては、外部での仕事にして、
