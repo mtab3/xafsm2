@@ -120,7 +120,13 @@ void Stars::MakeConnection( void )
   qDebug() << "Make Connection";
 
   if ( ( ss == NULL ) || ( ss->state() != QAbstractSocket::ConnectedState ) ){
+
+    qDebug() << "Makeing Connection";
+
     if ( newSetting == true ) {  // 同じアドレス設定での接続試行は一回だけ
+
+      qDebug() << "Makeing Connection 1";
+
       newSetting = false;
       if ( ss == NULL )
 	ss = new QTcpSocket;
@@ -130,6 +136,9 @@ void Stars::MakeConnection( void )
       ConnectionStage = CSTAGE0;
       connect( ss, SIGNAL( readyRead( void ) ),
 	       this, SLOT( ReceiveMessageFromStars( void ) ) );
+
+      qDebug() << "Makeing Connection 1" << StarsServer << StarsSPort;
+
       ss->connectToHost( StarsServer, StarsSPort );
     }
   }
