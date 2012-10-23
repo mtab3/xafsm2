@@ -54,6 +54,7 @@ void XView::setY( int l, int p, double yy )
 
 void XView::NewPoint( int l, double xx, double yy )
 {
+  //  qDebug() << tr( "NewPoint %1 %2 %3" ).arg( l ).arg(xx).arg(yy);
   if ( l < MAXLINES ) {
     if ( points[l] < MAXPOINTS - 1 ) {
       x[l][ points[l] ] = xx;
@@ -65,10 +66,11 @@ void XView::NewPoint( int l, double xx, double yy )
   }
 }
 
-void XView::NewPointR( double yy0, double yy )
+void XView::NewPointR( double yy0, double yy1, double yy2 )
 {
   mony[0][ points[0] ] = yy0;
-  mony[1][ points[0] ] = yy;
+  mony[1][ points[0] ] = yy1;
+  mony[2][ points[0] ] = yy2;
   points[0]++;
   if ( points[0] >= RingMax )
     points[0] = 0;
@@ -149,6 +151,8 @@ void XView::DrawXYPlot( QPainter *p )
     inc = 0;
 
     sy = dy = 0;
+    calcScale( 5, wminy, wmaxy, &sy, &dy );
+#if 0   
     for (;;) {
       sprintf( buf, "%7.5g", sy );
       sprintf( buf2, "%7.5g", sy + dy );
@@ -160,6 +164,7 @@ void XView::DrawXYPlot( QPainter *p )
       wmaxy += tmp * 5;
       wminy -= tmp * 5;
     }
+#endif
 
     for ( double yy = sy; yy < wmaxy; yy += dy ) {
       p->drawLine( LM, w2ry( yy ), width()-RM, w2ry( yy ) );   // 横の罫線
@@ -319,9 +324,9 @@ void XView::DrawMonitor( QPainter *p )
   pen1.setColor( LC[ 1 ] );
   p->setPen( pen1 );
 
-  int dx = MScales[ MonScale ].div / 10;
+  int dx = MScales[ MonScale ].div / (double)TicPDiv;
   int pp1, pp2;
-  for ( int i = 0; i < 60; i++ ) { // データプロット
+  for ( int i = 0; i < TicPDiv * 6; i++ ) { // データプロット
     pp1 = points[ 0 ] - 1 - i * dx;
     pp2 = points[ 0 ] - 1 - ( i + 1 ) * dx;
     if ( pp1 < 0 ) pp1 += RingMax;
@@ -447,7 +452,7 @@ void XView::UpDateYWindow( int l, SCALET s )
       nmaxy = y[l][i];
   }
   double dy = nmaxy - nminy;
-  switch( (int)s ) {
+  switch( s ) {
   case FULLSCALE:
     wminy = nminy - dy * 0.05;
     wmaxy = nmaxy + dy * 0.05;
@@ -455,6 +460,9 @@ void XView::UpDateYWindow( int l, SCALET s )
   case I0TYPE:
     wminy = nminy - dy * 5;
     wmaxy = nmaxy + dy * 1;
+    break;
+  default:
+    qDebug() << "Unknown scale type";
     break;
   }
 }

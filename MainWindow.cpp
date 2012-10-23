@@ -16,21 +16,34 @@ MOTORD Motors[ MOTORS ] = {
 };
 #endif
 
-MainWindow::MainWindow() : QMainWindow()
+const char *CMode[ MEASMODES + 1 ] = {
+  "Transmission",
+  "Fluorescence",
+  "Aux input",
+  "Extra mode",
+  NULL,
+};
+
+MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
+
+  XAFSName = myname;
+  XAFSKey = myname;
+  XAFSTitle = myname;
 
   starsSV = new StarsSV;
   selMC = new SelMC;
 
+  nowCurrent = 0;
+
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
-  s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
-  s->ReadStarsKeys( "XafsM2", "XafsM2" ); // Stars とのコネクション確立の準備
-
   ReadDef( "XAFSM.def" );
-  InitAndIdentifyMotors();
-  InitAndIdentifySensors();
+  setWindowTitle( XAFSTitle );
+
+  s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
+  s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
 
   setupCommonArea();
   setupSetupArea();
@@ -43,7 +56,7 @@ MainWindow::MainWindow() : QMainWindow()
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
 	     .arg( mccd[ selMC->MC() ].MCName ).arg( mccd[ selMC->MC() ].d ) );
 
-  connect( s, SIGNAL( aMessage( QString, int ) ),
+  connect( s, SIGNAL( AskShowStat( QString, int ) ),
 	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
   connect( action_SelMC, SIGNAL( triggered() ), selMC, SLOT( show() ) );
@@ -60,6 +73,20 @@ MainWindow::MainWindow() : QMainWindow()
 	   starsSV, SLOT( RecordSSVHistoryA( const QString & ) ) );
   connect( s, SIGNAL( RecordSSVHistoryP( const QString & ) ),
 	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ) );
+  connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
+  connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
+
+  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+  s->MakeConnection();
+}
+
+void MainWindow::Initialize( void )
+{
+  qDebug() << "First Init Again";
+
+  InitAndIdentifyMotors();
+  InitAndIdentifySensors();
+  resize( 1, 1 );
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )
@@ -67,22 +94,39 @@ void MainWindow::ShowMessageOnSBar( QString msg, int time )
   statusbar->showMessage( msg, time );
 }
 
+void MainWindow::InitializeUnitsAgain( void )
+{
+  qDebug() << "Init Again";
+
+  s->MakeConnection();
+  
+#if 0
+  AUnit *am, *as;
+  
+  for ( int i = 0; i < AMotors.count(); i++ ) {
+    am = AMotors.value(i);
+    am->Initialize( s );
+    //    am->GetValue();
+  }
+  
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    as = ASensors.value(i);
+    as->Initialize( s );
+    as->GetValue();
+  }
+#endif
+}
+
 void MainWindow::InitAndIdentifyMotors( void )
 {
   AUnit *am;
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
-    am->setStars( s );
+    am->Initialize( s );
     am->setUniqID( QString::number( i ) );
     if ( am->getID() == "THETA" ) {
       MMainTh = am;
     }
-    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
-    connect( s, SIGNAL( EvChangedIsBusy( SMsg ) ), am, SLOT( SetIsBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
-    connect( s, SIGNAL( EvChangedValue( SMsg ) ), am, SLOT( SetCurPos( SMsg ) ) );
-    am->AskIsBusy();
-    am->GetValue();
   }
   connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
@@ -92,11 +136,15 @@ void MainWindow::InitAndIdentifyMotors( void )
 
 void MainWindow::InitAndIdentifySensors( void )
 {
+  AUnit *as;
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    ASensors.value(i)->setStars( s );
-    if ( ASensors.value(i)->getID() == "I0" ) { SI0 = ASensors.value(i); }
-    if ( ASensors.value(i)->getID() == "I1" ) { SI1 = ASensors.value(i); }
-    if ( ASensors.value(i)->getID() == "TotalF" ) { SFluo = ASensors.value(i); }
+    as = ASensors.value(i);
+    as->Initialize( s );
+    as->setUniqID( QString::number( i ) );
+    if ( as->getID() == "I0" ) { SI0 = as; }
+    if ( as->getID() == "I1" ) { SI1 = as; }
+    if ( as->getID() == "TotalF" ) { SFluo = as; }
   }
 }
 

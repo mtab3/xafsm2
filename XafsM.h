@@ -85,7 +85,7 @@ const SPSMODED SPSModes[ SPSMODES ] = {
   { SCAN, "Scan" },
 };
 
-const int TicPDiv = 10;   // モニター時の 1罫線間に測定する回数
+const int TicPDiv = 50;   // モニター時の 1罫線間に測定する回数
 const int DivPScr = 6;    // この辺をかえるときは XView.h の RingMax にも注意
 struct MSCALED {
   int MSid;
@@ -108,7 +108,11 @@ const MSCALED MScales[ MSCALES ] = {
   { H05, " 5 h/div",  5*60*60,   5, "[h]" },
 };
 
-enum MEASMODE{ TRANS, FLUO, AUX, MEASMODES };
+enum MEASMODE{ TRANS, FLUO, AUX, EXTRA, MEASMODES };
+extern const char *CMode[ MEASMODES + 1 ];
+
+enum MEASCHNAME{ MC_I0, MC_I1, MC_SSD, MC_AUX1, MC_AUX2, MCHANNELS };
+enum MEASCHMODE{ MCM_I0, MCM_TRANS, MCM_FLUO, MCM_EY, MCMODES };
 
 enum MSPEED { LOW, MIDIUM, HIGH, MSPEEDS };
 struct MSPEEDD {

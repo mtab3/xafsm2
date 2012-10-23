@@ -13,16 +13,17 @@ class StarsSV : public QDialog, private Ui::StarsSV
 
 public:
   StarsSV();
+  QString SSVAddress( void ) { return StarsSVA->currentText(); };
+  QString SSVPort( void ) { return StarsSVP->currentText(); };
 
 private slots:
-  void SSVAnewIndex( const QString &item );
-  void SSVPnewIndex( const QString &item );
   void RecordSSVHistoryA( const QString &item );
   void RecordSSVHistoryP( const QString &item );
 
 signals:
   void SSVNewAddress( QString newA );
   void SSVNewPort( QString newP );
+  void AskReConnect( void );
 };
 
 #endif

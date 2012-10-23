@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+#include "XafsM.h"
 #include "Stars.h"
 
 class AUnit : public QObject
@@ -11,6 +12,7 @@ class AUnit : public QObject
 
   Stars *s;
 
+  QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
   QString ID;           // MainTh, StageX, General, ...
   QString UID;          // Uniq ID ( ID + number )
@@ -27,11 +29,16 @@ class AUnit : public QObject
   double MinV;          // only for PZ
 
   bool isBusy;
+  bool isBusy2;
   QString Value;
+
+  int LocalStage;
 
 public:
   AUnit( QObject *parent = 0 );
 
+  void Initialize( Stars *S );
+  void setGType( QString gtype ) { GType = gtype; };
   void setStars( Stars *S ) { s = S; };
   void setType( QString type ) { Type = type; };
   void setID( QString id ) { ID = id; };
@@ -46,6 +53,10 @@ public:
       DevCh = Driver + "." + Ch;
   }
   void setUnit( QString unit ) { Unit = unit; };
+  void setIsBusy( bool busy ) { isBusy = busy; };
+
+  double u2p( double u ) { return u / UPP + Center; };
+  double p2u( double p ) { return ( p - Center ) * UPP; };
 
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
@@ -55,6 +66,7 @@ public:
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
   void setMinV( QString minv ) { MinV = minv.toDouble(); };
 
+  QString getGType( void ) { return GType; };
   QString getType( void ) { return Type; };
   QString getID( void ) { return ID; };
   QString getUID( void ) { return UID; };
@@ -64,6 +76,7 @@ public:
   QString getDevCh( void ) { return DevCh; };
   QString getUnit( void ) { return Unit; };
   bool getIsBusy( void ) { return isBusy; };
+  bool getIsBusy2( void ) { return isBusy2; };
   QString value( void ) { return Value; };
 
   // only for PM
@@ -77,15 +90,24 @@ public:
   void show( void );   // mainly for debugging
 
   // wrapper functions of stars communication
-  void GetValue( void );
+  void InitLocalStage( void );
+  bool InitSensor( void );
+  bool GetValue0( void );
+  bool GetValue( void );
   void SetValue( double v );
   void AskIsBusy( void );
   void SetSpeed( MSPEED speed );
+  void SetTime( double dtime );   // in sec
   void Stop( void );
 
 public slots:
+  void ClrBusy( SMsg msg );
+  void SetIsBusyByMsg( SMsg msg );
   void SetCurPos( SMsg msg );
-  void SetIsBusy( SMsg msg );
+
+signals:
+  //  void CountFinished( void );
+  void newValue( QString value );
 };
 
 #endif

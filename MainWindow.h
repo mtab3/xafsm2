@@ -33,14 +33,23 @@ const int MaxBLKs = 6;        // Max Blocks
 const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
+struct DRVDef {
+  QString name;
+  QString comment;
+};
+
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
   Q_OBJECT
 
 public:
-  MainWindow();
+  MainWindow( QString myname );
 
 private:
+
+  QString XAFSName;
+  QString XAFSKey;
+  QString XAFSTitle;
 
   /* ReadDef */
   QVector<AUnit *> AMotors;
@@ -54,15 +63,18 @@ private:
   /* cfg. */
 
   double CurPosKeV;
+  double nowCurrent;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
-  void InitAndIdentifyMotors();
-  void InitAndIdentifySensors();
+  void InitAndIdentifyMotors( void );
+  void InitAndIdentifySensors( void );
 
   Stars *s;
   double MonoCryD;
+
+  MEASMODE MeasFileType;
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -77,6 +89,7 @@ private:
   void setupSetupArea( void );
   void setupMeasArea( void );
 
+  QVector<DRVDef *> DriverList;
 
   /* InterFace.cpp */ /**********************************************/
 
@@ -136,7 +149,7 @@ private:
     return 0;
   }
 
-  void GoMAtPuls( int Pos );
+  void GoMAtPuls( double Pos );
   void GoMStop0( void );
   void ShowTAE( void );
   void GetNewGo( int i );
@@ -145,8 +158,6 @@ private:
   void SPSStart( int AbsRel );
   void SPSStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
-  void MMRel( void );
-  void MMAbs( void );
   void ShowRelAbs( void );
 
   int inMMove;
@@ -165,17 +176,16 @@ private:
   QString RadioBOn;
   QString RadioBOff;
 
+  bool MeasCntIs;
+  int MeasCntNo;
+  int MeasChNo;
   bool setupMDispFirstTime;
 
   int inMonitor;
   int MonID;
-  int MonStage;
+  int MonStage1, MonStage2;
   int MonDev;
   double MonMeasTime;
-  double NewMonV, OldMonV;
-  double NewMonV0, OldMonV0;
-  int MonUsedOldV;
-  int MonUsedOldV0;
   XView *MonView;
 
   QVector<QLineEdit *> BLKstart;
@@ -184,7 +194,7 @@ private:
   QVector<QLineEdit *> BLKpoints;
 
   QVector<QPushButton *> SSD;
-  MEASMODE MeasMode;
+  //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;
   QFileDialog *SelRBFND;
@@ -199,9 +209,10 @@ private:
   UNIT SBLKUnit;
   int SBlocks;
   double SBlockStart[ MaxBLKs + 1 ];
+  double SBlockStep[ MaxBLKs + 1 ];
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
-  int SMeasMode;
+  int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
 
   int SelectedSSD[ MaxSSDs ];
 
@@ -214,8 +225,9 @@ private:
   void WriteBF( void );
 
   void SelSSDs( int i );
-  void SetSSDactive( bool active );
+  //  void SetSSDactive( bool active );
 
+  QString fixS( QString s, int l );
   QString DFName0, DFName;
   int TP;
   double TT0;
@@ -228,17 +240,24 @@ private:
   double InitialKeV;
   double r[ 100 ];
   QMessageBox *StopP;
+  QMessageBox *AskOverWrite;
+  bool AskingOverwrite;
   void ClearNowView( void );
   int GetDFName0( void );
   void SetDFName( int i );
-
+  double MeasVals[ MCHANNELS ];
+  MEASMODE MeasDispMode[ MCHANNELS ];
+  AUnit *MeasSens[ MCHANNELS ];
+  bool MeasSensF[ MCHANNELS ];
+  bool OneOfTheSensorIsCounter;
+  AUnit *TheCounter;
+  double NowDwell;
 
   void ShowTotal( void );
   void CpBlock2SBlock( void );
   void WriteHeader( int Rpt );
-  void RecordDataTrans( int devieNo, double r );
-  void RecordDataSSD( int devieNo, double r );
-  void RecordDataAUX( int devieNo, double r );
+  void DispMeasDatas( void );
+  void RecordData( void );
 
   QString NewLFName( void );
 
@@ -252,13 +271,29 @@ private:
   void MeasSequence( void );
   void SPSSequence( void );
   void MonSequence( void );
+  bool CheckDetectorSelection( void );
+
+  bool isBusyMotorInMeas( void );
+  bool isBusySensors( void );
+  void ClearSensorStages( void );
+  bool InitSensors( void );
+  void SetDwellTime( double dtime );
+  bool GetSensValues0( void );
+  bool GetSensValues( void );
+  void ReadSensValues( void );
 
 private slots:
+  void Initialize( void );
+  void InitializeUnitsAgain( void );
+
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
 
   void ShowCurThPos( SMsg msg );
   void ShowCurMotorPos( SMsg msg );
+
+  void MMRel( void );
+  void MMAbs( void );
 
   void NewSelA( int i );
   void OpenPT( void );
@@ -274,12 +309,10 @@ private slots:
   void GoToPosKeV3( void ) { MoveCurThPosKeV( GoPosKeV[2] ); }
   void GoToPosKeV4( void ) { MoveCurThPosKeV( GoPosKeV[3] ); }
   void NewMotor( void );
-  void GoMAt( void );
-  void GoMUp( void );
-  void GoMDown( void );
+  void NewGoMotorPosPuls( const QString &val );
+  void NewGoMotorPosUnit( const QString &val );
+  void GoMAtP( void );
   void GoMStop( void );
-  void NewGMU( void );
-  void NewGMD( void );
   void SPSAS( void );
   void SPSRS( void );
   void Monitor( void );
@@ -322,9 +355,11 @@ private slots:
   void SelectedWBFN( const QString &fname );
   void SelectedRBFN( const QString &fname );
 
+#if 0
   void Mode2Tr( void );
   void Mode2Fl( void );
   void Mode2Au( void );
+#endif
 
   void SelSSDs00( void );
   void SelSSDs01( void );
@@ -353,6 +388,7 @@ private slots:
   void PauseMeasurement( void );
   void SurelyStop( void );
   void GoingOn( void );
+  void OkOverWrite( void );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

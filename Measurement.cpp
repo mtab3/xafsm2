@@ -7,7 +7,8 @@
 
 void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置指定)
 {
-  MMainTh->SetValue( keV2deg( keV ) * MMainTh->getUPP() + MMainTh->getCenter() );
+  MMainTh->setIsBusy( true );
+  MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
 }
 
 #if 0

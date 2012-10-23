@@ -23,12 +23,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
-  MeasMode = TRANS;
   for ( int i = 0; i < MaxSSDs; i++ ) {
     SSD[i]->setStyleSheet( "background-color: #eeffee" );
     SSD[i]->setToolTip( tr( "Active" ) );
   }
-  SetSSDactive( false );
+  //  SetSSDactive( true );
 
   SelDFND = new QFileDialog;
   SelWBFND = new QFileDialog;
@@ -43,10 +42,13 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelWBFND->setFilter( "*.prm" );
   SelRBFND->setFilter( "*.prm" );
 
+  EditDFName->setText( "test.dat" );
+
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
   OnFinishP->setCurrentIndex( RETURN );
 
+  QPushButton *tmpB;
   TP = 0;
   TT0 = 0;
   MeasID = 0;
@@ -55,11 +57,45 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MeasStage = 0;
   MeasPause->setEnabled( false );
   StopP = new QMessageBox;
-  QPushButton *tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   StopP->addButton( tr( "OK" ), QMessageBox::AcceptRole );
   StopP->setText( tr( "<h1><center>Stop ?</center></h1>" ) );
   StopP->setWindowTitle( tr( "Stop or Continue" ) );
   StopP->setDefaultButton( tmpB );
+
+  AskOverWrite = new QMessageBox;
+  tmpB = AskOverWrite->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  AskOverWrite->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  AskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
+  AskOverWrite->setDefaultButton( tmpB );
+
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    QString name = ASensors.value(i)->getName(); 
+    SelectI0->addItem( name );
+    SelectI1->addItem( name );
+    SelectAux1->addItem( name );
+    SelectAux2->addItem( name );
+    if ( ASensors.value(i)->getID() == "I0" )
+      SelectI0->setCurrentIndex( i );
+    if ( ASensors.value(i)->getID() == "I1" )
+      SelectI1->setCurrentIndex( i );
+    if ( ASensors.value(i)->getID() == "Aux1" )
+      SelectAux1->setCurrentIndex( i );
+    if ( ASensors.value(i)->getID() == "Aux2" )
+      SelectAux2->setCurrentIndex( i );
+  }
+  UseI1->setChecked( true );
+#if 0
+  UseI1->setAutoExclusive( false );
+  Use19chSSD->setAutoExclusive( false );
+  UseAux1->setAutoExclusive( false );
+  UseAux2->setAutoExclusive( false );
+#endif
+
+  ModeA1->addItem( "log(I0/A1)" );
+  ModeA1->addItem( "A1/I0" );
+  ModeA2->addItem( "log(I0/A2)" );
+  ModeA2->addItem( "A2/I0" );
   
   connect( BLKstart[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart00()) );
   connect( BLKstart[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart01()) );
@@ -102,10 +138,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   this, SLOT( SelectedWBFN( const QString & ) ) );
   connect( SelRBFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedRBFN( const QString & ) ) );
-
+#if 0
   connect( ModeTrans, SIGNAL( clicked() ), this, SLOT( Mode2Tr() ) );
   connect( ModeFluo, SIGNAL( clicked() ), this, SLOT( Mode2Fl() ) );
   connect( ModeAux, SIGNAL( clicked() ), this, SLOT( Mode2Au() ) );
+#endif
 
   connect( SSD[0],  SIGNAL( clicked() ), this, SLOT( SelSSDs00() ) );
   connect( SSD[1],  SIGNAL( clicked() ), this, SLOT( SelSSDs01() ) );
@@ -136,6 +173,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ) );
   connect( StopP, SIGNAL( rejected() ), this, SLOT( GoingOn() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( NewRpt() ) );
+  connect( AskOverWrite, SIGNAL( accepted() ), this, SLOT( OkOverWrite() ) );
+  connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
 }
 
 void MainWindow::ClearBLKs( void )
@@ -356,6 +395,7 @@ void MainWindow::SetDwells( void )
   ShowBLKs();
 }
 
+#if 0
 void MainWindow::Mode2Tr( void )
 {
   MeasMode = TRANS;
@@ -373,13 +413,16 @@ void MainWindow::Mode2Au( void )
   MeasMode = AUX;
   SetSSDactive( false );
 }
+#endif
 
+#if 0
 void MainWindow::SetSSDactive( bool active )
 {
   for ( int i = 0; i < MaxSSDs; i++ ) {
     SSD[i]->setEnabled( active );
   }
 }
+#endif
 
 void MainWindow::SelSSDs00( void ) { SelSSDs(  0 ); }
 void MainWindow::SelSSDs01( void ) { SelSSDs(  1 ); }
@@ -485,32 +528,113 @@ void MainWindow::ClearNowView( void )
   NowView->SetGType( XYPLOT );
 }
 
+bool MainWindow::CheckDetectorSelection( void )
+{
+  int NoOfSelectedSens = 0;
+
+  MeasFileType = EXTRA;    // 実質 AUX タイプは無い
+
+  if ( UseI1->isChecked() ) NoOfSelectedSens++;
+  if ( Use19chSSD->isChecked() ) NoOfSelectedSens++;
+  if ( UseAux1->isChecked() ) NoOfSelectedSens++;
+  if ( UseAux2->isChecked() ) NoOfSelectedSens++;
+
+  if ( NoOfSelectedSens == 0 )
+    return false;
+
+  if ( NoOfSelectedSens == 1 ) {
+    if ( ( UseI1->isChecked()
+	   && ( ASensors.value( SelectI1->currentIndex() )->getType() == "CNT" ) )
+	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == TRANS ) )
+	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == TRANS ) ) )
+      MeasFileType = TRANS;
+    if ( Use19chSSD->isChecked() 
+	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == FLUO ) )
+	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == FLUO ) ) )
+      MeasFileType = FLUO;
+  }
+
+  return true;
+}
+
 void MainWindow::StartMeasurement( void )
 {
-  if ( ( inMeas == 0 )&&( MMainTh->getIsBusy() ) ) {
-    statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
-    return;
-  }
   if ( inMeas == 0 ) {
-    if ( GetDFName0() == 0 ) {
+    if ( MMainTh->getIsBusy() ) {
+      statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
     }
-    if ( ( TP > 0 ) && ( TT0 > 0 ) ) {
-      NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
-		 .arg( CurPosKeV ) );
-      InitialKeV = CurPosKeV;
-      inMeas = 1;
-      MeasStart->setText( tr( "Stop" ) );
-      MeasStart->setStyleSheet( "background-color: yellow" );
-      MeasPause->setEnabled( true );
-      CpBlock2SBlock();
-      MeasStage = 0;
-      ClearNowView();
-
-      MeasID = startTimer( 100 );
-    } else {
+    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
+      return;
     }
+    if ( GetDFName0() == 0 ) {
+      statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
+      return;
+    }
+    if ( CheckDetectorSelection() == false ) {
+      statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
+      return;
+    }
+
+    QFileInfo CheckFile( DFName0 + ".dat" );
+    if ( CheckFile.exists() ) {
+      AskOverWrite->setText( tr( "<h1><center>File [%1] Over Write ?</center></h1>" )
+			     .arg( DFName ) );
+      AskOverWrite->show();
+      AskingOverwrite = true;
+    } else {
+      AskingOverwrite = false;
+    }
+
+    MeasDispMode[ MC_I0 ] = TRANS;     // I0 にモードはないのでダミー
+    MeasDispMode[ MC_I1 ] = TRANS;     // I1 は TRANS に固定
+    MeasDispMode[ MC_SSD ] = FLUO;      // SSD は FLUO に固定
+    MeasDispMode[ MC_AUX1 ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
+    MeasDispMode[ MC_AUX2 ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
+
+    NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
+	       .arg( CurPosKeV ) );
+    InitialKeV = CurPosKeV;
+    inMeas = 1;
+    MeasStart->setText( tr( "Stop" ) );
+    MeasStart->setStyleSheet( "background-color: yellow" );
+    MeasPause->setEnabled( true );
+    
+    MeasSens[ MC_I0 ] = ASensors.value( SelectI0->currentIndex() );
+    MeasSens[ MC_I1 ] = ASensors.value( SelectI1->currentIndex() );
+    MeasSens[ MC_SSD ] = SFluo;
+    MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
+    MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
+    
+    for ( int i = 0; i < MCHANNELS; i++ )
+      MeasSensF[i] = false;
+    MeasSensF[ MC_I0 ] = true;
+    MeasSensF[ MC_I1 ] = UseI1->isChecked();
+    MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();
+    MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
+    MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
+    
+    MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
+    MeasCntNo = 0;       // そのデテクタの番号
+    MeasChNo = 0;        // 測定のチャンネル数
+    for ( int i = 0; i < 5; i++ ) {
+      if ( MeasSensF[i] ) {
+	MeasChNo++;
+	if ( MeasSens[i]->getType() == "CNT" ) {
+	  MeasCntIs = true;
+	  MeasCntNo = i;
+	  break;
+	}
+      }
+    }
+    if ( MeasSensF[2] )
+      MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
+    
+    CpBlock2SBlock();
+    MeasStage = 0;
+    ClearNowView();
+    MeasID = startTimer( 100 );
   } else {
     StopP->show();
     SinPause = inPause;
@@ -562,10 +686,10 @@ void MainWindow::CpBlock2SBlock( void )
   SBLKUnit = BLKUnit;
   for ( int i = 0; i < MaxBLKs; i++ ) {
     SBlockStart[i] = BlockStart[i];
+    SBlockStep[i] = BLKstep[i]->text().toDouble();
     SBlockPoints[i] = BlockPoints[i];
     SBlockDwell[i] = BlockDwell[i];
   }
-  SMeasMode = MeasMode;
 }
 
 void MainWindow::PauseMeasurement( void )
@@ -583,3 +707,7 @@ void MainWindow::PauseMeasurement( void )
   }
 }
 
+void MainWindow::OkOverWrite( void )
+{
+  AskingOverwrite = false;
+}

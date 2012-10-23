@@ -13,6 +13,9 @@ int main( int argc, char *argv[] )
 {
   LANG Lang = English;
 
+  QString myname = QString( *argv ).section( "/", -1 ).section( "\\", -1 ).section( ".", 0, 0 );
+  //qDebug() << myname;
+
   if ( QString( argv[0] ).contains( "XafsMj" ) == true ) {
     Lang = Japanese;
   }
@@ -38,7 +41,7 @@ int main( int argc, char *argv[] )
 
   app.setStyle( "plastique" );
 
-  MainWindow *mw = new MainWindow;
+  MainWindow *mw = new MainWindow( myname );
   mw->show();
 
   return app.exec();

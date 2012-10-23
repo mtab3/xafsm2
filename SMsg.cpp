@@ -24,7 +24,7 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
   msg.clear();
   val.clear();
 
-  Message = Message.simplified();
+  fullMsg = Message = Message.simplified();
   i1 = Message.indexOf( '>' );      // i1 : '>' の位置
   if ( i1 < 0 ) {
     MorE = RES_OTHER;         // '>' がないと、Stars server からのメッセージの構造
