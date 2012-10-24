@@ -1,12 +1,5 @@
 オフラインで触ったので要チェック
-○ Stars.cpp 接続開始をイベントドリブンに
-○ show は Initialize の後にしたいけど今はやってない。
-○ Stars.cpp ConnectionStage は enum にする。
-   (SendCMD 等で最終ステージに着てるかどうかをちぇっくする)
-○ ConnectionStage の 2段階目で Stars からの応答をチェックするべき。
-○ MainWindow.cpp で s->MakeConnection の後に直接 Initialize を呼んでる
 
-○ 相手を変えて ReConnect 正しい相手にして ReConnect しないと繋がらない
 
 改造中
 
@@ -75,7 +68,13 @@
 
 対処済み 2012.10～
 
-○ グラフ表示のスケール決定がメチャクチャ。とりあえずは見られるようになった
+○ Stars.cpp ConnectionStage は enum にする。
+   (SendCMD 等で最終ステージに着てるかどうかをちぇっくする)
+○ ConnectionStage の 2段階目で Stars からの応答をチェックするようにした
+○ Stars.cpp 接続開始をイベントドリブンにした
+○ show は Initialize の後にしたいけど今はやってない。
+○ 相手を変えて ReConnect 正しい相手にして ReConnect しないと繋がらなかったのを修正
+○ グラフ表示のスケール決定がメチャクチャ。ー＞とりあえずは見られるようになった
 ○ 検出器ごとにデータ取り扱い法を指定できるようにする。
    log(I0/I1), I/I0, ... 等
 ○ nct08 の GetValue 関係で、一つ前の値を読んでしまっている。

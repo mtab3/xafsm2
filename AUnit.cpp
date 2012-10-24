@@ -106,6 +106,8 @@ bool AUnit::GetValue0( void )
 {
   bool rv = false;
 
+  qDebug() << "aunit cnt";
+
   if ( Type == "CNT" ) {    // nct08
     switch( LocalStage ) {
     case 0:

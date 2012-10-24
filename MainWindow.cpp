@@ -44,6 +44,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
+  s->SetNewSVAddress( starsSV->SSVAddress() );
+  s->SetNewSVPort( starsSV->SSVPort() );
 
   setupCommonArea();
   setupSetupArea();
@@ -65,6 +67,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( selMC, SIGNAL( NewLatticeConstant( double ) ),
 	   this, SLOT( SetNewLatticeConstant( double ) ) );
   connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ) );
+
   connect( starsSV, SIGNAL( SSVNewAddress( const QString & ) ),
 	   s, SLOT( SetNewSVAddress( const QString & ) ) );
   connect( starsSV, SIGNAL( SSVNewPort( const QString & ) ),
@@ -75,6 +78,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ) );
   connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
+  connect( starsSV, SIGNAL( accept() ), s, SLOT( ReConnect() ) );
 
   connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
   s->MakeConnection();

@@ -615,15 +615,15 @@ void MainWindow::StartMeasurement( void )
     MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
     MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
     
-    MeasCntIs = false;   // 使おうとするディテクタの中にカウンタがあるか
-    MeasCntNo = 0;       // そのデテクタの番号
-    MeasChNo = 0;        // 測定のチャンネル数
+    OneOfTheSensorIsCounter = false;   // 使おうとするディテクタの中にカウンタがあるか
+    TheCounter = 0;       // そのデテクタの番号
+    MeasChNo = 0;         // 測定のチャンネル数
     for ( int i = 0; i < 5; i++ ) {
       if ( MeasSensF[i] ) {
 	MeasChNo++;
 	if ( MeasSens[i]->getType() == "CNT" ) {
-	  MeasCntIs = true;
-	  MeasCntNo = i;
+	  OneOfTheSensorIsCounter = true;
+	  TheCounter = MeasSens[i];
 	  break;
 	}
       }
