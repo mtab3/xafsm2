@@ -4,6 +4,9 @@
 #include "MainWindow.h"
 
 /* Timer イベントは、動作のシミュレーション以外にも使うけど、とりあえずここに置いとく */
+/* 歴史的には、Stars との通信をやっていなかった時期に、Stars のデバイスの */
+/* シミュレーションをここでやってたのにいつの間にか、本番でも */
+/* 大事な働きをさせられるようになった */
 
 void MainWindow::timerEvent( QTimerEvent *event )
 {
@@ -121,7 +124,7 @@ void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にす
 
 bool MainWindow::GetSensValues0( void )
 {
-  return MeasSens[ MeasCntNo ]->GetValue0();
+  return TheCounter->GetValue0();
 }
 
 bool MainWindow::GetSensValues( void )
@@ -183,12 +186,9 @@ void MainWindow::MeasSequence( void )
   if ( AskingOverwrite )
     return;
 
-  //  qDebug() << "Before " << MeasStage;
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = isBusySensors() ) ) {
-    //    qDebug() << "isBusy " << a1 << a2;
     return;
   }
-  //  qDebug() << "After " << MeasStage;
 
   switch( MeasStage ) {
     /* 
@@ -236,7 +236,7 @@ void MainWindow::MeasSequence( void )
 		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
     ClearSensorStages();
-    if ( MeasCntIs )
+    if ( OneOfTheSensorIsCounter )
       MeasStage = 5;
     else
       MeasStage = 6;
@@ -333,9 +333,13 @@ void MainWindow::MonSequence( void )
     MonStage2 = 3;
     // don't break;
   case 3:
+    qDebug() << "a";
     if ( OneOfTheSensorIsCounter ) {
+      qDebug() << "b";
       if ( GetSensValues0() == false ) { // only for counters
+	qDebug() << "c";
 	ClearSensorStages();
+	qDebug() << "d";
 	MonStage2 = 4;
       }
     } else {

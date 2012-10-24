@@ -149,6 +149,7 @@ void Stars::ReceiveMessageFromStars( void )
   SMsg smsg;
   QByteArray RBuf;
   QString WBuf;
+  bool OkF;
 
   qDebug() << "ReceiveMessage " << ConnectionStage;
 
@@ -162,11 +163,17 @@ void Stars::ReceiveMessageFromStars( void )
     ss->write( WBuf.toAscii() );
     break;
   case CSTAGE1:
-    while( ss->canReadLine() )       // ここで応答のメッセージをチェックするべき
+    OkF = false;
+    while( ss->canReadLine() ) {      // ここで応答のメッセージをチェックするべき
       RBuf = ss->readLine( 4000 );
-    ConnectionStage = CSTAGEEND;
-    emit AskRecord( tr( "Success to connect." ) );
-    emit ConnectionIsReady();
+      if ( RBuf.indexOf( "Ok:" ) >= 0 )
+	OkF = true;
+    }
+    if ( OkF ) {
+      ConnectionStage = CSTAGEEND;
+      emit AskRecord( tr( "Success to connect." ) );
+      emit ConnectionIsReady();
+    }
     break;
   case CSTAGEEND:
     while( ss->canReadLine() ) {

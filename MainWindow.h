@@ -176,8 +176,8 @@ private:
   QString RadioBOn;
   QString RadioBOff;
 
-  bool MeasCntIs;
-  int MeasCntNo;
+  //  bool MeasCntIs;
+  //  int MeasCntNo;
   int MeasChNo;
   bool setupMDispFirstTime;
 
