@@ -24,8 +24,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoPosKeV[3] = Eg + 1.10;
   ScanStage = 0;
 
-  s->WatchS( "w1" );
-
   for ( int i = 0; i < UNITS; i++ ) {
     GoUnit0->addItem( QString( UnitName[i].name ) );
     for ( int j = 0; j < GOS; j++ ) {
@@ -33,15 +31,11 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     }
   }
 
-    s->WatchS( "w2" );
-
   GoUnit0->setCurrentIndex( KEV );
   for ( int i = 0; i < GOS; i++ ) {
     GoUnit[i]->setCurrentIndex( KEV );
   }
   ShowAllGos();
-
-    s->WatchS( "w3" );
 
   connect( GoUnit0, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( SetAllGoUnits( int ) ) );
@@ -50,14 +44,10 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	     this, SLOT( ShowAllGos() ) );
   }
 
-    s->WatchS( "w4" );
-
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoPosEdit[i], SIGNAL( editingFinished() ),
 	     this, SLOT( GetNewGos() ) );
   }
-
-    s->WatchS( "w5" );
 
   for ( int i = 0; i < AMotors.count(); i++ ) {
     MotorN->addItem( AMotors.value(i)->getName() );
@@ -65,17 +55,11 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
   }
 
-    s->WatchS( "w6" );
-
   for ( int i = 0; i < MSPEEDS; i++ ) {
     MotorS->addItem( MSpeeds[i].MSName );
   }
-    s->WatchS( "w7" );
-    qDebug() << "ffv1" << MotorN->currentIndex();
-    AMotors.at( MotorN->currentIndex() )->GetValue();
-    s->WatchS( "w8" );
+  AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
-    qDebug() << "ffv2";
   for ( int i = 0; i < SPSMODES; i++ ) {
     SorPS->addItem( SPSModes[i].SPSMName );
   }

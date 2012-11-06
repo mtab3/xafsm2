@@ -333,13 +333,9 @@ void MainWindow::MonSequence( void )
     MonStage2 = 3;
     // don't break;
   case 3:
-    qDebug() << "a";
     if ( OneOfTheSensorIsCounter ) {
-      qDebug() << "b";
       if ( GetSensValues0() == false ) { // only for counters
-	qDebug() << "c";
 	ClearSensorStages();
-	qDebug() << "d";
 	MonStage2 = 4;
       }
     } else {

@@ -12,12 +12,9 @@ int MainWindow::GetDFName0()
     return 0;
   }
 
-  qDebug() << tr( "DFName00 = [%1]" ).arg( DFName0 );
   if ( DFName0.toUpper().lastIndexOf( ".DAT" ) == DFName0.length() - 4 ) {
     DFName0 = DFName0.left( DFName0.length() - 4 );
-    qDebug() << tr( "trans DFName0 = [%1]" ).arg( DFName0 );
   }
-  qDebug() << tr( "DFName0 = [%1]" ).arg( DFName0 );
 
   return 1;
 }
@@ -48,8 +45,6 @@ QString MainWindow::fixS( QString s, int l )
 void MainWindow::WriteHeader( int Rpt )
 {
   SetDFName( Rpt );   // Generate a file name with repitation number
-
-  qDebug() << "In writing header";
 
   QFile file( DFName );
   if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
