@@ -23,6 +23,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   isBusy2 = false;   // その他のコマンドを投げて返答が返ってくるまで isBusy2
   Value = "";
 
+  lastSetV = 0;
+
   LocalStage = 0;
 }
 
@@ -134,7 +136,7 @@ void AUnit::SetValue( double v )
 {
   //  isBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
   if ( Type == "PM" ) {
-    s->SendCMD2( UID, DevCh, "SetValue", QString::number( (int)v ) );
+    s->SendCMD2( UID, DevCh, "SetValue", QString::number( lastSetV = (int)v ) );
   }
 }
 
