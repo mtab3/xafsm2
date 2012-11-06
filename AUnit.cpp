@@ -78,10 +78,13 @@ bool AUnit::GetValue( void )
 {
   bool rv = false;
 
+  s->WatchS( "au1" );
+
   // Motor
   if ( GType == "MOTOR" ) {
     if ( Type == "PM" ) {
       isBusy2 = true;
+      qDebug() << "in Aunit " << UID << DevCh;
       s->SendCMD2( UID, DevCh, "GetValue" );
       rv = false;
     }

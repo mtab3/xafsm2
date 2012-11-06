@@ -41,23 +41,27 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   ReadDef( "XAFSM.def" );
   setWindowTitle( XAFSTitle );
-
+  qDebug() << "gg";
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
   s->SetNewSVAddress( starsSV->SSVAddress() );
   s->SetNewSVPort( starsSV->SSVPort() );
+  Initialize();
 
   setupCommonArea();
+    qDebug() << "ff1";
   setupSetupArea();
+    qDebug() << "ff2";
   setupMeasArea();
+    qDebug() << "ff3";
   setupView();
-
+  qDebug() << "ee";
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
-
+  qDebug() << "dd";
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
 	     .arg( mccd[ selMC->MC() ].MCName ).arg( mccd[ selMC->MC() ].d ) );
-
+  qDebug() << "cc";
   connect( s, SIGNAL( AskShowStat( QString, int ) ),
 	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
@@ -80,8 +84,10 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
   connect( starsSV, SIGNAL( accept() ), s, SLOT( ReConnect() ) );
 
-  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+//  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+  qDebug() << "bb";
   s->MakeConnection();
+  qDebug() << "aa";
 }
 
 void MainWindow::Initialize( void )

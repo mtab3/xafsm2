@@ -13,6 +13,12 @@ Stars::Stars( void ) : QObject()
   StarsServer = STARSSERVER;
   StarsSPort  = STARSPORT;
   newSetting = true;
+  ConnectionStage = CSTAGE0;
+}
+
+void Stars::WatchS( QString msg )
+{
+    qDebug() << msg << ConnectionStage;
 }
 
 void Stars::SetNewSVAddress( const QString &item )
@@ -293,8 +299,12 @@ bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
   }
 #endif
 
+  qDebug() << "a" << ConnectionStage;
+
   if ( ConnectionStage != CSTAGEEND )
     return false;
+
+  qDebug() << "b";
 
   QString Cmd = MyNameOnStars + "." + fromCh + ">" + dev + " " + cmd1;
   if ( !cmd2.isEmpty() )
