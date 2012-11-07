@@ -38,7 +38,7 @@ void MainWindow::ReadDef( QString fname )
   QTextStream in( &f );
   while( !in.atEnd() ) {
     aline = in.readLine();
-    if ( !aline.isEmpty() ) {
+    if ( !aline.isEmpty() && aline.at(0) != QChar( '#' ) ) {
       //      next = aline.simplified();
       next = nextItem( aline.simplified(), item );
       NewUnit = new AUnit;

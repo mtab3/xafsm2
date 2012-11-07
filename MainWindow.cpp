@@ -75,7 +75,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ) );
   connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
-  connect( starsSV, SIGNAL( accept() ), s, SLOT( ReConnect() ) );
+  connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
 
 //  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
   s->MakeConnection();
