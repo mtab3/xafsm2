@@ -77,7 +77,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
   connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
 
-//  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
   s->MakeConnection();
 }
 
