@@ -113,7 +113,6 @@ SENSOR CNT  "GENERAL" "Counter 3"      "nct0801" "ch2"  "cps"
 SENSOR CNT  "GENERAL" "Counter 4"      "nct0801" "ch3"  "cps"
 
 SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
-SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC      : Unit type   ENC an encorder observed/controlled via nd287

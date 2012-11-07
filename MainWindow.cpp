@@ -85,6 +85,8 @@ void MainWindow::Initialize( void )
 {
   InitAndIdentifyMotors();
   InitAndIdentifySensors();
+  connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
+  connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
   resize( 1, 1 );
 }
 
@@ -121,12 +123,9 @@ void MainWindow::InitAndIdentifyMotors( void )
     am = AMotors.value(i);
     am->Initialize( s );
     am->setUniqID( QString::number( i ) );
-    if ( am->getID() == "THETA" ) {
-      MMainTh = am;
-    }
+    if ( am->getID() == "THETA" ) { MMainTh = am; }
   }
-  connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
-  connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurThPos( SMsg ) ) );
+  connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
   MMainTh->AskIsBusy();
   MMainTh->GetValue();
 }
@@ -142,22 +141,27 @@ void MainWindow::InitAndIdentifySensors( void )
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
+    if ( as->getID() == "ENCTH" ) { EncMainTh = as; }
   }
+  connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+  EncMainTh->GetValue();
 }
 
-void MainWindow::ShowCurThPos( SMsg msg )
+void MainWindow::ShowCurThPos( void )   // ’l‚Í‚ ‚¦‚ÄŽg‚í‚È‚¢
 {
   QString buf;
   double deg;
 
-  if ( ( msg.From() == MMainTh->getDevCh() )
-       && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) ) ) {
-    deg = ( msg.Val().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
-    buf.sprintf( UnitName[KEV].form, deg );
-    CurrentAngle->setText( buf );
-    buf.sprintf( UnitName[DEG].form, CurPosKeV = deg2keV( deg ) );
-    CurrentEnergy->setText( buf );
-
-    NewLogMsg( tr( "Current Position [%1] keV" ).arg( buf ) );
+  if ( SelThEncorder->isChecked() ) {
+    deg = EncMainTh->value().toDouble();
+  } else {
+    deg = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
   }
+
+  buf.sprintf( UnitName[KEV].form, deg );
+  ShowCurrentAngle->setText( buf );
+  buf.sprintf( UnitName[DEG].form, CurPosKeV = deg2keV( deg ) );
+  ShowCurrentEnergy->setText( buf );
+  
+  NewLogMsg( tr( "Current Position [%1] keV" ).arg( buf ) );
 }

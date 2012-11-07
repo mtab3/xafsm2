@@ -5,10 +5,34 @@
 
 /* 以下 Stars とのインターフェイスのラッパ関数 */
 
+#if 0
+double MainWindow::CurrentAngle( void )
+{
+  if ( SelThEncorder->isChecked() ) {
+    return EncMainTh->value().toDouble();
+  } else {
+    return ( MMainTh->value().toInt() - MMainTh->getCenter() ) * MMainTh->getUPP();
+  }
+}
+#endif
+
 void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置指定)
 {
   MMainTh->setIsBusy( true );
-  MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
+
+#if 0
+  // どっちでも悪くはないが、こっちのほうがロジックはシンプル、誤差は大きいかも
+  // CurrentAngle を使うのをやめたので、こっちもやめる
+  MMainTh->setValue( ( keV2deg( keV ) - CurrentAngle() ) / MMainTh->getUPP()
+		     + MMainTh->value().toInt() );
+#else
+  if ( SelThEncorder->isChecked() ) {
+    MMainTh->SetValue( ( keV2deg( keV ) - EncMainTh->value().toDouble() )
+		       / MMainTh->getUPP() + MMainTh->value().toInt() );
+  } else {
+    MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
+  }
+#endif 
 }
 
 #if 0

@@ -62,7 +62,7 @@
             <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
            </property>
            <property name="text">
-            <string>PeriodicT</string>
+            <string>Periodic Table</string>
            </property>
           </widget>
          </item>
@@ -232,7 +232,7 @@
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QLabel" name="CurrentEnergy">
+          <widget class="QLabel" name="ShowCurrentEnergy">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 221);</string>
            </property>
@@ -248,7 +248,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="CurrentAngle">
+          <widget class="QLabel" name="ShowCurrentAngle">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 221);</string>
            </property>
@@ -273,7 +273,23 @@
          <item row="2" column="0" colspan="5">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QRadioButton" name="SelThEncorder">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually the &amp;quot;Encorder&amp;quot; should be selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Encorder</string>
              </property>
@@ -283,7 +299,10 @@
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="SelThCalcPalse">
+            <widget class="QRadioButton" name="SelThCalcPulse">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The &amp;quot;Calc from Pulse&amp;quot; should not be used for usual measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Calc from Pulse</string>
              </property>
