@@ -68,6 +68,8 @@ private:
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
+  AUnit *EncMainTh;
+
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
 
@@ -289,7 +291,8 @@ private slots:
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
 
-  void ShowCurThPos( SMsg msg );
+  //  double CurrentAngle( void );
+  void ShowCurThPos( void );
   void ShowCurMotorPos( SMsg msg );
 
   void MMRel( void );

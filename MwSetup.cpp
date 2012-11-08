@@ -43,6 +43,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( GoUnit[i], SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( ShowAllGos() ) );
   }
+
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoPosEdit[i], SIGNAL( editingFinished() ),
 	     this, SLOT( GetNewGos() ) );
@@ -53,12 +54,12 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
   }
+
   for ( int i = 0; i < MSPEEDS; i++ ) {
     MotorS->addItem( MSpeeds[i].MSName );
   }
-  AMotors.value( MotorN->currentIndex() )->GetValue();
+  AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
-
   for ( int i = 0; i < SPSMODES; i++ ) {
     SorPS->addItem( SPSModes[i].SPSMName );
   }

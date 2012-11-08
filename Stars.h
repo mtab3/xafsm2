@@ -24,7 +24,11 @@ class Stars : public QObject
 
   QString MyNameOnStars;
 
+  char buf[ 20480 ];
+
   CONNECTIONSTAGE ConnectionStage;
+
+  char buf2[ 10240 ];
 
   QString StarsServer;
   qint16  StarsSPort;

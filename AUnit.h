@@ -34,6 +34,8 @@ class AUnit : public QObject
 
   int LocalStage;
 
+  int lastSetV;
+
 public:
   AUnit( QObject *parent = 0 );
 
@@ -78,6 +80,8 @@ public:
   bool getIsBusy( void ) { return isBusy; };
   bool getIsBusy2( void ) { return isBusy2; };
   QString value( void ) { return Value; };
+
+  int getLastSetV( void ) { return lastSetV; };
 
   // only for PM
   double getUPP( void ) { return UPP; };

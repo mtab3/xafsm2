@@ -50,10 +50,19 @@
          <property name="spacing">
           <number>3</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="Select1">
+         <item row="0" column="2">
+          <widget class="QPushButton" name="ShowPT">
+           <property name="maximumSize">
+            <size>
+             <width>10000</width>
+             <height>10000</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
+           </property>
            <property name="text">
-            <string>Target</string>
+            <string>Periodic Table</string>
            </property>
           </widget>
          </item>
@@ -61,7 +70,7 @@
           <widget class="QComboBox" name="SelectTA">
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>100000</width>
              <height>16777215</height>
             </size>
            </property>
@@ -76,11 +85,11 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="4">
           <widget class="QComboBox" name="SelectTE">
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>10000</width>
              <height>16777215</height>
             </size>
            </property>
@@ -92,78 +101,95 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>  Edge</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="8">
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>Deg.</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QLineEdit" name="ManTEdeg">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>70</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLineEdit" name="ManTEkeV">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>70</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="label_15">
-           <property name="text">
-            <string>KeV  </string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="ShowPT">
+         <item row="0" column="0">
+          <widget class="QLabel" name="Select1">
            <property name="maximumSize">
             <size>
-             <width>70</width>
-             <height>10000</height>
+             <width>50</width>
+             <height>16777215</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
+           <property name="text">
+            <string>Target</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="5">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>  Edge</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ManTEkeV">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>KeV  </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ManTEdeg">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Deg.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_48">
+           <property name="maximumSize">
+            <size>
+             <width>35</width>
+             <height>16777215</height>
+            </size>
            </property>
            <property name="text">
-            <string>PeriodicT</string>
+            <string>Edge</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -191,22 +217,22 @@
          <property name="spacing">
           <number>3</number>
          </property>
-         <item row="0" column="4">
+         <item row="1" column="4">
           <widget class="QLabel" name="label_26">
            <property name="text">
             <string>KeV</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="1" column="2">
           <widget class="QLabel" name="label_25">
            <property name="text">
             <string>Deg.  </string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="CurrentEnergy">
+         <item row="1" column="3">
+          <widget class="QLabel" name="ShowCurrentEnergy">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 221);</string>
            </property>
@@ -221,8 +247,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="CurrentAngle">
+         <item row="1" column="1">
+          <widget class="QLabel" name="ShowCurrentAngle">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 221);</string>
            </property>
@@ -237,12 +263,52 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_22">
            <property name="text">
             <string>Cur. Pos.: </string>
            </property>
           </widget>
+         </item>
+         <item row="2" column="0" colspan="5">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="SelThEncorder">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually the &amp;quot;Encorder&amp;quot; should be selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Encorder</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="SelThCalcPulse">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The &amp;quot;Calc from Pulse&amp;quot; should not be used for usual measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Calc from Pulse</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -2777,8 +2843,6 @@
   <tabstop>SelectTA</tabstop>
   <tabstop>ShowPT</tabstop>
   <tabstop>SelectTE</tabstop>
-  <tabstop>ManTEkeV</tabstop>
-  <tabstop>ManTEdeg</tabstop>
   <tabstop>SelBLKs</tabstop>
   <tabstop>SelBLKUnit</tabstop>
   <tabstop>BLKs01</tabstop>

@@ -23,6 +23,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   isBusy2 = false;   // その他のコマンドを投げて返答が返ってくるまで isBusy2
   Value = "";
 
+  lastSetV = 0;
+
   LocalStage = 0;
 }
 
@@ -106,8 +108,6 @@ bool AUnit::GetValue0( void )
 {
   bool rv = false;
 
-  qDebug() << "aunit cnt";
-
   if ( Type == "CNT" ) {    // nct08
     switch( LocalStage ) {
     case 0:
@@ -134,7 +134,7 @@ void AUnit::SetValue( double v )
 {
   //  isBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
   if ( Type == "PM" ) {
-    s->SendCMD2( UID, DevCh, "SetValue", QString::number( (int)v ) );
+    s->SendCMD2( UID, DevCh, "SetValue", QString::number( lastSetV = (int)v ) );
   }
 }
 
@@ -242,13 +242,11 @@ void AUnit::SetTime( double dtime )   // in sec
     time = dtime * 60;
     if ( time < 1 ) time = 1;
     if ( time > 40 ) time = 40;
-    qDebug() << "PAM SetTime " << time;
     s->SendCMD2( UID, DevCh, "SetNPLCycles", QString::number( time ) );
   }
   if ( Type == "CNT" ) {
     isBusy2 = true;
     ltime = dtime * 1e6;
-    qDebug() << "CNT SetTime " << ltime;
     s->SendCMD2( UID, Driver, "SetTimerPreset", QString::number( ltime ) );
   }
 }
@@ -262,12 +260,7 @@ bool AUnit::InitSensor( void )
 {
   bool rv = false;
 
-    qDebug() << "InitSensor ALL";
-
   if ( Type == "PAM" ) {         // Keithley 6845
-
-    qDebug() << "InitSensor PAM";
-
     switch( LocalStage ) {
     case 0:
       isBusy2 = true;
