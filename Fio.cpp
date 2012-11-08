@@ -180,7 +180,7 @@ void MainWindow::RecordData( void )
     QString buf;
     for ( int i = 1; i < MCHANNELS; i++ ) {
       if ( MeasSensF[i] ) {
-        buf.sprintf("%10.5f%10.5f%10.2f%10.0f%10.0f%10.0f",
+        buf.sprintf("%10.5f%10.5f%10.2f%10.0f%10.0f%10.5f",
                     keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
 		    NowDwell, MeasVals[ MC_I0 ], MeasVals[i], GoToKeV );
         out << buf;
