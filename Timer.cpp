@@ -12,12 +12,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
 {
   int Id = event->timerId();
 
-#if 0
-  if ( Id == WatchCurPosID ) { /* 定常的な角度監視 */ 
-                               /* 本当に監視しつづけるのが良いかどうかはまた別 */
-    WatchPos();
-  }
-#endif
+  qDebug() << "tev";
 
   if ( Id == MeasID ) { /* 測定ステップの進行 */
     MeasSequence();
@@ -30,6 +25,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
   }
   if ( Id == MonID ) { /* 特定の測定器の値の時間変化の監視 */
     MonSequence();
+    qDebug() << "ttt";
   }
 }
 
@@ -105,11 +101,14 @@ bool MainWindow::isBusySensors( void )
 {
   bool ff = false;
 
+  qDebug() << "ibs a";
   for ( int i = 0; i < MCHANNELS; i++ ) {
+    qDebug() << "ibs b" << i;
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->getIsBusy() || MeasSens[i]->getIsBusy2();
     }
   }
+  qDebug() << "ibs c" << ff;
 
   return ff;
 }
@@ -300,6 +299,9 @@ void MainWindow::MeasSequence( void )
 void MainWindow::MonSequence( void )
 {
   MonStage1++;
+
+  qDebug() << "a: mstages " << MonStage1 << MonStage2;
+
   if ( MonStage1 == 4 ) {
     qDebug() << "Mon val " << MeasVals[0] << MeasVals[1] << MeasVals[2];
     MonView->NewPointR( MeasVals[0], MeasVals[1], MeasVals[2] );
@@ -307,8 +309,14 @@ void MainWindow::MonSequence( void )
     MonStage1 = 0;
   }
 
-  if ( isBusySensors() )
+  qDebug() << "b: mstages " << MonStage1 << MonStage2;
+
+  if ( isBusySensors() ) {
+    qDebug() << "bb";
     return;
+  }
+
+  qDebug() << "c: mstages " << MonStage1 << MonStage2;
 
   switch( MonStage2 ) {
     /* 
@@ -333,17 +341,21 @@ void MainWindow::MonSequence( void )
     MonStage2 = 3;
     // don't break;
   case 3:
+    qDebug() << "iii";
     if ( OneOfTheSensorIsCounter ) {
+      qDebug() << "uuu";
       if ( GetSensValues0() == false ) { // only for counters
 	ClearSensorStages();
 	MonStage2 = 4;
       }
     } else {
+      qDebug() << "eee";
       if ( GetSensValues() == false ) {  // true :: Getting
 	ClearSensorStages();
 	MonStage2 = 5;
       }
     }
+    qDebug() << "aaa";
     break;
   case 4:
     if ( GetSensValues() == false ) {  // true :: Getting

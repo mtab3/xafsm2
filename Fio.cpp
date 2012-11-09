@@ -178,25 +178,21 @@ void MainWindow::RecordData( void )
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
     QTextStream out( &file );
     QString buf;
+    // 行の先頭は 目標角度、エンコーダ読み角度、測定時間、I0
+    buf.sprintf( "%10.5f" "%10.5f" "%10.2f" "%10.0f",
+		keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
+		NowDwell, MeasVals[ MC_I0 ] );
     for ( int i = 1; i < MCHANNELS; i++ ) {
+      // その後に測定データの並び
       if ( MeasSensF[i] ) {
-        buf.sprintf("%10.5f%10.5f%10.2f%10.0f%10.0f%10.5f",
-                    keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
-		    NowDwell, MeasVals[ MC_I0 ], MeasVals[i], GoToKeV );
+        buf.sprintf("%10.5f", MeasVals[i] );
         out << buf;
       }
     }
-    // 野村フォーマットだとホントはエネルギーは書かない
-    // 本来2つめはエンコーダ
-//    out << GoToKeV
-//        << " " << keV2deg( GoToKeV ) << " " << keV2deg( GoToKeV )
-//        << " " << NowDwell << " " << MeasVals[ MC_I0 ];
-
-//    for ( int i = 1; i < MCHANNELS; i++ ) {
-//      if ( MeasSensF[i] ) {
-//        out << " " << MeasVals[i];
-//      }
-//    }
+    // 末尾にエネルギーの情報追加。
+    buf.sprintf( "%10.5f" "%10.5f", 
+		 GoToKeV,
+		 deg2keV( EncMainTh->value().toDouble() ) );
     out << endl;
     file.close();
   }

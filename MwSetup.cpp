@@ -445,7 +445,8 @@ void MainWindow::Monitor( void )
     MStart->setStyleSheet( "background-color: yellow" );
 
     /* 指定プロット間隔の 1/8 でタイマーセット [ms] */
-    MonID = startTimer( MScales[ SelectScale->currentIndex() ].div / TicPDiv * 1000 / 8. );
+    MonID = startTimer( MScales[ SelectScale->currentIndex() ].div
+			/ TicPDiv * 1000 / 8. );
 
   } else {
     killTimer( MonID );
