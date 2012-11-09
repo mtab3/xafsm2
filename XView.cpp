@@ -24,6 +24,7 @@ XView::XView( QWidget *parent ) : QWidget( parent )
      << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
      << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
   GType = XYPLOT;
+  MonScale = 0;
 }
 
 void XView::setX( int l, int p, double xx )
@@ -550,4 +551,10 @@ double XView::r2wdx( int x )
 double XView::r2wdy( int y )
 {
   return ( wmaxy - wminy ) / ( maxy - miny ) * y;
+}
+
+void XView::SetMonScale( int ms )
+{
+  MonScale = ms;
+  qDebug() << "in set mscale " << ms;
 }

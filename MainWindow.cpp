@@ -47,10 +47,10 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->SetNewSVPort( starsSV->SSVPort() );
   Initialize();
 
+  setupView();
   setupCommonArea();
   setupSetupArea();
   setupMeasArea();
-  setupView();
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )

@@ -437,6 +437,9 @@ void MainWindow::Monitor( void )
     }
     MonView->SetGType( MONITOR );                            // 確認
     MonView->makeValid( true );                              // 確認
+
+    qDebug() << "setmonscale " << SelectScale->currentIndex() << SelectScale->currentIndex();
+
     MonView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );

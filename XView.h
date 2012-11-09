@@ -32,7 +32,7 @@ private:
   int LineF[ MAXLINES ];
   int SLineR, SLineL;
   SCALET ScaleTR, ScaleTL;
-  double mony[2][ RingMax ]; // Monitor 用の配列は2本だけ。x もなし
+  double mony[3][ RingMax ]; // Monitor 用の配列は2本だけ。x もなし
   int MonScale;
 
 public:
@@ -70,7 +70,7 @@ public:
   int getMonScale( void ) { return MonScale; };
 
 public slots:
-  void SetMonScale( int ms ) { MonScale = ms; };
+  void SetMonScale( int ms );
 
 private:
   void paintEvent( QPaintEvent *event );

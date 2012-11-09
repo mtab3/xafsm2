@@ -108,6 +108,8 @@ bool AUnit::GetValue0( void )
 {
   bool rv = false;
 
+  qDebug() << "gv0 " << isBusy << isBusy2 << LocalStage;
+
   if ( Type == "CNT" ) {    // nct08
     switch( LocalStage ) {
     case 0:
