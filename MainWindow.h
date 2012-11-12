@@ -2,6 +2,7 @@
 #define MAINWIN_H
 
 #include <QMessageBox>
+#include <QTime>
 
 #include <math.h>
 
@@ -85,6 +86,8 @@ private:
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
+
+  QTime MonTime;
 
   void setupLogArea( void );
   void setupCommonArea( void );
@@ -185,7 +188,7 @@ private:
 
   int inMonitor;
   int MonID;
-  int MonStage1, MonStage2;
+  int MonStage;
   int MonDev;
   double MonMeasTime;
   XView *MonView;

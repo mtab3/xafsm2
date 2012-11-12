@@ -72,7 +72,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
   }
-  MonStage1 = MonStage2 = 0;
+  MonStage = 0;
 
   connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ) );
   connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ) );
@@ -400,8 +400,7 @@ void MainWindow::Monitor( void )
 
   if ( inMonitor == 0 ) {
     inMonitor = 1;
-    MonStage1 = 0;   // 表示のサイクル
-    MonStage2 = 0;   // 計測のサイクル
+    MonStage = 0;   // 計測のサイクル
 
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
@@ -423,22 +422,20 @@ void MainWindow::Monitor( void )
       MonMeasTime = 10;
 
     MonView = XViews[ ViewTab->currentIndex() ];
-    MonView->Clear();
-    MonView->SetSLines( 0, 1 );
-    MonView->SetLineF( RIGHT, LEFT );
-    MonView->SetScaleT( I0TYPE, FULLSCALE );
+    MonView->ClearDataR();
+    MonView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
+    //    MonView->SetScaleT( I0TYPE, FULLSCALE, FULLSCALE );   // 現状意味なし
+    MonView->SetDrawF( MeasSensF );
     MonView->SetLName( 0, tr( "I0" ) );
     int LineCount = 1;
     for ( int i = 1; i < 3; i++ ) {
-      if ( MeasSensF[i] == true ) {
+      if ( MeasSensF[i] ) {
 	MonView->SetLName( LineCount, MeasSens[i]->getName() );
 	LineCount++;
       }
     }
     MonView->SetGType( MONITOR );                            // 確認
     MonView->makeValid( true );                              // 確認
-
-    qDebug() << "setmonscale " << SelectScale->currentIndex() << SelectScale->currentIndex();
 
     MonView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
@@ -447,10 +444,8 @@ void MainWindow::Monitor( void )
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
 
-    /* 指定プロット間隔の 1/8 でタイマーセット [ms] */
-    MonID = startTimer( MScales[ SelectScale->currentIndex() ].div
-			/ TicPDiv * 1000 / 8. );
-
+    MonTime.restart();
+    MonID = startTimer( 50 );    /* 100msタイマーセット */
   } else {
     killTimer( MonID );
     inMonitor = 0;
