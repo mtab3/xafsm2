@@ -26,35 +26,6 @@ void MainWindow::timerEvent( QTimerEvent *event )
   }
 }
 
-#if 0     // Œ»Ý‘S‚­•s—v‚Ì‚Í‚¸
-void MainWindow::WatchPos( void )
-{
-  QString buf;
-
-  double newv;
-  
-  if ( inMove == 1 ) {
-    if ( isFinishedCurMove() ) {
-      inMove = 0;
-      if ( inMeas == 0 )
-	NewLogMsg( QString( tr( "Mono: Reach %1 keV\n" ) ).arg( CurPosKeV ) );
-    }
-  }
-  
-  if ( inMeas == 1 ) {
-    if ( inPause ) {
-      buf = QString( tr( "Pausing ! at Rpt [%1] Blk [%2] Stp[%3]" ) )
-	.arg( MeasR+1 ).arg( MeasB+1 ).arg( MeasS+1 );
-    } else {
-      buf = QString( tr( "Now: Rpt [%1] Blk [%2] Stp[%3]" ) )
-	.arg( MeasR+1 ).arg( MeasB+1 ).arg( MeasS+1 );
-    }
-    statusbar->showMessage( buf );
-  }
-  return;
-}
-#endif
-
 void MainWindow::MotorMove( void )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
