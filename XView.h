@@ -6,6 +6,7 @@
 #define MAXPOINTS ( 10000 )
 #define MAXLINES  ( 30 )
 
+const int MaxMon = 3;
 const int RingMax = 5 * 60 * 60 * 6;
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
@@ -25,6 +26,10 @@ private:
   double wminx, wmaxx;
   double wminy, wmaxy;
   int minx, miny, maxx, maxy;
+
+  double Rwmaxy[ MaxMon ];
+  double Rwminy[ MaxMon ];
+
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
   int points[ MAXLINES ];
@@ -32,14 +37,17 @@ private:
   int LineF[ MAXLINES ];
   int SLineR, SLineL;
   SCALET ScaleTR, ScaleTL;
-  double mony[3][ RingMax ]; // Monitor 用の配列は2本だけ。x もなし
+  bool *DrawF;
+  double mony[ MaxMon ][ RingMax ]; // Monitor 用の配列
+  int mont[ RingMax ];
   int MonScale;
 
 public:
   XView( QWidget *parent = NULL );
   void NewPoint( int l, double xx, double yy );
-  void NewPointR( double yy0, double yy1, double yy2 );
+  void NewPointR( int tt, double yy0, double yy1, double yy2 );
   void Clear( void );
+  void ClearDataR( void );
   void SetWindow( double x1, double y1, double x2, double y2 );
   void DrawXYPlot( QPainter *p );
   void DrawMonitor( QPainter *p );
@@ -49,6 +57,7 @@ public:
   void SetXName( QString Name ) { XName = Name; };
   void makeValid( int v = true ) { valid = v; };
   void SetSLines( int l1, int l2 ) { SLineR = l1; SLineL = l2; };
+  void SetDrawF( bool *f );
   void SetLineF( LINEF f00 = RIGHT, LINEF f01 = LEFT,
 		 LINEF f02 = LEFT, LINEF f03 = LEFT, LINEF f04 = LEFT, LINEF f05 = LEFT,
 		 LINEF f06 = LEFT, LINEF f07 = LEFT, LINEF f08 = LEFT, LINEF f09 = LEFT,
@@ -82,7 +91,7 @@ private:
   void calcScale( double div, double min, double max, double *s, double *d );
   void SetView( int x1, int y1, int x2, int y2 );
   void UpDateYWindow( int l, SCALET s );
-  void UpDateYWindowRing( int LR );
+  void UpDateYWindowRing( void );
   int w2rx( double x );
   int w2ry( double y );
   int w2rdx( double x );

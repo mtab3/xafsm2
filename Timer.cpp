@@ -26,35 +26,6 @@ void MainWindow::timerEvent( QTimerEvent *event )
   }
 }
 
-#if 0     // 現在全く不要のはず
-void MainWindow::WatchPos( void )
-{
-  QString buf;
-
-  double newv;
-  
-  if ( inMove == 1 ) {
-    if ( isFinishedCurMove() ) {
-      inMove = 0;
-      if ( inMeas == 0 )
-	NewLogMsg( QString( tr( "Mono: Reach %1 keV\n" ) ).arg( CurPosKeV ) );
-    }
-  }
-  
-  if ( inMeas == 1 ) {
-    if ( inPause ) {
-      buf = QString( tr( "Pausing ! at Rpt [%1] Blk [%2] Stp[%3]" ) )
-	.arg( MeasR+1 ).arg( MeasB+1 ).arg( MeasS+1 );
-    } else {
-      buf = QString( tr( "Now: Rpt [%1] Blk [%2] Stp[%3]" ) )
-	.arg( MeasR+1 ).arg( MeasB+1 ).arg( MeasS+1 );
-    }
-    statusbar->showMessage( buf );
-  }
-  return;
-}
-#endif
-
 void MainWindow::MotorMove( void )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
@@ -127,7 +98,7 @@ bool MainWindow::GetSensValues( void )
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->GetValue();
-      qDebug() << i << MeasSensF[i] << ff << MeasSens[i]->GetValue();
+      // qDebug() << "getSensVals" << i << MeasSensF[i] << ff << MeasSens[i]->GetValue();
     }
   }
   
@@ -293,22 +264,13 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::MonSequence( void )
 {
-  MonStage1++;
-
-  if ( MonStage1 == 4 ) {
-    MonView->NewPointR( MeasVals[0], MeasVals[1], MeasVals[2] );
-    MonView->ReDraw();
-    MonStage1 = 0;
-  }
   if ( isBusySensors() ) {
     return;
   }
 
-  qDebug() << "b: mstages " << MonStage1 << MonStage2;
+  MonMeasTime = 0.01;   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  MonMeasTime = 0.1;
-
-  switch( MonStage2 ) {
+  switch( MonStage ) {
     /* 
        0: 値の読み出しと表示
        1: nct08 を使う時: 計測開始の前準備
@@ -317,51 +279,53 @@ void MainWindow::MonSequence( void )
     */
   case 0:
     ClearSensorStages();
-    MonStage2 = 1;
+    MonStage = 1;
     break;
   case 1:
     if ( InitSensors() == false ) {  // true :: initializing
       ClearSensorStages();
-      MonStage2 = 2;
+      MonStage = 2;
     }
     break;
   case 2: 
     ClearSensorStages();
     SetDwellTime( MonMeasTime );
-    MonStage2 = 3;
+    MonStage = 3;
     break;
   case 3:
     if ( OneOfTheSensorIsCounter ) {
       if ( GetSensValues0() == false ) { // only for counters
 	ClearSensorStages();
-	MonStage2 = 4;
+	MonStage = 4;
       }
     } else {
       if ( GetSensValues() == false ) {  // true :: Getting
 	ClearSensorStages();
-	MonStage2 = 5;
+	MonStage = 5;
       }
     }
     break;
   case 4:
     if ( GetSensValues() == false ) {  // true :: Getting
       ClearSensorStages();
-      MonStage2 = 5;
+      MonStage = 5;
     }
     break;
   case 5:
     ReadSensValues();
-    MonStage2 = 10;
+    MonView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
+    MonView->ReDraw();
+    MonStage = 10;
 #if 0
     if ( inPause == 1 ) {
-      MonStage2 = 99;          // PauseStage
+      MonStage = 99;          // PauseStage
     }
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
     MonView->ReDraw();
     if ( inPause == 0 ) {
-      MonStage2 = 3;
+      MonStage = 3;
     }
     break;
   }
