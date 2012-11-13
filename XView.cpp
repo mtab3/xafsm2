@@ -58,7 +58,6 @@ void XView::setY( int l, int p, double yy )
 // l 番目のラインに新しいデータ1つ追加
 void XView::NewPoint( int l, double xx, double yy )
 {
-  //  qDebug() << tr( "NewPoint %1 %2 %3" ).arg( l ).arg(xx).arg(yy);
   if ( l < MAXLINES ) {
     if ( points[l] < MAXPOINTS - 1 ) {
       x[l][ points[l] ] = xx;
@@ -73,7 +72,6 @@ void XView::NewPoint( int l, double xx, double yy )
 // リングバッファへのデータ追加
 void XView::NewPointR( int tt, double yy0, double yy1, double yy2 )
 {
-  qDebug() << "elapsed " << tt;
   mont[ points[0] ] = tt;
   mony[0][ points[0] ] = yy0;
   mony[1][ points[0] ] = yy1;
@@ -268,10 +266,10 @@ void XView::DrawMonitor( QPainter *p )
   QPen pen0, pen1;
   QFont F1;
   QRect rec;
-  int ms = MScales[ MonScale ].div;
+  int ms = MScales[ MonScale ].div * 1000;
 
-  wminx = 0;
-  wmaxx = ms * 6;
+  wminx = -ms * 6;
+  wmaxx = 0;
 
   p->fillRect( 0, 0, width(), height(), bgColor );
   pen0.setWidth( 2 );
@@ -288,7 +286,7 @@ void XView::DrawMonitor( QPainter *p )
   SetView( LM, TM, width()-RM, height()-BM );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
 
-  for ( double xx = 00; xx <= wmaxx; xx += ms ) {
+  for ( double xx = wminx; xx <= wmaxx; xx += ms ) {
     p->drawLine( w2rx( xx ), TM, w2rx( xx ), height()-BM );  // 縦の罫線
     rec = QRect( w2rx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
     p->drawText( rec, Qt::AlignHCenter | Qt::AlignVCenter,
@@ -302,14 +300,13 @@ void XView::DrawMonitor( QPainter *p )
   double tmp;
   double sy, dy;
   UpDateYWindowRing();
-  pen1.setWidth( 1 );
-  pen1.setColor( LC[ 1 ] );
-  p->setPen( pen1 );
 
   for ( int j = 0; j < MaxMon; j++ ) {
     if ( DrawF[j] ) {
 #if 1
-      calcScale( 5, Rwminy[0], Rwmaxy[0], &sy, &dy );    // !!!!!!!!!!!!!!!!!!!!!!!!!
+      //      calcScale( 5, Rwminy[j], Rwmaxy[j], &sy, &dy );    // !!!!!!!!!!!!!!!!!!!!!!!!!
+      sy = Rwminy[j];
+      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
 #else
       inc = 0;
       sy = dy = 0;
@@ -325,37 +322,37 @@ void XView::DrawMonitor( QPainter *p )
 	Rwminy[0] -= tmp * 5;
       }
 #endif
-      
-      for ( double yy = sy; yy < wmaxy; yy += dy ) {
+      wmaxy = Rwmaxy[j];
+      wminy = Rwminy[j];
+
+      for ( double yy = sy; yy < Rwmaxy[j]; yy += dy ) {
 	p->drawLine( LM, w2ry( yy ), width()-RM, w2ry( yy ) );   // 横の罫線
 	rec = QRect( LM * 0.05, w2ry( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 ); // メモリ数字
 	sprintf( buf, "%7.5g", yy );
 	p->drawText( rec, Qt::AlignRight | Qt::AlignVCenter, QString( "%1" ).arg(buf) );
       }
-      rec = QRect( LM * 0.1, w2ry( wmaxy )-BM*0.35, 60, BM * 0.3 );  // 軸のラベル
+      rec = QRect( LM * 0.1, w2ry( Rwmaxy[j] )-BM*0.35, 60, BM * 0.3 );  // 軸のラベル
       p->drawText( rec, Qt::AlignRight | Qt::AlignVCenter, LNames[SLineL] );
-      
-      pen1.setWidth( 2 );
-      pen1.setColor( LC[ 1 ] );
-      p->setPen( pen1 );
 
+      /*************************************************************************/
 
-
-      /*************************************************************************************************************************************************************************/
-
-
-
-      int dx = MScales[ MonScale ].div;
       int pp1, pp2;
-      for ( int i = 0; i < TicPDiv * 6; i++ ) { // データプロット
-	pp1 = points[ 0 ] - 1 - i * dx;
-	pp2 = points[ 0 ] - 1 - ( i + 1 ) * dx;
+      int t0 = mont[ points[0] - 1 ];
+      pen1.setWidth( 2 );
+      pen1.setColor( LC[ j ] );
+      p->setPen( pen1 );
+      for ( int i = 0; i < RingMax; i++ ) { // データプロット
+	pp1 = points[ 0 ] - 1 - i;
+	pp2 = points[ 0 ] - 1 - ( i + 1 );
 	if ( pp1 < 0 ) pp1 += RingMax;
 	if ( pp2 < 0 ) pp2 += RingMax;
-	p->drawLine( w2rx( ms * 6 - dx * i ), w2ry( mony[1][pp1] ),
-		     w2rx( ms * 6 - dx * ( i + 1 ) ), w2ry( mony[1][pp2] ) );
+	if ( ( mont[ pp2 ] - t0 ) < ( - ms * 6 ) ) {
+	  break;
+	}
+	p->drawLine( w2rx( mont[pp1] - t0 ), w2ry( mony[j][pp1] ),
+		     w2rx( mont[pp2] - t0 ), w2ry( mony[j][pp2] ) );
       }
-      
+
 #if 0
       if ( SLineR >= 0 ) {                           // 右の y 軸に関連した描画
 	UpDateYWindow( SLineR, ScaleTR );
@@ -493,7 +490,7 @@ void XView::ClearDataR( void )
     for ( int i = 0; i < MaxMon; i++ ) {
       mony[ i ][ j ] = 0;
     }
-    mont[ j ] = 0;
+    mont[ j ] = -1000000000;
   }
   for ( int i = 0; i < MaxMon; i++ ) {
     points[ i ] = 0;
@@ -503,23 +500,26 @@ void XView::ClearDataR( void )
 void XView::UpDateYWindowRing( void )
 {
   int dx = MScales[ MonScale ].div;
-  int p;
+  int p, t0;
+
+  t0 = mont[ points[0] - 1 ];
 
   for ( int j = 0; j < MaxMon; j++ ) {
     double nmaxy = -1e300;
-    double nminy = -1e300;
-
+    double nminy = 1e300;
     for ( int i = 0; i < RingMax; i++ ) {
       p = points[ 0 ] - 1 - i;
       if ( p < 0 ) p += RingMax;
-      if ( ( mont[ points[0] - 1 ] - mont[ p ] ) < dx * 6 * 1000 ) {
-	if ( mony[i][ p ] < Rwminy[i] )
-	  Rwminy[i] = mony[i][ p ];
-	if ( mony[i][ p ] > Rwmaxy[i] ) 
-	  Rwmaxy[i] = mony[i][ p ];
+      if ( (  mont[ p ] - t0 ) > ( - dx * 6 * 1000 ) ) {
+	if ( mony[j][ p ] < nminy )
+	  nminy = mony[j][ p ];
+	if ( mony[j][ p ] > nmaxy ) 
+	  nmaxy = mony[j][ p ];
       }
     }
     double dy = nmaxy - nminy;
+    if ( dy == 0 )
+      dy = 1.;
     Rwminy[j] = nminy - dy * 0.05;
     Rwmaxy[j] = nmaxy + dy * 0.05;
   }
@@ -585,5 +585,4 @@ double XView::r2wdy( int y )
 void XView::SetMonScale( int ms )
 {
   MonScale = ms;
-  qDebug() << "in set mscale " << ms;
 }
