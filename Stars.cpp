@@ -49,6 +49,7 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
   bool FileOK = false;
 
   MyNameOnStars = DefaultName;
+  qDebug() << "set name " << MyNameOnStars;
 
   QFile file;
   if ( SelectedName != "" ) {
@@ -113,11 +114,6 @@ void Stars::ReConnect( void )
 
 void Stars::MakeConnection( void )
 {
-#if 0
-  QByteArray RBuf;
-  QString WBuf;
-#endif
-
   if ( ( ss == NULL ) || ( ss->state() != QAbstractSocket::ConnectedState ) ){
     if ( newSetting == true ) {  // 同じアドレス設定での接続試行は一回だけ
       newSetting = false;
@@ -145,6 +141,7 @@ void Stars::ReceiveMessageFromStars( void )
   case CSTAGE0: 
     RBuf = ss->readLine( 4000 );
     RBuf = RBuf.simplified();
+    qDebug() << "My Name on Stars " << MyNameOnStars;
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;
     ss->write( WBuf.toAscii() );

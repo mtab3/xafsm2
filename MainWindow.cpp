@@ -40,6 +40,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
   ReadDef( "XAFSM.def" );
+  qDebug() << "XName, XKey " << XAFSName << XAFSKey;
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備

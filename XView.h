@@ -19,7 +19,7 @@ class XView : public QWidget
 private:
   GTYPE GType;
   int valid;
-  QColor bgColor;
+  QColor bgColor, BLACK;
   QVector<QColor> LC;
   QVector<QString> LNames;
   QString XName;
@@ -100,6 +100,7 @@ private:
   double r2wy( int y );
   double r2wdx( int x );
   double r2wdy( int y );
+  void DrawText( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
 };
 
 
