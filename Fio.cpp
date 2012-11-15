@@ -179,21 +179,22 @@ void MainWindow::RecordData( void )
     QTextStream out( &file );
     QString buf;
     // 行の先頭は 目標角度、エンコーダ読み角度、測定時間、I0
-    buf.sprintf( "%10.5f" "%10.5f" "%10.2f" "%10.0f",
+    buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %12.0f",
 		keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
 		NowDwell, MeasVals[ MC_I0 ] );
+    out << buf;
     for ( int i = 1; i < MCHANNELS; i++ ) {
       // その後に測定データの並び
       if ( MeasSensF[i] ) {
-        buf.sprintf("%10.5f", MeasVals[i] );
+        buf.sprintf(" %12.3f", MeasVals[i] );
         out << buf;
       }
     }
     // 末尾にエネルギーの情報追加。
-    buf.sprintf( "%10.5f" "%10.5f", 
+    buf.sprintf( " %9.5f" " %9.5f", 
 		 GoToKeV,
 		 deg2keV( EncMainTh->value().toDouble() ) );
-    out << endl;
+    out << buf << endl;
     file.close();
   }
 

@@ -329,7 +329,7 @@ void XView::DrawMonitor( QPainter *p )
       for ( double yy = sy; yy < Rwmaxy[j]; yy += dy ) {
 	rec = QRectF( LM * 0.1, w2ry( yy )-BM*0.2+BM*0.27 * j,
 		     LM * 0.80, BM * 0.25 ); // ƒƒ‚ƒŠ”Žš
-	buf.sprintf( "%5.3g", yy );
+	buf.sprintf( "%6.4g", yy );
 	DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, buf );
       }
       rec = QRectF( LM * 0.1, w2ry( Rwmaxy[j] )-BM*0.35+BM*0.3 * j,

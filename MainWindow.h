@@ -322,6 +322,9 @@ private slots:
   void SPSAS( void );
   void SPSRS( void );
   void Monitor( void );
+  void newVI0( QString v );
+  void newVS1( QString v );
+  void newVS2( QString v );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );

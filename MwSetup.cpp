@@ -440,6 +440,11 @@ void MainWindow::Monitor( void )
     MonView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );
+    connect( SI0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+    connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
+    if ( MeasSensF[2] )
+      connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
+		 
 
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
@@ -452,8 +457,27 @@ void MainWindow::Monitor( void )
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );
+    disconnect( SI0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+    disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
+    if ( MeasSensF[2] )
+      disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
     MStart->setText( tr( "Mon. Start" ) );
     MStart->setStyleSheet( "" );
   }
+}
+
+void MainWindow::newVI0( QString v )
+{
+  DevCurV20->setText( v );
+}
+
+void MainWindow::newVS1( QString v )
+{
+  DevCurV21->setText( v );
+}
+
+void MainWindow::newVS2( QString v )
+{
+  DevCurV22->setText( v );
 }
