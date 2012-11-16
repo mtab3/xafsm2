@@ -319,20 +319,21 @@ void XView::DrawMonitor( QPainter *p )
 
   for ( int j = 0; j < MaxMon; j++ ) {
     if ( DrawF[j] ) {
-      sy = Rwminy[j];
-      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
+      //      sy = Rwminy[j];
+      //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
       wmaxy = Rwmaxy[j];
       wminy = Rwminy[j];
+      calcScale( 5, wminy, wmaxy, &sy, &dy );
 
       pen1.setColor( LC[ j ] );
       p->setPen( pen1 );
-      for ( double yy = sy; yy < Rwmaxy[j]; yy += dy ) {
+      for ( double yy = sy; yy < wmaxy; yy += dy ) {
 	rec = QRectF( LM * 0.1, w2ry( yy )-BM*0.2+BM*0.27 * j,
 		     LM * 0.80, BM * 0.25 ); // ƒƒ‚ƒŠ”Žš
 	buf.sprintf( "%6.4g", yy );
 	DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, buf );
       }
-      rec = QRectF( LM * 0.1, w2ry( Rwmaxy[j] )-BM*0.35+BM*0.3 * j,
+      rec = QRectF( LM * 0.1, w2ry( wmaxy )-BM*0.35+BM*0.3 * j,
 		   LM * 0.80, BM * 0.3 );  // Ž²‚Ìƒ‰ƒxƒ‹
       DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, LNames[j] );
 

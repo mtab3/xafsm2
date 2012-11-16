@@ -407,6 +407,7 @@ void MainWindow::Monitor( void )
     MeasSens[0] = SI0;   MeasSensF[0] = true;
     MeasSens[1] = as1;   MeasSensF[1] = true;
     MeasSens[2] = as2;   MeasSensF[2] = SelectD22Sel->isChecked();
+
     OneOfTheSensorIsCounter = false;
     for ( int i = 0; i < MCHANNELS; i++ ) {
       if ( MeasSens[i]->getType() == "CNT" ) {

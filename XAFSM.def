@@ -66,12 +66,17 @@ MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120 REAL     # Need to check t
 
 # define Sensor units
 
-SENSOR CNT  "I0" "Counter 1 (I0)" "nct0801" "ch0"  "cps"
+SENSOR CNT  "I0" "Counter 0 (I0)" "nct0801" "ch0"  "cps"
 #
 # You can use any other sensor as I0, by selecting it after running the program.
 # Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
 #
-SENSOR CNT  "I1" "Counter 2 (I1)" "nct0801" "ch1"  "cps"
+SENSOR CNT  "I1" "Counter 1 (I1)" "nct0801" "ch1"  "cps"
+
+SENSOR CNT  "GENERAL" "Counter 2 (I0 via KTL)"      "nct0801" "ch2"  "cps"
+SENSOR CNT  "GENERAL" "Counter 3 (I1 via KTL)"      "nct0801" "ch3"  "cps"
+# The identifier CNT might be changed CNT2 or something, 
+# to add some additional initialize sequence on the start of measurement
 
 SENSOR PAM "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA"
 SENSOR PAM "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA"
@@ -108,9 +113,6 @@ SENSOR SSDP "SingleF" "SSD-ch16"  "SSD"       "ch16" "cps"
 SENSOR SSDP "SingleF" "SSD-ch17"  "SSD"       "ch17" "cps"
 SENSOR SSDP "SingleF" "SSD-ch18"  "SSD"       "ch18" "cps"
 SENSOR SSDP "SingleF" "SSD-ch19"  "SSD"       "ch19" "cps"
-
-SENSOR CNT  "GENERAL" "Counter 3"      "nct0801" "ch2"  "cps"
-SENSOR CNT  "GENERAL" "Counter 4"      "nct0801" "ch3"  "cps"
 
 SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
 
