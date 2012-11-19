@@ -361,6 +361,7 @@ private slots:
   void ChangeBLKdwell05( void );
 
   void SetStdEXAFSBLKs( void );
+  void SetStdXAFSBLKs( void );
   void SetStdXANESBLKs( void );
   void SetDwells( void );
   void SelectedWBFN( const QString &fname );
