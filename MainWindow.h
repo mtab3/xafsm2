@@ -6,6 +6,7 @@
 
 #include <math.h>
 
+#include "Mccd.h"
 #include "ui_MainWindow.h"
 #include "SelMC.h"
 #include "StarsSV.h"
@@ -57,9 +58,10 @@ private:
   QVector<AUnit *> ASensors;
   void ReadDef( QString fname );
   QString nextItem( QString start, QString &item );
+  QVector<MCCD*> mccd;
 
   /* cfg. */
-  SelMC *selMC;
+  SelMC *selmc;
   StarsSV *starsSV;
   /* cfg. */
 
@@ -292,7 +294,7 @@ private slots:
   void InitializeUnitsAgain( void );
 
   void ShowMessageOnSBar( QString msg, int time );
-  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
+  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; qDebug() << "MonoCryD" << MonoCryD; };
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );

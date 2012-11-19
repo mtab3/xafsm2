@@ -62,8 +62,8 @@ void MainWindow::WriteHeader( int Rpt )
       << QString( "  %1 mA - " ).arg( nowCurrent, 6, 'f', 1, ' ' )
       << "%002%"          // 置換用のマーク 002 番目 実数6.1リング電流
       << " mA" << endl;
-  out << " " << "Mono :   " << fixS( mccd[ selMC->MC() ].MCName, 10 )   // Si(111)
-      << QString( "    D= %1 A    " ).arg( mccd[ selMC->MC() ].d, 8, 'f', 5, ' ' )
+  out << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )   // Si(111)
+      << QString( "    D= %1 A    " ).arg( mccd[ selmc->MC() ]->getD(), 8, 'f', 5, ' ' )
       << QString( "Initial angle=%1 deg" ).arg( keV2deg( InitialKeV ), 9, 'f', 5, ' ' ) 
       << endl;
   out << " " << fixS( BLNAME, 5 ) << "    "

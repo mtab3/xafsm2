@@ -218,11 +218,11 @@ void MainWindow::SetStdEXAFSBLKs( void )
 {
   double Eg = ManTEkeV->text().toDouble();
 
-  BlockStart[0] = Eg - 0.50;
+  BlockStart[0] = Eg - 0.30;
   BlockStart[1] = Eg - 0.05;
   BlockStart[2] = Eg + 0.10;
   BlockStart[3] = Eg + 0.50;
-  BlockStart[4] = Eg + 1.10;
+  BlockStart[4] = Eg + 1.20;
   for ( int i = 5; i < MaxBLKs+1; i++ )
     BlockStart[i] = 0;
 
@@ -243,6 +243,38 @@ void MainWindow::SetStdEXAFSBLKs( void )
   ChangeBLKs( 4 );
   ShowBLKs();
 }
+
+#if 0
+void MainWindow::SetStdXAFSBLKs( void )
+{
+  double Eg = ManTEkeV->text().toDouble();
+
+  BlockStart[0] = Eg - 0.30;
+  BlockStart[1] = Eg - 0.04;
+  BlockStart[2] = Eg + 0.05;
+  BlockStart[3] = Eg + 0.50;
+  BlockStart[4] = Eg + 1.10;
+  for ( int i = 5; i < MaxBLKs+1; i++ )
+    BlockStart[i] = 0;
+
+  BlockPoints[0] = 40;
+  BlockPoints[1] = 300;
+  BlockPoints[2] = 180;
+  BlockPoints[3] = 100;
+  for ( int i = 4; i < MaxBLKs; i++ )
+    BlockPoints[i] = 0;
+
+  BlockDwell[0] = 1.0;
+  BlockDwell[1] = 1.0;
+  BlockDwell[2] = 1.0;
+  BlockDwell[3] = 1.0;
+  for ( int i = 4; i < MaxBLKs; i++ )
+    BlockDwell[i] = 0;
+
+  ChangeBLKs( 4 );
+  ShowBLKs();
+}
+#endif
 
 void MainWindow::SetStdXANESBLKs( void )
 {

@@ -3,6 +3,7 @@
 
 #include "ui_SelMC.h"
 #include "XafsM.h"
+#include "Mccd.h"
 
 class QMessageBox;
 
@@ -11,14 +12,15 @@ class SelMC : public QDialog, private Ui::SelMC
   Q_OBJECT
 
 public:
-  SelMC();
+  SelMC( QVector<MCCD*> &Mccd );
 
-  void SetMC( MCC crystal ) {  SelectedCry = crystal; };
-  MCC MC( void ) { return SelectedCry; };
+  void SetMC( int crystal ) {  SelectedCry = crystal; };
+  int MC( void ) { return SelectedCry; };
 
 private:
-  MCC SelectedCry;
+  int SelectedCry;
   QMessageBox *IsReallyChgMC;
+  QVector<MCCD*> mccd;
 
 private slots:
   void SurelyChgMC( void );

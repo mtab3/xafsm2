@@ -33,13 +33,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   XAFSTitle = myname;
 
   starsSV = new StarsSV;
-  selMC = new SelMC;
 
   nowCurrent = 0;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
   ReadDef( "XAFSM.def" );
+  selmc = new SelMC( mccd );
+
   qDebug() << "XName, XKey " << XAFSName << XAFSKey;
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
@@ -55,14 +56,15 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
-	     .arg( mccd[ selMC->MC() ].MCName ).arg( mccd[ selMC->MC() ].d ) );
+	     .arg( mccd[ selmc->MC() ]->getMCName() )
+	     .arg( mccd[ selmc->MC() ]->getD() ) );
   connect( s, SIGNAL( AskShowStat( QString, int ) ),
 	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
-  connect( action_SelMC, SIGNAL( triggered() ), selMC, SLOT( show() ) );
-  connect( selMC, SIGNAL( NewLogMsg( QString ) ),
+  connect( action_SelMC, SIGNAL( triggered() ), selmc, SLOT( show() ) );
+  connect( selmc, SIGNAL( NewLogMsg( QString ) ),
 	   this, SLOT( NewLogMsg( QString ) ) );
-  connect( selMC, SIGNAL( NewLatticeConstant( double ) ),
+  connect( selmc, SIGNAL( NewLatticeConstant( double ) ),
 	   this, SLOT( SetNewLatticeConstant( double ) ) );
   connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ) );
 

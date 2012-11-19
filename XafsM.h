@@ -1,18 +1,6 @@
 #ifndef XAFSM_H
 #define XAFSM_H
 
-struct MCCD {
-  const char *MCName;
-  double d;
-};
-enum MCC { Si111, Si333, Ge111, Ge333, MCCS };
-const MCCD mccd[ MCCS ] = {
-  { "Si(111)", 3.1355316, },
-  { "Si(333)", 1.0451772, },
-  { "Ge(111)", 3.2663822, },
-  { "Ge(333)", 1.0887941, },
-};
-
 #if 0
 struct MOTORD {
   const int Mid;

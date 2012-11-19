@@ -14,6 +14,10 @@ STARSDRV "nct0801"    "8ch counter"
 STARSDRV "nd287"      "encoder: theter"
 STARSDRV "SSD"        "has not implemeted"
 
+CRYSTAL  "Si(111)"   3.1355316
+CRYSTAL  "Si(333)"   1.0451772
+CRYSTAL  "Ge(111)"   3.2663822
+CRYSTAL  "Ge(333)"   1.0887941
 
 # define Moveable units
 

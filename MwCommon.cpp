@@ -9,7 +9,7 @@ void MainWindow::setupCommonArea( void )   /* ã§í ÉGÉäÉA */
   GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
 
-  MonoCryD = mccd[ selMC->MC() ].d;     // Si (111) 
+  MonoCryD = mccd[ selmc->MC() ]->getD();     // Si (111) 
 
   SelectedA = Cu;
   SelectedE = Kedge;

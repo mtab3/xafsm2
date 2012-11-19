@@ -92,6 +92,12 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "XAFSTitle" ) {
 	next = nextItem( next, item );
 	XAFSTitle = item;
+      } else if ( item == "CRYSTAL" ) {
+	QString CName;
+	QString LatticeC;
+	next = nextItem( next, item ); CName = item;
+	next = nextItem( next, item ); LatticeC = item;
+	mccd << new MCCD( CName, LatticeC );
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
