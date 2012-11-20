@@ -130,6 +130,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   this, SLOT( ChangeBLKUnit( int ) ) );
   connect( SelBLKs, SIGNAL( valueChanged( int ) ), this, SLOT( ChangeBLKs( int ) ) );
   connect( StdEXAFS, SIGNAL( clicked() ), this, SLOT( SetStdEXAFSBLKs() ) );
+  connect( StdXAFS, SIGNAL( clicked() ), this, SLOT( SetStdXAFSBLKs() ) );
   connect( StdXANES, SIGNAL( clicked() ), this, SLOT( SetStdXANESBLKs() ) );
   connect( DwellAll, SIGNAL( editingFinished() ), this, SLOT( SetDwells() ) );
   connect( SaveBLKs, SIGNAL( clicked() ), SelWBFND, SLOT( show() ) );
@@ -244,7 +245,6 @@ void MainWindow::SetStdEXAFSBLKs( void )
   ShowBLKs();
 }
 
-#if 0
 void MainWindow::SetStdXAFSBLKs( void )
 {
   double Eg = ManTEkeV->text().toDouble();
@@ -274,7 +274,6 @@ void MainWindow::SetStdXAFSBLKs( void )
   ChangeBLKs( 4 );
   ShowBLKs();
 }
-#endif
 
 void MainWindow::SetStdXANESBLKs( void )
 {
@@ -660,7 +659,7 @@ void MainWindow::StartMeasurement( void )
 	}
       }
     }
-    if ( MeasSensF[2] )
+    if ( MeasSensF[ MC_SSD ] )
       MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
     
     CpBlock2SBlock();
