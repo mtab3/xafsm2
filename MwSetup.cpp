@@ -11,10 +11,13 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   inMonitor = 0;
   inSPSing = 0;
 
-  RadioBOn = "background-color: rgb(255,255,200)";
-  RadioBOff = "background-color: rgb(200,200,220)";
+  RadioBOn = "background-color: rgb(255,255,000)";
+  RadioBOff = "background-color: rgb(210,210,230)";
   RelAbs = REL;
   ShowRelAbs();
+
+  GoMSpeed = MIDDLE;
+  
 
   setupMDispFirstTime = true;
 
@@ -65,6 +68,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
+    SelectD20->addItem( ASensors.value(i)->getName() );
     SelectD21->addItem( ASensors.value(i)->getName() );
     SelectD22->addItem( ASensors.value(i)->getName() );
   }
@@ -73,6 +77,10 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectScale->addItem( MScales[i].MSName );
   }
   MonStage = 0;
+
+  connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ) );
+  connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ) );
+  connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ) );
 
   connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ) );
   connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ) );
@@ -109,6 +117,34 @@ void MainWindow::ShowRelAbs( void )
 {
   SetUpMMRel->setStyleSheet( ( RelAbs == REL )? RadioBOn : RadioBOff );
   SetUpMMAbs->setStyleSheet( ( RelAbs == ABS )? RadioBOn : RadioBOff );
+}
+
+void MainWindow::SetGoMSpeedH( void )
+{
+  GoMSpeed = HIGH;
+  MMainTh->SetSpeed( HIGH );
+  ShowGoMSpeed();
+}
+
+void MainWindow::SetGoMSpeedM( void )
+{
+  GoMSpeed = MIDDLE;
+  MMainTh->SetSpeed( MIDDLE );
+  ShowGoMSpeed();
+}
+
+void MainWindow::SetGoMSpeedL( void )
+{
+  GoMSpeed = LOW;
+  MMainTh->SetSpeed( LOW );
+  ShowGoMSpeed();
+}
+
+void MainWindow::ShowGoMSpeed( void )
+{
+  GoMSpeedH->setStyleSheet( ( GoMSpeed == HIGH )? RadioBOn : RadioBOff );
+  GoMSpeedM->setStyleSheet( ( GoMSpeed == MIDDLE )? RadioBOn : RadioBOff );
+  GoMSpeedL->setStyleSheet( ( GoMSpeed == LOW )? RadioBOn : RadioBOff );
 }
 
 void MainWindow::ShowCurMotorPos( SMsg msg )
@@ -395,6 +431,7 @@ void MainWindow::ReadOutScanData( void )    // ( int NowP )
 
 void MainWindow::Monitor( void )
 {
+  AUnit *as0 = ASensors.value( SelectD20->currentIndex() );
   AUnit *as1 = ASensors.value( SelectD21->currentIndex() );
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
@@ -404,8 +441,8 @@ void MainWindow::Monitor( void )
 
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
-    MeasSens[0] = SI0;   MeasSensF[0] = true;
-    MeasSens[1] = as1;   MeasSensF[1] = true;
+    MeasSens[0] = as0;   MeasSensF[0] = true;
+    MeasSens[1] = as1;   MeasSensF[1] = SelectD21Sel->isChecked();
     MeasSens[2] = as2;   MeasSensF[2] = SelectD22Sel->isChecked();
 
     OneOfTheSensorIsCounter = false;
@@ -441,7 +478,7 @@ void MainWindow::Monitor( void )
     MonView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );
-    connect( SI0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+    connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
     connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
     if ( MeasSensF[2] )
       connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
@@ -458,7 +495,7 @@ void MainWindow::Monitor( void )
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );
-    disconnect( SI0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+    disconnect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
     disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
     if ( MeasSensF[2] )
       disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );

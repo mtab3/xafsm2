@@ -102,14 +102,14 @@ extern const char *CMode[ MEASMODES + 1 ];
 enum MEASCHNAME{ MC_I0, MC_I1, MC_SSD, MC_AUX1, MC_AUX2, MCHANNELS };
 enum MEASCHMODE{ MCM_I0, MCM_TRANS, MCM_FLUO, MCM_EY, MCMODES };
 
-enum MSPEED { LOW, MIDIUM, HIGH, MSPEEDS };
+enum MSPEED { LOW, MIDDLE, HIGH, MSPEEDS };
 struct MSPEEDD {
   MSPEED MSid;
   const char *MSName;
 };
 const MSPEEDD MSpeeds[ MSPEEDS ] = {
   { LOW,    "Low" },
-  { MIDIUM, "Midium" },
+  { MIDDLE, "Midium" },
   { HIGH,   "High" },
 };
 

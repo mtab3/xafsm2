@@ -166,6 +166,9 @@ private:
   void SPSStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
   void ShowRelAbs( void );
+  void ShowGoMSpeed( void );
+
+  MSPEED GoMSpeed;
 
   int inMMove;
   int MoveID;            // Timer ID
@@ -302,6 +305,9 @@ private slots:
 
   void MMRel( void );
   void MMAbs( void );
+  void SetGoMSpeedH( void );
+  void SetGoMSpeedM( void );
+  void SetGoMSpeedL( void );
 
   void NewSelA( int i );
   void OpenPT( void );

@@ -147,7 +147,7 @@ void AUnit::SetSpeed( MSPEED i )
   if ( Type == "PM" ) {
     switch( i ) {
     case LOW: cmd = "SpeedLow"; break;
-    case MIDIUM: cmd = "SpeedMiddle"; break;
+    case MIDDLE: cmd = "SpeedMiddle"; break;
     case HIGH: cmd = "SpeedHigh"; break;
     default: cmd = "SpeedLow"; break;
     }
@@ -293,4 +293,3 @@ bool AUnit::InitSensor( void )
 
   return rv;
 }
-

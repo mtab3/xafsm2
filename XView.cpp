@@ -324,6 +324,8 @@ void XView::DrawMonitor( QPainter *p )
       wmaxy = Rwmaxy[j];
       wminy = Rwminy[j];
       calcScale( 5, wminy, wmaxy, &sy, &dy );
+      sy = wminy;
+      dy = ( wmaxy - wminy ) / 5.;
 
       pen1.setColor( LC[ j ] );
       p->setPen( pen1 );
