@@ -86,6 +86,14 @@ void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にす
   }
 }
 
+void MainWindow::SetDwellTime2( void )  // これもホントは返答を待つ形にするべき
+{
+  for ( int i = 0; i < MCHANNELS; i++ ) {
+    if ( MeasSensF[i] )
+      MeasSens[i]->SetTime( MeasSensDT[i] );
+  }
+}
+
 bool MainWindow::GetSensValues0( void )
 {
   return TheCounter->GetValue0();
@@ -268,8 +276,6 @@ void MainWindow::MonSequence( void )
     return;
   }
 
-  MonMeasTime = 0.01;   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
   switch( MonStage ) {
     /* 
        0: 値の読み出しと表示
@@ -289,7 +295,7 @@ void MainWindow::MonSequence( void )
     break;
   case 2: 
     ClearSensorStages();
-    SetDwellTime( MonMeasTime );
+    SetDwellTime2();
     MonStage = 3;
     break;
   case 3:

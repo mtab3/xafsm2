@@ -820,7 +820,7 @@
               </widget>
              </item>
              <item row="5" column="10" colspan="2">
-              <widget class="QComboBox" name="MotorS">
+              <widget class="QComboBox" name="GoMotorS">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -1152,7 +1152,7 @@
               </widget>
              </item>
              <item row="9" column="10" colspan="2">
-              <widget class="QComboBox" name="SorPS">
+              <widget class="QComboBox" name="SPSMotorS">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -3287,14 +3287,14 @@
   <tabstop>GoPos1</tabstop>
   <tabstop>GoPos3</tabstop>
   <tabstop>GoUnit4</tabstop>
-  <tabstop>MotorS</tabstop>
+  <tabstop>GoMotorS</tabstop>
   <tabstop>MotorN</tabstop>
   <tabstop>GoUnit0</tabstop>
   <tabstop>GoTo2</tabstop>
   <tabstop>GoPos4</tabstop>
   <tabstop>GoMotorPosPuls</tabstop>
   <tabstop>SPSstep</tabstop>
-  <tabstop>SorPS</tabstop>
+  <tabstop>SPSMotorS</tabstop>
   <tabstop>SelectD1</tabstop>
   <tabstop>LogFileName</tabstop>
   <tabstop>LogFileSelect</tabstop>

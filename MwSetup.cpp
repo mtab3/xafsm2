@@ -60,13 +60,12 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
 
   for ( int i = 0; i < MSPEEDS; i++ ) {
-    MotorS->addItem( MSpeeds[i].MSName );
+    GoMotorS->addItem( MSpeeds[i].MSName );
+    SPSMotorS->addItem( MSpeeds[i].MSName );
   }
   AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
-  for ( int i = 0; i < SPSMODES; i++ ) {
-    SorPS->addItem( SPSModes[i].SPSMName );
-  }
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
     SelectD20->addItem( ASensors.value(i)->getName() );
@@ -285,7 +284,7 @@ void MainWindow::GoMAtPuls( double Pos )
 {
   inMMove = 1;
   AUnit *am = AMotors.value( MotorN->currentIndex() );
-  MovingS = MotorS->currentIndex();
+  MovingS = GoMotorS->currentIndex();
 
   if ( GoMRelAbs == REL )
     Pos += am->value().toDouble();
@@ -356,7 +355,7 @@ void MainWindow::ScanStart( void )
   AUnit *as = ASensors.value( SelectD1->currentIndex() );
 
   if ( inSPSing == 0 ) {
-    MovingS = MotorS->currentIndex();
+    MovingS = SPSMotorS->currentIndex();
 
     if ( SPSRelAbs == 0 ) {
       ScanSP = SPSsP->text().toInt();
@@ -449,6 +448,10 @@ void MainWindow::Monitor( void )
     MeasSens[1] = as1;   MeasSensF[1] = SelectD21Sel->isChecked();
     MeasSens[2] = as2;   MeasSensF[2] = SelectD22Sel->isChecked();
 
+    MeasSensDT[0] = DwellT20->text().toDouble();
+    MeasSensDT[1] = DwellT21->text().toDouble();
+    MeasSensDT[2] = DwellT22->text().toDouble();
+
     OneOfTheSensorIsCounter = false;
     for ( int i = 0; i < MCHANNELS; i++ ) {
       if ( MeasSens[i]->getType() == "CNT" ) {
@@ -457,11 +460,6 @@ void MainWindow::Monitor( void )
 	break;
       }
     }
-
-    /* 計測時間 [s] (MomMeasTime)はプロット間隔の 1/4 */
-    MonMeasTime = MScales[ SelectScale->currentIndex() ].div / TicPDiv / 4.;
-    if ( MonMeasTime > 10 )
-      MonMeasTime = 10;
 
     MonView = XViews[ ViewTab->currentIndex() ];
     MonView->ClearDataR();

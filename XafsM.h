@@ -63,17 +63,7 @@ const MDEVD MDevs[ MEASDEVICES ] = {
 };
 #endif
 
-struct SPSMODED {   // Scan or Peak Search
-  int SPSMid;
-  const char *SPSMName;
-};
-enum SPSMODE { PEAKSEARCH, SCAN, SPSMODES };
-const SPSMODED SPSModes[ SPSMODES ] = {
-  { PEAKSEARCH, "Peak Search" },
-  { SCAN, "Scan" },
-};
-
-const int TicPDiv = 50;   // モニター時の 1罫線間に測定する回数
+//const int TicPDiv = 50;   // モニター時の 1罫線間に測定する回数
 const int DivPScr = 6;    // この辺をかえるときは XView.h の RingMax にも注意
 struct MSCALED {
   int MSid;

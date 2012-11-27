@@ -196,7 +196,6 @@ private:
   int MonID;
   int MonStage;
   int MonDev;
-  double MonMeasTime;
   XView *MonView;
 
   QVector<QLineEdit *> BLKstart;
@@ -260,6 +259,7 @@ private:
   MEASMODE MeasDispMode[ MCHANNELS ];
   AUnit *MeasSens[ MCHANNELS ];
   bool MeasSensF[ MCHANNELS ];
+  double MeasSensDT[ MCHANNELS ];
   bool OneOfTheSensorIsCounter;
   AUnit *TheCounter;
   double NowDwell;
@@ -288,7 +288,8 @@ private:
   bool isBusySensors( void );
   void ClearSensorStages( void );
   bool InitSensors( void );
-  void SetDwellTime( double dtime );
+  void SetDwellTime( double dtime );  // for measure
+  void SetDwellTime2( void );         // for monitor
   bool GetSensValues0( void );
   bool GetSensValues( void );
   void ReadSensValues( void );
