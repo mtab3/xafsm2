@@ -88,6 +88,8 @@ SENSOR PAM "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA"
 # The parameters following the identifier 'SENSOR' are
 #   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
 #     "GENERAL"         : Identifier that this is a generally used sensor
+#                       : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                       : default sensors for I0, I1, Aux1,...
 #     "Keithley 6485-1" : The name of the unit (only for display)
 #     "m6485drv-1"      : Stars driver name
 #     ""                : Node name in the stars driver

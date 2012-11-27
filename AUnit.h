@@ -31,9 +31,9 @@ class AUnit : public QObject
   bool isBusy;
   bool isBusy2;
   QString Value;
+  QString lastVal;
 
   int LocalStage;
-
   int lastSetV;
 
 public:
@@ -56,6 +56,13 @@ public:
   }
   void setUnit( QString unit ) { Unit = unit; };
   void setIsBusy( bool busy ) { isBusy = busy; };
+
+  bool checkNewVal( void )
+  {
+    bool rv = ( Value != lastVal );
+    lastVal = Value;
+    return rv;
+  };
 
   double u2p( double u ) { return u / UPP + Center; };
   double p2u( double p ) { return ( p - Center ) * UPP; };

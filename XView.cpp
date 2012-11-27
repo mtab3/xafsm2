@@ -105,15 +105,14 @@ void XView::Draw( QPainter *p )
 
 void XView::DrawXYPlot( QPainter *p )
 {
-  char buf[ 256 ], buf2[ 256 ];
-
   if ( valid != true ) 
     return;
 
+  QString buf, buf2;
   int RM, LM, TM, BM;
   QPen pen0, pen1;
   QFont F1;
-  QRect rec;
+  QRectF rec;
 
   p->fillRect( 0, 0, width(), height(), bgColor );
   pen0.setWidth( 2 );
@@ -135,16 +134,14 @@ void XView::DrawXYPlot( QPainter *p )
   int memc = 0;
   for ( double xx = sx; xx < wmaxx; xx += dx ) {
     p->drawLine( w2rx( xx ), TM, w2rx( xx ), height()-BM );  // 縦の罫線
-    rec = QRect( w2rx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
+    rec = QRectF( w2rx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
     if ( memc % (int)( 80 / w2rdx( dx ) + 1 ) == 0 ) {
-      p->drawText( rec, Qt::AlignHCenter | Qt::AlignVCenter,
-		   QString( tr( "%1" ) ).arg(xx) );
+      DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, QString::number( xx ) );
     }
     memc++;
   }
-  rec = QRect( w2rx( wmaxx ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
-  p->drawText( rec, Qt::AlignLeft | Qt::AlignVCenter, XName );
-  
+  rec = QRectF( w2rx( wmaxx ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
+  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, XName );
 
   int inc;
   double tmp;
@@ -158,28 +155,15 @@ void XView::DrawXYPlot( QPainter *p )
 
     sy = dy = 0;
     calcScale( 5, wminy, wmaxy, &sy, &dy );
-#if 0   
-    for (;;) {
-      sprintf( buf, "%7.5g", sy );
-      sprintf( buf2, "%7.5g", sy + dy );
-      calcScale( 5, wminy, wmaxy, &sy, &dy );
-      if ( ( inc >= 20 )||( strcmp( buf, buf2 ) != 0 ) )
-	break;
-      inc++;
-      tmp = wmaxy - wminy;
-      wmaxy += tmp * 5;
-      wminy -= tmp * 5;
-    }
-#endif
 
     for ( double yy = sy; yy < wmaxy; yy += dy ) {
       p->drawLine( LM, w2ry( yy ), width()-RM, w2ry( yy ) );   // 横の罫線
-      rec = QRect( LM * 0.05, w2ry( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 ); // メモリ数字
-      sprintf( buf, "%7.5g", yy );
-      p->drawText( rec, Qt::AlignRight | Qt::AlignVCenter, QString( "%1" ).arg(buf) );
+      rec = QRectF( LM * 0.05, w2ry( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 ); // メモリ数字
+      buf.sprintf( "%7.5g", yy );
+      DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, buf );
     }
-    rec = QRect( LM * 0.1, w2ry( wmaxy )-BM*0.35, 60, BM * 0.3 );  // 軸のラベル
-    p->drawText( rec, Qt::AlignRight | Qt::AlignVCenter, LNames[SLineL] );
+    rec = QRectF( LM * 0.1, w2ry( wmaxy )-BM*0.35, 60, BM * 0.3 );  // 軸のラベル
+    DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, LNames[SLineL] );
     
     for ( int l = 0; l < lines; l++ ) { // データプロット
       if ( LineF[l] == LEFT ) {
@@ -202,9 +186,9 @@ void XView::DrawXYPlot( QPainter *p )
     sy = dy = 0;
     for (;;) {
       calcScale( 5, wminy, wmaxy, &sy, &dy );
-      sprintf( buf, "%5.3g", sy );
-      sprintf( buf2, "%5.3g", sy + dy );
-      if ( ( inc >= 20 )||( strcmp( buf, buf2 ) != 0 ) )
+      buf.sprintf( "%5.3g", sy );
+      buf2.sprintf( "%5.3g", sy + dy );
+      if ( ( inc >= 20 )||( buf != buf2 ) )
 	break;
       inc++;
       tmp = wmaxy - wminy;
@@ -215,13 +199,13 @@ void XView::DrawXYPlot( QPainter *p )
     for ( double yy = sy; yy < wmaxy; yy += dy ) {
       p->drawLine( LM, w2ry( yy ), LM+3, w2ry( yy ) );                 // 横の罫線(短い)
       p->drawLine( width()-RM, w2ry( yy ), width()-RM-3, w2ry( yy ) ); // 横の罫線(短い)
-      rec = QRect( width()-RM*0.9, w2ry( yy )-BM*0.3/2, 60, BM * 0.3 ); // メモリ数字
-      sprintf( buf, "%5.3g", yy );
-      p->drawText( rec, Qt::AlignLeft | Qt::AlignVCenter, QString( "%1" ).arg(buf) );
+      rec = QRectF( width()-RM*0.9, w2ry( yy )-BM*0.3/2, 60, BM * 0.3 ); // メモリ数字
+      buf.sprintf( "%5.3g", yy );
+      DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, buf );
     }
-    rec = QRect( width()-RM*0.95, w2ry( wmaxy )-BM*0.35,
+    rec = QRectF( width()-RM*0.95, w2ry( wmaxy )-BM*0.35,
 		 RM*0.9, BM * 0.3 );    // 軸のラベル
-    p->drawText( rec, Qt::AlignLeft | Qt::AlignVCenter, LNames[ SLineR ] );
+    DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, LNames[ SLineR ] );
     
     for ( int l = 0; l < lines; l++ ) { // データプロット
       if ( LineF[l] == RIGHT ) {
@@ -263,13 +247,16 @@ void XView::DrawMonitor( QPainter *p )
   if ( valid != true ) 
     return;
 
-  int RM, LM, TM, BM;
+  double RM, LM, TM, BM, HDiv, VDiv;
   QPen pen0, pen1;
   QFont F1;
   QRectF rec;
   int ms = MScales[ MonScale ].div * 1000;
 
-  wminx = -ms * 6;
+  double HDNum = 6;
+  double VDNum = 10;
+
+  wminx = -ms * HDNum;
   wmaxx = 0;
 
   p->fillRect( 0, 0, width(), height(), bgColor );
@@ -277,11 +264,12 @@ void XView::DrawMonitor( QPainter *p )
   pen0.setColor( QColor( 0, 0, 0 ) );
   p->setPen( pen0 );
 
-  RM = width() * 0.10;
-  LM = width() * 0.10;
+  RM = width() * 0.03;
+  LM = width() * 0.17;
   TM = height() * 0.05;
   BM = height() * 0.10;
-  F1.setPointSizeF( ( LM*0.115 < BM*0.23 ) ? LM*0.115 : BM*0.23 );
+  HDiv = ( width() - RM - LM ) / HDNum;
+  VDiv = ( height() - TM - BM ) / VDNum;
   p->setFont( F1 );
 
   SetView( LM, TM, width()-RM, height()-BM );
@@ -289,13 +277,13 @@ void XView::DrawMonitor( QPainter *p )
 
   for ( double xx = wminx; xx <= wmaxx; xx += ms ) {
     p->drawLine( w2rx( xx ), TM, w2rx( xx ), height()-BM );  // 縦の罫線
-    rec = QRect( w2rx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
-    p->drawText( rec, Qt::AlignHCenter | Qt::AlignVCenter,
+    rec = QRect( w2rx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 ); // メモリ数字
+    DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter,
 		 QString( tr( "%1" ) )
 		 .arg( (int)((wmaxx-xx)/ms) * MScales[ MonScale ].dispDiv ) );
   }
-  rec = QRect( width()-RM*0.9, height()-BM+5, RM*0.8, BM*0.3 );   // X軸のラベル
-  p->drawText( rec, Qt::AlignLeft | Qt::AlignVCenter, MScales[ MonScale ].unit );
+  rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );   // X軸のラベル
+  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, MScales[ MonScale ].unit );
 
   wmaxy = 1;
   wminy = 0;
@@ -313,11 +301,6 @@ void XView::DrawMonitor( QPainter *p )
   UpDateYWindowRing();
 
   for ( int j = 0; j < MaxMon; j++ ) {
-    if ( DrawF[j] )
-      qDebug() << "Label " << j << LNames[j];
-  }
-
-  for ( int j = 0; j < MaxMon; j++ ) {
     if ( DrawF[j] ) {
       //      sy = Rwminy[j];
       //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
@@ -329,15 +312,15 @@ void XView::DrawMonitor( QPainter *p )
 
       pen1.setColor( LC[ j ] );
       p->setPen( pen1 );
-      for ( double yy = sy; yy < wmaxy; yy += dy ) {
-	rec = QRectF( LM * 0.1, w2ry( yy )-BM*0.2+BM*0.27 * j,
-		     LM * 0.80, BM * 0.25 ); // メモリ数字
+      for ( double yy = sy; yy <= wmaxy; yy += dy ) {
+	rec = QRectF( LM - LM * 0.32 * ( j + 1 ), w2ry( yy )-VDiv*0.45,
+		     LM * 0.3, VDiv * 0.9 ); // メモリ数字
 	buf.sprintf( "%6.4g", yy );
 	DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, buf );
       }
-      rec = QRectF( LM * 0.1, w2ry( wmaxy )-BM*0.35+BM*0.3 * j,
-		   LM * 0.80, BM * 0.3 );  // 軸のラベル
-      DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, LNames[j] );
+      rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
+		   HDiv * 2, TM * 0.9 );  // 軸のラベル
+      DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, LNames[j] );
 
       int pp1, pp2;
       int t0 = mont[ points[0] - 1 ];
@@ -555,11 +538,34 @@ void XView::DrawText( QPainter *p,
   double fSize = font.pointSizeF();
 
   brec = p->boundingRect( rec, flags, msg );
-  xr = brec.width() / rec.width();
-  yr = brec.height() / rec.height();
-  font.setPointSizeF( fSize / ( ( xr > yr ) ? xr : yr ) );
+  xr = brec.width() / (int)rec.width();
+  yr = brec.height() / (int)rec.height();
+  font.setPointSize( (int)( fSize / ( ( xr > yr ) ? xr : yr ) + 1 ) );
   p->setFont( font );
   p->drawText( rec, flags, msg );
   font.setPointSizeF( fSize );
   p->setFont( font );
 }
+
+/******************* Handle Mouse Events ************************/
+
+void XView::mouseMoveEvent( QMouseEvent *e )
+{
+}
+
+void XView::mousePressEvent( QMouseEvent *e )
+{
+}
+
+void XView::mouseReleaseEvent( QMouseEvent *e )
+{
+}
+
+void XView::mouseClickEvent( QMouseEvent *e )
+{
+}
+
+void XView::mouseDoubleClickEvent( QMouseEvent *e )
+{
+}
+

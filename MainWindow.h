@@ -162,19 +162,20 @@ private:
   void GetNewGo( int i );
   void ShowGo( int i );
   void SetNewGos( void );
-  void SPSStart( int AbsRel );
-  void SPSStop0( void );
+  void ScanStart( void );
+  void ScanStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
-  void ShowRelAbs( void );
-  void ShowGoMSpeed( void );
+  void ShowGoMRelAbs( void );
+  void ShowSPSRelAbs( void );
 
+  void ShowGoMSpeed( void );
   MSPEED GoMSpeed;
 
   int inMMove;
   int MoveID;            // Timer ID
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
-  RELABS RelAbs;
+  RELABS GoMRelAbs, SPSRelAbs;
   int SPSMon;            // SPS-ing monitor
   int SPSID;             // Timer ID
   int inSPSing;
@@ -305,6 +306,8 @@ private slots:
 
   void MMRel( void );
   void MMAbs( void );
+  void SPSRel( void );
+  void SPSAbs( void );
   void SetGoMSpeedH( void );
   void SetGoMSpeedM( void );
   void SetGoMSpeedL( void );
@@ -327,8 +330,6 @@ private slots:
   void NewGoMotorPosUnit( const QString &val );
   void GoMAtP( void );
   void GoMStop( void );
-  void SPSAS( void );
-  void SPSRS( void );
   void Monitor( void );
   void newVI0( QString v );
   void newVS1( QString v );

@@ -78,6 +78,12 @@ public:
   int PeakSearch( int l );
   int getMonScale( void ) { return MonScale; };
 
+  void mouseMoveEvent( QMouseEvent *e );
+  void mousePressEvent( QMouseEvent *e );
+  void mouseReleaseEvent( QMouseEvent *e );
+  void mouseClickEvent( QMouseEvent *e );
+  void mouseDoubleClickEvent( QMouseEvent *e );
+
 public slots:
   void SetMonScale( int ms );
 

@@ -166,5 +166,5 @@ void MainWindow::ShowCurThPos( void )   // ’l‚Í‚ ‚¦‚ÄŽg‚í‚È‚¢
   buf.sprintf( UnitName[DEG].form, CurPosKeV = deg2keV( deg ) );
   ShowCurrentEnergy->setText( buf );
   
-  NewLogMsg( tr( "Current Position [%1] keV" ).arg( buf ) );
+  NewLogMsg( tr( "Current Position [%1] keV\n" ).arg( buf ) );
 }
