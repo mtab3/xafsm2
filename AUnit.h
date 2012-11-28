@@ -66,6 +66,10 @@ public:
 
   double u2p( double u ) { return u / UPP + Center; };
   double p2u( double p ) { return ( p - Center ) * UPP; };
+  double any2p( double a, int selU, RELABS ra ) {
+    return a / ( ( selU == 0 ) ? 1 : UPP )
+      + ( ( ra == REL ) ? Value.toDouble() : ( ( selU == 0 ) ? 0 : Center ) );
+  }
 
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };

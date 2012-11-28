@@ -34,7 +34,7 @@ CRYSTAL  "Ge(333)"   1.0887941
 #     0.000027... : The metric unit / puls
 #     0           : Center position in puls
 
-MOTOR PM "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 0 INT
+MOTOR PM "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 0
 
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p

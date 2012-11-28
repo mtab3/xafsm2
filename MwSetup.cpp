@@ -65,6 +65,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
   AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
+  SPSUnit->addItem( "Puls" );
+  SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
@@ -302,7 +304,7 @@ void MainWindow::GoMAtPuls( double Pos )
   am->SetValue( Pos );
   am->setIsBusy( true );
 
-  MoveID = startTimer( 500 );
+  MoveID = startTimer( 100 );
 
   NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
 	     .arg( am->getName() )
@@ -320,6 +322,8 @@ void MainWindow::NewMotor( void )
   setupMDispFirstTime = true;
   AMotors.value( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
+  SPSUnit->removeItem( 1 );
+  SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
 }
 
 void MainWindow::GoMStop( void )
@@ -351,37 +355,40 @@ void MainWindow::GoMStop0( void )
 
 void MainWindow::ScanStart( void )
 {
-  AUnit *am = AMotors.value( MotorN->currentIndex() );
-  AUnit *as = ASensors.value( SelectD1->currentIndex() );
+  AUnit *am, *as;
 
   if ( inSPSing == 0 ) {
-    MovingS = SPSMotorS->currentIndex();
+    ScanMotor = MotorN->currentIndex();
+    ScanSensor = SelectD1->currentIndex();
+    am = AMotors.value( ScanMotor );
+    as = ASensors.value( ScanSensor );
 
-    if ( SPSRelAbs == 0 ) {
-      ScanSP = SPSsP->text().toInt();
-      ScanEP = SPSeP->text().toInt();
-    } else {
-      ScanSP = am->value().toInt() + SPSsP->text().toInt();
-      ScanEP = am->value().toInt() + SPSeP->text().toInt();
-    }
-    ScanSTP = SPSstep->text().toInt();
+    MovingS = SPSMotorS->currentIndex();  // motor speed;
+
+    SPSSelU = SPSUnit->currentIndex();
+    SPSUPP = ( SPSSelU == 0 ) ? 1 : am->getUPP();
+    ScanOrigin = am->value().toDouble();
+    ScanSP = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs );
+    ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs );
+    ScanSTP = SPSstep->text().toDouble() / SPSUPP;
     if ( ScanEP > ScanSP ) {
       ScanSTP = abs( ScanSTP );
     } else {
       ScanSTP = - abs( ScanSTP );
     }
-    ScanDW = SPSdwell->text().toDouble();
+    ScanDT = SPSdwell->text().toDouble();
     if ( ScanSTP == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
     }
     inSPSing = 1;
 
-    NewLogMsg( QString( tr( "S/PS: Start (%1 %2)\n" ) )
+    NewLogMsg( QString( tr( "Scan Start (%1 %2)\n" ) )
 	       .arg( am->getName() )
 	       .arg( as->getName() ) );
     
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
+    as->SetTime( ScanDT );
 
     SPSScan->setText( tr( "Stop" ) );
     SPSScan->setStyleSheet( "background-color: yellow" );
@@ -399,7 +406,7 @@ void MainWindow::ScanStart( void )
     SPSView->makeValid( true );
 
     ScanStage = 0;
-    SPSID = startTimer( 200 );
+    SPSID = startTimer( 100 );
   } else {
     ScanStop0();
   }
@@ -407,29 +414,7 @@ void MainWindow::ScanStart( void )
 
 void MainWindow::ScanStop0( void )
 {
-  AUnit *am = AMotors.value( MotorN->currentIndex() );
-
-  killTimer( SPSID );
-  inSPSing = 0;
-  am->Stop();
-
-  SPSScan->setText( tr( "Scan" ) );
-  SPSScan->setStyleSheet( "" );
-  SPSScan->setEnabled( true );
-  GoMotor->setEnabled( true );
-}
-
-void MainWindow::ReadOutScanData( void )    // ( int NowP )
-{
-  AUnit *as = ASensors.value( SelectD1->currentIndex() ); // D1 でいいのか???????
-
-  SI0->GetValue();
-  as->GetValue();
-
-#if 0           // ここではトリガをかけるだけ。値の読み出しは別のところでね。
-  SPSView->NewPoint( 0, NowP, I0 );
-  SPSView->NewPoint( 1, NowP, I );
-#endif
+  ScanStage = 10;
 }
 
 void MainWindow::Monitor( void )
@@ -491,7 +476,7 @@ void MainWindow::Monitor( void )
     MStart->setStyleSheet( "background-color: yellow" );
 
     MonTime.restart();
-    MonID = startTimer( 50 );    /* 100msタイマーセット */
+    MonID = startTimer( 50 );    /* 50msタイマーセット */
   } else {
     killTimer( MonID );
     inMonitor = 0;

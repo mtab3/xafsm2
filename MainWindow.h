@@ -162,7 +162,6 @@ private:
   void GetNewGo( int i );
   void ShowGo( int i );
   void SetNewGos( void );
-  void ScanStart( void );
   void ScanStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
   void ShowGoMRelAbs( void );
@@ -176,14 +175,18 @@ private:
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
   RELABS GoMRelAbs, SPSRelAbs;
+  int SPSSelU;           // Selected SPS Unit
+  double SPSUPP;         // Unit per puls
   int SPSMon;            // SPS-ing monitor
   int SPSID;             // Timer ID
   int inSPSing;
   int ScanStage;
-  int ScanSP, ScanEP, ScanSTP;
-  double ScanDW;
+  int ScanMotor, ScanSensor;
+  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
+  double ScanDT;
   int NowScanP;
   XView *SPSView;
+
   QString RadioBOn;
   QString RadioBOff;
 
@@ -293,6 +296,7 @@ private:
   bool GetSensValues0( void );
   bool GetSensValues( void );
   void ReadSensValues( void );
+  void SetSPSViewWindow( void );
 
 private slots:
   void Initialize( void );
@@ -312,6 +316,7 @@ private slots:
   void SetGoMSpeedH( void );
   void SetGoMSpeedM( void );
   void SetGoMSpeedL( void );
+  void ScanStart( void );
 
   void NewSelA( int i );
   void OpenPT( void );
