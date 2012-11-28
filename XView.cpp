@@ -3,8 +3,10 @@
 #include "XafsM.h"
 #include "XView.h"
 
-XView::XView( QWidget *parent ) : QWidget( parent )
+XView::XView( QWidget *parent ) : QFrame( parent )
 {
+  setupUi( this );
+
   Clear();
   valid = false;
   SetLineF();
@@ -551,21 +553,21 @@ void XView::DrawText( QPainter *p,
 
 void XView::mouseMoveEvent( QMouseEvent *e )
 {
+  qDebug() << e->x() << e->y() << "Mouse 1";
 }
 
 void XView::mousePressEvent( QMouseEvent *e )
 {
+  qDebug() << "Mouse 2";
 }
 
 void XView::mouseReleaseEvent( QMouseEvent *e )
 {
-}
-
-void XView::mouseClickEvent( QMouseEvent *e )
-{
+  qDebug() << "Mouse 3";
 }
 
 void XView::mouseDoubleClickEvent( QMouseEvent *e )
 {
+  qDebug() << "Mouse 5";
 }
 

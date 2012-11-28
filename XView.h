@@ -2,6 +2,7 @@
 #define XVIEW_H
 
 #include <QWidget>
+#include "ui_XView.h"
 
 #define MAXPOINTS ( 10000 )
 #define MAXLINES  ( 30 )
@@ -12,11 +13,16 @@ enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
 enum GTYPE { XYPLOT, MONITOR, GTYPES };
 
-class XView : public QWidget
+class XView : public QFrame, private Ui::XView
 {
   Q_OBJECT
 
 private:
+  void mouseMoveEvent( QMouseEvent *e );
+  void mousePressEvent( QMouseEvent *e );
+  void mouseReleaseEvent( QMouseEvent *e );
+  void mouseDoubleClickEvent( QMouseEvent *e );
+
   GTYPE GType;
   int valid;
   QColor bgColor, BLACK;
@@ -77,12 +83,6 @@ public:
   void SetScaleT( SCALET s1, SCALET s2 ) { ScaleTR = s1; ScaleTL = s2; };
   int PeakSearch( int l );
   int getMonScale( void ) { return MonScale; };
-
-  void mouseMoveEvent( QMouseEvent *e );
-  void mousePressEvent( QMouseEvent *e );
-  void mouseReleaseEvent( QMouseEvent *e );
-  void mouseClickEvent( QMouseEvent *e );
-  void mouseDoubleClickEvent( QMouseEvent *e );
 
 public slots:
   void SetMonScale( int ms );
