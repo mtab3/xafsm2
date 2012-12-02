@@ -1,8 +1,8 @@
 # XAFS-M setting file : Edited 2012/10/03
 
-XAFSName  "XafsM2-BL5S1"
-XAFSkey   "XafsM2-BL5S1"
-XAFSTitle "XafsM2-BL5S1"
+XAFSName  "XafsM2"
+XAFSkey   "XafsM2"
+XAFSTitle "XafsM2"
 
 #List of STARS drivers which requied by XafsM to have full function
 STARSDRV "pm16c04-1"  "PM controller"

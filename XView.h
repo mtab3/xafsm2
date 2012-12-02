@@ -22,6 +22,8 @@ private:
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
+  QColor MCLineC;          // mouse cursor line color
+  int nx, ny;              // current mouse position
 
   GTYPE GType;
   int valid;

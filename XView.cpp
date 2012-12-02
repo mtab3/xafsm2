@@ -14,6 +14,8 @@ XView::XView( QWidget *parent ) : QFrame( parent )
   SetWindow( 0, 0, 1, 1 );
   bgColor = QColor( 255, 255, 255 );
   BLACK = QColor( 0, 0, 0 );
+  MCLineC = QColor( 210, 180, 0 );     // mouse cursor line color
+
   LC << QColor(   0,   0,   0 )
      << QColor( 255,   0,   0 ) << QColor(   0,   0, 255 ) << QColor(   0, 255,   0 )
      << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
@@ -28,6 +30,7 @@ XView::XView( QWidget *parent ) : QFrame( parent )
      << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
   GType = XYPLOT;
   MonScale = 0;
+  nx = ny = 0;
 }
 
 // l 番目のラインの p 番目のポイントの X データセット
@@ -171,10 +174,19 @@ void XView::DrawXYPlot( QPainter *p )
       if ( LineF[l] == LEFT ) {
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
+	double nowx = r2wx( nx );
+	int nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {
 	  p->drawLine( w2rx( x[l][i] ), w2ry( y[l][i] ),
 		       w2rx( x[l][i+1] ), w2ry( y[l][i+1] ) );
+	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
+	    nowxp = i;
+	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
+	    nowxp = i;
 	}
+	rec = QRectF( LM * 1.2, w2ry( wmaxy )-BM*0.35, 60, BM * 0.3 );  // 軸のラベル
+	DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter,
+		  QString::number( y[l][nowxp] ) );
       }
     }
   }
@@ -207,18 +219,32 @@ void XView::DrawXYPlot( QPainter *p )
     }
     rec = QRectF( width()-RM*0.95, w2ry( wmaxy )-BM*0.35,
 		 RM*0.9, BM * 0.3 );    // 軸のラベル
-    DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, LNames[ SLineR ] );
+    //    DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, LNames[ SLineR ] );
     
     for ( int l = 0; l < lines; l++ ) { // データプロット
       if ( LineF[l] == RIGHT ) {
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
+	double nowx = r2wx( nx );
+	int nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {  // データプロット
 	  p->drawLine( w2rx( x[l][i] ), w2ry( y[l][i] ),
 		       w2rx( x[l][i+1] ), w2ry( y[l][i+1] ) );
+	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
+	    nowxp = i;
+	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
+	    nowxp = i;
 	}
+	rec = QRectF( width()-RM*0.95, w2ry( wmaxy )-BM*0.35,
+		      RM*0.9, BM * 0.3 );    // 軸の値
+	DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter,
+		  LNames[SLineR] + " : " + QString::number(y[l][nowxp]) );
       }
     }
+  }
+  if ( ( nx > LM ) && ( nx < width()-RM ) ) {
+    p->setPen( MCLineC );
+    p->drawLine( nx, TM, nx, height()-BM );
   }
 }
 
@@ -322,13 +348,13 @@ void XView::DrawMonitor( QPainter *p )
       }
       rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
 		   HDiv * 2, TM * 0.9 );  // 軸のラベル
-      DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, LNames[j] );
-
       int pp1, pp2;
       int t0 = mont[ points[0] - 1 ];
       pen1.setWidth( 2 );
       pen1.setColor( LC[ j ] );
       p->setPen( pen1 );
+      int nowt = r2wx( nx ) + t0;
+      int nowtp = 0;
       for ( int i = 0; i < RingMax; i++ ) { // データプロット
 	pp1 = points[ 0 ] - 1 - i;
 	pp2 = points[ 0 ] - 1 - ( i + 1 );
@@ -339,12 +365,18 @@ void XView::DrawMonitor( QPainter *p )
 	}
 	p->drawLine( w2rx( mont[pp1] - t0 ), w2ry( mony[j][pp1] ),
 		     w2rx( mont[pp2] - t0 ), w2ry( mony[j][pp2] ) );
+	if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
+	  nowtp = pp1;
       }
+      DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter,
+		LNames[j] + " : " + QString::number(mony[j][nowtp]) );
     }
   }
+  if ( ( nx > LM ) && ( nx < width()-RM ) ) {
+    p->setPen( MCLineC );
+    p->drawLine( nx, TM, nx, height()-BM );
+  }
 }
-
-
 
 void XView::ReDraw( void )
 {
@@ -553,21 +585,28 @@ void XView::DrawText( QPainter *p,
 
 void XView::mouseMoveEvent( QMouseEvent *e )
 {
-  qDebug() << e->x() << e->y() << "Mouse 1";
+  nx = e->x();
+  ny = e->y();
+
+  switch( (int)GType ) {
+  case XYPLOT:
+    break;
+  case MONITOR:
+    break;
+  }
+
+  update();
 }
 
 void XView::mousePressEvent( QMouseEvent *e )
 {
-  qDebug() << "Mouse 2";
 }
 
 void XView::mouseReleaseEvent( QMouseEvent *e )
 {
-  qDebug() << "Mouse 3";
 }
 
 void XView::mouseDoubleClickEvent( QMouseEvent *e )
 {
-  qDebug() << "Mouse 5";
 }
 

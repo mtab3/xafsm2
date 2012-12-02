@@ -388,7 +388,6 @@ void MainWindow::SPSSequence( void )
     break;
   case 4:
     SPSView->NewPoint( 1, NowScanP, as->value().toDouble() );
-    qDebug() << "getv" << as->value().toDouble();
     SPSView->ReDraw();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
@@ -407,7 +406,7 @@ void MainWindow::SPSSequence( void )
     ScanStage = 11;
     break;
   case 11:
-    am->SetValue( ScanOrigin ); qDebug() << "Go back !!" << ScanOrigin;
+    am->SetValue( ScanOrigin );
     ScanStage = 12;
     break;
   case 12:
