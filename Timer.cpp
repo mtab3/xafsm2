@@ -357,7 +357,7 @@ void MainWindow::SPSSequence( void )
        リピートも終わったら後始末をして終了
     */
   case 0:
-    ClearSensorStages();
+    as->InitLocalStage();
     SetSPSViewWindow();
     statusbar->showMessage( tr( "Scan Start!" ), 1000 );
     ScanStage = 1;
@@ -376,13 +376,13 @@ void MainWindow::SPSSequence( void )
     break;
   case 2: 
     if ( as->GetValue0() == false ) { // only for counters
-      ClearSensorStages();
+      as->InitLocalStage();
       ScanStage = 3;
     }
     break;
   case 3:
     if ( as->GetValue() == false ) {  // true :: Getting
-      ClearSensorStages();
+      as->InitLocalStage();
       ScanStage = 4;
     }
     break;

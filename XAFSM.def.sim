@@ -1,8 +1,8 @@
 # XAFS-M setting file : Edited 2012/10/03
 
-XAFSName  "XafsM2-BL5S1"
-XAFSkey   "XafsM2-BL5S1"
-XAFSTitle "XafsM2-BL5S1"
+XAFSName  "XafsM2"
+XAFSkey   "XafsM2"
+XAFSTitle "XafsM2"
 
 #List of STARS drivers which requied by XafsM to have full function
 STARSDRV "pm16c04-1"  "PM controller"
@@ -21,7 +21,7 @@ CRYSTAL  "Ge(333)"   1.0887941
 
 # define Moveable units
 
-# MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
+# MOTOR PM "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 -11406
 #          # The definition for "Theta" located at the end of the list of motors.
 
 # The parameters following the identifier 'MOTOR' are
@@ -34,7 +34,7 @@ CRYSTAL  "Ge(333)"   1.0887941
 #     0.000027... : The metric unit / puls
 #     0           : Center position in puls
 
-MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
+MOTOR PM "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 0
 
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
@@ -50,40 +50,40 @@ MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
 # Following definitions are temporal (not real)
 #
 
-MOTOR PM "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 0
-MOTOR PM "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 0
-MOTOR PM "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 0
-MOTOR PM "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 0
-MOTOR PM "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 0
-MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0
-MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0
-MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0
-MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0
-MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0 
+MOTOR PM "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 0
+MOTOR PM "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 0
+MOTOR PM "STAGEY" "Stage Y" "simmotor" "ch2" "mm" 0.001 0
+MOTOR PM "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 0
+MOTOR PM "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 0
+MOTOR PM "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 0
+MOTOR PM "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "simmotor" "ch12" "mm" 0.001 0 
 
-MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
-MOTOR PM "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0 INT
-MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120 REAL     # Need to check the range
+MOTOR PM "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 -11406
+MOTOR PM "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 0 INT
+MOTOR PZ "DTH1P" "Dth1p" "simmotor" "pz1" "um" 0.056 -10 120 REAL     # Need to check the range
 
 # define Sensor units
 
-SENSOR CNT  "I0" "Counter 0 (I0)" "nct0801" "ch0"  "cps"
+SENSOR CNT  "I0" "Counter 0 (I0)" "simmotor" "SNScnt0"  "cps"
 #
 # You can use any other sensor as I0, by selecting it after running the program.
 # Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
 #
-SENSOR CNT  "I1" "Counter 1 (I1)" "nct0801" "ch1"  "cps"
+SENSOR CNT  "I1" "Counter 1 (I1)" "simmotor" "SNScnt1"  "cps"
 
-SENSOR CNT  "GENERAL" "Counter 2 (I0 via KTL)"      "nct0801" "ch2"  "cps"
-SENSOR CNT  "GENERAL" "Counter 3 (I1 via KTL)"      "nct0801" "ch3"  "cps"
+SENSOR CNT  "GENERAL" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2"  "cps"
+SENSOR CNT  "GENERAL" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3"  "cps"
 # The identifier CNT might be changed CNT2 or something, 
 # to add some additional initialize sequence on the start of measurement
 
-SENSOR PAM "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA"
-SENSOR PAM "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA"
+SENSOR PAM "Aux1" "Keithley 6485-1" "simmotor" "SNSkth1" "mA"
+SENSOR PAM "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA"
 
 # The parameters following the identifier 'SENSOR' are
 #   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
@@ -99,28 +99,28 @@ SENSOR PAM "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA"
 # Following definitions are temporal (not real)
 #
 
-SENSOR SSD  "TotalF"  "SSD (19ch all)" "SSD"  "ch00" "cps"
-SENSOR SSDP "SingleF" "SSD-ch01"  "SSD"       "ch01" "cps"
-SENSOR SSDP "SingleF" "SSD-ch02"  "SSD"       "ch02" "cps"
-SENSOR SSDP "SingleF" "SSD-ch03"  "SSD"       "ch03" "cps"
-SENSOR SSDP "SingleF" "SSD-ch04"  "SSD"       "ch04" "cps"
-SENSOR SSDP "SingleF" "SSD-ch05"  "SSD"       "ch05" "cps"
-SENSOR SSDP "SingleF" "SSD-ch06"  "SSD"       "ch06" "cps"
-SENSOR SSDP "SingleF" "SSD-ch07"  "SSD"       "ch07" "cps"
-SENSOR SSDP "SingleF" "SSD-ch08"  "SSD"       "ch08" "cps"
-SENSOR SSDP "SingleF" "SSD-ch09"  "SSD"       "ch09" "cps"
-SENSOR SSDP "SingleF" "SSD-ch10"  "SSD"       "ch10" "cps"
-SENSOR SSDP "SingleF" "SSD-ch11"  "SSD"       "ch11" "cps"
-SENSOR SSDP "SingleF" "SSD-ch12"  "SSD"       "ch12" "cps"
-SENSOR SSDP "SingleF" "SSD-ch13"  "SSD"       "ch13" "cps"
-SENSOR SSDP "SingleF" "SSD-ch14"  "SSD"       "ch14" "cps"
-SENSOR SSDP "SingleF" "SSD-ch15"  "SSD"       "ch15" "cps"
-SENSOR SSDP "SingleF" "SSD-ch16"  "SSD"       "ch16" "cps"
-SENSOR SSDP "SingleF" "SSD-ch17"  "SSD"       "ch17" "cps"
-SENSOR SSDP "SingleF" "SSD-ch18"  "SSD"       "ch18" "cps"
-SENSOR SSDP "SingleF" "SSD-ch19"  "SSD"       "ch19" "cps"
+#SENSOR SSD  "TotalF"  "SSD (19ch all)" "SSD"  "ch00" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch01"  "SSD"       "ch01" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch02"  "SSD"       "ch02" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch03"  "SSD"       "ch03" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch04"  "SSD"       "ch04" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch05"  "SSD"       "ch05" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch06"  "SSD"       "ch06" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch07"  "SSD"       "ch07" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch08"  "SSD"       "ch08" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch09"  "SSD"       "ch09" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch10"  "SSD"       "ch10" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch11"  "SSD"       "ch11" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch12"  "SSD"       "ch12" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch13"  "SSD"       "ch13" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch14"  "SSD"       "ch14" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch15"  "SSD"       "ch15" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch16"  "SSD"       "ch16" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch17"  "SSD"       "ch17" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch18"  "SSD"       "ch18" "cps"
+#SENSOR SSDP "SingleF" "SSD-ch19"  "SSD"       "ch19" "cps"
 
-SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
+SENSOR ENC "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg"
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC      : Unit type   ENC an encorder observed/controlled via nd287
@@ -129,7 +129,6 @@ SENSOR ENC "ENCTH" "Encoder Th" "nd287" "" "deg"
 #     "nd287"      : Stars driver name
 #     ""           : Node name in the stars driver
 #     "deg"        : Name of the metric unit (only for display)
-
 
 #
 # For any item you can use "" (double quotation marks) as you want,

@@ -451,9 +451,9 @@ void MainWindow::Monitor( void )
     MonView->SetLineF( RIGHT, LEFT, LEFT );   // Œ»óˆÓ–¡‚È‚µ
     //    MonView->SetScaleT( I0TYPE, FULLSCALE, FULLSCALE );   // Œ»óˆÓ–¡‚È‚µ
     MonView->SetDrawF( MeasSensF );
-    MonView->SetLName( 0, tr( "I0" ) );
-    int LineCount = 1;
-    for ( int i = 1; i < 3; i++ ) {
+    //    MonView->SetLName( 0, tr( "I0" ) );
+    int LineCount = 0;
+    for ( int i = 0; i < 3; i++ ) {
       if ( MeasSensF[i] ) {
 	MonView->SetLName( LineCount, MeasSens[i]->getName() );
 	LineCount++;
