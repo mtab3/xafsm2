@@ -1,20 +1,22 @@
 #include <QtGui>
 
 #include "SelMC.h"
+#include "Mccd.h"
 
-
-SelMC::SelMC() : QDialog()
+SelMC::SelMC( QVector<MCCD*> &Mccd ) : QDialog()
 {
   setupUi( this );
 
-  SelectedCry = Si111;
-  for ( int i = 0; i < MCCS; i++ ) {
-    SelectMonoCry->addItem( mccd[i].MCName );
+  mccd = Mccd;
+
+  SelectedCry = 0;
+  for ( int i = 0; i < mccd.count(); i++ ) {
+    SelectMonoCry->addItem( mccd[i]->getMCName() );
   }
   SelectMonoCry->setCurrentIndex( SelectedCry );
   SelectMonoCry->setEnabled( false );
-  ShowMCLC->setText( QString( tr( "%1 A" ) ).arg( mccd[ SelectedCry ].d ) );
-
+  ShowMCLC->setText( QString( tr( "%1 A" ) ).arg( mccd[ SelectedCry ]->getD() ) );
+  
   IsReallyChgMC = new QMessageBox;
   QPushButton *tmpB
     = IsReallyChgMC->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
@@ -35,10 +37,11 @@ void SelMC::SurelyChgMC( void )
 
 void SelMC::HaveChgMC( int index )
 {
-  SelectedCry = (MCC)index;
+  SelectedCry = index;
   SelectMonoCry->setEnabled( false );
-  ShowMCLC->setText( QString( tr( "%1 A" ) ).arg( mccd[ SelectedCry ].d ) );
-  emit NewLatticeConstant( mccd[ SelectedCry ].d );
+  ShowMCLC->setText( QString( tr( "%1 A" ) ).arg( mccd[ SelectedCry ]->getD() ) );
+  emit NewLatticeConstant( mccd[ SelectedCry ]->getD() );
   emit NewLogMsg( QString( tr( "Mono: Cnaged to %1 (%2 A)\n" ) )
-		  .arg( mccd[ SelectedCry ].MCName ).arg( mccd[ SelectedCry ].d ) );
+		  .arg( mccd[ SelectedCry ]->getMCName() )
+		  .arg( mccd[ SelectedCry ]->getD() ) );
 }

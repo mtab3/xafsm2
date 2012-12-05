@@ -11,10 +11,14 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   inMonitor = 0;
   inSPSing = 0;
 
-  RadioBOn = "background-color: rgb(255,255,200)";
-  RadioBOff = "background-color: rgb(200,200,220)";
-  RelAbs = REL;
-  ShowRelAbs();
+  RadioBOn = "background-color: rgb(255,255,000)";
+  RadioBOff = "background-color: rgb(210,210,230)";
+  GoMRelAbs = REL;
+  SPSRelAbs = REL;
+  ShowGoMRelAbs();
+  ShowSPSRelAbs();
+
+  GoMSpeed = MIDDLE;
 
   setupMDispFirstTime = true;
 
@@ -43,6 +47,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( GoUnit[i], SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( ShowAllGos() ) );
   }
+
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoPosEdit[i], SIGNAL( editingFinished() ),
 	     this, SLOT( GetNewGos() ) );
@@ -53,17 +58,19 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
   }
-  for ( int i = 0; i < MSPEEDS; i++ ) {
-    MotorS->addItem( MSpeeds[i].MSName );
-  }
-  AMotors.value( MotorN->currentIndex() )->GetValue();
-  GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
 
-  for ( int i = 0; i < SPSMODES; i++ ) {
-    SorPS->addItem( SPSModes[i].SPSMName );
+  for ( int i = 0; i < MSPEEDS; i++ ) {
+    GoMotorS->addItem( MSpeeds[i].MSName );
+    SPSMotorS->addItem( MSpeeds[i].MSName );
   }
+  AMotors.at( MotorN->currentIndex() )->GetValue();
+  GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
+  SPSUnit->addItem( "Puls" );
+  SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
+    SelectD20->addItem( ASensors.value(i)->getName() );
     SelectD21->addItem( ASensors.value(i)->getName() );
     SelectD22->addItem( ASensors.value(i)->getName() );
   }
@@ -71,7 +78,11 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
   }
-  MonStage1 = MonStage2 = 0;
+  MonStage = 0;
+
+  connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ) );
+  connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ) );
+  connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ) );
 
   connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ) );
   connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ) );
@@ -85,29 +96,76 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( GoMotorPosUnit, SIGNAL( textEdited( const QString & ) ),
 	   this, SLOT( NewGoMotorPosUnit( const QString & ) ) );
 
-  connect( SPSAScan, SIGNAL( clicked() ), this, SLOT( SPSAS() ) );
-  connect( SPSRScan, SIGNAL( clicked() ), this, SLOT( SPSRS() ) );
+  connect( SPSScan, SIGNAL( clicked() ), this, SLOT( ScanStart() ) );
   connect( MStart, SIGNAL( clicked() ), this, SLOT( Monitor() ) );
   connect( SetUpMMRel, SIGNAL( clicked() ), this, SLOT( MMRel() ) );
   connect( SetUpMMAbs, SIGNAL( clicked() ), this, SLOT( MMAbs() ) );
+  connect( SetUpSPSRel, SIGNAL( clicked() ), this, SLOT( SPSRel() ) );
+  connect( SetUpSPSAbs, SIGNAL( clicked() ), this, SLOT( SPSAbs() ) );
 }
 
 void MainWindow::MMRel( void )
 {
-  RelAbs = REL;
-  ShowRelAbs();
+  GoMRelAbs = REL;
+  ShowGoMRelAbs();
 }
 
 void MainWindow::MMAbs( void )
 {
-  RelAbs = ABS;
-  ShowRelAbs();
+  GoMRelAbs = ABS;
+  ShowGoMRelAbs();
 }
 
-void MainWindow::ShowRelAbs( void )
+void MainWindow::ShowGoMRelAbs( void )
 {
-  SetUpMMRel->setStyleSheet( ( RelAbs == REL )? RadioBOn : RadioBOff );
-  SetUpMMAbs->setStyleSheet( ( RelAbs == ABS )? RadioBOn : RadioBOff );
+  SetUpMMRel->setStyleSheet( ( GoMRelAbs == REL )? RadioBOn : RadioBOff );
+  SetUpMMAbs->setStyleSheet( ( GoMRelAbs == ABS )? RadioBOn : RadioBOff );
+}
+
+void MainWindow::SPSRel( void )
+{
+  SPSRelAbs = REL;
+  ShowSPSRelAbs();
+}
+
+void MainWindow::SPSAbs( void )
+{
+  SPSRelAbs = ABS;
+  ShowSPSRelAbs();
+}
+
+void MainWindow::ShowSPSRelAbs( void )
+{
+  SetUpSPSRel->setStyleSheet( ( SPSRelAbs == REL )? RadioBOn : RadioBOff );
+  SetUpSPSAbs->setStyleSheet( ( SPSRelAbs == ABS )? RadioBOn : RadioBOff );
+}
+
+void MainWindow::SetGoMSpeedH( void )
+{
+  GoMSpeed = HIGH;
+  MMainTh->SetSpeed( HIGH );
+  ShowGoMSpeed();
+}
+
+void MainWindow::SetGoMSpeedM( void )
+{
+  GoMSpeed = MIDDLE;
+  MMainTh->SetSpeed( MIDDLE );
+  ShowGoMSpeed();
+}
+
+void MainWindow::SetGoMSpeedL( void )
+{
+  GoMSpeed = LOW;
+  MMainTh->SetSpeed( LOW );
+  ShowGoMSpeed();
+}
+
+void MainWindow::ShowGoMSpeed( void )
+{
+  GoMSpeedH->setStyleSheet( ( GoMSpeed == HIGH )? RadioBOn : RadioBOff );
+  GoMSpeedM->setStyleSheet( ( GoMSpeed == MIDDLE )? RadioBOn : RadioBOff );
+  GoMSpeedL->setStyleSheet( ( GoMSpeed == LOW )? RadioBOn : RadioBOff );
 }
 
 void MainWindow::ShowCurMotorPos( SMsg msg )
@@ -124,7 +182,7 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
       ( ( msg.Val().toDouble() - am->getCenter() ) * am->getUPP() );
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
-      if ( RelAbs == ABS ) {
+      if ( GoMRelAbs == ABS ) {
 	GoMotorPosPuls->setText( msg.Val() );
 	GoMotorPosUnit->setText( val );
 	setupMDispFirstTime = false;
@@ -134,10 +192,12 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
 	setupMDispFirstTime = false;
       }
     }
-    NewLogMsg( tr( "Current Position of [%1] : [%2] %3" )
-	       .arg( am->getName() )
-	       .arg( val )
-	       .arg( am->getUnit() ) );
+    if ( am->checkNewVal() ) {
+      NewLogMsg( tr( "Current Position of [%1] : [%2] %3\n" )
+		 .arg( am->getName() )
+		 .arg( val )
+		 .arg( am->getUnit() ) );
+    }
   }
 }
 
@@ -193,7 +253,7 @@ void MainWindow::NewGoMotorPosPuls( const QString &val )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
-  if ( RelAbs == ABS ) {
+  if ( GoMRelAbs == ABS ) {
     GoMotorPosUnit
       ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() ) );
   } else {
@@ -205,7 +265,7 @@ void MainWindow::NewGoMotorPosUnit( const QString &val )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
-  if ( RelAbs == ABS ) {
+  if ( GoMRelAbs == ABS ) {
     GoMotorPosPuls
       ->setText( QString::number( val.toDouble() / am->getUPP() + am->getCenter() ) );
   } else {
@@ -226,9 +286,9 @@ void MainWindow::GoMAtPuls( double Pos )
 {
   inMMove = 1;
   AUnit *am = AMotors.value( MotorN->currentIndex() );
-  MovingS = MotorS->currentIndex();
+  MovingS = GoMotorS->currentIndex();
 
-  if ( RelAbs == REL )
+  if ( GoMRelAbs == REL )
     Pos += am->value().toDouble();
 
   if ( am->getType() == "PM" ) {
@@ -238,14 +298,13 @@ void MainWindow::GoMAtPuls( double Pos )
   GoMotor->setText( tr( "Stop" ) );
   GoMotor->setStyleSheet( "background-color: yellow" );
 
-  SPSAScan->setEnabled( false );
-  SPSRScan->setEnabled( false );
+  SPSScan->setEnabled( false );
 
   am->SetSpeed( MSpeeds[ MovingS ].MSid );
   am->SetValue( Pos );
   am->setIsBusy( true );
 
-  MoveID = startTimer( 500 );
+  MoveID = startTimer( 100 );
 
   NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
 	     .arg( am->getName() )
@@ -263,6 +322,8 @@ void MainWindow::NewMotor( void )
   setupMDispFirstTime = true;
   AMotors.value( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
+  SPSUnit->removeItem( 1 );
+  SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
 }
 
 void MainWindow::GoMStop( void )
@@ -284,64 +345,53 @@ void MainWindow::GoMStop0( void )
 {
   inMMove = 0;
 
+  killTimer( MoveID );
   GoMotor->setEnabled( true );
-  SPSAScan->setEnabled( true );
-  SPSRScan->setEnabled( true );
+  SPSScan->setEnabled( true );
   GoMotor->setText( tr( "Go" ) );
   GoMotor->setStyleSheet( "" );
+  
 }
 
-void MainWindow::SPSAS( void )
+void MainWindow::ScanStart( void )
 {
-  SPSStart( 0 );
-}
-
-void MainWindow::SPSRS( void )
-{
-  SPSStart( 1 );
-}
-
-void MainWindow::SPSStart( int AbsRel )
-{
-  QPushButton *Go, *Go2;
-  AUnit *am = AMotors.value( MotorN->currentIndex() );
-  AUnit *as = ASensors.value( SelectD1->currentIndex() );
+  AUnit *am, *as;
 
   if ( inSPSing == 0 ) {
-    MovingS = MotorS->currentIndex();
+    ScanMotor = MotorN->currentIndex();
+    ScanSensor = SelectD1->currentIndex();
+    am = AMotors.value( ScanMotor );
+    as = ASensors.value( ScanSensor );
 
-    if ( AbsRel == 0 ) {
-      ScanSP = SPSsP->text().toInt();
-      ScanEP = SPSeP->text().toInt();
-    } else {
-      ScanSP = am->value().toInt() + SPSsP->text().toInt();
-      ScanEP = am->value().toInt() + SPSeP->text().toInt();
-    }
-    ScanSTP = SPSstep->text().toInt();
+    MovingS = SPSMotorS->currentIndex();  // motor speed;
+
+    SPSSelU = SPSUnit->currentIndex();
+    SPSUPP = ( SPSSelU == 0 ) ? 1 : am->getUPP();
+    ScanOrigin = am->value().toDouble();
+    ScanSP = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs );
+    ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs );
+    ScanSTP = SPSstep->text().toDouble() / SPSUPP;
     if ( ScanEP > ScanSP ) {
       ScanSTP = abs( ScanSTP );
     } else {
       ScanSTP = - abs( ScanSTP );
     }
-    ScanDW = SPSdwell->text().toDouble();
+    ScanDT = SPSdwell->text().toDouble();
     if ( ScanSTP == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
     }
     inSPSing = 1;
 
-    NewLogMsg( QString( tr( "S/PS: Start (%1 %2)\n" ) )
+    NewLogMsg( QString( tr( "Scan Start (%1 %2)\n" ) )
 	       .arg( am->getName() )
 	       .arg( as->getName() ) );
     
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
+    as->SetTime( ScanDT );
 
-    Go  = ( AbsRel == 0 ) ? SPSAScan : SPSRScan;
-    Go2 = ( AbsRel == 1 ) ? SPSAScan : SPSRScan;
-
-    Go->setText( tr( "Stop" ) );
-    Go->setStyleSheet( "background-color: yellow" );
-    Go2->setEnabled( false );
+    SPSScan->setText( tr( "Stop" ) );
+    SPSScan->setStyleSheet( "background-color: yellow" );
     GoMotor->setEnabled( false );
 
     SPSView = XViews[ ViewTab->currentIndex() ];
@@ -356,57 +406,37 @@ void MainWindow::SPSStart( int AbsRel )
     SPSView->makeValid( true );
 
     ScanStage = 0;
-    SPSID = startTimer( 200 );
+    SPSID = startTimer( 100 );
   } else {
-    SPSStop0();
+    ScanStop0();
   }
 }
 
-void MainWindow::SPSStop0( void )
+void MainWindow::ScanStop0( void )
 {
-  AUnit *am = AMotors.value( MotorN->currentIndex() );
-
-  killTimer( SPSID );
-  inSPSing = 0;
-  am->Stop();
-
-  SPSAScan->setText( tr( "Abs. Scn" ) );
-  SPSAScan->setStyleSheet( "" );
-  SPSAScan->setEnabled( true );
-  SPSRScan->setText( tr( "Rel. Scn" ) );
-  SPSRScan->setStyleSheet( "" );
-  SPSRScan->setEnabled( true );
-  GoMotor->setEnabled( true );
-}
-
-void MainWindow::ReadOutScanData( void )    // ( int NowP )
-{
-  AUnit *as = ASensors.value( SelectD1->currentIndex() ); // D1 でいいのか???????
-
-  SI0->GetValue();
-  as->GetValue();
-
-#if 0           // ここではトリガをかけるだけ。値の読み出しは別のところでね。
-  SPSView->NewPoint( 0, NowP, I0 );
-  SPSView->NewPoint( 1, NowP, I );
-#endif
+  ScanStage = 10;
 }
 
 void MainWindow::Monitor( void )
 {
+  AUnit *as0 = ASensors.value( SelectD20->currentIndex() );
   AUnit *as1 = ASensors.value( SelectD21->currentIndex() );
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
   if ( inMonitor == 0 ) {
     inMonitor = 1;
-    MonStage1 = 0;   // 表示のサイクル
-    MonStage2 = 0;   // 計測のサイクル
+    MonStage = 0;   // 計測のサイクル
 
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
-    MeasSens[0] = SI0;   MeasSensF[0] = true;
-    MeasSens[1] = as1;   MeasSensF[1] = true;
+    MeasSens[0] = as0;   MeasSensF[0] = true;
+    MeasSens[1] = as1;   MeasSensF[1] = SelectD21Sel->isChecked();
     MeasSens[2] = as2;   MeasSensF[2] = SelectD22Sel->isChecked();
+
+    MeasSensDT[0] = DwellT20->text().toDouble();
+    MeasSensDT[1] = DwellT21->text().toDouble();
+    MeasSensDT[2] = DwellT22->text().toDouble();
+
     OneOfTheSensorIsCounter = false;
     for ( int i = 0; i < MCHANNELS; i++ ) {
       if ( MeasSens[i]->getType() == "CNT" ) {
@@ -416,44 +446,65 @@ void MainWindow::Monitor( void )
       }
     }
 
-    /* 計測時間 [s] (MomMeasTime)はプロット間隔の 1/4 */
-    MonMeasTime = MScales[ SelectScale->currentIndex() ].div / TicPDiv / 4.;
-    if ( MonMeasTime > 10 )
-      MonMeasTime = 10;
-
     MonView = XViews[ ViewTab->currentIndex() ];
-    MonView->Clear();
-    MonView->SetSLines( 0, 1 );
-    MonView->SetLineF( RIGHT, LEFT );
-    MonView->SetScaleT( I0TYPE, FULLSCALE );
-    MonView->SetLName( 0, tr( "I0" ) );
-    int LineCount = 1;
-    for ( int i = 1; i < 3; i++ ) {
-      if ( MeasSensF[i] == true ) {
+    MonView->ClearDataR();
+    MonView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
+    //    MonView->SetScaleT( I0TYPE, FULLSCALE, FULLSCALE );   // 現状意味なし
+    MonView->SetDrawF( MeasSensF );
+    //    MonView->SetLName( 0, tr( "I0" ) );
+    int LineCount = 0;
+    for ( int i = 0; i < 3; i++ ) {
+      if ( MeasSensF[i] ) {
 	MonView->SetLName( LineCount, MeasSens[i]->getName() );
 	LineCount++;
       }
     }
     MonView->SetGType( MONITOR );                            // 確認
     MonView->makeValid( true );                              // 確認
+
     MonView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );
+    connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+    if ( MeasSensF[1] )
+      connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
+    if ( MeasSensF[2] )
+      connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
+		 
 
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
 
-    /* 指定プロット間隔の 1/8 でタイマーセット [ms] */
-    MonID = startTimer( MScales[ SelectScale->currentIndex() ].div / TicPDiv * 1000 / 8. );
-
+    MonTime.restart();
+    MonID = startTimer( 50 );    /* 50msタイマーセット */
   } else {
     killTimer( MonID );
     inMonitor = 0;
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonView, SLOT( SetMonScale( int ) ) );
+    disconnect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+    if ( MeasSensF[1] )
+      disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
+    if ( MeasSensF[2] )
+      disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
     MStart->setText( tr( "Mon. Start" ) );
     MStart->setStyleSheet( "" );
   }
+}
+
+void MainWindow::newVI0( QString v )
+{
+  DevCurV20->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
+}
+
+void MainWindow::newVS1( QString v )
+{
+  DevCurV21->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
+}
+
+void MainWindow::newVS2( QString v )
+{
+  DevCurV22->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
 }

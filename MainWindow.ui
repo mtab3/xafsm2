@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>774</width>
-    <height>863</height>
+    <height>892</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -50,10 +50,19 @@
          <property name="spacing">
           <number>3</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="Select1">
+         <item row="0" column="2">
+          <widget class="QPushButton" name="ShowPT">
+           <property name="maximumSize">
+            <size>
+             <width>10000</width>
+             <height>10000</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
+           </property>
            <property name="text">
-            <string>Target</string>
+            <string>Periodic Table</string>
            </property>
           </widget>
          </item>
@@ -61,7 +70,7 @@
           <widget class="QComboBox" name="SelectTA">
            <property name="maximumSize">
             <size>
-             <width>70</width>
+             <width>100000</width>
              <height>16777215</height>
             </size>
            </property>
@@ -76,11 +85,11 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="4">
           <widget class="QComboBox" name="SelectTE">
            <property name="maximumSize">
             <size>
-             <width>50</width>
+             <width>10000</width>
              <height>16777215</height>
             </size>
            </property>
@@ -92,78 +101,95 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>  Edge</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="8">
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>Deg.</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QLineEdit" name="ManTEdeg">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>70</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLineEdit" name="ManTEkeV">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>70</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 255);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="label_15">
-           <property name="text">
-            <string>KeV  </string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="ShowPT">
+         <item row="0" column="0">
+          <widget class="QLabel" name="Select1">
            <property name="maximumSize">
             <size>
-             <width>70</width>
-             <height>10000</height>
+             <width>50</width>
+             <height>16777215</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
+           <property name="text">
+            <string>Target</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="5">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>  Edge</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ManTEkeV">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>KeV  </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ManTEdeg">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>70</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Deg.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_48">
+           <property name="maximumSize">
+            <size>
+             <width>35</width>
+             <height>16777215</height>
+            </size>
            </property>
            <property name="text">
-            <string>PeriodicT</string>
+            <string>Edge</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -191,22 +217,22 @@
          <property name="spacing">
           <number>3</number>
          </property>
-         <item row="0" column="4">
+         <item row="1" column="4">
           <widget class="QLabel" name="label_26">
            <property name="text">
             <string>KeV</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="1" column="2">
           <widget class="QLabel" name="label_25">
            <property name="text">
             <string>Deg.  </string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="CurrentEnergy">
+         <item row="1" column="3">
+          <widget class="QLabel" name="ShowCurrentEnergy">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 221);</string>
            </property>
@@ -221,8 +247,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="CurrentAngle">
+         <item row="1" column="1">
+          <widget class="QLabel" name="ShowCurrentAngle">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 255, 221);</string>
            </property>
@@ -237,12 +263,52 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_22">
            <property name="text">
             <string>Cur. Pos.: </string>
            </property>
           </widget>
+         </item>
+         <item row="2" column="0" colspan="5">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="SelThEncorder">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually the &amp;quot;Encorder&amp;quot; should be selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Encorder</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="SelThCalcPulse">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The &amp;quot;Calc from Pulse&amp;quot; should not be used for usual measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Calc from Pulse</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -294,14 +360,14 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="0" column="0">
+             <item row="1" column="0">
               <widget class="QLabel" name="label_45">
                <property name="text">
                 <string>Monochro</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
+             <item row="1" column="2">
               <widget class="QComboBox" name="GoUnit0">
                <property name="maximumSize">
                 <size>
@@ -314,7 +380,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
+             <item row="2" column="0">
               <widget class="QLabel" name="label_11">
                <property name="minimumSize">
                 <size>
@@ -333,7 +399,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="2" column="1">
               <widget class="QLineEdit" name="GoPos1">
                <property name="minimumSize">
                 <size>
@@ -346,7 +412,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
+             <item row="2" column="2">
               <widget class="QComboBox" name="GoUnit1">
                <property name="maximumSize">
                 <size>
@@ -359,7 +425,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
+             <item row="2" column="3">
               <widget class="QPushButton" name="GoTo1">
                <property name="maximumSize">
                 <size>
@@ -375,21 +441,21 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
+             <item row="3" column="0">
               <widget class="QLabel" name="label_30">
                <property name="text">
                 <string>Move To (2)</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
+             <item row="3" column="1">
               <widget class="QLineEdit" name="GoPos2">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="3" column="2">
               <widget class="QComboBox" name="GoUnit2">
                <property name="maximumSize">
                 <size>
@@ -402,7 +468,7 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="3">
+             <item row="3" column="3">
               <widget class="QPushButton" name="GoTo2">
                <property name="maximumSize">
                 <size>
@@ -418,21 +484,21 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
+             <item row="4" column="0">
               <widget class="QLabel" name="label_31">
                <property name="text">
                 <string>Move To (3)</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="4" column="1">
               <widget class="QLineEdit" name="GoPos3">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="2">
+             <item row="4" column="2">
               <widget class="QComboBox" name="GoUnit3">
                <property name="maximumSize">
                 <size>
@@ -445,7 +511,7 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="3">
+             <item row="4" column="3">
               <widget class="QPushButton" name="GoTo3">
                <property name="maximumSize">
                 <size>
@@ -461,21 +527,21 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
+             <item row="5" column="0">
               <widget class="QLabel" name="label_32">
                <property name="text">
                 <string>Move To (4)</string>
                </property>
               </widget>
              </item>
-             <item row="4" column="1">
+             <item row="5" column="1">
               <widget class="QLineEdit" name="GoPos4">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
-             <item row="4" column="2">
+             <item row="5" column="2">
               <widget class="QComboBox" name="GoUnit4">
                <property name="maximumSize">
                 <size>
@@ -488,7 +554,7 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="3">
+             <item row="5" column="3">
               <widget class="QPushButton" name="GoTo4">
                <property name="maximumSize">
                 <size>
@@ -502,6 +568,167 @@
                <property name="text">
                 <string>Go</string>
                </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="4">
+              <widget class="QWidget" name="widget" native="true">
+               <layout class="QGridLayout" name="gridLayout_32">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_53">
+                  <property name="text">
+                   <string> Speed </string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QWidget" name="widget_2" native="true">
+                  <layout class="QGridLayout" name="gridLayout_33">
+                   <property name="leftMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="horizontalSpacing">
+                    <number>1</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>0</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QPushButton" name="GoMSpeedH">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>21</width>
+                       <height>23</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: rgb(210, 210,230);</string>
+                     </property>
+                     <property name="text">
+                      <string>H</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="GoMSpeedM">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>21</width>
+                       <height>23</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: rgb(255, 255, 000);</string>
+                     </property>
+                     <property name="text">
+                      <string>M</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="checked">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QPushButton" name="GoMSpeedL">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>21</width>
+                       <height>23</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: rgb(210, 210,230);</string>
+                     </property>
+                     <property name="text">
+                      <string>L</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <spacer name="horizontalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
@@ -548,37 +775,6 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="5" column="0" colspan="3">
-              <widget class="QFrame" name="MCurPosPulsF">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_21">
-                <property name="margin">
-                 <number>0</number>
-                </property>
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="MCurPosPuls">
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(250, 255, 240);</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
              <item row="5" column="6">
               <widget class="QLabel" name="label_21">
                <property name="text">
@@ -586,8 +782,8 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="10" colspan="2">
-              <widget class="QComboBox" name="MotorS">
+             <item row="5" column="12" colspan="2">
+              <widget class="QComboBox" name="GoMotorS">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -621,7 +817,7 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="9" colspan="2">
+             <item row="3" column="9" colspan="4">
               <widget class="QLabel" name="label_44">
                <property name="text">
                 <string/>
@@ -673,47 +869,6 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="8">
-              <widget class="QPushButton" name="GoMotor">
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Go</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0" colspan="3">
-              <widget class="QFrame" name="MCurPosUnitF">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_24">
-                <property name="margin">
-                 <number>0</number>
-                </property>
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="MCurPosUnit">
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(250, 255, 240);</string>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
              <item row="3" column="0" colspan="3">
               <widget class="QLabel" name="label_42">
                <property name="text">
@@ -724,7 +879,7 @@
                </property>
               </widget>
              </item>
-             <item row="8" column="0" colspan="12">
+             <item row="8" column="0" colspan="14">
               <widget class="Line" name="line_2">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -751,7 +906,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="11">
+             <item row="6" column="13">
               <widget class="QPushButton" name="SetUpMMAbs">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -790,38 +945,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="10" column="5" colspan="5">
-              <widget class="QLineEdit" name="SPSeP">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>100000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="10" column="10" colspan="2">
-              <widget class="QPushButton" name="SPSAScan">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Abs. Scn</string>
                </property>
               </widget>
              </item>
@@ -872,6 +995,74 @@
                </property>
               </widget>
              </item>
+             <item row="6" column="0" colspan="3">
+              <widget class="QFrame" name="MCurPosUnitF">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_24">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="MCurPosUnit">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(250, 255, 240);</string>
+                  </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="5" column="0" colspan="3">
+              <widget class="QFrame" name="MCurPosPulsF">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_21">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="MCurPosPuls">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>19</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(250, 255, 240);</string>
+                  </property>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
              <item row="11" column="4">
               <widget class="QLabel" name="label_37">
                <property name="text">
@@ -882,24 +1073,8 @@
                </property>
               </widget>
              </item>
-             <item row="11" column="5" colspan="5">
-              <widget class="QLineEdit" name="SPSdwell">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="11" column="10" colspan="2">
-              <widget class="QPushButton" name="SPSRScan">
+             <item row="11" column="12" colspan="2">
+              <widget class="QPushButton" name="SPSScan">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -910,7 +1085,7 @@
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
                <property name="text">
-                <string>Rel. Scn</string>
+                <string>Scan</string>
                </property>
               </widget>
              </item>
@@ -921,21 +1096,8 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="1" colspan="9">
-              <widget class="QComboBox" name="MotorN">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="10" colspan="2">
-              <widget class="QComboBox" name="SorPS">
+             <item row="9" column="12" colspan="2">
+              <widget class="QComboBox" name="SPSMotorS">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -970,7 +1132,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="10">
+             <item row="6" column="12">
               <widget class="QPushButton" name="SetUpMMRel">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -986,6 +1148,115 @@
                </property>
                <property name="text">
                 <string>Rel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="12">
+              <widget class="QPushButton" name="SetUpSPSRel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Rel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="13">
+              <widget class="QPushButton" name="SetUpSPSAbs">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Abs</string>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="11">
+              <widget class="QComboBox" name="SPSUnit">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               </property>
+               <property name="minimumContentsLength">
+                <number>0</number>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="5" colspan="7">
+              <widget class="QLineEdit" name="SPSeP">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>100000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="5" colspan="7">
+              <widget class="QLineEdit" name="SPSdwell">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="8" colspan="4">
+              <widget class="QPushButton" name="GoMotor">
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               </property>
+               <property name="text">
+                <string>Go</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" colspan="11">
+              <widget class="QComboBox" name="MotorN">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
               </widget>
              </item>
@@ -1010,30 +1281,7 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="1" column="5">
-              <widget class="QPushButton" name="MStart">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Mon. Start</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="5">
-              <widget class="QComboBox" name="SelectScale">
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="4">
+             <item row="2" column="4">
               <widget class="QLabel" name="DevCurV21">
                <property name="minimumSize">
                 <size>
@@ -1055,7 +1303,7 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="3">
+             <item row="2" column="3">
               <widget class="QComboBox" name="SelectD21">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -1068,35 +1316,31 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
+             <item row="3" column="3">
               <widget class="QComboBox" name="SelectD22">
                <property name="styleSheet">
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
+             <item row="3" column="2">
               <widget class="QRadioButton" name="SelectD22Sel">
                <property name="text">
                 <string/>
                </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
-             <item row="1" column="0" colspan="2">
+             <item row="3" column="0" colspan="2">
               <widget class="QLabel" name="label_23">
                <property name="text">
                 <string/>
                </property>
               </widget>
              </item>
-             <item row="0" column="0" colspan="3">
-              <widget class="QLabel" name="label_38">
-               <property name="text">
-                <string>Monitor</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="4">
+             <item row="3" column="4">
               <widget class="QLabel" name="DevCurV22">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(250, 255, 240);</string>
@@ -1106,6 +1350,175 @@
                </property>
                <property name="text">
                 <string>0.000</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_49">
+               <property name="text">
+                <string>Selected Detector</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="5">
+              <widget class="QLineEdit" name="DwellT21">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="text">
+                <string>0.1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <widget class="QLabel" name="DevCurV20">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(250, 255, 240);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>0.000</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="5">
+              <widget class="QLineEdit" name="DwellT20">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="text">
+                <string>0.1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="5">
+              <widget class="QLineEdit" name="DwellT22">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="text">
+                <string>0.1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLabel" name="label_50">
+               <property name="text">
+                <string>Value</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="5">
+              <widget class="QLabel" name="label_51">
+               <property name="text">
+                <string>Dwell T.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QRadioButton" name="SelectD21Sel">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1" colspan="5">
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <spacer name="horizontalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QComboBox" name="SelectScale">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="MStart">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>10000</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Mon. Start</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="1" column="3">
+              <widget class="QComboBox" name="SelectD20">
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
               </widget>
              </item>
@@ -1179,20 +1592,7 @@
                  <property name="spacing">
                   <number>1</number>
                  </property>
-                 <item row="0" column="0">
-                  <widget class="QPushButton" name="StdEXAFS">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                     <horstretch>2</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="text">
-                    <string>Std. EXAFS</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
+                 <item row="0" column="2">
                   <widget class="QPushButton" name="StdXANES">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1200,12 +1600,25 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To measure near edge region precisely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Std. XANES</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="2">
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="StdXAFS">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Both EXAFS and XAFNES regions are measured precisely at once.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Std. XAFS</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
                   <widget class="QPushButton" name="SaveBLKs">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1213,12 +1626,18 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>Save</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="3">
+                 <item row="0" column="5">
                   <widget class="QPushButton" name="LoadBLKs">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1226,8 +1645,37 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>Load</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="StdEXAFS">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>2</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To measure focusing on the 'EXAFS' region. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Std. EXAFS</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QLabel" name="label_52">
+                   <property name="text">
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -2719,7 +3167,7 @@
      <x>0</x>
      <y>0</y>
      <width>774</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -2777,8 +3225,6 @@
   <tabstop>SelectTA</tabstop>
   <tabstop>ShowPT</tabstop>
   <tabstop>SelectTE</tabstop>
-  <tabstop>ManTEkeV</tabstop>
-  <tabstop>ManTEdeg</tabstop>
   <tabstop>SelBLKs</tabstop>
   <tabstop>SelBLKUnit</tabstop>
   <tabstop>BLKs01</tabstop>
@@ -2843,7 +3289,6 @@
   <tabstop>OnFinishP</tabstop>
   <tabstop>ViewTab</tabstop>
   <tabstop>tabWidget</tabstop>
-  <tabstop>SelectScale</tabstop>
   <tabstop>GoUnit1</tabstop>
   <tabstop>SPSsP</tabstop>
   <tabstop>GoPos2</tabstop>
@@ -2851,22 +3296,21 @@
   <tabstop>GoUnit3</tabstop>
   <tabstop>GoTo3</tabstop>
   <tabstop>GoTo4</tabstop>
-  <tabstop>SPSAScan</tabstop>
   <tabstop>SPSeP</tabstop>
-  <tabstop>SPSRScan</tabstop>
+  <tabstop>SPSScan</tabstop>
   <tabstop>SPSdwell</tabstop>
   <tabstop>GoTo1</tabstop>
   <tabstop>GoPos1</tabstop>
   <tabstop>GoPos3</tabstop>
   <tabstop>GoUnit4</tabstop>
-  <tabstop>MotorS</tabstop>
+  <tabstop>GoMotorS</tabstop>
   <tabstop>MotorN</tabstop>
   <tabstop>GoUnit0</tabstop>
   <tabstop>GoTo2</tabstop>
   <tabstop>GoPos4</tabstop>
   <tabstop>GoMotorPosPuls</tabstop>
   <tabstop>SPSstep</tabstop>
-  <tabstop>SorPS</tabstop>
+  <tabstop>SPSMotorS</tabstop>
   <tabstop>SelectD1</tabstop>
   <tabstop>LogFileName</tabstop>
   <tabstop>LogFileSelect</tabstop>

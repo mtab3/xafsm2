@@ -13,6 +13,7 @@ Stars::Stars( void ) : QObject()
   StarsServer = STARSSERVER;
   StarsSPort  = STARSPORT;
   newSetting = true;
+  ConnectionStage = CSTAGE0;
 }
 
 void Stars::SetNewSVAddress( const QString &item )
@@ -48,6 +49,7 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
   bool FileOK = false;
 
   MyNameOnStars = DefaultName;
+  qDebug() << "set name " << MyNameOnStars;
 
   QFile file;
   if ( SelectedName != "" ) {
@@ -112,21 +114,8 @@ void Stars::ReConnect( void )
 
 void Stars::MakeConnection( void )
 {
-#if 0
-  QByteArray RBuf;
-  QString WBuf;
-#endif
-
-  qDebug() << "Make Connection";
-
   if ( ( ss == NULL ) || ( ss->state() != QAbstractSocket::ConnectedState ) ){
-
-    qDebug() << "Makeing Connection";
-
     if ( newSetting == true ) {  // 同じアドレス設定での接続試行は一回だけ
-
-      qDebug() << "Makeing Connection 1";
-
       newSetting = false;
       if ( ss == NULL )
 	ss = new QTcpSocket;
@@ -136,9 +125,6 @@ void Stars::MakeConnection( void )
       ConnectionStage = CSTAGE0;
       connect( ss, SIGNAL( readyRead( void ) ),
 	       this, SLOT( ReceiveMessageFromStars( void ) ) );
-
-      qDebug() << "Makeing Connection 1" << StarsServer << StarsSPort;
-
       ss->connectToHost( StarsServer, StarsSPort );
     }
   }
@@ -151,14 +137,12 @@ void Stars::ReceiveMessageFromStars( void )
   QString WBuf;
   bool OkF;
 
-  qDebug() << "ReceiveMessage " << ConnectionStage;
-
   switch( ConnectionStage ) {
   case CSTAGE0: 
     RBuf = ss->readLine( 4000 );
     RBuf = RBuf.simplified();
+    qDebug() << "My Name on Stars " << MyNameOnStars;
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
-    qDebug() << WBuf;
     ConnectionStage = CSTAGE1;
     ss->write( WBuf.toAscii() );
     break;
@@ -292,7 +276,6 @@ bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
     return false;          // コネクションをはれないと false
   }
 #endif
-
   if ( ConnectionStage != CSTAGEEND )
     return false;
 

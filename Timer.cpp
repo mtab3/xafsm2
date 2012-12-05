@@ -12,13 +12,6 @@ void MainWindow::timerEvent( QTimerEvent *event )
 {
   int Id = event->timerId();
 
-#if 0
-  if ( Id == WatchCurPosID ) { /* 定常的な角度監視 */ 
-                               /* 本当に監視しつづけるのが良いかどうかはまた別 */
-    WatchPos();
-  }
-#endif
-
   if ( Id == MeasID ) { /* 測定ステップの進行 */
     MeasSequence();
   }
@@ -32,35 +25,6 @@ void MainWindow::timerEvent( QTimerEvent *event )
     MonSequence();
   }
 }
-
-#if 0     // 現在全く不要のはず
-void MainWindow::WatchPos( void )
-{
-  QString buf;
-
-  double newv;
-  
-  if ( inMove == 1 ) {
-    if ( isFinishedCurMove() ) {
-      inMove = 0;
-      if ( inMeas == 0 )
-	NewLogMsg( QString( tr( "Mono: Reach %1 keV\n" ) ).arg( CurPosKeV ) );
-    }
-  }
-  
-  if ( inMeas == 1 ) {
-    if ( inPause ) {
-      buf = QString( tr( "Pausing ! at Rpt [%1] Blk [%2] Stp[%3]" ) )
-	.arg( MeasR+1 ).arg( MeasB+1 ).arg( MeasS+1 );
-    } else {
-      buf = QString( tr( "Now: Rpt [%1] Blk [%2] Stp[%3]" ) )
-	.arg( MeasR+1 ).arg( MeasB+1 ).arg( MeasS+1 );
-    }
-    statusbar->showMessage( buf );
-  }
-  return;
-}
-#endif
 
 void MainWindow::MotorMove( void )
 {
@@ -122,6 +86,14 @@ void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にす
   }
 }
 
+void MainWindow::SetDwellTime2( void )  // これもホントは返答を待つ形にするべき
+{
+  for ( int i = 0; i < MCHANNELS; i++ ) {
+    if ( MeasSensF[i] )
+      MeasSens[i]->SetTime( MeasSensDT[i] );
+  }
+}
+
 bool MainWindow::GetSensValues0( void )
 {
   return TheCounter->GetValue0();
@@ -134,6 +106,7 @@ bool MainWindow::GetSensValues( void )
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->GetValue();
+      // qDebug() << "getSensVals" << i << MeasSensF[i] << ff << MeasSens[i]->GetValue();
     }
   }
   
@@ -299,18 +272,11 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::MonSequence( void )
 {
-  MonStage1++;
-  if ( MonStage1 == 4 ) {
-    qDebug() << "Mon val " << MeasVals[0] << MeasVals[1] << MeasVals[2];
-    MonView->NewPointR( MeasVals[0], MeasVals[1], MeasVals[2] );
-    MonView->ReDraw();
-    MonStage1 = 0;
+  if ( isBusySensors() ) {
+    return;
   }
 
-  if ( isBusySensors() )
-    return;
-
-  switch( MonStage2 ) {
+  switch( MonStage ) {
     /* 
        0: 値の読み出しと表示
        1: nct08 を使う時: 計測開始の前準備
@@ -319,55 +285,53 @@ void MainWindow::MonSequence( void )
     */
   case 0:
     ClearSensorStages();
-    MonStage2 = 1;
+    MonStage = 1;
     break;
   case 1:
     if ( InitSensors() == false ) {  // true :: initializing
       ClearSensorStages();
-      MonStage2 = 2;
+      MonStage = 2;
     }
     break;
   case 2: 
     ClearSensorStages();
-    SetDwellTime( MonMeasTime );
-    MonStage2 = 3;
-    // don't break;
+    SetDwellTime2();
+    MonStage = 3;
+    break;
   case 3:
-    qDebug() << "a";
     if ( OneOfTheSensorIsCounter ) {
-      qDebug() << "b";
       if ( GetSensValues0() == false ) { // only for counters
-	qDebug() << "c";
 	ClearSensorStages();
-	qDebug() << "d";
-	MonStage2 = 4;
+	MonStage = 4;
       }
     } else {
       if ( GetSensValues() == false ) {  // true :: Getting
 	ClearSensorStages();
-	MonStage2 = 5;
+	MonStage = 5;
       }
     }
     break;
   case 4:
     if ( GetSensValues() == false ) {  // true :: Getting
       ClearSensorStages();
-      MonStage2 = 5;
+      MonStage = 5;
     }
     break;
   case 5:
     ReadSensValues();
-    MonStage2 = 10;
+    MonView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
+    MonView->ReDraw();
+    MonStage = 10;
 #if 0
     if ( inPause == 1 ) {
-      MonStage2 = 99;          // PauseStage
+      MonStage = 99;          // PauseStage
     }
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
     MonView->ReDraw();
     if ( inPause == 0 ) {
-      MonStage2 = 3;
+      MonStage = 3;
     }
     break;
   }
@@ -375,9 +339,12 @@ void MainWindow::MonSequence( void )
 
 void MainWindow::SPSSequence( void )
 {
-#if 0
-  MCurPos
-    ->setText( sks->GetValue( Motors[ MovingM ].devName ) );
+  AUnit *am = AMotors.value( MotorN->currentIndex() );
+  AUnit *as = ASensors.value( SelectD1->currentIndex() );
+
+  if ( am->getIsBusy() || am->getIsBusy2()
+       || as->getIsBusy() || as->getIsBusy2() )
+    return;
 
   switch( ScanStage ) {
     /* 
@@ -390,67 +357,74 @@ void MainWindow::SPSSequence( void )
        リピートも終わったら後始末をして終了
     */
   case 0:
+    as->InitLocalStage();
+    SetSPSViewWindow();
+    statusbar->showMessage( tr( "Scan Start!" ), 1000 );
+    ScanStage = 1;
+    // break;               // break の必要なし
+  case 1:
+    if ( as->InitSensor() == false ) {
+      NowScanP = ScanSP;
+      statusbar->showMessage( tr( "Going to initial position." ), 1000 );
+      am->SetValue( ScanSP );
+      if ( as->getType() == "CNT" ) {
+	ScanStage = 2;
+      } else {
+	ScanStage = 3;
+      }
+    }
+    break;
+  case 2: 
+    if ( as->GetValue0() == false ) { // only for counters
+      as->InitLocalStage();
+      ScanStage = 3;
+    }
+    break;
+  case 3:
+    if ( as->GetValue() == false ) {  // true :: Getting
+      as->InitLocalStage();
+      ScanStage = 4;
+    }
+    break;
+  case 4:
+    SPSView->NewPoint( 1, NowScanP, as->value().toDouble() );
+    SPSView->ReDraw();
+    NowScanP += ScanSTP;
+    if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
+	 ||( ( ScanSTP < 0 )&&( NowScanP < ScanEP ) ) ) {
+      ScanStage = 10;
+    } else {
+      am->SetValue( NowScanP );
+      ScanStage = 2;
+    }
+    break;
+  case 10:
+    statusbar->showMessage( tr( "The Scan has Finished" ), 4000 );
+    NewLogMsg( QString( tr( "Scan Finished\n" ) ) );
+    // sks->SetValue( Motors[ MovingM ].devName, p = SPSView->PeakSearch( 1 ) );
+    am->Stop();
+    ScanStage = 11;
+    break;
+  case 11:
+    am->SetValue( ScanOrigin );
+    ScanStage = 12;
+    break;
+  case 12:
+    inSPSing = 0;
+    killTimer( SPSID );
+    SPSScan->setText( tr( "Scan" ) );
+    SPSScan->setStyleSheet( "" );
+    SPSScan->setEnabled( true );
+    GoMotor->setEnabled( true );
+    break;
+  }
+}
+
+void MainWindow::SetSPSViewWindow( void )
+{
     if ( ScanEP > ScanSP ) {
       SPSView->SetWindow( ScanSP, 0, ScanEP, 0 );
     } else {
       SPSView->SetWindow( ScanEP, 0, ScanSP, 0 );
     }
-    statusbar->showMessage( tr( "Scan/Search Start!" ), 1000 );
-    ScanStage = 1;
-    break;
-  case 1:
-    NowScanP = ScanSP;
-    statusbar->showMessage( tr( "Going to initial position." ), 1000 );
-    sks->SetValue( Motors[ MovingM ].devName, ScanSP );
-    ScanStage = 2;
-    break;
-  case 2:
-    if ( sks->IsBusy( Motors[ MovingM ].devName ) == 0 ) {  // 目的の角度になったら
-      // 今の戻り値は Busy=1, Ready=0, Error=-1
-      // なので Error の時は状態遷移が進まなくなる
-      sks->StartMeas( MDevs[ SPSMon ].devName, ScanDW, MDevs[ SPSMon ].devCh );
-      MeasureICH( 0, ScanDW );
-      ScanStage = 3;
-    }
-    break;
-  case 3:
-    if ( sks->IsBusy( MDevs[ SPSMon ].devName, MDevs[ SPSMon ].devCh ) == 0 ) { 
-      ReadOutScanData( NowScanP );                        // 面倒なので今はまだ
-      SPSView->ReDraw();
-      NowScanP += ScanSTP;
-      if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
-	||( ( ScanSTP < 0 )&&( NowScanP < ScanEP ) ) ) {
-	ScanStage = 4;
-      } else {
-	sks->SetValue( Motors[ MovingM ].devName, NowScanP );
-	ScanStage = 2;
-      }
-    }
-    break;
-  case 4:
-    statusbar->showMessage( tr( "The Scan/Search has Finished" ), 4000 );
-    NewLogMsg( QString( tr( "SoPS: Finished\n" ) ) );
-    if ( SorPS->currentIndex() == PEAKSEARCH ) {
-      int p;
-      sks->SetSpeed( Motors[ MovingM ].devName, MSpeeds[ MovingS ].MSid );
-      sks->SetValue( Motors[ MovingM ].devName, p = SPSView->PeakSearch( 1 ) );
-      statusbar->showMessage( QString( tr( "Moving to %1." ) ).arg( p ), 4000 );
-      NewLogMsg( QString( tr( "Moving Motor[%1] to %2.\n" ) )
-		 .arg( Motors[ MovingM ].devName ).arg( p ) );
-      ScanStage = 5;  // モータがピーク位置にたどり着くのを待って終了
-    } else {
-      SPSStop0();
-    }
-    break;
-  case 5:
-    if ( sks->IsBusy( Motors[ MovingM ].devName ) == 0 ) { 
-      ScanStage = 6;  // ここで止めてもいいけど、モータの現在位置表示を確実にするために
-                      // あと1インターバルまわす。
-    }
-    break;
-  case 6:
-    SPSStop0();
-    break;
-  }
-#endif
 }

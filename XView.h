@@ -2,29 +2,42 @@
 #define XVIEW_H
 
 #include <QWidget>
+#include "ui_XView.h"
 
 #define MAXPOINTS ( 10000 )
 #define MAXLINES  ( 30 )
 
+const int MaxMon = 3;
 const int RingMax = 5 * 60 * 60 * 6;
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
 enum GTYPE { XYPLOT, MONITOR, GTYPES };
 
-class XView : public QWidget
+class XView : public QFrame, private Ui::XView
 {
   Q_OBJECT
 
 private:
+  void mouseMoveEvent( QMouseEvent *e );
+  void mousePressEvent( QMouseEvent *e );
+  void mouseReleaseEvent( QMouseEvent *e );
+  void mouseDoubleClickEvent( QMouseEvent *e );
+  QColor MCLineC;          // mouse cursor line color
+  int nx, ny;              // current mouse position
+
   GTYPE GType;
   int valid;
-  QColor bgColor;
+  QColor bgColor, BLACK;
   QVector<QColor> LC;
   QVector<QString> LNames;
   QString XName;
   double wminx, wmaxx;
   double wminy, wmaxy;
   int minx, miny, maxx, maxy;
+
+  double Rwmaxy[ MaxMon ];
+  double Rwminy[ MaxMon ];
+
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
   int points[ MAXLINES ];
@@ -32,14 +45,17 @@ private:
   int LineF[ MAXLINES ];
   int SLineR, SLineL;
   SCALET ScaleTR, ScaleTL;
-  double mony[2][ RingMax ]; // Monitor 用の配列は2本だけ。x もなし
+  bool *DrawF;
+  double mony[ MaxMon ][ RingMax ]; // Monitor 用の配列
+  int mont[ RingMax ];
   int MonScale;
 
 public:
   XView( QWidget *parent = NULL );
   void NewPoint( int l, double xx, double yy );
-  void NewPointR( double yy0, double yy1, double yy2 );
+  void NewPointR( int tt, double yy0, double yy1, double yy2 );
   void Clear( void );
+  void ClearDataR( void );
   void SetWindow( double x1, double y1, double x2, double y2 );
   void DrawXYPlot( QPainter *p );
   void DrawMonitor( QPainter *p );
@@ -49,6 +65,7 @@ public:
   void SetXName( QString Name ) { XName = Name; };
   void makeValid( int v = true ) { valid = v; };
   void SetSLines( int l1, int l2 ) { SLineR = l1; SLineL = l2; };
+  void SetDrawF( bool *f );
   void SetLineF( LINEF f00 = RIGHT, LINEF f01 = LEFT,
 		 LINEF f02 = LEFT, LINEF f03 = LEFT, LINEF f04 = LEFT, LINEF f05 = LEFT,
 		 LINEF f06 = LEFT, LINEF f07 = LEFT, LINEF f08 = LEFT, LINEF f09 = LEFT,
@@ -70,7 +87,7 @@ public:
   int getMonScale( void ) { return MonScale; };
 
 public slots:
-  void SetMonScale( int ms ) { MonScale = ms; };
+  void SetMonScale( int ms );
 
 private:
   void paintEvent( QPaintEvent *event );
@@ -82,7 +99,7 @@ private:
   void calcScale( double div, double min, double max, double *s, double *d );
   void SetView( int x1, int y1, int x2, int y2 );
   void UpDateYWindow( int l, SCALET s );
-  void UpDateYWindowRing( int LR );
+  void UpDateYWindowRing( void );
   int w2rx( double x );
   int w2ry( double y );
   int w2rdx( double x );
@@ -91,6 +108,7 @@ private:
   double r2wy( int y );
   double r2wdx( int x );
   double r2wdy( int y );
+  void DrawText( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
 };
 
 

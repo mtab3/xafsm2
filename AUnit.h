@@ -31,8 +31,10 @@ class AUnit : public QObject
   bool isBusy;
   bool isBusy2;
   QString Value;
+  QString lastVal;
 
   int LocalStage;
+  int lastSetV;
 
 public:
   AUnit( QObject *parent = 0 );
@@ -55,8 +57,19 @@ public:
   void setUnit( QString unit ) { Unit = unit; };
   void setIsBusy( bool busy ) { isBusy = busy; };
 
+  bool checkNewVal( void )
+  {
+    bool rv = ( Value != lastVal );
+    lastVal = Value;
+    return rv;
+  };
+
   double u2p( double u ) { return u / UPP + Center; };
   double p2u( double p ) { return ( p - Center ) * UPP; };
+  double any2p( double a, int selU, RELABS ra ) {
+    return a / ( ( selU == 0 ) ? 1 : UPP )
+      + ( ( ra == REL ) ? Value.toDouble() : ( ( selU == 0 ) ? 0 : Center ) );
+  }
 
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
@@ -78,6 +91,8 @@ public:
   bool getIsBusy( void ) { return isBusy; };
   bool getIsBusy2( void ) { return isBusy2; };
   QString value( void ) { return Value; };
+
+  int getLastSetV( void ) { return lastSetV; };
 
   // only for PM
   double getUPP( void ) { return UPP; };

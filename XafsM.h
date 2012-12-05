@@ -1,18 +1,6 @@
 #ifndef XAFSM_H
 #define XAFSM_H
 
-struct MCCD {
-  const char *MCName;
-  double d;
-};
-enum MCC { Si111, Si333, Ge111, Ge333, MCCS };
-const MCCD mccd[ MCCS ] = {
-  { "Si(111)", 3.1355316, },
-  { "Si(333)", 1.0451772, },
-  { "Ge(111)", 3.2663822, },
-  { "Ge(333)", 1.0887941, },
-};
-
 #if 0
 struct MOTORD {
   const int Mid;
@@ -75,17 +63,7 @@ const MDEVD MDevs[ MEASDEVICES ] = {
 };
 #endif
 
-struct SPSMODED {   // Scan or Peak Search
-  int SPSMid;
-  const char *SPSMName;
-};
-enum SPSMODE { PEAKSEARCH, SCAN, SPSMODES };
-const SPSMODED SPSModes[ SPSMODES ] = {
-  { PEAKSEARCH, "Peak Search" },
-  { SCAN, "Scan" },
-};
-
-const int TicPDiv = 50;   // モニター時の 1罫線間に測定する回数
+//const int TicPDiv = 50;   // モニター時の 1罫線間に測定する回数
 const int DivPScr = 6;    // この辺をかえるときは XView.h の RingMax にも注意
 struct MSCALED {
   int MSid;
@@ -114,14 +92,14 @@ extern const char *CMode[ MEASMODES + 1 ];
 enum MEASCHNAME{ MC_I0, MC_I1, MC_SSD, MC_AUX1, MC_AUX2, MCHANNELS };
 enum MEASCHMODE{ MCM_I0, MCM_TRANS, MCM_FLUO, MCM_EY, MCMODES };
 
-enum MSPEED { LOW, MIDIUM, HIGH, MSPEEDS };
+enum MSPEED { LOW, MIDDLE, HIGH, MSPEEDS };
 struct MSPEEDD {
   MSPEED MSid;
   const char *MSName;
 };
 const MSPEEDD MSpeeds[ MSPEEDS ] = {
   { LOW,    "Low" },
-  { MIDIUM, "Midium" },
+  { MIDDLE, "Midium" },
   { HIGH,   "High" },
 };
 

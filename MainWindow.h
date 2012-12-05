@@ -2,9 +2,11 @@
 #define MAINWIN_H
 
 #include <QMessageBox>
+#include <QTime>
 
 #include <math.h>
 
+#include "Mccd.h"
 #include "ui_MainWindow.h"
 #include "SelMC.h"
 #include "StarsSV.h"
@@ -56,9 +58,10 @@ private:
   QVector<AUnit *> ASensors;
   void ReadDef( QString fname );
   QString nextItem( QString start, QString &item );
+  QVector<MCCD*> mccd;
 
   /* cfg. */
-  SelMC *selMC;
+  SelMC *selmc;
   StarsSV *starsSV;
   /* cfg. */
 
@@ -68,6 +71,8 @@ private:
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
+  AUnit *EncMainTh;
+
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
 
@@ -83,6 +88,8 @@ private:
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
+
+  QTime MonTime;
 
   void setupLogArea( void );
   void setupCommonArea( void );
@@ -155,24 +162,31 @@ private:
   void GetNewGo( int i );
   void ShowGo( int i );
   void SetNewGos( void );
-  void SPSStart( int AbsRel );
-  void SPSStop0( void );
+  void ScanStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
-  void ShowRelAbs( void );
+  void ShowGoMRelAbs( void );
+  void ShowSPSRelAbs( void );
+
+  void ShowGoMSpeed( void );
+  MSPEED GoMSpeed;
 
   int inMMove;
   int MoveID;            // Timer ID
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
-  RELABS RelAbs;
+  RELABS GoMRelAbs, SPSRelAbs;
+  int SPSSelU;           // Selected SPS Unit
+  double SPSUPP;         // Unit per puls
   int SPSMon;            // SPS-ing monitor
   int SPSID;             // Timer ID
   int inSPSing;
   int ScanStage;
-  int ScanSP, ScanEP, ScanSTP;
-  double ScanDW;
+  int ScanMotor, ScanSensor;
+  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
+  double ScanDT;
   int NowScanP;
   XView *SPSView;
+
   QString RadioBOn;
   QString RadioBOff;
 
@@ -183,9 +197,8 @@ private:
 
   int inMonitor;
   int MonID;
-  int MonStage1, MonStage2;
+  int MonStage;
   int MonDev;
-  double MonMeasTime;
   XView *MonView;
 
   QVector<QLineEdit *> BLKstart;
@@ -249,6 +262,7 @@ private:
   MEASMODE MeasDispMode[ MCHANNELS ];
   AUnit *MeasSens[ MCHANNELS ];
   bool MeasSensF[ MCHANNELS ];
+  double MeasSensDT[ MCHANNELS ];
   bool OneOfTheSensorIsCounter;
   AUnit *TheCounter;
   double NowDwell;
@@ -277,23 +291,32 @@ private:
   bool isBusySensors( void );
   void ClearSensorStages( void );
   bool InitSensors( void );
-  void SetDwellTime( double dtime );
+  void SetDwellTime( double dtime );  // for measure
+  void SetDwellTime2( void );         // for monitor
   bool GetSensValues0( void );
   bool GetSensValues( void );
   void ReadSensValues( void );
+  void SetSPSViewWindow( void );
 
 private slots:
   void Initialize( void );
   void InitializeUnitsAgain( void );
 
   void ShowMessageOnSBar( QString msg, int time );
-  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
+  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; qDebug() << "MonoCryD" << MonoCryD; };
 
-  void ShowCurThPos( SMsg msg );
+  //  double CurrentAngle( void );
+  void ShowCurThPos( void );
   void ShowCurMotorPos( SMsg msg );
 
   void MMRel( void );
   void MMAbs( void );
+  void SPSRel( void );
+  void SPSAbs( void );
+  void SetGoMSpeedH( void );
+  void SetGoMSpeedM( void );
+  void SetGoMSpeedL( void );
+  void ScanStart( void );
 
   void NewSelA( int i );
   void OpenPT( void );
@@ -313,9 +336,10 @@ private slots:
   void NewGoMotorPosUnit( const QString &val );
   void GoMAtP( void );
   void GoMStop( void );
-  void SPSAS( void );
-  void SPSRS( void );
   void Monitor( void );
+  void newVI0( QString v );
+  void newVS1( QString v );
+  void newVS2( QString v );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
@@ -350,6 +374,7 @@ private slots:
   void ChangeBLKdwell05( void );
 
   void SetStdEXAFSBLKs( void );
+  void SetStdXAFSBLKs( void );
   void SetStdXANESBLKs( void );
   void SetDwells( void );
   void SelectedWBFN( const QString &fname );
