@@ -36,6 +36,9 @@ class AUnit : public QObject
   int LocalStage;
   int lastSetV;
 
+ private:
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp );
+
 public:
   AUnit( QObject *parent = 0 );
 
