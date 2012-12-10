@@ -264,6 +264,7 @@ private:
   bool MeasSensF[ MCHANNELS ];
   double MeasSensDT[ MCHANNELS ];
   bool OneOfTheSensorIsCounter;
+  bool OneOfTheSensorIsSSD;
   AUnit *TheCounter;
   double NowDwell;
 

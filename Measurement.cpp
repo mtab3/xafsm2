@@ -27,6 +27,13 @@ void MainWindow::MoveCurThPosKeV( double keV ) // •ªŒõŠí‚ÌˆÚ“®Žw—ß(keV’PˆÊ‚ÅˆÊ’u
 		     + MMainTh->value().toInt() );
 #else
   if ( SelThEncorder->isChecked() ) {
+    qDebug() << "MoveCurThPosKeV : to keV " << keV
+	     << "to Deg " << keV2deg( keV )
+	     << "EncMainTh " << EncMainTh->value().toDouble()
+	     << "delta in puls " << ( keV2deg( keV ) - EncMainTh->value().toDouble() ) / MMainTh->getUPP()
+	     << "MainTh " << MMainTh->value().toInt()
+	     << "GoTo " << ( keV2deg( keV ) - EncMainTh->value().toDouble() )
+                  / MMainTh->getUPP() + MMainTh->value().toInt();
     MMainTh->SetValue( ( keV2deg( keV ) - EncMainTh->value().toDouble() )
 		       / MMainTh->getUPP() + MMainTh->value().toInt() );
   } else {

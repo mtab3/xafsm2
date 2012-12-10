@@ -647,6 +647,7 @@ void MainWindow::StartMeasurement( void )
     MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
     
     OneOfTheSensorIsCounter = false;   // 使おうとするディテクタの中にカウンタがあるか
+    OneOfTheSensorIsSSD = false;   // 使おうとするディテクタの中にカウンタがあるか
     TheCounter = 0;       // そのデテクタの番号
     MeasChNo = 0;         // 測定のチャンネル数
     for ( int i = 0; i < 5; i++ ) {
@@ -655,6 +656,15 @@ void MainWindow::StartMeasurement( void )
 	if ( MeasSens[i]->getType() == "CNT" ) {
 	  OneOfTheSensorIsCounter = true;
 	  TheCounter = MeasSens[i];
+	  break;
+	}
+      }
+    }
+    for ( int i = 0; i < 5; i++ ) {
+      if ( MeasSensF[i] ) {
+	MeasChNo++;
+	if ( MeasSens[i]->getType() == "SSDP" ) {
+	  OneOfTheSensorIsSSD = true;
 	  break;
 	}
       }
@@ -693,6 +703,7 @@ void MainWindow::SurelyStop( void )
   MeasPause->setEnabled( false );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
+    qDebug() << "InitialKev" << InitialKeV;
   }
 }
 

@@ -445,6 +445,13 @@ void MainWindow::Monitor( void )
 	break;
       }
     }
+    OneOfTheSensorIsSSD = false;
+    for ( int i = 0; i < MCHANNELS; i++ ) {
+      if ( MeasSens[i]->getType() == "SSD" || MeasSens[i]->getType() == "SSDP") {
+	OneOfTheSensorIsSSD = true;
+	break;
+      }
+    }
 
     MonView = XViews[ ViewTab->currentIndex() ];
     MonView->ClearDataR();
