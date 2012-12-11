@@ -21,9 +21,11 @@ void MainWindow::timerEvent( QTimerEvent *event )
   if ( Id == SPSID ) { /* スキャン/ピークサーチの進行 */
     SPSSequence();
   }
+  qDebug() << "001";
   if ( Id == MonID ) { /* 特定の測定器の値の時間変化の監視 */
     MonSequence();
   }
+  qDebug() << "002";
 }
 
 void MainWindow::MotorMove( void )
@@ -96,7 +98,14 @@ void MainWindow::SetDwellTime2( void )  // これもホントは返答を待つ形にするべき
 
 bool MainWindow::GetSensValues0( void )
 {
-  return TheCounter->GetValue0();
+  bool rv = false;
+
+  if ( OneOfTheSensorIsCounter )
+    rv |= TheCounter->GetValue0();
+  if ( OneOfTheSensorIsSSD )
+    rv |= SFluo->GetValue0();
+
+  return rv;
 }
 
 bool MainWindow::GetSensValues( void )
@@ -106,7 +115,6 @@ bool MainWindow::GetSensValues( void )
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->GetValue();
-      // qDebug() << "getSensVals" << i << MeasSensF[i] << ff << MeasSens[i]->GetValue();
     }
   }
   
@@ -115,10 +123,16 @@ bool MainWindow::GetSensValues( void )
 
 void MainWindow::ReadSensValues( void )
 {
-  MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
-  for ( int i = 1; i < MCHANNELS; i++ ) {
+  //  MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
+  for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
-      MeasVals[i] = MeasSens[i]->value().toDouble();
+      if ( MeasSens[i]->getType() == "SSD" ) {
+	MeasVals[i] = MeasSens[i]->values().at(0).toDouble();
+      } else if ( MeasSens[i]->getType() == "SSDP" ) {
+	MeasVals[i] = SFluo->values().at( MeasSens[i]->getCh().toInt()+1 ).toDouble();
+      } else {
+	MeasVals[i] = MeasSens[i]->value().toDouble();
+      }
     }
   }
 }
@@ -209,7 +223,7 @@ void MainWindow::MeasSequence( void )
 		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
     ClearSensorStages();
-    if ( OneOfTheSensorIsCounter )
+    if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD )
       MeasStage = 5;
     else
       MeasStage = 6;
@@ -272,9 +286,12 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::MonSequence( void )
 {
+  qDebug() << "000";
   if ( isBusySensors() ) {
+    qDebug() << "busy000";
     return;
   }
+  qDebug() << "in000";
 
   switch( MonStage ) {
     /* 
@@ -284,22 +301,30 @@ void MainWindow::MonSequence( void )
        2: nct08 を使う時: 計測開始
     */
   case 0:
+qDebug() << "aaa";
     ClearSensorStages();
     MonStage = 1;
     break;
   case 1:
+qDebug() << "bbb";
     if ( InitSensors() == false ) {  // true :: initializing
+qDebug() << "bbb1";
       ClearSensorStages();
+qDebug() << "bbb2";
       MonStage = 2;
+qDebug() << "bbb3";
     }
+qDebug() << "bbb4";
     break;
   case 2: 
+qDebug() << "ccc";
     ClearSensorStages();
     SetDwellTime2();
     MonStage = 3;
     break;
   case 3:
-    if ( OneOfTheSensorIsCounter ) {
+qDebug() << "ddd";
+    if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
       if ( GetSensValues0() == false ) { // only for counters
 	ClearSensorStages();
 	MonStage = 4;
@@ -312,12 +337,14 @@ void MainWindow::MonSequence( void )
     }
     break;
   case 4:
+qDebug() << "eee";
     if ( GetSensValues() == false ) {  // true :: Getting
       ClearSensorStages();
       MonStage = 5;
     }
     break;
   case 5:
+qDebug() << "fff";
     ReadSensValues();
     MonView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
     MonView->ReDraw();
@@ -329,6 +356,7 @@ void MainWindow::MonSequence( void )
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
+qDebug() << "ggg";
     MonView->ReDraw();
     if ( inPause == 0 ) {
       MonStage = 3;
@@ -367,7 +395,9 @@ void MainWindow::SPSSequence( void )
       NowScanP = ScanSP;
       statusbar->showMessage( tr( "Going to initial position." ), 1000 );
       am->SetValue( ScanSP );
-      if ( as->getType() == "CNT" ) {
+      if ( ( as->getType() == "CNT" )
+	   ||( as->getType() == "SSD" )
+	   ||( as->getType() == "SSDP" ) ) {
 	ScanStage = 2;
       } else {
 	ScanStage = 3;
@@ -387,7 +417,14 @@ void MainWindow::SPSSequence( void )
     }
     break;
   case 4:
-    SPSView->NewPoint( 1, NowScanP, as->value().toDouble() );
+    if ( as->getType() == "SSD" ) {
+      SPSView->NewPoint( 1, NowScanP, as->values().at(0).toDouble() );
+    } else if ( as->getType() == "SSDP" ) {
+      SPSView->NewPoint( 1, NowScanP,
+			 SFluo->values().at( as->getCh().toInt() + 1 ).toDouble() );
+    } else {
+      SPSView->NewPoint( 1, NowScanP, as->value().toDouble() );
+    }
     SPSView->ReDraw();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )

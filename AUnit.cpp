@@ -52,8 +52,8 @@ void AUnit::Initialize( Stars *S )
   // 現状ある unit は
   //            PM  PZ CNT PAM ENC SSD SSDP
 
-  //            PM  PZ CNT PAM ENC SSD SSDP        // 全ユニット
-  if ( TypeCHK(  1,  1,  1,  1,  1,  1,   1 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP        // SSDP を除く全ユニット
+  if ( TypeCHK(  1,  1,  1,  1,  1,  1,   0 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ) );
@@ -72,7 +72,7 @@ void AUnit::Initialize( Stars *S )
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP        // CNT は Ch に IsBusy を訊くとエラー
-  if ( TypeCHK(  1,  1,  0,  1,  1,  1,   1 ) ) {
+  if ( TypeCHK(  1,  1,  0,  1,  1,  1,   0 ) ) {
     s->SendCMD2( "Init", DevCh, "IsBusy" );
   }
   if ( TypeCHK(  0,  0,  1,  0,  0,  0,   0 ) ) {
@@ -112,7 +112,7 @@ void AUnit::show( void )
     .arg( UPP ).arg( Center ).arg( MaxV ).arg( MinV );
 }
 
-bool AUnit::GetValue( void )    // 以下まだ SSD に対応していない
+bool AUnit::GetValue( void )
 {
   bool rv = false;
 
@@ -127,6 +127,13 @@ bool AUnit::GetValue( void )    // 以下まだ SSD に対応していない
     isBusy2 = true;
     s->SendCMD2( UID, Driver, "GetValues" );
   }
+#if 0
+  //            PM  PZ CNT PAM ENC SSD SSDP
+  if ( TypeCHK(  0,  0,  0,  0,  0,  0,   1 ) ) {  // SSD の GetValue は全体("SSD")に一回
+    isBusy2 = true;
+    s->SendCMD2( UID, DevCh, QString( "GetValue " ) + Ch );
+  }
+#endif
   //            PM  PZ CNT PAM ENC SSD SSDP
   if ( TypeCHK(  0,  0,  0,  1,  0,  0,   0 ) ) {
     isBusy2 = true;
@@ -216,6 +223,7 @@ void AUnit::SetCurPos( SMsg msg )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
 	    || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Val();
+    Values = msg.Vals();
     emit newValue( Value );
     isBusy2 = false;
   }
@@ -291,6 +299,7 @@ bool AUnit::InitSensor( void )
 {
   bool rv = false;
 
+  qDebug() << "LocalStage = " << LocalStage;
   if ( Type == "PAM" ) {         // Keithley 6845
     switch( LocalStage ) {
     case 0:

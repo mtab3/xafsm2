@@ -323,8 +323,6 @@ void XView::DrawMonitor( QPainter *p )
     p->drawLine( LM, w2ry( yy ), width()-RM, w2ry( yy ) );   // ‰¡‚ÌŒrü
   }
 
-  int inc;
-  double tmp;
   double sy, dy;
   UpDateYWindowRing();
 

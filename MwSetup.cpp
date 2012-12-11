@@ -438,18 +438,16 @@ void MainWindow::Monitor( void )
     MeasSensDT[2] = DwellT22->text().toDouble();
 
     OneOfTheSensorIsCounter = false;
-    for ( int i = 0; i < MCHANNELS; i++ ) {
-      if ( MeasSens[i]->getType() == "CNT" ) {
-	OneOfTheSensorIsCounter = true;
-	TheCounter = MeasSens[i];
-	break;
-      }
-    }
     OneOfTheSensorIsSSD = false;
     for ( int i = 0; i < MCHANNELS; i++ ) {
-      if ( MeasSens[i]->getType() == "SSD" || MeasSens[i]->getType() == "SSDP") {
-	OneOfTheSensorIsSSD = true;
-	break;
+      if ( MeasSensF[i] ) {
+	if ( MeasSens[i]->getType() == "CNT" ) {
+	  OneOfTheSensorIsCounter = true;
+	  TheCounter = MeasSens[i];
+	}
+	if ( MeasSens[i]->getType() == "SSD" || MeasSens[i]->getType() == "SSDP") {
+	  OneOfTheSensorIsSSD = true;
+	}
       }
     }
 
@@ -478,7 +476,6 @@ void MainWindow::Monitor( void )
     if ( MeasSensF[2] )
       connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 		 
-
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
 

@@ -41,7 +41,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   ReadDef( "XAFSM.def" );
   selmc = new SelMC( mccd );
 
-  qDebug() << "XName, XKey " << XAFSName << XAFSKey;
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備

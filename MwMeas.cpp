@@ -647,7 +647,9 @@ void MainWindow::StartMeasurement( void )
     MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
     
     OneOfTheSensorIsCounter = false;   // 使おうとするディテクタの中にカウンタがあるか
-    OneOfTheSensorIsSSD = false;   // 使おうとするディテクタの中にカウンタがあるか
+    OneOfTheSensorIsSSD = MeasSensF[ MC_SSD ];
+                                       // 使おうとするディテクタの中にSSDがあるか
+                                       // まずは、19ch SSD (全体)からチェック
     TheCounter = 0;       // そのデテクタの番号
     MeasChNo = 0;         // 測定のチャンネル数
     for ( int i = 0; i < 5; i++ ) {
@@ -656,22 +658,15 @@ void MainWindow::StartMeasurement( void )
 	if ( MeasSens[i]->getType() == "CNT" ) {
 	  OneOfTheSensorIsCounter = true;
 	  TheCounter = MeasSens[i];
-	  break;
 	}
-      }
-    }
-    for ( int i = 0; i < 5; i++ ) {
-      if ( MeasSensF[i] ) {
-	MeasChNo++;
 	if ( MeasSens[i]->getType() == "SSDP" ) {
 	  OneOfTheSensorIsSSD = true;
-	  break;
 	}
       }
     }
     if ( MeasSensF[ MC_SSD ] )
       MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
-    
+
     CpBlock2SBlock();
     MeasStage = 0;
     ClearNowView();
@@ -703,7 +698,6 @@ void MainWindow::SurelyStop( void )
   MeasPause->setEnabled( false );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
-    qDebug() << "InitialKev" << InitialKeV;
   }
 }
 

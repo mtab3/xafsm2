@@ -32,6 +32,7 @@ class AUnit : public QObject
   bool isBusy2;
   QString Value;
   QString lastVal;
+  QStringList Values;
 
   int LocalStage;
   int lastSetV;
@@ -94,6 +95,7 @@ public:
   bool getIsBusy( void ) { return isBusy; };
   bool getIsBusy2( void ) { return isBusy2; };
   QString value( void ) { return Value; };
+  QStringList values( void ) { return Values; };
 
   int getLastSetV( void ) { return lastSetV; };
 

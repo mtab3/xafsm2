@@ -1,8 +1,8 @@
   9809     AichiSR   BL5S1
- test.dat        12.12.10 21:09 - %001%
+ test.dat        12.12.11 15:58 - %001%
                                                                                  
  Ring :   1.2 GeV     0.0 mA - %002% mA
- Mono :   Si(111)       D=  3.13553 A    Initial angle= 12.78472 deg
+ Mono :   Si(111)       D=  3.13553 A    Initial angle= 12.78450 deg
  BL5S1    Transmission ( 0)   Repitition=  1     Points=  480
  Param file : DUMMYNAME.prm   energy axis (2)     Block = 4
 
@@ -15,8 +15,3 @@
  Angle(c) Angle(o) time/s         1         2         3
       Mode         0         0         1         2
     Offset         0         0     0.000     0.000
-  13.15931  13.15860      1.00      3075     87043   8.68440   8.68486
-  13.15380  13.15310      1.00      3075     87061   8.68797   8.68843
-  13.14830  13.14770      1.00      3075     87039   8.69154   8.69193
-  13.14280  13.14220      1.00      3075     87034   8.69511   8.69551
-  13.13731  13.13670      1.00      3075     87001   8.69869   8.69908
