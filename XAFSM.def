@@ -1,6 +1,6 @@
 # XAFS-M setting file : Edited 2012/10/03
 
-XAFSName  "XafsM2-BL5S1"
+XAFSName  "XafsM2-bsd"
 XAFSkey   "XafsM2-BL5S1"
 XAFSTitle "XafsM2-BL5S1"
 
@@ -34,7 +34,8 @@ CRYSTAL  "Ge(333)"   1.0887941
 #     0.000027... : The metric unit / puls
 #     0           : Center position in puls
 
-MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
+#MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
+MOTOR PM "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 0
 
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
@@ -50,23 +51,43 @@ MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0
 # Following definitions are temporal (not real)
 #
 
-MOTOR PM "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 0
-MOTOR PM "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 0
-MOTOR PM "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 0
-MOTOR PM "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 0
-MOTOR PM "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 0
-MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0
-MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0
-MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0
-MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0
-MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 0 
-MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0 
+#MOTOR PM "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 0
+#MOTOR PM "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 0
+#MOTOR PM "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 0
+#MOTOR PM "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 0
+#MOTOR PM "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 0
+#MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0
+#MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0
+#MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0
+#MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0
+#MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 0 
+#MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 0 
+#MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 0 
+#MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0 
 
-MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
-MOTOR PM "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0 INT
-MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120 REAL     # Need to check the range
+#MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
+#MOTOR PM "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0 INT
+#MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120 REAL     # Need to check the range
+
+
+MOTOR PM "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 0
+MOTOR PM "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 0
+MOTOR PM "STAGEY" "Stage Y" "simmotor" "ch2" "mm" 0.001 0
+MOTOR PM "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 0
+MOTOR PM "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 0
+MOTOR PM "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 0
+MOTOR PM "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 0
+MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 0 
+MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "simmotor" "ch12" "mm" 0.001 0 
+
+MOTOR PM "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 -11406
+MOTOR PM "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 0 INT
+MOTOR PZ "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 -10 120 REAL     # Need to check the range
+
 
 # define Sensor units
 

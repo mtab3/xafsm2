@@ -124,6 +124,7 @@ public slots:
   void ClrBusy( SMsg msg );
   void SetIsBusyByMsg( SMsg msg );
   void SetCurPos( SMsg msg );
+  void ReceiveValues( SMsg msg );
 
 signals:
   //  void CountFinished( void );

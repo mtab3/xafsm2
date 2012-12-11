@@ -80,9 +80,10 @@ void SMsg::setMsgType( void )
   int i = 0;
 
   msgt = NOTMSG;
-  while ( MsgTypeV[i] != NOTMSG ) {
-    if ( msg == MsgType[i] ) {
-      msgt = MsgTypeV[i];
+  while ( MsgT[i].V != NOTMSG ) {
+    if ( msg == MsgT[i].T ) {
+      msgt = MsgT[i].V;
+      qDebug() << "PersMsg " << MsgT[i].V << MsgT[i].T;
       break;
     }
     i++;

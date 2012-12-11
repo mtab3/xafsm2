@@ -3,80 +3,47 @@
 
 #include "MsgType.h"
 
-const QString MsgType[] = {
-  "@GetValue",                 // 0
-  "@GetSpeedSelected",
-  "@SpeedHigh",
-  "@SpeedMiddle",
-  "@SpeedLow",                 // 4
-  "@Stop",
-  "@Remote",
-  "@StopEmergency",
-  "@Standby",
-  "@Reset",                    // 9
-  "@SetDataFormatElements",
-  "@SetZeroCheckEnable",
-  "@SetAutoRangeEnable",
-  "@SetNPLCycles",
-  "@Run",                      // 14
-  "@ScanCw",
-  "@ScanCcw",
-  "@Read",
-  "@IsBusy",
+const MsgTyp MsgT[] = {
+  { "@GetValue", GETVALUE },
+  { "@GetSpeedSelected", GETSPEEDSELECTED },
+  { "@SpeedHigh", SPEEDHIGH },
+  { "@SpeedMiddle", SPEEDMIDDLE },
+  { "@SpeedLow", SPEEDLOW },
+  { "@Stop", STOP },
+  { "@Remote", REMOTE },
+  { "@StopEmergency", STOPEMERGENCY },
+  { "@Standby", STANDBY },
+  { "@Reset", RESET },
+  { "@SetDataFormatElements", SETDATAFORMAT },
+  { "@SetZeroCheckEnable", SETZEROCHECK },
+  { "@SetAutoRangeEnable", SETAUTORANGE },
+  { "@SetNPLCycles", SETNPLCYCLES },
+  { "@Run", RUN },
+  { "@ScanCw", SCANCW },
+  { "@ScanCcw", SCANCCW },
+  { "@Read", READ },
+  { "@IsBusy", ISBUSY },
 
-  "@SetAbsoluteVoltage",       // 19
-  "@SetAbsolutePosition",
-  "@SetRelativeVoltage",
-  "@SetRelativePosition",
-  "@SetSpeedHigh",
-  "@SetSpeedMiddle",           // 24
-  "@SetSpeedLow",
+  { "@SetAbsoluteVoltage", SETABSOLUTEVOLTAGE },
+  { "@SetAbsolutePosition", SETABSOLUTEPOSITION },
+  { "@SetRelativeVoltage", SETRELATIVEVOLTAGE },
+  { "@SetRelativePosition", SETRELATIVEPOSITION },
+  { "@SetSpeedHigh", SETSPEEDHIGH },
+  { "@SetSpeedMiddle", SETSPEEDMIDDLE },
+  { "@SetSpeedLow", SETSPEEDLOW },
 
-  "@SetStopMode",
-  "@SetTimerPreset",
-  "@CounterReset",
-  "@CountStart",               // 29
+  { "@SetStopMode", SETSTOPMODE },
+  { "@SetTimerPreset", SETTIMERPRESET },
+  { "@CounterReset", COUNTERRESET },
+  { "@CountStart", COUNTSTART },
 
-  "_ChangedValue",
-  "_ChangedIsBusy",
-  "",
-};
+  { "@SetPresetType", SETPRESETTYPE },
+  { "@SetPresetValue", SETPRESETVALUE },
+  { "@GetValues", GETVALUES },
+  { "@Start", SMSG_START },
 
-MSGTYPE MsgTypeV[] = {
-  GETVALUE,
-  GETSPEEDSELECTED,
-  SPEEDHIGH,
-  SPEEDMIDDLE,
-  SPEEDLOW,
-  STOP,
-  REMOTE,
-  STOPEMERGENCY,
-  STANDBY,
-  RESET,
-  SETDATAFORMAT,
-  SETZEROCHECK,
-  SETAUTORANGE,
-  SETNPLCYCLES,
-  RUN,
-  SCANCW,
-  SCANCCW,
-  READ,
-  ISBUSY,
+  { "_ChangedValue", EvCHANGEDVALUE },
+  { "_ChangedIsBusy", EvISBUSY },
 
-  SETABSOLUTEVOLTAGE,
-  SETABSOLUTEPOSITION,
-  SETRELATIVEVOLTAGE,
-  SETRELATIVEPOSITION,
-  SETSPEEDHIGH,
-  SETSPEEDMIDDLE,
-  SETSPEEDLOW,
-
-  SETSTOPMODE,
-  SETTIMERPRESET,
-  COUNTERRESET,
-  COUNTSTART,
-
-  EvCHANGEDVALUE,
-  EvISBUSY,
-  NOTMSG,
+  { "", NOTMSG },
 };

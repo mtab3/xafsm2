@@ -220,6 +220,15 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsCounterReset( smsg ); break;
 	case COUNTSTART:
 	  emit AnsCountStart( smsg ); break;
+	case SETPRESETTYPE:
+	  emit AnsSetPresetType( smsg ); break;
+	case SETPRESETVALUE:
+	  emit AnsSetPresetValue( smsg ); break;
+	case GETVALUES:
+	  qDebug() << "Receive Get Values in Stars";
+	  emit AnsGetValues( smsg ); break;
+	case SMSG_START:
+	  emit AnsStart( smsg ); break;
 	default:
 	  break;
 	}

@@ -286,12 +286,9 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::MonSequence( void )
 {
-  qDebug() << "000";
   if ( isBusySensors() ) {
-    qDebug() << "busy000";
     return;
   }
-  qDebug() << "in000";
 
   switch( MonStage ) {
     /* 
@@ -301,29 +298,21 @@ void MainWindow::MonSequence( void )
        2: nct08 を使う時: 計測開始
     */
   case 0:
-qDebug() << "aaa";
     ClearSensorStages();
     MonStage = 1;
     break;
   case 1:
-qDebug() << "bbb";
     if ( InitSensors() == false ) {  // true :: initializing
-qDebug() << "bbb1";
       ClearSensorStages();
-qDebug() << "bbb2";
       MonStage = 2;
-qDebug() << "bbb3";
     }
-qDebug() << "bbb4";
     break;
   case 2: 
-qDebug() << "ccc";
     ClearSensorStages();
     SetDwellTime2();
     MonStage = 3;
     break;
   case 3:
-qDebug() << "ddd";
     if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
       if ( GetSensValues0() == false ) { // only for counters
 	ClearSensorStages();

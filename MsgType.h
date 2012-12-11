@@ -3,6 +3,8 @@
 
 #include <QString>
 
+
+
 enum MSGTYPE {
   GETVALUE,                  // 0
   GETSPEEDSELECTED,
@@ -37,13 +39,23 @@ enum MSGTYPE {
   COUNTERRESET,
   COUNTSTART,                // 29
 
+  SETPRESETTYPE,
+  SETPRESETVALUE,
+  GETVALUES,
+  SMSG_START,
+
   EvCHANGEDVALUE,
   EvISBUSY,
   NOTMSG,                    // 32
 };
 
-extern const QString MsgType[];
-extern MSGTYPE MsgTypeV[];
+
+struct MsgTyp {
+  QString T;
+  MSGTYPE V;
+};
+
+extern const MsgTyp MsgT[];
 
 #endif
 

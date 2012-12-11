@@ -53,7 +53,7 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP
 
   //            PM  PZ CNT PAM ENC SSD SSDP        // SSDP を除く全ユニット
-  if ( TypeCHK(  1,  1,  1,  1,  1,  1,   0 ) ) {
+  if ( TypeCHK(  1,  1,  1,  1,  1,  0,   0 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ) );
@@ -98,8 +98,15 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP      // SSD(Xmap)だけ
-  if ( TypeCHK(  0,  0,  0,  0,  0,  1,   1 ) ) {
-    // 初期化処理は特に必要ないはず
+  if ( TypeCHK(  0,  0,  0,  0,  0,  1,   0 ) ) {
+    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
+    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    qDebug() << "Regist AnsGetValues for " << Driver;
+    connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ) );
+    s->SendCMD2( "Init", "System", "flgon", Driver );
   }
 }
 
@@ -170,6 +177,7 @@ bool AUnit::GetValue0( void )
   // 　　　　　　                               (SSDP の時も代表して SSD を呼ぶ)
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,   0 ) ) {
     isBusy2 = true;
+    isBusy = true;
     s->SendCMD2( UID, Driver, "Start" );
     rv = false;
   }
@@ -215,6 +223,21 @@ void AUnit::AskIsBusy( void )
   }
 }
 
+void AUnit::ReceiveValues( SMsg msg )
+{
+  QString buf;
+
+  qDebug() << "pre GetValues on " << msg.From() << ":" << msg.Msg()
+	   << " : Received by " << Driver;
+  if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
+    Value = msg.Val();
+    Values = msg.Vals();
+    qDebug() << "GetValues on " << msg.From() << ":" << msg.Msg();
+    emit newValue( Value );
+    isBusy2 = false;
+  }
+}
+
 void AUnit::SetCurPos( SMsg msg )
 {
   QString buf;
@@ -224,6 +247,7 @@ void AUnit::SetCurPos( SMsg msg )
 	    || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Val();
     Values = msg.Vals();
+    qDebug() << "GetValue on " << msg.From() << ":" << msg.Msg();
     emit newValue( Value );
     isBusy2 = false;
   }
@@ -242,6 +266,7 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
     if ( ( msg.From() == Driver )
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       isBusy = ( msg.Val().toInt() == 1 );
+      qDebug() << "nct08 is Busy is" << isBusy;
     }
   }
 
@@ -249,14 +274,17 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
     if ( ( msg.From() == Driver )
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       isBusy = ( msg.Val().toInt() == 1 );
+      qDebug() << "SSD is Busy is" << isBusy;
     }
   }
 }
 
 void AUnit::ClrBusy( SMsg msg )
 {
-  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) )
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+    qDebug() << "isBusy2 clear on " << msg.From() << ":" << msg.Msg();
     isBusy2 = false;
+  }
 }
 
 void AUnit::Stop( void )
