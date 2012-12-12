@@ -92,7 +92,8 @@ signals:
   void AnsSetPresetType( SMsg msg );
   void AnsSetPresetValue( SMsg msg );
   void AnsGetValues( SMsg msg );
-  void AnsStart( SMsg msg );
+  void AnsRunStart( SMsg msg );
+  void AnsRunStop( SMsg msg );
 
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );

@@ -2,6 +2,11 @@
 
 ○ モーターのストップがない!
 
+○ SSD 使えるようになってきたけど、まだ大変。
+　シングルチャンネル含めて設定をやる画面がどこかにいる
+  ROI, peaking, dynamic, calibration, threshold, Real/Live, MAC サイズの確認
+　Dead Time 表示、取得。 cps ではなく count になってるがどうする。
+
 ○ V/F コンバータを BL5S2 からもらったので、Keithley を I-V コンバータに使って、
 　NCT08 を通した測定が可能になった。
 　I0, I1 につながった Keithley の出力を V/F コンバータに入れ、

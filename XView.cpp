@@ -98,6 +98,8 @@ void XView::paintEvent( QPaintEvent * )
 
 void XView::Draw( QPainter *p )
 {
+  qDebug() << "in Draw";
+
   switch( (int)GType ) {
   case XYPLOT:
     DrawXYPlot( p );
@@ -106,6 +108,8 @@ void XView::Draw( QPainter *p )
     DrawMonitor( p );
     break;
   }
+
+  qDebug() << "out Draw";
 }
 
 void XView::DrawXYPlot( QPainter *p )
@@ -272,8 +276,11 @@ void XView::DrawMonitor( QPainter *p )
 {
   QString buf, buf2;
 
-  if ( valid != true ) 
+  if ( valid != true ) {
     return;
+  }
+
+  qDebug() << "drawMon aa";
 
   double RM, LM, TM, BM, HDiv, VDiv;
   QPen pen0, pen1;
@@ -292,6 +299,8 @@ void XView::DrawMonitor( QPainter *p )
   pen0.setColor( QColor( 0, 0, 0 ) );
   p->setPen( pen0 );
 
+  qDebug() << "drawMon bb";
+
   RM = width() * 0.03;
   LM = width() * 0.17;
   TM = height() * 0.05;
@@ -303,6 +312,8 @@ void XView::DrawMonitor( QPainter *p )
   SetView( LM, TM, width()-RM, height()-BM );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
 
+  qDebug() << "drawMon cc";
+
   for ( double xx = wminx; xx <= wmaxx; xx += ms ) {
     p->drawLine( w2rx( xx ), TM, w2rx( xx ), height()-BM );  // 縦の罫線
     rec = QRect( w2rx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 ); // メモリ数字
@@ -312,6 +323,8 @@ void XView::DrawMonitor( QPainter *p )
   }
   rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );   // X軸のラベル
   DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, MScales[ MonScale ].unit );
+
+  qDebug() << "drawMon dd";
 
   wmaxy = 1;
   wminy = 0;
@@ -326,15 +339,30 @@ void XView::DrawMonitor( QPainter *p )
   double sy, dy;
   UpDateYWindowRing();
 
+  qDebug() << "drawMon ee";
+
   for ( int j = 0; j < MaxMon; j++ ) {
+    qDebug() << "drawMon ee1";
     if ( DrawF[j] ) {
+      qDebug() << "drawMon ee2";
       //      sy = Rwminy[j];
       //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
       wmaxy = Rwmaxy[j];
       wminy = Rwminy[j];
-      calcScale( 5, wminy, wmaxy, &sy, &dy );
-      sy = wminy;
-      dy = ( wmaxy - wminy ) / 5.;
+      if ( wminy == wmaxy ) {
+	sy = 0;
+	dy = 1;
+      } else if ( wminy > wmaxy ) {
+	sy = wmaxy;
+	dy = ( wminy - wmaxy ) / 5;
+      } else {
+	qDebug() << "drawMon ee22" << wminy << wmaxy;
+	calcScale( 5, wminy, wmaxy, &sy, &dy );
+	sy = wminy;
+	dy = ( wmaxy - wminy ) / 5.;
+	qDebug() << "drawMon ee23" << sy << wmaxy << dy;
+      }
+      qDebug() << "drawMon ee3";
 
       pen1.setColor( LC[ j ] );
       p->setPen( pen1 );
@@ -346,6 +374,7 @@ void XView::DrawMonitor( QPainter *p )
       }
       rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
 		   HDiv * 2, TM * 0.9 );  // 軸のラベル
+      qDebug() << "drawMon ee4";
       int pp1, pp2;
       int t0 = mont[ points[0] - 1 ];
       pen1.setWidth( 2 );
@@ -353,6 +382,7 @@ void XView::DrawMonitor( QPainter *p )
       p->setPen( pen1 );
       int nowt = r2wx( nx ) + t0;
       int nowtp = 0;
+      qDebug() << "drawMon ee5";
       for ( int i = 0; i < RingMax; i++ ) { // データプロット
 	pp1 = points[ 0 ] - 1 - i;
 	pp2 = points[ 0 ] - 1 - ( i + 1 );
@@ -368,12 +398,20 @@ void XView::DrawMonitor( QPainter *p )
       }
       DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter,
 		LNames[j] + " : " + QString::number(mony[j][nowtp]) );
+      qDebug() << "drawMon ee6";
     }
+    qDebug() << "drawMon ee7";
   }
+
+  qDebug() << "drawMon ff";
+
   if ( ( nx > LM ) && ( nx < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( nx, TM, nx, height()-BM );
   }
+
+  qDebug() << "drawMon gg";
+
 }
 
 void XView::ReDraw( void )
@@ -397,9 +435,16 @@ void XView::Clear( void )
 
 void XView::calcScale( double div, double min, double max, double *s, double *d )
 {
+  qDebug() << "inCalcScale";
+  if ( max < min ) {
+    double tmp = min;
+    min = max;
+    max = min;
+  }
   if ( max == min ) {
     *s = min;
     *d = 1;
+    qDebug() << "outCalcScale1";
     return;
   }
 
@@ -424,6 +469,8 @@ void XView::calcScale( double div, double min, double max, double *s, double *d 
 
   *s = (int)(min / d0 + 1) * d0;
   *d = d0;
+
+  qDebug() << "outCalcScale2";
 }
 
 void XView::UpDateYWindow( int l, SCALET s )

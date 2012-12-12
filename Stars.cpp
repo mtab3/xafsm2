@@ -227,8 +227,10 @@ void Stars::ReceiveMessageFromStars( void )
 	case GETVALUES:
 	  qDebug() << "Receive Get Values in Stars";
 	  emit AnsGetValues( smsg ); break;
-	case SMSG_START:
-	  emit AnsStart( smsg ); break;
+	case RUNSTART:
+	  emit AnsRunStart( smsg ); break;
+	case RUNSTOP:
+	  emit AnsRunStop( smsg ); break;
 	default:
 	  break;
 	}

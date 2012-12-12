@@ -12,6 +12,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
 {
   int Id = event->timerId();
 
+  qDebug() << "Timer in";
   if ( Id == MeasID ) { /* 測定ステップの進行 */
     MeasSequence();
   }

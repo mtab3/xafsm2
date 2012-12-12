@@ -103,8 +103,9 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsRunStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     qDebug() << "Regist AnsGetValues for " << Driver;
+    connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", Driver );
   }
@@ -176,10 +177,20 @@ bool AUnit::GetValue0( void )
   //            PM  PZ CNT PAM ENC SSD SSDP     SSDP ではなにもしない
   // 　　　　　　                               (SSDP の時も代表して SSD を呼ぶ)
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,   0 ) ) {
-    isBusy2 = true;
-    isBusy = true;
-    s->SendCMD2( UID, Driver, "Start" );
-    rv = false;
+    switch( LocalStage ) {
+    case 0:
+      isBusy2 = true;
+      isBusy = true;
+      s->SendCMD2( UID, Driver, "RunStart" );
+      rv = true;
+      LocalStage++;
+      break;
+    case 1:
+      isBusy2 = true;
+      s->SendCMD2( UID, Driver, "RunStop" );
+      rv = false;
+      break;
+    }
   }
 
   return rv;
@@ -230,9 +241,9 @@ void AUnit::ReceiveValues( SMsg msg )
   qDebug() << "pre GetValues on " << msg.From() << ":" << msg.Msg()
 	   << " : Received by " << Driver;
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
-    Value = msg.Val();
+    Value = msg.Vals().at(0);
     Values = msg.Vals();
-    qDebug() << "GetValues on " << msg.From() << ":" << msg.Msg();
+    qDebug() << "GetValues on " << msg.From() << ":" << msg.Msg() << " : " << Value;
     emit newValue( Value );
     isBusy2 = false;
   }
@@ -359,8 +370,20 @@ bool AUnit::InitSensor( void )
     }
   }
   if ( Type == "SSD" ) {
-    s->SendCMD2( "Init", Driver, "SetPresetType", "LIVE" );
-    rv = false;
+    switch( LocalStage ) {
+    case 0:
+      isBusy2 = true;
+      s->SendCMD2( "Init", Driver, "RunStop" );
+      LocalStage++;
+      rv = true;
+      break;
+    case 1:
+      isBusy2 = true;
+      s->SendCMD2( "Init", Driver, "SetPresetType", "REAL" );
+      LocalStage++;
+      rv = false;
+      break;
+    }
   }
 
   return rv;

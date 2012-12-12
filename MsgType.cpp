@@ -40,7 +40,8 @@ const MsgTyp MsgT[] = {
   { "@SetPresetType", SETPRESETTYPE },
   { "@SetPresetValue", SETPRESETVALUE },
   { "@GetValues", GETVALUES },
-  { "@Start", SMSG_START },
+  { "@RunStart", RUNSTART },
+  { "@RunStop", RUNSTART },
 
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },
