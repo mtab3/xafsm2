@@ -49,7 +49,6 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
   bool FileOK = false;
 
   MyNameOnStars = DefaultName;
-  qDebug() << "set name " << MyNameOnStars;
 
   QFile file;
   if ( SelectedName != "" ) {
@@ -141,7 +140,6 @@ void Stars::ReceiveMessageFromStars( void )
   case CSTAGE0: 
     RBuf = ss->readLine( 4000 );
     RBuf = RBuf.simplified();
-    qDebug() << "My Name on Stars " << MyNameOnStars;
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;
     ss->write( WBuf.toAscii() );
@@ -161,7 +159,8 @@ void Stars::ReceiveMessageFromStars( void )
     break;
   case CSTAGEEND:
     while( ss->canReadLine() ) {
-      RBuf = ss->readLine( 4000 );
+      RBuf = ss->readLine( 60000 );
+      // 60000 / 2000 = 30 MCA でも 1チャンネルの数字が 30byte 以下なら大丈夫
       RBuf = RBuf.simplified();
       
       switch( smsg.ParseMsg( RBuf ) ) {
@@ -225,12 +224,43 @@ void Stars::ReceiveMessageFromStars( void )
 	case SETPRESETVALUE:
 	  emit AnsSetPresetValue( smsg ); break;
 	case GETVALUES:
-	  qDebug() << "Receive Get Values in Stars";
 	  emit AnsGetValues( smsg ); break;
 	case RUNSTART:
 	  emit AnsRunStart( smsg ); break;
 	case RUNSTOP:
 	  emit AnsRunStop( smsg ); break;
+	case RESUME:
+	  emit AnsResume( smsg ); break;
+	case GETREALTIME:
+	  emit AnsGetRealTime( smsg ); break;
+	case GETLIVETIME:
+	  emit AnsGetLiveTime( smsg ); break;
+	case GETSTATUS:
+	  emit AnsGetStatus( smsg ); break;
+	case SETROI:
+	  emit AnsSetROI( smsg ); break;
+	case SETROIS:
+	  emit AnsSetROIs( smsg ); break;
+	case SETCALIBRATION:
+	  emit AnsSetCalibration( smsg ); break;
+	case SETTHRESHOLD:
+	  emit AnsSetThreshold( smsg ); break;
+	case SETPEAKINGTIME:
+	  emit AnsSetPeakingTime( smsg ); break;
+	case SETDYNAMICRANGE:
+	  emit AnsSetDynamicRange( smsg ); break;
+	case GETCALIBRATION:
+	  emit AnsGetCalibration( smsg ); break;
+	case GETTHRESHOLD:
+	  emit AnsGetThreshold( smsg ); break;
+	case GETPEAKINGTIME:
+	  emit AnsGetPeakingTime( smsg ); break;
+	case GETDYNAMICRANGE:
+	  emit AnsGetDynamicRange( smsg ); break;
+	case GETMCALENGTH:
+	  emit AnsGetMCALength( smsg ); break;
+	case GETMCA:
+	  emit AnsGetMCA( smsg ); break;
 	default:
 	  break;
 	}
@@ -256,37 +286,8 @@ void Stars::ReceiveMessageFromStars( void )
   }
 }
 
-#if 0
-bool Stars::SendCMD( QString dev, QString cmd1, QString cmd2 )
-{
-  if ( MakeConnection() == false ) {
-    emit AskRecord( tr( "Failure to connect Stars." ) );
-    return false;          // コネクションをはれないと false
-  }
-
-  if ( ConnectionStage != CSTAGEEND )
-    return;
-
-  QString Cmd = dev + " " + cmd1;
-  if ( !cmd2.isEmpty() )
-    Cmd += " " + cmd2;
-  Cmd += "\n";
-
-  emit AskRecord( tr( "Sending a message [%1] to Stars" ).arg( Cmd ) );
-  ss->write( Cmd.toAscii() );
-
-  return true;
-}
-#endif
-
 bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
 {
-#if 0
-  if ( MakeConnection() == false ) {
-    emit AskRecord( tr( "Failure to connect Stars." ) );
-    return false;          // コネクションをはれないと false
-  }
-#endif
   if ( ConnectionStage != CSTAGEEND )
     return false;
 

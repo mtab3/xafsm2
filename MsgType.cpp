@@ -43,6 +43,23 @@ const MsgTyp MsgT[] = {
   { "@RunStart", RUNSTART },
   { "@RunStop", RUNSTART },
 
+  { "@Resume", RESUME },
+  { "@GetRealTime", GETREALTIME },
+  { "@GetLiveTime", GETLIVETIME },
+  { "@GetStatus", GETSTATUS },
+  { "@SetROI", SETROI },
+  { "@SetROIs", SETROIS },
+  { "@SetCalibration", SETCALIBRATION },
+  { "@SetThreshold", SETTHRESHOLD },
+  { "@SetPeakingTime", SETPEAKINGTIME },
+  { "@SetDynamicRange", SETDYNAMICRANGE },
+  { "@GetCalibration", GETCALIBRATION },
+  { "@GetThreshold", GETTHRESHOLD },
+  { "@GetPeakingTime", GETPEAKINGTIME },
+  { "@GetDynamicRange", GETDYNAMICRANGE },
+  { "@GetMCALength", GETMCALENGTH },
+  { "@GetMCA", GETMCA },
+
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },
 

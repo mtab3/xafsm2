@@ -83,22 +83,11 @@ void SMsg::setMsgType( void )
   while ( MsgT[i].V != NOTMSG ) {
     if ( msg == MsgT[i].T ) {
       msgt = MsgT[i].V;
-      qDebug() << "PersMsg " << MsgT[i].V << MsgT[i].T;
       break;
     }
     i++;
   }
 }
-
-#if 0
-bool SMsg::isMsg( int MsgT )
-{
-  if ( msgt == MsgT )
-    return true;
-
-  return false;
-}
-#endif
 
 bool SMsg::isOk( void )
 {

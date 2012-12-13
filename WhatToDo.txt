@@ -2,6 +2,8 @@
 
 ○ モーターのストップがない!
 
+○ Ok: でなく Er: もひろう。
+
 ○ SSD 使えるようになってきたけど、まだ大変。
 　シングルチャンネル含めて設定をやる画面がどこかにいる
   ROI, peaking, dynamic, calibration, threshold, Real/Live, MAC サイズの確認

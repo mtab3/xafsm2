@@ -126,6 +126,8 @@ public slots:
   void SetCurPos( SMsg msg );
   void ReceiveValues( SMsg msg );
 
+  void ReactGetMCA( SMsg msg );
+
 signals:
   //  void CountFinished( void );
   void newValue( QString value );

@@ -12,7 +12,6 @@ void MainWindow::timerEvent( QTimerEvent *event )
 {
   int Id = event->timerId();
 
-  qDebug() << "Timer in";
   if ( Id == MeasID ) { /* 測定ステップの進行 */
     MeasSequence();
   }
@@ -22,11 +21,9 @@ void MainWindow::timerEvent( QTimerEvent *event )
   if ( Id == SPSID ) { /* スキャン/ピークサーチの進行 */
     SPSSequence();
   }
-  qDebug() << "001";
   if ( Id == MonID ) { /* 特定の測定器の値の時間変化の監視 */
     MonSequence();
   }
-  qDebug() << "002";
 }
 
 void MainWindow::MotorMove( void )
@@ -44,6 +41,11 @@ void MainWindow::MotorMove( void )
 
 void MainWindow::ClearSensorStages( void )
 {
+  if ( OneOfTheSensorIsCounter )
+    TheCounter->InitLocalStage();
+  if ( OneOfTheSensorIsSSD ) {
+    SFluo->InitLocalStage();
+  }
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] )
       MeasSens[i]->InitLocalStage();
@@ -103,8 +105,10 @@ bool MainWindow::GetSensValues0( void )
 
   if ( OneOfTheSensorIsCounter )
     rv |= TheCounter->GetValue0();
-  if ( OneOfTheSensorIsSSD )
+  if ( OneOfTheSensorIsSSD ) {
+    qDebug() << "one of the sensor is SSD";
     rv |= SFluo->GetValue0();
+  }
 
   return rv;
 }
@@ -129,8 +133,6 @@ void MainWindow::ReadSensValues( void )
     if ( MeasSensF[i] ) {
       if ( MeasSens[i]->getType() == "SSD" ) {
 	MeasVals[i] = MeasSens[i]->values().at(0).toDouble();
-      } else if ( MeasSens[i]->getType() == "SSDP" ) {
-	MeasVals[i] = SFluo->values().at( MeasSens[i]->getCh().toInt()+1 ).toDouble();
       } else {
 	MeasVals[i] = MeasSens[i]->value().toDouble();
       }
@@ -315,7 +317,8 @@ void MainWindow::MonSequence( void )
     break;
   case 3:
     if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
-      if ( GetSensValues0() == false ) { // only for counters
+      qDebug() << "1: OneOfTheSensor is CNT or SSD";
+      if ( GetSensValues0() == false ) { // only for counters and SSDs
 	ClearSensorStages();
 	MonStage = 4;
       }
@@ -327,14 +330,12 @@ void MainWindow::MonSequence( void )
     }
     break;
   case 4:
-qDebug() << "eee";
     if ( GetSensValues() == false ) {  // true :: Getting
       ClearSensorStages();
       MonStage = 5;
     }
     break;
   case 5:
-qDebug() << "fff";
     ReadSensValues();
     MonView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
     MonView->ReDraw();
@@ -346,7 +347,6 @@ qDebug() << "fff";
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
-qDebug() << "ggg";
     MonView->ReDraw();
     if ( inPause == 0 ) {
       MonStage = 3;

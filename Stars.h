@@ -94,6 +94,23 @@ signals:
   void AnsGetValues( SMsg msg );
   void AnsRunStart( SMsg msg );
   void AnsRunStop( SMsg msg );
+  void AnsResume( SMsg msg );
+  void AnsGetRealTime( SMsg msg );
+  void AnsGetLiveTime( SMsg msg );
+  void AnsGetStatus( SMsg msg );
+  void AnsSetROI( SMsg msg );
+  void AnsSetROIs( SMsg msg );
+  void AnsSetCalibration( SMsg msg );
+  void AnsSetThreshold( SMsg msg );
+  void AnsSetPeakingTime( SMsg msg );
+  void AnsSetDynamicRange( SMsg msg );
+  void AnsGetCalibration( SMsg msg );
+  void AnsGetThreshold( SMsg msg );
+  void AnsGetPeakingTime( SMsg msg );
+  void AnsGetDynamicRange( SMsg msg );
+  void AnsGetMCALength( SMsg msg );
+  void AnsGetMCA( SMsg msg );
+
 
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );
