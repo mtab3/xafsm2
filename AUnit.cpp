@@ -183,18 +183,12 @@ bool AUnit::GetValue0( void )
     switch( LocalStage ) {
     case 0:
       isBusy2 = true;
-      s->SendCMD2( UID, Driver, "RunStop" );
-      rv = true;
-      LocalStage++;
-      break;
-    case 1:
-      isBusy2 = true;
       isBusy = true;
       s->SendCMD2( UID, Driver, "RunStart" );
       rv = true;
       LocalStage++;
       break;
-    case 2:
+    case 1:
       isBusy2 = true;
       s->SendCMD2( UID, Driver, "RunStop" );
       rv = false;
@@ -372,6 +366,7 @@ bool AUnit::InitSensor( void )
     }
   }
   if ( Type == "SSD" ) {
+    qDebug() << "LocalStage SSD " << LocalStage;
     switch( LocalStage ) {
     case 0:
       isBusy2 = true;

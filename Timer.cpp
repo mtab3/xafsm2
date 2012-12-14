@@ -56,6 +56,11 @@ bool MainWindow::InitSensors( void )
 {
   bool ff = false;
 
+  if ( OneOfTheSensorIsCounter )
+    ff |= TheCounter->InitSensor();
+  if ( OneOfTheSensorIsSSD ) {
+    ff |= SFluo->InitSensor();
+  }
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->InitSensor();
@@ -74,6 +79,11 @@ bool MainWindow::isBusySensors( void )
 {
   bool ff = false;
 
+  if ( OneOfTheSensorIsCounter )
+    ff |= TheCounter->getIsBusy() || TheCounter->getIsBusy2();
+  if ( OneOfTheSensorIsSSD ) {
+    ff |= SFluo->getIsBusy() || SFluo->getIsBusy();
+  }
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
       ff |= MeasSens[i]->getIsBusy() || MeasSens[i]->getIsBusy2();
@@ -106,7 +116,6 @@ bool MainWindow::GetSensValues0( void )
   if ( OneOfTheSensorIsCounter )
     rv |= TheCounter->GetValue0();
   if ( OneOfTheSensorIsSSD ) {
-    qDebug() << "one of the sensor is SSD";
     rv |= SFluo->GetValue0();
   }
 
@@ -317,7 +326,6 @@ void MainWindow::MonSequence( void )
     break;
   case 3:
     if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
-      qDebug() << "1: OneOfTheSensor is CNT or SSD";
       if ( GetSensValues0() == false ) { // only for counters and SSDs
 	ClearSensorStages();
 	MonStage = 4;
