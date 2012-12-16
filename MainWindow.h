@@ -183,7 +183,6 @@ private:
   int ScanStage;
   int ScanMotor, ScanSensor;
   double ScanOrigin, ScanSP, ScanEP, ScanSTP;
-  double ScanDT;
   int NowScanP;
   XView *SPSView;
 

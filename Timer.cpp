@@ -368,8 +368,7 @@ void MainWindow::SPSSequence( void )
   AUnit *am = AMotors.value( MotorN->currentIndex() );
   AUnit *as = ASensors.value( SelectD1->currentIndex() );
 
-  if ( am->getIsBusy() || am->getIsBusy2()
-       || as->getIsBusy() || as->getIsBusy2() )
+  if ( am->getIsBusy() || am->getIsBusy2() || isBusySensors() )
     return;
 
   switch( ScanStage ) {
@@ -383,46 +382,47 @@ void MainWindow::SPSSequence( void )
        リピートも終わったら後始末をして終了
     */
   case 0:
-    as->InitLocalStage();
+    statusbar->showMessage( tr( "Going to initial position." ), 1000 );
+    NowScanP = ScanSP;
+    am->SetValue( ScanSP );
     SetSPSViewWindow();
-    statusbar->showMessage( tr( "Scan Start!" ), 1000 );
+    ClearSensorStages();
     ScanStage = 1;
-    // break;               // break の必要なし
+    // break;                   // break 不要
   case 1:
-    if ( as->InitSensor() == false ) {
-      NowScanP = ScanSP;
-      statusbar->showMessage( tr( "Going to initial position." ), 1000 );
-      am->SetValue( ScanSP );
-      if ( ( as->getType() == "CNT" )
-	   ||( as->getType() == "SSD" )
-	   ||( as->getType() == "SSDP" ) ) {
-	ScanStage = 2;
-      } else {
-	ScanStage = 3;
-      }
+    if ( InitSensors() == false ) {  // true :: initializing
+      ClearSensorStages();
+      ScanStage = 2;
     }
     break;
   case 2: 
-    if ( as->GetValue0() == false ) { // only for counters
-      as->InitLocalStage();
-      ScanStage = 3;
-    }
+    ClearSensorStages();
+    SetDwellTime2();
+    ScanStage = 3;
     break;
   case 3:
-    if ( as->GetValue() == false ) {  // true :: Getting
-      as->InitLocalStage();
-      ScanStage = 4;
+    if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
+      if ( GetSensValues0() == false ) { // only for counters and SSDs
+	ClearSensorStages();
+	ScanStage = 4;
+      }
+    } else {
+      if ( GetSensValues() == false ) {  // true :: Getting
+	ClearSensorStages();
+	ScanStage = 5;
+      }
     }
     break;
   case 4:
-    if ( as->getType() == "SSD" ) {
-      SPSView->NewPoint( 1, NowScanP, as->values().at(0).toDouble() );
-    } else if ( as->getType() == "SSDP" ) {
-      SPSView->NewPoint( 1, NowScanP,
-			 SFluo->values().at( as->getCh().toInt() + 1 ).toDouble() );
-    } else {
-      SPSView->NewPoint( 1, NowScanP, as->value().toDouble() );
+    if ( GetSensValues() == false ) {  // true :: Getting
+      ClearSensorStages();
+      ScanStage = 5;
     }
+    break;
+  case 5:
+    ReadSensValues();
+    qDebug() << "Plot" << NowScanP << MeasVals[0];
+    SPSView->NewPoint( 1, NowScanP, MeasVals[0] );
     SPSView->ReDraw();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
@@ -430,7 +430,7 @@ void MainWindow::SPSSequence( void )
       ScanStage = 10;
     } else {
       am->SetValue( NowScanP );
-      ScanStage = 2;
+      ScanStage = 3;
     }
     break;
   case 10:

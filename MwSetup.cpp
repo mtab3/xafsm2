@@ -363,6 +363,19 @@ void MainWindow::ScanStart( void )
     am = AMotors.value( ScanMotor );
     as = ASensors.value( ScanSensor );
 
+    for ( int i = 0; i < MCHANNELS; i++ )
+      MeasSensF[i] = false;
+    MeasSensF[0] = true; MeasSens[0] = as;
+    MeasSensDT[0] = SPSdwell->text().toDouble();
+    OneOfTheSensorIsSSD = false;
+    OneOfTheSensorIsCounter = false;
+    if ( as->getType() == "SSDP" || as->getType() == "SSD" )
+      OneOfTheSensorIsSSD = true;
+    if ( as->getType() == "CNT" ) {
+      OneOfTheSensorIsCounter = true;
+      TheCounter = as;
+    }
+
     MovingS = SPSMotorS->currentIndex();  // motor speed;
 
     SPSSelU = SPSUnit->currentIndex();
@@ -376,7 +389,6 @@ void MainWindow::ScanStart( void )
     } else {
       ScanSTP = - abs( ScanSTP );
     }
-    ScanDT = SPSdwell->text().toDouble();
     if ( ScanSTP == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
@@ -388,7 +400,7 @@ void MainWindow::ScanStart( void )
 	       .arg( as->getName() ) );
     
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
-    as->SetTime( ScanDT );
+    as->SetTime( MeasSensDT[0] );
 
     SPSScan->setText( tr( "Stop" ) );
     SPSScan->setStyleSheet( "background-color: yellow" );
