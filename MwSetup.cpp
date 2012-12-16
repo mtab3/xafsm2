@@ -439,43 +439,26 @@ void MainWindow::Monitor( void )
     inMonitor = 1;
     MonStage = 0;   // 計測のサイクル
 
-    for ( int i = 0; i < MCHANNELS; i++ )
-      MeasSensF[i] = false;
-    MeasSens[0] = as0;   MeasSensF[0] = true;
-    MeasSens[1] = as1;   MeasSensF[1] = SelectD21Sel->isChecked();
-    MeasSens[2] = as2;   MeasSensF[2] = SelectD22Sel->isChecked();
+    mUnits.clearUnits();
+    MeasSensF[0] = true;
 
-    MeasSensDT[0] = DwellT20->text().toDouble();
-    MeasSensDT[1] = DwellT21->text().toDouble();
-    MeasSensDT[2] = DwellT22->text().toDouble();
-
-    OneOfTheSensorIsCounter = false;
-    OneOfTheSensorIsSSD = false;
-    for ( int i = 0; i < MCHANNELS; i++ ) {
-      if ( MeasSensF[i] ) {
-	if ( MeasSens[i]->getType() == "CNT" ) {
-	  OneOfTheSensorIsCounter = true;
-	  TheCounter = MeasSens[i];
-	}
-	if ( MeasSens[i]->getType() == "SSD" || MeasSens[i]->getType() == "SSDP") {
-	  OneOfTheSensorIsSSD = true;
-	}
-      }
-    }
+    mUnits.addUnit( as0, DwellT20->text().toDouble() );
+    if ( MeasSensF[1] = SelectD21Sel->isChecked() )
+      mUnits.addUnit( as1, DwellT21->text().toDouble() );
+    if ( MeasSensF[2] = SelectD22Sel->isChecked() )
+      mUnits.addUnit( as1, DwellT22->text().toDouble() );
 
     MonView = XViews[ ViewTab->currentIndex() ];
     MonView->ClearDataR();
     MonView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
-    //    MonView->SetScaleT( I0TYPE, FULLSCALE, FULLSCALE );   // 現状意味なし
-    MonView->SetDrawF( MeasSensF );
-    //    MonView->SetLName( 0, tr( "I0" ) );
+
     int LineCount = 0;
     for ( int i = 0; i < 3; i++ ) {
       if ( MeasSensF[i] ) {
-	MonView->SetLName( LineCount, MeasSens[i]->getName() );
-	LineCount++;
+	MonView->SetLName( LineCount++, mUnits.getName(i) );
       }
     }
+    MonView->SetLines( LineCount );                            // 確認
     MonView->SetGType( MONITOR );                            // 確認
     MonView->makeValid( true );                              // 確認
 

@@ -45,7 +45,6 @@ private:
   int LineF[ MAXLINES ];
   int SLineR, SLineL;
   SCALET ScaleTR, ScaleTL;
-  bool *DrawF;
   double mony[ MaxMon ][ RingMax ]; // Monitor —p‚Ì”z—ñ
   int mont[ RingMax ];
   int MonScale;
@@ -65,7 +64,7 @@ public:
   void SetXName( QString Name ) { XName = Name; };
   void makeValid( int v = true ) { valid = v; };
   void SetSLines( int l1, int l2 ) { SLineR = l1; SLineL = l2; };
-  void SetDrawF( bool *f );
+  void SetLines( int L );
   void SetLineF( LINEF f00 = RIGHT, LINEF f01 = LEFT,
 		 LINEF f02 = LEFT, LINEF f03 = LEFT, LINEF f04 = LEFT, LINEF f05 = LEFT,
 		 LINEF f06 = LEFT, LINEF f07 = LEFT, LINEF f08 = LEFT, LINEF f09 = LEFT,

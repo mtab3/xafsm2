@@ -298,9 +298,8 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::MonSequence( void )
 {
-  if ( isBusySensors() ) {
+  if ( mUnits.isBusy() )
     return;
-  }
 
   switch( MonStage ) {
     /* 
@@ -310,41 +309,37 @@ void MainWindow::MonSequence( void )
        2: nct08 を使う時: 計測開始
     */
   case 0:
-    ClearSensorStages();
+    mUnits.clearStage();
     MonStage = 1;
     break;
   case 1:
-    if ( InitSensors() == false ) {  // true :: initializing
-      ClearSensorStages();
+    if ( mUnits.init() == false ) {  // true :: initializing
+      mUnits.clearStage();
       MonStage = 2;
     }
     break;
   case 2: 
-    ClearSensorStages();
-    SetDwellTime2();
-    MonStage = 3;
+    mUnits.setDwellTime();
+    if ( mUnits.isParent() ) {
+      MonStage = 3;
+    } else {
+      MonStage = 4;
+    }
     break;
   case 3:
-    if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
-      if ( GetSensValues0() == false ) { // only for counters and SSDs
-	ClearSensorStages();
-	MonStage = 4;
-      }
-    } else {
-      if ( GetSensValues() == false ) {  // true :: Getting
-	ClearSensorStages();
-	MonStage = 5;
-      }
+    if ( mUnits.getValue0() == false ) { // only for counters and SSDs
+      mUnits.clearStage();
+      MonStage = 4;
     }
     break;
   case 4:
-    if ( GetSensValues() == false ) {  // true :: Getting
-      ClearSensorStages();
+    if ( mUnits.getValue() == false ) {  // true :: Getting
+      mUnits.clearStage();
       MonStage = 5;
     }
     break;
   case 5:
-    ReadSensValues();
+    mUnits.readValue( MeasVals );
     MonView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
     MonView->ReDraw();
     MonStage = 10;

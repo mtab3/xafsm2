@@ -18,13 +18,21 @@ class MUnits : public QObject
 
   QVector<MUElement*> Units;     // マルチユニットを構成するエレメントの一覧
   QVector<MUElement*> PUnits;    // エレメントの親の重複なしの一覧
-  bool isParent;                 // 一つでも親ユニットがあるか
 
  public:
   MUnits( QObject *p = 0 );
 
+  bool isParent( void ) { return ( PUnits.count() > 0 ); };
   void clearUnits( void );
   void addUnit( AUnit *au, double dt );
+  bool isBusy( void );
+  void clearStage( void );
+  bool init( void );
+  void setDwellTime( void );
+  bool getValue0( void );
+  bool getValue( void );
+  void readValue( double *rvs );
+  QString getName( int i ) { return Units.at(i)->au->getName(); };
 };
 
 

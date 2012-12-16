@@ -33,6 +33,7 @@ XView::XView( QWidget *parent ) : QFrame( parent )
   nx = ny = 0;
 }
 
+
 // l 番目のラインの p 番目のポイントの X データセット
 void XView::setX( int l, int p, double xx )
 {
@@ -263,9 +264,9 @@ int XView::PeakSearch( int l )
   return x[l][maxp];
 }
 
-void XView::SetDrawF( bool *f )
+void XView::SetLines( int Lines )
 {
-  DrawF = f;
+  lines = Lines;
 }
 
 void XView::DrawMonitor( QPainter *p )
@@ -327,58 +328,56 @@ void XView::DrawMonitor( QPainter *p )
   double sy, dy;
   UpDateYWindowRing();
 
-  for ( int j = 0; j < MaxMon; j++ ) {
-    if ( DrawF[j] ) {
-      //      sy = Rwminy[j];
-      //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
-      wmaxy = Rwmaxy[j];
-      wminy = Rwminy[j];
-      if ( wminy == wmaxy ) {
-	sy = 0;
-	dy = 1;
-      } else if ( wminy > wmaxy ) {
-	sy = wmaxy;
-	dy = ( wminy - wmaxy ) / 5;
-      } else {
-	calcScale( 5, wminy, wmaxy, &sy, &dy );
-	sy = wminy;
-	dy = ( wmaxy - wminy ) / 5.;
-      }
-      pen1.setColor( LC[ j ] );
-      p->setPen( pen1 );
-      for ( double yy = sy; yy <= wmaxy; yy += dy ) {
-	rec = QRectF( LM - LM * 0.32 * ( j + 1 ), w2ry( yy )-VDiv*0.45,
-		     LM * 0.3, VDiv * 0.9 ); // メモリ数字
-	buf.sprintf( "%6.4g", yy );
-	DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, buf );
-      }
-      rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
-		   HDiv * 2, TM * 0.9 );  // 軸のラベル
-
-      int pp1, pp2;
-      int t0 = mont[ points[0] - 1 ];
-      pen1.setWidth( 2 );
-      pen1.setColor( LC[ j ] );
-      p->setPen( pen1 );
-      int nowt = r2wx( nx ) + t0;
-      int nowtp = 0;
-
-      for ( int i = 0; i < RingMax; i++ ) { // データプロット
-	pp1 = points[ 0 ] - 1 - i;
-	pp2 = points[ 0 ] - 1 - ( i + 1 );
-	if ( pp1 < 0 ) pp1 += RingMax;
-	if ( pp2 < 0 ) pp2 += RingMax;
-	if ( ( mont[ pp2 ] - t0 ) < ( - ms * 6 ) ) {
-	  break;
-	}
-	p->drawLine( w2rx( mont[pp1] - t0 ), w2ry( mony[j][pp1] ),
-		     w2rx( mont[pp2] - t0 ), w2ry( mony[j][pp2] ) );
-	if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
-	  nowtp = pp1;
-      }
-      DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter,
-		LNames[j] + " : " + QString::number(mony[j][nowtp]) );
+  for ( int j = 0; j < lines; j++ ) {
+    //      sy = Rwminy[j];
+    //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
+    wmaxy = Rwmaxy[j];
+    wminy = Rwminy[j];
+    if ( wminy == wmaxy ) {
+      sy = 0;
+      dy = 1;
+    } else if ( wminy > wmaxy ) {
+      sy = wmaxy;
+      dy = ( wminy - wmaxy ) / 5;
+    } else {
+      calcScale( 5, wminy, wmaxy, &sy, &dy );
+      sy = wminy;
+      dy = ( wmaxy - wminy ) / 5.;
     }
+    pen1.setColor( LC[ j ] );
+    p->setPen( pen1 );
+    for ( double yy = sy; yy <= wmaxy; yy += dy ) {
+      rec = QRectF( LM - LM * 0.32 * ( j + 1 ), w2ry( yy )-VDiv*0.45,
+		    LM * 0.3, VDiv * 0.9 ); // メモリ数字
+      buf.sprintf( "%6.4g", yy );
+      DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, buf );
+    }
+    rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
+		  HDiv * 2, TM * 0.9 );  // 軸のラベル
+    
+    int pp1, pp2;
+    int t0 = mont[ points[0] - 1 ];
+    pen1.setWidth( 2 );
+    pen1.setColor( LC[ j ] );
+    p->setPen( pen1 );
+    int nowt = r2wx( nx ) + t0;
+    int nowtp = 0;
+    
+    for ( int i = 0; i < RingMax; i++ ) { // データプロット
+      pp1 = points[ 0 ] - 1 - i;
+      pp2 = points[ 0 ] - 1 - ( i + 1 );
+      if ( pp1 < 0 ) pp1 += RingMax;
+      if ( pp2 < 0 ) pp2 += RingMax;
+      if ( ( mont[ pp2 ] - t0 ) < ( - ms * 6 ) ) {
+	break;
+      }
+      p->drawLine( w2rx( mont[pp1] - t0 ), w2ry( mony[j][pp1] ),
+		   w2rx( mont[pp2] - t0 ), w2ry( mony[j][pp2] ) );
+      if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
+	nowtp = pp1;
+    }
+    DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter,
+	      LNames[j] + " : " + QString::number(mony[j][nowtp]) );
   }
 
   if ( ( nx > LM ) && ( nx < width()-RM ) ) {
