@@ -39,140 +39,31 @@ void MainWindow::MotorMove( void )
   }
 }
 
-void MainWindow::ClearSensorStages( void )
-{
-  if ( OneOfTheSensorIsCounter )
-    TheCounter->InitLocalStage();
-  if ( OneOfTheSensorIsSSD ) {
-    SFluo->InitLocalStage();
-  }
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] )
-      MeasSens[i]->InitLocalStage();
-  }
-}
-
-bool MainWindow::InitSensors( void )
-{
-  bool ff = false;
-
-  if ( OneOfTheSensorIsCounter )
-    ff |= TheCounter->InitSensor();
-  if ( OneOfTheSensorIsSSD ) {
-    ff |= SFluo->InitSensor();
-  }
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] ) {
-      ff |= MeasSens[i]->InitSensor();
-    }
-  }
-
-  return ff;
-}
-
 bool MainWindow::isBusyMotorInMeas( void )
 {
   return MMainTh->isBusy() || MMainTh->isBusy2();
-}
-
-bool MainWindow::isBusySensors( void )
-{
-  bool ff = false;
-
-  if ( OneOfTheSensorIsCounter )
-    ff |= TheCounter->isBusy() || TheCounter->isBusy2();
-  if ( OneOfTheSensorIsSSD ) {
-    ff |= SFluo->isBusy() || SFluo->isBusy();
-  }
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] ) {
-      ff |= MeasSens[i]->isBusy() || MeasSens[i]->isBusy2();
-    }
-  }
-
-  return ff;
-}
-
-void MainWindow::SetDwellTime( double dtime )  // これもホントは返答を待つ形にするべき
-{
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] )
-      MeasSens[i]->SetTime( dtime );
-  }
-}
-
-void MainWindow::SetDwellTime2( void )  // これもホントは返答を待つ形にするべき
-{
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] )
-      MeasSens[i]->SetTime( MeasSensDT[i] );
-  }
-}
-
-bool MainWindow::GetSensValues0( void )
-{
-  bool rv = false;
-
-  if ( OneOfTheSensorIsCounter )
-    rv |= TheCounter->GetValue0();
-  if ( OneOfTheSensorIsSSD ) {
-    rv |= SFluo->GetValue0();
-  }
-
-  return rv;
-}
-
-bool MainWindow::GetSensValues( void )
-{
-  bool ff = false;
-
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] ) {
-      ff |= MeasSens[i]->GetValue();
-    }
-  }
-  
-  return ff;
-}
-
-void MainWindow::ReadSensValues( void )
-{
-  //  MeasVals[ MC_I0 ] = MeasSens[ MC_I0 ]->value().toDouble();
-  for ( int i = 0; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] ) {
-      if ( MeasSens[i]->getType() == "SSD" ) {
-	MeasVals[i] = MeasSens[i]->values().at(0).toDouble();
-      } else {
-	MeasVals[i] = MeasSens[i]->value().toDouble();
-      }
-    }
-  }
 }
 
 void MainWindow::DispMeasDatas( void )
 {
   double I0;
   double Val;
-  int LineCount = 1;
 
   I0 = MeasVals[ MC_I0 ];
   NowView->NewPoint( 0, GoToKeV, I0 );
-  for ( int i = 1; i < MCHANNELS; i++ ) {
-    if ( MeasSensF[i] ) {
-      Val = MeasVals[i];
-      if ( MeasDispMode[i] == TRANS ) {
-	if ( Val < 1e-10 )
-	  Val = 1e-10;
-	if ( ( I0 / Val ) > 0 )
-	  NowView->NewPoint( LineCount, GoToKeV, log( I0/Val ) );
-	else 
-	  NowView->NewPoint( LineCount, GoToKeV, 0 );
-      } else {  // MeasDispMode == FLUO
-	if ( I0 < 1e-20 )
-	  I0 = 1e-20;
-	NowView->NewPoint( LineCount, GoToKeV, Val/I0 );
-      }
-      LineCount++;
+  for ( int i = 1; i < mUnits.count(); i++ ) {
+    Val = MeasVals[i];
+    if ( MeasDispMode[i] == TRANS ) {
+      if ( Val < 1e-10 )
+	Val = 1e-10;
+      if ( ( I0 / Val ) > 0 )
+	NowView->NewPoint( i, GoToKeV, log( I0/Val ) );
+      else 
+	NowView->NewPoint( i, GoToKeV, 0 );
+    } else {  // MeasDispMode == FLUO
+      if ( I0 < 1e-20 )
+	I0 = 1e-20;
+      NowView->NewPoint( i, GoToKeV, Val/I0 );
     }
   }
 }
@@ -185,7 +76,7 @@ void MainWindow::MeasSequence( void )
   if ( AskingOverwrite )
     return;
 
-  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = isBusySensors() ) ) {
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
     return;
   }
 
@@ -206,13 +97,14 @@ void MainWindow::MeasSequence( void )
        99: pause の時用のステージ
     */
   case 0:
-    ClearSensorStages();
+    mUnits.clearStage();
     MeasStage = 1;
   case 1:
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasR = 0;    // Measurement Repeat count
-    if ( InitSensors() == false )   // true :: initializing
+    if ( mUnits.init() == false )   // true :: initializing
+      mUnits.clearStage();
       MeasStage = 2;
     break;
   case 2:
@@ -223,8 +115,7 @@ void MainWindow::MeasSequence( void )
     // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
   case 3: 
     MeasS = 0;    // Measurement Step count in each block
-    ClearSensorStages();
-    SetDwellTime( NowDwell = SBlockDwell[0] );
+    mUnits.setDwellTimes( NowDwell = SBlockDwell[0] );
     MeasStage = 4;
     // break;       MeasStage == 2 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)
@@ -234,26 +125,26 @@ void MainWindow::MeasSequence( void )
     GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
 		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
-    ClearSensorStages();
-    if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD )
+    mUnits.clearStage();
+    if ( mUnits.isParent() )
       MeasStage = 5;
     else
       MeasStage = 6;
     break;
   case 5:
-    if ( GetSensValues0() == false ) { // only for counters
-      ClearSensorStages();
+    if ( mUnits.getValue0() == false ) { // only for counters
+      mUnits.clearStage();
       MeasStage = 6;
     }
     break;
   case 6:
-    if ( GetSensValues() == false ) {  // true :: Getting
-      ClearSensorStages();
+    if ( mUnits.getValue() == false ) {  // true :: Getting
+      mUnits.clearStage();
       MeasStage = 7;
     }
     break;
   case 7:
-    ReadSensValues();
+    mUnits.readValue( MeasVals );
     DispMeasDatas();
     RecordData();
     MeasStage = 10;
@@ -362,7 +253,7 @@ void MainWindow::SPSSequence( void )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
-  if ( am->isBusy() || am->isBusy2() || isBusySensors() )
+  if ( am->isBusy() || am->isBusy2() || mUnits.isBusy() )
     return;
 
   switch( ScanStage ) {
@@ -380,42 +271,37 @@ void MainWindow::SPSSequence( void )
     NowScanP = ScanSP;
     am->SetValue( ScanSP );
     SetSPSViewWindow();
-    ClearSensorStages();
+    mUnits.clearStage();
     ScanStage = 1;
     // break;                   // break 不要
   case 1:
-    if ( InitSensors() == false ) {  // true :: initializing
-      ClearSensorStages();
+    if ( mUnits.init() == false ) {  // true :: initializing
+      mUnits.clearStage();
       ScanStage = 2;
     }
     break;
   case 2: 
-    ClearSensorStages();
-    SetDwellTime2();
-    ScanStage = 3;
+    mUnits.setDwellTime();
+    if ( mUnits.isParent() ) {
+      ScanStage = 3;
+    } else {
+      ScanStage = 4;
+    }
     break;
   case 3:
-    if ( OneOfTheSensorIsCounter || OneOfTheSensorIsSSD ) {
-      if ( GetSensValues0() == false ) { // only for counters and SSDs
-	ClearSensorStages();
-	ScanStage = 4;
-      }
-    } else {
-      if ( GetSensValues() == false ) {  // true :: Getting
-	ClearSensorStages();
-	ScanStage = 5;
-      }
+    if ( mUnits.getValue0() == false ) { // only for counters and SSDs
+      mUnits.clearStage();
+      ScanStage = 4;
     }
     break;
   case 4:
-    if ( GetSensValues() == false ) {  // true :: Getting
-      ClearSensorStages();
+    if ( mUnits.getValue() == false ) {  // true :: Getting
+      mUnits.clearStage();
       ScanStage = 5;
     }
     break;
   case 5:
-    ReadSensValues();
-    qDebug() << "Plot" << NowScanP << MeasVals[0];
+    mUnits.readValue( MeasVals );
     SPSView->NewPoint( 1, NowScanP, MeasVals[0] );
     SPSView->ReDraw();
     NowScanP += ScanSTP;

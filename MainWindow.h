@@ -262,12 +262,7 @@ private:
   void SetDFName( int i );
   double MeasVals[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
-  AUnit *MeasSens[ MCHANNELS ];
   bool MeasSensF[ MCHANNELS ];
-  double MeasSensDT[ MCHANNELS ];
-  bool OneOfTheSensorIsCounter;
-  bool OneOfTheSensorIsSSD;
-  AUnit *TheCounter;
   double NowDwell;
 
   void ShowTotal( void );

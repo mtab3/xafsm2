@@ -39,6 +39,16 @@ void MUnits::addUnit( AUnit *au, double dt )
   }
 }
 
+void MUnits::setDwellTimes( double dt )
+{
+  for ( int i = 0; i < Units.count(); i++ ) {
+    Units.at(i)->dt = dt;
+  }
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    PUnits.at(i)->dt = dt;
+  }
+}
+
 bool MUnits::isBusy( void )
 {
   bool ff = false;

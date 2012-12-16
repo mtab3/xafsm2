@@ -359,22 +359,10 @@ void MainWindow::ScanStart( void )
 
   if ( inSPSing == 0 ) {
     ScanMotor = MotorN->currentIndex();
-    ScanSensor = SelectD1->currentIndex();
     am = AMotors.value( ScanMotor );
-    as = ASensors.value( ScanSensor );
-
-    for ( int i = 0; i < MCHANNELS; i++ )
-      MeasSensF[i] = false;
-    MeasSensF[0] = true; MeasSens[0] = as;
-    MeasSensDT[0] = SPSdwell->text().toDouble();
-    OneOfTheSensorIsSSD = false;
-    OneOfTheSensorIsCounter = false;
-    if ( as->getType() == "SSDP" || as->getType() == "SSD" )
-      OneOfTheSensorIsSSD = true;
-    if ( as->getType() == "CNT" ) {
-      OneOfTheSensorIsCounter = true;
-      TheCounter = as;
-    }
+    mUnits.clearUnits();
+    mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ),
+		    SPSdwell->text().toDouble() );
 
     MovingS = SPSMotorS->currentIndex();  // motor speed;
 
@@ -400,7 +388,6 @@ void MainWindow::ScanStart( void )
 	       .arg( as->getName() ) );
     
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
-    as->SetTime( MeasSensDT[0] );
 
     SPSScan->setText( tr( "Stop" ) );
     SPSScan->setStyleSheet( "background-color: yellow" );
@@ -440,25 +427,21 @@ void MainWindow::Monitor( void )
     MonStage = 0;   // 計測のサイクル
 
     mUnits.clearUnits();
-    MeasSensF[0] = true;
 
     mUnits.addUnit( as0, DwellT20->text().toDouble() );
-    if ( MeasSensF[1] = SelectD21Sel->isChecked() )
+    if ( SelectD21Sel->isChecked() )
       mUnits.addUnit( as1, DwellT21->text().toDouble() );
-    if ( MeasSensF[2] = SelectD22Sel->isChecked() )
+    if ( SelectD22Sel->isChecked() )
       mUnits.addUnit( as1, DwellT22->text().toDouble() );
 
     MonView = XViews[ ViewTab->currentIndex() ];
     MonView->ClearDataR();
     MonView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
 
-    int LineCount = 0;
-    for ( int i = 0; i < 3; i++ ) {
-      if ( MeasSensF[i] ) {
-	MonView->SetLName( LineCount++, mUnits.getName(i) );
-      }
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      MonView->SetLName( i, mUnits.getName( i ) );
     }
-    MonView->SetLines( LineCount );                            // 確認
+    MonView->SetLines( mUnits.count() );                            // 確認
     MonView->SetGType( MONITOR );                            // 確認
     MonView->makeValid( true );                              // 確認
 

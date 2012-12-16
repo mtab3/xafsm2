@@ -618,11 +618,36 @@ void MainWindow::StartMeasurement( void )
       AskingOverwrite = false;
     }
 
-    MeasDispMode[ MC_I0 ] = TRANS;     // I0 にモードはないのでダミー
-    MeasDispMode[ MC_I1 ] = TRANS;     // I1 は TRANS に固定
-    MeasDispMode[ MC_SSD ] = FLUO;      // SSD は FLUO に固定
-    MeasDispMode[ MC_AUX1 ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
-    MeasDispMode[ MC_AUX2 ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
+    int LC = 0;
+
+    mUnits.clearUnits();
+    for ( int i = 0; i < MCHANNELS; i++ )
+      MeasSensF[i] = false;
+
+    MeasSensF[ LC ] = true;
+    MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
+    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ), 0 );
+    LC++;
+    if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
+      MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
+      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ), 0 );
+      LC++;
+    }
+    if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
+      MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
+      mUnits.addUnit( SFluo, 0 );
+      LC++;
+    }
+    if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
+      MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
+      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ), 0 );
+      LC++;
+    }
+    if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
+      MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
+      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ), 0 );
+      LC++;
+    }
 
     NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
 	       .arg( CurPosKeV ) );
@@ -632,39 +657,8 @@ void MainWindow::StartMeasurement( void )
     MeasStart->setStyleSheet( "background-color: yellow" );
     MeasPause->setEnabled( true );
     
-    MeasSens[ MC_I0 ] = ASensors.value( SelectI0->currentIndex() );
-    MeasSens[ MC_I1 ] = ASensors.value( SelectI1->currentIndex() );
-    MeasSens[ MC_SSD ] = SFluo;
-    MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
-    MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
-    
-    for ( int i = 0; i < MCHANNELS; i++ )
-      MeasSensF[i] = false;
-    MeasSensF[ MC_I0 ] = true;
-    MeasSensF[ MC_I1 ] = UseI1->isChecked();
-    MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();
-    MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
-    MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
-    
-    OneOfTheSensorIsCounter = false;   // 使おうとするディテクタの中にカウンタがあるか
-    OneOfTheSensorIsSSD = MeasSensF[ MC_SSD ];
-                                       // 使おうとするディテクタの中にSSDがあるか
-                                       // まずは、19ch SSD (全体)からチェック
-    TheCounter = 0;       // そのデテクタの番号
-    MeasChNo = 0;         // 測定のチャンネル数
-    for ( int i = 0; i < 5; i++ ) {
-      if ( MeasSensF[i] ) {
-	MeasChNo++;
-	if ( MeasSens[i]->getType() == "CNT" ) {
-	  OneOfTheSensorIsCounter = true;
-	  TheCounter = MeasSens[i];
-	}
-	if ( MeasSens[i]->getType() == "SSDP" ) {
-	  OneOfTheSensorIsSSD = true;
-	}
-      }
-    }
-    if ( MeasSensF[ MC_SSD ] )
+    MeasChNo = mUnits.count();         // 測定のチャンネル数
+    if ( Use19chSSD->isChecked() )
       MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
 
     CpBlock2SBlock();

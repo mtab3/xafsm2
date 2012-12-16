@@ -22,9 +22,11 @@ class MUnits : public QObject
  public:
   MUnits( QObject *p = 0 );
 
+  int count( void ) { return Units.count(); };
   bool isParent( void ) { return ( PUnits.count() > 0 ); };
   void clearUnits( void );
   void addUnit( AUnit *au, double dt );
+  void setDwellTimes( double dt );
   bool isBusy( void );
   void clearStage( void );
   bool init( void );
