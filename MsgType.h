@@ -3,8 +3,6 @@
 
 #include <QString>
 
-
-
 enum MSGTYPE {
   GETVALUE,                  // 0
   GETSPEEDSELECTED,

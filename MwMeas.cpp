@@ -591,7 +591,7 @@ bool MainWindow::CheckDetectorSelection( void )
 void MainWindow::StartMeasurement( void )
 {
   if ( inMeas == 0 ) {
-    if ( MMainTh->getIsBusy() ) {
+    if ( MMainTh->isBusy() ) {
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
     }

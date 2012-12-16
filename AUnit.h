@@ -14,22 +14,26 @@ class AUnit : public QObject
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
+  QString Uid;          // Uniq ID
   QString ID;           // MainTh, StageX, General, ...
-  QString UID;          // Uniq ID ( ID + number )
   QString Name;         // Disiplayed name
   QString Driver;
   QString Ch;
   QString DevCh;        // Driver + "." + Ch
   QString Unit;         // metric unit "mm", "mA", ...
-
   double UPP;           // Unit per Puls : only for PM
+  bool IsInt;           // is the controlling unit is integer or not.
+  bool HasParent;       // does the unit have parent (group leader).
+  QString PUid;         // the Uid of the parenet
+  AUnit *theParent;        // the parent
+
   double Center;        // Center position in puls : only for PM
 
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
-  bool isBusy;
-  bool isBusy2;
+  bool IsBusy;
+  bool IsBusy2;
   QString Value;
   QString lastVal;
   QStringList Values;
@@ -48,7 +52,7 @@ public:
   void setStars( Stars *S ) { s = S; };
   void setType( QString type ) { Type = type; };
   void setID( QString id ) { ID = id; };
-  void setUniqID( QString num ) { UID = "N" + num + "N" + ID; };
+  void setUid( QString uid ) { Uid = uid; };
   void setName( QString name ) { Name = name; };
   void setDriver( QString driver ) { Driver = driver; };
   void setCh( QString ch ) { Ch = ch; };
@@ -59,7 +63,11 @@ public:
       DevCh = Driver + "." + Ch;
   }
   void setUnit( QString unit ) { Unit = unit; };
-  void setIsBusy( bool busy ) { isBusy = busy; };
+  void setIsBusy( bool busy ) { IsBusy = busy; };
+  void setIsInt( bool isInt ) { IsInt = isInt; };
+  void setHasParent( bool hasParent ) { HasParent = hasParent; };
+  void setParent( QString pUid ) { PUid = pUid; };
+  void setTheParent( AUnit *p ) { theParent = p; };
 
   bool checkNewVal( void )
   {
@@ -86,26 +94,29 @@ public:
   QString getGType( void ) { return GType; };
   QString getType( void ) { return Type; };
   QString getID( void ) { return ID; };
-  QString getUID( void ) { return UID; };
+  QString getUid( void ) { return Uid; };
   QString getName( void ) { return Name; };
   QString getDriver( void ) { return Driver; };
   QString getCh( void ) { return Ch; };
   QString getDevCh( void ) { return DevCh; };
   QString getUnit( void ) { return Unit; };
-  bool getIsBusy( void ) { return isBusy; };
-  bool getIsBusy2( void ) { return isBusy2; };
+  bool isBusy( void ) { return IsBusy; };
+  bool isBusy2( void ) { return IsBusy2; };
   QString value( void ) { return Value; };
   QStringList values( void ) { return Values; };
+  double getUPP( void ) { return UPP; };
+  bool isInt( void ) { return IsInt; };
+  bool hasParent( void ) { return HasParent; };
+  QString getPUid( void ) { return PUid; };
+  AUnit *getTheParent( void ) { return theParent; };
 
   int getLastSetV( void ) { return lastSetV; };
 
   // only for PM
-  double getUPP( void ) { return UPP; };
   double getCenter( void ) { return Center; };
   // only for PZ
   double getMaxV( void ) { return MaxV; };
   double getMinV( void ) { return MinV; };
-
 
   void show( void );   // mainly for debugging
 

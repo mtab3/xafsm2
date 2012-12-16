@@ -30,7 +30,7 @@ void MainWindow::MotorMove( void )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
   
-  if ( !am->getIsBusy() ) {
+  if ( !am->isBusy() ) {
     GoMStop0();
     NewLogMsg( tr( "Setup: %1 : Reached at %2\n" )
 	       .arg( am->getName() ).arg( am->value() ) );
@@ -72,7 +72,7 @@ bool MainWindow::InitSensors( void )
 
 bool MainWindow::isBusyMotorInMeas( void )
 {
-  return MMainTh->getIsBusy() || MMainTh->getIsBusy2();
+  return MMainTh->isBusy() || MMainTh->isBusy2();
 }
 
 bool MainWindow::isBusySensors( void )
@@ -80,13 +80,13 @@ bool MainWindow::isBusySensors( void )
   bool ff = false;
 
   if ( OneOfTheSensorIsCounter )
-    ff |= TheCounter->getIsBusy() || TheCounter->getIsBusy2();
+    ff |= TheCounter->isBusy() || TheCounter->isBusy2();
   if ( OneOfTheSensorIsSSD ) {
-    ff |= SFluo->getIsBusy() || SFluo->getIsBusy();
+    ff |= SFluo->isBusy() || SFluo->isBusy();
   }
   for ( int i = 0; i < MCHANNELS; i++ ) {
     if ( MeasSensF[i] ) {
-      ff |= MeasSens[i]->getIsBusy() || MeasSens[i]->getIsBusy2();
+      ff |= MeasSens[i]->isBusy() || MeasSens[i]->isBusy2();
     }
   }
 
@@ -366,9 +366,8 @@ void MainWindow::MonSequence( void )
 void MainWindow::SPSSequence( void )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
-  AUnit *as = ASensors.value( SelectD1->currentIndex() );
 
-  if ( am->getIsBusy() || am->getIsBusy2() || isBusySensors() )
+  if ( am->isBusy() || am->isBusy2() || isBusySensors() )
     return;
 
   switch( ScanStage ) {

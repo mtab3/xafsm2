@@ -100,22 +100,6 @@ void MainWindow::ShowMessageOnSBar( QString msg, int time )
 void MainWindow::InitializeUnitsAgain( void )
 {
   s->MakeConnection();
-  
-#if 0
-  AUnit *am, *as;
-  
-  for ( int i = 0; i < AMotors.count(); i++ ) {
-    am = AMotors.value(i);
-    am->Initialize( s );
-    //    am->GetValue();
-  }
-  
-  for ( int i = 0; i < ASensors.count(); i++ ) {
-    as = ASensors.value(i);
-    as->Initialize( s );
-    as->GetValue();
-  }
-#endif
 }
 
 void MainWindow::InitAndIdentifyMotors( void )
@@ -124,7 +108,6 @@ void MainWindow::InitAndIdentifyMotors( void )
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
     am->Initialize( s );
-    am->setUniqID( QString::number( i ) );
     if ( am->getID() == "THETA" ) { MMainTh = am; }
   }
   connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
@@ -139,7 +122,6 @@ void MainWindow::InitAndIdentifySensors( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
     as->Initialize( s );
-    as->setUniqID( QString::number( i ) );
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }

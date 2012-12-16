@@ -755,14 +755,54 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="2" column="0">
+             <item row="2" column="0" colspan="2">
               <widget class="QLabel" name="label_38">
                <property name="text">
                 <string>PeakingTime</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
+             <item row="4" column="0" colspan="2">
+              <widget class="QLabel" name="label_55">
+               <property name="text">
+                <string>Caribration</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0" colspan="2">
+              <widget class="QLabel" name="label_54">
+               <property name="text">
+                <string>Threshold</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0" colspan="2">
+              <widget class="QLabel" name="label_56">
+               <property name="text">
+                <string>Dynamic Range</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_57">
+               <property name="text">
+                <string>SSD Ch No.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2" colspan="2">
+              <widget class="QLineEdit" name="lineEdit"/>
+             </item>
+             <item row="3" column="2" colspan="2">
+              <widget class="QLineEdit" name="lineEdit_2"/>
+             </item>
+             <item row="4" column="2" colspan="2">
+              <widget class="QLineEdit" name="lineEdit_3"/>
+             </item>
+             <item row="5" column="2" colspan="2">
+              <widget class="QLineEdit" name="lineEdit_4"/>
+             </item>
+             <item row="1" column="1" colspan="2">
               <widget class="QSpinBox" name="spinBox">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -774,39 +814,6 @@
                 <number>19</number>
                </property>
               </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_55">
-               <property name="text">
-                <string>Caribration</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="lineEdit_2"/>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_54">
-               <property name="text">
-                <string>Threshold</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="lineEdit"/>
-             </item>
-             <item row="5" column="0">
-              <widget class="QLabel" name="label_56">
-               <property name="text">
-                <string>Dynamic Range</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="lineEdit_3"/>
-             </item>
-             <item row="5" column="1">
-              <widget class="QLineEdit" name="lineEdit_4"/>
              </item>
             </layout>
            </widget>
@@ -3244,7 +3251,7 @@
      <x>0</x>
      <y>0</y>
      <width>774</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

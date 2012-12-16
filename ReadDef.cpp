@@ -31,6 +31,7 @@ void MainWindow::ReadDef( QString fname )
   QString aline;
   QString next;
   QString item;
+  bool isMotor;
   QString type;
 
   AUnit *NewUnit;
@@ -46,32 +47,48 @@ void MainWindow::ReadDef( QString fname )
 	if ( item == "MOTOR" ) { // Motor か
 	  AMotors << NewUnit;
 	  NewUnit->setGType( "MOTOR" );
+	  isMotor = true;
 	} else {
 	  ASensors << NewUnit;  // Sensor か
 	  NewUnit->setGType( "SENSOR" );
+	  isMotor = false;
 	}
 	// 全 motor, sensor に共通の項目
 	next = nextItem( next, item ); NewUnit->setType( type = item );
+	next = nextItem( next, item ); NewUnit->setUid( item );
 	next = nextItem( next, item ); NewUnit->setID( item );
 	next = nextItem( next, item ); NewUnit->setName( item );
 	next = nextItem( next, item ); NewUnit->setDriver( item );
 	next = nextItem( next, item ); NewUnit->setCh( item );
 	next = nextItem( next, item ); NewUnit->setUnit( item );
 	NewUnit->setDevCh();
-	// 以下、各 motor, sensor に依存する項目
-	if ( type == "PM" ) {
+	// 以下、motor だけの項目
+	if ( isMotor ) {
+	  // 全 motor 共通
 	  next = nextItem( next, item ); NewUnit->setUPP( item );
-	  next = nextItem( next, item ); NewUnit->setCenter( item );
-	} else if ( type == "PZ" ) {
-	  next = nextItem( next, item ); NewUnit->setMinV( item );
-	  next = nextItem( next, item ); NewUnit->setMaxV( item );
-	} else if ( type == "ENC" ) {
-	} else if ( type == "PAM" ) {
-	} else if ( type == "CNT" ) {
-	} else if ( type == "SSDP" ) {
-	} else if ( type == "SSD" ) {
-	} else {
-	  qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+	  next = nextItem( next, item ); NewUnit->setIsInt( item == "INT" );
+	  // 各 motor 個別
+	  if ( type == "PM" ) {
+	    next = nextItem( next, item ); NewUnit->setCenter( item );
+	  } else if ( type == "PZ" ) {
+	    next = nextItem( next, item ); NewUnit->setMinV( item );
+	    next = nextItem( next, item ); NewUnit->setMaxV( item );
+	  } else {
+	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+	  }
+	} else {  // 以下、各 sensor だけの項目
+	  // 全 sensor 共通
+	  next = nextItem( next, item ); NewUnit->setHasParent( item == "YES" );
+	  next = nextItem( next, item ); NewUnit->setParent( item );
+	  // 各 sensor 個別
+	  if ( type == "ENC" ) {
+	  } else if ( type == "PAM" ) {
+	  } else if ( type == "CNT" ) {
+	  } else if ( type == "SSDP" ) {
+	  } else if ( type == "SSD" ) {
+	  } else {
+	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+	  }
 	}
 	//	NewUnit->show();
       } else if ( item == "#" ) {
@@ -109,6 +126,20 @@ void MainWindow::ReadDef( QString fname )
   }
 
   f.close();
+
+  int i, j;   // 親ユニット有り、と宣言したセンサーに親ユニットのポインタを渡す。
+              // 全部の定義が終わってからやっているのは、親と宣言したユニットの定義が
+              // 後から出てきても大丈夫にするため。
+  for ( i = 0; i < ASensors.count(); i++ ) {
+    if ( ASensors.at(i)->hasParent() ) {
+      for ( j = 0; j < ASensors.count(); j++ ) {
+	if ( ASensors.at(i)->getPUid() == ASensors.at(j)->getUid() ) {
+	  ASensors.at(i)->setTheParent( ASensors.at(j) );
+	  break;
+	}
+      }
+    }
+  }
 }
 
 QString MainWindow::nextItem( QString start, QString &item )

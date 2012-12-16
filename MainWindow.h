@@ -16,6 +16,7 @@
 #include "Stars.h"
 #include "PeriodicT.h"
 #include "AUnit.h"
+#include "MultiUnits.h"
 
 class QFileDialog;
 
@@ -97,6 +98,8 @@ private:
   void setupMeasArea( void );
 
   QVector<DRVDef *> DriverList;
+
+  MUnits mUnits;
 
   /* InterFace.cpp */ /**********************************************/
 
