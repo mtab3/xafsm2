@@ -4,8 +4,11 @@
 
 void MainWindow::setupView( void )
 {
-  XViews << View1 << View2 << View3 << View4 << View5
-	 << View6 << View7 << View8 << View9 << View10;
+  ViewBases << VT1 << VT2 << VT3 << VT4 << VT5 << VT6 << VT7 << VT8 << VT9 << VT10;
+  for ( int i = 0; i < ViewBases.count(); i++ ) {
+    nowViews << (void *)NULL;
+    nowVTypes << NONVIEW;
+  }
 }
 
 

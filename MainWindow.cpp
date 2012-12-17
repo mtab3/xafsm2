@@ -5,17 +5,6 @@
 #include "SelMC.h"
 #include "Stars.h"
 
-#if 0
-MOTORD Motors[ MOTORS ] = {
-  { MONOCHRO1, "Monochro 1", "monochro1", "", 0, 0,  0, 0, 0, 0 },
-                                   // ’: ‚P”Ô‚Ìƒ‚[ƒ^[‚Í monochro ‚ÆŒˆ‚ß‘Å‚¿‚É‚µ‚Ä‚¢‚é
-  { MOTOR1, "Motor 1", "motor1", "", 100, 100,  100, 1, 0, 1000 },
-  { MOTOR2, "Motor 2", "motor2", "", 100, 100,  100, 1, 0, 1000 },
-  { MOTOR3, "Motor 3", "motor3", "", 100, 100,  100, 1, 0, 1000 },
-  { MOTOR4, "Motor 4", "motor4", "", 100, 100,  100, 1, 0, 1000 },
-};
-#endif
-
 const char *CMode[ MEASMODES + 1 ] = {
   "Transmission",
   "Fluorescence",
@@ -57,6 +46,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
 	     .arg( mccd[ selmc->MC() ]->getMCName() )
 	     .arg( mccd[ selmc->MC() ]->getD() ) );
+
   connect( s, SIGNAL( AskShowStat( QString, int ) ),
 	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
@@ -80,8 +70,21 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
 
   connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+
+
+  GoTimer = new QTimer;
+  ScanTimer = new QTimer;
+  MonTimer = new QTimer;
+  MeasTimer = new QTimer;
+
+  connect( GoTimer, SIGNAL( timeout() ), this, SLOT( MotorMove() ) );
+  connect( ScanTimer, SIGNAL( timeout() ), this, SLOT( ScanSequence() ) );
+  connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ) );
+  connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
+
   s->MakeConnection();
 }
+
 
 void MainWindow::Initialize( void )
 {
@@ -90,6 +93,9 @@ void MainWindow::Initialize( void )
   connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
   connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
   resize( 1, 1 );
+
+  getMCASettings( MCACh->text().toInt() );
+  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )

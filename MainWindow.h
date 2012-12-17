@@ -2,6 +2,7 @@
 #define MAINWIN_H
 
 #include <QMessageBox>
+#include <QTimer>
 #include <QTime>
 
 #include <math.h>
@@ -17,6 +18,8 @@
 #include "PeriodicT.h"
 #include "AUnit.h"
 #include "MultiUnits.h"
+#include "XView.h"
+#include "MCAView.h"
 
 class QFileDialog;
 
@@ -35,6 +38,8 @@ const int GOS = 4;            // Presetted Go To Positions
 const int MaxBLKs = 6;        // Max Blocks
 const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
+
+enum VTYPE { XVIEW, MCAVIEW, NONVIEW };
 
 struct DRVDef {
   QString name;
@@ -69,6 +74,14 @@ private:
   double CurPosKeV;
   double nowCurrent;
 
+  /* MCA */
+  QString ROIStart[19];
+  QString ROIEnd[19];
+  int MCALength;
+  bool inMCAMeas;
+  int cMCACh;
+  MCAView *cMCAV;
+
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
@@ -77,10 +90,16 @@ private:
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
 
+  QTimer *GoTimer, *ScanTimer, *MonTimer, *MeasTimer;
+
   Stars *s;
   double MonoCryD;
 
   MEASMODE MeasFileType;
+
+  QVector<QWidget*> ViewBases;
+  QVector<void*> nowViews;
+  QVector<VTYPE> nowVTypes;
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -122,9 +141,6 @@ private:
   void DummyDelayMotionStart( double keV );
 
   /* InterFace.cpp */ /**********************************************/
-
-  void timerEvent( QTimerEvent *event );
-  //  int WatchCurPosID;
 
   double eV2deg( double eV ) {
     double tmp = eV2a( eV )/( 2.* MonoCryD );
@@ -174,14 +190,12 @@ private:
   MSPEED GoMSpeed;
 
   int inMMove;
-  int MoveID;            // Timer ID
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
   RELABS GoMRelAbs, SPSRelAbs;
   int SPSSelU;           // Selected SPS Unit
   double SPSUPP;         // Unit per puls
   int SPSMon;            // SPS-ing monitor
-  int SPSID;             // Timer ID
   int inSPSing;
   int ScanStage;
   int ScanMotor, ScanSensor;
@@ -198,7 +212,6 @@ private:
   bool setupMDispFirstTime;
 
   int inMonitor;
-  int MonID;
   int MonStage;
   int MonDev;
   XView *MonView;
@@ -249,7 +262,6 @@ private:
   int inMeas, inPause, SinPause;
   int inMoveTh;
   int MeasStage, SMeasStage;
-  int MeasID;
   int MeasR, MeasB, MeasS;
   double GoToKeV;
   double InitialKeV;
@@ -273,27 +285,21 @@ private:
 
   QString NewLFName( void );
 
-  QVector<XView *> XViews;
   XView *NowView;
   void setupView( void );
 
-  /* in Timer.cc */
-  void WatchPos( void );
-  void MotorMove( void );
-  void MeasSequence( void );
-  void SPSSequence( void );
-  void MonSequence( void );
+
   bool CheckDetectorSelection( void );
 
   bool isBusyMotorInMeas( void );
-  bool isBusySensors( void );
-  void ClearSensorStages( void );
-  bool InitSensors( void );
-  void SetDwellTime( double dtime );  // for measure
-  void SetDwellTime2( void );         // for monitor
-  bool GetSensValues0( void );
-  bool GetSensValues( void );
-  void ReadSensValues( void );
+  //  bool isBusySensors( void );
+  //  void ClearSensorStages( void );
+  //  bool InitSensors( void );
+  //  void SetDwellTime( double dtime );  // for measure
+  //  void SetDwellTime2( void );         // for monitor
+  //  bool GetSensValues0( void );
+  //  bool GetSensValues( void );
+  //  void ReadSensValues( void );
   void SetSPSViewWindow( void );
 
 private slots:
@@ -338,6 +344,17 @@ private slots:
   void newVI0( QString v );
   void newVS1( QString v );
   void newVS2( QString v );
+
+  void StartMCA( void );
+  void MCAChSelected( int i );
+  void showPeakingTime( SMsg mag );
+  void showThreshold( SMsg mas );
+  void showCalibration( SMsg mas );
+  void showDynamicRange( SMsg msg );
+  void getMCALen( SMsg msg );
+  void getMCASettings( int ch );
+  void newROIStart( const QString &newv );
+  void newROIEnd( const QString &newv );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
@@ -417,6 +434,12 @@ private slots:
   void SelLFN( void );
   void SetNewLFName( const QString &name );
   void AddLogComment( void );
+
+  void MotorMove( void );
+  void MeasSequence( void );
+  void ScanSequence( void );
+  void MonSequence( void );
+
 };
 
 #endif

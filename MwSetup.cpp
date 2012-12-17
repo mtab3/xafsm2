@@ -102,6 +102,21 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( SetUpMMAbs, SIGNAL( clicked() ), this, SLOT( MMAbs() ) );
   connect( SetUpSPSRel, SIGNAL( clicked() ), this, SLOT( SPSRel() ) );
   connect( SetUpSPSAbs, SIGNAL( clicked() ), this, SLOT( SPSAbs() ) );
+
+  /* MCA */
+
+  connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ), this, SLOT( showPeakingTime( SMsg ) ) );
+  connect( s, SIGNAL( AnsGetThreshold( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
+  connect( s, SIGNAL( AnsGetCalibration( SMsg ) ), this, SLOT( showCalibration( SMsg ) ) );
+  connect( s, SIGNAL( AnsGetDynamicRange( SMsg ) ), this, SLOT( showDynamicRange( SMsg ) ) );
+  connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ) );
+  connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ) );
+  connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ) );
+  connect( ROIStartInput, SIGNAL( textEdited( const QString & ) ),
+	   this, SLOT( newROIStart( const QString & ) ) );
+  connect( ROIEndInput, SIGNAL( textEdited( const QString & ) ),
+	   this, SLOT( newROIEnd( const QString & ) ) );
+  inMCAMeas = false;
 }
 
 void MainWindow::MMRel( void )
@@ -304,7 +319,7 @@ void MainWindow::GoMAtPuls( double Pos )
   am->SetValue( Pos );
   am->setIsBusy( true );
 
-  MoveID = startTimer( 100 );
+  GoTimer->start( 100 );
 
   NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
 	     .arg( am->getName() )
@@ -345,7 +360,7 @@ void MainWindow::GoMStop0( void )
 {
   inMMove = 0;
 
-  killTimer( MoveID );
+  GoTimer->stop();
   GoMotor->setEnabled( true );
   SPSScan->setEnabled( true );
   GoMotor->setText( tr( "Go" ) );
@@ -393,7 +408,16 @@ void MainWindow::ScanStart( void )
     SPSScan->setStyleSheet( "background-color: yellow" );
     GoMotor->setEnabled( false );
 
-    SPSView = XViews[ ViewTab->currentIndex() ];
+    SPSView = new XView;
+    int cTab = ViewTab->currentIndex();
+    if ( nowViews[ cTab ] != NULL ) {
+      ViewBases.at( cTab )->layout()->removeWidget( (QWidget *)nowViews[ cTab ] );
+      delete nowViews[ cTab ];
+      nowViews[ cTab ] = (void *)NULL;
+    }
+    ViewBases.at( cTab )->layout()->addWidget( SPSView );
+    nowViews[ cTab ] = (void *)SPSView;
+
     SPSView->Clear();
     SPSView->SetSLines( 0, 1 );
     SPSView->SetLineF( RIGHT, LEFT );
@@ -405,7 +429,7 @@ void MainWindow::ScanStart( void )
     SPSView->makeValid( true );
 
     ScanStage = 0;
-    SPSID = startTimer( 100 );
+    ScanTimer->start( 100 );
   } else {
     ScanStop0();
   }
@@ -458,9 +482,9 @@ void MainWindow::Monitor( void )
     MStart->setStyleSheet( "background-color: yellow" );
 
     MonTime.restart();
-    MonID = startTimer( 50 );    /* 50msタイマーセット */
+    MonTimer->start( 100 );
   } else {
-    killTimer( MonID );
+    MonTimer->stop();
     inMonitor = 0;
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),

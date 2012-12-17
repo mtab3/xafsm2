@@ -51,7 +51,6 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
   QPushButton *tmpB;
   TP = 0;
   TT0 = 0;
-  MeasID = 0;
   inMeas = 0;
   inPause = 0;
   MeasStage = 0;
@@ -545,7 +544,16 @@ void MainWindow::SelectedRBFN( const QString &fname )
 
 void MainWindow::ClearNowView( void )
 {
-  NowView = XViews[ ViewTab->currentIndex() ];
+  NowView = new XView;
+  int cTab = ViewTab->currentIndex();
+  if ( nowViews[ cTab ] != NULL ) {
+    ViewBases.at( cTab )->layout()->removeWidget( (QWidget *)nowViews[ cTab ] );
+    delete nowViews[ cTab ];
+    nowViews[ cTab ] = (void *)NULL;
+  }
+  ViewBases.at( cTab )->layout()->addWidget( NowView );
+  nowViews[ cTab ] = (void *)NowView;
+
   NowView->Clear();
   NowView->SetSLines( 0, 1 );
   NowView->SetLineF( RIGHT, LEFT,
@@ -664,7 +672,8 @@ void MainWindow::StartMeasurement( void )
     CpBlock2SBlock();
     MeasStage = 0;
     ClearNowView();
-    MeasID = startTimer( 100 );
+
+    MeasTimer->start( 100 );
   } else {
     StopP->show();
     SinPause = inPause;
@@ -681,7 +690,7 @@ void MainWindow::SurelyStop( void )
 {
   NewLogMsg( QString( tr( "Meas: Stopped (%1 keV)\n" ) ).arg( CurPosKeV ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
-  killTimer( MeasID );
+  MeasTimer->stop();
   inMeas = 0;
   MeasStart->setText( tr( "Start" ) );
   MeasStart->setStyleSheet( "" );
