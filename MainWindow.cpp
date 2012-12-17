@@ -73,11 +73,13 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
 
   GoTimer = new QTimer;
+  MCATimer = new QTimer;
   ScanTimer = new QTimer;
   MonTimer = new QTimer;
   MeasTimer = new QTimer;
 
   connect( GoTimer, SIGNAL( timeout() ), this, SLOT( MotorMove() ) );
+  connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ) );
   connect( ScanTimer, SIGNAL( timeout() ), this, SLOT( ScanSequence() ) );
   connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ) );
   connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );

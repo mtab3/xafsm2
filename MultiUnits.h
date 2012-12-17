@@ -35,6 +35,7 @@ class MUnits : public QObject
   bool getValue( void );
   void readValue( double *rvs );
   QString getName( int i ) { return Units.at(i)->au->getName(); };
+  bool getMCA( int ch );
 };
 
 

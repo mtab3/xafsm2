@@ -37,6 +37,7 @@ class AUnit : public QObject
   QString Value;
   QString lastVal;
   QStringList Values;
+  QStringList MCAValues;
 
   int LocalStage;
   int lastSetV;
@@ -104,6 +105,7 @@ public:
   bool isBusy2( void ) { return IsBusy2; };
   QString value( void ) { return Value; };
   QStringList values( void ) { return Values; };
+  QStringList MCAvalues( void ) { return MCAValues; };
   double getUPP( void ) { return UPP; };
   bool isInt( void ) { return IsInt; };
   bool hasParent( void ) { return HasParent; };
@@ -130,6 +132,7 @@ public:
   void SetSpeed( MSPEED speed );
   void SetTime( double dtime );   // in sec
   void Stop( void );
+  bool GetMCA( int ch );
 
 public slots:
   void ClrBusy( SMsg msg );

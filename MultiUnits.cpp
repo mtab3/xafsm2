@@ -129,3 +129,14 @@ void MUnits::readValue( double *rvs )
     }
   }
 }
+
+bool MUnits::getMCA( int ch )
+{
+  bool ff = false;
+
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->GetMCA( ch );
+  }
+  
+  return ff;
+}

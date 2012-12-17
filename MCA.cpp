@@ -75,21 +75,65 @@ void MainWindow::showDynamicRange( SMsg msg )
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
+    MCAStart->setText( tr( "Stop" ) );
+    MCAStart->setStyleSheet( "background-color: yellow" );
+
     inMCAMeas = true;
+    mUnits.clearUnits();
+    mUnits.addUnit( SFluo, 0.1 );
+
     cMCACh = MCACh->text().toInt();
     cMCAV = new MCAView;
-    
     int cTab = ViewTab->currentIndex();
-    if ( nowViews[ cTab ] != NULL ) {
-      ViewBases.at( cTab )->layout()->removeWidget( (QWidget *)nowViews[ cTab ] );
-      delete nowViews[ cTab ];
-      nowViews[ cTab ] = (void *)NULL;
-    }
+    deleteView( cTab );
     ViewBases.at( cTab )->layout()->addWidget( cMCAV );
     nowViews[ cTab ] = (void *)cMCAV;
+    nowVTypes[ cTab ] = MCAVIEW;
+
+    MCAStage = 0;
+    MCATimer->start( 100 );
   } else {
     inMCAMeas = false;
+    MCATimer->stop();
+    MCAStart->setText( tr( "Start" ) );
+    MCAStart->setStyleSheet( "background-color: "
+			     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0"
+			     " rgba(225, 235, 225, 255), stop:1"
+			     " rgba(255, 255, 255, 255));" );
   }
-  
+}
 
+void MainWindow::MCASequence( void )
+{
+  QStringList MCA;
+
+  if ( mUnits.isBusy() )
+    return;
+
+  switch( MCAStage ) {
+  case 0:
+    mUnits.clearStage();
+    MCAStage = 1;
+  case 1:
+    if ( mUnits.init() == false ) {  // true :: initializing
+      mUnits.clearStage();
+      MCAStage = 2;
+    }
+    break;
+  case 2: 
+    mUnits.setDwellTime();
+    MCAStage = 3;
+    break;
+  case 3:
+    if ( mUnits.getMCA( cMCACh ) == false ) {
+      mUnits.clearStage();
+      MCAStage = 4;
+    }
+    break;
+  case 4:
+    MCA = SFluo->MCAvalues();
+    qDebug() << "MCA" << MCA;
+    MCAStage = 3;
+    break;
+  }
 }

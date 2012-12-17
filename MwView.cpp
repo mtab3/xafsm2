@@ -11,4 +11,20 @@ void MainWindow::setupView( void )
   }
 }
 
+void MainWindow::deleteView( int tab )
+{
+  if ( nowViews[ tab ] != NULL ) {
+    ViewBases.at( tab )->layout()->removeWidget( (QWidget *)nowViews[ tab ] );
+    switch( nowVTypes[ tab ] ) {
+    case XVIEW:
+      delete (XView *)nowViews[ tab ]; break;
+    case MCAVIEW:
+      delete (MCAView *)nowViews[ tab ]; break;
+    default:
+      break;
+    }
+    nowViews[ tab ] = (void *)NULL;
+  }
+}
+
 

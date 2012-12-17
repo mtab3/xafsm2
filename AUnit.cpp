@@ -391,5 +391,21 @@ bool AUnit::InitSensor( void )
 
 void AUnit::ReactGetMCA( SMsg msg )
 {
-  qDebug() << msg.Msg();
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+    IsBusy2 = false;
+    MCAValues = msg.Vals();
+  }
+}
+
+bool AUnit::GetMCA( int ch )
+{
+  bool rv;
+
+  if ( Type == "SSD" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, Driver, "GetMCA", QString::number( ch ) );
+    rv = false;
+  }
+
+  return rv;
 }

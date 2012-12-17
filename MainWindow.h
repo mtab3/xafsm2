@@ -80,6 +80,7 @@ private:
   int MCALength;
   bool inMCAMeas;
   int cMCACh;
+  int MCAStage;
   MCAView *cMCAV;
 
   /* Special Units */
@@ -90,7 +91,7 @@ private:
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
 
-  QTimer *GoTimer, *ScanTimer, *MonTimer, *MeasTimer;
+  QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer;
 
   Stars *s;
   double MonoCryD;
@@ -100,6 +101,7 @@ private:
   QVector<QWidget*> ViewBases;
   QVector<void*> nowViews;
   QVector<VTYPE> nowVTypes;
+  void deleteView( int tab );
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -439,6 +441,7 @@ private slots:
   void MeasSequence( void );
   void ScanSequence( void );
   void MonSequence( void );
+  void MCASequence( void );
 
 };
 

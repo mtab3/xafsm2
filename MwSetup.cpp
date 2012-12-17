@@ -364,7 +364,10 @@ void MainWindow::GoMStop0( void )
   GoMotor->setEnabled( true );
   SPSScan->setEnabled( true );
   GoMotor->setText( tr( "Go" ) );
-  GoMotor->setStyleSheet( "" );
+  GoMotor->setStyleSheet( "background-color: "
+			  "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+			  "rgba(225, 235, 225, 255), stop:1 "
+			  "rgba(255, 255, 255, 255));" );
   
 }
 
@@ -410,13 +413,10 @@ void MainWindow::ScanStart( void )
 
     SPSView = new XView;
     int cTab = ViewTab->currentIndex();
-    if ( nowViews[ cTab ] != NULL ) {
-      ViewBases.at( cTab )->layout()->removeWidget( (QWidget *)nowViews[ cTab ] );
-      delete nowViews[ cTab ];
-      nowViews[ cTab ] = (void *)NULL;
-    }
+    deleteView( cTab );
     ViewBases.at( cTab )->layout()->addWidget( SPSView );
     nowViews[ cTab ] = (void *)SPSView;
+    nowVTypes[ cTab ] = XVIEW;
 
     SPSView->Clear();
     SPSView->SetSLines( 0, 1 );
@@ -458,7 +458,13 @@ void MainWindow::Monitor( void )
     if ( SelectD22Sel->isChecked() )
       mUnits.addUnit( as1, DwellT22->text().toDouble() );
 
-    MonView = XViews[ ViewTab->currentIndex() ];
+    MonView = new XView;
+    int cTab = ViewTab->currentIndex();
+    deleteView( cTab );
+    ViewBases.at( cTab )->layout()->addWidget( MonView );
+    nowViews[ cTab ] = (void *)MonView;
+    nowVTypes[ cTab ] = XVIEW;
+
     MonView->ClearDataR();
     MonView->SetLineF( RIGHT, LEFT, LEFT );   // Œ»óˆÓ–¡‚È‚µ
 
@@ -496,7 +502,10 @@ void MainWindow::Monitor( void )
       disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
     MStart->setText( tr( "Mon. Start" ) );
-    MStart->setStyleSheet( "" );
+    MStart->setStyleSheet( "background-color: "
+			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+			   "rgba(225, 235, 225, 255), stop:1 "
+			   "rgba(255, 255, 255, 255));" );
   }
 }
 
