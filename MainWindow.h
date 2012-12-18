@@ -82,7 +82,7 @@ private:
   int cMCACh;
   int MCAStage;
   MCAView *cMCAV;
-  double *MCAData;
+  int *MCAData;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
@@ -358,6 +358,8 @@ private slots:
   void getMCASettings( int ch );
   void newROIStart( const QString &newv );
   void newROIEnd( const QString &newv );
+  void showCurrentValues( int, int );
+  void setNewROI( int, int );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );

@@ -117,6 +117,8 @@ void MainWindow::setupSetupArea( void )   /* ê›íËÉGÉäÉA */
   connect( ROIEndInput, SIGNAL( textEdited( const QString & ) ),
 	   this, SLOT( newROIEnd( const QString & ) ) );
   inMCAMeas = false;
+  MCAData = NULL;
+  cMCAV = NULL;
 }
 
 void MainWindow::MMRel( void )

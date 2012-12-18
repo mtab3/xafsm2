@@ -22,6 +22,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   MaxV = 0;          // only for PZ
   MinV = 0;          // only for PZ
 
+  SSDPresetType = "REAL";
+
   IsBusy = false;    // 相手に尋ねる isBusy
   IsBusy2 = false;   // その他のコマンドを投げて返答が返ってくるまで isBusy2
   Value = "";
@@ -204,6 +206,27 @@ bool AUnit::GetValue0( void )
   return rv;
 }
 
+void AUnit::RunStart( void )
+{
+  if ( Type == "SSD" ) {
+    s->SendCMD2( Uid, Driver, "RunStart" );
+  }
+}
+
+void AUnit::RunStop( void )
+{
+  if ( Type == "SSD" ) {
+    s->SendCMD2( Uid, Driver, "RunStop" );
+  }
+}
+
+void AUnit::RunResume( void )
+{
+  if ( Type == "SSD" ) {
+    s->SendCMD2( Uid, Driver, "Resume" );
+  }
+}
+
 void AUnit::SetValue( double v )
 {
   //  IsBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
@@ -379,7 +402,7 @@ bool AUnit::InitSensor( void )
       break;
     case 1:
       IsBusy2 = true;
-      s->SendCMD2( "Init", Driver, "SetPresetType", "REAL" );
+      s->SendCMD2( "Init", Driver, "SetPresetType", SSDPresetType );
       LocalStage++;
       rv = false;
       break;

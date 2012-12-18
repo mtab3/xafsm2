@@ -79,23 +79,42 @@ void MainWindow::StartMCA( void )
     MCAStart->setStyleSheet( "background-color: yellow" );
 
     inMCAMeas = true;
-    mUnits.clearUnits();
-    mUnits.addUnit( SFluo, 0.1 );
 
-    cMCACh = MCACh->text().toInt();
-    cMCAV = new MCAView;
     int cTab = ViewTab->currentIndex();
+    cMCACh = MCACh->text().toInt();
+
+    if ( cMCAV != NULL ) {
+      disconnect( cMCAV, SIGNAL( CurrentValues( int, int ) ),
+		  this, SLOT( showCurrentValues( int, int ) ) );
+      disconnect( cMCAV, SIGNAL( newROI( int, int ) ),
+		  this, SLOT( setNewROI( int, int ) ) );
+      disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
+		  cMCAV, SLOT( setLog( bool ) ) );
+    }
     deleteView( cTab );
+    cMCAV = new MCAView;
+
+    cMCAV->setLog( SetDisplayLog->isChecked() );
+    connect( cMCAV, SIGNAL( CurrentValues( int, int ) ),
+	     this, SLOT( showCurrentValues( int, int ) ) );
+    connect( cMCAV, SIGNAL( newROI( int, int ) ), this, SLOT( setNewROI( int, int ) ) );
+    connect( SetDisplayLog, SIGNAL( clicked( bool ) ), cMCAV, SLOT( setLog( bool ) ) );
+
     ViewBases.at( cTab )->layout()->addWidget( cMCAV );
     nowViews[ cTab ] = (void *)cMCAV;
     nowVTypes[ cTab ] = MCAVIEW;
-    MCAData = new double[ MCALength ];
+    if ( MCAData != NULL )
+      delete MCAData;
+    MCAData = new int[ MCALength ];
+    for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
     cMCAV->setMCAdataPointer( MCAData, MCALength );
+    SFluo->setSSDPresetType( "NONE" );
+    SFluo->RunStop();
     MCAStage = 0;
     MCATimer->start( 100 );
   } else {
     inMCAMeas = false;
-    delete MCAData;
+    SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
     MCAStart->setStyleSheet( "background-color: "
@@ -105,37 +124,51 @@ void MainWindow::StartMCA( void )
   }
 }
 
+void MainWindow::showCurrentValues( int atCur, int inROI )
+{
+  ValAtCurDisp->setText( QString::number( atCur ) );
+  ValInROIDisp->setText( QString::number( inROI ) );
+}
+
+void MainWindow::setNewROI( int s, int e )
+{
+  ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
+  ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+}
+
 void MainWindow::MCASequence( void )
 {
   QStringList MCA;
-
-  if ( mUnits.isBusy() )
+  if ( MCAStage < 2 )         // MCA に RunStart をかけてしまうと、ずっと isBusy
+    if ( SFluo->isBusy() || SFluo->isBusy2() )
+      return;
+  if ( SFluo->isBusy2() )
     return;
 
   switch( MCAStage ) {
   case 0:
-    mUnits.clearStage();
+    SFluo->InitLocalStage();
     MCAStage = 1;
   case 1:
-    if ( mUnits.init() == false ) {  // true :: initializing
-      mUnits.clearStage();
+    if ( SFluo->InitSensor() == false ) {  // true :: initializing
+      SFluo->RunStart();
+      SFluo->InitLocalStage();
       MCAStage = 2;
     }
     break;
-  case 2: 
-    mUnits.setDwellTime();
-    MCAStage = 3;
-    break;
-  case 3:
-    if ( mUnits.getMCA( cMCACh ) == false ) {
-      mUnits.clearStage();
-      MCAStage = 4;
+  case 2:
+    if ( SFluo->GetMCA( cMCACh ) == false ) {
+      SFluo->InitLocalStage();
+      MCAStage = 3;
     }
     break;
-  case 4:
+  case 3:
     MCA = SFluo->MCAvalues();
-    qDebug() << "MCA" << MCA;
-    MCAStage = 3;
+    for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
+      MCAData[i] = MCA.at(i).toInt();
+    }
+    cMCAV->update();
+    MCAStage = 2;
     break;
   }
 }

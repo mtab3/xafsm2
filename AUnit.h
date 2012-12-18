@@ -32,6 +32,8 @@ class AUnit : public QObject
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
+  QString SSDPresetType;
+
   bool IsBusy;
   bool IsBusy2;
   QString Value;
@@ -69,6 +71,8 @@ public:
   void setHasParent( bool hasParent ) { HasParent = hasParent; };
   void setParent( QString pUid ) { PUid = pUid; };
   void setTheParent( AUnit *p ) { theParent = p; };
+  void setSSDPresetType( QString type ) { SSDPresetType = type; };
+  QString getSSDPresetType( void ) { return SSDPresetType; };
 
   bool checkNewVal( void )
   {
@@ -128,6 +132,9 @@ public:
   bool GetValue0( void );
   bool GetValue( void );
   void SetValue( double v );
+  void RunStart( void );
+  void RunStop( void );
+  void RunResume( void );
   void AskIsBusy( void );
   void SetSpeed( MSPEED speed );
   void SetTime( double dtime );   // in sec

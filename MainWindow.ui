@@ -759,52 +759,70 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="5" column="1">
+             <item row="5" column="1" colspan="4">
               <widget class="QLineEdit" name="DynamicRangeInput">
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
+                <string notr="true">background-color: rgb(230, 230, 230);</string>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="2" column="5">
               <widget class="QLabel" name="label_59">
                <property name="text">
                 <string>micro-sec</string>
                </property>
               </widget>
              </item>
-             <item row="6" column="1">
+             <item row="6" column="1" colspan="3">
               <widget class="QLineEdit" name="ROIStartInput">
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
-             <item row="6" column="2">
+             <item row="6" column="4" colspan="2">
               <widget class="QLineEdit" name="ROIEndInput">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="2">
+             <item row="3" column="5">
               <widget class="QLabel" name="label_60">
                <property name="text">
                 <string>eV</string>
                </property>
               </widget>
              </item>
-             <item row="5" column="2">
+             <item row="5" column="5">
               <widget class="QLabel" name="label_62">
                <property name="text">
                 <string>eV</string>
                </property>
               </widget>
              </item>
-             <item row="4" column="2">
+             <item row="4" column="5">
               <widget class="QLabel" name="label_61">
                <property name="text">
                 <string>eV</string>
@@ -814,14 +832,14 @@
              <item row="6" column="0">
               <widget class="QLabel" name="label_58">
                <property name="text">
-                <string>ROI start:end</string>
+                <string>ROI [ S : E ]</string>
                </property>
               </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_38">
                <property name="text">
-                <string>PeakingTime</string>
+                <string>Peak. Time</string>
                </property>
               </widget>
              </item>
@@ -839,44 +857,88 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_64">
+               <property name="text">
+                <string>   </string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="5">
+              <widget class="QPushButton" name="MCAPause">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>1000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               </property>
+               <property name="text">
+                <string>Pause</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
              <item row="5" column="0">
               <widget class="QLabel" name="label_56">
                <property name="text">
-                <string>Dynamic Range</string>
+                <string>Dyn. Range</string>
                </property>
               </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_57">
                <property name="text">
-                <string>SSD Ch No.</string>
+                <string>SSD No.</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
+             <item row="2" column="1" colspan="4">
               <widget class="QLineEdit" name="PeakingTimeInput">
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
+                <string notr="true">background-color: rgb(230, 230, 230);</string>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="3" column="1" colspan="4">
               <widget class="QLineEdit" name="ThresholdInput">
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
+                <string notr="true">background-color: rgb(230, 230, 230);</string>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
                </property>
               </widget>
              </item>
-             <item row="4" column="1">
+             <item row="4" column="1" colspan="4">
               <widget class="QLineEdit" name="CalibrationInput">
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
+                <string notr="true">background-color: rgb(230, 230, 230);</string>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
@@ -899,12 +961,18 @@
              <item row="7" column="0">
               <widget class="QLabel" name="label_63">
                <property name="text">
-                <string>Val. at Cur.:ROI</string>
+                <string>Cur. : ROI</string>
                </property>
               </widget>
              </item>
-             <item row="7" column="1">
+             <item row="7" column="1" colspan="3">
               <widget class="QLabel" name="ValAtCurDisp">
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 221);</string>
                </property>
@@ -919,8 +987,14 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="2">
+             <item row="7" column="4" colspan="2">
               <widget class="QLabel" name="ValInROIDisp">
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 221);</string>
                </property>
@@ -935,13 +1009,38 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
+             <item row="1" column="4">
               <widget class="QPushButton" name="MCAStart">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>1000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
                <property name="text">
                 <string>Start</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QRadioButton" name="SetDisplayLog">
+               <property name="text">
+                <string>Log  </string>
                </property>
               </widget>
              </item>

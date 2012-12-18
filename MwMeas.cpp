@@ -548,7 +548,7 @@ void MainWindow::ClearNowView( void )
   int cTab = ViewTab->currentIndex();
   if ( nowViews[ cTab ] != NULL ) {
     ViewBases.at( cTab )->layout()->removeWidget( (QWidget *)nowViews[ cTab ] );
-    delete nowViews[ cTab ];
+    deleteView( cTab );
     nowViews[ cTab ] = (void *)NULL;
   }
   ViewBases.at( cTab )->layout()->addWidget( NowView );
