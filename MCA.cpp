@@ -89,11 +89,13 @@ void MainWindow::StartMCA( void )
     ViewBases.at( cTab )->layout()->addWidget( cMCAV );
     nowViews[ cTab ] = (void *)cMCAV;
     nowVTypes[ cTab ] = MCAVIEW;
-
+    MCAData = new double[ MCALength ];
+    cMCAV->setMCAdataPointer( MCAData, MCALength );
     MCAStage = 0;
     MCATimer->start( 100 );
   } else {
     inMCAMeas = false;
+    delete MCAData;
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
     MCAStart->setStyleSheet( "background-color: "

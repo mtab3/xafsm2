@@ -11,6 +11,12 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   valid = false;
 }
 
+void MCAView::setMCAdataPointer( double *mca, int len )
+{
+  MCA = mca;
+  MCALen = len;
+}
+
 void MCAView::mouseMoveEvent( QMouseEvent *e ) {}
 void MCAView::mousePressEvent( QMouseEvent *e ) {}
 void MCAView::mouseReleaseEvent( QMouseEvent *e ) {}

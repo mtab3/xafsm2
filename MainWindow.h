@@ -82,6 +82,7 @@ private:
   int cMCACh;
   int MCAStage;
   MCAView *cMCAV;
+  double *MCAData;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax

@@ -8,14 +8,18 @@ class MCAView : public QFrame, private Ui::MCAView
   Q_OBJECT
 
 private:
+  int valid;
+  double *MCA;
+  int MCALen;
+
   void mouseMoveEvent( QMouseEvent *e );
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
-  int valid;
 
 public:
   MCAView( QWidget *parent = NULL );
+  void setMCAdataPointer( double *mca, int length );
 };
 
 #endif
