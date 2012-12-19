@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "ui_XView.h"
 
+#include "ChCoord.h"
+
 #define MAXPOINTS ( 10000 )
 #define MAXLINES  ( 30 )
 
@@ -24,6 +26,7 @@ private:
   void mouseDoubleClickEvent( QMouseEvent *e );
   QColor MCLineC;          // mouse cursor line color
   int nx, ny;              // current mouse position
+  ChCoord cc;
 
   GTYPE GType;
   int valid;
@@ -31,9 +34,11 @@ private:
   QVector<QColor> LC;
   QVector<QString> LNames;
   QString XName;
+#if 0
   double wminx, wmaxx;
   double wminy, wmaxy;
   int minx, miny, maxx, maxy;
+#endif
 
   double Rwmaxy[ MaxMon ];
   double Rwminy[ MaxMon ];
@@ -55,7 +60,7 @@ public:
   void NewPointR( int tt, double yy0, double yy1, double yy2 );
   void Clear( void );
   void ClearDataR( void );
-  void SetWindow( double x1, double y1, double x2, double y2 );
+  //  void SetWindow( double x1, double y1, double x2, double y2 );
   void DrawXYPlot( QPainter *p );
   void DrawMonitor( QPainter *p );
   void ReDraw( void );
@@ -84,6 +89,8 @@ public:
   void SetScaleT( SCALET s1, SCALET s2 ) { ScaleTR = s1; ScaleTL = s2; };
   int PeakSearch( int l );
   int getMonScale( void ) { return MonScale; };
+  void SetWindow( double x1, double y1, double x2, double y2 )
+  { cc.SetWindow( x1, y1, x2, y2 ); };
 
 public slots:
   void SetMonScale( int ms );
@@ -95,18 +102,10 @@ private:
   void setX( int l, int p, double xx );
   void setY( int l, int p, double yy );
 
-  void calcScale( double div, double min, double max, double *s, double *d );
-  void SetView( int x1, int y1, int x2, int y2 );
   void UpDateYWindow( int l, SCALET s );
   void UpDateYWindowRing( void );
-  int w2rx( double x );
-  int w2ry( double y );
-  int w2rdx( double x );
-  int w2rdy( double y );
-  double r2wx( int x );
-  double r2wy( int y );
-  double r2wdx( int x );
-  double r2wdy( int y );
+  void calcScale( double div, double min, double max, double *s, double *d );
+
   void DrawText( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
 };
 
