@@ -257,6 +257,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGetPeakingTime( smsg ); break;
 	case GETDYNAMICRANGE:
 	  emit AnsGetDynamicRange( smsg ); break;
+	case GETPREAMPGAIN:
+	  emit AnsGetPreAMPGain( smsg ); break;
 	case GETMCALENGTH:
 	  emit AnsGetMCALength( smsg ); break;
 	case GETMCA:

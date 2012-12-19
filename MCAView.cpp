@@ -23,10 +23,16 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   nx = ny = sx = sy = ex = ey = 0;
 }
 
-void MCAView::setMCAdataPointer( int *mca, int len )
+MCAView::~MCAView( void )
 {
-  MCA = mca;
-  MCALen = len;
+  if ( MCA != NULL )
+    delete MCA;
+}
+
+int *MCAView::setMCAdataPointer( int len )
+{
+  MCA = new int[ MCALen = len ];
+  return MCA;
 }
 
 void MCAView::paintEvent( QPaintEvent * )

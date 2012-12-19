@@ -354,6 +354,7 @@ private slots:
   void showThreshold( SMsg mas );
   void showCalibration( SMsg mas );
   void showDynamicRange( SMsg msg );
+  void showPreAMPGain( SMsg msg );
   void getMCALen( SMsg msg );
   void getMCASettings( int ch );
   void newROIStart( const QString &newv );

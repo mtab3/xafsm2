@@ -30,7 +30,7 @@ void MUnits::addUnit( AUnit *au, double dt )
       if ( PUnits.at(i)->au->getUid() == au->getPUid() )
 	break;
     }
-    if ( i < PUnits.count() ) {
+    if ( i >= PUnits.count() ) {
       MUElement *pmue = new MUElement;
       pmue->au = au->getTheParent();
       pmue->dt = dt;
@@ -93,7 +93,9 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形にするべき
     PUnits.at(i)->au->SetTime( PUnits.at(i)->dt );
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    Units.at(i)->au->SetTime( Units.at(i)->dt );
+    if ( ! Units.at(i)->au->hasParent() ) {
+      Units.at(i)->au->SetTime( Units.at(i)->dt );
+    }
   }
 }
 
@@ -102,7 +104,7 @@ bool MUnits::getValue0( void )
   bool ff = false;
 
   for ( int i = 0; i < PUnits.count(); i++ ) {
-    ff |= PUnits.at(i)->au->GetValue();
+    ff |= PUnits.at(i)->au->GetValue0();
   }
 
   return ff;

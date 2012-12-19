@@ -1,7 +1,10 @@
 #ifndef CHCOORD_H
 #define CHCOORD_H
 
+#include <QtGui>
 #include <QObject>
+
+enum DRAWTXTF { FIXSIZE, SCALESIZE };
 
 class ChCoord : public QObject
 {
@@ -38,6 +41,11 @@ class ChCoord : public QObject
 
   void getSEDy( double *sy, double *ey, double *dy );
   void calcScale( double div, double min, double max, double *s, double *d );
+
+  /* ChCoord とは直接関係ないけど、グラフ関係の一般的な関数なのでここに置いとく */
+
+  void DrawText( QPainter *p, 
+		 QRectF rec, QFont font, int flags, QString msg, DRAWTXTF f );
 };
 
 #endif

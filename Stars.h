@@ -108,6 +108,7 @@ signals:
   void AnsGetThreshold( SMsg msg );
   void AnsGetPeakingTime( SMsg msg );
   void AnsGetDynamicRange( SMsg msg );
+  void AnsGetPreAMPGain( SMsg msg );
   void AnsGetMCALength( SMsg msg );
   void AnsGetMCA( SMsg msg );
 

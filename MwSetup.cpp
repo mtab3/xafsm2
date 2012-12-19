@@ -109,7 +109,9 @@ void MainWindow::setupSetupArea( void )   /* ê›íËÉGÉäÉA */
   connect( s, SIGNAL( AnsGetThreshold( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
   connect( s, SIGNAL( AnsGetCalibration( SMsg ) ), this, SLOT( showCalibration( SMsg ) ) );
   connect( s, SIGNAL( AnsGetDynamicRange( SMsg ) ), this, SLOT( showDynamicRange( SMsg ) ) );
+  connect( s, SIGNAL( AnsGetPreAMPGain( SMsg ) ), this, SLOT( showPreAMPGain( SMsg ) ) );
   connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ) );
+
   connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ) );
   connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ) );
   connect( ROIStartInput, SIGNAL( textEdited( const QString & ) ),

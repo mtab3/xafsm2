@@ -33,6 +33,7 @@ class AUnit : public QObject
   double MinV;          // only for PZ
 
   QString SSDPresetType;
+  QString *ROIStart, *ROIEnd;
 
   bool IsBusy;
   bool IsBusy2;
@@ -73,6 +74,8 @@ public:
   void setTheParent( AUnit *p ) { theParent = p; };
   void setSSDPresetType( QString type ) { SSDPresetType = type; };
   QString getSSDPresetType( void ) { return SSDPresetType; };
+  void setROIs( QString *roistart, QString *roiend )
+  { ROIStart = roistart; ROIEnd = roiend; };
 
   bool checkNewVal( void )
   {

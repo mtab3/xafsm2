@@ -138,6 +138,10 @@ void MainWindow::ReadDef( QString fname )
 	  break;
 	}
       }
+      if ( j >= ASensors.count() ) {
+	qDebug() << "can not find a parent for " << ASensors.at(i)->getUid()
+		 << "the name is " << ASensors.at(i)->getPUid();
+      }
     }
   }
 }

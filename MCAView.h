@@ -30,7 +30,9 @@ private:
   void mouseDoubleClickEvent( QMouseEvent *e );
 public:
   MCAView( QWidget *parent = NULL );
-  void setMCAdataPointer( int *mca, int length );
+  ~MCAView( void );
+
+  int *setMCAdataPointer( int length );
 
 public slots:
   void setLog( bool f ) { dispLog = f; update(); };

@@ -131,3 +131,22 @@ void ChCoord::calcScale( double div, double min, double max, double *s, double *
   *s = (int)(min / d0 + 1) * d0;
   *d = d0;
 }
+
+/**********************************************************************/
+
+void ChCoord::DrawText( QPainter *p, 
+			QRectF rec, QFont font, int flags, QString msg, DRAWTXTF f )
+{
+  double xr, yr;
+  QRectF brec;
+  double fSize = font.pointSizeF();
+
+  brec = p->boundingRect( rec, flags, msg );
+  xr = brec.width() / (int)rec.width();
+  yr = brec.height() / (int)rec.height();
+  font.setPointSize( (int)( fSize / ( ( xr > yr ) ? xr : yr ) + 1 ) );
+  p->setFont( font );
+  p->drawText( rec, flags, msg );
+  font.setPointSizeF( fSize );
+  p->setFont( font );
+}

@@ -135,6 +135,7 @@ void MainWindow::InitAndIdentifySensors( void )
     if ( as->getID() == "TotalF" ) { SFluo = as; }
     if ( as->getID() == "ENCTH" ) { EncMainTh = as; }
   }
+  SFluo->setROIs( ROIStart, ROIEnd );
   connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
   EncMainTh->GetValue();
 }

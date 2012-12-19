@@ -48,6 +48,7 @@ void MainWindow::MeasSequence( void )
   case 3: 
     MeasS = 0;    // Measurement Step count in each block
     mUnits.setDwellTimes( NowDwell = SBlockDwell[0] );
+    mUnits.setDwellTime();
     MeasStage = 4;
     // break;       MeasStage == 2 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)

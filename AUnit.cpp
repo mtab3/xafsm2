@@ -113,6 +113,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
   }
@@ -122,6 +123,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", DevCh );
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
   }
@@ -189,14 +191,14 @@ bool AUnit::GetValue0( void )
     switch( LocalStage ) {
     case 0:
       IsBusy2 = true;
-      IsBusy = true;
-      s->SendCMD2( Uid, Driver, "RunStart" );
+      s->SendCMD2( Uid, Driver, "RunStop" );
       rv = true;
       LocalStage++;
       break;
     case 1:
       IsBusy2 = true;
-      s->SendCMD2( Uid, Driver, "RunStop" );
+      IsBusy = true;
+      s->SendCMD2( Uid, Driver, "RunStart" );
       rv = false;
       LocalStage++;
       break;
@@ -393,6 +395,7 @@ bool AUnit::InitSensor( void )
     }
   }
   if ( Type == "SSD" ) {
+    QString ROIs = "";
     switch( LocalStage ) {
     case 0:
       IsBusy2 = true;
@@ -403,6 +406,16 @@ bool AUnit::InitSensor( void )
     case 1:
       IsBusy2 = true;
       s->SendCMD2( "Init", Driver, "SetPresetType", SSDPresetType );
+      LocalStage++;
+      rv = true;
+      break;
+    case 2:
+      IsBusy2 = true;
+      ROIs = ROIStart[0] + " " + ROIEnd[0];
+      for ( int i = 1; i < 19; i++ ) {
+	ROIs += " " + ROIStart[i] + " " + ROIEnd[i];
+      }
+      s->SendCMD2( "Init", Driver, "SetROIs", ROIs );
       LocalStage++;
       rv = false;
       break;

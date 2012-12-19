@@ -9,6 +9,7 @@ void MainWindow::getMCASettings( int ch )
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
@@ -72,6 +73,13 @@ void MainWindow::showDynamicRange( SMsg msg )
   }
 }
 
+void MainWindow::showPreAMPGain( SMsg msg )
+{
+  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+    GainInput->setText( msg.Val() );
+  }
+}
+
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
@@ -93,8 +101,9 @@ void MainWindow::StartMCA( void )
     }
     deleteView( cTab );
     cMCAV = new MCAView;
-
+    MCAData = cMCAV->setMCAdataPointer( MCALength );
     cMCAV->setLog( SetDisplayLog->isChecked() );
+
     connect( cMCAV, SIGNAL( CurrentValues( int, int ) ),
 	     this, SLOT( showCurrentValues( int, int ) ) );
     connect( cMCAV, SIGNAL( newROI( int, int ) ), this, SLOT( setNewROI( int, int ) ) );
@@ -103,11 +112,7 @@ void MainWindow::StartMCA( void )
     ViewBases.at( cTab )->layout()->addWidget( cMCAV );
     nowViews[ cTab ] = (void *)cMCAV;
     nowVTypes[ cTab ] = MCAVIEW;
-    if ( MCAData != NULL )
-      delete MCAData;
-    MCAData = new int[ MCALength ];
     for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
-    cMCAV->setMCAdataPointer( MCAData, MCALength );
     SFluo->setSSDPresetType( "NONE" );
     SFluo->RunStop();
     MCAStage = 0;

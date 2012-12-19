@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>774</width>
+    <width>718</width>
     <height>892</height>
    </rect>
   </property>
@@ -318,7 +318,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -759,24 +759,14 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="5" column="1" colspan="4">
-              <widget class="QLineEdit" name="DynamicRangeInput">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(230, 230, 230);</string>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="5">
+             <item row="2" column="3">
               <widget class="QLabel" name="label_59">
                <property name="text">
-                <string>micro-sec</string>
+                <string>u-sec</string>
                </property>
               </widget>
              </item>
-             <item row="6" column="1" colspan="3">
+             <item row="5" column="1" colspan="3">
               <widget class="QLineEdit" name="ROIStartInput">
                <property name="maximumSize">
                 <size>
@@ -789,7 +779,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="4" colspan="2">
+             <item row="5" column="4" colspan="2">
               <widget class="QLineEdit" name="ROIEndInput">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -815,21 +805,14 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="5">
-              <widget class="QLabel" name="label_62">
-               <property name="text">
-                <string>eV</string>
-               </property>
-              </widget>
-             </item>
              <item row="4" column="5">
               <widget class="QLabel" name="label_61">
                <property name="text">
-                <string>eV</string>
+                <string>mV/keV</string>
                </property>
               </widget>
              </item>
-             <item row="6" column="0">
+             <item row="5" column="0">
               <widget class="QLabel" name="label_58">
                <property name="text">
                 <string>ROI [ S : E ]</string>
@@ -839,69 +822,32 @@
              <item row="2" column="0">
               <widget class="QLabel" name="label_38">
                <property name="text">
-                <string>Peak. Time</string>
+                <string>Peak. T.</string>
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
+             <item row="3" column="3">
               <widget class="QLabel" name="label_55">
                <property name="text">
-                <string>Caribration</string>
+                <string>eV  Carib.</string>
                </property>
               </widget>
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_54">
                <property name="text">
-                <string>Threshold</string>
+                <string>Thresh.</string>
                </property>
               </widget>
              </item>
              <item row="1" column="2">
               <widget class="QLabel" name="label_64">
                <property name="text">
-                <string>   </string>
+                <string/>
                </property>
               </widget>
              </item>
-             <item row="1" column="5">
-              <widget class="QPushButton" name="MCAPause">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>20</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>1000</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Pause</string>
-               </property>
-               <property name="default">
-                <bool>false</bool>
-               </property>
-               <property name="flat">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
+             <item row="4" column="0">
               <widget class="QLabel" name="label_56">
                <property name="text">
                 <string>Dyn. Range</string>
@@ -915,7 +861,7 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1" colspan="4">
+             <item row="2" column="1" colspan="2">
               <widget class="QLineEdit" name="PeakingTimeInput">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -925,7 +871,7 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1" colspan="4">
+             <item row="3" column="1" colspan="2">
               <widget class="QLineEdit" name="ThresholdInput">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -935,7 +881,7 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="1" colspan="4">
+             <item row="3" column="4">
               <widget class="QLineEdit" name="CalibrationInput">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -958,14 +904,14 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="0">
+             <item row="6" column="0">
               <widget class="QLabel" name="label_63">
                <property name="text">
                 <string>Cur. : ROI</string>
                </property>
               </widget>
              </item>
-             <item row="7" column="1" colspan="3">
+             <item row="6" column="1" colspan="3">
               <widget class="QLabel" name="ValAtCurDisp">
                <property name="maximumSize">
                 <size>
@@ -987,7 +933,7 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="4" colspan="2">
+             <item row="6" column="4" colspan="2">
               <widget class="QLabel" name="ValInROIDisp">
                <property name="maximumSize">
                 <size>
@@ -1009,40 +955,111 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="4">
-              <widget class="QPushButton" name="MCAStart">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>20</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>1000</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Start</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="3">
               <widget class="QRadioButton" name="SetDisplayLog">
                <property name="text">
                 <string>Log  </string>
                </property>
               </widget>
+             </item>
+             <item row="4" column="1" colspan="2">
+              <widget class="QLineEdit" name="DynamicRangeInput">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(230, 230, 230);</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="QLabel" name="label_65">
+               <property name="text">
+                <string>eV  Gain</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="4">
+              <widget class="QLineEdit" name="GainInput">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(230, 230, 230);</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4" colspan="2">
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="MCAStart">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>20</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>1000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Start</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="MCAPause">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>20</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>1000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Pause</string>
+                 </property>
+                 <property name="default">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -3182,7 +3199,7 @@
        <string notr="true">background-color: rgb(245, 240, 220);</string>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="VT1">
        <attribute name="title">
@@ -3253,7 +3270,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>774</width>
+     <width>718</width>
      <height>21</height>
     </rect>
    </property>

@@ -106,7 +106,7 @@ private:
   void UpDateYWindowRing( void );
   void calcScale( double div, double min, double max, double *s, double *d );
 
-  void DrawText( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
+  //  void DrawText( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
 };
 
 
