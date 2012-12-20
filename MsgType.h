@@ -61,6 +61,8 @@ enum MSGTYPE {
   GETMCALENGTH,
   GETMCA,
 
+  GETSTATISTICS,
+
   EvCHANGEDVALUE,
   EvISBUSY,
   NOTMSG,                    // 32

@@ -16,6 +16,9 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   IsInt = false;
   HasParent = false;
   theParent = NULL;
+  for ( int i = 0; i < 20; i++ ) {
+    MCARealTime[i] = MCALiveTime[i] = 0;
+  }
   
   Center = 0;        // only for PM
 
@@ -114,8 +117,12 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetRealTime( SMsg ) ), this, SLOT( ReactGetRealTime( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetLiveTime( SMsg ) ), this, SLOT( ReactGetLiveTime( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
+    s->SendCMD2( "Init", Driver, "RunStop" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP      // SSDP(Xmap)¤À¤±
   if ( TypeCHK(  0,  0,  0,  0,  0,  0, 1 ) ) {
@@ -425,14 +432,6 @@ bool AUnit::InitSensor( void )
   return rv;
 }
 
-void AUnit::ReactGetMCA( SMsg msg )
-{
-  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
-    IsBusy2 = false;
-    MCAValues = msg.Vals();
-  }
-}
-
 bool AUnit::GetMCA( int ch )
 {
   bool rv;
@@ -441,6 +440,129 @@ bool AUnit::GetMCA( int ch )
     IsBusy2 = true;
     s->SendCMD2( Uid, Driver, "GetMCA", QString::number( ch ) );
     rv = false;
+  }
+
+  return rv;
+}
+
+void AUnit::ReactGetMCA( SMsg msg )
+{
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+    IsBusy2 = false;
+    MCAValues = msg.Vals();
+  }
+}
+
+bool AUnit::GetStat( void )
+{
+  bool rv;
+
+  if ( Type == "SSD" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, Driver, "GetStatistics" );
+    rv = false;
+  }
+
+  return rv;
+}
+
+void AUnit::ReactGetStat( SMsg msg )
+{
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+    IsBusy2 = false;
+    MCAStats = msg.Vals();
+  }
+}
+
+double AUnit::stat( int ch, STATELM i )
+{
+  double rv = 0;
+
+  if ( Type == "SSD" ) {
+    if ( MCAStats.count() >= 140 ) {
+      rv = MCAStats.at( ch * 7 + (int)i ).toDouble();
+    }
+  }
+
+  return rv;
+}
+
+double AUnit::stat( STATELM i )
+{
+  double rv = 0;
+
+  if ( Type == "SSDP" ) {
+    rv = theParent->stat( Ch.toInt(), i );
+  }
+
+  return rv;
+}
+
+
+
+
+
+
+
+bool AUnit::GetRealTime( int ch )
+{
+  bool rv;
+
+  if ( Type == "SSD" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, Driver, "GetRealTime", QString::number( ch ) );
+    rv = false;
+  }
+
+  return rv;
+}
+
+void AUnit::ReactGetRealTime( SMsg msg )
+{
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+    IsBusy2 = false;
+    MCARealTime[ msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
+  }
+}
+
+double AUnit::realTime( int ch )
+{
+  double rv = 0;
+
+  if ( Type == "SSD" ) {
+    rv = MCARealTime[ ch ];
+  }
+
+  return rv;
+}
+
+bool AUnit::GetLiveTime( int ch )
+{
+  bool rv;
+
+  if ( Type == "SSD" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, Driver, "GetLiveTime", QString::number( ch ) );
+    rv = false;
+  }
+
+  return rv;
+}
+
+void AUnit::ReactGetLiveTime( SMsg msg )
+{
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+    IsBusy2 = false;
+    MCALiveTime[ msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
+  }
+}
+
+double AUnit::liveTime( int ch )
+{
+  double rv = 0;
+
+  if ( Type == "SSD" ) {
+    rv = MCALiveTime[ ch ];
   }
 
   return rv;

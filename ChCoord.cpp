@@ -67,6 +67,32 @@ double ChCoord::r2wy( int y )
   return ( wmaxy - wminy ) / ( maxy - miny ) * ( maxy - y ) + wminy;
 }
 
+double ChCoord::r2wxLimit( int x )
+{
+  double rv = ( wmaxx - wminx ) / ( maxx - minx ) * ( x - minx ) + wminx;
+  if ( wmaxx > wminx ) {
+    if ( rv > wmaxx ) rv = wmaxx;
+    if ( rv < wminx ) rv = wminx;
+  } else {
+    if ( rv > wminx ) rv = wminx;
+    if ( rv < wmaxx ) rv = wmaxx;
+  }
+  return rv;
+}
+
+double ChCoord::r2wyLimit( int y )
+{
+  double rv = ( wmaxy - wminy ) / ( maxy - miny ) * ( maxy - y ) + wminy;
+  if ( wmaxy > wminy ) {
+    if ( rv > wmaxy ) rv = wmaxy;
+    if ( rv < wminy ) rv = wminy;
+  } else {
+    if ( rv > wminy ) rv = wminy;
+    if ( rv < wmaxy ) rv = wmaxy;
+  }
+  return rv;
+}
+
 double ChCoord::r2wdx( int x )
 {
   return ( wmaxx - wminx ) / ( maxx - minx ) * x;
@@ -132,19 +158,31 @@ void ChCoord::calcScale( double div, double min, double max, double *s, double *
   *d = d0;
 }
 
-/**********************************************************************/
+/*************************************************************************************/
+/*   The following functions have almost no relation with the coordination change.   */
+/*   But useful as common function for drawing applications.                         */
+/*************************************************************************************/
 
 void ChCoord::DrawText( QPainter *p, 
-			QRectF rec, QFont font, int flags, QString msg, DRAWTXTF f )
+			QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg )
+/* Draw Text within a given rectangle, 'QRectF rec'. 
+ *   When the 'DRAWTEXTF (draw text flag) f' is 
+ *   FIXSIZE   : the text will draw with preparantially set font size via 'QFont font'
+ *   SCALESIZE : the text will be automatically scaled to match within the rectange. 
+ */
 {
   double xr, yr;
-  QRectF brec;
+  QRectF brec, dummyrec = QRectF( 0, 0, 1000, 1000 );
   double fSize = font.pointSizeF();
 
-  brec = p->boundingRect( rec, flags, msg );
-  xr = brec.width() / (int)rec.width();
-  yr = brec.height() / (int)rec.height();
-  font.setPointSize( (int)( fSize / ( ( xr > yr ) ? xr : yr ) + 1 ) );
+  brec = p->boundingRect( dummyrec, flags, msg );
+  // There was a bug, that call the boundingRect with given 'rec'
+  // Then it returns limitted by the size of rec when the 
+  //   drawn text size should bigger than the rectange,
+  //   and the results of the resize were wrong. 
+  xr = brec.width() / rec.width();
+  yr = brec.height() / rec.height();
+  font.setPointSize( fSize / ( ( xr > yr ) ? xr : yr ) );
   p->setFont( font );
   p->drawText( rec, flags, msg );
   font.setPointSizeF( fSize );

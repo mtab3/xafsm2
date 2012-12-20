@@ -40,6 +40,7 @@ const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
 enum VTYPE { XVIEW, MCAVIEW, NONVIEW };
+enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 
 struct DRVDef {
   QString name;
@@ -83,6 +84,7 @@ private:
   int MCAStage;
   MCAView *cMCAV;
   int *MCAData;
+  MCASTARTRESUME StartResume;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
@@ -117,6 +119,7 @@ private:
   void setupLogArea( void );
   void setupCommonArea( void );
   void setupSetupArea( void );
+  void setupSetupSSDArea( void );
   void setupMeasArea( void );
 
   QVector<DRVDef *> DriverList;
@@ -224,7 +227,7 @@ private:
   QVector<QLineEdit *> BLKdwell;
   QVector<QLineEdit *> BLKpoints;
 
-  QVector<QPushButton *> SSD;
+  QVector<QPushButton *> SSDbs;
   //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;
@@ -244,8 +247,6 @@ private:
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
-
-  int SelectedSSD[ MaxSSDs ];
 
   void ChangeBLKstart( int i );
   void ChangeBLKstep( int i );

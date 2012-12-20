@@ -6,6 +6,9 @@
 #include "XafsM.h"
 #include "Stars.h"
 
+enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
+	       STAT_EVENTS, STAT_ICR, STAT_OCR };
+
 class AUnit : public QObject
 {
   Q_OBJECT
@@ -41,6 +44,9 @@ class AUnit : public QObject
   QString lastVal;
   QStringList Values;
   QStringList MCAValues;
+  QStringList MCAStats;
+  double MCARealTime[ 20 ];
+  double MCALiveTime[ 20 ];
 
   int LocalStage;
   int lastSetV;
@@ -118,6 +124,10 @@ public:
   bool hasParent( void ) { return HasParent; };
   QString getPUid( void ) { return PUid; };
   AUnit *getTheParent( void ) { return theParent; };
+  double stat( int ch, STATELM i );
+  double stat( STATELM i );
+  double realTime( int ch );
+  double liveTime( int ch );
 
   int getLastSetV( void ) { return lastSetV; };
 
@@ -143,6 +153,9 @@ public:
   void SetTime( double dtime );   // in sec
   void Stop( void );
   bool GetMCA( int ch );
+  bool GetStat( void );
+  bool GetRealTime( int ch );
+  bool GetLiveTime( int ch );
 
 public slots:
   void ClrBusy( SMsg msg );
@@ -151,6 +164,9 @@ public slots:
   void ReceiveValues( SMsg msg );
 
   void ReactGetMCA( SMsg msg );
+  void ReactGetStat( SMsg msg );
+  void ReactGetRealTime( SMsg msg );
+  void ReactGetLiveTime( SMsg msg );
 
 signals:
   //  void CountFinished( void );

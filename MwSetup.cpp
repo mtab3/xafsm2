@@ -102,25 +102,6 @@ void MainWindow::setupSetupArea( void )   /* ê›íËÉGÉäÉA */
   connect( SetUpMMAbs, SIGNAL( clicked() ), this, SLOT( MMAbs() ) );
   connect( SetUpSPSRel, SIGNAL( clicked() ), this, SLOT( SPSRel() ) );
   connect( SetUpSPSAbs, SIGNAL( clicked() ), this, SLOT( SPSAbs() ) );
-
-  /* MCA */
-
-  connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ), this, SLOT( showPeakingTime( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetThreshold( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetCalibration( SMsg ) ), this, SLOT( showCalibration( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetDynamicRange( SMsg ) ), this, SLOT( showDynamicRange( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetPreAMPGain( SMsg ) ), this, SLOT( showPreAMPGain( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ) );
-
-  connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ) );
-  connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ) );
-  connect( ROIStartInput, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( newROIStart( const QString & ) ) );
-  connect( ROIEndInput, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( newROIEnd( const QString & ) ) );
-  inMCAMeas = false;
-  MCAData = NULL;
-  cMCAV = NULL;
 }
 
 void MainWindow::MMRel( void )

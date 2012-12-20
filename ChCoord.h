@@ -26,6 +26,8 @@ class ChCoord : public QObject
   int w2rdy( double y );
   double r2wx( int x );
   double r2wy( int y );
+  double r2wxLimit( int x );
+  double r2wyLimit( int y );
   double r2wdx( int x );
   double r2wdy( int y );
 
@@ -45,7 +47,7 @@ class ChCoord : public QObject
   /* ChCoord とは直接関係ないけど、グラフ関係の一般的な関数なのでここに置いとく */
 
   void DrawText( QPainter *p, 
-		 QRectF rec, QFont font, int flags, QString msg, DRAWTXTF f );
+		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
 };
 
 #endif

@@ -40,6 +40,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupView();
   setupCommonArea();
   setupSetupArea();
+  setupSetupSSDArea();
   setupMeasArea();
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
@@ -70,7 +71,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
 
   connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
-
 
   GoTimer = new QTimer;
   MCATimer = new QTimer;

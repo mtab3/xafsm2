@@ -111,7 +111,7 @@ signals:
   void AnsGetPreAMPGain( SMsg msg );
   void AnsGetMCALength( SMsg msg );
   void AnsGetMCA( SMsg msg );
-
+  void AnsGetStatistics( SMsg msg );
 
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );

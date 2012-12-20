@@ -12,6 +12,9 @@ private:
   int valid;
   int *MCA;
   int MCALen;
+  int MCACh;
+  double realTime;
+  double liveTime;
 
   bool dispLog;
 
@@ -33,6 +36,9 @@ public:
   ~MCAView( void );
 
   int *setMCAdataPointer( int length );
+  void SetRealTime( double rt ) { realTime = rt; };
+  void SetLiveTime( double lt ) { liveTime = lt; };
+  void SetMCACh( int i ) { MCACh = i; };
 
 public slots:
   void setLog( bool f ) { dispLog = f; update(); };

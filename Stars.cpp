@@ -263,6 +263,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGetMCALength( smsg ); break;
 	case GETMCA:
 	  emit AnsGetMCA( smsg ); break;
+	case GETSTATISTICS:
+	  emit AnsGetStatistics( smsg ); break;
 	default:
 	  break;
 	}

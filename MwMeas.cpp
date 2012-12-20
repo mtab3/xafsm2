@@ -10,10 +10,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   << BLKdwell04 << BLKdwell05 << BLKdwell06;
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03
 	    << BLKpoints04 << BLKpoints05 << BLKpoints06;
-  SSD << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
-      << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
-      << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
-      << SSDE16 << SSDE17 << SSDE18 << SSDE19;
 
   BLKUnit = KEV;
   ClearBLKs();
@@ -23,11 +19,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    SSD[i]->setStyleSheet( "background-color: #eeffee" );
-    SSD[i]->setToolTip( tr( "Active" ) );
-  }
-  //  SetSSDactive( true );
 
   SelDFND = new QFileDialog;
   SelWBFND = new QFileDialog;
@@ -144,25 +135,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( ModeAux, SIGNAL( clicked() ), this, SLOT( Mode2Au() ) );
 #endif
 
-  connect( SSD[0],  SIGNAL( clicked() ), this, SLOT( SelSSDs00() ) );
-  connect( SSD[1],  SIGNAL( clicked() ), this, SLOT( SelSSDs01() ) );
-  connect( SSD[2],  SIGNAL( clicked() ), this, SLOT( SelSSDs02() ) );
-  connect( SSD[3],  SIGNAL( clicked() ), this, SLOT( SelSSDs03() ) );
-  connect( SSD[4],  SIGNAL( clicked() ), this, SLOT( SelSSDs04() ) );
-  connect( SSD[5],  SIGNAL( clicked() ), this, SLOT( SelSSDs05() ) );
-  connect( SSD[6],  SIGNAL( clicked() ), this, SLOT( SelSSDs06() ) );
-  connect( SSD[7],  SIGNAL( clicked() ), this, SLOT( SelSSDs07() ) );
-  connect( SSD[8],  SIGNAL( clicked() ), this, SLOT( SelSSDs08() ) );
-  connect( SSD[9],  SIGNAL( clicked() ), this, SLOT( SelSSDs09() ) );
-  connect( SSD[10], SIGNAL( clicked() ), this, SLOT( SelSSDs10() ) );
-  connect( SSD[11], SIGNAL( clicked() ), this, SLOT( SelSSDs11() ) );
-  connect( SSD[12], SIGNAL( clicked() ), this, SLOT( SelSSDs12() ) );
-  connect( SSD[13], SIGNAL( clicked() ), this, SLOT( SelSSDs13() ) );
-  connect( SSD[14], SIGNAL( clicked() ), this, SLOT( SelSSDs14() ) );
-  connect( SSD[15], SIGNAL( clicked() ), this, SLOT( SelSSDs15() ) );
-  connect( SSD[16], SIGNAL( clicked() ), this, SLOT( SelSSDs16() ) );
-  connect( SSD[17], SIGNAL( clicked() ), this, SLOT( SelSSDs17() ) );
-  connect( SSD[18], SIGNAL( clicked() ), this, SLOT( SelSSDs18() ) );
 
   connect( SelDFName, SIGNAL( clicked() ), SelDFND, SLOT( show() ) );
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
@@ -423,68 +395,6 @@ void MainWindow::SetDwells( void )
     BlockDwell[i] = DwellAll->text().toDouble();
   }
   ShowBLKs();
-}
-
-#if 0
-void MainWindow::Mode2Tr( void )
-{
-  MeasMode = TRANS;
-  SetSSDactive( false );
-}
-
-void MainWindow::Mode2Fl( void )
-{
-  MeasMode = FLUO;
-  SetSSDactive( true );
-}
-
-void MainWindow::Mode2Au( void )
-{
-  MeasMode = AUX;
-  SetSSDactive( false );
-}
-#endif
-
-#if 0
-void MainWindow::SetSSDactive( bool active )
-{
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    SSD[i]->setEnabled( active );
-  }
-}
-#endif
-
-void MainWindow::SelSSDs00( void ) { SelSSDs(  0 ); }
-void MainWindow::SelSSDs01( void ) { SelSSDs(  1 ); }
-void MainWindow::SelSSDs02( void ) { SelSSDs(  2 ); }
-void MainWindow::SelSSDs03( void ) { SelSSDs(  3 ); }
-void MainWindow::SelSSDs04( void ) { SelSSDs(  4 ); }
-void MainWindow::SelSSDs05( void ) { SelSSDs(  5 ); }
-void MainWindow::SelSSDs06( void ) { SelSSDs(  6 ); }
-void MainWindow::SelSSDs07( void ) { SelSSDs(  7 ); }
-void MainWindow::SelSSDs08( void ) { SelSSDs(  8 ); }
-void MainWindow::SelSSDs09( void ) { SelSSDs(  9 ); }
-void MainWindow::SelSSDs10( void ) { SelSSDs( 10 ); }
-void MainWindow::SelSSDs11( void ) { SelSSDs( 11 ); }
-void MainWindow::SelSSDs12( void ) { SelSSDs( 12 ); }
-void MainWindow::SelSSDs13( void ) { SelSSDs( 13 ); }
-void MainWindow::SelSSDs14( void ) { SelSSDs( 14 ); }
-void MainWindow::SelSSDs15( void ) { SelSSDs( 15 ); }
-void MainWindow::SelSSDs16( void ) { SelSSDs( 16 ); }
-void MainWindow::SelSSDs17( void ) { SelSSDs( 17 ); }
-void MainWindow::SelSSDs18( void ) { SelSSDs( 18 ); }
-
-void MainWindow::SelSSDs( int i )
-{
-  if ( SSD[i]->isChecked() ) {
-    SelectedSSD[i] = 0;
-    SSD[i]->setStyleSheet( "background-color: #aabbaa" );
-    SSD[i]->setToolTip( tr( "Inactive" ) );
-  } else {
-    SelectedSSD[i] = 1;
-    SSD[i]->setStyleSheet( "background-color: #eeffee" );
-    SSD[i]->setToolTip( tr( "Active" ) );
-  }
 }
 
 void MainWindow::SelectedNDFN( const QString &fname )

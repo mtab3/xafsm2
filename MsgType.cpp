@@ -60,6 +60,7 @@ const MsgTyp MsgT[] = {
   { "@GetPreAMPGain", GETPREAMPGAIN },
   { "@GetMCALength", GETMCALENGTH },
   { "@GetMCA", GETMCA },
+  { "@GetStatistics", GETSTATISTICS },
 
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },

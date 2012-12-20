@@ -1,17 +1,21 @@
 
+○ MCA Start-Pause ボタン体制から Start-Clear ボタン体制に変更中
+
 ○ モーターのストップがない!
 ○ Scan の時 Stop に対する反応が遅い。(dwell タイム分待たないと反応しない)
 ○ Scan のデータ書き出し。
 ○ Monitor のデータ書き出し
 ○ MCA のデータ書き出し
 
-○ MCA 画面内に情報。RealTime, LiveTime, CPS,...
+○ 例えば MCA の描画中 (Stop を押していない状態)で、同じ画面を使って Monitor を
+　スタートしようとすると落ちる (MCAView とか色々が delete されるため)
+
 ○ MCA モードの時に指定時間で止まる機能がいる気がする。
-○ MCA Dead Time 表示、取得。 cps ではなく count になってるがどうする。
+○ MCA その他も cps ではなく count になってるがどうする。
 
 ○ グラフ表示部分を直接 XView にせず、コントロールを含んだコンテナにする
 ○ XView の XY プロットモードと Ring モードを切り分けて別々にするべき。
-　　(MCAView の作成に合わせてした準備は終了)
+   (MCAView の作成に合わせてした準備はかなり進んだはず)
 ○ MainWindow オンリーワン class 構成をやめたい。
 
 ○ Ok: でなく Er: もひろう。
@@ -83,6 +87,9 @@
 
 対処済み 2012.12～
 
+○ MCA Dead Time 表示、取得。
+○ Set Up の画面が手狭になったので、MCA を切り分ける。
+○ MCA 画面内に情報。RealTime, LiveTime, CPS,...
 ○ XAFSM.def で、センサーに関して親ユニットがあるかないかと、その親ユニットの指定を入れた
 ○ XAFSM.def で、ユニークな識別子の定義を入れた
 ○ XAFSM.def で、モータの移動単位が REAL か INT かを示す項目を入れた。

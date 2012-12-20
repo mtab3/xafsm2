@@ -30,14 +30,15 @@ void MainWindow::MeasSequence( void )
     */
   case 0:
     mUnits.clearStage();
-    MeasStage = 1;
-  case 1:
     NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
-    MeasR = 0;    // Measurement Repeat count
-    if ( mUnits.init() == false )   // true :: initializing
+    MeasStage = 1;
+  case 1:
+    if ( mUnits.init() == false ) {  // true :: initializing
+      MeasR = 0;    // Measurement Repeat count
       mUnits.clearStage();
       MeasStage = 2;
+    }
     break;
   case 2:
     MeasB = 0;    // Measurement Block count
