@@ -195,6 +195,7 @@ void MainWindow::StartMCA( void )
 
     inMCAMeas = true;
 
+    oldMCACh = cMCACh;
     cMCACh = MCACh->text().toInt();
 
     if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
