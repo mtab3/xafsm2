@@ -5,120 +5,120 @@
 
 ChCoord::ChCoord( void )
 {
-  minx = maxx = miny = maxy = 0;
-  wminx = wmaxx = wminy = wmaxy = 0.0;
+  sminx = smaxx = sminy = smaxy = 0;
+  rminx = rmaxx = rminy = rmaxy = 0.0;
 }
 
-void ChCoord::SetView( int x1, int y1, int x2, int y2 )
+void ChCoord::SetScreenCoord( double x1, double y1, double x2, double y2 )
 {
-  minx = x1;
-  maxx = x2;
-  miny = y1;
-  maxy = y2;
+  sminx = x1;
+  smaxx = x2;
+  sminy = y1;
+  smaxy = y2;
 }
 
-void ChCoord::SetWindow( double x1, double y1, double x2, double y2 )
+void ChCoord::SetRealCoord( double x1, double y1, double x2, double y2 )
 {
-  wminx = x1;
-  wmaxx = x2;
-  wminy = y1;
-  wmaxy = y2;
+  rminx = x1;
+  rmaxx = x2;
+  rminy = y1;
+  rmaxy = y2;
 }
 
-void ChCoord::SetWindowX( double x1, double x2 )
+void ChCoord::SetRealX( double x1, double x2 )
 {
-  wminx = x1;
-  wmaxx = x2;
+  rminx = x1;
+  rmaxx = x2;
 }
 
-void ChCoord::SetWindowY( double y1, double y2 )
+void ChCoord::SetRealY( double y1, double y2 )
 {
-  wminy = y1;
-  wmaxy = y2;
+  rminy = y1;
+  rmaxy = y2;
 }
 
-int ChCoord::w2rx( double x )
+double ChCoord::r2sx( double rx )
 {
-  return ( maxx - minx ) / ( wmaxx - wminx ) * ( x - wminx ) + minx; 
+  return ( smaxx - sminx ) / ( rmaxx - rminx ) * ( rx - rminx ) + sminx; 
 }
 
-int ChCoord::w2ry( double y )
+double ChCoord::r2sy( double ry )
 {
-  return maxy - ( maxy - miny ) / ( wmaxy - wminy ) * ( y - wminy );
+  return smaxy - ( smaxy - sminy ) / ( rmaxy - rminy ) * ( ry - rminy );
 }
 
-int ChCoord::w2rdx( double x )
+double ChCoord::r2sdx( double rx )
 {
-  return ( maxx - minx ) / ( wmaxx - wminx ) * x;
+  return ( smaxx - sminx ) / ( rmaxx - rminx ) * rx;
 }
 
-int ChCoord::w2rdy( double y )
+double ChCoord::r2sdy( double ry )
 {
-  return ( maxy - miny ) / ( wmaxy - wminy ) * y;
+  return ( smaxy - sminy ) / ( rmaxy - rminy ) * ry;
 }
 
-double ChCoord::r2wx( int x )
+double ChCoord::s2rx( double sx )
 {
-  return ( wmaxx - wminx ) / ( maxx - minx ) * ( x - minx ) + wminx;
+  return ( rmaxx - rminx ) / ( smaxx - sminx ) * ( sx - sminx ) + rminx;
 }
 
-double ChCoord::r2wy( int y )
+double ChCoord::s2ry( double sy )
 {
-  return ( wmaxy - wminy ) / ( maxy - miny ) * ( maxy - y ) + wminy;
+  return ( rmaxy - rminy ) / ( smaxy - sminy ) * ( smaxy - sy ) + rminy;
 }
 
-double ChCoord::r2wxLimit( int x )
+double ChCoord::s2rxLimit( double sx )
 {
-  double rv = ( wmaxx - wminx ) / ( maxx - minx ) * ( x - minx ) + wminx;
-  if ( wmaxx > wminx ) {
-    if ( rv > wmaxx ) rv = wmaxx;
-    if ( rv < wminx ) rv = wminx;
+  double rv = ( rmaxx - rminx ) / ( smaxx - sminx ) * ( sx - sminx ) + rminx;
+  if ( rmaxx > rminx ) {
+    if ( rv > rmaxx ) rv = rmaxx;
+    if ( rv < rminx ) rv = rminx;
   } else {
-    if ( rv > wminx ) rv = wminx;
-    if ( rv < wmaxx ) rv = wmaxx;
+    if ( rv > rminx ) rv = rminx;
+    if ( rv < rmaxx ) rv = rmaxx;
   }
   return rv;
 }
 
-double ChCoord::r2wyLimit( int y )
+double ChCoord::s2ryLimit( double sy )
 {
-  double rv = ( wmaxy - wminy ) / ( maxy - miny ) * ( maxy - y ) + wminy;
-  if ( wmaxy > wminy ) {
-    if ( rv > wmaxy ) rv = wmaxy;
-    if ( rv < wminy ) rv = wminy;
+  double rv = ( rmaxy - rminy ) / ( smaxy - sminy ) * ( smaxy - sy ) + rminy;
+  if ( rmaxy > rminy ) {
+    if ( rv > rmaxy ) rv = rmaxy;
+    if ( rv < rminy ) rv = rminy;
   } else {
-    if ( rv > wminy ) rv = wminy;
-    if ( rv < wmaxy ) rv = wmaxy;
+    if ( rv > rminy ) rv = rminy;
+    if ( rv < rmaxy ) rv = rmaxy;
   }
   return rv;
 }
 
-double ChCoord::r2wdx( int x )
+double ChCoord::s2rdx( double sx )
 {
-  return ( wmaxx - wminx ) / ( maxx - minx ) * x;
+  return ( rmaxx - rminx ) / ( smaxx - sminx ) * sx;
 }
 
-double ChCoord::r2wdy( int y )
+double ChCoord::s2rdy( double sy )
 {
-  return ( wmaxy - wminy ) / ( maxy - miny ) * y;
+  return ( rmaxy - rminy ) / ( smaxy - sminy ) * sy;
 }
 
 
-void ChCoord::getSEDy( double *sy, double *ey, double *dy )
+void ChCoord::getSEDy( double *sy, double *ey, double *dy, double div )
 {
-    if ( wminy == wmaxy ) {
+    if ( rminy == rmaxy ) {
       *sy = 0;
       *ey = 1;
       *dy = 1;
-    } else if ( wminy > wmaxy ) {
-      *sy = wmaxy;
-      *ey = wminy;
-      *dy = ( wminy - wmaxy ) / 5;
+    } else if ( rminy > rmaxy ) {
+      *sy = rmaxy;
+      *ey = rminy;
+      *dy = ( rminy - rmaxy ) / div;
     } else {
-      // calcScale( 5, wminy, wmaxy, &sy, &dy )
-      *sy = wminy;
-      *ey = wmaxy;
-      *dy = ( wmaxy - wminy ) / 5.;
+      // calcScale( div, wminy, wmaxy, &sy, &dy )
+      *sy = rminy;
+      *ey = rmaxy;
+      *dy = ( rmaxy - rminy ) / div;
     }
 }
 
@@ -175,14 +175,16 @@ void ChCoord::DrawText( QPainter *p,
   QRectF brec, dummyrec = QRectF( 0, 0, 1000, 1000 );
   double fSize = font.pointSizeF();
 
-  brec = p->boundingRect( dummyrec, flags, msg );
-  // There was a bug, that call the boundingRect with given 'rec'
-  // Then it returns limitted by the size of rec when the 
-  //   drawn text size should bigger than the rectange,
-  //   and the results of the resize were wrong. 
-  xr = brec.width() / rec.width();
-  yr = brec.height() / rec.height();
-  font.setPointSize( fSize / ( ( xr > yr ) ? xr : yr ) );
+  if ( f == SCALESIZE ) {
+    brec = p->boundingRect( dummyrec, flags, msg );
+    // There was a bug, that call the boundingRect with given 'rec'
+    // Then it returns limitted by the size of rec when the 
+    //   drawn text size should bigger than the rectange,
+    //   and the results of the resize were wrong. 
+    xr = brec.width() / rec.width();
+    yr = brec.height() / rec.height();
+    font.setPointSize( fSize / ( ( xr > yr ) ? xr : yr ) );
+  }
   p->setFont( font );
   p->drawText( rec, flags, msg );
   font.setPointSizeF( fSize );

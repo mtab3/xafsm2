@@ -25,6 +25,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   inPress = false;
   nx = ny = sx = sy = ex = ey = 0;
+  setROIrequest = false;
+  reqsx = reqex = 0;
 }
 
 MCAView::~MCAView( void )
@@ -65,7 +67,7 @@ void MCAView::Draw( QPainter *p )
   double dVW = VW / 20;     // 1行の高さ(文字の高さ)
   double dVW2 = dVW * 1.2;  // 行間
 
-  cc.SetView( LM, TM, LM+HW, TM+VW );
+  cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
 
   double max = 0;
@@ -82,31 +84,37 @@ void MCAView::Draw( QPainter *p )
       }
     }
   }
-  cc.SetWindow( 0, 0, MCALen, max );
+  cc.SetRealCoord( 0, 0, MCALen-1, max );
 
-  int tex;
+  if ( setROIrequest ) {
+    setROIrequest = false;
+    sx = cc.r2sx( reqsx );
+    ex = cc.r2sx( reqex );
+  }
+
+  double tex;
   if ( inPress ) {
     tex = nx;
   } else {
     tex = ex;
   }
-  int roisx = sx;
-  int roiex = tex;
-  int wroisx, wroiex;
+  double roisx = sx;
+  double roiex = tex;
+  int rroisx, rroiex;
   if ( roisx > roiex ) {
     int tmp = roisx;
     roisx = roiex;
     roiex = tmp;
   }
-  wroisx = cc.r2wxLimit( roisx );
-  wroiex = cc.r2wxLimit( roiex );
+  rroisx = (int)( cc.s2rxLimit( roisx ) + 0.5 );
+  rroiex = (int)( cc.s2rxLimit( roiex ) + 0.5 );
   if ( inPress ) {
-    emit newROI( wroisx, wroiex );
+    emit newROI( rroisx, rroiex );
   }
 
   int sum = 0;
   for ( int i = 0; i < MCALen; i++ ) {
-    if (( i >= wroisx )&&( i <= wroiex )) {
+    if (( i >= rroisx )&&( i <= rroiex )) {
       p->setPen( Green );
       sum += MCA[i];
     } else {
@@ -114,9 +122,9 @@ void MCAView::Draw( QPainter *p )
     }
     if ( dispLog ) {
       if ( MCA[i] > 0 )
-	p->drawLine( cc.w2rx( i ), cc.w2ry( log( MCA[i] ) ), cc.w2rx( i ), cc.w2ry( 0 ) );
+	p->drawLine( cc.r2sx( i ), cc.r2sy( log( MCA[i] ) ), cc.r2sx( i ), cc.r2sy( 0 ) );
     } else {
-      p->drawLine( cc.w2rx( i ), cc.w2ry( MCA[i] ), cc.w2rx( i ), cc.w2ry( 0 ) );
+      p->drawLine( cc.r2sx( i ), cc.r2sy( MCA[i] ), cc.r2sx( i ), cc.r2sy( 0 ) );
     }
   }
   p->setPen( Black );
@@ -127,7 +135,7 @@ void MCAView::Draw( QPainter *p )
     p->drawLine( nx, TM, nx, TM+VW );
   }
   int curp;
-  emit CurrentValues( MCA[ curp = (int)cc.r2wxLimit( nx ) ], sum );
+  emit CurrentValues( MCA[ curp = (int)cc.s2rxLimit( nx ) ], sum );
 
   QFont f;
   QRectF rec;
@@ -165,7 +173,7 @@ void MCAView::Draw( QPainter *p )
 	       "ROI start : " );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( wroisx ) );
+	       QString::number( rroisx ) );
   LINE++;
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
@@ -173,7 +181,7 @@ void MCAView::Draw( QPainter *p )
 	       "ROI end : " );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( wroiex ) );
+	       QString::number( rroiex ) );
   LINE++;
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
@@ -238,3 +246,9 @@ void MCAView::mouseReleaseEvent( QMouseEvent *e )
 
 void MCAView::mouseDoubleClickEvent( QMouseEvent * ) {}
 
+void MCAView::setROI( int s, int e )
+{
+  setROIrequest = true;
+  reqsx = s;
+  reqex = e;
+}

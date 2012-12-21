@@ -83,12 +83,13 @@ private:
   QString ROIEnd[19];
   int MCALength;
   bool inMCAMeas;
-  int cMCACh;
+  int cMCACh, oldMCACh;
   int MCAStage;
   ViewCTRL *cMCAViewC;
   MCAView *cMCAView;
   int *MCAData;
   MCASTARTRESUME StartResume;
+  bool MCAClearRequest;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax

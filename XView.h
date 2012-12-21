@@ -90,7 +90,7 @@ public:
   int PeakSearch( int l );
   int getMonScale( void ) { return MonScale; };
   void SetWindow( double x1, double y1, double x2, double y2 )
-  { cc.SetWindow( x1, y1, x2, y2 ); };
+  { cc.SetRealCoord( x1, y1, x2, y2 ); };
 
 public slots:
   void SetMonScale( int ms );

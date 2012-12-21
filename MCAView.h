@@ -20,7 +20,9 @@ private:
 
   ChCoord cc;
   bool inPress;
-  int nx, ny, sx, sy, ex, ey;         // mouse 
+  double nx, ny, sx, sy, ex, ey;         // mouse 
+  bool setROIrequest;
+  double reqsx, reqex;
 
   QColor Blue, Black, Red, Green, White;
 
@@ -42,6 +44,7 @@ public:
 
 public slots:
   void setLog( bool f ) { dispLog = f; update(); };
+  void setROI( int s, int e );
 
 signals:
   void CurrentValues( int atCur, int inROI );

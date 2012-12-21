@@ -4,7 +4,7 @@
 #include "MainWindow.h"
 #include "MCAView.h"
 
-void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
+void MainWindow::setupSetupSSDArea( void )   /* æ¸¬å®šã‚¨ãƒªã‚¢ */
 {
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
@@ -111,7 +111,7 @@ void MainWindow::getMCASettings( int ch )
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
 }
 
-void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤ë
+void MainWindow::getMCALen( SMsg msg )  // åˆæœŸåŒ–ã®æ™‚ã«ä¸€å›žã—ã‹å‘¼ã°ã‚Œãªã„ã¨ä¿¡ã˜ã‚‹
 {
   if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
@@ -195,6 +195,7 @@ void MainWindow::StartMCA( void )
 
     inMCAMeas = true;
 
+    oldMCACh = cMCACh;
     cMCACh = MCACh->text().toInt();
 
     if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
@@ -261,7 +262,7 @@ void MainWindow::setNewROI( int s, int e )
 void MainWindow::MCASequence( void )
 {
   QStringList MCA;
-  if ( MCAStage < 2 )         // MCA ¤Ë RunStart ¤ò¤«¤±¤Æ¤·¤Þ¤¦¤È¡¢¤º¤Ã¤È isBusy
+  if ( MCAStage < 2 )         // MCA ã« RunStart ã‚’ã‹ã‘ã¦ã—ã¾ã†ã¨ã€ãšã£ã¨ isBusy
     if ( SFluo->isBusy() || SFluo->isBusy2() )
       return;
   if ( SFluo->isBusy2() )

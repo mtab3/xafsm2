@@ -11,7 +11,7 @@ XView::XView( QWidget *parent ) : QFrame( parent )
   valid = false;
   SetLineF();
   lines = 0;
-  cc.SetWindow( 0, 0, 1, 1 );
+  cc.SetRealCoord( 0, 0, 1, 1 );
   bgColor = QColor( 255, 255, 255 );
   BLACK = QColor( 0, 0, 0 );
   MCLineC = QColor( 210, 180, 0 );     // mouse cursor line color
@@ -132,22 +132,22 @@ void XView::DrawXYPlot( QPainter *p )
   F1.setPointSizeF( ( LM*0.115 < BM*0.23 ) ? LM*0.115 : BM*0.23 );
   p->setFont( F1 );
 
-  cc.SetView( LM, TM, width()-RM, height()-BM );
+  cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
 
   double sx, dx;
-  cc.calcScale( 10, cc.Wminx(), cc.Wmaxx(), &sx, &dx );
+  cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
-  for ( double xx = sx; xx < cc.Wmaxx(); xx += dx ) {
-    p->drawLine( cc.w2rx( xx ), TM, cc.w2rx( xx ), height()-BM );  // ècÇÃårê¸
-    rec = QRectF( cc.w2rx( xx )-40, height()-BM+5, 80, BM*0.3 ); // ÉÅÉÇÉäêîéö
-    if ( memc % (int)( 80 / cc.w2rdx( dx ) + 1 ) == 0 ) {
+  for ( double xx = sx; xx < cc.Rmaxx(); xx += dx ) {
+    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // ècÇÃårê¸
+    rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // ÉÅÉÇÉäêîéö
+    if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
 		   QString::number( xx ) );
     }
     memc++;
   }
-  rec = QRectF( cc.w2rx( cc.Wmaxx() ), height()-BM+5, 80, BM*0.3 );   // Xé≤ÇÃÉâÉxÉã
+  rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // Xé≤ÇÃÉâÉxÉã
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
 
   int inc;
@@ -161,15 +161,15 @@ void XView::DrawXYPlot( QPainter *p )
     inc = 0;
 
     sy = dy = 0;
-    cc.calcScale( 5, cc.Wminy(), cc.Wmaxy(), &sy, &dy );
+    cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
 
-    for ( double yy = sy; yy < cc.Wmaxy(); yy += dy ) {
-      p->drawLine( LM, cc.w2ry( yy ), width()-RM, cc.w2ry( yy ) );   // â°ÇÃårê¸
-      rec = QRectF( LM * 0.05, cc.w2ry( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 ); // ÉÅÉÇÉäêîéö
+    for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
+      p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // â°ÇÃårê¸
+      rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 ); // ÉÅÉÇÉäêîéö
       buf.sprintf( "%7.5g", yy );
       cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
     }
-    rec = QRectF( LM * 0.1, cc.w2ry( cc.Wmaxy() )-BM*0.35, 60, BM * 0.3 );  // é≤ÇÃÉâÉxÉã
+    rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );  // é≤ÇÃÉâÉxÉã
     cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
 		 LNames[SLineL] );
     
@@ -177,17 +177,17 @@ void XView::DrawXYPlot( QPainter *p )
       if ( LineF[l] == LEFT ) {
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
-	double nowx = cc.r2wx( nx );
+	double nowx = cc.s2rx( nx );
 	int nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {
-	  p->drawLine( cc.w2rx( x[l][i] ), cc.w2ry( y[l][i] ),
-		       cc.w2rx( x[l][i+1] ), cc.w2ry( y[l][i+1] ) );
+	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
+		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
 	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
 	    nowxp = i;
 	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
 	    nowxp = i;
 	}
-	rec = QRectF( LM * 1.2, cc.w2ry( cc.Wmaxy() )-BM*0.35, 60, BM * 0.3 );
+	rec = QRectF( LM * 1.2, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
 	// é≤ÇÃÉâÉxÉã
 	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 		     QString::number( y[l][nowxp] ) );
@@ -203,24 +203,24 @@ void XView::DrawXYPlot( QPainter *p )
     inc = 0;
     sy = dy = 0;
     for (;;) {
-      cc.calcScale( 5, cc.Wminy(), cc.Wmaxy(), &sy, &dy );
+      cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
       buf.sprintf( "%5.3g", sy );
       buf2.sprintf( "%5.3g", sy + dy );
       if ( ( inc >= 20 )||( buf != buf2 ) )
 	break;
       inc++;
-      tmp = cc.Wmaxy() - cc.Wminy();
-      cc.SetWindowY( cc.Wmaxy() + tmp, cc.Wminy() - tmp * 5 );
+      tmp = cc.Rmaxy() - cc.Rminy();
+      cc.SetRealY( cc.Rmaxy() + tmp, cc.Rminy() - tmp * 5 );
     }
 
-    for ( double yy = sy; yy < cc.Wmaxy(); yy += dy ) {
-      p->drawLine( LM, cc.w2ry( yy ), LM+3, cc.w2ry( yy ) );                 // â°ÇÃårê¸(íZÇ¢)
-      p->drawLine( width()-RM, cc.w2ry( yy ), width()-RM-3, cc.w2ry( yy ) ); // â°ÇÃårê¸(íZÇ¢)
-      rec = QRectF( width()-RM*0.9, cc.w2ry( yy )-BM*0.3/2, 60, BM * 0.3 ); // ÉÅÉÇÉäêîéö
+    for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
+      p->drawLine( LM, cc.r2sy( yy ), LM+3, cc.r2sy( yy ) );                 // â°ÇÃårê¸(íZÇ¢)
+      p->drawLine( width()-RM, cc.r2sy( yy ), width()-RM-3, cc.r2sy( yy ) ); // â°ÇÃårê¸(íZÇ¢)
+      rec = QRectF( width()-RM*0.9, cc.r2sy( yy )-BM*0.3/2, 60, BM * 0.3 ); // ÉÅÉÇÉäêîéö
       buf.sprintf( "%5.3g", yy );
       cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, buf );
     }
-    rec = QRectF( width()-RM*0.95, cc.w2ry( cc.Wmaxy() )-BM*0.35,
+    rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
 		 RM*0.9, BM * 0.3 );    // é≤ÇÃÉâÉxÉã
     //    DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
     //              LNames[ SLineR ] );
@@ -229,17 +229,17 @@ void XView::DrawXYPlot( QPainter *p )
       if ( LineF[l] == RIGHT ) {
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
-	double nowx = cc.r2wx( nx );
+	double nowx = cc.s2rx( nx );
 	int nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {  // ÉfÅ[É^ÉvÉçÉbÉg
-	  p->drawLine( cc.w2rx( x[l][i] ), cc.w2ry( y[l][i] ),
-		       cc.w2rx( x[l][i+1] ), cc.w2ry( y[l][i+1] ) );
+	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
+		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
 	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
 	    nowxp = i;
 	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
 	    nowxp = i;
 	}
-	rec = QRectF( width()-RM*0.95, cc.w2ry( cc.Wmaxy() )-BM*0.35,
+	rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
 		      RM*0.9, BM * 0.3 );    // é≤ÇÃíl
 	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 		     LNames[SLineR] + " : " + QString::number(y[l][nowxp]) );
@@ -290,7 +290,7 @@ void XView::DrawMonitor( QPainter *p )
   double HDNum = 6;
   double VDNum = 10;
 
-  cc.SetWindow( -ms * HDNum, 0, 0, 1 );
+  cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );
 
   p->fillRect( 0, 0, width(), height(), bgColor );
   pen0.setWidth( 1 );
@@ -305,15 +305,15 @@ void XView::DrawMonitor( QPainter *p )
   VDiv = ( height() - TM - BM ) / VDNum;
   p->setFont( F1 );
 
-  cc.SetView( LM, TM, width()-RM, height()-BM );
+  cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
 
-  for ( double xx = cc.Wminx(); xx <= cc.Wmaxx(); xx += ms ) {
-    p->drawLine( cc.w2rx( xx ), TM, cc.w2rx( xx ), height()-BM );  // ècÇÃårê¸
-    rec = QRect( cc.w2rx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 ); // ÉÅÉÇÉäêîéö
+  for ( double xx = cc.Rminx(); xx <= cc.Rmaxx(); xx += ms ) {
+    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // ècÇÃårê¸
+    rec = QRect( cc.r2sx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 ); // ÉÅÉÇÉäêîéö
     cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE, 
 		 QString( tr( "%1" ) )
-		 .arg( (int)((cc.Wmaxx()-xx)/ms) * MScales[ MonScale ].dispDiv ) );
+		 .arg( (int)((cc.Rmaxx()-xx)/ms) * MScales[ MonScale ].dispDiv ) );
   }
   rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );   // Xé≤ÇÃÉâÉxÉã
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
@@ -323,7 +323,7 @@ void XView::DrawMonitor( QPainter *p )
   pen1.setColor( BLACK );
   p->setPen( pen1 );
   for ( double yy = 0; yy < 1; yy += 0.1 ) {
-    p->drawLine( LM, cc.w2ry( yy ), width()-RM, cc.w2ry( yy ) );   // â°ÇÃårê¸
+    p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // â°ÇÃårê¸
   }
 
   double sy, ey, dy;
@@ -332,12 +332,12 @@ void XView::DrawMonitor( QPainter *p )
   for ( int j = 0; j < lines; j++ ) {
     //      sy = Rwminy[j];
     //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
-    cc.SetWindowY( Rwminy[j], Rwmaxy[j] );
-    cc.getSEDy( &sy, &ey, &dy );
+    cc.SetRealY( Rwminy[j], Rwmaxy[j] );
+    cc.getSEDy( &sy, &ey, &dy, 5 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
-    for ( double yy = sy; yy <= cc.Wmaxy(); yy += dy ) {
-      rec = QRectF( LM - LM * 0.32 * ( j + 1 ), cc.w2ry( yy )-VDiv*0.45,
+    for ( double yy = sy; yy <= cc.Rmaxy(); yy += dy ) {
+      rec = QRectF( LM - LM * 0.32 * ( j + 1 ), cc.r2sy( yy )-VDiv*0.45,
 		    LM * 0.3, VDiv * 0.9 ); // ÉÅÉÇÉäêîéö
       buf.sprintf( "%6.4g", yy );
       cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
@@ -350,7 +350,7 @@ void XView::DrawMonitor( QPainter *p )
     pen1.setWidth( 2 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
-    int nowt = cc.r2wx( nx ) + t0;
+    int nowt = cc.s2rx( nx ) + t0;
     int nowtp = 0;
     
     for ( int i = 0; i < RingMax; i++ ) { // ÉfÅ[É^ÉvÉçÉbÉg
@@ -361,8 +361,8 @@ void XView::DrawMonitor( QPainter *p )
       if ( ( mont[ pp2 ] - t0 ) < ( - ms * 6 ) ) {
 	break;
       }
-      p->drawLine( cc.w2rx( mont[pp1] - t0 ), cc.w2ry( mony[j][pp1] ),
-		   cc.w2rx( mont[pp2] - t0 ), cc.w2ry( mony[j][pp2] ) );
+      p->drawLine( cc.r2sx( mont[pp1] - t0 ), cc.r2sy( mony[j][pp1] ),
+		   cc.r2sx( mont[pp2] - t0 ), cc.r2sy( mony[j][pp2] ) );
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
     }
@@ -399,7 +399,7 @@ void XView::Clear( void )
 void XView::UpDateYWindow( int l, SCALET s )
 {
   if ( points[l] == 0 ) {
-    cc.SetWindowY( 0, 1 );
+    cc.SetRealY( 0, 1 );
     return;
   }
 
@@ -415,10 +415,10 @@ void XView::UpDateYWindow( int l, SCALET s )
   double dy = nmaxy - nminy;
   switch( s ) {
   case FULLSCALE:
-    cc.SetWindowY( nminy - dy * 0.05, nmaxy + dy * 0.05 );
+    cc.SetRealY( nminy - dy * 0.05, nmaxy + dy * 0.05 );
     break;
   case I0TYPE:
-    cc.SetWindowY( nminy - dy * 5, nmaxy + dy * 1 );
+    cc.SetRealY( nminy - dy * 5, nmaxy + dy * 1 );
     break;
   default:
     qDebug() << "Unknown scale type";
