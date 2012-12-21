@@ -44,8 +44,8 @@ void MainWindow::MonSequence( void )
     break;
   case 5:
     mUnits.readValue( MeasVals );
-    MonView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
-    MonView->ReDraw();
+    MonitorView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
+    MonitorView->ReDraw();
     MonStage = 10;
 #if 0
     if ( inPause == 1 ) {
@@ -54,7 +54,7 @@ void MainWindow::MonSequence( void )
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
-    MonView->ReDraw();
+    MonitorView->ReDraw();
     if ( inPause == 0 ) {
       MonStage = 3;
     }

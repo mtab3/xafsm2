@@ -361,6 +361,11 @@ void MainWindow::ScanStart( void )
   AUnit *am, *as;
 
   if ( inSPSing == 0 ) {
+    if ( ( ScanViewC = SetUpNewView( XVIEW ) ) == NULL ) 
+      return;
+    ScanView = (XView*)(ScanViewC->getView());
+    ScanViewC->setIsDeletable( false );
+
     ScanMotor = MotorN->currentIndex();
     am = AMotors.value( ScanMotor );
     mUnits.clearUnits();
@@ -396,26 +401,20 @@ void MainWindow::ScanStart( void )
     SPSScan->setStyleSheet( "background-color: yellow" );
     GoMotor->setEnabled( false );
 
-    SPSView = new XView;
-    int cTab = ViewTab->currentIndex();
-    deleteView( cTab );
-    ViewBases.at( cTab )->layout()->addWidget( SPSView );
-    nowViews[ cTab ] = (void *)SPSView;
-    nowVTypes[ cTab ] = XVIEW;
-
-    SPSView->Clear();
-    SPSView->SetSLines( 0, 1 );
-    SPSView->SetLineF( RIGHT, LEFT );
-    SPSView->SetScaleT( I0TYPE, FULLSCALE );
-    SPSView->SetLName( 0, tr( "I0" ) );
-    SPSView->SetLName( 1, as->getName() );
-    SPSView->SetXName( am->getName() );
-    SPSView->SetGType( XYPLOT );
-    SPSView->makeValid( true );
+    ScanView->Clear();
+    ScanView->SetSLines( 0, 1 );
+    ScanView->SetLineF( RIGHT, LEFT );
+    ScanView->SetScaleT( I0TYPE, FULLSCALE );
+    ScanView->SetLName( 0, tr( "I0" ) );
+    ScanView->SetLName( 1, as->getName() );
+    ScanView->SetXName( am->getName() );
+    ScanView->SetGType( XYPLOT );
+    ScanView->makeValid( true );
 
     ScanStage = 0;
     ScanTimer->start( 100 );
   } else {
+    ScanViewC->setIsDeletable( false );
     ScanStop0();
   }
 }
@@ -432,6 +431,10 @@ void MainWindow::Monitor( void )
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
   if ( inMonitor == 0 ) {
+    if ( ( MonitorViewC = SetUpNewView( XVIEW ) ) == NULL ) 
+      return;
+    MonitorView = (XView*)(MonitorViewC->getView());
+    
     inMonitor = 1;
     MonStage = 0;   // 計測のサイクル
 
@@ -443,26 +446,19 @@ void MainWindow::Monitor( void )
     if ( SelectD22Sel->isChecked() )
       mUnits.addUnit( as1, DwellT22->text().toDouble() );
 
-    MonView = new XView;
-    int cTab = ViewTab->currentIndex();
-    deleteView( cTab );
-    ViewBases.at( cTab )->layout()->addWidget( MonView );
-    nowViews[ cTab ] = (void *)MonView;
-    nowVTypes[ cTab ] = XVIEW;
-
-    MonView->ClearDataR();
-    MonView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
+    MonitorView->ClearDataR();
+    MonitorView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      MonView->SetLName( i, mUnits.getName( i ) );
+      MonitorView->SetLName( i, mUnits.getName( i ) );
     }
-    MonView->SetLines( mUnits.count() );                            // 確認
-    MonView->SetGType( MONITOR );                            // 確認
-    MonView->makeValid( true );                              // 確認
+    MonitorView->SetLines( mUnits.count() );                            // 確認
+    MonitorView->SetGType( MONITOR );                            // 確認
+    MonitorView->makeValid( true );                              // 確認
 
-    MonView->SetMonScale( SelectScale->currentIndex() );
+    MonitorView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
-	     MonView, SLOT( SetMonScale( int ) ) );
+	     MonitorView, SLOT( SetMonScale( int ) ) );
     connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
     if ( MeasSensF[1] )
       connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
@@ -472,6 +468,7 @@ void MainWindow::Monitor( void )
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
 
+    MonitorViewC->setIsDeletable( false );
     MonTime.restart();
     MonTimer->start( 100 );
   } else {
@@ -479,13 +476,14 @@ void MainWindow::Monitor( void )
     inMonitor = 0;
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
-	     MonView, SLOT( SetMonScale( int ) ) );
+	     MonitorView, SLOT( SetMonScale( int ) ) );
     disconnect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
     if ( MeasSensF[1] )
       disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
     if ( MeasSensF[2] )
       disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
+    MonitorViewC->setIsDeletable( true );
     MStart->setText( tr( "Mon. Start" ) );
     MStart->setStyleSheet( "background-color: "
 			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "

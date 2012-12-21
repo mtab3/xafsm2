@@ -54,9 +54,11 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( newROIStart( const QString & ) ) );
   connect( ROIEndInput, SIGNAL( textEdited( const QString & ) ),
 	   this, SLOT( newROIEnd( const QString & ) ) );
+  connect( MCAClear, SIGNAL( clicked() ), this, SLOT( clearMCA() ) );
+
   inMCAMeas = false;
   MCAData = NULL;
-  cMCAV = NULL;
+  cMCAView = NULL;
 
   SelSSDs00();
 }
@@ -183,34 +185,35 @@ void MainWindow::StartMCA( void )
 
     inMCAMeas = true;
 
-    int cTab = ViewTab->currentIndex();
     cMCACh = MCACh->text().toInt();
 
-    if ( cMCAV != NULL ) {
-      disconnect( cMCAV, SIGNAL( CurrentValues( int, int ) ),
+    if ( cMCAView != NULL ) {
+      disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
 		  this, SLOT( showCurrentValues( int, int ) ) );
-      disconnect( cMCAV, SIGNAL( newROI( int, int ) ),
+      disconnect( cMCAView, SIGNAL( newROI( int, int ) ),
 		  this, SLOT( setNewROI( int, int ) ) );
       disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-		  cMCAV, SLOT( setLog( bool ) ) );
+		  cMCAView, SLOT( setLog( bool ) ) );
+      cMCAViewC->setIsDeletable( true );
     }
-    deleteView( cTab );
-    cMCAV = new MCAView;
-    MCAData = cMCAV->setMCAdataPointer( MCALength );
-    cMCAV->setLog( SetDisplayLog->isChecked() );
-    cMCAV->SetMCACh( cMCACh );
 
-    connect( cMCAV, SIGNAL( CurrentValues( int, int ) ),
+    if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
+      return;
+    cMCAView = (MCAView*)(cMCAViewC->getView());
+
+    MCAData = cMCAView->setMCAdataPointer( MCALength );
+    cMCAView->setLog( SetDisplayLog->isChecked() );
+    cMCAView->SetMCACh( cMCACh );
+
+    connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
 	     this, SLOT( showCurrentValues( int, int ) ) );
-    connect( cMCAV, SIGNAL( newROI( int, int ) ), this, SLOT( setNewROI( int, int ) ) );
-    connect( SetDisplayLog, SIGNAL( clicked( bool ) ), cMCAV, SLOT( setLog( bool ) ) );
+    connect( cMCAView, SIGNAL( newROI( int, int ) ), this, SLOT( setNewROI( int, int ) ) );
+    connect( SetDisplayLog, SIGNAL( clicked( bool ) ), cMCAView, SLOT( setLog( bool ) ) );
 
-    ViewBases.at( cTab )->layout()->addWidget( cMCAV );
-    nowViews[ cTab ] = (void *)cMCAV;
-    nowVTypes[ cTab ] = MCAVIEW;
     for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
     SFluo->setSSDPresetType( "NONE" );
     SFluo->RunStop();
+    cMCAViewC->setIsDeletable( false );
     MCAStage = 0;
     MCATimer->start( 100 );
   } else {
@@ -276,10 +279,22 @@ void MainWindow::MCASequence( void )
     for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
       MCAData[i] = MCA.at(i).toInt();
     }
-    cMCAV->SetRealTime( SFluo->realTime( cMCACh ) );
-    cMCAV->SetLiveTime( SFluo->liveTime( cMCACh ) );
-    cMCAV->update();
+    cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
+    cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
+    cMCAView->update();
     MCAStage = 2;
     break;
+  }
+}
+
+void MainWindow::clearMCA( void )
+{
+  StartResume = MCA_START;
+  if ( cMCAView != NULL ) {
+    for ( int i = 0; i < MCALength; i++ ) {
+      MCAData[i] = 0;
+    }
+    MCAStage = 0;
+    cMCAView->update();
   }
 }

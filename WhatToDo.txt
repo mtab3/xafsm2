@@ -7,9 +7,6 @@
 ○ Monitor のデータ書き出し
 ○ MCA のデータ書き出し
 
-○ 例えば MCA の描画中 (Stop を押していない状態)で、同じ画面を使って Monitor を
-　スタートしようとすると落ちる (MCAView とか色々が delete されるため)
-
 ○ MCA モードの時に指定時間で止まる機能がいる気がする。
 ○ MCA その他も cps ではなく count になってるがどうする。
 
@@ -87,6 +84,8 @@
 
 対処済み 2012.12～
 
+○ 例えば MCA の描画中 (Stop を押していない状態)で、同じ画面を使って Monitor を
+　スタートしようとすると落ちる (MCAView とか色々が delete されるため)
 ○ MCA Dead Time 表示、取得。
 ○ Set Up の画面が手狭になったので、MCA を切り分ける。
 ○ MCA 画面内に情報。RealTime, LiveTime, CPS,...

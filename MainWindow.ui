@@ -42,7 +42,7 @@
        <string notr="true">background-color: rgb(245, 240, 220);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="VT1">
        <attribute name="title">
@@ -2272,7 +2272,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="MCAPause">
+              <widget class="QPushButton" name="MCAClear">
                <property name="enabled">
                 <bool>false</bool>
                </property>

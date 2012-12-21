@@ -452,29 +452,19 @@ void MainWindow::SelectedRBFN( const QString &fname )
   ShowBLKs();
 }
 
-void MainWindow::ClearNowView( void )
+void MainWindow::ClearXViewScreenForMeas( void )
 {
-  NowView = new XView;
-  int cTab = ViewTab->currentIndex();
-  if ( nowViews[ cTab ] != NULL ) {
-    ViewBases.at( cTab )->layout()->removeWidget( (QWidget *)nowViews[ cTab ] );
-    deleteView( cTab );
-    nowViews[ cTab ] = (void *)NULL;
-  }
-  ViewBases.at( cTab )->layout()->addWidget( NowView );
-  nowViews[ cTab ] = (void *)NowView;
-
-  NowView->Clear();
-  NowView->SetSLines( 0, 1 );
-  NowView->SetLineF( RIGHT, LEFT,
+  MeasView->Clear();
+  MeasView->SetSLines( 0, 1 );
+  MeasView->SetLineF( RIGHT, LEFT,
 		     LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT,
 		     LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT );
-  NowView->SetScaleT( I0TYPE, FULLSCALE );
-  NowView->SetLName( 0, tr( "I0" ) );
-  NowView->SetLName( 1, tr( "mu(E)" ) );
-  NowView->SetXName( tr( "[keV]" ) );
-  NowView->makeValid( true );
-  NowView->SetGType( XYPLOT );
+  MeasView->SetScaleT( I0TYPE, FULLSCALE );
+  MeasView->SetLName( 0, tr( "I0" ) );
+  MeasView->SetLName( 1, tr( "mu(E)" ) );
+  MeasView->SetXName( tr( "[keV]" ) );
+  MeasView->makeValid( true );
+  MeasView->SetGType( XYPLOT );
 }
 
 bool MainWindow::CheckDetectorSelection( void )
@@ -525,6 +515,11 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
+    if ( ( MeasViewC = SetUpNewView( XVIEW ) ) == NULL )
+      return;
+    MeasView = (XView*)(MeasViewC->getView());
+    ClearXViewScreenForMeas();
+
 
     QFileInfo CheckFile( DFName0 + ".dat" );
     if ( CheckFile.exists() ) {
@@ -566,7 +561,6 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ), 0 );
       LC++;
     }
-
     NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
 	       .arg( CurPosKeV ) );
     InitialKeV = CurPosKeV;
@@ -581,8 +575,8 @@ void MainWindow::StartMeasurement( void )
 
     CpBlock2SBlock();
     MeasStage = 0;
-    ClearNowView();
-
+    //    ClearMeasView();
+    MeasViewC->setIsDeletable( false );
     MeasTimer->start( 100 );
   } else {
     StopP->show();
@@ -593,6 +587,7 @@ void MainWindow::StartMeasurement( void )
     MeasPause->setStyleSheet( "background-color: yellow" );
     MeasPause->setEnabled( false );
     MeasStart->setEnabled( false );
+    MeasViewC->setIsDeletable( true );
   }
 }
 

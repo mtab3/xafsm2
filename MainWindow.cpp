@@ -158,3 +158,43 @@ void MainWindow::ShowCurThPos( void )   // ’l‚Í‚ ‚¦‚ÄŽg‚í‚È‚¢
   
   NewLogMsg( tr( "Current Position [%1] keV\n" ).arg( buf ) );
 }
+
+
+ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
+{
+  void *newView = NULL;
+  switch( vtype ) {
+  case XVIEW:
+    newView = (void *)(new XView); break;
+  case MCAVIEW:
+    newView = (void *)(new MCAView); break;
+  default:
+    return NULL;
+  }
+
+  if ( ! ViewCtrls[ ViewTab->currentIndex() ]->setView( newView, vtype ) ) {
+    // current tab is not available.
+    int i;
+    for ( i = 0; i < ViewTab->count(); i++ ) {
+      if ( ViewCtrls[ i ]->setView( newView, vtype ) ) {
+	break;
+      }
+    }
+    if ( i < ViewTab->count() ) {          // an available tab is found.
+      ViewTab->setCurrentIndex( i );       // make it current tab.
+    } else {
+      // no tab is available.
+      statusbar->showMessage( tr( "No Scree is available!" ), 2000 );
+      switch( vtype ) {
+      case XVIEW:
+	delete (XView *)newView; break;
+      case MCAVIEW:
+	delete (MCAView *)newView; break;
+      default:
+	qDebug() << "Unknow vewType was passed to SetUpNewView";
+      }
+      newView = NULL;
+    }
+  }
+  return ViewCtrls[ ViewTab->currentIndex() ];
+}

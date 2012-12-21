@@ -21,7 +21,7 @@ void MainWindow::ScanSequence( void )
     statusbar->showMessage( tr( "Going to initial position." ), 1000 );
     NowScanP = ScanSP;
     am->SetValue( ScanSP );
-    SetSPSViewWindow();
+    SetScanViewWindow();
     mUnits.clearStage();
     ScanStage = 1;
     // break;                   // break ÉÔÍ×
@@ -53,8 +53,8 @@ void MainWindow::ScanSequence( void )
     break;
   case 5:
     mUnits.readValue( MeasVals );
-    SPSView->NewPoint( 1, NowScanP, MeasVals[0] );
-    SPSView->ReDraw();
+    ScanView->NewPoint( 1, NowScanP, MeasVals[0] );
+    ScanView->ReDraw();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
 	 ||( ( ScanSTP < 0 )&&( NowScanP < ScanEP ) ) ) {
@@ -65,9 +65,11 @@ void MainWindow::ScanSequence( void )
     }
     break;
   case 10:
+    SPSScan->setText( tr( "Scan" ) );
+    SPSScan->setStyleSheet( "" );
     statusbar->showMessage( tr( "The Scan has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Scan Finished\n" ) ) );
-    // sks->SetValue( Motors[ MovingM ].devName, p = SPSView->PeakSearch( 1 ) );
+    // sks->SetValue( Motors[ MovingM ].devName, p = ScanView->PeakSearch( 1 ) );
     am->Stop();
     ScanStage = 11;
     break;
@@ -78,19 +80,18 @@ void MainWindow::ScanSequence( void )
   case 12:
     inSPSing = 0;
     ScanTimer->stop();
-    SPSScan->setText( tr( "Scan" ) );
-    SPSScan->setStyleSheet( "" );
     SPSScan->setEnabled( true );
     GoMotor->setEnabled( true );
+    ScanViewC->setIsDeletable( true );
     break;
   }
 }
 
-void MainWindow::SetSPSViewWindow( void )
+void MainWindow::SetScanViewWindow( void )
 {
   if ( ScanEP > ScanSP ) {
-    SPSView->SetWindow( ScanSP, 0, ScanEP, 0 );
+    ScanView->SetWindow( ScanSP, 0, ScanEP, 0 );
   } else {
-    SPSView->SetWindow( ScanEP, 0, ScanSP, 0 );
+    ScanView->SetWindow( ScanEP, 0, ScanSP, 0 );
   }
 }

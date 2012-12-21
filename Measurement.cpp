@@ -30,7 +30,7 @@ void MainWindow::MeasSequence( void )
     */
   case 0:
     mUnits.clearStage();
-    NowView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
+    MeasView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
   case 1:
@@ -87,7 +87,7 @@ void MainWindow::MeasSequence( void )
     }
     // don't break
   case 10:                     // This label is resume point from pausing
-    NowView->ReDraw();
+    MeasView->ReDraw();
     MeasS++;
     if ( inPause == 0 ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {
@@ -97,7 +97,7 @@ void MainWindow::MeasSequence( void )
 	MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1\n" ) ).arg( MeasR + 1 ) );
-	ClearNowView();
+	ClearXViewScreenForMeas();
 	MeasR++;
 	MeasStage = 2;
       } else {               // ½ªÎ»
@@ -132,20 +132,20 @@ void MainWindow::DispMeasDatas( void )
   double Val;
 
   I0 = MeasVals[ MC_I0 ];
-  NowView->NewPoint( 0, GoToKeV, I0 );
+  MeasView->NewPoint( 0, GoToKeV, I0 );
   for ( int i = 1; i < mUnits.count(); i++ ) {
     Val = MeasVals[i];
     if ( MeasDispMode[i] == TRANS ) {
       if ( Val < 1e-10 )
 	Val = 1e-10;
       if ( ( I0 / Val ) > 0 )
-	NowView->NewPoint( i, GoToKeV, log( I0/Val ) );
+	MeasView->NewPoint( i, GoToKeV, log( I0/Val ) );
       else 
-	NowView->NewPoint( i, GoToKeV, 0 );
+	MeasView->NewPoint( i, GoToKeV, 0 );
     } else {  // MeasDispMode == FLUO
       if ( I0 < 1e-20 )
 	I0 = 1e-20;
-      NowView->NewPoint( i, GoToKeV, Val/I0 );
+      MeasView->NewPoint( i, GoToKeV, Val/I0 );
     }
   }
 }

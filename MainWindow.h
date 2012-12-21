@@ -12,6 +12,7 @@
 #include "SelMC.h"
 #include "StarsSV.h"
 
+#include "ViewCtrl.h"
 #include "XafsM.h"
 #include "Atoms.h"
 #include "Stars.h"
@@ -39,7 +40,6 @@ const int MaxBLKs = 6;        // Max Blocks
 const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
-enum VTYPE { XVIEW, MCAVIEW, NONVIEW };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 
 struct DRVDef {
@@ -59,6 +59,9 @@ private:
   QString XAFSName;
   QString XAFSKey;
   QString XAFSTitle;
+
+  /* Tab control */
+  QVector<ViewCTRL*> ViewCtrls;
 
   /* ReadDef */
   QVector<AUnit *> AMotors;
@@ -82,7 +85,8 @@ private:
   bool inMCAMeas;
   int cMCACh;
   int MCAStage;
-  MCAView *cMCAV;
+  ViewCTRL *cMCAViewC;
+  MCAView *cMCAView;
   int *MCAData;
   MCASTARTRESUME StartResume;
 
@@ -101,10 +105,6 @@ private:
 
   MEASMODE MeasFileType;
 
-  QVector<QWidget*> ViewBases;
-  QVector<void*> nowViews;
-  QVector<VTYPE> nowVTypes;
-  void deleteView( int tab );
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -207,7 +207,8 @@ private:
   int ScanMotor, ScanSensor;
   double ScanOrigin, ScanSP, ScanEP, ScanSTP;
   int NowScanP;
-  XView *SPSView;
+  ViewCTRL *ScanViewC;
+  XView *ScanView;
 
   QString RadioBOn;
   QString RadioBOff;
@@ -220,7 +221,8 @@ private:
   int inMonitor;
   int MonStage;
   int MonDev;
-  XView *MonView;
+  ViewCTRL *MonitorViewC;
+  XView *MonitorView;
 
   QVector<QLineEdit *> BLKstart;
   QVector<QLineEdit *> BLKstep;
@@ -264,6 +266,7 @@ private:
   int TP;
   double TT0;
   int inMeas, inPause, SinPause;
+  int cMeasTab;          // Tab No. on which the current measurement result is displayed
   int inMoveTh;
   int MeasStage, SMeasStage;
   int MeasR, MeasB, MeasS;
@@ -273,7 +276,8 @@ private:
   QMessageBox *StopP;
   QMessageBox *AskOverWrite;
   bool AskingOverwrite;
-  void ClearNowView( void );
+  ViewCTRL *SetUpNewView( VTYPE vtype );
+  void ClearXViewScreenForMeas( void );
   int GetDFName0( void );
   void SetDFName( int i );
   double MeasVals[ MCHANNELS ];
@@ -289,7 +293,8 @@ private:
 
   QString NewLFName( void );
 
-  XView *NowView;
+  ViewCTRL *MeasViewC;
+  XView *MeasView;
   void setupView( void );
 
 
@@ -304,7 +309,7 @@ private:
   //  bool GetSensValues0( void );
   //  bool GetSensValues( void );
   //  void ReadSensValues( void );
-  void SetSPSViewWindow( void );
+  void SetScanViewWindow( void );
 
 private slots:
   void Initialize( void );
@@ -362,6 +367,7 @@ private slots:
   void newROIEnd( const QString &newv );
   void showCurrentValues( int, int );
   void setNewROI( int, int );
+  void clearMCA( void );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
