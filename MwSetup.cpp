@@ -376,12 +376,14 @@ void MainWindow::ScanStart( void )
 	.arg( am->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg + "\n" );
+      return;
     }
     if ( ! as->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg + "\n" );
+      return;
     }
     
     MovingS = SPSMotorS->currentIndex();  // motor speed;
@@ -448,6 +450,7 @@ void MainWindow::Monitor( void )
 	.arg( as0->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg + "\n" );
+      return;
     }
 
     if ( ( MonitorViewC = SetUpNewView( XVIEW ) ) == NULL ) 
@@ -467,6 +470,7 @@ void MainWindow::Monitor( void )
 	  .arg( as1->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg + "\n" );
+	return;
       }
     }
     if ( SelectD22Sel->isChecked() ) {
@@ -476,6 +480,7 @@ void MainWindow::Monitor( void )
 	  .arg( as2->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg + "\n" );
+	return;
       }
     }
 

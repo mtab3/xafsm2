@@ -149,22 +149,17 @@ void MainWindow::InitAndIdentifySensors( void )
 void MainWindow::RcvListNodes( SMsg msg )
 {
   for ( int i = 0; i < msg.Vals().count(); i++ ) {
-    qDebug() << "Ans on listnodes" << msg.Vals().at(i);
     SetEnableOfUnits( msg.Vals().at(i), true );
   }
 }
 
 void MainWindow::SomeDrvIsConnected( SMsg msg )
 {
-  qDebug() << "Ans on Connected" << msg.From();
-
   SetEnableOfUnits( msg.From(), true );
 }
 
 void MainWindow::SomeDrvIsDisconnected( SMsg msg )
 {
-  qDebug() << "Ans on DisConnected" << msg.From();
-
   SetEnableOfUnits( msg.From(), false );
 }
 

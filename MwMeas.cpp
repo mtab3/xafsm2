@@ -543,6 +543,7 @@ void MainWindow::StartMeasurement( void )
 	.arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg + "\n" );
+      return;
     }
     if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 ‚Í TRANS ‚ÉŒÅ’è
@@ -553,17 +554,20 @@ void MainWindow::StartMeasurement( void )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg + "\n" );
+	return;
       }
     }
     if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD ‚Í FLUO ‚ÉŒÅ’è
       mUnits.addUnit( as = SFluo, 0 );
       LC++;
+      qDebug() << "Checking isEnabled" << as->getName() << as->isEnable();
       if ( ! as->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg + "\n" );
+	return;
       }
     }
     if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
@@ -575,6 +579,7 @@ void MainWindow::StartMeasurement( void )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg + "\n" );
+	return;
       }
     }
     if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
@@ -586,6 +591,7 @@ void MainWindow::StartMeasurement( void )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg + "\n" );
+	return;
       }
     }
 
