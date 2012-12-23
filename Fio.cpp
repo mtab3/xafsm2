@@ -22,13 +22,13 @@ int MainWindow::GetDFName0()
 
 void MainWindow::SetDFName( int i )
 {
-  char buf[ 100 ];
+  QString buf;
 
   if ( i == 0 ) {
     DFName = DFName0 + ".dat";
   } else {
-    sprintf( buf, ".%03d", i );
-    DFName = DFName0 + QString( buf );
+    buf.sprintf( ".%03d", i );
+    DFName = DFName0 + buf;
   }
 }
 

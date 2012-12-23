@@ -498,11 +498,20 @@ bool MainWindow::CheckDetectorSelection( void )
 
 void MainWindow::StartMeasurement( void )
 {
+  AUnit *as;
+
   if ( inMeas == 0 ) {
     if ( MMainTh->isBusy() ) {
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
     }
+    if ( ! MMainTh->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( MMainTh->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg + "\n" );
+    }
+
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
@@ -520,47 +529,77 @@ void MainWindow::StartMeasurement( void )
     MeasView = (XView*)(MeasViewC->getView());
     ClearXViewScreenForMeas();
 
-
-    QFileInfo CheckFile( DFName0 + ".dat" );
-    if ( CheckFile.exists() ) {
-      AskOverWrite->setText( tr( "<h1><center>File [%1] Over Write ?</center></h1>" )
-			     .arg( DFName ) );
-      AskOverWrite->show();
-      AskingOverwrite = true;
-    } else {
-      AskingOverwrite = false;
-    }
-
     int LC = 0;
-
     mUnits.clearUnits();
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
 
     MeasSensF[ LC ] = true;
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
-    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ), 0 );
+    mUnits.addUnit( as = ASensors.value( SelectI0->currentIndex() ), 0 );
     LC++;
+    if ( ! as->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( as->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg + "\n" );
+    }
     if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
-      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ), 0 );
+      mUnits.addUnit( as = ASensors.value( SelectI1->currentIndex() ), 0 );
       LC++;
+      if ( ! as->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg + "\n" );
+      }
     }
     if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
-      mUnits.addUnit( SFluo, 0 );
+      mUnits.addUnit( as = SFluo, 0 );
       LC++;
+      if ( ! as->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg + "\n" );
+      }
     }
     if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ), 0 );
+      mUnits.addUnit( as = ASensors.value( SelectAux1->currentIndex() ), 0 );
       LC++;
+      if ( ! as->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg + "\n" );
+      }
     }
     if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ), 0 );
+      mUnits.addUnit( as = ASensors.value( SelectAux2->currentIndex() ), 0 );
       LC++;
+      if ( ! as->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg + "\n" );
+      }
     }
+
+    QFileInfo CheckFile( DFName0 + ".dat" );
+    if ( CheckFile.exists() ) {
+      AskOverWrite->setText( tr( "<h1><center>File [%1] Over Write ?</center></h1>" )
+			     .arg( DFName0 + ".dat" ) );
+      AskOverWrite->show();
+      AskingOverwrite = true;
+    } else {
+      AskingOverwrite = false;
+    }
+
+
     NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
 	       .arg( CurPosKeV ) );
     InitialKeV = CurPosKeV;

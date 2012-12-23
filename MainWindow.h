@@ -42,11 +42,6 @@ const int MaxSSDs = 19;       // Max SSD elements
 
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 
-struct DRVDef {
-  QString name;
-  QString comment;
-};
-
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
   Q_OBJECT
@@ -123,7 +118,7 @@ private:
   void setupSetupSSDArea( void );
   void setupMeasArea( void );
 
-  QVector<DRVDef *> DriverList;
+  QStringList DriverList;
 
   MUnits mUnits;
 
@@ -312,9 +307,14 @@ private:
   //  void ReadSensValues( void );
   void SetScanViewWindow( void );
 
+  void SetEnableOfUnits( QString drv, bool enable );
+
 private slots:
   void Initialize( void );
   void InitializeUnitsAgain( void );
+  void RcvListNodes( SMsg msg );
+  void SomeDrvIsConnected( SMsg msg );
+  void SomeDrvIsDisconnected( SMsg msg );
 
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; qDebug() << "MonoCryD" << MonoCryD; };
@@ -369,6 +369,8 @@ private slots:
   void showCurrentValues( int, int );
   void setNewROI( int, int );
   void clearMCA( void );
+  void RealTimeIsSelected( void );
+  void LiveTimeIsSelected( void );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
@@ -454,7 +456,6 @@ private slots:
   void ScanSequence( void );
   void MonSequence( void );
   void MCASequence( void );
-
 };
 
 #endif

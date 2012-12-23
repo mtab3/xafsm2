@@ -14,6 +14,7 @@ class AUnit : public QObject
   Q_OBJECT
 
   Stars *s;
+  bool Enable;          // if the unit is enable on Stars server or not
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
@@ -58,6 +59,8 @@ public:
   AUnit( QObject *parent = 0 );
 
   void Initialize( Stars *S );
+  void setEnable( bool enable );
+  bool isEnable( void ) { return Enable; };
   void setGType( QString gtype ) { GType = gtype; };
   void setStars( Stars *S ) { s = S; };
   void setType( QString type ) { Type = type; };
@@ -154,6 +157,10 @@ public:
   void Stop( void );
   bool GetMCA( int ch );
   bool GetStat( void );
+  bool SetRealTime( double val );
+  bool SetLiveTime( double val );
+  bool SetRealTime( int ch, double val );
+  bool SetLiveTime( int ch, double val );
   bool GetRealTime( int ch );
   bool GetLiveTime( int ch );
 

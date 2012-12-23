@@ -5,7 +5,7 @@
 #include "SelMC.h"
 #include "Stars.h"
 
-const char *CMode[ MEASMODES + 1 ] = {
+const QString CMode[ MEASMODES + 1 ] = {
   "Transmission",
   "Fluorescence",
   "Aux input",
@@ -71,6 +71,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
 
   connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
+  connect( s, SIGNAL( AnsListNodes( SMsg ) ), this, SLOT( RcvListNodes( SMsg ) ) );
+  connect( s, SIGNAL( EvConnected( SMsg ) ),
+	   this, SLOT( SomeDrvIsConnected( SMsg ) ) );
+  connect( s, SIGNAL( EvDisconnected( SMsg ) ),
+	   this, SLOT( SomeDrvIsDisconnected( SMsg ) ) );
 
   GoTimer = new QTimer;
   MCATimer = new QTimer;
@@ -98,6 +103,10 @@ void MainWindow::Initialize( void )
 
   getMCASettings( MCACh->text().toInt() );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+  s->SendCMD2( "Initialize", "System", "listnodes" );
+  for ( int i = 0; i < DriverList.count(); i++ ) {
+    s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
+  }
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )
@@ -119,8 +128,6 @@ void MainWindow::InitAndIdentifyMotors( void )
     if ( am->getID() == "THETA" ) { MMainTh = am; }
   }
   connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
-  MMainTh->AskIsBusy();
-  MMainTh->GetValue();
 }
 
 void MainWindow::InitAndIdentifySensors( void )
@@ -137,8 +144,52 @@ void MainWindow::InitAndIdentifySensors( void )
   }
   SFluo->setROIs( ROIStart, ROIEnd );
   connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
-  EncMainTh->GetValue();
 }
+
+void MainWindow::RcvListNodes( SMsg msg )
+{
+  for ( int i = 0; i < msg.Vals().count(); i++ ) {
+    qDebug() << "Ans on listnodes" << msg.Vals().at(i);
+    SetEnableOfUnits( msg.Vals().at(i), true );
+  }
+}
+
+void MainWindow::SomeDrvIsConnected( SMsg msg )
+{
+  qDebug() << "Ans on Connected" << msg.From();
+
+  SetEnableOfUnits( msg.From(), true );
+}
+
+void MainWindow::SomeDrvIsDisconnected( SMsg msg )
+{
+  qDebug() << "Ans on DisConnected" << msg.From();
+
+  SetEnableOfUnits( msg.From(), false );
+}
+
+void MainWindow::SetEnableOfUnits( QString drv, bool enable )
+{
+  AUnit *am, *as;
+
+  for ( int j = 0; j < AMotors.count(); j++ ) {
+    am = AMotors.value( j );
+    if ( am->getDriver() == drv ) {
+      am->setEnable( enable );
+      if ( enable ) 
+	am->Initialize( s );
+    }
+  }
+  for ( int j = 0; j < ASensors.count(); j++ ) {
+    as = ASensors.value( j );
+    if ( as->getDriver() == drv ) {
+      as->setEnable( enable );
+      if ( enable ) 
+	as->Initialize( s );
+    }
+  }
+}
+
 
 void MainWindow::ShowCurThPos( void )   // ’l‚Í‚ ‚¦‚ÄŽg‚í‚È‚¢
 {

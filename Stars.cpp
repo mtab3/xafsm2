@@ -16,6 +16,15 @@ Stars::Stars( void ) : QObject()
   ConnectionStage = CSTAGE0;
 }
 
+Stars::~Stars( void ) 
+{
+  if ( ss != NULL ) {
+    ss->disconnectFromHost();
+    delete ss;
+    ss = NULL;
+  }
+}
+
 void Stars::SetNewSVAddress( const QString &item )
 {
   StarsServer = item;
@@ -166,7 +175,12 @@ void Stars::ReceiveMessageFromStars( void )
       switch( smsg.ParseMsg( RBuf ) ) {
       case RES_MSG:
 	emit AskRecord( tr( "Receive an answer from Stars [%1]" ).arg( RBuf.data() ) );
+	if ( smsg.Val() == "Er:" ) {
+	  emit ReceiveError( smsg ); break;
+	}
 	switch( smsg.Msgt() ) {
+	case LISTNODES:
+	  emit AnsListNodes( smsg ); break;
 	case GETVALUE:
 	  emit AnsGetValue( smsg ); break;
 	case GETSPEEDSELECTED:
@@ -276,6 +290,10 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit EvChangedValue( smsg ); break;
 	case EvISBUSY: 
 	  emit EvIsBusy( smsg ); break;
+	case EvCONNECTED: 
+	  emit EvConnected( smsg ); break;
+	case EvDISCONNECTED: 
+	  emit EvDisconnected( smsg ); break;
 	default: 
 	  break;
 	}

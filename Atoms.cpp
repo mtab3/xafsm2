@@ -4,7 +4,7 @@
 
 #include "Atoms.h"
 
-const char *AbENames[ Edges ] = {
+const QString AbENames[ Edges ] = {
   "K",
   "LI",
   "LII",

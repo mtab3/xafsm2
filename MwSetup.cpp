@@ -371,7 +371,19 @@ void MainWindow::ScanStart( void )
     mUnits.clearUnits();
     mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ),
 		    SPSdwell->text().toDouble() );
-
+    if ( ! am->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( am->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg + "\n" );
+    }
+    if ( ! as->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( as->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg + "\n" );
+    }
+    
     MovingS = SPSMotorS->currentIndex();  // motor speed;
 
     SPSSelU = SPSUnit->currentIndex();
@@ -431,6 +443,13 @@ void MainWindow::Monitor( void )
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
   if ( inMonitor == 0 ) {
+    if ( ! as0->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( as0->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg + "\n" );
+    }
+
     if ( ( MonitorViewC = SetUpNewView( XVIEW ) ) == NULL ) 
       return;
     MonitorView = (XView*)(MonitorViewC->getView());
@@ -441,10 +460,24 @@ void MainWindow::Monitor( void )
     mUnits.clearUnits();
 
     mUnits.addUnit( as0, DwellT20->text().toDouble() );
-    if ( SelectD21Sel->isChecked() )
+    if ( SelectD21Sel->isChecked() ) {
       mUnits.addUnit( as1, DwellT21->text().toDouble() );
-    if ( SelectD22Sel->isChecked() )
+      if ( ! as1->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as1->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg + "\n" );
+      }
+    }
+    if ( SelectD22Sel->isChecked() ) {
       mUnits.addUnit( as1, DwellT22->text().toDouble() );
+      if ( ! as2->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as2->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg + "\n" );
+      }
+    }
 
     MonitorView->ClearDataR();
     MonitorView->SetLineF( RIGHT, LEFT, LEFT );   // Œ»óˆÓ–¡‚È‚µ

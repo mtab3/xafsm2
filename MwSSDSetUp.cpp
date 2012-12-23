@@ -10,12 +10,12 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
         << SSDE16 << SSDE17 << SSDE18 << SSDE19;
-
+  
   for ( int i = 0; i < MaxSSDs; i++ ) {
     SSDbs[i]->setStyleSheet( "background-color: #eeffee" );
     SSDbs[i]->setToolTip( tr( "Active" ) );
   }
-
+  
   connect( SSDbs[0],  SIGNAL( clicked() ), this, SLOT( SelSSDs00() ) );
   connect( SSDbs[1],  SIGNAL( clicked() ), this, SLOT( SelSSDs01() ) );
   connect( SSDbs[2],  SIGNAL( clicked() ), this, SLOT( SelSSDs02() ) );
@@ -35,9 +35,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( SSDbs[16], SIGNAL( clicked() ), this, SLOT( SelSSDs16() ) );
   connect( SSDbs[17], SIGNAL( clicked() ), this, SLOT( SelSSDs17() ) );
   connect( SSDbs[18], SIGNAL( clicked() ), this, SLOT( SelSSDs18() ) );
-
+  
   StartResume = MCA_START;
-
+  
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
 	   this, SLOT( showPeakingTime( SMsg ) ) );
   connect( s, SIGNAL( AnsGetThreshold( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
@@ -47,7 +47,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( showDynamicRange( SMsg ) ) );
   connect( s, SIGNAL( AnsGetPreAMPGain( SMsg ) ), this, SLOT( showPreAMPGain( SMsg ) ) );
   connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ) );
-
+  
   connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ) );
   connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ) );
   connect( ROIStartInput, SIGNAL( textEdited( const QString & ) ),
@@ -55,6 +55,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( ROIEndInput, SIGNAL( textEdited( const QString & ) ),
 	   this, SLOT( newROIEnd( const QString & ) ) );
   connect( MCAClear, SIGNAL( clicked() ), this, SLOT( clearMCA() ) );
+  
+  connect( SelRealTime, SIGNAL( clicked() ), this, SLOT( RealTimeIsSelected() ) );
+  connect( SelLiveTime, SIGNAL( clicked() ), this, SLOT( LiveTimeIsSelected() ) );
 
   inMCAMeas = false;
   MCAData = NULL;
@@ -84,6 +87,20 @@ void MainWindow::SelSSDs15( void ) { SelSSDs( 15 ); }
 void MainWindow::SelSSDs16( void ) { SelSSDs( 16 ); }
 void MainWindow::SelSSDs17( void ) { SelSSDs( 17 ); }
 void MainWindow::SelSSDs18( void ) { SelSSDs( 18 ); }
+
+void MainWindow::RealTimeIsSelected( void )
+{
+  if ( SelRealTime->isChecked() ) {
+    SelLiveTime->setChecked( false );
+  }
+}
+
+void MainWindow::LiveTimeIsSelected( void )
+{
+  if ( SelLiveTime->isChecked() ) {
+    SelRealTime->setChecked( false );
+  }
+}
 
 void MainWindow::SelSSDs( int ch )
 {
@@ -190,6 +207,12 @@ void MainWindow::showPreAMPGain( SMsg msg )
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
+    if ( ! SFluo->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg + "\n" );
+    }
+
     MCAStart->setText( tr( "Stop" ) );
     MCAStart->setStyleSheet( "background-color: yellow" );
 
@@ -229,7 +252,6 @@ void MainWindow::StartMCA( void )
 	for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
     }
     MCAClearRequest = false;
-    SFluo->setSSDPresetType( "NONE" );
     SFluo->RunStop();
     cMCAViewC->setIsDeletable( false );
     MCAStage = 0;
@@ -280,6 +302,24 @@ void MainWindow::MCASequence( void )
     SFluo->InitLocalStage();
     MCAStage = 1;
   case 1:
+    if ( SelRealTime->isChecked() ) {
+      SFluo->setSSDPresetType( "REAL" );
+      MCAStage = 2;
+    } else if ( SelLiveTime->isChecked() ) {
+      SFluo->setSSDPresetType( "LIVE" );
+      MCAStage = 2;
+    } else {
+      SFluo->setSSDPresetType( "NONE" );
+      MCAStage = 3;
+    }
+    break;
+  case 2:
+    if ( SelRealTime->isChecked() || SelLiveTime->isChecked() ) {
+      SFluo->SetTime( PresetTime->text().toDouble() );
+    }
+    MCAStage = 3;
+    break;
+  case 3:
     if ( SFluo->InitSensor() == false ) {  // true :: initializing
       if ( StartResume == MCA_START ) {
 	SFluo->RunStart();
@@ -288,18 +328,18 @@ void MainWindow::MCASequence( void )
 	SFluo->RunResume();
       }
       SFluo->InitLocalStage();
-      MCAStage = 2;
+      MCAStage = 4;
     }
     break;
-  case 2:
+  case 4:
     if ( SFluo->GetMCA( cMCACh ) == false ) {
       SFluo->GetRealTime( cMCACh );
       SFluo->GetLiveTime( cMCACh );
       SFluo->InitLocalStage();
-      MCAStage = 3;
+      MCAStage = 5;
     }
     break;
-  case 3:
+  case 5:
     MCA = SFluo->MCAvalues();
     for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
       MCAData[i] = MCA.at(i).toInt();
@@ -307,7 +347,7 @@ void MainWindow::MCASequence( void )
     cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
     cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
     cMCAView->update();
-    MCAStage = 2;
+    MCAStage = 4;
     break;
   }
 }

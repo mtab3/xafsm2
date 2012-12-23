@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>718</width>
-    <height>870</height>
+    <height>883</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -406,7 +406,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -446,188 +446,6 @@
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_45">
-             <property name="text">
-              <string>Monochro</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QComboBox" name="GoUnit0">
-             <property name="maximumSize">
-              <size>
-               <width>70</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>18</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Move To (1)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="GoPos1">
-             <property name="minimumSize">
-              <size>
-               <width>80</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);
-</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QComboBox" name="GoUnit1">
-             <property name="maximumSize">
-              <size>
-               <width>70</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QPushButton" name="GoTo1">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-             <property name="text">
-              <string>Go</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_30">
-             <property name="text">
-              <string>Move To (2)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="GoPos2">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QComboBox" name="GoUnit2">
-             <property name="maximumSize">
-              <size>
-               <width>70</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="3">
-            <widget class="QPushButton" name="GoTo2">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-             <property name="text">
-              <string>Go</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_31">
-             <property name="text">
-              <string>Move To (3)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="GoPos3">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QComboBox" name="GoUnit3">
-             <property name="maximumSize">
-              <size>
-               <width>70</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QPushButton" name="GoTo3">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-             <property name="text">
-              <string>Go</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_32">
-             <property name="text">
-              <string>Move To (4)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="GoPos4">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-            </widget>
-           </item>
            <item row="5" column="2">
             <widget class="QComboBox" name="GoUnit4">
              <property name="maximumSize">
@@ -818,6 +636,201 @@
              </layout>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_45">
+             <property name="text">
+              <string>Monochro</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QComboBox" name="GoUnit0">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>18</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Move To (1)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="GoPos1">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);
+</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QComboBox" name="GoUnit1">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QPushButton" name="GoTo1">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+             <property name="text">
+              <string>Go</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_30">
+             <property name="text">
+              <string>Move To (2)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="GoPos2">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QComboBox" name="GoUnit2">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QPushButton" name="GoTo2">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+             <property name="text">
+              <string>Go</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_31">
+             <property name="text">
+              <string>Move To (3)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="GoPos3">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QComboBox" name="GoUnit3">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <widget class="QPushButton" name="GoTo3">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+             <property name="text">
+              <string>Go</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_32">
+             <property name="text">
+              <string>Move To (4)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="GoPos4">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
         </item>
@@ -954,12 +967,12 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1" colspan="5">
+           <item row="5" column="1" colspan="5">
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
               <widget class="QLabel" name="label_62">
                <property name="text">
-                <string>     </string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -996,7 +1009,7 @@
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                </property>
                <property name="text">
-                <string>...</string>
+                <string>Select</string>
                </property>
               </widget>
              </item>
@@ -1111,6 +1124,13 @@
              </property>
             </widget>
            </item>
+           <item row="4" column="2" colspan="4">
+            <widget class="Line" name="line_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1138,6 +1158,298 @@
            <property name="spacing">
             <number>1</number>
            </property>
+           <item row="11" column="2" colspan="2">
+            <widget class="QLineEdit" name="SPSstep">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>100000</height>
+              </size>
+             </property>
+             <property name="sizeIncrement">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="4">
+            <widget class="QLabel" name="label_37">
+             <property name="text">
+              <string> Dwell [s]:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="6">
+            <widget class="QLabel" name="label_43">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="14" colspan="3">
+            <widget class="QComboBox" name="SPSMotorS">
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+             <property name="minimumContentsLength">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="2" colspan="8">
+            <widget class="QComboBox" name="SelectD1">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="3">
+            <widget class="QFrame" name="MCurPosUnitF">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_24">
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="MCurPosUnit">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(250, 255, 240);</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="6" column="14">
+            <widget class="QPushButton" name="SetUpMMRel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="14">
+            <widget class="QPushButton" name="SetUpSPSRel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Rel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="16">
+            <widget class="QPushButton" name="SetUpSPSAbs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Abs</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="12">
+            <widget class="QComboBox" name="SPSUnit">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+             <property name="minimumContentsLength">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="5" colspan="8">
+            <widget class="QLineEdit" name="SPSeP">
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>100000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="5" colspan="8">
+            <widget class="QLineEdit" name="SPSdwell">
+             <property name="maximumSize">
+              <size>
+               <width>75</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="8" colspan="5">
+            <widget class="QPushButton" name="GoMotor">
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+             <property name="text">
+              <string>Go</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3" colspan="14">
+            <widget class="QComboBox" name="MotorN">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>10000</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="3">
+            <widget class="QLabel" name="label_46">
+             <property name="text">
+              <string>Selected Motor</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="3">
+            <widget class="QFrame" name="MCurPosPulsF">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_21">
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="MCurPosPuls">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>19</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(250, 255, 240);</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
            <item row="5" column="6">
             <widget class="QLabel" name="label_21">
              <property name="text">
@@ -1145,7 +1457,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="12" colspan="2">
+           <item row="5" column="14" colspan="3">
             <widget class="QComboBox" name="GoMotorS">
              <property name="maximumSize">
               <size>
@@ -1180,7 +1492,7 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="9" colspan="4">
+           <item row="3" column="9" colspan="6">
             <widget class="QLabel" name="label_44">
              <property name="text">
               <string/>
@@ -1242,7 +1554,7 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="0" colspan="14">
+           <item row="8" column="0" colspan="17">
             <widget class="Line" name="line_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -1269,7 +1581,7 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="13">
+           <item row="6" column="16">
             <widget class="QPushButton" name="SetUpMMAbs">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1279,7 +1591,7 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>40</width>
+               <width>35</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1321,24 +1633,38 @@
              </property>
             </widget>
            </item>
-           <item row="11" column="2" colspan="2">
-            <widget class="QLineEdit" name="SPSstep">
+           <item row="12" column="0">
+            <widget class="QLabel" name="label_71">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="16">
+            <widget class="QPushButton" name="pushButton">
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Save</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="14">
+            <widget class="QToolButton" name="toolButton_2">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
              <property name="maximumSize">
               <size>
-               <width>16777215</width>
-               <height>100000</height>
+               <width>40</width>
+               <height>16777215</height>
               </size>
              </property>
              <property name="sizeIncrement">
@@ -1347,100 +1673,23 @@
                <height>0</height>
               </size>
              </property>
-             <property name="baseSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
+             <property name="text">
+              <string>Select</string>
              </property>
+            </widget>
+           </item>
+           <item row="12" column="2" colspan="11">
+            <widget class="QLineEdit" name="lineEdit_2">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="0" colspan="3">
-            <widget class="QFrame" name="MCurPosUnitF">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_24">
-              <property name="margin">
-               <number>0</number>
-              </property>
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="MCurPosUnit">
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(250, 255, 240);</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="3">
-            <widget class="QFrame" name="MCurPosPulsF">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_21">
-              <property name="margin">
-               <number>0</number>
-              </property>
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="MCurPosPuls">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>19</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(250, 255, 240);</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="11" column="4">
-            <widget class="QLabel" name="label_37">
-             <property name="text">
-              <string> Dwell [s]:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="12" colspan="2">
+           <item row="11" column="14" colspan="3">
             <widget class="QPushButton" name="SPSScan">
              <property name="maximumSize">
               <size>
-               <width>16777215</width>
+               <width>80</width>
                <height>100000</height>
               </size>
              </property>
@@ -1449,177 +1698,6 @@
              </property>
              <property name="text">
               <string>Scan</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="6">
-            <widget class="QLabel" name="label_43">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="12" colspan="2">
-            <widget class="QComboBox" name="SPSMotorS">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-             <property name="minimumContentsLength">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="2" colspan="8">
-            <widget class="QComboBox" name="SelectD1">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="12">
-            <widget class="QPushButton" name="SetUpMMRel">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Rel</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="12">
-            <widget class="QPushButton" name="SetUpSPSRel">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Rel</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="13">
-            <widget class="QPushButton" name="SetUpSPSAbs">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Abs</string>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="11">
-            <widget class="QComboBox" name="SPSUnit">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-             <property name="minimumContentsLength">
-              <number>0</number>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="5" colspan="7">
-            <widget class="QLineEdit" name="SPSeP">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="5" colspan="7">
-            <widget class="QLineEdit" name="SPSdwell">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="8" colspan="4">
-            <widget class="QPushButton" name="GoMotor">
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-             <property name="text">
-              <string>Go</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3" colspan="11">
-            <widget class="QComboBox" name="MotorN">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>10000</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" colspan="3">
-            <widget class="QLabel" name="label_46">
-             <property name="text">
-              <string>Selected Motor</string>
              </property>
             </widget>
            </item>
@@ -2027,7 +2105,55 @@
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="2" column="3">
+           <item row="6" column="5">
+            <widget class="QLabel" name="ValInROIDisp">
+             <property name="maximumSize">
+              <size>
+               <width>10000</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(250, 255, 240);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="4">
+            <widget class="QLabel" name="label_19">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>  ROI end</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="4">
+            <widget class="QLabel" name="label_20">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>  In ROI</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4">
             <widget class="QLabel" name="label_59">
              <property name="minimumSize">
               <size>
@@ -2040,14 +2166,14 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="5">
+           <item row="3" column="6">
             <widget class="QLabel" name="label_60">
              <property name="text">
               <string>eV</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="5">
+           <item row="4" column="6">
             <widget class="QLabel" name="label_61">
              <property name="minimumSize">
               <size>
@@ -2086,10 +2212,24 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="3">
+           <item row="3" column="4">
             <widget class="QLabel" name="label_55">
              <property name="text">
               <string>eV  Carib.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="5">
+            <widget class="QLineEdit" name="PresetTime">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="6">
+            <widget class="QLabel" name="label_66">
+             <property name="text">
+              <string>sec</string>
              </property>
             </widget>
            </item>
@@ -2133,33 +2273,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1" colspan="2">
-            <widget class="QLineEdit" name="PeakingTimeInput">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(230, 230, 230);</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="QLineEdit" name="ThresholdInput">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(230, 230, 230);</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="4">
+           <item row="3" column="5">
             <widget class="QLineEdit" name="CalibrationInput">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -2189,7 +2303,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
+           <item row="1" column="4">
             <widget class="QRadioButton" name="SetDisplayLog">
              <property name="minimumSize">
               <size>
@@ -2202,23 +2316,7 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1" colspan="2">
-            <widget class="QLineEdit" name="DynamicRangeInput">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(230, 230, 230);</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
+           <item row="4" column="4">
             <widget class="QLabel" name="label_65">
              <property name="minimumSize">
               <size>
@@ -2231,7 +2329,7 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="4">
+           <item row="4" column="5">
             <widget class="QLineEdit" name="GainInput">
              <property name="minimumSize">
               <size>
@@ -2247,7 +2345,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="4" colspan="2">
+           <item row="1" column="5" colspan="2">
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <property name="spacing">
               <number>1</number>
@@ -2319,48 +2417,7 @@
              </item>
             </layout>
            </item>
-           <item row="5" column="1" colspan="2">
-            <widget class="QLineEdit" name="ROIStartInput">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>10000</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1" colspan="2">
-            <widget class="QLabel" name="ValAtCurDisp">
-             <property name="maximumSize">
-              <size>
-               <width>10000</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(250, 255, 240);</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="4">
+           <item row="5" column="5">
             <widget class="QLineEdit" name="ROIEndInput">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -2385,8 +2442,18 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="4">
-            <widget class="QLabel" name="ValInROIDisp">
+           <item row="7" column="4">
+            <widget class="QRadioButton" name="SelLiveTime">
+             <property name="text">
+              <string>Live</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" colspan="3">
+            <widget class="QLabel" name="ValAtCurDisp">
              <property name="maximumSize">
               <size>
                <width>10000</width>
@@ -2407,29 +2474,81 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="3">
-            <widget class="QLabel" name="label_19">
+           <item row="5" column="1" colspan="3">
+            <widget class="QLineEdit" name="ROIStartInput">
              <property name="minimumSize">
               <size>
                <width>0</width>
                <height>0</height>
               </size>
              </property>
-             <property name="text">
-              <string>  ROI end</string>
+             <property name="maximumSize">
+              <size>
+               <width>10000</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="3">
-            <widget class="QLabel" name="label_20">
+           <item row="4" column="1" colspan="3">
+            <widget class="QLineEdit" name="DynamicRangeInput">
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>23</height>
+               <height>0</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(230, 230, 230);</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" colspan="3">
+            <widget class="QLineEdit" name="ThresholdInput">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(230, 230, 230);</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" colspan="3">
+            <widget class="QLineEdit" name="PeakingTimeInput">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(230, 230, 230);</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="3">
+            <widget class="QRadioButton" name="SelRealTime">
              <property name="text">
-              <string>  In ROI</string>
+              <string>Real</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLabel" name="label_70">
+             <property name="text">
+              <string>Preset:</string>
              </property>
             </widget>
            </item>
@@ -3338,6 +3457,10 @@
                </property>
                <item row="3" column="2">
                 <widget class="QSpinBox" name="SelRPT">
+                 <property name="toolTip">
+                  <string>The change of the repitation No. is available, even after starting measurement.
+Though, other parameters are fixed at the value on starting.</string>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
@@ -3629,7 +3752,7 @@
      <x>0</x>
      <y>0</y>
      <width>718</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

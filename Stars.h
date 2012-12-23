@@ -24,11 +24,7 @@ class Stars : public QObject
 
   QString MyNameOnStars;
 
-  char buf[ 20480 ];
-
   CONNECTIONSTAGE ConnectionStage;
-
-  char buf2[ 10240 ];
 
   QString StarsServer;
   qint16  StarsSPort;
@@ -42,6 +38,7 @@ class Stars : public QObject
 
 public:
   Stars( void );
+  ~Stars( void );
   void ReadStarsKeys( QString SelectedName, QString DefaultName );
   QString GetKey( int nkey );
 
@@ -57,11 +54,15 @@ public slots:
 
 signals:
   void ConnectionIsReady( void );
+
   void AskShowStat( QString msg, int time );
   void AskRecord( QString msg );
   void RecordSSVHistoryA( const QString &item );
   void RecordSSVHistoryP( const QString &item );
   void ReConnected( void );
+  void ReceiveError( SMsg msg );
+
+  void AnsListNodes( SMsg msg );
 
   void AnsRemote( SMsg msg );
   void AnsGetValue( SMsg msg );
@@ -113,6 +114,8 @@ signals:
   void AnsGetMCA( SMsg msg );
   void AnsGetStatistics( SMsg msg );
 
+  void EvConnected( SMsg msg );
+  void EvDisconnected( SMsg msg );
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );
 };

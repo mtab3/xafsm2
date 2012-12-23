@@ -58,7 +58,7 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); NewUnit->setUid( item );
 	next = nextItem( next, item ); NewUnit->setID( item );
 	next = nextItem( next, item ); NewUnit->setName( item );
-	next = nextItem( next, item ); NewUnit->setDriver( item );
+	next = nextItem( next, item ); NewUnit->setDriver( item ); DriverList << item;
 	next = nextItem( next, item ); NewUnit->setCh( item );
 	next = nextItem( next, item ); NewUnit->setUnit( item );
 	NewUnit->setDevCh();
@@ -93,13 +93,6 @@ void MainWindow::ReadDef( QString fname )
 	//	NewUnit->show();
       } else if ( item == "#" ) {
 	// qDebug() << "Comment line"; // do nothing but not an error
-      } else if ( item == "STARSDRV" ) {
-	DRVDef *drv = new DRVDef;
-	next = nextItem( next, item );
-	drv->name = item;
-	next = nextItem( next, item );
-	drv->comment = item;
-	DriverList << drv;
       } else if ( item == "XAFSName" ) {
         next = nextItem( next, item );
         XAFSName = item;
@@ -121,8 +114,9 @@ void MainWindow::ReadDef( QString fname )
     }
   }
 
+  DriverList.removeDuplicates();
   for ( int i = 0; i < DriverList.count(); i++ ) {
-    qDebug() << "Driver " << DriverList.value(i)->name << DriverList.value(i)->comment;
+    qDebug() << "Driver " << DriverList.at(i);
   }
 
   f.close();

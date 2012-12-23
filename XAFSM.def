@@ -14,15 +14,7 @@ XAFSName  "XafsM2-bsd"
 XAFSkey   "XafsM2-BL5S1"
 XAFSTitle "XafsM2-BL5S1"
 
-#List of STARS drivers which requied by XafsM to have full function
-STARSDRV "pm16c04-1"  "PM controller"
-STARSDRV "pm16c04-2"  "PM controller"
-STARSDRV "e665"       "piezo actuator"
-STARSDRV "m6485drv-1" "Keithley Pico-an-mator"
-STARSDRV "m6485drv-2" "Keithley Pico-an-mator"
-STARSDRV "nct08"      "8ch counter"
-STARSDRV "nd287"      "encoder: theter"
-STARSDRV "SSD"        "has not implemeted"
+# now the keyword STARSDRIVER is obsolete
 
 CRYSTAL  "Si(111)"   3.1355316
 CRYSTAL  "Si(333)"   1.0451772
@@ -105,15 +97,15 @@ MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check th
 
 # define Sensor units
 
-SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
-#SENSOR CNT "S000" "I0" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
+#SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
+SENSOR CNT "S000" "I0" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
 #
 # // You can use any other sensor as I0, by selecting it after running the program.
 # // Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
 # The rule might be obsolute now.
 #
-SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
-#SENSOR CNT "S001" "I1" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
+#SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
+SENSOR CNT "S001" "I1" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
 # The parameters following the identifier 'SENSOR' are
 #   CNT              : Unit type   CNT : Counter nct08
 #   "S000"           : Uniq identifire of the sensor. The identifier must be identical.
@@ -128,17 +120,17 @@ SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
 #   YES              : If the sensor has a parente (group leader) or not. YES or NO
 #   "I0"             : The identifier of the parent (group reader)
 
-SENSOR CNT "S002" "GENERAL" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000"
-SENSOR CNT "S003" "GENERAL" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000"
-#SENSOR CNT "S002" "GENERAL" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000"
-#SENSOR CNT "S003" "GENERAL" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "count" YES "S000"
+#SENSOR CNT "S002" "GENERAL" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000"
+#SENSOR CNT "S003" "GENERAL" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000"
+SENSOR CNT "S002" "GENERAL" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000"
+SENSOR CNT "S003" "GENERAL" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "count" YES "S000"
 # The identifier CNT might be changed CNT2 or something, 
 # to add some additional initialize sequence on the start of measurement
 
-SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
-SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
-#SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "simmotor" "SNSkth1" "mA" NO ""
-#SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
+#SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
+#SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
+SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "simmotor" "SNSkth1" "mA" NO ""
+SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 
 # The parameters following the identifier 'SENSOR' are
 #   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
@@ -175,8 +167,8 @@ SENSOR SSDP "S023" "SingleF" "SSD-ch16"  "QtXmapSSD"      "16" "count" YES "S006
 SENSOR SSDP "S024" "SingleF" "SSD-ch17"  "QtXmapSSD"      "17" "count" YES "S006"
 SENSOR SSDP "S025" "SingleF" "SSD-ch18"  "QtXmapSSD"      "18" "count" YES "S006"
 
-SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "" "deg" NO ""
-#SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
+#SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "" "deg" NO ""
+SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC      : Unit type   ENC an encorder observed/controlled via nd287

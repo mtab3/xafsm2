@@ -4,6 +4,7 @@
 
 AUnit::AUnit( QObject *parent ) : QObject( parent )
 {
+  Enable = false;
   Type = "";
   ID = "";
   Uid = "";
@@ -36,6 +37,12 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   LocalStage = 0;
 }
 
+void AUnit::setEnable( bool enable )
+{
+  Enable = enable;
+  IsBusy = IsBusy2 = false;
+}
+
 //                       PM      PZ      CNT      PAM      ENC      SSD      SSDP
 bool AUnit::TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp )
 {
@@ -58,9 +65,15 @@ void AUnit::Initialize( Stars *S )
 //  なんとか頑張って明確にする)
 {
   s = S;
-  // 現状ある unit は
-  //            PM  PZ CNT PAM ENC SSD SSDP
 
+  connect( s, SIGNAL( ReceiveError( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+  // 何らかのコマンドに対する応答がエラーだった場合の対処。
+  // 単に、isBusy2 をクリアしているだけ。
+  // こんなに単純でいいかどうかは難しいところだけれど、
+  // enable をちゃんと管理するようにしたので、変な処理に突入することはそちらで避けて
+  // 変な処理に突入してしまった場合は、緊急避難的にこの方法で逃げることにする。
+
+  // 現状ある unit は
   //            PM  PZ CNT PAM ENC SSD SSDP        // SSDP を除く全ユニット
   if ( TypeCHK(  1,  1,  1,  1,  1,  0,   0 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
@@ -120,8 +133,8 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg ) ) );
     connect( s, SIGNAL( AnsGetRealTime( SMsg ) ), this, SLOT( ReactGetRealTime( SMsg ) ) );
     connect( s, SIGNAL( AnsGetLiveTime( SMsg ) ), this, SLOT( ReactGetLiveTime( SMsg ) ) );
-    s->SendCMD2( "Init", "System", "flgon", Driver );
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
+    s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP      // SSDP(Xmap)だけ
@@ -131,8 +144,25 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    s->SendCMD2( "Init", "System", "flgon", DevCh );
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
+    s->SendCMD2( "Init", "System", "flgon", DevCh );
+  }
+
+  // 以下 Unit タイプではなくて、特定のユニットに固有の処理
+  // MMainTh   : "THETA"
+  // SI0       : "I0"
+  // SI1       : "I1"
+  // SFluo     : "TotalF"
+  // EncMainTh : "ENCTH"
+  if ( ID == "THETA" ) {
+    AskIsBusy();
+    GetValue();
+  }
+  if ( ID == "TotalF" ) {
+    s->SendCMD2( "SetUpMCA", getDriver(), "GetMCALength" );
+  }
+  if ( ID == "ENCTH" ) {
+    GetValue();
   }
 }
 
@@ -498,11 +528,32 @@ double AUnit::stat( STATELM i )
   return rv;
 }
 
+bool AUnit::SetRealTime( double val )
+{
+  bool rv;
 
+  if ( Type == "SSDP" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, DevCh, "SetRealTime", QString::number( val ) );
+    rv = false;
+  }
 
+  return rv;
+}
 
+bool AUnit::SetRealTime( int ch, double val )
+{
+  bool rv;
 
+  if ( Type == "SSD" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, Driver, "SetRealTime",
+		 QString::number( ch ) + " " + QString::number( val ) );
+    rv = false;
+  }
 
+  return rv;
+}
 
 bool AUnit::GetRealTime( int ch )
 {
@@ -531,6 +582,33 @@ double AUnit::realTime( int ch )
 
   if ( Type == "SSD" ) {
     rv = MCARealTime[ ch ];
+  }
+
+  return rv;
+}
+
+bool AUnit::SetLiveTime( double val )
+{
+  bool rv;
+
+  if ( Type == "SSDP" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, DevCh, "SetLiveTime", QString::number( val ) );
+    rv = false;
+  }
+
+  return rv;
+}
+
+bool AUnit::SetLiveTime( int ch, double val )
+{
+  bool rv;
+
+  if ( Type == "SSD" ) {
+    IsBusy2 = true;
+    s->SendCMD2( Uid, Driver, "SetLiveTime",
+		 QString::number( ch ) + " " + QString::number( val ) );
+    rv = false;
   }
 
   return rv;

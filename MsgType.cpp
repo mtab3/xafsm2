@@ -4,6 +4,8 @@
 #include "MsgType.h"
 
 const MsgTyp MsgT[] = {
+  { "@listnodes", LISTNODES },
+
   { "@GetValue", GETVALUE },
   { "@GetSpeedSelected", GETSPEEDSELECTED },
   { "@SpeedHigh", SPEEDHIGH },
@@ -62,6 +64,8 @@ const MsgTyp MsgT[] = {
   { "@GetMCA", GETMCA },
   { "@GetStatistics", GETSTATISTICS },
 
+  { "_Connected", EvCONNECTED },
+  { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },
 
