@@ -315,6 +315,7 @@ private:
 private slots:
   void Initialize( void );
   void InitializeUnitsAgain( void );
+  void SendListNodes( void );
   void RcvListNodes( SMsg msg );
   void SomeDrvIsConnected( SMsg msg );
   void SomeDrvIsDisconnected( SMsg msg );

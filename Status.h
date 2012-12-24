@@ -15,10 +15,12 @@ class Status : public QFrame, private Ui::FrameWGrid
   QStringList Drivers;
   QVector<QVector<AUnit*>*> DrvUnits;
 
+  bool SWactive;
+
   QLabel *l1;
-  QVector<QLabel*> LENBLs, LIB1s, LIB2s;
-  QVector<QPushButton*> CBBs;
-  QVector<QComboBox*> IBBx1s, IBBx2s;
+  QVector<QLabel*> LENBLs, LIB1s, LIB2s;  // Label-Enable, -IsBusy1, -IsBusy2
+  QVector<QPushButton*> CEBs, CBBs;       // Clear-Enable-Buttons, Clear-Busy-Buttons
+  QVector<QComboBox*> IBBx1s, IBBx2s;     // Is-Busy1,2-Box
   QString OKcolor, NGcolor;
 
 public:
@@ -27,10 +29,15 @@ public:
   void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass );
 
 public slots:
+  void SelStatWatch( void );
   void OnEnabled( QString Driver, bool flag );
   void OnChangedIsBusy1( QString Drv );
   void OnChangedIsBusy2( QString Drv );
-  void OnClear( void );
+  void OnClear1( void );
+  void OnClear2( void );
+
+signals:
+  void NeedListNodes( void );
 };
 
 #endif

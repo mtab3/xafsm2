@@ -46,6 +46,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupSetupSSDArea();
   setupMeasArea();
   StatDisp->setupStatArea( &AMotors, &ASensors );
+  connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
@@ -96,7 +97,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->MakeConnection();
 }
 
-
 void MainWindow::Initialize( void )
 {
   InitAndIdentifyMotors();
@@ -106,11 +106,16 @@ void MainWindow::Initialize( void )
   resize( 1, 1 );
 
   getMCASettings( MCACh->text().toInt() );
+  SendListNodes();
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
-  s->SendCMD2( "Initialize", "System", "listnodes" );
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
   }
+}
+
+void MainWindow::SendListNodes( void )
+{
+  s->SendCMD2( "Initialize", "System", "listnodes" );
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )
