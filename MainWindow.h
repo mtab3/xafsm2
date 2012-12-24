@@ -21,6 +21,7 @@
 #include "MultiUnits.h"
 #include "XView.h"
 #include "MCAView.h"
+#include "Status.h"
 
 class QFileDialog;
 
@@ -50,6 +51,8 @@ public:
   MainWindow( QString myname );
 
 private:
+
+  Status* StatDisp;
 
   QString XAFSName;
   QString XAFSKey;

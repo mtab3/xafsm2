@@ -132,7 +132,6 @@ void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤
 {
   if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
-    qDebug() << "MCA Length " << MCALength;
   }
   for ( int i = 0; i < 19; i++ ) {
     ROIStart[i] = "0";

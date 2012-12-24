@@ -115,10 +115,6 @@ void MainWindow::ReadDef( QString fname )
   }
 
   DriverList.removeDuplicates();
-  for ( int i = 0; i < DriverList.count(); i++ ) {
-    qDebug() << "Driver " << DriverList.at(i);
-  }
-
   f.close();
 
   int i, j;   // 親ユニット有り、と宣言したセンサーに親ユニットのポインタを渡す。

@@ -17,6 +17,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+  StatDisp = new Status();
+  StatTab->layout()->addWidget( StatDisp );
+
   XAFSName = myname;
   XAFSKey = myname;
   XAFSTitle = myname;
@@ -42,6 +45,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupSetupArea();
   setupSetupSSDArea();
   setupMeasArea();
+  StatDisp->setupStatArea( &AMotors, &ASensors );
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg + "\n" );
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )

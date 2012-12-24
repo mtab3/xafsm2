@@ -76,7 +76,8 @@ public:
       DevCh = Driver + "." + Ch;
   }
   void setUnit( QString unit ) { Unit = unit; };
-  void setIsBusy( bool busy ) { IsBusy = busy; };
+  void setIsBusy( bool busy ) { IsBusy = busy; emit ChangedIsBusy1( Driver ); };
+  void setIsBusy2( bool busy ) { IsBusy2 = busy; emit ChangedIsBusy2( Driver ); };
   void setIsInt( bool isInt ) { IsInt = isInt; };
   void setHasParent( bool hasParent ) { HasParent = hasParent; };
   void setParent( QString pUid ) { PUid = pUid; };
@@ -178,6 +179,9 @@ public slots:
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
+  void Enabled( QString Drv, bool flag );
+  void ChangedIsBusy1( QString Drv );
+  void ChangedIsBusy2( QString Drv );
 };
 
 #endif
