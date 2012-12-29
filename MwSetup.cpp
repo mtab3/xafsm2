@@ -80,6 +80,16 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
   MonStage = 0;
 
+  scanFSel = new QFileDialog;
+  scanFSel->setAcceptMode( QFileDialog::AcceptSave );
+  scanFSel->setDirectory( QDir::currentPath() );
+  scanFSel->setFilter( "*.dat" );
+
+  monFSel = new QFileDialog;
+  monFSel->setAcceptMode( QFileDialog::AcceptSave );
+  monFSel->setDirectory( QDir::currentPath() );
+  monFSel->setFilter( "*.dat" );
+
   connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ) );
   connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ) );
   connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ) );
@@ -102,6 +112,24 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( SetUpMMAbs, SIGNAL( clicked() ), this, SLOT( MMAbs() ) );
   connect( SetUpSPSRel, SIGNAL( clicked() ), this, SLOT( SPSRel() ) );
   connect( SetUpSPSAbs, SIGNAL( clicked() ), this, SLOT( SPSAbs() ) );
+
+  connect( SelMonRecFile, SIGNAL( clicked() ), monFSel, SLOT( show() ) );
+  connect( monFSel, SIGNAL( fileSelected( const QString & ) ),
+	   this, SLOT( setSelectedMonFName( const QString & ) ) );
+
+  connect( SelScanRecFile, SIGNAL( clicked() ), scanFSel, SLOT( show() ) );
+  connect( scanFSel, SIGNAL( fileSelected( const QString & ) ),
+	   this, SLOT( setSelectedScanFName( const QString & ) ) );
+}
+
+void MainWindow::setSelectedMonFName( const QString &fname )
+{
+  MonRecFile->setText( fname );
+}
+
+void MainWindow::setSelectedScanFName( const QString &fname )
+{
+  ScanRecFile->setText( fname );
 }
 
 void MainWindow::MMRel( void )
@@ -474,7 +502,7 @@ void MainWindow::Monitor( void )
       }
     }
     if ( SelectD22Sel->isChecked() ) {
-      mUnits.addUnit( as1, DwellT22->text().toDouble() );
+      mUnits.addUnit( as2, DwellT22->text().toDouble() );
       if ( ! as2->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as2->getName() );

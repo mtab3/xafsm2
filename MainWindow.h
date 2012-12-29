@@ -88,6 +88,7 @@ private:
   int *MCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
+  QFileDialog *MCAFSel;
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
@@ -208,6 +209,7 @@ private:
   int NowScanP;
   ViewCTRL *ScanViewC;
   XView *ScanView;
+  QFileDialog *scanFSel;
 
   QString RadioBOn;
   QString RadioBOff;
@@ -222,6 +224,7 @@ private:
   int MonDev;
   ViewCTRL *MonitorViewC;
   XView *MonitorView;
+  QFileDialog *monFSel;
 
   QVector<QLineEdit *> BLKstart;
   QVector<QLineEdit *> BLKstep;
@@ -321,7 +324,7 @@ private slots:
   void SomeDrvIsDisconnected( SMsg msg );
 
   void ShowMessageOnSBar( QString msg, int time );
-  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; qDebug() << "MonoCryD" << MonoCryD; };
+  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );
@@ -358,6 +361,9 @@ private slots:
   void newVI0( QString v );
   void newVS1( QString v );
   void newVS2( QString v );
+  void setSelectedMonFName( const QString &fname );
+  void setSelectedScanFName( const QString &fname );
+  void setSelectedMCAFName( const QString &fname );
 
   void StartMCA( void );
   void MCAChSelected( int i );

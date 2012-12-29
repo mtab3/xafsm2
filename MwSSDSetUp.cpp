@@ -59,6 +59,15 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( SelRealTime, SIGNAL( clicked() ), this, SLOT( RealTimeIsSelected() ) );
   connect( SelLiveTime, SIGNAL( clicked() ), this, SLOT( LiveTimeIsSelected() ) );
 
+  MCAFSel = new QFileDialog;
+  MCAFSel->setAcceptMode( QFileDialog::AcceptSave );
+  MCAFSel->setDirectory( QDir::currentPath() );
+  MCAFSel->setFilter( "*.dat" );
+
+  connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
+  connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
+	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
+
   inMCAMeas = false;
   MCAData = NULL;
   cMCAView = NULL;
@@ -66,6 +75,11 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   oldMCACh = -1;
 
   SelSSDs00();
+}
+
+void MainWindow::setSelectedMCAFName( const QString &fname )
+{
+  MCARecFile->setText( fname );
 }
 
 void MainWindow::SelSSDs00( void ) { SelSSDs(  0 ); }
