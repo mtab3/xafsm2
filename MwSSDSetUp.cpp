@@ -67,14 +67,43 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
+  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
 
   inMCAMeas = false;
+  validMCAData = false;
   MCAData = NULL;
   cMCAView = NULL;
   cMCACh = 0;
   oldMCACh = -1;
 
   SelSSDs00();
+}
+
+void MainWindow::saveMCAData( void )
+{
+  if ( !validMCAData ) {
+    statusbar->showMessage( "MCA data is not valid", 2000 );
+    return;
+  }
+  if ( MCARecFile->text().isEmpty() ) {
+    statusbar->showMessage( "Save file name is not selected", 2000 );
+    return;
+  }
+
+  QFile f( MCARecFile->text() );
+  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+    statusbar->showMessage( "The file [%1] can not open to record the data", 2000 );
+    return;
+  }
+  QTextStream out( &f );
+
+
+  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  for ( int i = 0; i < MCALength; i++ ) {
+    out << i << "\t" << MCAData[i] << "\n";
+  }
+
+  f.close();
 }
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
@@ -251,6 +280,7 @@ void MainWindow::StartMCA( void )
       cMCAView = (MCAView*)(cMCAViewC->getView());
       
       MCAData = cMCAView->setMCAdataPointer( MCALength );
+      validMCAData = true;
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
       

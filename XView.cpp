@@ -76,6 +76,51 @@ void XView::NewPoint( int l, double xx, double yy )
   }
 }
 
+int XView::getPoints( int l )    // only for XY draw, but...
+{
+  if ( GType != XYPLOT )
+    return -1;
+  if ( l >= lines )
+    return -1;
+
+  return points[ l ];
+};
+
+double XView::getX( int l, int p )
+{
+  double rv = 0;
+
+  switch ( GType ) {
+  case XYPLOT:
+    if ( l < lines )
+      if ( p < points[l] )
+	rv = x[l][p];
+    break;
+  default:
+    break;
+  }
+
+  return rv;
+}
+
+double XView::getY( int l, int p )
+{
+  double rv = 0;
+
+  switch ( GType ) {
+  case XYPLOT:
+    if ( l < lines )
+      if ( p < points[l] )
+	rv = y[l][p];
+    break;
+  default:
+    break;
+  }
+
+  return rv;
+}
+
+
 // リングバッファへのデータ追加
 void XView::NewPointR( int tt, double yy0, double yy1, double yy2 )
 {

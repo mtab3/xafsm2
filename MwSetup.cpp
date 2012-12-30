@@ -11,6 +11,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   inMonitor = 0;
   inSPSing = 0;
 
+  ScanView = NULL;
+  MonitorView = NULL;
+
   RadioBOn = "background-color: rgb(255,255,000)";
   RadioBOff = "background-color: rgb(210,210,230)";
   GoMRelAbs = REL;
@@ -120,6 +123,35 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( SelScanRecFile, SIGNAL( clicked() ), scanFSel, SLOT( show() ) );
   connect( scanFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedScanFName( const QString & ) ) );
+  connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
+}
+
+void MainWindow::saveScanData( void )
+{
+  if ( ScanView == NULL ) {
+    statusbar->showMessage( "Scan data is not valid", 2000 );
+    return;
+  }
+  if ( ScanRecFile->text().isEmpty() ) {
+    statusbar->showMessage( "Save file name is not selected", 2000 );
+    return;
+  }
+
+  QFile f( ScanRecFile->text() );
+  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+    statusbar->showMessage( "The file [%1] can not open to record the data", 2000 );
+    return;
+  }
+  QTextStream out( &f );
+
+  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  int points = ScanView->getPoints( 1 );
+
+  for ( int i = 0; i < points; i++ ) {
+    out << ScanView->getX( 1, i ) << "\t" << ScanView->getY( 1, i ) << "\n";
+  }
+
+  f.close();
 }
 
 void MainWindow::setSelectedMonFName( const QString &fname )
@@ -389,8 +421,10 @@ void MainWindow::ScanStart( void )
   AUnit *am, *as;
 
   if ( inSPSing == 0 ) {
-    if ( ( ScanViewC = SetUpNewView( XVIEW ) ) == NULL ) 
+    if ( ( ScanViewC = SetUpNewView( XVIEW ) ) == NULL ) {
+      statusbar->showMessage( "No drawing screen is available", 2000 );
       return;
+    }
     ScanView = (XView*)(ScanViewC->getView());
     ScanViewC->setIsDeletable( false );
 

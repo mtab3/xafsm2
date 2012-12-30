@@ -2073,10 +2073,13 @@ Though, other parameters are fixed at the value on starting.</string>
              <item>
               <widget class="QLineEdit" name="MonRecFile">
                <property name="enabled">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -2452,10 +2455,13 @@ Though, other parameters are fixed at the value on starting.</string>
            <item row="12" column="2" colspan="8">
             <widget class="QLineEdit" name="ScanRecFile">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -3292,10 +3298,13 @@ Though, other parameters are fixed at the value on starting.</string>
              </widget>
              <widget class="QLineEdit" name="MCARecFile">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
              <widget class="QToolButton" name="SelMCARecFile">
@@ -3927,7 +3936,7 @@ Though, other parameters are fixed at the value on starting.</string>
      <x>0</x>
      <y>0</y>
      <width>718</width>
-     <height>23</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

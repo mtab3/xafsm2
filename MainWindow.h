@@ -81,6 +81,7 @@ private:
   QString ROIEnd[19];
   int MCALength;
   bool inMCAMeas;
+  bool validMCAData;
   int cMCACh, oldMCACh;
   int MCAStage;
   ViewCTRL *cMCAViewC;
@@ -338,6 +339,7 @@ private slots:
   void SetGoMSpeedM( void );
   void SetGoMSpeedL( void );
   void ScanStart( void );
+  void saveScanData( void );
 
   void NewSelA( int i );
   void OpenPT( void );
@@ -381,6 +383,7 @@ private slots:
   void clearMCA( void );
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
+  void saveMCAData( void );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );

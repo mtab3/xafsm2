@@ -91,6 +91,9 @@ public:
   int getMonScale( void ) { return MonScale; };
   void SetWindow( double x1, double y1, double x2, double y2 )
   { cc.SetRealCoord( x1, y1, x2, y2 ); };
+  int getPoints( int l );
+  double getX( int l, int p );
+  double getY( int l, int p );
 
 public slots:
   void SetMonScale( int ms );
