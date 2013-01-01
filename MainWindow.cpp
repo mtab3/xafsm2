@@ -17,6 +17,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+  SI0 = SI1 = SFluo = NULL;
+
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
 

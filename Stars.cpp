@@ -145,8 +145,8 @@ void Stars::MakeConnection( void )
       
       emit ConnectingServer( StarsServer );
       emit ConnectingPort( StarsSPort );
-      emit AskRecord( tr( "Connecting Stars Server [%1] [%2] as [%3]" ).
-		      arg( StarsServer ).arg( StarsSPort ).arg( MyNameOnStars ) );
+      emit AskRecord( tr( "Connecting Stars Server [%1] [%2] as [%3]" )
+		      .arg( StarsServer ).arg( StarsSPort ).arg( MyNameOnStars ) );
       ConnectionStage = CSTAGE0;
       connect( ss, SIGNAL( readyRead( void ) ),
 	       this, SLOT( ReceiveMessageFromStars( void ) ) );

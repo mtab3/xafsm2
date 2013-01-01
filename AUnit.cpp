@@ -19,6 +19,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   theParent = NULL;
   for ( int i = 0; i < 20; i++ ) {
     MCARealTime[i] = MCALiveTime[i] = 0;
+    SSDUsingCh[i] = true;
   }
   
   Center = 0;        // only for PM
@@ -324,7 +325,17 @@ void AUnit::ReceiveValues( SMsg msg )
   QString buf;
 
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
-    Value = msg.Vals().at(0);
+    if ( Type == "SSD" ) {
+      int sum = 0;
+      for ( int i = 0; i < 19; i++ ) {
+	if ( SSDUsingCh[i] ) {
+	  sum += msg.Vals().at( i + 1 ).toInt();
+	}
+      }
+      Value = QString::number( sum );
+    } else {
+      Value = msg.Vals().at(0);
+    }
     Values = msg.Vals();
     emit newValue( Value );
     IsBusy2 = false;

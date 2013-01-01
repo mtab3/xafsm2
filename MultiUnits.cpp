@@ -124,11 +124,15 @@ bool MUnits::getValue( void )
 void MUnits::readValue( double *rvs )
 {
   for ( int i = 0; i < Units.count(); i++ ) {
+#if 0                          // values().at(0) is total of all 19 CHs
     if ( Units.at(i)->au->getType() == "SSD" ) {
       rvs[i] = Units.at(i)->au->values().at(0).toDouble();
     } else {
       rvs[i] = Units.at(i)->au->value().toDouble();
     }
+#else
+    rvs[i] = Units.at(i)->au->value().toDouble();
+#endif
   }
 }
 

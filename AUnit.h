@@ -48,6 +48,7 @@ class AUnit : public QObject
   QStringList MCAStats;
   double MCARealTime[ 20 ];
   double MCALiveTime[ 20 ];
+  bool SSDUsingCh[ 20 ];       // Only 19 is necessary, 20 is only for safety.
 
   int LocalStage;
   int lastSetV;
@@ -132,6 +133,7 @@ public:
   double stat( STATELM i );
   double realTime( int ch );
   double liveTime( int ch );
+  bool *getSSDUsingCh( void ) { return SSDUsingCh; };
 
   int getLastSetV( void ) { return lastSetV; };
 

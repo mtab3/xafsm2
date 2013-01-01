@@ -1900,7 +1900,7 @@ Though, other parameters are fixed at the value on starting.</source>
     <message>
         <location filename="Stars.cpp" line="148"/>
         <source>Connecting Stars Server [%1] [%2] as [%3]</source>
-        <translation>キーファイル [%1.key] と [:%2.key]のいずれも開けませんでした。</translation>
+        <translation type="unfinished">Starsサーバ [%1][%2] に [%3] として接続できませんでした。</translation>
     </message>
     <message>
         <location filename="Stars.cpp" line="169"/>

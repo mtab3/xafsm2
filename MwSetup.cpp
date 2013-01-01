@@ -572,13 +572,15 @@ void MainWindow::Monitor( void )
       mUnits.addUnit( as2, DwellT22->text().toDouble() );
       MeasSensF[2] = true;
     }
-    MonOut << "# sec";
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      MonOut << QString( tr( "\t %1[%2]" )
-			 .arg( mUnits.getName( i ) )
-			 .arg( mUnits.getUnit( i ) ) );
+    if ( monRecF ) {
+      MonOut << "# sec";
+      for ( int i = 0; i < mUnits.count(); i++ ) {
+	MonOut << QString( tr( "\t %1[%2]" )
+			   .arg( mUnits.getName( i ) )
+			   .arg( mUnits.getUnit( i ) ) );
+      }
+      MonOut << "\n";
     }
-    MonOut << "\n";
 
     MonitorView->ClearDataR();
     MonitorView->SetLineF( RIGHT, LEFT, LEFT );   // åªèÛà”ñ°Ç»Çµ
