@@ -6,36 +6,31 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
+  SSDActive = "background-color: #ccffcc";
+  SSDnotActive = "background-color: #aabbaa";
+
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
         << SSDE16 << SSDE17 << SSDE18 << SSDE19;
+  SSDbs2 << SSDE01_2 << SSDE02_2 << SSDE03_2 << SSDE04_2 << SSDE05_2
+	 << SSDE06_2 << SSDE07_2 << SSDE08_2 << SSDE09_2 << SSDE10_2
+	 << SSDE11_2 << SSDE12_2 << SSDE13_2 << SSDE14_2 << SSDE15_2
+	 << SSDE16_2 << SSDE17_2 << SSDE18_2 << SSDE19_2;
   
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    SSDbs[i]->setStyleSheet( "background-color: #eeffee" );
+  for ( int i = 0; i < SSDbs.count(); i++ ) {
+    SSDbs[i]->setStyleSheet( SSDActive );
     SSDbs[i]->setToolTip( tr( "Active" ) );
+    connect( SSDbs[i],  SIGNAL( clicked() ), this, SLOT( SelSSDs0() ) );
   }
-  
-  connect( SSDbs[0],  SIGNAL( clicked() ), this, SLOT( SelSSDs00() ) );
-  connect( SSDbs[1],  SIGNAL( clicked() ), this, SLOT( SelSSDs01() ) );
-  connect( SSDbs[2],  SIGNAL( clicked() ), this, SLOT( SelSSDs02() ) );
-  connect( SSDbs[3],  SIGNAL( clicked() ), this, SLOT( SelSSDs03() ) );
-  connect( SSDbs[4],  SIGNAL( clicked() ), this, SLOT( SelSSDs04() ) );
-  connect( SSDbs[5],  SIGNAL( clicked() ), this, SLOT( SelSSDs05() ) );
-  connect( SSDbs[6],  SIGNAL( clicked() ), this, SLOT( SelSSDs06() ) );
-  connect( SSDbs[7],  SIGNAL( clicked() ), this, SLOT( SelSSDs07() ) );
-  connect( SSDbs[8],  SIGNAL( clicked() ), this, SLOT( SelSSDs08() ) );
-  connect( SSDbs[9],  SIGNAL( clicked() ), this, SLOT( SelSSDs09() ) );
-  connect( SSDbs[10], SIGNAL( clicked() ), this, SLOT( SelSSDs10() ) );
-  connect( SSDbs[11], SIGNAL( clicked() ), this, SLOT( SelSSDs11() ) );
-  connect( SSDbs[12], SIGNAL( clicked() ), this, SLOT( SelSSDs12() ) );
-  connect( SSDbs[13], SIGNAL( clicked() ), this, SLOT( SelSSDs13() ) );
-  connect( SSDbs[14], SIGNAL( clicked() ), this, SLOT( SelSSDs14() ) );
-  connect( SSDbs[15], SIGNAL( clicked() ), this, SLOT( SelSSDs15() ) );
-  connect( SSDbs[16], SIGNAL( clicked() ), this, SLOT( SelSSDs16() ) );
-  connect( SSDbs[17], SIGNAL( clicked() ), this, SLOT( SelSSDs17() ) );
-  connect( SSDbs[18], SIGNAL( clicked() ), this, SLOT( SelSSDs18() ) );
-  
+
+  for ( int i = 0; i < SSDbs2.count(); i++ ) {
+    SSDbs2[i]->setStyleSheet( SSDActive );
+    SSDbs2[i]->setToolTip( tr( "Active" ) );
+    SSDbs2[i]->setChecked( true );
+    connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ) );
+  }
+
   StartResume = MCA_START;
   
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
@@ -76,23 +71,24 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   cMCACh = 0;
   oldMCACh = -1;
 
-  SelSSDs00();
+  SelSSDs( 0 );
 }
 
 void MainWindow::saveMCAData( void )
 {
   if ( !validMCAData ) {
-    statusbar->showMessage( "MCA data is not valid", 2000 );
+    statusbar->showMessage( tr( "MCA data is not valid" ), 2000 );
     return;
   }
   if ( MCARecFile->text().isEmpty() ) {
-    statusbar->showMessage( "Save file name is not selected", 2000 );
+    statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
     return;
   }
 
   QFile f( MCARecFile->text() );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-    statusbar->showMessage( "The file [%1] can not open to record the data", 2000 );
+    statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+			    2000 );
     return;
   }
   QTextStream out( &f );
@@ -111,26 +107,6 @@ void MainWindow::setSelectedMCAFName( const QString &fname )
   MCARecFile->setText( fname );
 }
 
-void MainWindow::SelSSDs00( void ) { SelSSDs(  0 ); }
-void MainWindow::SelSSDs01( void ) { SelSSDs(  1 ); }
-void MainWindow::SelSSDs02( void ) { SelSSDs(  2 ); }
-void MainWindow::SelSSDs03( void ) { SelSSDs(  3 ); }
-void MainWindow::SelSSDs04( void ) { SelSSDs(  4 ); }
-void MainWindow::SelSSDs05( void ) { SelSSDs(  5 ); }
-void MainWindow::SelSSDs06( void ) { SelSSDs(  6 ); }
-void MainWindow::SelSSDs07( void ) { SelSSDs(  7 ); }
-void MainWindow::SelSSDs08( void ) { SelSSDs(  8 ); }
-void MainWindow::SelSSDs09( void ) { SelSSDs(  9 ); }
-void MainWindow::SelSSDs10( void ) { SelSSDs( 10 ); }
-void MainWindow::SelSSDs11( void ) { SelSSDs( 11 ); }
-void MainWindow::SelSSDs12( void ) { SelSSDs( 12 ); }
-void MainWindow::SelSSDs13( void ) { SelSSDs( 13 ); }
-void MainWindow::SelSSDs14( void ) { SelSSDs( 14 ); }
-void MainWindow::SelSSDs15( void ) { SelSSDs( 15 ); }
-void MainWindow::SelSSDs16( void ) { SelSSDs( 16 ); }
-void MainWindow::SelSSDs17( void ) { SelSSDs( 17 ); }
-void MainWindow::SelSSDs18( void ) { SelSSDs( 18 ); }
-
 void MainWindow::RealTimeIsSelected( void )
 {
   if ( SelRealTime->isChecked() ) {
@@ -145,17 +121,42 @@ void MainWindow::LiveTimeIsSelected( void )
   }
 }
 
+void MainWindow::SelSSDs0( void )
+{
+  for ( int i = 0; i < SSDbs.count(); i++ ) {
+    if ( sender() == SSDbs.at(i) ) {
+      SelSSDs( i );
+      break;
+    }
+  }
+}
+
+void MainWindow::SelSSDs20( void )
+{
+  for ( int i = 0; i < SSDbs2.count(); i++ ) {
+    if ( sender() == SSDbs2.at(i) ) {
+      if ( SSDbs2.at(i)->isChecked() ) {
+	SSDbs2.at(i)->setStyleSheet( SSDActive );
+	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
+      } else {
+	SSDbs2.at(i)->setStyleSheet( SSDnotActive );
+	SSDbs2.at(i)->setToolTip( tr( "Inactive" ) );
+      }
+    }
+  }
+}
+
 void MainWindow::SelSSDs( int ch )
 {
-  for ( int i = 0; i < 19; i++ ) {
-    if ( ch == i ) {
+  for ( int i = 0; i < SSDbs.count(); i++ ) {
+    if ( i == ch ) {
       SSDbs[i]->setChecked( true );
-      SSDbs[i]->setStyleSheet( "background-color: #eeffee" );
+      SSDbs[i]->setStyleSheet( SSDActive );
       SSDbs[i]->setToolTip( tr( "Active" ) );
       MCACh->setValue( i );
     } else {
       SSDbs[i]->setChecked( false );
-      SSDbs[i]->setStyleSheet( "background-color: #aabbaa" );
+      SSDbs[i]->setStyleSheet( SSDnotActive );
       SSDbs[i]->setToolTip( tr( "Inactive" ) );
     }
   }

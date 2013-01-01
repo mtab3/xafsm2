@@ -10,6 +10,7 @@
 Stars::Stars( void ) : QObject()
 {
   ss = NULL;
+  emit SSisActive( false );
   StarsServer = STARSSERVER;
   StarsSPort  = STARSPORT;
   newSetting = true;
@@ -22,6 +23,7 @@ Stars::~Stars( void )
     ss->disconnectFromHost();
     delete ss;
     ss = NULL;
+    emit SSisActive( false );
   }
 }
 
@@ -34,6 +36,7 @@ void Stars::SetNewSVAddress( const QString &item )
     delete ss;
     ss = NULL;
     newSetting = true;
+    emit SSisActive( false );
   }
 
   emit RecordSSVHistoryA( item );
@@ -48,6 +51,7 @@ void Stars::SetNewSVPort( const QString &item )
     delete ss;
     ss = NULL;
     newSetting = true;
+    emit SSisActive( false );
   }
 
   emit RecordSSVHistoryP( item );
@@ -109,9 +113,20 @@ void Stars::ReConnect( void )
     delete ss;
     ss = NULL;
     newSetting = true;
+    emit SSisActive( false );
   }
 
   emit ReConnected();
+}
+
+void Stars::AskStatus( void )
+{
+  if ( ss == NULL )
+    emit SSisActive( false );
+  else 
+    emit SSisActive( ss->state() == QAbstractSocket::ConnectedState );
+  emit ConnectingServer( StarsServer );
+  emit ConnectingPort( StarsSPort );
 }
 
 /** サーバとの接続 **/
@@ -128,6 +143,8 @@ void Stars::MakeConnection( void )
       if ( ss == NULL )
 	ss = new QTcpSocket;
       
+      emit ConnectingServer( StarsServer );
+      emit ConnectingPort( StarsSPort );
       emit AskRecord( tr( "Connecting Stars Server [%1] [%2] as [%3]" ).
 		      arg( StarsServer ).arg( StarsSPort ).arg( MyNameOnStars ) );
       ConnectionStage = CSTAGE0;
@@ -164,12 +181,13 @@ void Stars::ReceiveMessageFromStars( void )
       ConnectionStage = CSTAGEEND;
       emit AskRecord( tr( "Success to connect." ) );
       emit ConnectionIsReady();
+      emit SSisActive( true );
     }
     break;
   case CSTAGEEND:
     while( ss->canReadLine() ) {
-      RBuf = ss->readLine( 60000 );
-      // 60000 / 2000 = 30 MCA でも 1チャンネルの数字が 30byte 以下なら大丈夫
+      RBuf = ss->readLine( 160000 );
+      // 160000 / 8000 = 20  dummy MCA でも 1チャンネルの数字が 20byte 以下なら大丈夫
       RBuf = RBuf.simplified();
       
       switch( smsg.ParseMsg( RBuf ) ) {

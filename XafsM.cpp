@@ -11,13 +11,13 @@ enum LANG { English, Japanese, LANGS };
 
 int main( int argc, char *argv[] )
 {
-  LANG Lang = English;
+  LANG Lang = Japanese;
 
   QString myname = QString( *argv ).section( "/", -1 ).section( "\\", -1 ).section( ".", 0, 0 );
   //qDebug() << myname;
 
-  if ( QString( argv[0] ).contains( "XafsMj" ) == true ) {
-    Lang = Japanese;
+  if ( QString( argv[0] ).contains( "XafsM2e" ) == true ) {
+    Lang = English;
   }
 
   QApplication app( argc, argv );

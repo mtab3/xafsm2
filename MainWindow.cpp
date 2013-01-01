@@ -94,6 +94,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ) );
   connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
 
+  connect( s, SIGNAL( ConnectingServer( QString )), StatDisp, SLOT( SetSSVA( QString )));
+  connect( s, SIGNAL( ConnectingPort( qint16 ) ), StatDisp, SLOT( SetSSVP( qint16 ) ) );
+  connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ) );
+  s->AskStatus();
+
   s->MakeConnection();
 }
 

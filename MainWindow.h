@@ -115,8 +115,6 @@ private:
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
 
-  QTime MonTime;
-
   void setupLogArea( void );
   void setupCommonArea( void );
   void setupSetupArea( void );
@@ -220,6 +218,10 @@ private:
   int MeasChNo;
   bool setupMDispFirstTime;
 
+  QTime MonTime;
+  bool monRecF;
+  QFile MonFile;
+  QTextStream MonOut;
   int inMonitor;
   int MonStage;
   int MonDev;
@@ -233,6 +235,9 @@ private:
   QVector<QLineEdit *> BLKpoints;
 
   QVector<QPushButton *> SSDbs;
+  QVector<QPushButton *> SSDbs2;
+  QString SSDActive;
+  QString SSDnotActive;
   //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;
@@ -430,26 +435,8 @@ private slots:
   void Mode2Au( void );
 #endif
 
-  void SelSSDs00( void );
-  void SelSSDs01( void );
-  void SelSSDs02( void );
-  void SelSSDs03( void );
-  void SelSSDs04( void );
-  void SelSSDs05( void );
-  void SelSSDs06( void );
-  void SelSSDs07( void );
-  void SelSSDs08( void );
-  void SelSSDs09( void );
-  void SelSSDs10( void );
-  void SelSSDs11( void );
-  void SelSSDs12( void );
-  void SelSSDs13( void );
-  void SelSSDs14( void );
-  void SelSSDs15( void );
-  void SelSSDs16( void );
-  void SelSSDs17( void );
-  void SelSSDs18( void );
-
+  void SelSSDs0( void );
+  void SelSSDs20( void );
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   

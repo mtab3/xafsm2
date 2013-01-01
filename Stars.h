@@ -51,9 +51,13 @@ public slots:
   void SetNewSVPort( const QString &item );
   void ReceiveMessageFromStars( void );
   void ReConnect( void );
+  void AskStatus( void );
 
 signals:
+  void ConnectingServer( QString SSVA );
+  void ConnectingPort( qint16 SSVP );
   void ConnectionIsReady( void );
+  void SSisActive( bool f );
 
   void AskShowStat( QString msg, int time );
   void AskRecord( QString msg );

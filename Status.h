@@ -10,8 +10,7 @@ class Status : public QFrame, private Ui::FrameWGrid
 {
   Q_OBJECT
 
-  QVector<AUnit*> *ams;
-  QVector<AUnit*> *ass;
+  QVector<AUnit*> drivers;
   QStringList Drivers;
   QVector<QVector<AUnit*>*> DrvUnits;
 
@@ -22,6 +21,7 @@ class Status : public QFrame, private Ui::FrameWGrid
   QVector<QPushButton*> CEBs, CBBs;       // Clear-Enable-Buttons, Clear-Busy-Buttons
   QVector<QComboBox*> IBBx1s, IBBx2s;     // Is-Busy1,2-Box
   QString OKcolor, NGcolor;
+  QLabel *SSAddr, *SSPort, *SSStat;
 
 public:
   Status( QWidget *parent = 0 );
@@ -29,6 +29,10 @@ public:
   void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass );
 
 public slots:
+  void SetSSVA( QString Server );
+  void SetSSVP( qint16 Port );
+  void SetSSVStat( bool f );
+
   void SelStatWatch( void );
   void OnEnabled( QString Driver, bool flag );
   void OnChangedIsBusy1( QString Drv );

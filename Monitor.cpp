@@ -43,9 +43,19 @@ void MainWindow::MonSequence( void )
     }
     break;
   case 5:
+    int etime;
     mUnits.readValue( MeasVals );
-    MonitorView->NewPointR( MonTime.elapsed(), MeasVals[0], MeasVals[1], MeasVals[2] );
+    MonitorView->NewPointR( etime = MonTime.elapsed(),
+			    MeasVals[0], MeasVals[1], MeasVals[2] );
     MonitorView->ReDraw();
+    if ( monRecF ) {
+      MonOut << (double)etime/1000;
+      for ( int i = 0; i < mUnits.count(); i++ ) {
+	MonOut << "\t" << MeasVals[i];
+      }
+      MonOut << "\t # " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
+      MonOut << "\n";
+    }
     MonStage = 10;
 #if 0
     if ( inPause == 1 ) {

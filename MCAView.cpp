@@ -145,7 +145,7 @@ void MCAView::Draw( QPainter *p )
   if ( MCACh >= 0 ) {
     rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
     cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		 "MCA Ch. : " );
+		 tr( "MCA Ch. : " ) );
     rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
     cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 		 QString::number( MCACh ) );
@@ -154,7 +154,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "Cursor point : " );
+	       tr( "Cursor point : " ) );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( curp ) );
@@ -162,7 +162,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "Val. at Cursor : " );
+	       tr( "Val. at Cursor : " ) );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( MCA[ curp ] ) );
@@ -170,7 +170,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "ROI start : " );
+	       tr( "ROI start : " ) );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( rroisx ) );
@@ -178,7 +178,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "ROI end : " );
+	       tr( "ROI end : " ) );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( rroiex ) );
@@ -186,7 +186,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "ROI value : " );
+	       tr( "ROI value : " ) );
   rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( sum ) );
@@ -194,7 +194,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "Real Time : " );
+	       tr( "Real Time : " ) );
   rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( realTime, 'f', 2 ) );
@@ -202,7 +202,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "Live Time : " );
+	       tr( "Live Time : " ) );
   rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( liveTime, 'f', 2 ) );
@@ -210,7 +210,7 @@ void MCAView::Draw( QPainter *p )
 
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       "Dead Time : " );
+	       tr( "Dead Time : " ) );
   rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( ( realTime != 0 ) ?

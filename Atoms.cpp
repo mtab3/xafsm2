@@ -27,7 +27,7 @@ void ReadVicF( void )
 
   QFile file( QString( ":Victoreen1.txt" ) );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    printf( "Cannot open [Victoreen1.txt]\n" );
+    qDebug() << "Cannot open [Victoreen1.txt]\n";
     return;
   }
   

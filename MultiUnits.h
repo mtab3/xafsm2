@@ -23,6 +23,7 @@ class MUnits : public QObject
   MUnits( QObject *p = 0 );
 
   int count( void ) { return Units.count(); };
+  AUnit *at( int i ) { return Units.at(i)->au; };
   bool isParent( void ) { return ( PUnits.count() > 0 ); };
   void clearUnits( void );
   void addUnit( AUnit *au, double dt );
@@ -35,6 +36,7 @@ class MUnits : public QObject
   bool getValue( void );
   void readValue( double *rvs );
   QString getName( int i ) { return Units.at(i)->au->getName(); };
+  QString getUnit( int i ) { return Units.at(i)->au->getUnit(); };
   bool getMCA( int ch );
 };
 

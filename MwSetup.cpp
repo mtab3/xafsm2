@@ -24,6 +24,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoMSpeed = MIDDLE;
 
   setupMDispFirstTime = true;
+  monRecF = false;
 
   GoPosKeV[0] = Eg - 0.50;
   GoPosKeV[1] = Eg - 0.05;
@@ -129,17 +130,18 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 void MainWindow::saveScanData( void )
 {
   if ( ScanView == NULL ) {
-    statusbar->showMessage( "Scan data is not valid", 2000 );
+    statusbar->showMessage( tr( "Scan data is not valid" ), 2000 );
     return;
   }
   if ( ScanRecFile->text().isEmpty() ) {
-    statusbar->showMessage( "Save file name is not selected", 2000 );
+    statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
     return;
   }
 
   QFile f( ScanRecFile->text() );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-    statusbar->showMessage( "The file [%1] can not open to record the data", 2000 );
+    statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+			    2000 );
     return;
   }
   QTextStream out( &f );
@@ -422,7 +424,7 @@ void MainWindow::ScanStart( void )
 
   if ( inSPSing == 0 ) {
     if ( ( ScanViewC = SetUpNewView( XVIEW ) ) == NULL ) {
-      statusbar->showMessage( "No drawing screen is available", 2000 );
+      statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
     ScanView = (XView*)(ScanViewC->getView());
@@ -514,9 +516,31 @@ void MainWindow::Monitor( void )
       NewLogMsg( msg + "\n" );
       return;
     }
-
-    if ( ( MonitorViewC = SetUpNewView( XVIEW ) ) == NULL ) 
+    if ( ( MonitorViewC = SetUpNewView( XVIEW ) ) == NULL ) {
+      statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
+    }
+    if ( IsMonRec->isChecked() ) {
+      if ( MonRecFile->text().isEmpty() ) {
+	statusbar->showMessage( tr ( "No Record file is selected" ) );
+	return;
+      } else {
+	monRecF = true;
+	MonFile.setFileName( MonRecFile->text() );
+	if ( !MonFile.open( QIODevice::Append | QIODevice::Text ) ) {
+	  statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+				      2000 );
+	  return;
+	}
+	MonOut.setDevice( &MonFile );
+
+	MonOut << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
+	       << "\n";
+      }
+    } else {
+      monRecF = false;
+    }
+
     MonitorView = (XView*)(MonitorViewC->getView());
     
     inMonitor = 1;
@@ -525,8 +549,8 @@ void MainWindow::Monitor( void )
     mUnits.clearUnits();
 
     mUnits.addUnit( as0, DwellT20->text().toDouble() );
+    MeasSensF[0] = true;
     if ( SelectD21Sel->isChecked() ) {
-      mUnits.addUnit( as1, DwellT21->text().toDouble() );
       if ( ! as1->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as1->getName() );
@@ -534,9 +558,10 @@ void MainWindow::Monitor( void )
 	NewLogMsg( msg + "\n" );
 	return;
       }
+      mUnits.addUnit( as1, DwellT21->text().toDouble() );
+      MeasSensF[1] = true;
     }
     if ( SelectD22Sel->isChecked() ) {
-      mUnits.addUnit( as2, DwellT22->text().toDouble() );
       if ( ! as2->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as2->getName() );
@@ -544,7 +569,16 @@ void MainWindow::Monitor( void )
 	NewLogMsg( msg + "\n" );
 	return;
       }
+      mUnits.addUnit( as2, DwellT22->text().toDouble() );
+      MeasSensF[2] = true;
     }
+    MonOut << "# sec";
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      MonOut << QString( tr( "\t %1[%2]" )
+			 .arg( mUnits.getName( i ) )
+			 .arg( mUnits.getUnit( i ) ) );
+    }
+    MonOut << "\n";
 
     MonitorView->ClearDataR();
     MonitorView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
@@ -572,6 +606,9 @@ void MainWindow::Monitor( void )
     MonTime.restart();
     MonTimer->start( 100 );
   } else {
+    if ( monRecF ) {
+      MonFile.close();
+    }
     MonTimer->stop();
     inMonitor = 0;
 

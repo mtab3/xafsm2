@@ -27,8 +27,9 @@ void MainWindow::NewLogMsg( QString msg )
 
   QFile file( LogFileName->text() );
   if ( !file.open( QIODevice::Append ) ) {
-    printf( "Cannot open Log File [%s]\n", LogFileName->text().toAscii().data() );
-    exit( 1 );
+    statusbar->showMessage( tr( "Cannot open Log File [%1]\n" )
+			    .arg( LogFileName->text() ) );
+    return;
   }
   QTextStream out( &file );
   out << msg;
