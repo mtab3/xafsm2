@@ -87,6 +87,7 @@ public:
   QString getSSDPresetType( void ) { return SSDPresetType; };
   void setROIs( QString *roistart, QString *roiend )
   { ROIStart = roistart; ROIEnd = roiend; };
+  void setSSDUsingCh( int i, bool f ) { if ( i < 19 ) SSDUsingCh[i] = f; };
 
   bool checkNewVal( void )
   {
@@ -133,7 +134,7 @@ public:
   double stat( STATELM i );
   double realTime( int ch );
   double liveTime( int ch );
-  bool *getSSDUsingCh( void ) { return SSDUsingCh; };
+  bool getSSDUsingCh( int i ) { if ( i < 19 ) return SSDUsingCh[i]; else return false; };
 
   int getLastSetV( void ) { return lastSetV; };
 

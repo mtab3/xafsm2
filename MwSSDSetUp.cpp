@@ -138,11 +138,11 @@ void MainWindow::SelSSDs20( void )
       if ( SSDbs2.at(i)->isChecked() ) {
 	SSDbs2.at(i)->setStyleSheet( SSDActive );
 	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
-	SFluo->getSSDUsingCh()[i] = true;
+	SFluo->setSSDUsingCh( i, true );
       } else {
 	SSDbs2.at(i)->setStyleSheet( SSDnotActive );
 	SSDbs2.at(i)->setToolTip( tr( "Inactive" ) );
-	SFluo->getSSDUsingCh()[i] = false;
+	SFluo->setSSDUsingCh( i, false );
       }
     }
   }

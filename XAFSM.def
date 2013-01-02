@@ -11,7 +11,7 @@
 #
 
 XAFSName  "XafsM2-bsd"
-XAFSkey   "XafsM2-BL5S1"
+XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
 
 # now the keyword STARSDRIVER is obsolete
