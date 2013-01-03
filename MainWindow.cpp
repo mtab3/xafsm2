@@ -226,8 +226,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
 {
   void *newView = NULL;
   switch( vtype ) {
-  case XVIEW:
-    newView = (void *)(new XView); break;
+  case XYVIEW:
+    newView = (void *)(new XYView); break;
+  case TYVIEW:
+    newView = (void *)(new TYView); break;
   case MCAVIEW:
     newView = (void *)(new MCAView); break;
   default:
@@ -248,8 +250,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
       // no tab is available.
       statusbar->showMessage( tr( "No Scree is available!" ), 2000 );
       switch( vtype ) {
-      case XVIEW:
-	delete (XView *)newView; break;
+      case XYVIEW:
+	delete (XYView *)newView; break;
+      case TYVIEW:
+	delete (TYView *)newView; break;
       case MCAVIEW:
 	delete (MCAView *)newView; break;
       default:

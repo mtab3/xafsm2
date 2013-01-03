@@ -26,8 +26,10 @@ bool ViewCTRL::deleteView( void )
   if ( deletable ) {
     ViewBase->layout()->removeWidget( (QWidget *)nowView );
     switch( nowVType ) {
-    case XVIEW:
-      delete (XView *)nowView; break;
+    case XYVIEW:
+      delete (XYView *)nowView; break;
+    case TYVIEW:
+      delete (TYView *)nowView; break;
     case MCAVIEW:
       delete (MCAView *)nowView; break;
     default:

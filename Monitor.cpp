@@ -47,7 +47,7 @@ void MainWindow::MonSequence( void )
     mUnits.readValue( MeasVals );
     MonitorView->NewPointR( etime = MonTime.elapsed(),
 			    MeasVals[0], MeasVals[1], MeasVals[2] );
-    MonitorView->ReDraw();
+    MonitorView->update();
     if ( monRecF ) {
       MonOut << (double)etime/1000;
       for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -64,7 +64,7 @@ void MainWindow::MonSequence( void )
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
-    MonitorView->ReDraw();
+    MonitorView->update();
     if ( inPause == 0 ) {
       MonStage = 3;
     }

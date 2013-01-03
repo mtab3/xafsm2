@@ -121,7 +121,7 @@ bool MUnits::getValue( void )
   return ff;
 }
 
-void MUnits::readValue( double *rvs )
+void MUnits::readValue( double *rvs ) // 登録されているユニットの現在値を前詰めの配列で返す
 {
   for ( int i = 0; i < Units.count(); i++ ) {
 #if 0                          // values().at(0) is total of all 19 CHs

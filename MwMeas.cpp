@@ -464,7 +464,6 @@ void MainWindow::ClearXViewScreenForMeas( void )
   MeasView->SetLName( 1, tr( "mu(E)" ) );
   MeasView->SetXName( tr( "[keV]" ) );
   MeasView->makeValid( true );
-  MeasView->SetGType( XYPLOT );
 }
 
 bool MainWindow::CheckDetectorSelection( void )
@@ -524,9 +523,9 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
-    if ( ( MeasViewC = SetUpNewView( XVIEW ) ) == NULL )
+    if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL )
       return;
-    MeasView = (XView*)(MeasViewC->getView());
+    MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas();
 
     int LC = 0;

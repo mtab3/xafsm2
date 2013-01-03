@@ -19,7 +19,8 @@
 #include "PeriodicT.h"
 #include "AUnit.h"
 #include "MultiUnits.h"
-#include "XView.h"
+#include "XYView.h"
+#include "TYView.h"
 #include "MCAView.h"
 #include "Status.h"
 
@@ -207,7 +208,7 @@ private:
   double ScanOrigin, ScanSP, ScanEP, ScanSTP;
   int NowScanP;
   ViewCTRL *ScanViewC;
-  XView *ScanView;
+  XYView *ScanView;
   QFileDialog *scanFSel;
 
   QString RadioBOn;
@@ -226,7 +227,7 @@ private:
   int MonStage;
   int MonDev;
   ViewCTRL *MonitorViewC;
-  XView *MonitorView;
+  TYView *MonitorView;
   QFileDialog *monFSel;
 
   QVector<QLineEdit *> BLKstart;
@@ -302,7 +303,7 @@ private:
   QString NewLFName( void );
 
   ViewCTRL *MeasViewC;
-  XView *MeasView;
+  XYView *MeasView;
   void setupView( void );
 
 

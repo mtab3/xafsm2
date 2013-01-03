@@ -54,7 +54,7 @@ void MainWindow::ScanSequence( void )
   case 5:
     mUnits.readValue( MeasVals );
     ScanView->NewPoint( 1, NowScanP, MeasVals[0] );
-    ScanView->ReDraw();
+    ScanView->update();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
 	 ||( ( ScanSTP < 0 )&&( NowScanP < ScanEP ) ) ) {

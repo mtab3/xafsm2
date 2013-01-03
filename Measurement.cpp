@@ -87,7 +87,7 @@ void MainWindow::MeasSequence( void )
     }
     // don't break
   case 10:                     // This label is resume point from pausing
-    MeasView->ReDraw();
+    MeasView->update();
     MeasS++;
     if ( inPause == 0 ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {

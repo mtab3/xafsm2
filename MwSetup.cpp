@@ -423,11 +423,11 @@ void MainWindow::ScanStart( void )
   AUnit *am, *as;
 
   if ( inSPSing == 0 ) {
-    if ( ( ScanViewC = SetUpNewView( XVIEW ) ) == NULL ) {
+    if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
-    ScanView = (XView*)(ScanViewC->getView());
+    ScanView = (XYView*)(ScanViewC->getView());
     ScanViewC->setIsDeletable( false );
 
     ScanMotor = MotorN->currentIndex();
@@ -486,7 +486,6 @@ void MainWindow::ScanStart( void )
     ScanView->SetLName( 0, tr( "I0" ) );
     ScanView->SetLName( 1, as->getName() );
     ScanView->SetXName( am->getName() );
-    ScanView->SetGType( XYPLOT );
     ScanView->makeValid( true );
 
     ScanStage = 0;
@@ -516,7 +515,7 @@ void MainWindow::Monitor( void )
       NewLogMsg( msg + "\n" );
       return;
     }
-    if ( ( MonitorViewC = SetUpNewView( XVIEW ) ) == NULL ) {
+    if ( ( MonitorViewC = SetUpNewView( TYVIEW ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
@@ -541,7 +540,7 @@ void MainWindow::Monitor( void )
       monRecF = false;
     }
 
-    MonitorView = (XView*)(MonitorViewC->getView());
+    MonitorView = (TYView*)(MonitorViewC->getView());
     
     inMonitor = 1;
     MonStage = 0;   // 計測のサイクル
@@ -583,14 +582,11 @@ void MainWindow::Monitor( void )
     }
 
     MonitorView->ClearDataR();
-    MonitorView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
-
     for ( int i = 0; i < mUnits.count(); i++ ) {
       MonitorView->SetLName( i, mUnits.getName( i ) );
     }
-    MonitorView->SetLines( mUnits.count() );                            // 確認
-    MonitorView->SetGType( MONITOR );                            // 確認
-    MonitorView->makeValid( true );                              // 確認
+    MonitorView->SetLines( mUnits.count() );
+    MonitorView->makeValid( true );
 
     MonitorView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),

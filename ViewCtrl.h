@@ -5,10 +5,11 @@
 #include <QWidget>
 #include <QLayout>
 
-#include "XView.h"
+#include "XYView.h"
+#include "TYView.h"
 #include "MCAView.h"
 
-enum VTYPE { XVIEW, MCAVIEW, NONVIEW };
+enum VTYPE { XYVIEW, TYVIEW, MCAVIEW, NONVIEW };
 
 class ViewCTRL : public QObject
 {
