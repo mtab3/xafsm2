@@ -42,6 +42,7 @@ class ChCoord : public QObject
   double Smaxy( void ) { return smaxy; };
   double Sminy( void ) { return sminy; };
 
+  void getSEDy0( double *sy, double *ey, double *dy, double div );
   void getSEDy( double *sy, double *ey, double *dy, double div );
   void calcScale( double div, double min, double max, double *s, double *d );
 

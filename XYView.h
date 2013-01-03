@@ -9,12 +9,6 @@
 #define MAXPOINTS ( 10000 )
 #define MAXLINES  ( 30 )
 
-#if 0
-const int MaxMon = 3;
-const int RingMax = 5 * 60 * 60 * 6;
-enum GTYPE { XYPLOT, MONITOR, GTYPES };
-#endif
-
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
 
@@ -35,7 +29,7 @@ private:
   SCALET ScaleTR, ScaleTL;
   QVector<QString> LNames;
   QString XName;
-  int valid;
+  bool valid;
 
   int lines;
   int points[ MAXLINES ];
@@ -72,15 +66,10 @@ public:
   void SetScaleT( SCALET s1, SCALET s2 ) { ScaleTR = s1; ScaleTL = s2; };
   void SetLName( int i, QString Name ) { LNames.insert( i, Name ); }; // ‘½•ªŠÔˆá‚Á‚Ä‚é
   void SetXName( QString Name ) { XName = Name; };
-  void makeValid( int v = true ) { valid = v; };
+  void makeValid( bool v = true ) { valid = v; };
   int getPoints( int l );
   double getX( int l, int p );
   double getY( int l, int p );
-#if 0
-  void DrawXYPlot( QPainter *p );
-  void SetLines( int L );
-  int PeakSearch( int l );
-#endif
   void SetWindow( double x1, double y1, double x2, double y2 )
   { cc.SetRealCoord( x1, y1, x2, y2 ); };
 
@@ -90,14 +79,6 @@ private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
   void UpDateYWindow( int l, SCALET s );
-
-#if 0
-  void setX( int l, int p, double xx );
-  void setY( int l, int p, double yy );
-
-  void calcScale( double div, double min, double max, double *s, double *d );
-#endif
-
 };
 
 #endif

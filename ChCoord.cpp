@@ -104,22 +104,40 @@ double ChCoord::s2rdy( double sy )
 }
 
 
+void ChCoord::getSEDy0( double *sy, double *ey, double *dy, double div )
+{
+  if ( rminy == rmaxy ) {
+    *sy = 0;
+    *ey = 1;
+    *dy = 1;
+  } else if ( rminy > rmaxy ) {
+    *sy = rmaxy;
+    *ey = rminy;
+    *dy = ( rminy - rmaxy ) / div;
+  } else {
+    *sy = rminy;
+    *ey = rmaxy;
+    *dy = ( rmaxy - rminy ) / div;
+  }
+}
+
 void ChCoord::getSEDy( double *sy, double *ey, double *dy, double div )
 {
-    if ( rminy == rmaxy ) {
-      *sy = 0;
-      *ey = 1;
-      *dy = 1;
-    } else if ( rminy > rmaxy ) {
-      *sy = rmaxy;
-      *ey = rminy;
-      *dy = ( rminy - rmaxy ) / div;
-    } else {
-      // calcScale( div, wminy, wmaxy, &sy, &dy )
-      *sy = rminy;
-      *ey = rmaxy;
-      *dy = ( rmaxy - rminy ) / div;
-    }
+  if ( rminy == rmaxy ) {
+    *sy = 0;
+    *ey = 1;
+    *dy = 1;
+  } else if ( rminy > rmaxy ) {
+    // calcScale( div, rmaxy, rminy, &sy, &dy )
+    *sy = rmaxy;
+    *ey = rminy;
+    *dy = ( rminy - rmaxy ) / div;
+  } else {
+    // calcScale( div, rminy, rmaxy, &sy, &dy )
+    *sy = rminy;
+    *ey = rmaxy;
+    *dy = ( rmaxy - rminy ) / div;
+  }
 }
 
 void ChCoord::calcScale( double div, double min, double max, double *s, double *d )

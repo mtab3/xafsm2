@@ -27,6 +27,8 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
      << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
   MonScale = 0;
   nx = ny = 0;
+  ep = 0;
+  datas = 0;
 }
 
 void TYView::ClearDataR( void )
@@ -35,9 +37,10 @@ void TYView::ClearDataR( void )
     for ( int i = 0; i < MaxMon; i++ ) {
       mony[ i ][ j ] = 0;
     }
-    mont[ j ] = -1000000000;
+    mont[ j ] = 0;
   }
-  points = 0;
+  ep = 0;
+  datas = 0;
 }
 
 void TYView::SetLines( int Lines )
@@ -53,13 +56,15 @@ void TYView::SetMonScale( int ms )
 // リングバッファへのデータ追加
 void TYView::NewPointR( int tt, double yy0, double yy1, double yy2 )
 {
-  mont[ points ] = tt;
-  mony[0][ points ] = yy0;
-  mony[1][ points ] = yy1;
-  mony[2][ points ] = yy2;
-  points++;
-  if ( points >= RingMax )
-    points = 0;
+  mont[ ep ] = tt;
+  mony[0][ ep ] = yy0;
+  mony[1][ ep ] = yy1;
+  mony[2][ ep ] = yy2;
+  ep++;
+  if ( ep >= RingMax )
+    ep = 0;
+  if ( datas < RingMax )
+    datas++;
 }
 
 void TYView::paintEvent( QPaintEvent * )
@@ -71,50 +76,51 @@ void TYView::paintEvent( QPaintEvent * )
 
 void TYView::Draw( QPainter *p )
 {
+  if ( valid != true ) return;
+
   QString buf, buf2;
-
-  if ( valid != true ) {
-    return;
-  }
-
   double RM, LM, TM, BM, HDiv, VDiv;
   QPen pen0, pen1;
   QFont F1;
   QRectF rec;
-  int ms = MScales[ MonScale ].div * 1000;
+  int ms = MScales[ MonScale ].div * 1000;   // １グリッドの時間 秒 x 1000 = ミリ秒
 
-  double HDNum = 6;
-  double VDNum = 10;
+  double HDNum = 6;    // 水平方向のグリッド数
+  double VDNum = 10;   // 垂直方向のグリッド数
 
-  cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );
+  cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );   // 実座標の指定(とりあえず垂直方向は 1)
 
-  p->fillRect( 0, 0, width(), height(), bgColor );
+  p->fillRect( 0, 0, width(), height(), bgColor ); // 背景全体の塗りつぶし
   pen0.setWidth( 1 );
   pen0.setColor( QColor( 0, 0, 0 ) );
   p->setPen( pen0 );
-
-  RM = width() * 0.03;
-  LM = width() * 0.17;
-  TM = height() * 0.05;
-  BM = height() * 0.10;
-  HDiv = ( width() - RM - LM ) / HDNum;
-  VDiv = ( height() - TM - BM ) / VDNum;
   p->setFont( F1 );
 
-  cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
-  p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
+  RM = width() * 0.03;    // 描画領域の中でのグラフの右マージン
+  LM = width() * 0.15;    // 描画領域の中でのグラフの左マージン
+  TM = height() * 0.05;   // 描画領域の中でのグラフの上(top)マージン
+  BM = height() * 0.10;   // 描画領域の中でのグラフの下(bottom)マージン
+  HDiv = ( width() - RM - LM ) / HDNum;     // グリッド幅
+  VDiv = ( height() - TM - BM ) / VDNum;    // グリッド高さ
 
-  for ( double xx = cc.Rminx(); xx <= cc.Rmaxx(); xx += ms ) {
-    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦の罫線
-    rec = QRect( cc.r2sx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 ); // メモリ数字
+  cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
+  // screen 座標の指定。左上、右下の座標指定
+  // (ここで上下裏がえった座標を指定することで real 座標で普通に左下が 0,0 の座標になる)
+
+  p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );  // グラフの枠線
+
+  for ( double xx = cc.Rminx(); xx <= cc.Rmaxx(); xx += ms ) {   // 横方向方向
+    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦罫線
+                                                                   // 横軸のメモリ数字
+    rec = QRect( cc.r2sx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 );
     cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE, 
 		 QString( tr( "%1" ) )
 		 .arg( (int)((cc.Rmaxx()-xx)/ms) * MScales[ MonScale ].dispDiv ) );
   }
-  rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );   // X軸のラベル
+  rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );  // 横軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       MScales[ MonScale ].unit );
-  
+
   pen1.setWidth( 1 );
   pen1.setColor( BLACK );
   p->setPen( pen1 );
@@ -123,7 +129,7 @@ void TYView::Draw( QPainter *p )
   }
 
   double sy, ey, dy;
-  UpDateYWindowRing();
+  UpDateYWindowRing();   // 最大値最小値(5%マージン)を探す (Rminy, Rmaxy に返す)
 
   for ( int j = 0; j < lines; j++ ) {
     //      sy = Rwminy[j];
@@ -132,6 +138,9 @@ void TYView::Draw( QPainter *p )
     cc.getSEDy( &sy, &ey, &dy, 5 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
+
+    /*  ここまで確認した  */
+
     for ( double yy = sy; yy <= cc.Rmaxy(); yy += dy ) {
       rec = QRectF( LM - LM * 0.32 * ( j + 1 ), cc.r2sy( yy )-VDiv*0.45,
 		    LM * 0.3, VDiv * 0.9 ); // メモリ数字
@@ -142,16 +151,16 @@ void TYView::Draw( QPainter *p )
 		  HDiv * 2, TM * 0.9 );  // 軸のラベル
     
     int pp1, pp2;
-    int t0 = mont[ points - 1 ];
+    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];
     pen1.setWidth( 2 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
-    int nowt = cc.s2rx( nx ) + t0;
+    int nowt = cc.s2rx( nx ) + t0;  // マウスポインタの位置に相当する時刻
     int nowtp = 0;
     
-    for ( int i = 0; i < RingMax; i++ ) { // データプロット
-      pp1 = points - 1 - i;
-      pp2 = points - 1 - ( i + 1 );
+    for ( int i = 0; i < datas - 1; i++ ) { // データプロット
+      pp1 = ep - 1 - i;
+      pp2 = ep - 1 - ( i + 1 );
       if ( pp1 < 0 ) pp1 += RingMax;
       if ( pp2 < 0 ) pp2 += RingMax;
       if ( ( mont[ pp2 ] - t0 ) < ( - ms * 6 ) ) {
@@ -159,13 +168,17 @@ void TYView::Draw( QPainter *p )
       }
       p->drawLine( cc.r2sx( mont[pp1] - t0 ), cc.r2sy( mony[j][pp1] ),
 		   cc.r2sx( mont[pp2] - t0 ), cc.r2sy( mony[j][pp2] ) );
+
+      // マウスポインタの指す時刻に出来るだけ近い実測点
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
+
     }
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
   }
 
+  // マウスポインタの位置に縦線を引く
   if ( ( nx > LM ) && ( nx < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( nx, TM, nx, height()-BM );
@@ -177,13 +190,13 @@ void TYView::UpDateYWindowRing( void )
   int dx = MScales[ MonScale ].div;
   int p, t0;
 
-  t0 = mont[ points - 1 ];
+  t0 = mont[ ( ep == 0 ) ? RingMax -1 : ep - 1 ];
 
-  for ( int j = 0; j < MaxMon; j++ ) {
+  for ( int j = 0; j < lines; j++ ) {
     double nmaxy = -1e300;
     double nminy = 1e300;
-    for ( int i = 0; i < RingMax; i++ ) {
-      p = points - 1 - i;
+    for ( int i = 0; i < datas; i++ ) {
+      p = ep - 1 - i;
       if ( p < 0 ) p += RingMax;
       if ( (  mont[ p ] - t0 ) > ( - dx * 6 * 1000 ) ) {
 	if ( mony[j][ p ] < nminy )
@@ -221,308 +234,3 @@ void TYView::mouseReleaseEvent( QMouseEvent * )
 void TYView::mouseDoubleClickEvent( QMouseEvent * )
 {
 }
-
-
-
-#if 0
-// l 番目のラインの p 番目のポイントの X データセット
-void TYView::setX( int l, int p, double xx )
-{
-  if ( l < MAXLINES ) {
-    if ( p < MAXPOINTS ) {
-      x[l][p] = xx;
-      if ( p >= points[l] )
-	points[l] = p + 1;
-      if ( ( l >= lines )&&( l < MAXLINES - 1 ) )
-	lines = l + 1;
-    }
-  }
-}
-
-// l 番目のラインの p 番目のポイントの Y データセット
-void TYView::setY( int l, int p, double yy )
-{
-  if ( l < MAXLINES ) {
-    if ( p < MAXPOINTS ) {
-      y[l][p] = yy;
-      if ( p >= points[l] )
-	points[l] = p + 1;
-      if ( ( l >= lines )&&( l < MAXLINES - 1 ) )
-	lines = l + 1;
-    }
-  }
-}
-
-// l 番目のラインに新しいデータ1つ追加
-void TYView::NewPoint( int l, double xx, double yy )
-{
-  if ( l < MAXLINES ) {
-    if ( points[l] < MAXPOINTS - 1 ) {
-      x[l][ points[l] ] = xx;
-      y[l][ points[l] ] = yy;
-      points[l]++;
-    }
-    if ( ( l >= lines )&&( l < MAXLINES - 1 ) )
-      lines = l + 1;
-  }
-}
-
-int TYView::getPoints( int l )    // only for XY draw, but...
-{
-  if ( GType != XYPLOT )
-    return -1;
-  if ( l >= lines )
-    return -1;
-
-  return points[ l ];
-};
-
-double TYView::getX( int l, int p )
-{
-  double rv = 0;
-
-  switch ( GType ) {
-  case XYPLOT:
-    if ( l < lines )
-      if ( p < points[l] )
-	rv = x[l][p];
-    break;
-  default:
-    break;
-  }
-
-  return rv;
-}
-
-double TYView::getY( int l, int p )
-{
-  double rv = 0;
-
-  switch ( GType ) {
-  case XYPLOT:
-    if ( l < lines )
-      if ( p < points[l] )
-	rv = y[l][p];
-    break;
-  default:
-    break;
-  }
-
-  return rv;
-}
-
-/*****************************************************/
-
-
-void TYView::Draw( QPainter *p )
-{
-  switch( (int)GType ) {
-  case XYPLOT:
-    DrawXYPlot( p );
-    break;
-  case MONITOR:
-    DrawMonitor( p );
-    break;
-  }
-}
-
-void TYView::DrawXYPlot( QPainter *p )
-{
-  if ( valid != true ) 
-    return;
-
-  QString buf, buf2;
-  int RM, LM, TM, BM;
-  QPen pen0, pen1;
-  QFont F1;
-  QRectF rec;
-
-  p->fillRect( 0, 0, width(), height(), bgColor );
-  pen0.setWidth( 2 );
-  pen0.setColor( QColor( 95, 95, 195 ) );
-  p->setPen( pen0 );
-
-  RM = width() * 0.10;
-  LM = width() * 0.10;
-  TM = height() * 0.05;
-  BM = height() * 0.10;
-  F1.setPointSizeF( ( LM*0.115 < BM*0.23 ) ? LM*0.115 : BM*0.23 );
-  p->setFont( F1 );
-
-  cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
-  p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
-
-  double sx, dx;
-  cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
-  int memc = 0;
-  for ( double xx = sx; xx < cc.Rmaxx(); xx += dx ) {
-    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦の罫線
-    rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
-    if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
-      cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
-		   QString::number( xx ) );
-    }
-    memc++;
-  }
-  rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
-
-  int inc;
-  double tmp;
-  double sy, dy;
-  if ( SLineL >= 0 ) {                            // 左の y 軸に関連した描画
-    UpDateYWindow( SLineL, ScaleTL );
-    pen1.setWidth( 1 );
-    pen1.setColor( LC[ SLineL ] );
-    p->setPen( pen1 );
-    inc = 0;
-
-    sy = dy = 0;
-    cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
-
-    for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
-      p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
-      rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 ); // メモリ数字
-      buf.sprintf( "%7.5g", yy );
-      cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
-    }
-    rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );  // 軸のラベル
-    cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
-		 LNames[SLineL] );
-    
-    for ( int l = 0; l < lines; l++ ) { // データプロット
-      if ( LineF[l] == LEFT ) {
-	pen1.setColor( LC[ l ] );
-	p->setPen( pen1 );
-	double nowx = cc.s2rx( nx );
-	int nowxp = 0;
-	for ( int i = 0; i < points[l] - 1; i++ ) {
-	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
-		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
-	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
-	    nowxp = i;
-	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
-	    nowxp = i;
-	}
-	rec = QRectF( LM * 1.2, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
-	// 軸のラベル
-	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-		     QString::number( y[l][nowxp] ) );
-      }
-    }
-  }
-
-  if ( SLineR >= 0 ) {                           // 右の y 軸に関連した描画
-    UpDateYWindow( SLineR, ScaleTR );
-    pen1.setWidth( 1 );
-    pen1.setColor( LC[ SLineR ] );
-    p->setPen( pen1 );
-    inc = 0;
-    sy = dy = 0;
-    for (;;) {
-      cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
-      buf.sprintf( "%5.3g", sy );
-      buf2.sprintf( "%5.3g", sy + dy );
-      if ( ( inc >= 20 )||( buf != buf2 ) )
-	break;
-      inc++;
-      tmp = cc.Rmaxy() - cc.Rminy();
-      cc.SetRealY( cc.Rmaxy() + tmp, cc.Rminy() - tmp * 5 );
-    }
-
-    for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
-      p->drawLine( LM, cc.r2sy( yy ), LM+3, cc.r2sy( yy ) );                 // 横の罫線(短い)
-      p->drawLine( width()-RM, cc.r2sy( yy ), width()-RM-3, cc.r2sy( yy ) ); // 横の罫線(短い)
-      rec = QRectF( width()-RM*0.9, cc.r2sy( yy )-BM*0.3/2, 60, BM * 0.3 ); // メモリ数字
-      buf.sprintf( "%5.3g", yy );
-      cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, buf );
-    }
-    rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-		 RM*0.9, BM * 0.3 );    // 軸のラベル
-    //    DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-    //              LNames[ SLineR ] );
-    
-    for ( int l = 0; l < lines; l++ ) { // データプロット
-      if ( LineF[l] == RIGHT ) {
-	pen1.setColor( LC[ l ] );
-	p->setPen( pen1 );
-	double nowx = cc.s2rx( nx );
-	int nowxp = 0;
-	for ( int i = 0; i < points[l] - 1; i++ ) {  // データプロット
-	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
-		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
-	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
-	    nowxp = i;
-	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
-	    nowxp = i;
-	}
-	rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-		      RM*0.9, BM * 0.3 );    // 軸の値
-	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-		     LNames[SLineR] + " : " + QString::number(y[l][nowxp]) );
-      }
-    }
-  }
-  if ( ( nx > LM ) && ( nx < width()-RM ) ) {
-    p->setPen( MCLineC );
-    p->drawLine( nx, TM, nx, height()-BM );
-  }
-}
-
-int TYView::PeakSearch( int l )
-{
-  int maxp = 0;
-  double maxv = -1e200;
-
-  for ( int i = 0; i < points[l]; i++ ) {
-    if ( y[l][i] > maxv ) {
-      maxp = i;
-      maxv = y[l][i];
-    }
-  }
-
-  return x[l][maxp];
-}
-
-
-
-
-/*****************************************************/
-
-
-void TYView::UpDateYWindow( int l, SCALET s )
-{
-  if ( points[l] == 0 ) {
-    cc.SetRealY( 0, 1 );
-    return;
-  }
-
-  double nmaxy = -1e300;
-  double nminy = +1e300;
-
-  for ( int i = 0; i < points[l]; i++ ) {
-    if ( y[l][i] < nminy )
-      nminy = y[l][i];
-    if ( y[l][i] > nmaxy )
-      nmaxy = y[l][i];
-  }
-  double dy = nmaxy - nminy;
-  switch( s ) {
-  case FULLSCALE:
-    cc.SetRealY( nminy - dy * 0.05, nmaxy + dy * 0.05 );
-    break;
-  case I0TYPE:
-    cc.SetRealY( nminy - dy * 5, nmaxy + dy * 1 );
-    break;
-  default:
-    qDebug() << "Unknown scale type";
-    break;
-  }
-}
-
-
-
-
-/******************* Handle Mouse Events ************************/
-
-#endif

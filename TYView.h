@@ -6,15 +6,6 @@
 
 #include "ChCoord.h"
 
-#if 0
-#define MAXPOINTS ( 10000 )
-#define MAXLINES  ( 30 )
-
-enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
-enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
-enum GTYPE { XYPLOT, MONITOR, GTYPES };
-#endif
-
 const int RingMax = 5 * 60 * 60 * 6;
 const int MaxMon = 3;
 
@@ -29,7 +20,7 @@ private:
   QColor MCLineC;          // mouse cursor line color
   int nx, ny;              // current mouse position
 
-  int valid;
+  bool valid;
   int MonScale;
   QVector<QString> LNames;
 
@@ -38,18 +29,13 @@ private:
   double Rwminy[ MaxMon ];
   double mony[ MaxMon ][ RingMax ]; // Monitor 用の配列
   int mont[ RingMax ];
-  int points;
+  int ep;     // Ring Buffer の end point 
+  int datas;  // Ring Buffer 内の有効なデータ点数
 
   void mouseMoveEvent( QMouseEvent *e );
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
-
-#if 0
-  QString XName;
-
-  SCALET ScaleTR, ScaleTL;
-#endif
 
 public:
   TYView( QWidget *parent = NULL );
@@ -59,15 +45,8 @@ public:
   void ClearDataR( void );
   void SetLines( int line );
   void SetLName( int i, QString Name ) { LNames.insert( i, Name ); }; // 多分間違ってる
-  void makeValid( int v = true ) { valid = v; };
+  void makeValid( bool v = true ) { valid = v; };
   int getMonScale( void ) { return MonScale; };
-#if 0
-  void DrawMonitor( QPainter *p );
-  void SetXName( QString Name ) { XName = Name; };
-  void SetScaleT( SCALET s1, SCALET s2 ) { ScaleTR = s1; ScaleTL = s2; };
-  void SetWindow( double x1, double y1, double x2, double y2 )
-  { cc.SetRealCoord( x1, y1, x2, y2 ); };
-#endif
 
 public slots:
   void SetMonScale( int ms );
@@ -76,9 +55,6 @@ private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
   void UpDateYWindowRing( void );
-#if 0
-
-  void calcScale( double div, double min, double max, double *s, double *d );
-#endif
 };
+
 #endif
