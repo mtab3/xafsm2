@@ -184,10 +184,10 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( rroiex ) );
   LINE++;
 
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( "ROI value : " ) );
-  rec.setRect( dLM*7, TM + dVW2 * LINE, dLM * 2, dVW );
+  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( sum ) );
   LINE++;

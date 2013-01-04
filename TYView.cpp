@@ -88,7 +88,8 @@ void TYView::Draw( QPainter *p )
   double HDNum = 6;    // 水平方向のグリッド数
   double VDNum = 10;   // 垂直方向のグリッド数
 
-  cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );   // 実座標の指定(とりあえず垂直方向は 1)
+  cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );   // 実座標の指定
+                                             // 縦方向は、この時点では [0,1]
 
   p->fillRect( 0, 0, width(), height(), bgColor ); // 背景全体の塗りつぶし
   pen0.setWidth( 1 );
@@ -97,7 +98,7 @@ void TYView::Draw( QPainter *p )
   p->setFont( F1 );
 
   RM = width() * 0.03;    // 描画領域の中でのグラフの右マージン
-  LM = width() * 0.15;    // 描画領域の中でのグラフの左マージン
+  LM = width() * 0.12;    // 描画領域の中でのグラフの左マージン
   TM = height() * 0.05;   // 描画領域の中でのグラフの上(top)マージン
   BM = height() * 0.10;   // 描画領域の中でのグラフの下(bottom)マージン
   HDiv = ( width() - RM - LM ) / HDNum;     // グリッド幅
@@ -128,7 +129,7 @@ void TYView::Draw( QPainter *p )
     p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
   }
 
-  double sy, ey, dy;
+  double sy, ey, dy, ty;
   UpDateYWindowRing();   // 最大値最小値(5%マージン)を探す (Rminy, Rmaxy に返す)
 
   for ( int j = 0; j < lines; j++ ) {
@@ -136,16 +137,24 @@ void TYView::Draw( QPainter *p )
     //      dy = ( Rwmaxy[j] - Rwminy[j] ) / 10.;
     cc.SetRealY( Rwminy[j], Rwmaxy[j] );
     cc.getSEDy( &sy, &ey, &dy, 5 );
+    pen1.setWidth( 1 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
 
-    /*  ここまで確認した  */
-
-    for ( double yy = sy; yy <= cc.Rmaxy(); yy += dy ) {
+    for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
+#if 0       // メモリに対応する数字、最大3つを横に並べる
       rec = QRectF( LM - LM * 0.32 * ( j + 1 ), cc.r2sy( yy )-VDiv*0.45,
 		    LM * 0.3, VDiv * 0.9 ); // メモリ数字
+#else       // メモリに対応する数字、最大3つを縦に並べる
+      rec = QRectF( LM * 0.1, ty = ( cc.r2sy( yy ) - VDiv * 0.5 + VDiv * 0.45 * j ),
+		    LM * 0.75, VDiv * 0.42 ); // メモリ数字
+#endif
+
+      /* ここまで確認した */
+
       buf.sprintf( "%6.4g", yy );
       cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
+      p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
     }
     rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
 		  HDiv * 2, TM * 0.9 );  // 軸のラベル
