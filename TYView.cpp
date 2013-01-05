@@ -26,9 +26,11 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
      << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
      << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
   MonScale = 0;
-  nx = ny = 0;
   ep = 0;
   datas = 0;
+  timeShift = 0;
+  timeShift0 = 0;
+  tts = 0;
 }
 
 void TYView::ClearDataR( void )
@@ -116,7 +118,8 @@ void TYView::Draw( QPainter *p )
     rec = QRect( cc.r2sx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 );
     cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE, 
 		 QString( tr( "%1" ) )
-		 .arg( (int)((cc.Rmaxx()-xx)/ms) * MScales[ MonScale ].dispDiv ) );
+		 .arg( ((double)timeShift/ms * MScales[MonScale].dispDiv)
+		       + (int)( (cc.Rmaxx()-xx)/ms * MScales[ MonScale ].dispDiv ) ) );
   }
   rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );  // 横軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
@@ -160,11 +163,12 @@ void TYView::Draw( QPainter *p )
 		  HDiv * 2, TM * 0.9 );  // 軸のラベル
     
     int pp1, pp2;
-    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];
+    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // 最新時刻
     pen1.setWidth( 2 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
-    int nowt = cc.s2rx( nx ) + t0;  // マウスポインタの位置に相当する時刻
+    int nowt = cc.s2rx( m.x() ) + t0 - timeShift;
+                                               // マウスポインタの位置に相当する時刻
     int nowtp = 0;
     
     for ( int i = 0; i < datas - 1; i++ ) { // データプロット
@@ -172,25 +176,25 @@ void TYView::Draw( QPainter *p )
       pp2 = ep - 1 - ( i + 1 );
       if ( pp1 < 0 ) pp1 += RingMax;
       if ( pp2 < 0 ) pp2 += RingMax;
-      if ( ( mont[ pp2 ] - t0 ) < ( - ms * 6 ) ) {
+      if ( ( t0 - mont[ pp2 ] ) > ( ms * 6 + timeShift ) ) {
 	break;
       }
-      p->drawLine( cc.r2sx( mont[pp1] - t0 ), cc.r2sy( mony[j][pp1] ),
-		   cc.r2sx( mont[pp2] - t0 ), cc.r2sy( mony[j][pp2] ) );
-
+      if ( ( t0 - mont[ pp2 ] ) > timeShift ) {
+	p->drawLine( cc.r2sx( mont[pp1] - t0 + timeShift ), cc.r2sy( mony[j][pp1] ),
+		     cc.r2sx( mont[pp2] - t0 + timeShift ), cc.r2sy( mony[j][pp2] ) );
+      }
       // マウスポインタの指す時刻に出来るだけ近い実測点
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
-
     }
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
   }
 
   // マウスポインタの位置に縦線を引く
-  if ( ( nx > LM ) && ( nx < width()-RM ) ) {
+  if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
-    p->drawLine( nx, TM, nx, height()-BM );
+    p->drawLine( m.x(), TM, m.x(), height()-BM );
   }
 }
 
@@ -226,18 +230,32 @@ void TYView::UpDateYWindowRing( void )
 
 void TYView::mouseMoveEvent( QMouseEvent *e )
 {
-  nx = e->x();
-  ny = e->y();
+  m.Moved( e );
+
+  if ( m.inPress() ) {
+    tts = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
+  }
+  timeShift = timeShift0 + tts;
 
   update();
 }
 
-void TYView::mousePressEvent( QMouseEvent * )
+void TYView::mousePressEvent( QMouseEvent *e )
 {
+  m.Pressed( e );
+  update();
 }
 
-void TYView::mouseReleaseEvent( QMouseEvent * )
+void TYView::mouseReleaseEvent( QMouseEvent *e )
 {
+  m.Released( e );
+  timeShift0 += tts;
+  tts = 0;
+  if ( timeShift0 < 0 ) {
+    timeShift0 = 0;
+    timeShift = 0;
+  }
+  update();
 }
 
 void TYView::mouseDoubleClickEvent( QMouseEvent * )

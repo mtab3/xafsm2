@@ -23,8 +23,6 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   Blue = QColor( 0, 0, 255 );
   Black = QColor( 0, 0, 0 );
 
-  inPress = false;
-  nx = ny = sx = sy = ex = ey = 0;
   setROIrequest = false;
   reqsx = reqex = 0;
 }
@@ -88,17 +86,17 @@ void MCAView::Draw( QPainter *p )
 
   if ( setROIrequest ) {
     setROIrequest = false;
-    sx = cc.r2sx( reqsx );
-    ex = cc.r2sx( reqex );
+    m.setSx( cc.r2sx( reqsx ) );
+    m.setEx( cc.r2sx( reqex ) );
   }
 
   double tex;
-  if ( inPress ) {
-    tex = nx;
+  if ( m.inPress() ) {
+    tex = m.x();
   } else {
-    tex = ex;
+    tex = m.ex();
   }
-  double roisx = sx;
+  double roisx = m.sx();
   double roiex = tex;
   int rroisx, rroiex;
   if ( roisx > roiex ) {
@@ -108,7 +106,7 @@ void MCAView::Draw( QPainter *p )
   }
   rroisx = (int)( cc.s2rxLimit( roisx ) + 0.5 );
   rroiex = (int)( cc.s2rxLimit( roiex ) + 0.5 );
-  if ( inPress ) {
+  if ( m.inPress() ) {
     emit newROI( rroisx, rroiex );
   }
 
@@ -130,12 +128,12 @@ void MCAView::Draw( QPainter *p )
   p->setPen( Black );
   p->drawRect( LM, TM, HW, VW );
 
-  if ( ( nx > LM )&&( nx < LM+HW ) ) {
+  if ( ( m.x() > LM )&&( m.x() < LM+HW ) ) {
     p->setPen( Red );
-    p->drawLine( nx, TM, nx, TM+VW );
+    p->drawLine( m.x(), TM, m.x(), TM+VW );
   }
   int curp;
-  emit CurrentValues( MCA[ curp = (int)cc.s2rxLimit( nx ) ], sum );
+  emit CurrentValues( MCA[ curp = (int)cc.s2rxLimit( m.x() ) ], sum );
 
   QFont f;
   QRectF rec;
@@ -220,27 +218,19 @@ void MCAView::Draw( QPainter *p )
 
 void MCAView::mouseMoveEvent( QMouseEvent *e )
 {
-  nx = e->x();
-  ny = e->y();
-
+  m.Moved( e );
   update();
 }
 
 void MCAView::mousePressEvent( QMouseEvent *e )
 {
-  sx = e->x();
-  sy = e->y();
-  inPress = true;
-
+  m.Pressed( e );
   update();
 }
 
 void MCAView::mouseReleaseEvent( QMouseEvent *e )
 {
-  ex = e->x();
-  ey = e->y();
-  inPress = false;
-
+  m.Released( e );
   update();
 }
 

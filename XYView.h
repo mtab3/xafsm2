@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "ui_XView.h"
 
+#include "MouseC.h"
 #include "ChCoord.h"
 
 #define MAXPOINTS ( 10000 )
@@ -22,7 +23,6 @@ private:
   QColor bgColor, BLACK;
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
-  int nx, ny;              // current mouse position
 
   int SLineR, SLineL;
   int LineF[ MAXLINES ];
@@ -36,6 +36,7 @@ private:
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
 
+  MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );

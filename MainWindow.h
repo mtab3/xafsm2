@@ -201,7 +201,6 @@ private:
   RELABS GoMRelAbs, SPSRelAbs;
   int SPSSelU;           // Selected SPS Unit
   double SPSUPP;         // Unit per puls
-  int SPSMon;            // SPS-ing monitor
   int inSPSing;
   int ScanStage;
   int ScanMotor, ScanSensor;

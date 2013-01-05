@@ -27,6 +27,8 @@ class ChCoord : public QObject
   double r2sdy( double y );
   double s2rx( double x );     // from screen to realsize
   double s2ry( double y );
+  double s2rx0( double x );     // from screen to realsize
+  double s2ry0( double y );
   double s2rxLimit( double x );
   double s2ryLimit( double y );
   double s2rdx( double x );

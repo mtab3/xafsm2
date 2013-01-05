@@ -67,6 +67,16 @@ double ChCoord::s2ry( double sy )
   return ( rmaxy - rminy ) / ( smaxy - sminy ) * ( smaxy - sy ) + rminy;
 }
 
+double ChCoord::s2rx0( double sx )
+{
+  return ( rmaxx - rminx ) / ( smaxx - sminx ) * ( sx - sminx );
+}
+
+double ChCoord::s2ry0( double sy )
+{
+  return ( rmaxy - rminy ) / ( smaxy - sminy ) * ( smaxy - sy );
+}
+
 double ChCoord::s2rxLimit( double sx )
 {
   double rv = ( rmaxx - rminx ) / ( smaxx - sminx ) * ( sx - sminx ) + rminx;

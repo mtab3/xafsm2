@@ -2,6 +2,7 @@
 #define MCAVIEW_H
 
 #include "ui_MCAView.h"
+#include "MouseC.h"
 #include "ChCoord.h"
 
 class MCAView : public QFrame, private Ui::MCAView
@@ -19,8 +20,6 @@ private:
   bool dispLog;
 
   ChCoord cc;
-  bool inPress;
-  double nx, ny, sx, sy, ex, ey;         // mouse 
   bool setROIrequest;
   double reqsx, reqex;
 
@@ -33,6 +32,7 @@ private:
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
+  MouseC m;
 public:
   MCAView( QWidget *parent = NULL );
   ~MCAView( void );

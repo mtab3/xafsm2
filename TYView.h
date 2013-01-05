@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "ui_XView.h"
 
+#include "MouseC.h"
 #include "ChCoord.h"
 
 const int RingMax = 5 * 60 * 60 * 6;
@@ -18,7 +19,6 @@ private:
   QColor bgColor, BLACK;
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
-  int nx, ny;              // current mouse position
 
   bool valid;
   int MonScale;
@@ -31,7 +31,9 @@ private:
   int mont[ RingMax ];
   int ep;     // Ring Buffer の end point 
   int datas;  // Ring Buffer 内の有効なデータ点数
+  int timeShift, timeShift0, tts;   // 表示の時間を現在の時間からどれだけずらすか
 
+  MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );

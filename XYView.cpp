@@ -28,7 +28,6 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
      << QColor( 255,   0,   0 ) << QColor(   0, 255,   0 ) << QColor(   0,   0, 255 )
      << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
      << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
-  nx = ny = 0;
 }
 
 void XYView::Clear( void )
@@ -162,7 +161,7 @@ void XYView::Draw( QPainter *p )
       if ( LineF[l] == LEFT ) {
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
-	double nowx = cc.s2rx( nx );
+	double nowx = cc.s2rx( m.x() );
 	int nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {
 	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
@@ -214,7 +213,7 @@ void XYView::Draw( QPainter *p )
       if ( LineF[l] == RIGHT ) {
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
-	double nowx = cc.s2rx( nx );
+	double nowx = cc.s2rx( m.x() );
 	int nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {  // データプロット
 	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
@@ -231,9 +230,9 @@ void XYView::Draw( QPainter *p )
       }
     }
   }
-  if ( ( nx > LM ) && ( nx < width()-RM ) ) {
+  if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
-    p->drawLine( nx, TM, nx, height()-BM );
+    p->drawLine( m.x(), TM, m.x(), height()-BM );
   }
 }
 
@@ -271,18 +270,20 @@ void XYView::UpDateYWindow( int l, SCALET s )
 
 void XYView::mouseMoveEvent( QMouseEvent *e )
 {
-  nx = e->x();
-  ny = e->y();
-
+  m.Moved( e );
   update();
 }
 
-void XYView::mousePressEvent( QMouseEvent * )
+void XYView::mousePressEvent( QMouseEvent *e )
 {
+  m.Pressed( e );
+  update();
 }
 
-void XYView::mouseReleaseEvent( QMouseEvent * )
+void XYView::mouseReleaseEvent( QMouseEvent *e )
 {
+  m.Released( e );
+  update();
 }
 
 void XYView::mouseDoubleClickEvent( QMouseEvent * )
