@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+  <file>XAFSM0.def</file>
   <file>Victoreen1.txt</file>
   <file>XafsMsg_ja_JP.qm</file>
   <file>XafsM2.key</file>

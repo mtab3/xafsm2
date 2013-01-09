@@ -6,9 +6,9 @@ void MainWindow::MotorMove( void )
   
   if ( !am->isBusy() ) {
     GoMStop0();
-    NewLogMsg( tr( "Setup: %1 : Reached at %2\n" )
+    NewLogMsg( tr( "Setup: %1 : Reached at %2" )
 	       .arg( am->getName() ).arg( am->value() ) );
-    statusbar->showMessage( tr( "Setup: %1 : Reached at %2\n" )
+    statusbar->showMessage( tr( "Setup: %1 : Reached at %2" )
 			    .arg( am->getName() ).arg( am->value() ), 1000 );
   }
 }

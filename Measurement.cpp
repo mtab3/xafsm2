@@ -5,7 +5,7 @@ void MainWindow::MeasSequence( void )
   double Delta;
   bool a1, a2;
 
-  if ( AskingOverwrite )
+  if (( AskingOverwrite )||( MakingSureOfRangeSelect ))
     return;
 
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
@@ -96,13 +96,13 @@ void MainWindow::MeasSequence( void )
 	MeasB++;
 	MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
-	NewLogMsg( QString( tr( "Meas: Repeat %1\n" ) ).arg( MeasR + 1 ) );
+	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
 	ClearXViewScreenForMeas();
 	MeasR++;
 	MeasStage = 2;
       } else {               // ½ªÎ»
 	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
-	NewLogMsg( QString( tr( "Meas: Finished\n" ) ) );
+	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
 	MeasTimer->stop();
 	inMeas = 0;
 	MeasStart->setText( tr( "Start" ) );

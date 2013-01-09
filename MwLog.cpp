@@ -20,8 +20,11 @@ void MainWindow::NewLogMsg( QString msg )
 {
   if ( msg.simplified().isEmpty() )
     return;
+  if ( ! msg.endsWith( "\n" ) )
+    msg += "\n";
 
   msg = QDateTime::currentDateTime().toString( "hh:mm:ss> " ) + msg;
+  
   LogMsgs->insertPlainText( msg );
   LogMsgs->moveCursor( QTextCursor::End );
 
@@ -58,6 +61,6 @@ void MainWindow::SetNewLFName( const QString &name )
 
 void MainWindow::AddLogComment( void )
 {
-  NewLogMsg( LogComment->text() + "\n" );
+  NewLogMsg( LogComment->text() );
   LogComment->setText( "" );
 }

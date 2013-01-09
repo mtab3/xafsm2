@@ -32,7 +32,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
-  ReadDef( "XAFSM.def" );
+  ReadDef( DefFileName );
   selmc = new SelMC( mccd );
 
   setWindowTitle( XAFSTitle );
@@ -50,8 +50,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   StatDisp->setupStatArea( &AMotors, &ASensors );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
   QString msg = "XafsMsg_" + QLocale::system().name();
-  NewLogMsg( msg + "\n" );
-  NewLogMsg( QString( tr( "Mono: %1 (%2 A)\n" ) )
+  NewLogMsg( msg );
+  NewLogMsg( QString( tr( "Mono: %1 (%2 A)" ) )
 	     .arg( mccd[ selmc->MC() ]->getMCName() )
 	     .arg( mccd[ selmc->MC() ]->getD() ) );
 
@@ -218,7 +218,7 @@ void MainWindow::ShowCurThPos( void )   // 値はあえて使わない
   buf.sprintf( UnitName[DEG].form, CurPosKeV = deg2keV( deg ) );
   ShowCurrentEnergy->setText( buf );
   
-  NewLogMsg( tr( "Current Position [%1] keV\n" ).arg( buf ) );
+  NewLogMsg( tr( "Current Position [%1] keV" ).arg( buf ) );
 }
 
 

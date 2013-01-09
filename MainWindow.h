@@ -229,6 +229,8 @@ private:
   TYView *MonitorView;
   QFileDialog *monFSel;
 
+  QVector<AUnit*> SensWithRange;
+
   QVector<QLineEdit *> BLKstart;
   QVector<QLineEdit *> BLKstep;
   QVector<QLineEdit *> BLKdwell;
@@ -283,7 +285,9 @@ private:
   double r[ 100 ];
   QMessageBox *StopP;
   QMessageBox *AskOverWrite;
+  QMessageBox *MakeSureOfRangeSelect;
   bool AskingOverwrite;
+  bool MakingSureOfRangeSelect;
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( void );
   int GetDFName0( void );
@@ -372,6 +376,9 @@ private slots:
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
 
+  void newSensSelected( int );
+  void newRangeSelected( int );
+
   void StartMCA( void );
   void MCAChSelected( int i );
   void showPeakingTime( SMsg mag );
@@ -445,6 +452,7 @@ private slots:
   void SurelyStop( void );
   void GoingOn( void );
   void OkOverWrite( void );
+  void RangeSelOK( void );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

@@ -21,6 +21,7 @@ const MsgTyp MsgT[] = {
   { "@SetAutoRangeEnable", SETAUTORANGE },
   { "@SetNPLCycles", SETNPLCYCLES },
   { "@Run", RUN },
+  { "@SetRange", SETRANGE },
   { "@ScanCw", SCANCW },
   { "@ScanCcw", SCANCCW },
   { "@Read", READ },

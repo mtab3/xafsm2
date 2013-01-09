@@ -79,6 +79,7 @@ signals:
   void AnsSetAutoRange( SMsg msg );
   void AnsSetNPLCycles( SMsg msg );
   void AnsRun( SMsg msg );
+  void AnsSetRange( SMsg msg );
   void AnsScanCw( SMsg msg );
   void AnsScanCcw( SMsg msg );
   void AnsRead( SMsg msg );

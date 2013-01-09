@@ -14,7 +14,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
     drivers << Ass->at(i);
   }
 
-  for ( int i = 0; i < drivers.count(); i++ ) {
+  for ( int i = 0; i < drivers.count(); i++ ) {   // XAFSM.def にある全ドライバ名を集める
     Drivers << drivers.at(i)->getDriver();
     connect( drivers.at(i), SIGNAL( Enabled( QString, bool ) ),
 	     this, SLOT( OnEnabled( QString, bool ) ) );
@@ -83,12 +83,16 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
   QPushButton *CEB, *CBB;
   QComboBox *CB1, *IBBx1, *IBBx2;
   int col;
-  for ( int i = 0; i < Drivers.count(); i++ ) {
+  for ( int i = 0; i < Drivers.count(); i++ ) {   // 集めた全ドライバ名の一つ一つに対して
     col = 0;
     QVector<AUnit*> *Units = new QVector<AUnit*>;
+    // それぞれの名前のドライバを使っているユニットのポインタを集める
     for ( int j = 0; j < drivers.count(); j++ ) {
       if ( Drivers.at(i) == drivers.at(j)->getDriver() )
 	*Units << drivers.at(j);
+      if ( drivers.at(j)->has2ndDriver() )
+	if ( Drivers.at(i) == drivers.at(j)->get2ndDriver() )
+	  *Units << drivers.at(j);
     }
     DrvUnits << Units;
 
@@ -100,9 +104,11 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
 
     CB1 = new QComboBox;
     for ( int j = 0; j < drivers.count(); j++ ) {
-      if ( drivers.at(j)->getDriver() == Drivers.at(i) ) {
+      if ( drivers.at(j)->getDriver() == Drivers.at(i) )
 	CB1->addItem( drivers.at(j)->getName() );
-      }
+      if ( drivers.at(j)->has2ndDriver() )
+	if ( drivers.at(j)->get2ndDriver() == Drivers.at(i) )
+	  CB1->addItem( drivers.at(j)->getName() );
     }
     CB1->setStyleSheet( CBack );
     MainGrid->addWidget( CB1, i+3, col++ );
@@ -333,7 +339,6 @@ void Status::SelStatWatch( void )
 	  }
 	}
 	LIB2s.at(i)->setStyleSheet( ( IBBx2s.at(i)->count() > 0 ) ? NGcolor : OKcolor );
-
       }
     }
   }

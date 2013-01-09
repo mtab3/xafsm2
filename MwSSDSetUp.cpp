@@ -255,7 +255,7 @@ void MainWindow::StartMCA( void )
     if ( ! SFluo->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
       statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg + "\n" );
+      NewLogMsg( msg );
       return;
     }
 

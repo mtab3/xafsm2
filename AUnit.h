@@ -19,17 +19,26 @@ class AUnit : public QObject
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
   QString Uid;          // Uniq ID
+  QString Uid2;         // 2nd Uid
   QString ID;           // MainTh, StageX, General, ...
   QString Name;         // Disiplayed name
   QString Driver;
+  QString Driver2;      // 2nd Driver
   QString Ch;
+  QString Ch2;          // 2nd Ch;
   QString DevCh;        // Driver + "." + Ch
+  QString DevCh2;       // 2nd DevCh
   QString Unit;         // metric unit "mm", "mA", ...
   double UPP;           // Unit per Puls : only for PM
-  bool IsInt;           // is the controlling unit is integer or not.
-  bool HasParent;       // does the unit have parent (group leader).
+  bool IsInt;           // if the controlling unit is integer or not.
+  bool HasParent;       // if the unit have parent (group leader).
   QString PUid;         // the Uid of the parenet
-  AUnit *theParent;        // the parent
+  AUnit *theParent;     // the parent
+  bool Has2ndDriver;    // if the unit has second driver or not.
+  bool RangeSelectable; // if range is selectable for the unit
+  int RangeU;           // Upper range limit
+  int RangeL;           // Lower range limit
+  int SelectedRange;
 
   double Center;        // Center position in puls : only for PM
 
@@ -54,7 +63,7 @@ class AUnit : public QObject
   int lastSetV;
 
  private:
-  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp );
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp, int cnt2 );
 
 public:
   AUnit( QObject *parent = 0 );
@@ -67,6 +76,7 @@ public:
   void setType( QString type ) { Type = type; };
   void setID( QString id ) { ID = id; };
   void setUid( QString uid ) { Uid = uid; };
+  void set2ndUid( QString uid ) { Uid2 = uid; };
   void setName( QString name ) { Name = name; };
   void setDriver( QString driver ) { Driver = driver; };
   void setCh( QString ch ) { Ch = ch; };
@@ -76,6 +86,14 @@ public:
     else 
       DevCh = Driver + "." + Ch;
   }
+  void set2ndDriver( QString driver ) { Driver2 = driver; };
+  void set2ndCh( QString ch ) { Ch2 = ch; };
+  void set2ndDevCh( void ) {
+    if ( Ch2.isEmpty() )
+      DevCh2 = Driver2;
+    else 
+      DevCh2 = Driver2 + "." + Ch2;
+  }
   void setUnit( QString unit ) { Unit = unit; };
   void setIsBusy( bool busy ) { IsBusy = busy; emit ChangedIsBusy1( Driver ); };
   void setIsBusy2( bool busy ) { IsBusy2 = busy; emit ChangedIsBusy2( Driver ); };
@@ -83,11 +101,16 @@ public:
   void setHasParent( bool hasParent ) { HasParent = hasParent; };
   void setParent( QString pUid ) { PUid = pUid; };
   void setTheParent( AUnit *p ) { theParent = p; };
+  void setHas2ndDriver( bool has2ndDriver ) { Has2ndDriver = has2ndDriver; };
   void setSSDPresetType( QString type ) { SSDPresetType = type; };
   QString getSSDPresetType( void ) { return SSDPresetType; };
   void setROIs( QString *roistart, QString *roiend )
   { ROIStart = roistart; ROIEnd = roiend; };
   void setSSDUsingCh( int i, bool f ) { if ( i < 19 ) SSDUsingCh[i] = f; };
+  void setRangeSelectable( bool f ) { RangeSelectable = f; };
+  void setRangeU( int upper ) { RangeU = upper; };
+  void setRangeL( int lower ) { RangeL = lower; };
+  void setRange( int r ) { SelectedRange = r; };
 
   bool checkNewVal( void )
   {
@@ -115,10 +138,14 @@ public:
   QString getType( void ) { return Type; };
   QString getID( void ) { return ID; };
   QString getUid( void ) { return Uid; };
+  QString get2ndUid( void ) { return Uid2; };
   QString getName( void ) { return Name; };
   QString getDriver( void ) { return Driver; };
   QString getCh( void ) { return Ch; };
   QString getDevCh( void ) { return DevCh; };
+  QString get2ndDriver( void ) { return Driver2; };
+  QString get2ndCh( void ) { return Ch2; };
+  QString get2ndDevCh( void ) { return DevCh2; };
   QString getUnit( void ) { return Unit; };
   bool isBusy( void ) { return IsBusy; };
   bool isBusy2( void ) { return IsBusy2; };
@@ -128,6 +155,7 @@ public:
   double getUPP( void ) { return UPP; };
   bool isInt( void ) { return IsInt; };
   bool hasParent( void ) { return HasParent; };
+  bool has2ndDriver( void ) { return Has2ndDriver; };
   QString getPUid( void ) { return PUid; };
   AUnit *getTheParent( void ) { return theParent; };
   double stat( int ch, STATELM i );
@@ -135,6 +163,10 @@ public:
   double realTime( int ch );
   double liveTime( int ch );
   bool getSSDUsingCh( int i ) { if ( i < 19 ) return SSDUsingCh[i]; else return false; };
+  bool isRangeSelectable( void ) { return RangeSelectable; };
+  int getRangeU( void ) { return RangeU; };
+  int getRangeL( void ) { return RangeL; };
+  int getRange( void ) { return SelectedRange; };
 
   int getLastSetV( void ) { return lastSetV; };
 

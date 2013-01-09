@@ -59,6 +59,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
   AskOverWrite->setDefaultButton( tmpB );
 
+  MakeSureOfRangeSelect = new QMessageBox;
+  tmpB = MakeSureOfRangeSelect->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  MakeSureOfRangeSelect->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
+  MakeSureOfRangeSelect->setDefaultButton( tmpB );
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
     QString name = ASensors.value(i)->getName(); 
     SelectI0->addItem( name );
@@ -147,6 +153,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( NewRpt() ) );
   connect( AskOverWrite, SIGNAL( accepted() ), this, SLOT( OkOverWrite() ) );
   connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
+  connect( MakeSureOfRangeSelect, SIGNAL( accepted() ), this, SLOT( RangeSelOK() ) );
+  connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
 }
 
 void MainWindow::ClearBLKs( void )
@@ -508,7 +516,7 @@ void MainWindow::StartMeasurement( void )
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( MMainTh->getName() );
       statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg + "\n" );
+      NewLogMsg( msg );
     }
 
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {
@@ -523,11 +531,14 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
-    if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL )
+    if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       return;
+    }
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas();
 
+    bool OneOfSensIsRangeSelectable = false;
+    QString theNames = "";
     int LC = 0;
     mUnits.clearUnits();
     for ( int i = 0; i < MCHANNELS; i++ )
@@ -541,8 +552,12 @@ void MainWindow::StartMeasurement( void )
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg + "\n" );
+      NewLogMsg( msg );
       return;
+    }
+    if ( as->isRangeSelectable() ) {
+      OneOfSensIsRangeSelectable = true;
+      theNames += " [" + as->getName() + "]";
     }
     if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
@@ -552,8 +567,12 @@ void MainWindow::StartMeasurement( void )
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg + "\n" );
+	NewLogMsg( msg );
 	return;
+      }
+      if ( as->isRangeSelectable() ) {
+	OneOfSensIsRangeSelectable = true;
+	theNames += " [" + as->getName() + "]";
       }
     }
     if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
@@ -565,8 +584,12 @@ void MainWindow::StartMeasurement( void )
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg + "\n" );
+	NewLogMsg( msg );
 	return;
+      }
+      if ( as->isRangeSelectable() ) {
+	OneOfSensIsRangeSelectable = true;
+	theNames += " [" + as->getName() + "]";
       }
     }
     if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
@@ -577,8 +600,12 @@ void MainWindow::StartMeasurement( void )
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg + "\n" );
+	NewLogMsg( msg );
 	return;
+      }
+      if ( as->isRangeSelectable() ) {
+	OneOfSensIsRangeSelectable = true;
+	theNames += " [" + as->getName() + "]";
       }
     }
     if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
@@ -589,14 +616,30 @@ void MainWindow::StartMeasurement( void )
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg + "\n" );
+	NewLogMsg( msg );
 	return;
       }
+      if ( as->isRangeSelectable() ) {
+	OneOfSensIsRangeSelectable = true;
+	theNames += " [" + as->getName() + "]";
+      }
+    }
+
+    if ( OneOfSensIsRangeSelectable ) {
+      MakeSureOfRangeSelect
+	->setText( tr( "The Sensor(s)%1 should be range selected.\n"
+		       "Have you selected the range in 'Setup Condition'" )
+		   .arg( theNames ) );
+      MakeSureOfRangeSelect->show();
+      MakingSureOfRangeSelect = true;
+    } else {
+      MakingSureOfRangeSelect = false;
     }
 
     QFileInfo CheckFile( DFName0 + ".dat" );
     if ( CheckFile.exists() ) {
-      AskOverWrite->setText( tr( "<h1><center>File [%1] Over Write ?</center></h1>" )
+      AskOverWrite
+	->setText( tr( "File [%1] Over Write ?" )
 			     .arg( DFName0 + ".dat" ) );
       AskOverWrite->show();
       AskingOverwrite = true;
@@ -605,7 +648,7 @@ void MainWindow::StartMeasurement( void )
     }
 
 
-    NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
+    NewLogMsg( QString( tr( "Meas: Start (%1 keV)" ) )
 	       .arg( CurPosKeV ) );
     InitialKeV = CurPosKeV;
     inMeas = 1;
@@ -625,7 +668,7 @@ void MainWindow::StartMeasurement( void )
   } else {
     StopP->show();
     SinPause = inPause;
-    NewLogMsg( QString( tr( "Meas: Break (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( QString( tr( "Meas: Break (%1 keV)" ) ).arg( CurPosKeV ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
@@ -637,7 +680,7 @@ void MainWindow::StartMeasurement( void )
 
 void MainWindow::SurelyStop( void )
 {
-  NewLogMsg( QString( tr( "Meas: Stopped (%1 keV)\n" ) ).arg( CurPosKeV ) );
+  NewLogMsg( QString( tr( "Meas: Stopped (%1 keV)" ) ).arg( CurPosKeV ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = 0;
@@ -658,10 +701,10 @@ void MainWindow::GoingOn( void )
   MeasStart->setEnabled( true );
   MeasPause->setEnabled( true );
   if ( SinPause == 1 ) {
-    NewLogMsg( QString( tr( "Meas: Pausing (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( QString( tr( "Meas: Pausing (%1 keV)" ) ).arg( CurPosKeV ) );
     inPause = 1;
   } else {
-    NewLogMsg( QString( tr( "Measu: Resume (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( QString( tr( "Measu: Resume (%1 keV)" ) ).arg( CurPosKeV ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause->setStyleSheet( "" );
@@ -683,12 +726,12 @@ void MainWindow::CpBlock2SBlock( void )
 void MainWindow::PauseMeasurement( void )
 {
   if ( inPause == 0 ) {
-    NewLogMsg( QString( tr( "Meas: Pause (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( QString( tr( "Meas: Pause (%1 keV)" ) ).arg( CurPosKeV ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
   } else {
-    NewLogMsg( QString( tr( "Meas: Resume (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( QString( tr( "Meas: Resume (%1 keV)" ) ).arg( CurPosKeV ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause->setStyleSheet( "" );
@@ -698,4 +741,9 @@ void MainWindow::PauseMeasurement( void )
 void MainWindow::OkOverWrite( void )
 {
   AskingOverwrite = false;
+}
+
+void MainWindow::RangeSelOK( void )
+{
+  MakingSureOfRangeSelect = false;
 }

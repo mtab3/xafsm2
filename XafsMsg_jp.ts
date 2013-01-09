@@ -25,47 +25,47 @@
         <translation>Frame</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="148"/>
+        <location filename="MCAView.cpp" line="146"/>
         <source>MCA Ch. : </source>
         <translation>MCA Ch. : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="157"/>
+        <location filename="MCAView.cpp" line="155"/>
         <source>Cursor point : </source>
         <translation>カーソル位置: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="165"/>
+        <location filename="MCAView.cpp" line="163"/>
         <source>Val. at Cursor : </source>
         <translation>カーソル位置の値 : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="173"/>
+        <location filename="MCAView.cpp" line="171"/>
         <source>ROI start : </source>
         <translation>ROI始点</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="181"/>
+        <location filename="MCAView.cpp" line="179"/>
         <source>ROI end : </source>
         <translation>ROI終点: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="189"/>
+        <location filename="MCAView.cpp" line="187"/>
         <source>ROI value : </source>
         <translation>ROI積分値: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="197"/>
+        <location filename="MCAView.cpp" line="195"/>
         <source>Real Time : </source>
         <translation>実時間: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="205"/>
+        <location filename="MCAView.cpp" line="203"/>
         <source>Live Time : </source>
         <translation>ライブ時間: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="213"/>
+        <location filename="MCAView.cpp" line="211"/>
         <source>Dead Time : </source>
         <translation>デッドタイム: </translation>
     </message>
@@ -879,20 +879,23 @@ Though, other parameters are fixed at the value on starting.</source>
     <message>
         <location filename="Goto.cpp" line="9"/>
         <location filename="Goto.cpp" line="11"/>
-        <source>Setup: %1 : Reached at %2
-</source>
+        <source>Setup: %1 : Reached at %2</source>
+        <oldsource>Setup: %1 : Reached at %2
+</oldsource>
         <translation>設定: %1 : %2 に到達</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="54"/>
-        <source>Mono: %1 (%2 A)
-</source>
+        <source>Mono: %1 (%2 A)</source>
+        <oldsource>Mono: %1 (%2 A)
+</oldsource>
         <translation>分光結晶: %1 (%2 A)</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="221"/>
-        <source>Current Position [%1] keV
-</source>
+        <source>Current Position [%1] keV</source>
+        <oldsource>Current Position [%1] keV
+</oldsource>
         <translation>分光器現在位置 [%1] keV</translation>
     </message>
     <message>
@@ -912,8 +915,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="Measurement.cpp" line="99"/>
-        <source>Meas: Repeat %1
-</source>
+        <source>Meas: Repeat %1</source>
+        <oldsource>Meas: Repeat %1
+</oldsource>
         <translation>測定： %1回目</translation>
     </message>
     <message>
@@ -923,8 +927,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="Measurement.cpp" line="105"/>
-        <source>Meas: Finished
-</source>
+        <source>Meas: Finished</source>
+        <oldsource>Meas: Finished
+</oldsource>
         <translation>測定: 終了</translation>
     </message>
     <message>
@@ -1038,8 +1043,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="608"/>
-        <source>Meas: Start (%1 keV)
-</source>
+        <source>Meas: Start (%1 keV)</source>
+        <oldsource>Meas: Start (%1 keV)
+</oldsource>
         <translation>測定: 開始(%1 keV)</translation>
     </message>
     <message>
@@ -1053,8 +1059,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="628"/>
-        <source>Meas: Break (%1 keV)
-</source>
+        <source>Meas: Break (%1 keV)</source>
+        <oldsource>Meas: Break (%1 keV)
+</oldsource>
         <translation>測定: 中断(%1 keV)</translation>
     </message>
     <message>
@@ -1065,8 +1072,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="640"/>
-        <source>Meas: Stopped (%1 keV)
-</source>
+        <source>Meas: Stopped (%1 keV)</source>
+        <oldsource>Meas: Stopped (%1 keV)
+</oldsource>
         <translation>測定: 停止 (%1 keV)</translation>
     </message>
     <message>
@@ -1076,26 +1084,30 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="661"/>
-        <source>Meas: Pausing (%1 keV)
-</source>
+        <source>Meas: Pausing (%1 keV)</source>
+        <oldsource>Meas: Pausing (%1 keV)
+</oldsource>
         <translation>測定: ポーズ (%1 keV)</translation>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="664"/>
-        <source>Measu: Resume (%1 keV)
-</source>
+        <source>Measu: Resume (%1 keV)</source>
+        <oldsource>Measu: Resume (%1 keV)
+</oldsource>
         <translation>測定: 再開 (%1 keV)</translation>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="686"/>
-        <source>Meas: Pause (%1 keV)
-</source>
+        <source>Meas: Pause (%1 keV)</source>
+        <oldsource>Meas: Pause (%1 keV)
+</oldsource>
         <translation>測定: ポーズ (%1 keV)</translation>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="691"/>
-        <source>Meas: Resume (%1 keV)
-</source>
+        <source>Meas: Resume (%1 keV)</source>
+        <oldsource>Meas: Resume (%1 keV)
+</oldsource>
         <translation>測定: 再開 (%1 keV)</translation>
     </message>
     <message>
@@ -1142,22 +1154,25 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MwSetup.cpp" line="258"/>
-        <source>Current Position of [%1] : [%2] %3
-</source>
+        <source>Current Position of [%1] : [%2] %3</source>
+        <oldsource>Current Position of [%1] : [%2] %3
+</oldsource>
         <translation>[%1]の現在位置 : [%2] %3</translation>
     </message>
     <message>
         <location filename="MwSetup.cpp" line="371"/>
         <location filename="MwSetup.cpp" line="375"/>
-        <source>Setup: %1 : GoTo %2 : Speed %3
-</source>
+        <source>Setup: %1 : GoTo %2 : Speed %3</source>
+        <oldsource>Setup: %1 : GoTo %2 : Speed %3
+</oldsource>
         <translation>設定: %1 をスピード %3 で %2 に移動</translation>
     </message>
     <message>
         <location filename="MwSetup.cpp" line="398"/>
         <location filename="MwSetup.cpp" line="401"/>
-        <source>Setup: %1 : Stopped at %2
-</source>
+        <source>Setup: %1 : Stopped at %2</source>
+        <oldsource>Setup: %1 : Stopped at %2
+</oldsource>
         <translation>設定: %1 を %2 で停止</translation>
     </message>
     <message>
@@ -1172,8 +1187,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MwSetup.cpp" line="472"/>
-        <source>Scan Start (%1 %2)
-</source>
+        <source>Scan Start (%1 %2)</source>
+        <oldsource>Scan Start (%1 %2)
+</oldsource>
         <translation>スキャン: 開始 (%1, %2)</translation>
     </message>
     <message>
@@ -1234,12 +1250,13 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="Scan.cpp" line="71"/>
-        <source>Scan Finished
-</source>
+        <source>Scan Finished</source>
+        <oldsource>Scan Finished
+</oldsource>
         <translation>スキャン終了</translation>
     </message>
     <message>
-        <location filename="MwLog.cpp" line="30"/>
+        <location filename="MwLog.cpp" line="33"/>
         <source>Cannot open Log File [%1]
 </source>
         <translation>ログファイル[%1]が開けません。</translation>
@@ -1880,8 +1897,9 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="SelMC.cpp" line="44"/>
-        <source>Mono: Cnaged to %1 (%2 A)
-</source>
+        <source>Mono: Cnaged to %1 (%2 A)</source>
+        <oldsource>Mono: Cnaged to %1 (%2 A)
+</oldsource>
         <translation>分光結晶: 変更 %1 (%2 A)</translation>
     </message>
 </context>
@@ -2055,7 +2073,7 @@ Though, other parameters are fixed at the value on starting.</source>
 <context>
     <name>TYView</name>
     <message>
-        <location filename="TYView.cpp" line="113"/>
+        <location filename="TYView.cpp" line="120"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
@@ -2068,8 +2086,9 @@ Though, other parameters are fixed at the value on starting.</source>
         <translation>Frame</translation>
     </message>
     <message>
+        <location filename="XView.cpp" line="360"/>
         <source>%1</source>
-        <translation type="obsolete">%1</translation>
+        <translation>%1</translation>
     </message>
 </context>
 </TS>

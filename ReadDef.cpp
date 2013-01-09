@@ -76,7 +76,7 @@ void MainWindow::ReadDef( QString fname )
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }
-	} else {  // 以下、各 sensor だけの項目
+	} else {  // 以下、sensor だけの項目
 	  // 全 sensor 共通
 	  next = nextItem( next, item ); NewUnit->setHasParent( item == "YES" );
 	  next = nextItem( next, item ); NewUnit->setParent( item );
@@ -84,6 +84,15 @@ void MainWindow::ReadDef( QString fname )
 	  if ( type == "ENC" ) {
 	  } else if ( type == "PAM" ) {
 	  } else if ( type == "CNT" ) {
+	  } else if ( type == "CNT2" ) {
+	    next = nextItem( next, item );
+	    NewUnit->set2ndUid( item );             // 2nd ドライバの設定
+	    NewUnit->setHas2ndDriver( true );       // 2nd ドライバフラグ
+	    NewUnit->setRangeSelectable( true );    // レンジ設定可能のフラグ
+	    next = nextItem( next, item );
+	    NewUnit->setRangeU( item.toInt() );     // レンジ上限値
+	    next = nextItem( next, item );
+	    NewUnit->setRangeL( item.toInt() );     // レンジ下限値
 	  } else if ( type == "SSDP" ) {
 	  } else if ( type == "SSD" ) {
 	  } else {
@@ -118,6 +127,7 @@ void MainWindow::ReadDef( QString fname )
   f.close();
 
   int i, j;   // 親ユニット有り、と宣言したセンサーに親ユニットのポインタを渡す。
+              // また、2nd Driver があるユニット Uid2 を元に Driver2, Ch2, DevCh2 を設定
               // 全部の定義が終わってからやっているのは、親と宣言したユニットの定義が
               // 後から出てきても大丈夫にするため。
   for ( i = 0; i < ASensors.count(); i++ ) {
@@ -131,6 +141,20 @@ void MainWindow::ReadDef( QString fname )
       if ( j >= ASensors.count() ) {
 	qDebug() << "can not find a parent for " << ASensors.at(i)->getUid()
 		 << "the name is " << ASensors.at(i)->getPUid();
+      }
+    }
+    if ( ASensors.at(i)->getType() == "CNT2" ) {
+      for ( j = 0; j < ASensors.count(); j++ ) {
+	if ( ASensors.at(i)->get2ndUid() == ASensors.at(j)->getUid() ) {
+	  ASensors.at(i)->set2ndDriver( ASensors.at(j)->getDriver() );
+	  ASensors.at(i)->set2ndCh( ASensors.at(j)->getCh() );
+	  ASensors.at(i)->set2ndDevCh();
+	  break;
+	}
+      }
+      if ( j >= ASensors.count() ) {
+	qDebug() << "can not find a 2nd Driver for " << ASensors.at(i)->getUid()
+		 << "the name is " << ASensors.at(i)->get2ndUid();
       }
     }
   }

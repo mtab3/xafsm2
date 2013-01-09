@@ -77,7 +77,19 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectD20->addItem( ASensors.value(i)->getName() );
     SelectD21->addItem( ASensors.value(i)->getName() );
     SelectD22->addItem( ASensors.value(i)->getName() );
+    if ( ASensors.at(i)->isRangeSelectable() ) {
+      SelSensToSetRange->addItem( ASensors.at(i)->getName() );
+      SensWithRange << ASensors.at(i);
+      ASensors.at(i)->setRange( ASensors.at(i)->getRangeU() );
+    }
   }
+  RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
+			 SensWithRange.at(0)->getRangeU() );
+  RangeSelect->setValue( SensWithRange.at(0)->getRange() );
+  connect( SelSensToSetRange, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelected( int ) ) );
+  connect( RangeSelect, SIGNAL( valueChanged( int ) ),
+	   this, SLOT( newRangeSelected( int ) ) );
 
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
@@ -126,6 +138,19 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( setSelectedScanFName( const QString & ) ) );
   connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
 }
+
+void MainWindow::newSensSelected( int i )
+{
+  RangeSelect->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+  RangeSelect->setValue( SensWithRange.at(i)->getRange() );
+}
+
+void MainWindow::newRangeSelected( int i )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )->setRange( i );
+}
+
 
 void MainWindow::saveScanData( void )
 {
@@ -255,7 +280,7 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
       }
     }
     if ( am->checkNewVal() ) {
-      NewLogMsg( tr( "Current Position of [%1] : [%2] %3\n" )
+      NewLogMsg( tr( "Current Position of [%1] : [%2] %3" )
 		 .arg( am->getName() )
 		 .arg( val )
 		 .arg( am->getUnit() ) );
@@ -368,11 +393,11 @@ void MainWindow::GoMAtPuls( double Pos )
 
   GoTimer->start( 100 );
 
-  NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
+  NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
 	     .arg( am->getName() )
 	     .arg( GoMotorPosPuls->text().toInt() )
 	     .arg( MSpeeds[ MovingS ].MSName ) );
-  statusbar->showMessage( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
+  statusbar->showMessage( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
 			  .arg( am->getName() )
 			  .arg( GoMotorPosPuls->text().toInt() )
 			  .arg( MSpeeds[ MovingS ].MSName ),
@@ -395,10 +420,10 @@ void MainWindow::GoMStop( void )
   am->Stop();
   GoMStop0();
 
-  NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2\n" ) )
+  NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2" ) )
 	     .arg( am->getName() )
 	     .arg( am->value() ) );
-  statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2\n" ) )
+  statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2" ) )
 			  .arg( am->getName() )
 			  .arg( am->value() ), 1000 );
 }
@@ -439,14 +464,14 @@ void MainWindow::ScanStart( void )
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( am->getName() );
       statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg + "\n" );
+      NewLogMsg( msg );
       return;
     }
     if ( ! as->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg + "\n" );
+      NewLogMsg( msg );
       return;
     }
     
@@ -469,7 +494,7 @@ void MainWindow::ScanStart( void )
     }
     inSPSing = 1;
 
-    NewLogMsg( QString( tr( "Scan Start (%1 %2)\n" ) )
+    NewLogMsg( QString( tr( "Scan Start (%1 %2)" ) )
 	       .arg( am->getName() )
 	       .arg( as->getName() ) );
     
@@ -512,7 +537,7 @@ void MainWindow::Monitor( void )
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( as0->getName() );
       statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg + "\n" );
+      NewLogMsg( msg );
       return;
     }
     if ( ( MonitorViewC = SetUpNewView( TYVIEW ) ) == NULL ) {
@@ -554,7 +579,7 @@ void MainWindow::Monitor( void )
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as1->getName() );
 	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg + "\n" );
+	NewLogMsg( msg );
 	return;
       }
       mUnits.addUnit( as1, DwellT21->text().toDouble() );
@@ -565,7 +590,7 @@ void MainWindow::Monitor( void )
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	  .arg( as2->getName() );
 	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg + "\n" );
+	NewLogMsg( msg );
 	return;
       }
       mUnits.addUnit( as2, DwellT22->text().toDouble() );

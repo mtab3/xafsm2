@@ -223,6 +223,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetNPLCycles( smsg ); break;
 	case RUN:
 	  emit AnsRun( smsg ); break;
+	case SETRANGE:
+	  emit AnsSetRange( smsg ); break;
 	case SCANCW:
 	  emit AnsScanCw( smsg ); break;
 	case SCANCCW:
