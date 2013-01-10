@@ -4,12 +4,14 @@
 
 void MainWindow::setupMeasArea( void )   /* 測定エリア */
 {
-  BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05 << BLKs06 << BLKs07;
-  BLKstep  << BLKstep01 << BLKstep02 << BLKstep03 << BLKstep04 << BLKstep05 << BLKstep06;
-  BLKdwell << BLKdwell01 << BLKdwell02 << BLKdwell03
-	   << BLKdwell04 << BLKdwell05 << BLKdwell06;
-  BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03
-	    << BLKpoints04 << BLKpoints05 << BLKpoints06;
+  BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05
+	   << BLKs06 << BLKs07 << BLKs08 << BLKs09;
+  BLKstep  << BLKstep01 << BLKstep02 << BLKstep03 << BLKstep04 << BLKstep05
+	   << BLKstep06 << BLKstep07 << BLKstep08;
+  BLKdwell << BLKdwell01 << BLKdwell02 << BLKdwell03 << BLKdwell04 << BLKdwell05
+	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
+  BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
+	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
 
   BLKUnit = KEV;
   ClearBLKs();
@@ -92,35 +94,20 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   ModeA1->addItem( "A1/I0" );
   ModeA2->addItem( "log(I0/A2)" );
   ModeA2->addItem( "A2/I0" );
-  
-  connect( BLKstart[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart00()) );
-  connect( BLKstart[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart01()) );
-  connect( BLKstart[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart02()) );
-  connect( BLKstart[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart03()) );
-  connect( BLKstart[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart04()) );
-  connect( BLKstart[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart05()) );
-  connect( BLKstart[6], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart06()) );
 
-  connect( BLKstep[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep00()) );
-  connect( BLKstep[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep01()) );
-  connect( BLKstep[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep02()) );
-  connect( BLKstep[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep03()) );
-  connect( BLKstep[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep04()) );
-  connect( BLKstep[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep05()) );
-
-  connect( BLKdwell[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell00()) );
-  connect( BLKdwell[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell01()) );
-  connect( BLKdwell[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell02()) );
-  connect( BLKdwell[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell03()) );
-  connect( BLKdwell[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell04()) );
-  connect( BLKdwell[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell05()) );
-
-  connect( BLKpoints[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints00()) );
-  connect( BLKpoints[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints01()) );
-  connect( BLKpoints[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints02()) );
-  connect( BLKpoints[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints03()) );
-  connect( BLKpoints[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints04()) );
-  connect( BLKpoints[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints05()) );
+  for ( int i = 0; i < BLKstart.count(); i++ ) {
+    connect( BLKstart.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart()) );
+  }
+  for ( int i = 0; i < BLKstep.count(); i++ ) {
+    connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
+  }
+  for ( int i = 0; i < BLKdwell.count(); i++ ) {
+    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell()) );
+  }
+  for ( int i = 0; i < BLKpoints.count(); i++ ) {
+    connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
+	     this, SLOT(ChangeBLKpoints()) );
+  }
 
   connect( SelBLKUnit, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( ChangeBLKUnit( int ) ) );
@@ -135,12 +122,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   this, SLOT( SelectedWBFN( const QString & ) ) );
   connect( SelRBFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedRBFN( const QString & ) ) );
-#if 0
-  connect( ModeTrans, SIGNAL( clicked() ), this, SLOT( Mode2Tr() ) );
-  connect( ModeFluo, SIGNAL( clicked() ), this, SLOT( Mode2Fl() ) );
-  connect( ModeAux, SIGNAL( clicked() ), this, SLOT( Mode2Au() ) );
-#endif
-
 
   connect( SelDFName, SIGNAL( clicked() ), SelDFND, SLOT( show() ) );
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
@@ -339,62 +320,49 @@ void MainWindow::ShowTotal( void )
   TTime->setText( tr( "Time: " ) + buf );
 }
 
-void MainWindow::ChangeBLKstart00( void ) { ChangeBLKstart( 0 ); }
-void MainWindow::ChangeBLKstart01( void ) { ChangeBLKstart( 1 ); }
-void MainWindow::ChangeBLKstart02( void ) { ChangeBLKstart( 2 ); }
-void MainWindow::ChangeBLKstart03( void ) { ChangeBLKstart( 3 ); }
-void MainWindow::ChangeBLKstart04( void ) { ChangeBLKstart( 4 ); }
-void MainWindow::ChangeBLKstart05( void ) { ChangeBLKstart( 5 ); }
-void MainWindow::ChangeBLKstart06( void ) { ChangeBLKstart( 6 ); }
-
-void MainWindow::ChangeBLKstart( int i )
+void MainWindow::ChangeBLKstart( void )
 {
-  BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
-  ShowBLKs();
+  for ( int i = 0; i < BLKstart.count(); i++ ) {
+    if ( BLKstart.at(i) == sender() ) {
+      BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
+      ShowBLKs();
+    }
+  }
 }
 
-void MainWindow::ChangeBLKstep00( void ) { ChangeBLKstep( 0 ); }
-void MainWindow::ChangeBLKstep01( void ) { ChangeBLKstep( 1 ); }
-void MainWindow::ChangeBLKstep02( void ) { ChangeBLKstep( 2 ); }
-void MainWindow::ChangeBLKstep03( void ) { ChangeBLKstep( 3 ); }
-void MainWindow::ChangeBLKstep04( void ) { ChangeBLKstep( 4 ); }
-void MainWindow::ChangeBLKstep05( void ) { ChangeBLKstep( 5 ); }
-
-void MainWindow::ChangeBLKstep( int i )
+void MainWindow::ChangeBLKstep( void )
 {
   double step;
 
-  step = BLKstep[i]->text().toDouble();
-  BlockPoints[i]
-    = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
-	   /step )+0.5;
-  ShowBLKs();
+  for ( int i = 0; i < BLKstep.count(); i++ ) {
+    if ( BLKstep.at(i) == sender() ) {
+      step = BLKstep[i]->text().toDouble();
+      BlockPoints[i]
+	= fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	       /step )+0.5;
+      ShowBLKs();
+    }
+  }
 }
 
-void MainWindow::ChangeBLKpoints00( void ) { ChangeBLKpoints( 0 ); }
-void MainWindow::ChangeBLKpoints01( void ) { ChangeBLKpoints( 1 ); }
-void MainWindow::ChangeBLKpoints02( void ) { ChangeBLKpoints( 2 ); }
-void MainWindow::ChangeBLKpoints03( void ) { ChangeBLKpoints( 3 ); }
-void MainWindow::ChangeBLKpoints04( void ) { ChangeBLKpoints( 4 ); }
-void MainWindow::ChangeBLKpoints05( void ) { ChangeBLKpoints( 5 ); }
-
-void MainWindow::ChangeBLKpoints( int i )
+void MainWindow::ChangeBLKpoints( void )
 {
-  BlockPoints[i] = BLKpoints[i]->text().toDouble();
-  ShowBLKs();
+  for ( int i = 0; i < BLKpoints.count(); i++ ) {
+    if ( BLKpoints.at(i) == sender() ) {
+      BlockPoints[i] = BLKpoints[i]->text().toDouble();
+      ShowBLKs();
+    }
+  }
 }
 
-void MainWindow::ChangeBLKdwell00( void ) { ChangeBLKdwell( 0 ); }
-void MainWindow::ChangeBLKdwell01( void ) { ChangeBLKdwell( 1 ); }
-void MainWindow::ChangeBLKdwell02( void ) { ChangeBLKdwell( 2 ); }
-void MainWindow::ChangeBLKdwell03( void ) { ChangeBLKdwell( 3 ); }
-void MainWindow::ChangeBLKdwell04( void ) { ChangeBLKdwell( 4 ); }
-void MainWindow::ChangeBLKdwell05( void ) { ChangeBLKdwell( 5 ); }
-
-void MainWindow::ChangeBLKdwell( int i )
+void MainWindow::ChangeBLKdwell( void )
 {
-  BlockDwell[i] = BLKdwell[i]->text().toDouble();
-  ShowBLKs();
+  for ( int i = 0; i < BLKdwell.count(); i++ ) {
+    if ( BLKdwell.at(i) == sender() ) {
+      BlockDwell[i] = BLKdwell[i]->text().toDouble();
+      ShowBLKs();
+    }
+  }
 }
 
 void MainWindow::SetDwells( void )

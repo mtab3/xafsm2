@@ -38,7 +38,7 @@ class QFileDialog;
 /* Window design of the program is assuming these values are as defined here. */
 /******************************************************************************/
 const int GOS = 4;            // Presetted Go To Positions
-const int MaxBLKs = 6;        // Max Blocks
+const int MaxBLKs = 8;        // Max Blocks
 const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
@@ -260,10 +260,6 @@ private:
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
 
-  void ChangeBLKstart( int i );
-  void ChangeBLKstep( int i );
-  void ChangeBLKpoints( int i );
-  void ChangeBLKdwell( int i );
   void ClearBLKs( void );
   void ShowBLKs( void );
   void WriteBF( void );
@@ -313,14 +309,6 @@ private:
   bool CheckDetectorSelection( void );
 
   bool isBusyMotorInMeas( void );
-  //  bool isBusySensors( void );
-  //  void ClearSensorStages( void );
-  //  bool InitSensors( void );
-  //  void SetDwellTime( double dtime );  // for measure
-  //  void SetDwellTime2( void );         // for monitor
-  //  bool GetSensValues0( void );
-  //  bool GetSensValues( void );
-  //  void ReadSensValues( void );
   void SetScanViewWindow( void );
 
   void SetEnableOfUnits( QString drv, bool enable );
@@ -335,6 +323,11 @@ private slots:
 
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
+
+  void ChangeBLKstart( void );
+  void ChangeBLKstep( void );
+  void ChangeBLKpoints( void );
+  void ChangeBLKdwell( void );
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );
@@ -403,47 +396,12 @@ private slots:
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
 
-  void ChangeBLKstart00( void );
-  void ChangeBLKstart01( void );
-  void ChangeBLKstart02( void );
-  void ChangeBLKstart03( void );
-  void ChangeBLKstart04( void );
-  void ChangeBLKstart05( void );
-  void ChangeBLKstart06( void );
-
-  void ChangeBLKstep00( void );
-  void ChangeBLKstep01( void );
-  void ChangeBLKstep02( void );
-  void ChangeBLKstep03( void );
-  void ChangeBLKstep04( void );
-  void ChangeBLKstep05( void );
-
-  void ChangeBLKpoints00( void );
-  void ChangeBLKpoints01( void );
-  void ChangeBLKpoints02( void );
-  void ChangeBLKpoints03( void );
-  void ChangeBLKpoints04( void );
-  void ChangeBLKpoints05( void );
-
-  void ChangeBLKdwell00( void );
-  void ChangeBLKdwell01( void );
-  void ChangeBLKdwell02( void );
-  void ChangeBLKdwell03( void );
-  void ChangeBLKdwell04( void );
-  void ChangeBLKdwell05( void );
-
   void SetStdEXAFSBLKs( void );
   void SetStdXAFSBLKs( void );
   void SetStdXANESBLKs( void );
   void SetDwells( void );
   void SelectedWBFN( const QString &fname );
   void SelectedRBFN( const QString &fname );
-
-#if 0
-  void Mode2Tr( void );
-  void Mode2Fl( void );
-  void Mode2Au( void );
-#endif
 
   void SelSSDs0( void );
   void SelSSDs20( void );
