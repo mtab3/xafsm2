@@ -243,7 +243,7 @@
            <item>
             <widget class="QLabel" name="label_15">
              <property name="text">
-              <string>KeV  </string>
+              <string>KeV   </string>
              </property>
             </widget>
            </item>
@@ -299,52 +299,6 @@
          <property name="spacing">
           <number>3</number>
          </property>
-         <item row="1" column="4">
-          <widget class="QLabel" name="label_26">
-           <property name="text">
-            <string>KeV</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_25">
-           <property name="text">
-            <string>Deg.  </string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QLabel" name="ShowCurrentEnergy">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 221);</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="text">
-            <string>10.0000</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="ShowCurrentAngle">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 221);</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="text">
-            <string>10.0000</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_22">
            <property name="text">
@@ -352,7 +306,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="5">
+         <item row="2" column="0" colspan="6">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <spacer name="horizontalSpacer_2">
@@ -392,6 +346,52 @@
            </item>
           </layout>
          </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="ShowCurrentEnergy">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 221);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string>10.0000</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QLabel" name="label_25">
+           <property name="text">
+            <string>Deg.  </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_26">
+           <property name="text">
+            <string>KeV  </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3" colspan="2">
+          <widget class="QLabel" name="ShowCurrentAngle">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 221);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string>10.0000</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -406,7 +406,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="MeasTab">
        <attribute name="title">
