@@ -81,6 +81,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       SelSensToSetRange->addItem( ASensors.at(i)->getName() );
       SensWithRange << ASensors.at(i);
       ASensors.at(i)->setRange( ASensors.at(i)->getRangeU() );
+      connect( ASensors.at(i), SIGNAL( AskedNowRange( int ) ),
+	       this, SLOT( GotNowRange( int ) ) );
     }
   }
   RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
@@ -90,6 +92,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( newSensSelected( int ) ) );
   connect( RangeSelect, SIGNAL( valueChanged( int ) ),
 	   this, SLOT( newRangeSelected( int ) ) );
+  connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ) );
+  connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ) );
 
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
@@ -151,6 +155,28 @@ void MainWindow::newRangeSelected( int i )
   SensWithRange.at( SelSensToSetRange->currentIndex() )->setRange( i );
 }
 
+void MainWindow::askNowRange( void )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )->GetRange();
+}
+
+void MainWindow::askNowRanges( void )
+{
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    SensWithRange.at( i )->GetRange();
+  }
+}
+
+void MainWindow::GotNowRange( int r ) // This function is pure SLOT as it used 'sender()'
+{
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if ( SensWithRange.at( i ) == sender() ) {
+      SensWithRange.at( i )->setRange( r );
+      if ( i == SelSensToSetRange->currentIndex() )
+	RangeSelect->setValue( r );
+    }
+  }
+}
 
 void MainWindow::saveScanData( void )
 {

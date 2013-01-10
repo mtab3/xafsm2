@@ -22,6 +22,7 @@ const MsgTyp MsgT[] = {
   { "@SetNPLCycles", SETNPLCYCLES },
   { "@Run", RUN },
   { "@SetRange", SETRANGE },
+  { "@GetRange", GETRANGE },
   { "@ScanCw", SCANCW },
   { "@ScanCcw", SCANCCW },
   { "@Read", READ },

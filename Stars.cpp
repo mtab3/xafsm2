@@ -225,6 +225,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsRun( smsg ); break;
 	case SETRANGE:
 	  emit AnsSetRange( smsg ); break;
+	case GETRANGE:
+	  emit AnsGetRange( smsg ); break;
 	case SCANCW:
 	  emit AnsScanCw( smsg ); break;
 	case SCANCCW:

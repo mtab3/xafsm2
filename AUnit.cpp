@@ -134,6 +134,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetRange( SMsg ) ), this, SLOT( ReactGetRange( SMsg ) ) );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2      // SSD(Xmap)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0 ) ) {
@@ -509,7 +510,14 @@ bool AUnit::InitSensor( void )
       emit ChangedIsBusy2( Driver2 );
       s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2.1E%1" ).arg( SelectedRange ) );
       LocalStage++;
+      rv = true;
+      break;
+    case 3:
+      IsBusy2 = true;
+      emit ChangedIsBusy2( Driver2 );
+      s->SendCMD2( "Scan", DevCh2, "SetZeroCheckEnable", "0" );
       rv = false;
+      LocalStage++;
       break;
     default:
       rv = false;
@@ -743,4 +751,32 @@ double AUnit::liveTime( int ch )
   }
 
   return rv;
+}
+
+bool AUnit::GetRange( void )
+{
+  bool rv = false;
+
+  //                PZ                          // この GetValue まだ対応してない
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2
+  if ( Type == "CNT2" ) {
+    IsBusy2 = true;
+    emit ChangedIsBusy2( Driver2 );
+    s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
+    rv = false;
+  }
+
+  return rv;
+}
+
+void AUnit::ReactGetRange( SMsg msg )
+{
+  if ( Type == "CNT2" ) {
+    if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) {
+      IsBusy2 = false;
+      emit ChangedIsBusy2( Driver2 );
+      double range = log10( msg.Vals().at(0).toDouble() / 2.1 );
+      emit AskedNowRange( (int)range );
+    }
+  }
 }

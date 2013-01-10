@@ -378,6 +378,9 @@ private slots:
 
   void newSensSelected( int );
   void newRangeSelected( int );
+  void askNowRange( void );
+  void askNowRanges( void );
+  void GotNowRange( int r );
 
   void StartMCA( void );
   void MCAChSelected( int i );

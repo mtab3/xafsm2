@@ -199,6 +199,7 @@ public:
   bool SetLiveTime( int ch, double val );
   bool GetRealTime( int ch );
   bool GetLiveTime( int ch );
+  bool GetRange( void );
 
 public slots:
   void ClrBusy( SMsg msg );
@@ -210,6 +211,7 @@ public slots:
   void ReactGetStat( SMsg msg );
   void ReactGetRealTime( SMsg msg );
   void ReactGetLiveTime( SMsg msg );
+  void ReactGetRange( SMsg msg );
 
 signals:
   //  void CountFinished( void );
@@ -217,6 +219,7 @@ signals:
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
+  void AskedNowRange( int r );
 };
 
 #endif
