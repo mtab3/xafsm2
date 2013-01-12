@@ -214,6 +214,8 @@ void MainWindow::MCAChSelected( int i )
   getMCASettings( i );
   ROIStartInput->setText( ROIStart[ i ] );
   ROIEndInput->setText( ROIEnd[ i ] );
+  if ( cMCAView != NULL )
+    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
 }
 
 void MainWindow::showPeakingTime( SMsg msg )
@@ -394,11 +396,11 @@ void MainWindow::ShowNewMCAStat( void )
 {
   QStringList MCA;
 
-  MCA = SFluo->MCAvalues();
-  for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
-    MCAData[i] = MCA.at(i).toInt();
-  }
   if ( cMCAView != NULL ) {
+    MCA = SFluo->MCAvalues();
+    for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
+      MCAData[i] = MCA.at(i).toInt();
+    }
     cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
     cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
     cMCAView->update();

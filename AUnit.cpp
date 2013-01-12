@@ -576,8 +576,8 @@ void AUnit::ReactGetMCA( SMsg msg )
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );
-    emit ReceivedNewMCAValue();
     MCAValues = msg.Vals();
+    emit ReceivedNewMCAValue();
   }
 }
 
