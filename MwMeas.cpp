@@ -17,7 +17,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   ClearBLKs();
   ChangeBLKs( 4 );
   for ( int i = 0; i < UNITS; i++ ) {
-    SelBLKUnit->addItem( QString( UnitName[i].name ) );
+    SelBLKUnit->addItem( UnitName[i].name );
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
@@ -453,16 +453,16 @@ bool MainWindow::CheckDetectorSelection( void )
   if ( UseAux1->isChecked() ) NoOfSelectedSens++;
   if ( UseAux2->isChecked() ) NoOfSelectedSens++;
 
-  if ( NoOfSelectedSens == 0 )
+  if ( NoOfSelectedSens == 0 )  // I0 以外に一つはセンサが選ばれていなければダメ
     return false;
 
-  if ( NoOfSelectedSens == 1 ) {
-    if ( ( UseI1->isChecked()
+  if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけで
+    if ( ( UseI1->isChecked()     // それが.... なら、測定は「透過」
 	   && ( ASensors.value( SelectI1->currentIndex() )->getType() == "CNT" ) )
 	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == TRANS ) )
 	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == TRANS ) ) )
       MeasFileType = TRANS;
-    if ( Use19chSSD->isChecked() 
+    if ( Use19chSSD->isChecked()  // それが.... なら、測定は「蛍光」
 	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == FLUO ) )
 	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == FLUO ) ) )
       MeasFileType = FLUO;
@@ -475,31 +475,32 @@ void MainWindow::StartMeasurement( void )
 {
   AUnit *as;
 
-  if ( inMeas == 0 ) {
-    if ( MMainTh->isBusy() ) {
+  if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
+    if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
     }
-    if ( ! MMainTh->isEnable() ) {
-      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+    if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
+      QString msg = tr( "Scan cannot Start : (%1) is disabled" )
 	.arg( MMainTh->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
     }
 
-    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {
+    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
-    if ( GetDFName0() == 0 ) {
+    if ( GetDFName0() == 0 ) {  // データファイルが選択されていなかったらダメ
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
     }
-    if ( CheckDetectorSelection() == false ) {
+    if ( CheckDetectorSelection() == false ) { // I0 以外に一つは選ばれてないとダメ
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
+      // グラフ表示領域が確保できないとダメ
       return;
     }
     MeasView = (XYView*)(MeasViewC->getView());
@@ -516,9 +517,8 @@ void MainWindow::StartMeasurement( void )
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     mUnits.addUnit( as = ASensors.value( SelectI0->currentIndex() ), 0 );
     LC++;
-    if ( ! as->isEnable() ) {
-      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	.arg( as->getName() );
+    if ( ! as->isEnable() ) { // I0 に指定されたセンサーが Stars 経由で生きていないとダメ
+      QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return;
@@ -531,9 +531,8 @@ void MainWindow::StartMeasurement( void )
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       mUnits.addUnit( as = ASensors.value( SelectI1->currentIndex() ), 0 );
       LC++;
-      if ( ! as->isEnable() ) {
-	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as->getName() );
+      if ( ! as->isEnable() ) { // I1に指定されたセンサーが Stars 経由で生きていないとダメ
+	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -549,8 +548,8 @@ void MainWindow::StartMeasurement( void )
       LC++;
       qDebug() << "Checking isEnabled" << as->getName() << as->isEnable();
       if ( ! as->isEnable() ) {
-	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as->getName() );
+	// 蛍光測定に指定されたセンサーが Stars 経由で生きていないとダメ
+	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -565,8 +564,8 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( as = ASensors.value( SelectAux1->currentIndex() ), 0 );
       LC++;
       if ( ! as->isEnable() ) {
-	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as->getName() );
+	// AUX1に指定されたセンサーが Stars 経由で生きていないとダメ
+	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -581,8 +580,8 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( as = ASensors.value( SelectAux2->currentIndex() ), 0 );
       LC++;
       if ( ! as->isEnable() ) {
-	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as->getName() );
+	// AUX2に指定されたセンサーが Stars 経由で生きていないとダメ
+	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -593,7 +592,26 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
-    if ( OneOfSensIsRangeSelectable ) {
+    // CNT2 はカウンタの向こうに Keithley が繋がってる。
+    // CNT2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
+    // 両方を同時には測定に使えない
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( mUnits.at(i)->getType() == "CNT2" ) {
+	for ( int j = 0; j < mUnits.count(); j++ ) {
+	  if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
+	    QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
+	      .arg( mUnits.at(i)->getName() )
+	      .arg( mUnits.at(j)->getName() );
+	    statusbar->showMessage( msg, 2000 );
+	    NewLogMsg( msg );
+	    return;
+	  }
+	}
+      }
+    }
+
+    if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
+                                        // 設定済みかどうか確認する (測定開始をブロック)
       MakeSureOfRangeSelect
 	->setText( tr( "The Sensor(s)%1 should be range selected.\n"
 		       "Have you selected the range in 'Setup Condition'" )
@@ -616,8 +634,7 @@ void MainWindow::StartMeasurement( void )
     }
 
 
-    NewLogMsg( QString( tr( "Meas: Start (%1 keV)" ) )
-	       .arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Start (%1 keV)" ).arg( CurPosKeV ) );
     InitialKeV = CurPosKeV;
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
@@ -636,7 +653,7 @@ void MainWindow::StartMeasurement( void )
   } else {
     StopP->show();
     SinPause = inPause;
-    NewLogMsg( QString( tr( "Meas: Break (%1 keV)" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Break (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
@@ -648,7 +665,7 @@ void MainWindow::StartMeasurement( void )
 
 void MainWindow::SurelyStop( void )
 {
-  NewLogMsg( QString( tr( "Meas: Stopped (%1 keV)" ) ).arg( CurPosKeV ) );
+  NewLogMsg( tr( "Meas: Stopped (%1 keV)" ).arg( CurPosKeV ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = 0;
@@ -669,10 +686,10 @@ void MainWindow::GoingOn( void )
   MeasStart->setEnabled( true );
   MeasPause->setEnabled( true );
   if ( SinPause == 1 ) {
-    NewLogMsg( QString( tr( "Meas: Pausing (%1 keV)" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Pausing (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 1;
   } else {
-    NewLogMsg( QString( tr( "Measu: Resume (%1 keV)" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Measu: Resume (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause->setStyleSheet( "" );
@@ -694,12 +711,12 @@ void MainWindow::CpBlock2SBlock( void )
 void MainWindow::PauseMeasurement( void )
 {
   if ( inPause == 0 ) {
-    NewLogMsg( QString( tr( "Meas: Pause (%1 keV)" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Pause (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
   } else {
-    NewLogMsg( QString( tr( "Meas: Resume (%1 keV)" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Resume (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause->setStyleSheet( "" );
