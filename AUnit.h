@@ -220,6 +220,7 @@ signals:
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
   void AskedNowRange( int r );
+  void ReceivedNewMCAValue( void );
 };
 
 #endif

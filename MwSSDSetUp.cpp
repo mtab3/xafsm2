@@ -63,6 +63,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
   connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
+  connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ) );
 
   inMCAMeas = false;
   validMCAData = false;
@@ -172,6 +173,7 @@ void MainWindow::getMCASettings( int ch )
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
+  SFluo->GetMCA( ch );
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
@@ -330,7 +332,6 @@ void MainWindow::setNewROI( int s, int e )
 
 void MainWindow::MCASequence( void )
 {
-  QStringList MCA;
   if ( MCAStage < 2 )         // MCA に RunStart をかけてしまうと、ずっと isBusy
     if ( SFluo->isBusy() || SFluo->isBusy2() )
       return;
@@ -383,19 +384,24 @@ void MainWindow::MCASequence( void )
       SFluo->GetRealTime( cMCACh );
       SFluo->GetLiveTime( cMCACh );
       SFluo->InitLocalStage();
-      MCAStage = 5;
+      MCAStage = 4;
     }
     break;
-  case 5:
-    MCA = SFluo->MCAvalues();
-    for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
-      MCAData[i] = MCA.at(i).toInt();
-    }
+  }
+}
+
+void MainWindow::ShowNewMCAStat( void )
+{
+  QStringList MCA;
+
+  MCA = SFluo->MCAvalues();
+  for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
+    MCAData[i] = MCA.at(i).toInt();
+  }
+  if ( cMCAView != NULL ) {
     cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
     cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
     cMCAView->update();
-    MCAStage = 4;
-    break;
   }
 }
 

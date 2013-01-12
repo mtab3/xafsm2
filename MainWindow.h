@@ -368,6 +368,7 @@ private slots:
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
+  void ShowNewMCAStat( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
