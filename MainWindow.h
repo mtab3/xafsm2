@@ -83,7 +83,8 @@ private:
   int MCALength;
   bool inMCAMeas;
   bool validMCAData;
-  int cMCACh, oldMCACh;
+  int cMCACh;
+  //  int oldMCACh;
   int MCAStage;
   ViewCTRL *cMCAViewC;
   MCAView *cMCAView;
@@ -369,6 +370,8 @@ private slots:
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
   void ShowNewMCAStat( void );
+  void ShowNewMCARealTime( int ch );
+  void ShowNewMCALiveTime( int ch );
 
   void newSensSelected( int );
   void newRangeSelected( int );

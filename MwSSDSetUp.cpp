@@ -64,13 +64,17 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
   connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
   connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ) );
+  connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
+	   this, SLOT( ShowNewMCARealTime( int ) ) );
+  connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
+	   this, SLOT( ShowNewMCALiveTime( int ) ) );
 
   inMCAMeas = false;
   validMCAData = false;
   MCAData = NULL;
   cMCAView = NULL;
   cMCACh = 0;
-  oldMCACh = -1;
+  //  oldMCACh = -1;
 
   SelSSDs( 0 );
 }
@@ -157,6 +161,7 @@ void MainWindow::SelSSDs( int ch )
       SSDbs[i]->setStyleSheet( SSDActive );
       SSDbs[i]->setToolTip( tr( "Active" ) );
       MCACh->setValue( i );
+      MCAChSelected( i );
     } else {
       SSDbs[i]->setChecked( false );
       SSDbs[i]->setStyleSheet( SSDnotActive );
@@ -209,13 +214,22 @@ void MainWindow::newROIEnd( const QString &newv )
 
 void MainWindow::MCAChSelected( int i )
 {
+  if ( i == cMCACh )
+    return;
+
   if ( i < 0 ) { MCACh->setValue( 18 ); i = 18; }
   if ( i > 18 ) { MCACh->setValue( 0 ); i = 0; }
-  getMCASettings( i );
-  ROIStartInput->setText( ROIStart[ i ] );
-  ROIEndInput->setText( ROIEnd[ i ] );
-  if ( cMCAView != NULL )
+  cMCACh = i;
+  getMCASettings( cMCACh );
+  ROIStartInput->setText( ROIStart[ cMCACh ] );
+  ROIEndInput->setText( ROIEnd[ cMCACh ] );
+  if ( cMCAView != NULL ) {
+    cMCAView->SetMCACh( cMCACh );
     cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+    SFluo->GetRealTime( cMCACh );
+    SFluo->GetLiveTime( cMCACh );
+  }
+  SelSSDs( cMCACh );
 }
 
 void MainWindow::showPeakingTime( SMsg msg )
@@ -268,10 +282,11 @@ void MainWindow::StartMCA( void )
 
     inMCAMeas = true;
 
-    oldMCACh = cMCACh;
-    cMCACh = MCACh->text().toInt();
+    //    oldMCACh = cMCACh;
+    //    cMCACh = MCACh->text().toInt();
 
-    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
+    //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
+    if ( StartResume == MCA_START ) {
       if ( cMCAView != NULL ) {
 	disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
 		    this, SLOT( showCurrentValues( int, int ) ) );
@@ -404,6 +419,23 @@ void MainWindow::ShowNewMCAStat( void )
     cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
     cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
     cMCAView->update();
+  }
+}
+
+void MainWindow::ShowNewMCARealTime( int ch )
+{
+  if ( cMCAView != NULL ) {
+    if ( ch == cMCACh ) {
+      cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
+    }
+  }
+}
+
+void MainWindow::ShowNewMCALiveTime( int ch )
+{
+  if ( cMCAView != NULL ) {
+    if ( ch == cMCACh )
+      cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
   }
 }
 

@@ -221,6 +221,8 @@ signals:
   void ChangedIsBusy2( QString Drv );
   void AskedNowRange( int r );
   void ReceivedNewMCAValue( void );
+  void ReceivedNewMCARealTime( int i );
+  void ReceivedNewMCALiveTime( int i );
 };
 
 #endif

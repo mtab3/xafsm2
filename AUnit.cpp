@@ -577,7 +577,7 @@ void AUnit::ReactGetMCA( SMsg msg )
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );
     MCAValues = msg.Vals();
-    emit ReceivedNewMCAValue();
+    emit ReceivedNewMCAValue();    // !!!!!!!!!!!!!!!!
   }
 }
 
@@ -673,10 +673,13 @@ bool AUnit::GetRealTime( int ch )
 
 void AUnit::ReactGetRealTime( SMsg msg )
 {
+  int ch;
+
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );
-    MCARealTime[ msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
+    MCARealTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
+    emit ReceivedNewMCARealTime( ch );
   }
 }
 
@@ -736,10 +739,13 @@ bool AUnit::GetLiveTime( int ch )
 
 void AUnit::ReactGetLiveTime( SMsg msg )
 {
+  int ch;
+
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );
-    MCALiveTime[ msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
+    MCALiveTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
+    emit ReceivedNewMCALiveTime( ch );
   }
 }
 
