@@ -214,6 +214,9 @@ void MCAView::Draw( QPainter *p )
   if ( dt < 10 ) { r = 0; g = (int)( dt / 10 * 255 ); b = 255 - g; };
   if ( 10 <= dt < 20 ) { r = (int)( ( dt - 10 ) / 10 * 255 ); g = 255; b = 0; };
   if ( dt >= 20 ) { r = 255; g = 255 - (int)( ( dt - 20 ) / 80 * 255 ); b = 0; };
+  if ( r < 0 ) r = 0;
+  if ( g < 0 ) g = 0;
+  if ( b < 0 ) b = 0;
   QColor DTC = QColor( r, g, b );
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
