@@ -1,4 +1,4 @@
-all	:	xafsm2.tex
-	platex xafsm2
-	dvips -o xafsm2.ps xafsm2
-	dvipdfmx xafsm2
+all	:	XafsM2.tex
+	platex XafsM2
+	dvips -o XafsM2.ps XafsM2
+	dvipdfmx XafsM2
