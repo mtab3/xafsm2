@@ -63,7 +63,8 @@ class AUnit : public QObject
   int lastSetV;
 
  private:
-  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp, int cnt2 );
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
+		int ssd, int ssdp, int cnt2, int sc );
 
 public:
   AUnit( QObject *parent = 0 );

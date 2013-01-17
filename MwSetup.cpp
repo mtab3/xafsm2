@@ -74,6 +74,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
+    SelectD10->addItem( ASensors.value(i)->getName() );
     SelectD20->addItem( ASensors.value(i)->getName() );
     SelectD21->addItem( ASensors.value(i)->getName() );
     SelectD22->addItem( ASensors.value(i)->getName() );
@@ -201,7 +202,7 @@ void MainWindow::saveScanData( void )
   int points = ScanView->getPoints( 1 );
 
   for ( int i = 0; i < points; i++ ) {
-    out << ScanView->getX( 1, i ) << "\t" << ScanView->getY( 1, i ) << "\n";
+    out << ScanView->getX( 0, i ) << "\t" << ScanView->getY( 0, i ) << "\t" << ScanView->getY( 1, i ) << "\n";
   }
 
   f.close();
@@ -284,19 +285,25 @@ void MainWindow::ShowGoMSpeed( void )
 void MainWindow::ShowCurMotorPos( SMsg msg )
 {
   QString buf;
+  QString val0;
   QString val;
 
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
   if ( ( msg.From() == am->getDevCh() )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) ) ) {
-    MCurPosPuls->setText( msg.Val() );
+    if ( ( am->getType() == "SC" ) && ( msg.Msgt() == GETVALUE ) ) {
+      val0 = msg.Vals().at(1);
+    } else {
+      val0 = msg.Val();
+    }
+    MCurPosPuls->setText( val0 );
     val = QString::number
-      ( ( msg.Val().toDouble() - am->getCenter() ) * am->getUPP() );
+      ( ( val0.toDouble() - am->getCenter() ) * am->getUPP() );
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
       if ( GoMRelAbs == ABS ) {
-	GoMotorPosPuls->setText( msg.Val() );
+	GoMotorPosPuls->setText( val0 );
 	GoMotorPosUnit->setText( val );
 	setupMDispFirstTime = false;
       } else {
@@ -471,7 +478,7 @@ void MainWindow::GoMStop0( void )
 
 void MainWindow::ScanStart( void )
 {
-  AUnit *am, *as;
+  AUnit *am, *as, *as1 = NULL;
 
   if ( inSPSing == 0 ) {
     if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
@@ -486,6 +493,8 @@ void MainWindow::ScanStart( void )
     mUnits.clearUnits();
     mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ),
 		    SPSdwell->text().toDouble() );
+    mUnits.addUnit( as1 = ASensors.value( SelectD10->currentIndex() ),
+		      SPSdwell->text().toDouble() );
     if ( ! am->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( am->getName() );
@@ -493,14 +502,15 @@ void MainWindow::ScanStart( void )
       NewLogMsg( msg );
       return;
     }
-    if ( ! as->isEnable() ) {
-      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	.arg( as->getName() );
-      statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg );
-      return;
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( ! mUnits.at(i)->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( mUnits.at(i)->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
     }
-    
     MovingS = SPSMotorS->currentIndex();  // motor speed;
 
     SPSSelU = SPSUnit->currentIndex();
@@ -531,12 +541,16 @@ void MainWindow::ScanStart( void )
     GoMotor->setEnabled( false );
 
     ScanView->Clear();
-    ScanView->SetSLines( 0, 1 );
-    ScanView->SetLineF( RIGHT, LEFT );
-    ScanView->SetScaleT( I0TYPE, FULLSCALE );
-    ScanView->SetLName( 0, tr( "I0" ) );
-    ScanView->SetLName( 1, as->getName() );
+    ScanView->SetLGroups( 2 );     // グラフの線が所属するグループは 2つ
+    ScanView->SetLineG( 0, 1 );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->SetScaleType( FULLSCALE, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->SetLRGroup( 0, 1 );      // 左軸に関係付けるのは group 0 右軸は group 1
+    ScanView->SetScaleType( FULLSCALE, FULLSCALE );
+    for ( int i = 0; i < mUnits.count(); i++ )
+      ScanView->SetLineName( i, mUnits.at(i)->getName() );
     ScanView->SetXName( am->getName() );
+    ScanView->setUpp( am->getUPP() );
+    ScanView->setCenter( am->getCenter() );
     ScanView->makeValid( true );
 
     ScanStage = 0;

@@ -68,7 +68,7 @@ void MainWindow::ReadDef( QString fname )
 	  next = nextItem( next, item ); NewUnit->setUPP( item );
 	  next = nextItem( next, item ); NewUnit->setIsInt( item == "INT" );
 	  // ³Æ motor ¸ÄÊÌ
-	  if ( type == "PM" ) {
+	  if (( type == "PM" )||( type == "SC" )) {
 	    next = nextItem( next, item ); NewUnit->setCenter( item );
 	  } else if ( type == "PZ" ) {
 	    next = nextItem( next, item ); NewUnit->setMinV( item );

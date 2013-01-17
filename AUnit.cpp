@@ -50,9 +50,9 @@ void AUnit::setEnable( bool enable )
   emit ChangedIsBusy2( Driver );
 }
 
-//           PM      PZ      CNT      PAM      ENC      SSD      SSDP      CNT2
+//           PM      PZ      CNT      PAM      ENC      SSD      SSDP      CNT2,     SC
 bool AUnit::
-TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp, int cnt2 )
+TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp, int cnt2, int sc )
 {
   bool rv = false;
 
@@ -64,6 +64,7 @@ TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp, int cnt2 
   if ( ( Type == "SSD"  ) && ( ssd  == 1 ) ) rv = true;
   if ( ( Type == "SSDP" ) && ( ssdp == 1 ) ) rv = true;
   if ( ( Type == "CNT2" ) && ( cnt2 == 1 ) ) rv = true;
+  if ( ( Type == "SC"   ) && ( sc   == 1 ) ) rv = true;
 
   return rv;
 }
@@ -83,8 +84,8 @@ void AUnit::Initialize( Stars *S )
   // 変な処理に突入してしまった場合は、緊急避難的にこの方法で逃げることにする。
 
   // 現状ある unit は
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2        // SSDP を除く全ユニット
-  if ( TypeCHK(  1,  1,  1,  1,  1,  0,  0,   1 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC     // SSDP を除く全ユニット
+  if ( TypeCHK(  1,  1,  1,  1,  1,  0,  0,   1,  1 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ) );
@@ -94,33 +95,33 @@ void AUnit::Initialize( Stars *S )
     // 悪いことは起こらないはずなので安全側に振っておく
   }
 
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2        // 駆動系だけ
-  if ( TypeCHK(  1,  1,  0,  0,  1,  0,  0,   0 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC       // 駆動系だけ
+  if ( TypeCHK(  1,  1,  0,  0,  1,  0,  0,   0,  1 ) ) {
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     s->SendCMD2( "Init", DevCh, "GetValue" );
   }
-  if ( TypeCHK(  0,  0,  1,  1,  1,  1,  1,   0 ) ) {   // 駆動系以外
+  if ( TypeCHK(  0,  0,  1,  1,  1,  1,  1,   0,  0 ) ) {   // 駆動系以外
   }
 
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2   // CNT は Ch に IsBusy を訊くとエラー
-  if ( TypeCHK(  1,  1,  0,  1,  1,  1,  0,   0 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC  // CNT は Ch に IsBusy を訊くとエラー
+  if ( TypeCHK(  1,  1,  0,  1,  1,  1,  0,   0,  1 ) ) {
     s->SendCMD2( "Init", DevCh, "IsBusy" );
   }
-  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1 ) ) {
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0 ) ) {
     s->SendCMD2( "Init", Driver, "IsBusy" );
   }
 
   // 以下個別処理
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2      // カウンタ(nct08)だけ
-  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC  // カウンタ(nct08)だけ
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1, 0 ) ) {
     connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", Driver, "SetStopMode", "T" );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2     // PAM(Keithley)だけ
-  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC     // PAM(Keithley)だけ
+  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0, 0 ) ) {
     connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -128,16 +129,16 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2     // CNT2だけ。Keithley対応
-  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   1 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC     // CNT2だけ。Keithley対応
+  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   1, 0 ) ) {
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsGetRange( SMsg ) ), this, SLOT( ReactGetRange( SMsg ) ) );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2      // SSD(Xmap)だけ
-  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC     // SSD(Xmap)だけ
+  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0, 0 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -154,8 +155,8 @@ void AUnit::Initialize( Stars *S )
     s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2     // SSDP(Xmap)だけ
-  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  1,   0  ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC    // SSDP(Xmap)だけ
+  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  1,   0, 0  ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
@@ -200,23 +201,30 @@ bool AUnit::GetValue( void )
   bool rv = false;
 
   //                PZ                          // この GetValue まだ対応してない
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2
-  if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC
+  if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0 ) ) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, DevCh, QString( "GetValue" ) );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2
-  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC
+  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0 ) ) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, Driver, "GetValues" );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2
-  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC
+  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0 ) ) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, DevCh, "Read" );
+    rv = false;
+  }
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC
+  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  1 ) ) {
+    IsBusy2 = true;
+    emit ChangedIsBusy2( Driver );
+    s->SendCMD2( Uid, DevCh, "GetValue 0" );
     rv = false;
   }
 
@@ -227,8 +235,8 @@ bool AUnit::GetValue0( void )
 {
   bool rv = false;
 
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2
-  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1 ) ) {
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0 ) ) {
     switch( LocalStage ) {
     case 0:
       IsBusy2 = true;
@@ -248,9 +256,9 @@ bool AUnit::GetValue0( void )
       break;
     }
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2     SSDP ではなにもしない
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC    SSDP ではなにもしない
   // 　　　　　　                                    (SSDP の時も代表して SSD を呼ぶ)
-  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0 ) ) {
+  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0 ) ) {
     switch( LocalStage ) {
     case 0:
       IsBusy2 = true;
@@ -301,6 +309,10 @@ void AUnit::SetValue( double v )
   if ( Type == "PM" ) {
     s->SendCMD2( Uid, DevCh, "SetValue", QString::number( lastSetV = (int)v ) );
   }
+  if ( Type == "SC" ) {
+    s->SendCMD2( Uid, DevCh, "SetValue", QString( "%1 1 0 0 0 0" )
+		 .arg( lastSetV = (int)v ) );
+  }
 }
 
 void AUnit::SetSpeed( MSPEED i )
@@ -322,7 +334,7 @@ void AUnit::SetSpeed( MSPEED i )
 
 void AUnit::AskIsBusy( void )
 {
-  if ( Type == "PM" ) {
+  if (( Type == "PM" )||( Type == "PM" )) {
     s->SendCMD2( Uid, DevCh, "IsBusy" );
   }
   if ( Type == "CNT" ) {
@@ -363,7 +375,15 @@ void AUnit::SetCurPos( SMsg msg )
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
 	    || ( msg.Msgt() == READ ) ) ) {
-    Value = msg.Val();
+    if ( Type == "SC" ) {
+      if ( msg.Msgt() == EvCHANGEDVALUE ) {
+	Value = msg.Val();
+      } else {
+	Value = msg.Vals().at(1);
+      }
+    } else {
+      Value = msg.Val();
+    }
     Values = msg.Vals();
     emit newValue( Value );
     IsBusy2 = false;
@@ -373,7 +393,7 @@ void AUnit::SetCurPos( SMsg msg )
 
 void AUnit::SetIsBusyByMsg( SMsg msg )
 {
-  if ( Type == "PM" ) {
+  if (( Type == "PM" )||( Type == "SC" )) {
     if ( ( msg.From() == DevCh )
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       IsBusy = ( msg.Val().toInt() == 1 );
@@ -412,7 +432,7 @@ void AUnit::ClrBusy( SMsg msg )
 
 void AUnit::Stop( void )
 {
-  if ( Type == "PM" ) {
+  if (( Type == "PM" )||( Type == "SC" )) {
     s->SendCMD2( Uid, DevCh, "Stop" );
   }
 }
@@ -765,7 +785,7 @@ bool AUnit::GetRange( void )
   bool rv = false;
 
   //                PZ                          // この GetValue まだ対応してない
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2
+  //
   if ( Type == "CNT2" ) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver2 );

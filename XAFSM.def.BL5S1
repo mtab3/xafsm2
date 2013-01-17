@@ -65,6 +65,9 @@ MOTOR PM "M015" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -1140
 MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0
 MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the range !!!
 
+MOTOR SC "M018" "NEATh" "NEATh" "sc400" "unused_1" "deg" 0.00125 INT 0 
+MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0 
+
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
 #     "Dth1p"     : The name of the unit (only for display)
@@ -75,6 +78,7 @@ MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the ra
 #     REAL        : The unit of the motion should be real ( or INT )
 #     -10         : Minimum Voltage
 #     120         : Maximum Voltage
+
 
 #MOTOR PM "M002" "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 INT 0
 #MOTOR PM "M003" "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 INT 0
@@ -96,33 +100,11 @@ MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the ra
 
 # define Sensor units
 
-SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
-#SENSOR CNT "S000" "I0" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
-#
-# // You can use any other sensor as I0, by selecting it after running the program.
-# // Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
-# The rule might be obsolute now.
-#
-SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
-#SENSOR CNT "S001" "I1" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
-# The parameters following the identifier 'SENSOR' are
-#   CNT              : Unit type   CNT : Counter nct08
-#   "S000"           : Uniq identifire of the sensor. The identifier must be identical.
-#                    : The identifier can be any string, while it is identical.
-#   "I0"             : Identifier of the sensor
-#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
-#                    : default sensors for I0, I1, Aux1,...
-#   "Counter 0 (I0)" : The name of the unit (only for display)
-#   "nct0801"        : Stars driver name
-#   "ch0"            : Node name in the stars driver
-#   "count"          : Name of the metric unit (only for display)
-#   YES              : If the sensor has a parente (group leader) or not. YES or NO
-#   "S000"             : The identifier of the parent (group reader)
+SENSOR CNT2 "S002" "I00" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
+SENSOR CNT2 "S003" "I01" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000" "S005" -2 -9
+#SENSOR CNT2 "S002" "I0" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000" "S004" -2 -9
+#SENSOR CNT2 "S003" "I1" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "count" YES "S000" "S005" -2 -9
 
-SENSOR CNT2 "S002" "GENERAL" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
-SENSOR CNT2 "S003" "GENERAL" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000" "S005" -2 -9
-#SENSOR CNT2 "S002" "GENERAL" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000" "S004" -2 -9
-#SENSOR CNT2 "S003" "GENERAL" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "count" YES "S000" "S005" -2 -9
 #SENSOR CNT "S001" "I1" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
 # The parameters following the identifier 'SENSOR' are
 #   CNT2             : Unit type  CNT2 : Counter nct08 exteded connected to keithley
@@ -141,8 +123,8 @@ SENSOR CNT2 "S003" "GENERAL" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YE
 #   -2               : Upper range limit
 #   -9               : Lower range limit
 
-SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
-SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
+SENSOR PAM "S004" "I0" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
+SENSOR PAM "S005" "I1" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
 #SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "simmotor" "SNSkth1" "mA" NO ""
 #SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 
@@ -195,3 +177,26 @@ SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
 #     "deg"        : Name of the metric unit (only for display)
 #     NO           : If the sensor has a parente (group leader) or not. YES or NO
 #     ""           : The identifier of the parent (group reader)
+
+SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
+#SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
+#
+# // You can use any other sensor as I0, by selecting it after running the program.
+# // Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
+# The rule might be obsolute now.
+#
+SENSOR CNT "S001" "GENERAL" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
+#SENSOR CNT "S001" "GENERAL" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
+# The parameters following the identifier 'SENSOR' are
+#   CNT              : Unit type   CNT : Counter nct08
+#   "S000"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "I0"             : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Counter 0 (I0)" : The name of the unit (only for display)
+#   "nct0801"        : Stars driver name
+#   "ch0"            : Node name in the stars driver
+#   "count"          : Name of the metric unit (only for display)
+#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   "S000"             : The identifier of the parent (group reader)

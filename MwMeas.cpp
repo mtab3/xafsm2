@@ -431,13 +431,13 @@ void MainWindow::SelectedRBFN( const QString &fname )
 void MainWindow::ClearXViewScreenForMeas( void )
 {
   MeasView->Clear();
-  MeasView->SetSLines( 0, 1 );
-  MeasView->SetLineF( RIGHT, LEFT,
-		     LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT,
-		     LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT );
-  MeasView->SetScaleT( I0TYPE, FULLSCALE );
-  MeasView->SetLName( 0, tr( "I0" ) );
-  MeasView->SetLName( 1, tr( "mu(E)" ) );
+  MeasView->SetLGroups( 2 );      // 線が属するグループの数は 2 つ
+  MeasView->SetLineG( 0, 1 );     // 0 番目はグループ 0, 1 番目はグループ 1
+  MeasView->SetScaleType( I0TYPE, FULLSCALE );
+                                  // グループ 0 は I0 型、グループ 1 はフルスケール
+  MeasView->SetLRGroup( 1, 0 );        // 左軸を使うのはグループ 1, 右軸を使うのは 0
+  MeasView->SetLineName( 0, tr( "I0" ) );     // 線 0 の軸の名前
+  MeasView->SetLineName( 1, tr( "mu(E)" ) );  // 線 1 の軸の名前
   MeasView->SetXName( tr( "[keV]" ) );
   MeasView->makeValid( true );
 }

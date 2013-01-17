@@ -53,7 +53,9 @@ void MainWindow::ScanSequence( void )
     break;
   case 5:
     mUnits.readValue( MeasVals );
-    ScanView->NewPoint( 1, NowScanP, MeasVals[0] );
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      ScanView->NewPoint( i, NowScanP, MeasVals[i] );
+    }
     ScanView->update();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
