@@ -108,6 +108,8 @@ void XYView::Draw( QPainter *p )
   QPen pen0, pen1;
   QFont F1;
   QRectF rec;
+  double nowx;
+  int nowxp;
 
   p->fillRect( 0, 0, width(), height(), bgColor );
   pen0.setWidth( 2 );
@@ -144,6 +146,7 @@ void XYView::Draw( QPainter *p )
   int AlLC = Qt::AlignLeft | Qt::AlignVCenter;
   int AlRC = Qt::AlignRight | Qt::AlignVCenter;
   double sy, dy;
+  int displayedLs = 0;
   for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
     // g 番目のグループに属する線を全部調べて描画スケールを決める。
     UpDateYWindow( g, ScaleType[ g ] );
@@ -181,16 +184,13 @@ void XYView::Draw( QPainter *p )
       }
     }
 
-    int displayedLs = 0;
     for ( int l = 0; l < lines; l++ ) { // データプロット
-      qDebug() << "Ls line " << l;
       if ( LineG[l] == g ) {
-	qDebug() << "dipsLs line " << l;
 	displayedLs++;
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
-	double nowx = cc.s2rx( m.x() );
-	int nowxp = 0;
+	nowx = cc.s2rx( m.x() );
+	nowxp = 0;
 	for ( int i = 0; i < points[l] - 1; i++ ) {
 	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
 		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
@@ -201,7 +201,7 @@ void XYView::Draw( QPainter *p )
 	}
 	if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
 	  rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
-			cc.r2sy( cc.Rmaxy() )-TM*0.9, 60, TM * 0.8 );
+			cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
 	  cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( y[l][nowxp] ) );
 	}
       }
@@ -211,6 +211,9 @@ void XYView::Draw( QPainter *p )
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( m.x(), TM, m.x(), height()-BM );
+    p->setPen( BLACK );
+    rec = QRectF( LM + HW, TM + VH + BM * 0.5, LM * 0.9, BM * 0.45 );
+    cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( cc.s2rx( m.x() ) ) );
   }
 }
 
