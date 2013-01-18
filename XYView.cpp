@@ -104,7 +104,7 @@ void XYView::Draw( QPainter *p )
     return;
 
   QString buf, buf2;
-  int RM, LM, TM, BM;
+  int RM, LM, TM, BM, HW, VH;
   QPen pen0, pen1;
   QFont F1;
   QRectF rec;
@@ -118,6 +118,8 @@ void XYView::Draw( QPainter *p )
   LM = width() * 0.10;
   TM = height() * 0.05;
   BM = height() * 0.10;
+  HW = width() - LM - RM;
+  VH = height() - TM - BM;
   F1.setPointSizeF( ( LM*0.115 < BM*0.23 ) ? LM*0.115 : BM*0.23 );
   p->setFont( F1 );
 
@@ -132,72 +134,59 @@ void XYView::Draw( QPainter *p )
     rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
     if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
-		   QString::number( xx ) );
+		   QString::number( xx * upp ) );
     }
     memc++;
   }
   rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
 
+  int AlLC = Qt::AlignLeft | Qt::AlignVCenter;
+  int AlRC = Qt::AlignRight | Qt::AlignVCenter;
   double sy, dy;
   for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
     // g 番目のグループに属する線を全部調べて描画スケールを決める。
     UpDateYWindow( g, ScaleType[ g ] );
-    pen1.setWidth( 1 );
-    if ( g == LeftG ) {  // もし、そのグループが左軸と関連付けられたグループなら
+
+    if (( g == LeftG )||( g == RightG )) {
+      sy = dy = 0;
+      cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
+      pen1.setWidth( 1 );
       pen1.setColor( LC[ g ] );
       p->setPen( pen1 );
 
-      sy = dy = 0;
-      cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
-      
       for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
-	p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
-	rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 );
-	// メモリ数字
-	buf.sprintf( "%7.5g", yy * upp );
-	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
-      }
-      for ( int l = 0; l < lines; l++ ) {
-	if ( LineG[l] == g ) {
-	  rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
-	  // 軸のラベル
-	  cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
-		   LNames[g] );
-	  break;
+	buf.sprintf( "%7.5g", yy );
+	if ( g == LeftG ) {  // もし、そのグループが左軸と関連付けられたグループなら
+	  p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
+	  rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 );
+	} else {
+	  p->drawLine( LM, cc.r2sy( yy ), LM+3, cc.r2sy( yy ) );
+	  p->drawLine( width()-RM, cc.r2sy( yy ), width()-RM-3, cc.r2sy( yy ) );
+	  rec = QRectF( width()-RM*0.9, cc.r2sy( yy )-BM*0.3/2, 60, BM * 0.3 );
 	}
-      }
-    }
-    if ( g == RightG ) {  // もし、そのグループが右軸と関連付けられたグループなら
-      pen1.setColor( LC[ g ] );
-      p->setPen( pen1 );
-
-      sy = dy = 0;
-      cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
-      
-      for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
-	p->drawLine( LM, cc.r2sy( yy ), LM+3, cc.r2sy( yy ) );
-	// 横の罫線(短い)
-	p->drawLine( width()-RM, cc.r2sy( yy ), width()-RM-3, cc.r2sy( yy ) );
-	// 横の罫線(短い)
-	rec = QRectF( width()-RM*0.9, cc.r2sy( yy )-BM*0.3/2, 60, BM * 0.3 );
-	// メモリ数字
-	buf.sprintf( "%5.3g", yy );
-	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, buf );
+	cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, buf );
       }
       for ( int l = 0; l < lines; l++ ) {
 	if ( LineG[l] == g ) {
-	  rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-			RM*0.9, BM * 0.3 );    // 軸のラベル
-	  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-		       LNames[ g ] );
-	  break;
+	  if ( g == LeftG ) {
+	    rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
+	  } else {
+	    rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
+			  RM*0.9, BM * 0.3 );    // 軸のラベル
+	  }
+	  cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, LNames[g] );
+	  break;  // 同じ軸に属する線が複数あってもラベルを描くのは最初の線だけ
 	}
       }
     }
 
+    int displayedLs = 0;
     for ( int l = 0; l < lines; l++ ) { // データプロット
+      qDebug() << "Ls line " << l;
       if ( LineG[l] == g ) {
+	qDebug() << "dipsLs line " << l;
+	displayedLs++;
 	pen1.setColor( LC[ l ] );
 	p->setPen( pen1 );
 	double nowx = cc.s2rx( m.x() );
@@ -210,21 +199,11 @@ void XYView::Draw( QPainter *p )
 	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
 	    nowxp = i;
 	}
-#if 0
-	// マウスポインタ位置の値の表示　左
-	rec = QRectF( LM * 1.2, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
-	// 軸のラベル
-	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-		     QString( "at %1(%2) : %3" )
-		     .arg( ( nowxp - center ) * upp ).arg( nowxp )
-		     .arg( y[l][nowxp] ) );
-	
-	// マウスポインタ位置の値の表示 右
-	rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-		      RM*0.9, BM * 0.3 );    // 軸の値
-	cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-		     LNames[l] + " : " + QString::number(y[l][nowxp]) );
-#endif
+	if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
+	  rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
+			cc.r2sy( cc.Rmaxy() )-TM*0.9, 60, TM * 0.8 );
+	  cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( y[l][nowxp] ) );
+	}
       }
     }
   }
