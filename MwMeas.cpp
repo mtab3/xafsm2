@@ -456,16 +456,31 @@ bool MainWindow::CheckDetectorSelection( void )
   if ( NoOfSelectedSens == 0 )  // I0 以外に一つはセンサが選ばれていなければダメ
     return false;
 
-  if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけで
-    if ( ( UseI1->isChecked()     // それが.... なら、測定は「透過」
-	   && ( ASensors.value( SelectI1->currentIndex() )->getType() == "CNT" ) )
-	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == TRANS ) )
-	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == TRANS ) ) )
-      MeasFileType = TRANS;
-    if ( Use19chSSD->isChecked()  // それが.... なら、測定は「蛍光」
-	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == FLUO ) )
-	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == FLUO ) ) )
+  if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
+    if ( UseI1->isChecked() ) {
+      AUnit *as = ASensors.value( SelectI1->currentIndex() );
+      if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
+	  ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
+	MeasFileType = TRANS;
+      }  // その他は EXTRA
+    }
+    if ( Use19chSSD->isChecked() ) {
       MeasFileType = FLUO;
+    }
+    if ( UseAux1->isChecked() ) {
+      if ( MeasDispMode[ MC_AUX1 ] == TRANS ) {
+	MeasFileType = TRANS;
+      } else {
+	MeasFileType = FLUO;
+      }
+    }
+    if ( UseAux2->isChecked() ) {
+      if ( MeasDispMode[ MC_AUX2 ] == TRANS ) {
+	MeasFileType = TRANS;
+      } else {
+	MeasFileType = TRANS;
+      }
+    }
   }
 
   return true;
@@ -592,11 +607,11 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
-    // CNT2 はカウンタの向こうに Keithley が繋がってる。
-    // CNT2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
+    // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
+    // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
     // 両方を同時には測定に使えない
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      if ( mUnits.at(i)->getType() == "CNT2" ) {
+      if (( mUnits.at(i)->getType() == "CNT2" )||( mUnits.at(i)->getType() == "OTC2" )) {
 	for ( int j = 0; j < mUnits.count(); j++ ) {
 	  if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
 	    QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
@@ -609,7 +624,6 @@ void MainWindow::StartMeasurement( void )
 	}
       }
     }
-
     if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
                                         // 設定済みかどうか確認する (測定開始をブロック)
       MakeSureOfRangeSelect

@@ -1,4 +1,4 @@
-
+#include <QMessageBox>
 #include "MultiUnits.h"
 
 MUnits::MUnits( QObject *p ) : QObject( p )
@@ -89,14 +89,47 @@ bool MUnits::init( void )
 
 void MUnits::setDwellTime( void )  // これもホントは返答を待つ形にするべき
 {
+  double rv;
+
   for ( int i = 0; i < PUnits.count(); i++ ) {
-    PUnits.at(i)->au->SetTime( PUnits.at(i)->dt );
+    if ( ( rv = PUnits.at(i)->au->SetTime( PUnits.at(i)->dt ) ) != PUnits.at(i)->dt ) {
+      // 設定しようとした値と実際に設定された値が違ってたら
+      QMessageBox *msg1 = new QMessageBox;
+      msg1->setModal( false );
+      msg1->setText( tr( "Dwell time was set [%1] for [%2],"
+			 " though tried to be as [%3]." )
+		     .arg( rv ).arg( PUnits.at(i)->au->getName() )
+		     .arg( PUnits.at(i)->dt ) );
+      msg1->setWindowTitle( tr( "Warning on dwell time" ) );
+      connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
+	       this, SLOT( ShownMessage( QAbstractButton * ) ) );
+      msg1->show();
+    }
   }
   for ( int i = 0; i < Units.count(); i++ ) {
     if ( ! Units.at(i)->au->hasParent() ) {
-      Units.at(i)->au->SetTime( Units.at(i)->dt );
+      if ( ( rv = Units.at(i)->au->SetTime( Units.at(i)->dt ) ) != Units.at(i)->dt ) {
+	// 設定しようとした値と実際に設定された値が違ってたら
+	QMessageBox *msg1 = new QMessageBox;
+	msg1->setModal( false );
+	msg1->setText( tr( "Dwell time was set [%1] for [%2],"
+			   " though tried to be as [%3]." )
+		       .arg( rv ).arg( Units.at(i)->au->getName() )
+		       .arg( Units.at(i)->dt ) );
+	msg1->setWindowTitle( tr( "Warning on dwell time" ) );
+	connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
+		 this, SLOT( ShownMessage( QAbstractButton * ) ) );
+	msg1->show();
+      }
     }
   }
+}
+
+void MUnits::ShownMessage( QAbstractButton * )
+{
+  QMessageBox *msg1 = (QMessageBox *)sender();
+  disconnect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
+	      this, SLOT( ShownMessage( QAbstractButton * ) ) );
 }
 
 bool MUnits::getValue0( void )

@@ -15,6 +15,7 @@ class AUnit : public QObject
 
   Stars *s;
   bool Enable;          // if the unit is enable on Stars server or not
+  int aLine;            // the line number where the definition appears in .def file
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
@@ -64,13 +65,14 @@ class AUnit : public QObject
 
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
-		int ssd, int ssdp, int cnt2, int sc );
+		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2 );
 
 public:
   AUnit( QObject *parent = 0 );
 
   void Initialize( Stars *S );
   void setEnable( bool enable );
+  void setALine( int aline ) { aLine = aline; };
   bool isEnable( void ) { return Enable; };
   void setGType( QString gtype ) { GType = gtype; };
   void setStars( Stars *S ) { s = S; };
@@ -135,6 +137,7 @@ public:
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
   void setMinV( QString minv ) { MinV = minv.toDouble(); };
 
+  int getALine( void ) { return aLine; };
   QString getGType( void ) { return GType; };
   QString getType( void ) { return Type; };
   QString getID( void ) { return ID; };
@@ -190,7 +193,7 @@ public:
   void RunResume( void );
   void AskIsBusy( void );
   void SetSpeed( MSPEED speed );
-  void SetTime( double dtime );   // in sec
+  double SetTime( double dtime );   // in sec
   void Stop( void );
   bool GetMCA( int ch );
   bool GetStat( void );

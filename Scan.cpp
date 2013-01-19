@@ -53,9 +53,12 @@ void MainWindow::ScanSequence( void )
     break;
   case 5:
     mUnits.readValue( MeasVals );
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      ScanView->NewPoint( i, NowScanP, MeasVals[i] );
+    if ( ScanNormalize->isChecked() ) {
+      ScanView->NewPoint( 0, NowScanP, MeasVals[0] / MeasVals[1] );
+    } else {
+      ScanView->NewPoint( 0, NowScanP, MeasVals[0] );
     }
+    ScanView->NewPoint( 1, NowScanP, MeasVals[1] );
     ScanView->update();
     NowScanP += ScanSTP;
     if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )

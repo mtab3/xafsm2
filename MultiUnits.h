@@ -2,6 +2,7 @@
 #define MULTIUNITS_H
 
 #include <QVector>
+#include <QAbstractButton>
 #include <QObject>
 #include "AUnit.h"
 
@@ -38,6 +39,9 @@ class MUnits : public QObject
   QString getName( int i ) { return Units.at(i)->au->getName(); };
   QString getUnit( int i ) { return Units.at(i)->au->getUnit(); };
   bool getMCA( int ch );
+
+private slots:
+  void ShownMessage( QAbstractButton * );
 };
 
 

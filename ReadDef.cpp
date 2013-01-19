@@ -28,6 +28,7 @@ void MainWindow::ReadDef( QString fname )
     return;
   }
 
+  int line = 0;
   QString aline;
   QString next;
   QString item;
@@ -39,6 +40,7 @@ void MainWindow::ReadDef( QString fname )
   QTextStream in( &f );
   while( !in.atEnd() ) {
     aline = in.readLine();
+    line++;
     if ( !aline.isEmpty() && aline.at(0) != QChar( '#' ) ) {
       //      next = aline.simplified();
       next = nextItem( aline.simplified(), item );
@@ -54,6 +56,7 @@ void MainWindow::ReadDef( QString fname )
 	  isMotor = false;
 	}
 	// 全 motor, sensor に共通の項目
+	NewUnit->setALine( line );
 	next = nextItem( next, item ); NewUnit->setType( type = item );
 	next = nextItem( next, item ); NewUnit->setUid( item );
 	next = nextItem( next, item ); NewUnit->setID( item );
@@ -84,7 +87,8 @@ void MainWindow::ReadDef( QString fname )
 	  if ( type == "ENC" ) {
 	  } else if ( type == "PAM" ) {
 	  } else if ( type == "CNT" ) {
-	  } else if ( type == "CNT2" ) {
+	  } else if ( type == "OTC" ) {
+	  } else if (( type == "CNT2" )||( type == "OTC2" )) {
 	    next = nextItem( next, item );
 	    NewUnit->set2ndUid( item );             // 2nd ドライバの設定
 	    NewUnit->setHas2ndDriver( true );       // 2nd ドライバフラグ
@@ -126,6 +130,9 @@ void MainWindow::ReadDef( QString fname )
   DriverList.removeDuplicates();
   f.close();
 
+  // Uid のダブりチェック
+  CheckDuplicateUID();
+
   int i, j;   // 親ユニット有り、と宣言したセンサーに親ユニットのポインタを渡す。
               // また、2nd Driver があるユニット Uid2 を元に Driver2, Ch2, DevCh2 を設定
               // 全部の定義が終わってからやっているのは、親と宣言したユニットの定義が
@@ -158,6 +165,52 @@ void MainWindow::ReadDef( QString fname )
       }
     }
   }
+}
+
+// Uid の重複チェック
+void MainWindow::CheckDuplicateUID( void )
+{
+  for ( int i = 0; i < AMotors.count(); i++ ) {
+    for ( int j = 0; j < AMotors.count(); j++ ) {
+      if ( i != j ) {
+	if ( AMotors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
+	  // Uid がダブってると致命的なので止まらないとしかたない
+	  ExitByDuplicateUID( AMotors.at(i), AMotors.at(j) );
+	}
+      }
+    }
+    for ( int j = 0; j < ASensors.count(); j++ ) {
+      if ( AMotors.at(i)->getUid() == ASensors.at(j)->getUid() ) {
+	ExitByDuplicateUID( AMotors.at(i), ASensors.at(j) );
+      }
+    }
+  }
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    for ( int j = 0; j < ASensors.count(); j++ ) {
+      if ( i != j ) {
+	if ( ASensors.at(i)->getUid() == ASensors.at(j)->getUid() ) {
+	  ExitByDuplicateUID( ASensors.at(i), ASensors.at(j) );
+	}
+      }
+    }
+    for ( int j = 0; j < AMotors.count(); j++ ) {
+      if ( ASensors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
+	ExitByDuplicateUID( ASensors.at(i), AMotors.at(j) );
+      }
+    }
+  }
+}
+
+void MainWindow::ExitByDuplicateUID( AUnit *a1, AUnit *a2 )
+{
+  qDebug() << tr( "UIDs [%1](at line %2) and [%3](at line %4) are duplicated." )
+    .arg( a1->getUid() ).arg( a1->getALine() )
+    .arg( a2->getUid() ).arg( a2->getALine() );
+  qDebug() << tr( "1st one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
+    .arg( a1->getType() ).arg( a1->getID() ).arg( a1->getDriver() ).arg( a1->getCh() );
+  qDebug() << tr( "2nd one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
+    .arg( a2->getType() ).arg( a2->getID() ).arg( a2->getDriver() ).arg( a2->getCh() );
+  exit( 0 );
 }
 
 QString MainWindow::nextItem( QString start, QString &item )

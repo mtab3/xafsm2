@@ -119,6 +119,8 @@ signals:
   void AnsGetMCALength( SMsg msg );
   void AnsGetMCA( SMsg msg );
   void AnsGetStatistics( SMsg msg );
+  void AnsSetMode( SMsg msg );
+  void AnsSetCounterPreset( SMsg msg );
 
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

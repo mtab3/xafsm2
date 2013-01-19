@@ -68,6 +68,8 @@ private:
   void ReadDef( QString fname );
   QString nextItem( QString start, QString &item );
   QVector<MCCD*> mccd;
+  void CheckDuplicateUID( void );
+  void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
 
   /* cfg. */
   SelMC *selmc;

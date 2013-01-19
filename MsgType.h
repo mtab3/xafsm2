@@ -6,6 +6,7 @@
 enum MSGTYPE {
   LISTNODES,
 
+  // PM16C and keithley
   GETVALUE, 
   GETSPEEDSELECTED,
   SPEEDHIGH,
@@ -28,6 +29,7 @@ enum MSGTYPE {
   READ,
   ISBUSY,
 
+  // piezo
   SETABSOLUTEVOLTAGE,
   SETABSOLUTEPOSITION,
   SETRELATIVEVOLTAGE,
@@ -36,17 +38,18 @@ enum MSGTYPE {
   SETSPEEDMIDDLE,
   SETSPEEDLOW,
 
+  // NCT08
   SETSTOPMODE,
   SETTIMERPRESET,
   COUNTERRESET,
   COUNTSTART,
 
+  // MCA SSD
   SETPRESETTYPE,
   SETPRESETVALUE,
   GETVALUES,
   RUNSTART,
   RUNSTOP,
-
   RESUME,
   GETREALTIME,
   GETLIVETIME,
@@ -64,8 +67,18 @@ enum MSGTYPE {
   GETPREAMPGAIN,
   GETMCALENGTH,
   GETMCA,
-
   GETSTATISTICS,
+
+  // ortec974
+  // RESET,          //  already is
+  SETMODE,
+  SETCOUNTERPRESET,
+  // COUNTERRESET,   // already is 
+  // RUN,            // already is
+  // STOP,           // already is
+  // GETVALUE,       // already is
+  // _EvChangedIsBusy  // already is
+  // _EvChangedValue   // already is
 
   EvCONNECTED,
   EvDISCONNECTED,
