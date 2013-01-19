@@ -35,16 +35,41 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( ManTEdeg, SIGNAL( editingFinished() ), SLOT( ManSelTEdeg() ) );
   connect( ManTEkeV, SIGNAL( editingFinished() ), SLOT( ManSelTEkeV() ) );
   connect( ShowPT, SIGNAL( clicked() ), PT, SLOT( show() ) );
-  connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( AtomSelectedByPT( int ) ) );
+  connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ) );
 }
 
 void MainWindow::NewSelA( int i )
 {
+  qDebug() << "newsela";
   if ( keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
+    qDebug() << "newsela accepted";
     SelectedA = (AtomNo)i;
+    SelectTA->setCurrentIndex( i );
     ShowTAE();
     SetNewGos();
   } else {
+    // エネルギーが範囲外だった場合、
+    if ( SelectedE != Kedge ) {   // もし L エッジを選択していたら、K エッジを試してみる。
+      if ( keV2deg( Vic[ i ].AE[ Kedge ] ) > 0 ) {
+	SelectedA = (AtomNo)i;
+	SelectedE = Kedge;
+	SelectTA->setCurrentIndex( i );
+	SelectTE->setCurrentIndex( Kedge );
+	ShowTAE();
+	SetNewGos();
+	return;
+      }
+    } else {  // もし K エッジを選択していたら LIII を試してみる
+      if ( keV2deg( Vic[ i ].AE[ LIIIedge ] ) > 0 ) {
+	SelectedA = (AtomNo)i;
+	SelectedE = LIIIedge;
+	SelectTA->setCurrentIndex( i );
+	SelectTE->setCurrentIndex( LIIIedge );
+	ShowTAE();
+	SetNewGos();
+	return;
+      }
+    } // それでもダメならエラー表示して何もしない
     statusbar->showMessage( tr( "Absorption edge of the atom is out of range." ), 5000 );
     SelectTA->setCurrentIndex( SelectedA );
   }
@@ -66,6 +91,7 @@ void MainWindow::ShowTAE( void )
 {
   QString buf;
   
+  qDebug() << "showtae" << SelectedA << SelectedE;
   buf.sprintf( UnitName[DEG].form, keV2deg( Vic[SelectedA].AE[SelectedE] ) );
   ManTEdeg->setText( buf );
   buf.sprintf( UnitName[KEV].form, Vic[SelectedA].AE[SelectedE] );
@@ -95,27 +121,14 @@ void MainWindow::OpenPT( void )
   PT->show();
 }
 
-void MainWindow::AtomSelectedByPT( int i )
-{
-  NewSelA( i );
-  SelectTA->setCurrentIndex( i );
-}
-
 void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置指定)
 {
   MMainTh->setIsBusy( true );
 
-#if 0
-  // どっちでも悪くはないが、こっちのほうがロジックはシンプル、誤差は大きいかも
-  // CurrentAngle を使うのをやめたので、こっちもやめる
-  MMainTh->setValue( ( keV2deg( keV ) - CurrentAngle() ) / MMainTh->getUPP()
-		     + MMainTh->value().toInt() );
-#else
   if ( SelThEncorder->isChecked() ) {
     MMainTh->SetValue( ( keV2deg( keV ) - EncMainTh->value().toDouble() )
 		       / MMainTh->getUPP() + MMainTh->value().toInt() );
   } else {
     MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
   }
-#endif 
 }

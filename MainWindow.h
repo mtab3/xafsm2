@@ -346,7 +346,6 @@ private slots:
 
   void NewSelA( int i );
   void OpenPT( void );
-  void AtomSelectedByPT( int i );
   void NewSelE( int i );
   void ManSelTEdeg( void );
   void ManSelTEkeV( void );
