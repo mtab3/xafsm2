@@ -494,7 +494,7 @@ void MainWindow::ScanStart( void )
     mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ),
 		    SPSdwell->text().toDouble() );
     mUnits.addUnit( as1 = ASensors.value( SelectD10->currentIndex() ),
-		      SPSdwell->text().toDouble() );
+		    SPSdwell->text().toDouble() );
     if ( ! am->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( am->getName() );

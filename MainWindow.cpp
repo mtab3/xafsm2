@@ -202,7 +202,7 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
 }
 
 
-void MainWindow::ShowCurThPos( void )   // 値はあえて使わない
+void MainWindow::ShowCurThPos( void )
 {
   QString buf;
   double deg;
@@ -211,6 +211,7 @@ void MainWindow::ShowCurThPos( void )   // 値はあえて使わない
     deg = EncMainTh->value().toDouble();
   } else {
     deg = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
+    qDebug() << "Show cur pos2 " << MMainTh->getCenter() << deg;
   }
 
   buf.sprintf( UnitName[KEV].form, deg );

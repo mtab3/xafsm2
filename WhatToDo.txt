@@ -1,6 +1,6 @@
 ○ モーターのストップがない!
 
-○ puls -> energy, angle の変換が変
+○ puls -> energy, angle の変換が変 ?? 大丈夫な気もする。　現場で再チェック
 ○ XYView で mouse 位置の値表示やりかけ
 ○ SC410 関連で起動時にへんな GetValue が出てるみたい...だけど、いいか。
 

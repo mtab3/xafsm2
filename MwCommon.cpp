@@ -40,9 +40,7 @@ void MainWindow::setupCommonArea( void )   /* ã§í ÉGÉäÉA */
 
 void MainWindow::NewSelA( int i )
 {
-  qDebug() << "newsela";
   if ( keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
-    qDebug() << "newsela accepted";
     SelectedA = (AtomNo)i;
     SelectTA->setCurrentIndex( i );
     ShowTAE();
@@ -91,7 +89,6 @@ void MainWindow::ShowTAE( void )
 {
   QString buf;
   
-  qDebug() << "showtae" << SelectedA << SelectedE;
   buf.sprintf( UnitName[DEG].form, keV2deg( Vic[SelectedA].AE[SelectedE] ) );
   ManTEdeg->setText( buf );
   buf.sprintf( UnitName[KEV].form, Vic[SelectedA].AE[SelectedE] );
