@@ -13,6 +13,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   Ch = "";
   DevCh = "";
   Unit = "";
+  Dark = 0;
   UPP = 0;
   IsInt = false;
   HasParent = false;

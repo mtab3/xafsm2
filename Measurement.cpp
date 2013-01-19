@@ -78,7 +78,7 @@ void MainWindow::MeasSequence( void )
     }
     break;
   case 7:
-    mUnits.readValue( MeasVals );
+    mUnits.readValue( MeasVals, true );  // true : correct dark
     DispMeasDatas();
     RecordData();
     MeasStage = 10;

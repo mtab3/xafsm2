@@ -103,7 +103,7 @@ private:
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
 
-  QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer;
+  QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
 
   Stars *s;
   double MonoCryD;
@@ -295,6 +295,8 @@ private:
   MEASMODE MeasDispMode[ MCHANNELS ];
   bool MeasSensF[ MCHANNELS ];
   double NowDwell;
+  bool inMeasDark;
+  int MeasDarkStage;
 
   void ShowTotal( void );
   void CpBlock2SBlock( void );
@@ -326,6 +328,8 @@ private slots:
 
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
+
+  void MeasureDark( void );
 
   void ChangeBLKstart( void );
   void ChangeBLKstep( void );
@@ -430,6 +434,7 @@ private slots:
   void ScanSequence( void );
   void MonSequence( void );
   void MCASequence( void );
+  void MeasDarkSequence( void );
 };
 
 #endif

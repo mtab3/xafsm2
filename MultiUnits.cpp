@@ -154,7 +154,8 @@ bool MUnits::getValue( void )
   return ff;
 }
 
-void MUnits::readValue( double *rvs ) // ≈–œø§µ§Ï§∆§§§Î•Ê•À•√•»§Œ∏Ω∫ﬂ√Õ§Ú¡∞µÕ§·§Œ«€ŒÛ§« ÷§π
+void MUnits::readValue( double *rvs, bool correctBack )
+// ≈–œø§µ§Ï§∆§§§Î•Ê•À•√•»§Œ∏Ω∫ﬂ√Õ§Ú¡∞µÕ§·§Œ«€ŒÛ§« ÷§π
 {
   for ( int i = 0; i < Units.count(); i++ ) {
 #if 0                          // values().at(0) is total of all 19 CHs
@@ -165,6 +166,8 @@ void MUnits::readValue( double *rvs ) // ≈–œø§µ§Ï§∆§§§Î•Ê•À•√•»§Œ∏Ω∫ﬂ√Õ§Ú¡∞µÕ§·§
     }
 #else
     rvs[i] = Units.at(i)->au->value().toDouble();
+    if ( correctBack )
+      rvs[i] -= Units.at(i)->au->getDark();
 #endif
   }
 }

@@ -35,7 +35,7 @@ class MUnits : public QObject
   void setDwellTime( void );
   bool getValue0( void );
   bool getValue( void );
-  void readValue( double *rvs );
+  void readValue( double *rvs, bool correctBack );
   QString getName( int i ) { return Units.at(i)->au->getName(); };
   QString getUnit( int i ) { return Units.at(i)->au->getUnit(); };
   bool getMCA( int ch );

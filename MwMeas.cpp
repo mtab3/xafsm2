@@ -136,6 +136,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
   connect( MakeSureOfRangeSelect, SIGNAL( accepted() ), this, SLOT( RangeSelOK() ) );
   connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
+  connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ) );
+
+  inMeasDark = false;
+  MeasDarkStage = 0;
 }
 
 void MainWindow::ClearBLKs( void )
@@ -528,6 +532,47 @@ void MainWindow::StartMeasurement( void )
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
 
+#if 1
+    MeasSensF[ LC ] = true;
+    MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
+    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ), 0 );
+    LC++;
+    if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
+      MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
+      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ), 0 );
+      LC++;
+    }
+    if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
+      MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
+      mUnits.addUnit( SFluo, 0 );
+      LC++;
+    }
+    if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
+      MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
+      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ), 0 );
+      LC++;
+    }
+    if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
+      MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
+      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ), 0 );
+      LC++;
+    }
+
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      as = mUnits.at(i);
+      if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
+	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+      if ( as->isRangeSelectable() ) {
+	OneOfSensIsRangeSelectable = true;
+	theNames += " [" + as->getName() + "]";
+      }
+    }
+
+#else
     MeasSensF[ LC ] = true;
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     mUnits.addUnit( as = ASensors.value( SelectI0->currentIndex() ), 0 );
@@ -606,6 +651,7 @@ void MainWindow::StartMeasurement( void )
 	theNames += " [" + as->getName() + "]";
       }
     }
+#endif
 
     // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので

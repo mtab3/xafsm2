@@ -89,12 +89,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   ScanTimer = new QTimer;
   MonTimer = new QTimer;
   MeasTimer = new QTimer;
+  MeasDarkTimer = new QTimer;
 
   connect( GoTimer, SIGNAL( timeout() ), this, SLOT( MotorMove() ) );
   connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ) );
   connect( ScanTimer, SIGNAL( timeout() ), this, SLOT( ScanSequence() ) );
   connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ) );
   connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
+  connect( MeasDarkTimer, SIGNAL( timeout() ), this, SLOT( MeasDarkSequence() ) );
 
   connect( s, SIGNAL( ConnectingServer( QString )), StatDisp, SLOT( SetSSVA( QString )));
   connect( s, SIGNAL( ConnectingPort( qint16 ) ), StatDisp, SLOT( SetSSVP( qint16 ) ) );

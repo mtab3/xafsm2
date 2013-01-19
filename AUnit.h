@@ -52,6 +52,7 @@ class AUnit : public QObject
   bool IsBusy;
   bool IsBusy2;
   QString Value;
+  double Dark;
   QString lastVal;
   QStringList Values;
   QStringList MCAValues;
@@ -114,6 +115,7 @@ public:
   void setRangeU( int upper ) { RangeU = upper; };
   void setRangeL( int lower ) { RangeL = lower; };
   void setRange( int r ) { SelectedRange = r; };
+  void setDark( double dark ) { Dark = dark; };
 
   bool checkNewVal( void )
   {
@@ -171,6 +173,7 @@ public:
   int getRangeU( void ) { return RangeU; };
   int getRangeL( void ) { return RangeL; };
   int getRange( void ) { return SelectedRange; };
+  double getDark( void ) { return Dark; };
 
   int getLastSetV( void ) { return lastSetV; };
 
