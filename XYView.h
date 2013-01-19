@@ -32,6 +32,7 @@ private:
   SCALET ScaleType[ MAXGRPS ];
   QVector<QString> LNames;
   QString XName;
+  QString XUnitName;
   bool valid;
   double upp;
   double center;
@@ -102,6 +103,7 @@ public:
   void SetLRGroup( int leftG = 0, int rightG = 1 ) { LeftG = leftG; RightG = rightG; };
   void SetLineName( int i, QString Name ) { LNames.insert( i, Name ); }; // ‘½•ªŠÔˆá‚Á‚Ä‚é
   void SetXName( QString Name ) { XName = Name; };
+  void SetXUnitName( QString name ) { XUnitName = name; };
   void makeValid( bool v = true ) { valid = v; };
   int getPoints( int l );
   double getX( int l, int p );

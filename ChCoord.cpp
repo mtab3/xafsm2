@@ -155,7 +155,7 @@ void ChCoord::calcScale( double div, double min, double max, double *s, double *
   if ( max < min ) {
     double tmp = min;
     min = max;
-    max = min;
+    max = tmp;
   }
   if ( max == min ) {
     *s = min;

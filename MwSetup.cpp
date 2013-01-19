@@ -549,7 +549,8 @@ void MainWindow::ScanStart( void )
     for ( int i = 0; i < mUnits.count(); i++ )
       ScanView->SetLineName( i, mUnits.at(i)->getName() );
     ScanView->SetXName( am->getName() );
-    ScanView->setUpp( am->getUPP() );
+    ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
+    ScanView->setUpp( SPSUPP );
     ScanView->setCenter( am->getCenter() );
     ScanView->makeValid( true );
 

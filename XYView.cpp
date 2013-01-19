@@ -136,7 +136,7 @@ void XYView::Draw( QPainter *p )
     rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // ƒƒ‚ƒŠ”Žš
     if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
-		   QString::number( xx * upp ) );
+		   QString::number( ( xx - center ) * upp ) );
     }
     memc++;
   }
@@ -213,7 +213,8 @@ void XYView::Draw( QPainter *p )
     p->drawLine( m.x(), TM, m.x(), height()-BM );
     p->setPen( BLACK );
     rec = QRectF( LM + HW, TM + VH + BM * 0.5, LM * 0.9, BM * 0.45 );
-    cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( cc.s2rx( m.x() ) ) );
+    cc.DrawText( p, rec, F1, AlLC, SCALESIZE,
+		 QString( "%1" ).arg( ( cc.s2rx( m.x() ) - center ) * upp ) );
   }
 }
 

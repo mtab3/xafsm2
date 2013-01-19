@@ -61,8 +61,8 @@ MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 INT 0
 MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 INT 0
 
-MOTOR PM "M015" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11776
-MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0
+MOTOR PM "M015" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 INT -11776
+MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 INT 0
 MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the range !!!
 
 MOTOR SC "M018" "NEATh" "NEATh" "sc400" "unused_1" "deg" 0.00125 INT 0 
@@ -78,7 +78,6 @@ MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0
 #     REAL        : The unit of the motion should be real ( or INT )
 #     -10         : Minimum Voltage
 #     120         : Maximum Voltage
-
 
 #MOTOR PM "M002" "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 INT 0
 #MOTOR PM "M003" "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 INT 0
