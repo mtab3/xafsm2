@@ -522,7 +522,7 @@ double AUnit::SetTime( double dtime )   // in sec
     qDebug() << tr( "Set Time for %1 = %2 x 10^%3 [0.1sec]" )
       .arg( dtime ).arg( M ).arg( N );
     emit ChangedIsBusy2( Driver );
-    s->SendCMD2( Uid, Driver, "SetTimerPreset", QString::number( ltime ) );
+    s->SendCMD2( Uid, Driver, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
     setTime = M * pow( 10, N ) * 0.1;
   }
 
