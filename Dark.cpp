@@ -82,7 +82,7 @@ bool MainWindow::MeasureDark( void )
 
 void MainWindow::MeasDarkSequence( void )
 {
-  if (( mUnits.isBusy() )||( AskingShutterOpen ))
+  if (( mUnits.isBusy() )||( AskingShutterClose )||( AskingShutterOpen ))
     return;
 
   switch( MeasDarkStage ) {
@@ -142,6 +142,7 @@ void MainWindow::MeasDarkSequence( void )
     break;
   case 6:
     inMeasDark = false;
+    MeasBackGround->setText( tr( "Measure Background" ) );
     MeasBackGround
       ->setStyleSheet( "background-color: "
 		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "

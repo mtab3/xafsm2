@@ -736,11 +736,19 @@ void MainWindow::SurelyStop( void )
   MeasTimer->stop();
   inMeas = 0;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( "" );
+  MeasStart
+    ->setStyleSheet( "background-color: "
+		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		     "rgba(225, 235, 225, 255), stop:1 "
+		     "rgba(255, 255, 255, 255));" );
   MeasStart->setEnabled( true );
   inPause = 0;
   MeasPause->setText( tr( "Pause" ) );
-  MeasPause->setStyleSheet( "" );
+  MeasPause
+    ->setStyleSheet( "background-color: "
+		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		     "rgba(225, 235, 225, 255), stop:1 "
+		     "rgba(255, 255, 255, 255));" );
   MeasPause->setEnabled( false );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
@@ -758,7 +766,11 @@ void MainWindow::GoingOn( void )
     NewLogMsg( tr( "Measu: Resume (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
-    MeasPause->setStyleSheet( "" );
+    MeasPause
+      ->setStyleSheet( "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+		       "rgba(255, 255, 255, 255));" );
   }
 }
 
@@ -785,7 +797,11 @@ void MainWindow::PauseMeasurement( void )
     NewLogMsg( tr( "Meas: Resume (%1 keV)" ).arg( CurPosKeV ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
-    MeasPause->setStyleSheet( "" );
+    MeasPause
+      ->setStyleSheet( "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+		       "rgba(255, 255, 255, 255));" );
   }
 }
 
