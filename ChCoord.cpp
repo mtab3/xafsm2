@@ -37,6 +37,46 @@ void ChCoord::SetRealY( double y1, double y2 )
   rmaxy = y2;
 }
 
+void ChCoord::SetRealCoord0( double x1, double y1, double x2, double y2 )
+{
+  rminx0 = x1;
+  rmaxx0 = x2;
+  rminy0 = y1;
+  rmaxy0 = y2;
+}
+
+void ChCoord::SetRealX0( double x1, double x2 )
+{
+  rminx0 = x1;
+  rmaxx0 = x2;
+}
+
+void ChCoord::SetRealY0( double y1, double y2 )
+{
+  rminy0 = y1;
+  rmaxy0 = y2;
+}
+
+void ChCoord::RecallRealCoord( void )
+{
+  rminx = rminx0;
+  rmaxx = rmaxx0;
+  rminy = rminy0;
+  rmaxy = rmaxy0;
+}
+
+void ChCoord::RecallRealX( void )
+{
+  rminx = rminx0;
+  rmaxx = rmaxx0;
+}
+
+void ChCoord::RecallRealY( void )
+{
+  rminy = rminy0;
+  rmaxy = rmaxy0;
+}
+
 double ChCoord::r2sx( double rx )
 {
   return ( smaxx - sminx ) / ( rmaxx - rminx ) * ( rx - rminx ) + sminx; 

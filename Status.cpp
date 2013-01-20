@@ -37,6 +37,8 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
   QFrame *SSFrame = new QFrame;
   MainGrid->addWidget( SSFrame, 0, 0, 1, 5 );
   QGridLayout *SSS = new QGridLayout;
+  SSS->setContentsMargins( 3, 3, 3, 3 );
+  SSS->setVerticalSpacing( 1 );
   SSFrame->setLayout( SSS );
   SSFrame->setStyleSheet( TBack );
   SSFrame->setFrameStyle( QFrame::StyledPanel );

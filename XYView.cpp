@@ -7,6 +7,8 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
 
+  autoScale = true;
+
   Clear();
   valid = false;
   Groups = 0;
@@ -18,6 +20,10 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   bgColor = QColor( 255, 255, 255 );
   BLACK = QColor( 0, 0, 0 );
   MCLineC = QColor( 210, 180, 0 );     // mouse cursor line color
+  ASBBorderC = QColor( 0, 220, 220 );  // auto scale button border color
+  ASBOnC = QColor( 170, 255, 170 );    // auto scale button on color
+  ASBOffC = QColor( 140, 180, 140 );   // auto scale button off color
+
   upp = 1;
   center = 0;
 
@@ -103,6 +109,10 @@ void XYView::Draw( QPainter *p )
   if ( valid != true ) 
     return;
 
+  if ( autoScale ) {
+    cc.RecallRealX();
+  }
+
   QString buf, buf2;
   int RM, LM, TM, BM, HW, VH;
   QPen pen0, pen1;
@@ -127,6 +137,7 @@ void XYView::Draw( QPainter *p )
 
   cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
+  ShowAScaleButton( p );
 
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
@@ -149,8 +160,10 @@ void XYView::Draw( QPainter *p )
   int displayedLs = 0;
   for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
     // g 番目のグループに属する線を全部調べて描画スケールを決める。
-    UpDateYWindow( g, ScaleType[ g ] );
+    if ( autoScale )
+      UpDateYWindow( g, ScaleType[ g ] );
 
+    cc.SetRealY( miny[g], maxy[g] );
     if (( g == LeftG )||( g == RightG )) {
       sy = dy = 0;
       cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
@@ -218,6 +231,34 @@ void XYView::Draw( QPainter *p )
   }
 }
 
+void XYView::ShowAScaleButton( QPainter *p )
+{
+  QFont F1;
+
+  if ( autoScale )
+    p->fillRect( 5, height() - 19, 14, 14, ASBOnC );
+  else 
+    p->fillRect( 5, height() - 19, 14, 14, ASBOffC );
+  p->setPen( ASBBorderC );
+  p->drawRect( 5, height() - 19, 14, 14 );
+
+  p->setPen( BLACK );
+  QRectF rec = QRectF( 24, height()-17, 90, 11 );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "A. Scale" );
+}
+
+void XYView::CheckASPush( void )
+{
+  if ( ( m.ex() > 5 )&&( m.ex() < 19 )
+       &&( m.ey() > ( height() - 19 ) )&&( m.ey() < ( height() - 5 ) ) ) {
+    if ( autoScale ) {
+      autoScale = false;
+    } else {
+      autoScale = true;
+    }
+  }
+}
+
 void XYView::UpDateYWindow( int g, SCALET s )
 {
   bool noPoints = true;
@@ -240,10 +281,12 @@ void XYView::UpDateYWindow( int g, SCALET s )
 
   switch( s ) {
   case FULLSCALE:
-    cc.SetRealY( nminy - dy * 0.05, nmaxy + dy * 0.05 );
+    miny[g] = nminy - dy * 0.05;
+    maxy[g] = nmaxy + dy * 0.05;
     break;
   case I0TYPE:
-    cc.SetRealY( nminy - dy * 5, nmaxy + dy * 1 );
+    miny[g] = nminy - dy * 5;
+    maxy[g] = nmaxy + dy * 1;
     break;
   default:
     qDebug() << "Unknown scale type";
@@ -251,7 +294,8 @@ void XYView::UpDateYWindow( int g, SCALET s )
   }
 
   if ( noPoints ) {
-    cc.SetRealY( 0, 1 );
+    miny[g] = 0;
+    maxy[g] = 1;
   }
 }
 
@@ -272,6 +316,7 @@ void XYView::mousePressEvent( QMouseEvent *e )
 void XYView::mouseReleaseEvent( QMouseEvent *e )
 {
   m.Released( e );
+  CheckASPush();
   update();
 }
 
@@ -279,3 +324,8 @@ void XYView::mouseDoubleClickEvent( QMouseEvent * )
 {
 }
 
+void XYView::wheelEvent( QWheelEvent *e )
+{
+  double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
+  qDebug() << "Wheel " << step;
+}

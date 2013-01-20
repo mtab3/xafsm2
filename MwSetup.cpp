@@ -553,6 +553,7 @@ void MainWindow::ScanStart( void )
     ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
     ScanView->setUpp( SPSUPP );
     ScanView->setCenter( am->getCenter() );
+    ScanView->setAutoScale( true );
     ScanView->makeValid( true );
 
     ScanStage = 0;

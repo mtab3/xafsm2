@@ -99,8 +99,8 @@ void MainWindow::ScanSequence( void )
 void MainWindow::SetScanViewWindow( void )
 {
   if ( ScanEP > ScanSP ) {
-    ScanView->SetWindow( ScanSP, 0, ScanEP, 0 );
+    ScanView->SetWindow0( ScanSP, 0, ScanEP, 0 );
   } else {
-    ScanView->SetWindow( ScanEP, 0, ScanSP, 0 );
+    ScanView->SetWindow0( ScanEP, 0, ScanSP, 0 );
   }
 }

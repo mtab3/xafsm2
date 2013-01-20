@@ -12,6 +12,7 @@ class ChCoord : public QObject
 
   double sminx, smaxx, sminy, smaxy;
   double rminx, rmaxx, rminy, rmaxy;
+  double rminx0, rmaxx0, rminy0, rmaxy0;
 
  public:
   ChCoord();
@@ -19,8 +20,14 @@ class ChCoord : public QObject
   void SetScreenCoord( double x1, double y1, double x2, double y2 );
                                                  // on screen window size and position
   void SetRealCoord( double x1, double y1, double x2, double y2 );
+  void SetRealCoord0( double x1, double y1, double x2, double y2 );
   void SetRealX( double x1, double x2 );
+  void SetRealX0( double x1, double x2 );
   void SetRealY( double y1, double y2 );
+  void SetRealY0( double y1, double y2 );
+  void RecallRealCoord( void );
+  void RecallRealX( void );
+  void RecallRealY( void );
   double r2sx( double x );     // from realsize to screen size
   double r2sy( double y );     
   double r2sdx( double x );

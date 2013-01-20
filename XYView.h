@@ -20,10 +20,12 @@ class XYView : public QFrame, private Ui::XView
 
 private:
   ChCoord cc;
+  bool autoScale;
 
   QColor bgColor, BLACK;
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
+  QColor ASBBorderC, ASBOnC, ASBOffC;
 
   int Groups;
   int LeftG, RightG;
@@ -41,12 +43,15 @@ private:
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
+  double miny[ MAXLINES ];
+  double maxy[ MAXLINES ];
 
   MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
+  void wheelEvent( QWheelEvent *e );
 
 public:
   XYView( QWidget *parent = NULL );
@@ -109,9 +114,12 @@ public:
   double getX( int l, int p );
   double getY( int l, int p );
   void SetWindow( double x1, double y1, double x2, double y2 )
-  { cc.SetRealCoord( x1, y1, x2, y2 ); };
+    { cc.SetRealCoord( x1, y1, x2, y2 ); };
+  void SetWindow0( double x1, double y1, double x2, double y2 )
+    { cc.SetRealCoord0( x1, y1, x2, y2 ); };
   void setUpp( double upp0 ) { upp = upp0; };
   void setCenter( double center0 ) { center = center0; };
+  void setAutoScale( bool ascale ) { autoScale = ascale; };
 
 public slots:
 
@@ -119,6 +127,8 @@ private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
   void UpDateYWindow( int g, SCALET s );
+  void ShowAScaleButton( QPainter *p );
+  void CheckASPush( void );
 };
 
 #endif

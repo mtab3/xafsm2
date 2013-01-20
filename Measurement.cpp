@@ -33,7 +33,7 @@ void MainWindow::MeasSequence( void )
     */
   case 0:
     mUnits.clearStage();
-    MeasView->SetWindow( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
+    MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
   case 1:
