@@ -39,6 +39,9 @@ private:
   double upp;
   double center;
 
+  double XShift, XShift0, xshift;
+  double YShift[ MAXLINES ], YShift0[ MAXLINES ], yshift[ MAXLINES ];
+
   int lines;
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];

@@ -137,6 +137,47 @@ void XYView::Draw( QPainter *p )
 
   cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );
+
+  int AlLC = Qt::AlignLeft | Qt::AlignVCenter;
+  int AlRC = Qt::AlignRight | Qt::AlignVCenter;
+  double sy, dy;
+  int displayedLs = 0;
+  for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
+    // g 番目のグループに属する線を全部調べて描画スケールを決める。
+    if ( autoScale )
+      UpDateYWindow( g, ScaleType[ g ] );
+
+    cc.SetRealY( miny[g], maxy[g] );
+    for ( int l = 0; l < lines; l++ ) { // データプロット
+      if ( LineG[l] == g ) {
+	displayedLs++;
+	pen1.setColor( LC[ l ] );
+	p->setPen( pen1 );
+	nowx = cc.s2rx( m.x() );
+	nowxp = 0;
+	for ( int i = 0; i < points[l] - 1; i++ ) {
+	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
+		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
+	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
+	    nowxp = i;
+	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
+	    nowxp = i;
+	}
+	if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
+	  rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
+			cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
+	  cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( y[l][nowxp] ) );
+	}
+      }
+    }
+  }
+  // お笑いクリップ ^^;;;
+  p->fillRect( 0, 0, LM, height(), bgColor );
+  p->fillRect( width()-RM, 0, RM, height(), bgColor );
+  p->fillRect( 0, 0, width(), TM, bgColor );
+  p->fillRect( 0, height()-BM, width(), BM, bgColor );
+  // お笑いクリップ ^^;;;
+
   ShowAScaleButton( p );
 
   double sx, dx;
@@ -154,10 +195,6 @@ void XYView::Draw( QPainter *p )
   rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
 
-  int AlLC = Qt::AlignLeft | Qt::AlignVCenter;
-  int AlRC = Qt::AlignRight | Qt::AlignVCenter;
-  double sy, dy;
-  int displayedLs = 0;
   for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
     // g 番目のグループに属する線を全部調べて描画スケールを決める。
     if ( autoScale )
@@ -193,29 +230,6 @@ void XYView::Draw( QPainter *p )
 	  }
 	  cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, LNames[g] );
 	  break;  // 同じ軸に属する線が複数あってもラベルを描くのは最初の線だけ
-	}
-      }
-    }
-
-    for ( int l = 0; l < lines; l++ ) { // データプロット
-      if ( LineG[l] == g ) {
-	displayedLs++;
-	pen1.setColor( LC[ l ] );
-	p->setPen( pen1 );
-	nowx = cc.s2rx( m.x() );
-	nowxp = 0;
-	for ( int i = 0; i < points[l] - 1; i++ ) {
-	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
-		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
-	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
-	    nowxp = i;
-	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
-	    nowxp = i;
-	}
-	if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
-	  rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
-			cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
-	  cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( y[l][nowxp] ) );
 	}
       }
     }
@@ -304,6 +318,14 @@ void XYView::UpDateYWindow( int g, SCALET s )
 void XYView::mouseMoveEvent( QMouseEvent *e )
 {
   m.Moved( e );
+
+  if ( m.inPress() ) {
+    xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
+    //    yshift = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
+  }
+  XShift = XShift0 + xshift;
+  //  YShift = YShift0 + yshift;
+
   update();
 }
 
@@ -316,6 +338,10 @@ void XYView::mousePressEvent( QMouseEvent *e )
 void XYView::mouseReleaseEvent( QMouseEvent *e )
 {
   m.Released( e );
+  XShift0 += xshift;
+  //  YShift0 += yshift;
+  xshift = 0;
+  //  yshift = 0;
   CheckASPush();
   update();
 }
@@ -327,5 +353,30 @@ void XYView::mouseDoubleClickEvent( QMouseEvent * )
 void XYView::wheelEvent( QWheelEvent *e )
 {
   double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
-  qDebug() << "Wheel " << step;
+  double rx = cc.s2rx( e->x() );
+  double drx = cc.Rmaxx() - cc.Rminx();
+  if ( step > 0 ) {
+    drx *= 0.9;
+  } else {
+    drx /= 0.9;
+  }
+  double nminx = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
+  double nmaxx = nminx + drx;
+  cc.SetRealX( nminx, nmaxx );
+
+  for ( int g = 0; g < Groups; g++ ) {
+    cc.SetRealY( miny[g], maxy[g] );
+    double ry = cc.s2ry( e->y() );
+    double dry = cc.Rmaxy() - cc.Rminy();
+    if ( step > 0 ) {
+      dry *= 0.9;
+    } else {
+      dry /= 0.9;
+    }
+    double nmaxy = ry + ( e->y() - cc.Sminy() ) / ( cc.Smaxy() - cc.Sminy() ) * dry;
+    double nminy = nmaxy - dry;
+    miny[g] = nminy;
+    maxy[g] = nmaxy;
+  }
+  update();
 }
