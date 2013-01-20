@@ -140,6 +140,8 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
 
   inMeasDark = false;
   MeasDarkStage = 0;
+  AskingShutterClose = false;
+  AskingShutterOpen = false;
 }
 
 void MainWindow::ClearBLKs( void )

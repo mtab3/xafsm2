@@ -6,8 +6,18 @@ bool MainWindow::MeasureDark( void )
   AUnit *as;
 
   if ( inMeasDark ) {
-    statusbar->showMessage( tr( "Already Measuring Dark!" ), 2000 );
-    return false;
+    if ( AskingShutterClose ) {
+      AskingShutterClose = false;
+      MeasBackGround->setText( tr( "BG Measuring" ) );
+      MeasBackGround->setStyleSheet( "background-color: yellow" );
+      return false;
+    } else if ( AskingShutterOpen ) {
+      AskingShutterOpen = false;
+      return false;
+    } else {
+      statusbar->showMessage( tr( "Already Measuring Dark!" ), 2000 );
+      return false;
+    }
   }
   if ( inMeas != 0 ) {
     statusbar->showMessage( tr( "Measurement is going on!" ), 2000 );
@@ -60,7 +70,10 @@ bool MainWindow::MeasureDark( void )
   }
 
   inMeasDark = true;
-  MeasBackGround->setStyleSheet( "background-color: yellow" );
+  AskingShutterClose = true;
+  AskingShutterOpen = false;
+  MeasBackGround->setText( tr( "Close Shutter!!" ) );
+  MeasBackGround->setStyleSheet( "background-color: red" );
   MeasDarkStage = 0;
   MeasDarkTimer->start( 100 );
 
@@ -69,7 +82,7 @@ bool MainWindow::MeasureDark( void )
 
 void MainWindow::MeasDarkSequence( void )
 {
-  if ( mUnits.isBusy() )
+  if (( mUnits.isBusy() )||( AskingShutterOpen ))
     return;
 
   switch( MeasDarkStage ) {
@@ -122,6 +135,12 @@ void MainWindow::MeasDarkSequence( void )
 	mUnits.at(i)->setDark( MeasVals[i] );
       }
     }
+    AskingShutterOpen = true;
+    MeasBackGround->setText( tr( "Open Shutter!!" ) );
+    MeasBackGround->setStyleSheet( "background-color: red" );
+    MeasDarkStage = 6;
+    break;
+  case 6:
     inMeasDark = false;
     MeasBackGround
       ->setStyleSheet( "background-color: "

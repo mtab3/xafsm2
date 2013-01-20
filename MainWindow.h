@@ -296,6 +296,8 @@ private:
   bool MeasSensF[ MCHANNELS ];
   double NowDwell;
   bool inMeasDark;
+  bool AskingShutterClose;
+  bool AskingShutterOpen;
   int MeasDarkStage;
 
   void ShowTotal( void );
