@@ -17,12 +17,11 @@ void MUnits::clearUnits( void )
   PUnits.clear();
 };
 
-void MUnits::addUnit( AUnit *au, double dt )
+void MUnits::addUnit( AUnit *au )
 {
   int i;
   MUElement *mue = new MUElement;
   mue->au = au;
-  mue->dt = dt;
   Units << mue;
 
   if ( au->hasParent() ) {
@@ -33,7 +32,6 @@ void MUnits::addUnit( AUnit *au, double dt )
     if ( i >= PUnits.count() ) {
       MUElement *pmue = new MUElement;
       pmue->au = au->getTheParent();
-      pmue->dt = dt;
       PUnits << pmue;
     }
   }
@@ -107,21 +105,21 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形にするべき
     }
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    if ( ! Units.at(i)->au->hasParent() ) {
-      if ( ( rv = Units.at(i)->au->SetTime( Units.at(i)->dt ) ) != Units.at(i)->dt ) {
-	// 設定しようとした値と実際に設定された値が違ってたら
-	QMessageBox *msg1 = new QMessageBox;
-	msg1->setModal( false );
-	msg1->setText( tr( "Dwell time was set [%1] for [%2],"
-			   " though tried to be as [%3]." )
-		       .arg( rv ).arg( Units.at(i)->au->getName() )
-		       .arg( Units.at(i)->dt ) );
-	msg1->setWindowTitle( tr( "Warning on dwell time" ) );
-	connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
-		 this, SLOT( ShownMessage( QAbstractButton * ) ) );
-	msg1->show();
-      }
+    //    if ( ! Units.at(i)->au->hasParent() ) {
+    if ( ( rv = Units.at(i)->au->SetTime( Units.at(i)->dt ) ) != Units.at(i)->dt ) {
+      // 設定しようとした値と実際に設定された値が違ってたら
+      QMessageBox *msg1 = new QMessageBox;
+      msg1->setModal( false );
+      msg1->setText( tr( "Dwell time was set [%1] for [%2],"
+			 " though tried to be as [%3]." )
+		     .arg( rv ).arg( Units.at(i)->au->getName() )
+		     .arg( Units.at(i)->dt ) );
+      msg1->setWindowTitle( tr( "Warning on dwell time" ) );
+      connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
+	       this, SLOT( ShownMessage( QAbstractButton * ) ) );
+      msg1->show();
     }
+    // }
   }
 }
 
@@ -167,7 +165,7 @@ void MUnits::readValue( double *rvs, bool correctBack )
 #else
     rvs[i] = Units.at(i)->au->value().toDouble();
     if ( correctBack )
-      rvs[i] -= Units.at(i)->au->getDark();
+      rvs[i] -= Units.at(i)->au->getDark() * Units.at(i)->au->GetSetTime();
 #endif
   }
 }

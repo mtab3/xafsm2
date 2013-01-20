@@ -40,6 +40,7 @@ class AUnit : public QObject
   int RangeU;           // Upper range limit
   int RangeL;           // Lower range limit
   int SelectedRange;
+  double setTime;       // Actually set time;
 
   double Center;        // Center position in puls : only for PM
 
@@ -52,7 +53,7 @@ class AUnit : public QObject
   bool IsBusy;
   bool IsBusy2;
   QString Value;
-  double Dark;
+  double Dark;                 // back ground value normalized for 1 sec
   QString lastVal;
   QStringList Values;
   QStringList MCAValues;
@@ -207,6 +208,7 @@ public:
   bool GetRealTime( int ch );
   bool GetLiveTime( int ch );
   bool GetRange( void );
+  double GetSetTime( void ) { return setTime; };   // actual set time
 
 public slots:
   void ClrBusy( SMsg msg );

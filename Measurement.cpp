@@ -5,6 +5,9 @@ void MainWindow::MeasSequence( void )
   double Delta;
   bool a1, a2;
 
+  if ( inMeasDark )
+    return;
+
   if (( AskingOverwrite )||( MakingSureOfRangeSelect ))
     return;
 

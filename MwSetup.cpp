@@ -491,10 +491,11 @@ void MainWindow::ScanStart( void )
     ScanMotor = MotorN->currentIndex();
     am = AMotors.value( ScanMotor );
     mUnits.clearUnits();
-    mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ),
-		    SPSdwell->text().toDouble() );
-    mUnits.addUnit( as1 = ASensors.value( SelectD10->currentIndex() ),
-		    SPSdwell->text().toDouble() );
+    mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ) );
+    mUnits.addUnit( as1 = ASensors.value( SelectD10->currentIndex() ) );
+    mUnits.setDwellTimes( SPSdwell->text().toDouble() );
+    mUnits.setDwellTime();
+
     if ( ! am->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( am->getName() );
@@ -612,8 +613,7 @@ void MainWindow::Monitor( void )
     MonStage = 0;   // 計測のサイクル
 
     mUnits.clearUnits();
-
-    mUnits.addUnit( as0, DwellT20->text().toDouble() );
+    mUnits.addUnit( as0 );
     MeasSensF[0] = true;
     if ( SelectD21Sel->isChecked() ) {
       if ( ! as1->isEnable() ) {
@@ -623,7 +623,7 @@ void MainWindow::Monitor( void )
 	NewLogMsg( msg );
 	return;
       }
-      mUnits.addUnit( as1, DwellT21->text().toDouble() );
+      mUnits.addUnit( as1 );
       MeasSensF[1] = true;
     }
     if ( SelectD22Sel->isChecked() ) {
@@ -634,9 +634,12 @@ void MainWindow::Monitor( void )
 	NewLogMsg( msg );
 	return;
       }
-      mUnits.addUnit( as2, DwellT22->text().toDouble() );
+      mUnits.addUnit( as2 );
       MeasSensF[2] = true;
     }
+    mUnits.setDwellTimes( DwellT20->text().toDouble() );
+    mUnits.setDwellTime();
+
     if ( monRecF ) {
       MonOut << "# sec";
       for ( int i = 0; i < mUnits.count(); i++ ) {

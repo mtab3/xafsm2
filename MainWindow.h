@@ -329,7 +329,7 @@ private slots:
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
 
-  void MeasureDark( void );
+  bool MeasureDark( void );
 
   void ChangeBLKstart( void );
   void ChangeBLKstep( void );

@@ -27,7 +27,7 @@ class MUnits : public QObject
   AUnit *at( int i ) { return Units.at(i)->au; };
   bool isParent( void ) { return ( PUnits.count() > 0 ); };
   void clearUnits( void );
-  void addUnit( AUnit *au, double dt );
+  void addUnit( AUnit *au );
   void setDwellTimes( double dt );
   bool isBusy( void );
   void clearStage( void );

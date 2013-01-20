@@ -25,6 +25,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   Has2ndDriver = false;
   RangeSelectable = false;
   SelectedRange = 0;
+  setTime = 1;
 
   Center = 0;        // only for PM
 
@@ -491,8 +492,6 @@ double AUnit::SetTime( double dtime )   // in sec
   long int ltime;
   int M, N;
 
-  double setTime = 0;
-  
   if (( Type == "SSD" )||( Type == "SSDP" )) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
@@ -519,10 +518,12 @@ double AUnit::SetTime( double dtime )   // in sec
   if (( Type == "OTC" )||( Type == "OTC2" )) {
     IsBusy2 = true;
     N = log10( dtime * 10 );
-    M = ceil( dtime / pow( 10., N ) );
-    qDebug() << tr( "Set Time for %1 = %2 x 10^%3" ).arg( dtime ).arg( M ).arg( N );
+    M = ceil( dtime / pow( 10., N - 1 ) );
+    qDebug() << tr( "Set Time for %1 = %2 x 10^%3 [0.1sec]" )
+      .arg( dtime ).arg( M ).arg( N );
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, Driver, "SetTimerPreset", QString::number( ltime ) );
+    setTime = M * pow( 10, N ) * 0.1;
   }
 
   return setTime;

@@ -532,29 +532,29 @@ void MainWindow::StartMeasurement( void )
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
 
-#if 1
+#if 1           // 下の (elseの) 手続きを簡略化。こっちで正しいはず。
     MeasSensF[ LC ] = true;
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
-    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ), 0 );
+    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++;
     if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
-      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ), 0 );
+      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
     }
     if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
-      mUnits.addUnit( SFluo, 0 );
+      mUnits.addUnit( SFluo );
       LC++;
     }
     if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ), 0 );
+      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
     }
     if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ), 0 );
+      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
       LC++;
     }
 
@@ -572,10 +572,10 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
-#else
+#else         // 古いコード。上が整理整頓版
     MeasSensF[ LC ] = true;
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
-    mUnits.addUnit( as = ASensors.value( SelectI0->currentIndex() ), 0 );
+    mUnits.addUnit( as = ASensors.value( SelectI0->currentIndex() ) );
     LC++;
     if ( ! as->isEnable() ) { // I0 に指定されたセンサーが Stars 経由で生きていないとダメ
       QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
@@ -589,7 +589,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
-      mUnits.addUnit( as = ASensors.value( SelectI1->currentIndex() ), 0 );
+      mUnits.addUnit( as = ASensors.value( SelectI1->currentIndex() ) );
       LC++;
       if ( ! as->isEnable() ) { // I1に指定されたセンサーが Stars 経由で生きていないとダメ
 	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
@@ -604,7 +604,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
-      mUnits.addUnit( as = SFluo, 0 );
+      mUnits.addUnit( as = SFluo );
       LC++;
       qDebug() << "Checking isEnabled" << as->getName() << as->isEnable();
       if ( ! as->isEnable() ) {
@@ -621,7 +621,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( as = ASensors.value( SelectAux1->currentIndex() ), 0 );
+      mUnits.addUnit( as = ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
       if ( ! as->isEnable() ) {
 	// AUX1に指定されたセンサーが Stars 経由で生きていないとダメ
@@ -637,7 +637,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( as = ASensors.value( SelectAux2->currentIndex() ), 0 );
+      mUnits.addUnit( as = ASensors.value( SelectAux2->currentIndex() ) );
       LC++;
       if ( ! as->isEnable() ) {
 	// AUX2に指定されたセンサーが Stars 経由で生きていないとダメ
@@ -682,6 +682,11 @@ void MainWindow::StartMeasurement( void )
       MakingSureOfRangeSelect = false;
     }
 
+    if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
+      if ( ! MeasureDark() )                // 正常に測れなければだめ
+	return;
+    }
+
     QFileInfo CheckFile( DFName0 + ".dat" );
     if ( CheckFile.exists() ) {
       AskOverWrite
@@ -692,7 +697,6 @@ void MainWindow::StartMeasurement( void )
     } else {
       AskingOverwrite = false;
     }
-
 
     NewLogMsg( tr( "Meas: Start (%1 keV)" ).arg( CurPosKeV ) );
     InitialKeV = CurPosKeV;
