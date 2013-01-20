@@ -23,6 +23,7 @@ class ChCoord : public QObject
   void SetRealCoord0( double x1, double y1, double x2, double y2 );
   void SetRealX( double x1, double x2 );
   void SetRealX0( double x1, double x2 );
+  void SetRealX0( void ) { rminx0 = rminx; rmaxx0 = rmaxx; };
   void SetRealY( double y1, double y2 );
   void SetRealY0( double y1, double y2 );
   void RecallRealCoord( void );

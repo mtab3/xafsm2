@@ -24,7 +24,7 @@ class MouseC : public QObject
   void setEx( int x ) { Ex = x; };
   void setEy( int y ) { Ey = y; };
   int x( void ) { return nx; };
-  int y( void ) { return nx; };
+  int y( void ) { return ny; };
   int sx( void ) { return Sx; };
   int sy( void ) { return Sy; };
   int ex( void ) { return Ex; };

@@ -39,6 +39,7 @@ private:
   double upp;
   double center;
 
+  double origMinx, origMaxx;
   double XShift, XShift0, xshift;
   double YShift[ MAXLINES ], YShift0[ MAXLINES ], yshift[ MAXLINES ];
 
@@ -117,9 +118,9 @@ public:
   double getX( int l, int p );
   double getY( int l, int p );
   void SetWindow( double x1, double y1, double x2, double y2 )
-    { cc.SetRealCoord( x1, y1, x2, y2 ); };
+  { cc.SetRealCoord( x1, y1, x2, y2 ); };
   void SetWindow0( double x1, double y1, double x2, double y2 )
-    { cc.SetRealCoord0( x1, y1, x2, y2 ); };
+    { origMinx = x1; origMaxx = x2; cc.SetRealCoord0( x1, y1, x2, y2 ); };
   void setUpp( double upp0 ) { upp = upp0; };
   void setCenter( double center0 ) { center = center0; };
   void setAutoScale( bool ascale ) { autoScale = ascale; };

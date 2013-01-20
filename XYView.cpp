@@ -110,7 +110,8 @@ void XYView::Draw( QPainter *p )
     return;
 
   if ( autoScale ) {
-    cc.RecallRealX();
+    cc.SetRealX( origMinx, origMaxx );
+    cc.SetRealX0( origMinx, origMaxx );
   }
 
   QString buf, buf2;
@@ -147,7 +148,10 @@ void XYView::Draw( QPainter *p )
     if ( autoScale )
       UpDateYWindow( g, ScaleType[ g ] );
 
-    cc.SetRealY( miny[g], maxy[g] );
+    if ( autoScale )
+      cc.SetRealY( miny[g], maxy[g] );
+    else
+      cc.SetRealY( miny[g] - YShift[g], maxy[g] - YShift[g] );
     for ( int l = 0; l < lines; l++ ) { // データプロット
       if ( LineG[l] == g ) {
 	displayedLs++;
@@ -200,7 +204,10 @@ void XYView::Draw( QPainter *p )
     if ( autoScale )
       UpDateYWindow( g, ScaleType[ g ] );
 
-    cc.SetRealY( miny[g], maxy[g] );
+    if ( autoScale )
+      cc.SetRealY( miny[g], maxy[g] );
+    else
+      cc.SetRealY( miny[g] - YShift[g], maxy[g] - YShift[g] );
     if (( g == LeftG )||( g == RightG )) {
       sy = dy = 0;
       cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
@@ -269,6 +276,10 @@ void XYView::CheckASPush( void )
       autoScale = false;
     } else {
       autoScale = true;
+      XShift = XShift0 = xshift = 0;
+      for ( int g = 0; g < Groups; g++ ) {
+	YShift[g] = YShift0[g] = yshift[g] = 0;
+      }
     }
   }
 }
@@ -319,12 +330,20 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
 {
   m.Moved( e );
 
-  if ( m.inPress() ) {
-    xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
-    //    yshift = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
+  if ( !autoScale ) {
+    if ( m.inPress() ) {
+      xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
+      for ( int g = 0; g < Groups; g++ ) {
+	cc.SetRealY( miny[g], maxy[g] );
+	yshift[g] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
+      }
+    }
+    XShift = XShift0 + xshift;
+    cc.RecallRealX();
+    cc.SetRealX( cc.Rminx() - XShift, cc.Rmaxx() - XShift );
+    for ( int g = 0; g < Groups; g++ ) 
+      YShift[g] = YShift0[g] + yshift[g];
   }
-  XShift = XShift0 + xshift;
-  //  YShift = YShift0 + yshift;
 
   update();
 }
@@ -338,10 +357,14 @@ void XYView::mousePressEvent( QMouseEvent *e )
 void XYView::mouseReleaseEvent( QMouseEvent *e )
 {
   m.Released( e );
-  XShift0 += xshift;
-  //  YShift0 += yshift;
-  xshift = 0;
-  //  yshift = 0;
+  if ( !autoScale ) {
+    XShift0 += xshift;
+    xshift = 0;
+    for ( int g = 0; g < Groups; g++ ) {
+      YShift0[g] += yshift[g];
+      yshift[g] = 0;
+    }
+  }
   CheckASPush();
   update();
 }
@@ -363,6 +386,7 @@ void XYView::wheelEvent( QWheelEvent *e )
   double nminx = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
   double nmaxx = nminx + drx;
   cc.SetRealX( nminx, nmaxx );
+  cc.SetRealX0( nminx, nmaxx );
 
   for ( int g = 0; g < Groups; g++ ) {
     cc.SetRealY( miny[g], maxy[g] );
