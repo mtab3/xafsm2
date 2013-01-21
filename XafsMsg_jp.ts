@@ -672,7 +672,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MainWindow.ui" line="1095"/>
-        <location filename="Dark.cpp" line="145"/>
+        <location filename="Dark.cpp" line="146"/>
         <source>Measure Background</source>
         <oldsource>Back Ground</oldsource>
         <translation>バックグラウンド計測</translation>
@@ -1163,14 +1163,24 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>シャッター CLOSE 確認</translation>
     </message>
     <message>
-        <location filename="Dark.cpp" line="131"/>
+        <location filename="Dark.cpp" line="79"/>
+        <source>Make sure that shutte is closed.  Then push the &apos;red&apos; button.</source>
+        <translation type="unfinished">シャッターが閉まっていることを確認し、赤くなっている「シャッター CLOSE 確認」ボタンを押して下さい。</translation>
+    </message>
+    <message>
+        <location filename="Dark.cpp" line="130"/>
         <source>Invalid dwell time [%1] was set for [%2].However, the background was set as if the time was set at 1sec.</source>
         <translation>計測器[%2]に指定された計測時間[%1]が正しくありません。1秒に設定して計測します。</translation>
     </message>
     <message>
-        <location filename="Dark.cpp" line="139"/>
+        <location filename="Dark.cpp" line="138"/>
         <source>Open Shutter!!</source>
         <translation>シャッター OPEN 確認</translation>
+    </message>
+    <message>
+        <location filename="Dark.cpp" line="140"/>
+        <source>Make sure that shutte is opened.  Then push the &apos;red&apos; button.</source>
+        <translation type="unfinished">シャッタがーが開いていることを確認し、赤くなっている「シャッター OPEN 確認」ボタンを押して下さい。</translation>
     </message>
     <message>
         <location filename="MwMeas.cpp" line="512"/>

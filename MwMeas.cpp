@@ -608,7 +608,6 @@ void MainWindow::StartMeasurement( void )
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       mUnits.addUnit( as = SFluo );
       LC++;
-      qDebug() << "Checking isEnabled" << as->getName() << as->isEnable();
       if ( ! as->isEnable() ) {
 	// 蛍光測定に指定されたセンサーが Stars 経由で生きていないとダメ
 	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );

@@ -75,6 +75,8 @@ bool MainWindow::MeasureDark( void )
   MeasBackGround->setText( tr( "Close Shutter!!" ) );
   MeasBackGround->setStyleSheet( "background-color: red" );
   MeasDarkStage = 0;
+  statusbar->showMessage( tr( "Make sure that shutte is closed."
+			      "  Then push the 'red' button." ), 0 );
   MeasDarkTimer->start( 100 );
 
   return true;
@@ -87,6 +89,7 @@ void MainWindow::MeasDarkSequence( void )
 
   switch( MeasDarkStage ) {
   case 0:
+    statusbar->showMessage( "", 0 );
     mUnits.clearStage();
     MeasDarkStage = 1;
     break;
@@ -123,9 +126,6 @@ void MainWindow::MeasDarkSequence( void )
       setTime = mUnits.at(i)->GetSetTime();
       if ( setTime > 0 ) {
 	mUnits.at(i)->setDark( MeasVals[i] / setTime );
-	qDebug() << "Dark for" << mUnits.at(i)->getName()
-		 << "is" << MeasVals[i] / setTime
-		 << " raw value " << MeasVals[i] << " meas time " << setTime;
       } else {
 	statusbar
 	  ->showMessage( tr( "Invalid dwell time [%1] was set for [%2]."
@@ -138,10 +138,13 @@ void MainWindow::MeasDarkSequence( void )
     AskingShutterOpen = true;
     MeasBackGround->setText( tr( "Open Shutter!!" ) );
     MeasBackGround->setStyleSheet( "background-color: red" );
+    statusbar->showMessage( tr( "Make sure that shutte is opened."
+				"  Then push the 'red' button." ), 0 );
     MeasDarkStage = 6;
     break;
   case 6:
     inMeasDark = false;
+    statusbar->showMessage( "", 0 );
     MeasBackGround->setText( tr( "Measure Background" ) );
     MeasBackGround
       ->setStyleSheet( "background-color: "
