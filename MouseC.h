@@ -12,13 +12,15 @@ class MouseC : public QObject
   int Ex, Ey;
 
   bool inpress;
+  Qt::MouseButton Button;
+  Qt::KeyboardModifiers Mod;
 
  public:
   MouseC( void );
 
-  void Moved( QMouseEvent *e ) { nx = e->x(); ny = e->y(); };
-  void Pressed( QMouseEvent *e ) { Sx = e->x(); Sy = e->y(); inpress = true; };
-  void Released( QMouseEvent *e ) { Ex = e->x(); Ey = e->y(); inpress = false; };
+  void Moved( QMouseEvent *e );
+  void Pressed( QMouseEvent *e );
+  void Released( QMouseEvent *e );
   void setSx( int x ) { Sx = x; };
   void setSy( int y ) { Sy = y; };
   void setEx( int x ) { Ex = x; };
@@ -29,6 +31,17 @@ class MouseC : public QObject
   int sy( void ) { return Sy; };
   int ex( void ) { return Ex; };
   int ey( void ) { return Ey; };
+
+  Qt::MouseButton button( void ) { return Button; };
+  //it will return, 'OR' operated following values : 
+  //      Qt::LeftButton, Qt::RightButton, Qt::MidButton, Qt::NoButton
+
+  Qt::KeyboardModifiers modifier( void ) { return Mod; };
+  //it will return, 'OR' operated following values : 
+  //      Qt::NoModifier,
+  //      Qt::ShiftModifier, Qt::ControlModifier, Qt::AltModifier, Qt::MetaModifier,
+  //      Qt::KeypadModifier, Qt::GroupSwitchModifier
+
   bool inPress( void ) { return inpress; };
 };
 

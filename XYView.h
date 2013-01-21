@@ -22,7 +22,7 @@ private:
   ChCoord cc;
   bool autoScale;
 
-  QColor bgColor, BLACK;
+  QColor bgColor, BLACK, ASelC;
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
   QColor ASBBorderC, ASBOnC, ASBOffC;
@@ -38,6 +38,7 @@ private:
   bool valid;
   double upp;
   double center;
+  bool AreaSelecting;
 
   double origMinx, origMaxx;
   double XShift, XShift0, xshift;
@@ -47,8 +48,9 @@ private:
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
-  double miny[ MAXLINES ];
-  double maxy[ MAXLINES ];
+  double miny[ MAXGRPS ];
+  double maxy[ MAXGRPS ];
+  double SaveYatNowXp[ MAXLINES ];
 
   MouseC m;
   void mouseMoveEvent( QMouseEvent *e );

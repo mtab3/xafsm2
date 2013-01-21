@@ -8,6 +8,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   setupUi( this );
 
   autoScale = true;
+  AreaSelecting = false;
 
   Clear();
   valid = false;
@@ -23,6 +24,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   ASBBorderC = QColor( 0, 220, 220 );  // auto scale button border color
   ASBOnC = QColor( 170, 255, 170 );    // auto scale button on color
   ASBOffC = QColor( 140, 180, 140 );   // auto scale button off color
+  ASelC = QColor( 0, 255, 120 );      // Area Select Color
 
   upp = 1;
   center = 0;
@@ -167,20 +169,24 @@ void XYView::Draw( QPainter *p )
 	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
 	    nowxp = i;
 	}
-	if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
-	  rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
-			cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
-	  cc.DrawText( p, rec, F1, AlLC, SCALESIZE, QString( "%1" ).arg( y[l][nowxp] ) );
-	}
+	SaveYatNowXp[l] = y[l][nowxp];
       }
     }
   }
-  // お笑いクリップ ^^;;;
+  if ( AreaSelecting ) {
+    p->setPen( ASelC );
+    p->drawLine( m.sx(), m.sy(), m.sx(), m.y() );
+    p->drawLine( m.sx(), m.y(),  m.x(),  m.y() );
+    p->drawLine( m.x(),  m.y(),  m.x(),  m.sy() );
+    p->drawLine( m.x(),  m.sy(), m.sx(), m.sy() );
+  }
+
+  // お笑いクリッピング ^^;;;
   p->fillRect( 0, 0, LM, height(), bgColor );
   p->fillRect( width()-RM, 0, RM, height(), bgColor );
   p->fillRect( 0, 0, width(), TM, bgColor );
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
-  // お笑いクリップ ^^;;;
+  // お笑いクリッピング ^^;;;
 
   ShowAScaleButton( p );
 
@@ -199,6 +205,7 @@ void XYView::Draw( QPainter *p )
   rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
 
+  displayedLs = 0;
   for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
     // g 番目のグループに属する線を全部調べて描画スケールを決める。
     if ( autoScale )
@@ -237,6 +244,18 @@ void XYView::Draw( QPainter *p )
 	  }
 	  cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, LNames[g] );
 	  break;  // 同じ軸に属する線が複数あってもラベルを描くのは最初の線だけ
+	}
+      }
+
+      for ( int l = 0; l < lines; l++ ) {
+	if ( LineG[l] == g ) {
+	  displayedLs++;
+	  if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
+	    rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
+			  cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
+	    cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
+			 QString( "%1" ).arg( SaveYatNowXp[l] ) );
+	  }
 	}
       }
     }
@@ -330,40 +349,92 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
 {
   m.Moved( e );
 
-  if ( !autoScale ) {
-    if ( m.inPress() ) {
-      xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
-      for ( int g = 0; g < Groups; g++ ) {
-	cc.SetRealY( miny[g], maxy[g] );
-	yshift[g] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
+  if ( m.inPress() ) {
+    switch( m.modifier() ) {
+    case Qt::NoModifier:                          // 平行移動
+      if ( !autoScale ) {
+	xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
+	for ( int g = 0; g < Groups; g++ ) {
+	  cc.SetRealY( miny[g], maxy[g] );
+	  yshift[g] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
+	}
+	XShift = XShift0 + xshift;
+	cc.RecallRealX();
+	cc.SetRealX( cc.Rminx() - XShift, cc.Rmaxx() - XShift );
+	for ( int g = 0; g < Groups; g++ ) 
+	  YShift[g] = YShift0[g] + yshift[g];
       }
+      break;
+    case Qt::ShiftModifier:                       // 領域選択拡大
+      break;
     }
-    XShift = XShift0 + xshift;
-    cc.RecallRealX();
-    cc.SetRealX( cc.Rminx() - XShift, cc.Rmaxx() - XShift );
-    for ( int g = 0; g < Groups; g++ ) 
-      YShift[g] = YShift0[g] + yshift[g];
   }
-
+  
   update();
 }
 
 void XYView::mousePressEvent( QMouseEvent *e )
 {
   m.Pressed( e );
+
+  switch( m.modifier() ) {
+  case Qt::NoModifier:                          // 平行移動
+    break;
+  case Qt::ShiftModifier:                       // 領域選択拡大
+    if ( !autoScale )
+      AreaSelecting = true;
+    break;
+  }
+
   update();
 }
 
 void XYView::mouseReleaseEvent( QMouseEvent *e )
 {
+  double dummy;
+  double nminx, nmaxx;
+  double nminy, nmaxy;
+
   m.Released( e );
-  if ( !autoScale ) {
-    XShift0 += xshift;
-    xshift = 0;
-    for ( int g = 0; g < Groups; g++ ) {
-      YShift0[g] += yshift[g];
-      yshift[g] = 0;
+
+  switch( m.modifier() ) {
+  case Qt::NoModifier:                          // 平行移動
+    if ( !autoScale ) {
+      cc.SetRealX0();
+      XShift0 = 0;
+      xshift = 0;
+      for ( int g = 0; g < Groups; g++ ) {
+	YShift0[g] += yshift[g];
+	yshift[g] = 0;
+      }
     }
+    break;
+  case Qt::ShiftModifier:                       // 領域選択拡大
+    if ( !autoScale ) {
+      AreaSelecting = false;
+      nminx = cc.s2rx( m.sx() );
+      nmaxx = cc.s2rx( m.ex() );
+      if ( nminx > nmaxx ) {
+	dummy = nminx;
+	nminx = nmaxx;
+	nmaxx = dummy;
+      }
+      cc.SetRealX( nminx, nmaxx );
+      cc.SetRealX0();
+      for ( int g = 0; g < Groups; g++ ) {
+	cc.SetRealY( miny[g], maxy[g] );
+	nminy = cc.s2ry( m.sy() );
+	nmaxy = cc.s2ry( m.ey() );
+	if ( nminy > nmaxy ) {
+	  dummy = nminy;
+	  nminy = nmaxy;
+	  nmaxy = dummy;
+	}
+	miny[g] = nminy;
+	maxy[g] = nmaxy;
+      }
+    }
+    break;
   }
   CheckASPush();
   update();
