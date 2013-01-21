@@ -131,12 +131,12 @@ void AUnit::Initialize( Stars *S )
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  1,  1 ) ) {
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetCounterPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetCountPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsRun( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", Driver, "Reset" );
-    s->SendCMD2( "Init", Driver, "SetMode", 0 );
+    s->SendCMD2( "Init", Driver, "SetMode", "0" );
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2
@@ -519,8 +519,6 @@ double AUnit::SetTime( double dtime )   // in sec
     IsBusy2 = true;
     N = log10( dtime * 10 );
     M = ceil( dtime / pow( 10., N - 1 ) );
-    qDebug() << tr( "Set Time for %1 = %2 x 10^%3 [0.1sec]" )
-      .arg( dtime ).arg( M ).arg( N );
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, Driver, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
     setTime = M * pow( 10, N ) * 0.1;

@@ -120,7 +120,7 @@ signals:
   void AnsGetMCA( SMsg msg );
   void AnsGetStatistics( SMsg msg );
   void AnsSetMode( SMsg msg );
-  void AnsSetCounterPreset( SMsg msg );
+  void AnsSetCountPreset( SMsg msg );
 
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

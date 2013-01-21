@@ -72,7 +72,7 @@ enum MSGTYPE {
   // ortec974
   // RESET,          //  already is
   SETMODE,
-  SETCOUNTERPRESET,
+  SETCOUNTPRESET,
   // COUNTERRESET,   // already is 
   // RUN,            // already is
   // STOP,           // already is

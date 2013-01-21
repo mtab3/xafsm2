@@ -199,16 +199,14 @@ SENSOR CNT "S001" "GENERAL" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
 #   YES              : If the sensor has a parente (group leader) or not. YES or NO
 #   "S000"             : The identifier of the parent (group reader)
 
-
-
-
-
-
-
-SENSOR OTC "S027" "GENERAL" "Otc974 0" "ortec974" "counter01" "count" YES "S027"
-SENSOR OTC "S028" "GENERAL" "Otc974 1" "ortec974" "counter02" "count" YES "S027"
-#SENSOR OTC "S027" "GENERAL" "Otc974 0" "simmotor" "OTCCh01" "count" YES "S027"
-#SENSOR OTC "S028" "GENERAL" "Otc974 1" "simmotor" "OTCCh02" "count" YES "S027"
+#SENSOR OTC "S027" "GENERAL" "Otc974 ch1(timer)" "ortec974" "counter01" "count" YES "S027"
+#SENSOR OTC "S028" "GENERAL" "Otc974 ch2" "ortec974" "counter02" "count" YES "S027"
+#SENSOR OTC "S029" "GENERAL" "Otc974 ch3" "ortec974" "counter03" "count" YES "S027"
+#SENSOR OTC "S030" "GENERAL" "Otc974 ch4" "ortec974" "counter04" "count" YES "S027"
+SENSOR OTC "S027" "GENERAL" "Otc974 ch1(timer)" "simmotor" "OTCCh01" "count" YES "S027"
+SENSOR OTC "S028" "GENERAL" "Otc974 ch2" "simmotor" "OTCCh02" "count" YES "S027"
+SENSOR OTC "S029" "GENERAL" "Otc974 ch3" "simmotor" "OTCCh03" "count" YES "S027"
+SENSOR OTC "S030" "GENERAL" "Otc974 ch4" "simmotor" "OTCCh04" "count" YES "S027"
 
 # The parameters following the identifier 'SENSOR' are
 #   OTC              : Unit type   OTC : Counter ortec978
@@ -224,10 +222,10 @@ SENSOR OTC "S028" "GENERAL" "Otc974 1" "ortec974" "counter02" "count" YES "S027"
 #   YES              : If the sensor has a parente (group leader) or not. YES or NO
 #   "S027"           : The identifier of the parent (group reader)
 
-SENSOR OTC2 "S029" "GENERAL" "Otc974 2" "ortec974" "counter03" "count" YES "S027" "S004" -2 -9
-SENSOR OTC2 "S030" "GENERAL" "Orc974 4" "ortec974" "counter04" "count" YES "S027" "S005" -2 -9
-#SENSOR OTC2 "S029" "GENERAL" "Otc974 2" "simmotor" "OTCCh03" "count" YES "S027" "S004" -2 -9
-#SENSOR OTC2 "S030" "GENERAL" "Orc974 4" "simmotor" "OTCCh04" "count" YES "S027" "S005" -2 -9
+#SENSOR OTC2 "S031" "GENERAL" "Otc974 ch2(via KTL-1)" "ortec974" "counter02" "count" YES "S027" "S004" -2 -9
+#SENSOR OTC2 "S032" "GENERAL" "Orc974 ch3(via KTL-2)" "ortec974" "counter03" "count" YES "S027" "S005" -2 -9
+SENSOR OTC2 "S031" "GENERAL" "Otc974 ch2(via KTL-1)" "simmotor" "OTCCh03" "count" YES "S027" "S004" -2 -9
+SENSOR OTC2 "S032" "GENERAL" "Orc974 ch3(via KTL-2)" "simmotor" "OTCCh04" "count" YES "S027" "S005" -2 -9
 
 # The parameters following the identifier 'SENSOR' are
 #   OTC2             : Unit type  OTC2 : Counter ortec974 exteded connected to keithley

@@ -303,8 +303,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGetStatistics( smsg ); break;
 	case SETMODE:
 	  emit AnsSetMode( smsg ); break;
-	case SETCOUNTERPRESET:
-	  emit AnsSetCounterPreset( smsg ); break;
+	case SETCOUNTPRESET:
+	  emit AnsSetCountPreset( smsg ); break;
 	default:
 	  break;
 	}
