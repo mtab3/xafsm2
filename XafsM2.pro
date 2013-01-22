@@ -69,4 +69,5 @@ RESOURCES += XafsM.qrc
 TRANSLATIONS += XafsMsg_jp.ts
 QT += network
 # TRANSLATIONS = XafsMsg_jp.ts
+RC_FILE = XafsM2.rc
 
