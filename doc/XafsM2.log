@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.9.30)  22 JAN 2013 01:23
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.9.12)  22 JAN 2013 18:13
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -25,20 +25,19 @@ LaTeX Font Info:    Overwriting symbol font `mincho' in version `bold'
 \@lnumwidth=\dimen119
 \bibindent=\dimen120
 \heisei=\count90
-)
-(/home/tabuchi/inputs/my.sty
+) (./my.sty
 \SIDEX=\dimen121
 \TEXTWIDTH=\dimen122
 \TOPX=\dimen123
 \TEXTLENGTH=\dimen124
 \c@rnumber=\count91
-) (/home/tabuchi/inputs/hangcaption.sty
+)
+(/usr/local/share/texmf-dist/tex/latex/hangcaption/hangcaption.sty
 \captionwidth=\skip43
 )
-(/home/tabuchi/inputs/wrapfloat.sty
+(./wrapfloat.sty
 \WF@wrappedlines=\count92
-)
-(/usr/local/share/texmf-dist/tex/latex/graphics/graphics.sty
+) (/usr/local/share/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
 
 (/usr/local/share/texmf-dist/tex/latex/graphics/trig.sty
@@ -239,11 +238,11 @@ File: PeriodicTable.png Graphic file (type bmp)
  <PeriodicTable.png> [3] [4] (./XafsM2.aux) ) 
 Here is how much of TeX's memory you used:
  1477 strings out of 95545
- 16186 string characters out of 1190572
+ 16193 string characters out of 1190572
  60902 words of memory out of 1000000
  4614 multiletter control sequences out of 10000+100000
  31694 words of font info for 104 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
  23i,6n,22p,261b,439s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (6 pages, 12944 bytes).
+Output written on XafsM2.dvi (6 pages, 12988 bytes).

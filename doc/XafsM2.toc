@@ -7,4 +7,5 @@
 \contentsline {section}{\numberline {5}グラフ表示部}{4}
 \contentsline {section}{\numberline {6}その他の機能}{4}
 \contentsline {section}{\numberline {7}標準的な測定操作}{4}
-\contentsline {section}{\numberline {8}定義ファイル}{4}
+\contentsline {section}{\numberline {8}起動方法・設定}{4}
+\contentsline {section}{\numberline {9}定義ファイル}{4}
