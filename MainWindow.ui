@@ -409,7 +409,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="MeasTab">
        <attribute name="title">
@@ -1019,6 +1019,22 @@
                  </property>
                 </widget>
                </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="label_8">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 230,190);</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <property name="text">
+                  <string>SetUp BLKs</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
@@ -1069,14 +1085,53 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="0" column="1" colspan="2">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 230,190);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>Back ground</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QRadioButton" name="UseMeasured">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Use Measured</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2" colspan="2">
               <widget class="QLabel" name="label_7">
                <property name="text">
                 <string>Meas. Bacground Time.[s]</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="2" colspan="2">
+             <item row="0" column="4">
+              <widget class="QLineEdit" name="MeasBackTime">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3" colspan="2">
               <widget class="QPushButton" name="MeasBackGround">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1096,24 +1151,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="0" column="3">
-              <widget class="QLineEdit" name="MeasBackTime">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_4">
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_9">
                <property name="text">
-                <string>Back ground</string>
+                <string/>
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
+             <item row="1" column="0" colspan="2">
               <widget class="QRadioButton" name="MeasBackBeforeMeas">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -1126,19 +1171,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="checked">
                 <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QRadioButton" name="UseMeasured">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Use Measured</string>
                </property>
               </widget>
              </item>
@@ -1273,13 +1305,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="0" column="0" colspan="3">
-              <widget class="QLabel" name="label_91">
-               <property name="text">
-                <string>Detecotr Select</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_92">
                <property name="text">
@@ -1450,6 +1475,22 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
+             <item row="0" column="0" colspan="2">
+              <widget class="QLabel" name="label_91">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 230,190);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>Select Detectors</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -1476,7 +1517,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <property name="spacing">
                 <number>1</number>
                </property>
-               <item row="3" column="2">
+               <item row="3" column="3">
                 <widget class="QSpinBox" name="SelRPT">
                  <property name="toolTip">
                   <string>The change of the repitation No. is available, even after starting measurement.
@@ -1493,7 +1534,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="2">
+               <item row="2" column="3">
                 <widget class="QLabel" name="label_93">
                  <property name="text">
                   <string>Repeat</string>
@@ -1503,14 +1544,14 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
+               <item row="3" column="1">
                 <widget class="QComboBox" name="OnFinishP">
                  <property name="styleSheet">
                   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
+               <item row="2" column="1">
                 <widget class="QLabel" name="label_94">
                  <property name="text">
                   <string>On Finish</string>
@@ -1520,7 +1561,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="5">
+               <item row="2" column="6">
                 <widget class="QPushButton" name="MeasStart">
                  <property name="maximumSize">
                   <size>
@@ -1536,7 +1577,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="5">
+               <item row="3" column="6">
                 <widget class="QPushButton" name="MeasPause">
                  <property name="maximumSize">
                   <size>
@@ -1552,21 +1593,21 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1" rowspan="2">
+               <item row="2" column="2" rowspan="2">
                 <widget class="Line" name="line">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="3" rowspan="2">
+               <item row="2" column="4" rowspan="2">
                 <widget class="Line" name="line_3">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="4">
+               <item row="2" column="5">
                 <spacer name="horizontalSpacer_7">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -1578,6 +1619,22 @@ Though, other parameters are fixed at the value on starting.</string>
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 230,190);</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <property name="text">
+                  <string>Start Meas.</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -1602,6 +1659,15 @@ Though, other parameters are fixed at the value on starting.</string>
                </property>
                <item row="0" column="0">
                 <widget class="QLabel" name="label_95">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 230,190);</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
                  <property name="text">
                   <string>Check Cond.</string>
                  </property>
@@ -3186,80 +3252,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="9" column="0" colspan="7">
-            <widget class="QSplitter" name="splitter_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <widget class="QLabel" name="label_73">
-              <property name="text">
-               <string>Save:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-             <widget class="QLineEdit" name="MCARecFile">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgb(250, 255, 240);</string>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-             <widget class="QToolButton" name="SelMCARecFile">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>40</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="sizeIncrement">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Select</string>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="MCARec">
-              <property name="maximumSize">
-               <size>
-                <width>40</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Save</string>
-              </property>
-             </widget>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_63">
-             <property name="text">
-              <string>At Cursor</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="4">
+           <item row="2" column="4">
             <widget class="QRadioButton" name="SetDisplayLog">
              <property name="minimumSize">
               <size>
@@ -3272,7 +3265,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="4">
+           <item row="5" column="4">
             <widget class="QLabel" name="label_65">
              <property name="minimumSize">
               <size>
@@ -3285,7 +3278,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="5">
+           <item row="5" column="5">
             <widget class="QLineEdit" name="GainInput">
              <property name="minimumSize">
               <size>
@@ -3301,7 +3294,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="5" colspan="2">
+           <item row="2" column="5" colspan="2">
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <property name="spacing">
               <number>1</number>
@@ -3373,7 +3366,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
             </layout>
            </item>
-           <item row="5" column="5">
+           <item row="6" column="5">
             <widget class="QLineEdit" name="ROIEndInput">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -3398,7 +3391,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="4">
+           <item row="8" column="4">
             <widget class="QRadioButton" name="SelLiveTime">
              <property name="text">
               <string>Live</string>
@@ -3408,7 +3401,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="1" colspan="3">
+           <item row="7" column="1" colspan="3">
             <widget class="QLabel" name="ValAtCurDisp">
              <property name="maximumSize">
               <size>
@@ -3430,7 +3423,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="1" colspan="3">
+           <item row="6" column="1" colspan="3">
             <widget class="QLineEdit" name="ROIStartInput">
              <property name="minimumSize">
               <size>
@@ -3449,7 +3442,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1" colspan="3">
+           <item row="5" column="1" colspan="3">
             <widget class="QLineEdit" name="DynamicRangeInput">
              <property name="minimumSize">
               <size>
@@ -3465,7 +3458,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1" colspan="3">
+           <item row="4" column="1" colspan="3">
             <widget class="QLineEdit" name="ThresholdInput">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -3475,7 +3468,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1" colspan="3">
+           <item row="3" column="1" colspan="3">
             <widget class="QLineEdit" name="PeakingTimeInput">
              <property name="minimumSize">
               <size>
@@ -3491,7 +3484,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="3">
+           <item row="8" column="3">
             <widget class="QRadioButton" name="SelRealTime">
              <property name="text">
               <string>Real</string>
@@ -3501,14 +3494,21 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="1">
+           <item row="8" column="1">
             <widget class="QLabel" name="label_70">
              <property name="text">
               <string>Preset:</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="5">
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_63">
+             <property name="text">
+              <string>At Cursor</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="5">
             <widget class="QLabel" name="ValInROIDisp">
              <property name="maximumSize">
               <size>
@@ -3530,7 +3530,73 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="4">
+           <item row="10" column="0" colspan="7">
+            <widget class="QSplitter" name="splitter_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <widget class="QLabel" name="label_73">
+              <property name="text">
+               <string>Save:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="MCARecFile">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(250, 255, 240);</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QToolButton" name="SelMCARecFile">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="sizeIncrement">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>Select</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="MCARec">
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>Save</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item row="6" column="4">
             <widget class="QLabel" name="label_19">
              <property name="minimumSize">
               <size>
@@ -3543,7 +3609,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="4">
+           <item row="7" column="4">
             <widget class="QLabel" name="label_20">
              <property name="minimumSize">
               <size>
@@ -3556,7 +3622,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="4">
+           <item row="3" column="4">
             <widget class="QLabel" name="label_59">
              <property name="minimumSize">
               <size>
@@ -3569,14 +3635,14 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="6">
+           <item row="4" column="6">
             <widget class="QLabel" name="label_60">
              <property name="text">
               <string>eV</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="6">
+           <item row="5" column="6">
             <widget class="QLabel" name="label_61">
              <property name="minimumSize">
               <size>
@@ -3589,7 +3655,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="6" column="0">
             <widget class="QLabel" name="label_58">
              <property name="minimumSize">
               <size>
@@ -3602,7 +3668,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="label_38">
              <property name="minimumSize">
               <size>
@@ -3615,42 +3681,42 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="4">
+           <item row="4" column="4">
             <widget class="QLabel" name="label_55">
              <property name="text">
               <string>eV  Carib.</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="5">
+           <item row="8" column="5">
             <widget class="QLineEdit" name="PresetTime">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="6">
+           <item row="8" column="6">
             <widget class="QLabel" name="label_66">
              <property name="text">
               <string>sec</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="label_54">
              <property name="text">
               <string>Thresh.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
+           <item row="2" column="2">
             <widget class="QLabel" name="label_64">
              <property name="text">
               <string/>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="5" column="0">
             <widget class="QLabel" name="label_56">
              <property name="minimumSize">
               <size>
@@ -3663,7 +3729,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
+           <item row="2" column="0">
             <widget class="QLabel" name="label_57">
              <property name="minimumSize">
               <size>
@@ -3676,7 +3742,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="5">
+           <item row="4" column="5">
             <widget class="QLineEdit" name="CalibrationInput">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -3686,7 +3752,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
+           <item row="2" column="1">
             <widget class="QSpinBox" name="MCACh">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -3699,10 +3765,26 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="0" colspan="7">
+           <item row="9" column="0" colspan="7">
             <widget class="Line" name="line_6">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="3">
+            <widget class="QLabel" name="label_14">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 230,190);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <property name="text">
+              <string>Set Up a SSD Channel</string>
              </property>
             </widget>
            </item>
@@ -3741,7 +3823,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="1" column="0">
+             <item row="1" column="0" colspan="2">
               <layout class="QGridLayout" name="SSDSelectLayout">
                <property name="spacing">
                 <number>1</number>
@@ -4049,6 +4131,21 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_75">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 230,190);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
                <property name="text">
                 <string>Select a SSD ch (MCA spectrum)</string>
                </property>
@@ -4124,7 +4221,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="1" column="0">
+           <item row="1" column="0" colspan="2">
             <layout class="QGridLayout" name="SSDSelectLayout_2">
              <property name="spacing">
               <number>1</number>
@@ -4430,8 +4527,17 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
             </layout>
            </item>
-           <item row="0" column="0">
+           <item row="0" column="0" colspan="2">
             <widget class="QLabel" name="label_80">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 230,190);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
              <property name="text">
               <string>Select SSD channels (XAFS meas.)</string>
              </property>
@@ -4559,7 +4665,7 @@ Though, other parameters are fixed at the value on starting.</string>
      <x>0</x>
      <y>0</y>
      <width>805</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

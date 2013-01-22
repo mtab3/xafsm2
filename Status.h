@@ -3,10 +3,10 @@
 
 #include <QtGui>
 
-#include "ui_FrameWGrid.h"
+#include "ui_ScrollWGrid.h"
 #include "AUnit.h"
 
-class Status : public QFrame, private Ui::FrameWGrid
+class Status : public QScrollArea, private Ui::ScrollWGrid
 {
   Q_OBJECT
 
