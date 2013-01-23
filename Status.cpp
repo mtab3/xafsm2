@@ -1,6 +1,6 @@
 #include "Status.h"
 
-Status::Status( QWidget *p ) : QFrame( p )
+Status::Status( QWidget *p ) : QScrollArea( p )
 {
   setupUi( this );
 }
