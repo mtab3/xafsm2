@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>795</width>
-    <height>890</height>
+    <height>893</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -4724,6 +4724,11 @@ Though, other parameters are fixed at the value on starting.</string>
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Read Data</string>
+       </attribute>
+      </widget>
       <widget class="QWidget" name="LogTab">
        <property name="styleSheet">
         <string notr="true">background-color: rgb(215, 225, 210);</string>
@@ -4845,7 +4850,7 @@ Though, other parameters are fixed at the value on starting.</string>
      <x>0</x>
      <y>0</y>
      <width>795</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
