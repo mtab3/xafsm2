@@ -14,6 +14,7 @@ void MainWindow::setupView( void )
     viewCtrl->setViewBase( ViewBases.at(i) );
     viewCtrl->setNowView( (void *)NULL );
     viewCtrl->setNowVType( NONVIEW );
+    viewCtrl->setNowDType( NONDATA );
     viewCtrl->setIsDeletable( true );
     ViewCtrls << viewCtrl;
   }

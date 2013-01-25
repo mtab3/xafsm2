@@ -183,29 +183,32 @@ void MainWindow::RecordData( void )
     QString buf;
     // 行の先頭は 目標角度、エンコーダ読み角度、測定時間、I0
     // Should be changed depending on the detector (ammeter or counter)
-    // Quick hack for ammeter
-    if ( MeasVals[MC_I0] < 1 ) {
-      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9.8f",
+
+    if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
+      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9d",
                    keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
-                   NowDwell, MeasVals[ MC_I0 ] * pow(10, 10) );
+                   NowDwell, (int)MeasVals[ MC_I0 ] );
     } else {
-      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9.0f",
+      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9.6g",
                    keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
                    NowDwell, MeasVals[ MC_I0 ] );
     }
     out << buf;
+
+    // その後に測定データの並び
     for ( int i = 1; i < MCHANNELS; i++ ) {
-      // その後に測定データの並び
       if ( MeasSensF[i] ) {
         // Quick hack for ammeter
-        if ( MeasVals[i] < 1 ) {
-          buf.sprintf(" %9.8f", MeasVals[ i ] * pow(10,10));
+        if ( (int)(MeasVals[i]) == MeasVals[i] ) {
+          buf.sprintf(" %9d", (int)MeasVals[i] );
         } else {
-          buf.sprintf(" %9.0f", MeasVals[i] );
+          buf.sprintf(" %9.6g", MeasVals[i] );
         }
+	qDebug() << tr( "[%1] = [%2](%3)" ).arg( i ).arg( buf ).arg( MeasVals[i] );
         out << buf;
       }
     }
+
     // 末尾にエネルギーの情報追加。
     buf.sprintf( " %9.5f" " %9.5f",
                  GoToKeV,

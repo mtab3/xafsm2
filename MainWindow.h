@@ -95,6 +95,10 @@ private:
   bool MCAClearRequest;
   QFileDialog *MCAFSel;
 
+  /* ReadData */
+  QVector<Data*> Datas;
+  void setupReadDataArea();
+
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
   AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
@@ -288,7 +292,7 @@ private:
   bool AskingOverwrite;
   bool MakingSureOfRangeSelect;
   ViewCTRL *SetUpNewView( VTYPE vtype );
-  void ClearXViewScreenForMeas( void );
+  void ClearXViewScreenForMeas( XYView *view );
   int GetDFName0( void );
   void SetDFName( int i );
   double MeasVals[ MCHANNELS ];
@@ -317,6 +321,7 @@ private:
 
   bool isBusyMotorInMeas( void );
   void SetScanViewWindow( void );
+  void ClearXViewScreenForScan( XYView *view );
 
   void SetEnableOfUnits( QString drv, bool enable );
 
@@ -437,6 +442,11 @@ private slots:
   void MonSequence( void );
   void MCASequence( void );
   void MeasDarkSequence( void );
+
+  void TryToGiveNewView( DATATYPE dtype );
+
+ signals:
+  void GiveNewView( QObject *to, ViewCTRL *view );
 };
 
 #endif

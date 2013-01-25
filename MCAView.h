@@ -41,6 +41,9 @@ public:
   void SetRealTime( double rt ) { realTime = rt; };
   void SetLiveTime( double lt ) { liveTime = lt; };
   void SetMCACh( int i ) { MCACh = i; };
+  void makeValid( bool v ) { valid = v; };
+  double getRealTime( void ) { return realTime; };
+  double getLiveTime( void ) { return liveTime; };
 
 public slots:
   void setLog( bool f ) { dispLog = f; update(); };

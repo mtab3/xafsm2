@@ -7,6 +7,11 @@ ChCoord::ChCoord( void )
 {
   sminx = smaxx = sminy = smaxy = 0;
   rminx = rmaxx = rminy = rmaxy = 0.0;
+
+  ASBBorderC = QColor( 0, 220, 220 );  // auto scale button border color
+  ASBOnC = QColor( 170, 255, 170 );    // auto scale button on color
+  ASBOffC = QColor( 140, 180, 140 );   // auto scale button off color
+  BLACK = QColor( 0, 0, 0 );
 }
 
 void ChCoord::SetScreenCoord( double x1, double y1, double x2, double y2 )
@@ -257,4 +262,20 @@ void ChCoord::DrawText( QPainter *p,
   p->drawText( rec, flags, msg );
   font.setPointSizeF( fSize );
   p->setFont( font );
+}
+
+void ChCoord::ShowAScaleButton( QPainter *p, bool autoScale, int height )
+{
+  QFont F1;
+
+  if ( autoScale )
+    p->fillRect( 5, height - 19, 14, 14, ASBOnC );
+  else 
+    p->fillRect( 5, height - 19, 14, 14, ASBOffC );
+  p->setPen( ASBBorderC );
+  p->drawRect( 5, height - 19, 14, 14 );
+
+  p->setPen( BLACK );
+  QRectF rec = QRectF( 24, height-17, 90, 11 );
+  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "A. Scale" );
 }

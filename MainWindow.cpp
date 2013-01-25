@@ -47,6 +47,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupSetupArea();
   setupSetupSSDArea();
   setupMeasArea();
+  setupReadDataArea();
+
   StatDisp->setupStatArea( &AMotors, &ASensors );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
   QString msg = "XafsMsg_" + QLocale::system().name();
@@ -262,6 +264,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
 	qDebug() << "Unknow vewType was passed to SetUpNewView";
       }
       newView = NULL;
+      return NULL;
     }
   }
   return ViewCtrls[ ViewTab->currentIndex() ];

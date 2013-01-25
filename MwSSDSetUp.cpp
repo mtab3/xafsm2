@@ -98,8 +98,14 @@ void MainWindow::saveMCAData( void )
   }
   QTextStream out( &f );
 
-
+  out << "# XafsM2 MCA Data\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  out << "# " << "MCALength " << "MCA Ch. " << "RealTime " << "LiveTime "
+              << "ROIs " << "ROIe" << "\n";
+  out << "# " << MCALength << " " << cMCACh << " "
+              << cMCAView->getRealTime() << " " << cMCAView->getLiveTime() << " "
+              << ROIStartInput->text().toInt() << " " << ROIEndInput->text().toInt()
+              << "\n";
   for ( int i = 0; i < MCALength; i++ ) {
     out << i << "\t" << MCAData[i] << "\n";
   }
@@ -299,12 +305,14 @@ void MainWindow::StartMCA( void )
       
       if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
 	return;
+      cMCAViewC->setNowDType( MCADATA );
       cMCAView = (MCAView*)(cMCAViewC->getView());
       
       MCAData = cMCAView->setMCAdataPointer( MCALength );
       validMCAData = true;
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
+      cMCAView->makeValid( true );
       
       connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
 	       this, SLOT( showCurrentValues( int, int ) ) );

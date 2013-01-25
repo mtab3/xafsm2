@@ -100,7 +100,7 @@ void MainWindow::MeasSequence( void )
 	MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
-	ClearXViewScreenForMeas();
+	ClearXViewScreenForMeas( MeasView );
 	MeasR++;
 	MeasStage = 2;
       } else {               // ½ªÎ»

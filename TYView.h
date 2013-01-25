@@ -16,13 +16,15 @@ class TYView : public QFrame, private Ui::XView
 
 private:
   ChCoord cc;
-  QColor bgColor, BLACK;
+  QColor bgColor, BLACK, ASelC;
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
 
   bool valid;
   int MonScale;
   QVector<QString> LNames;
+  bool autoScale;
+  bool AreaSelecting;
 
   int lines;
   double Rwmaxy[ MaxMon ];
@@ -32,12 +34,14 @@ private:
   int ep;     // Ring Buffer の end point 
   int datas;  // Ring Buffer 内の有効なデータ点数
   int timeShift, timeShift0, tts;   // 表示の時間を現在の時間からどれだけずらすか
+  double YShift[ MaxMon ], YShift0[ MaxMon ], yshift[ MaxMon ];
 
   MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
+  void wheelEvent( QWheelEvent *e );
 
 public:
   TYView( QWidget *parent = NULL );
@@ -45,18 +49,21 @@ public:
   void ReDraw( void );
   void NewPointR( int tt, double yy0, double yy1, double yy2 );
   void ClearDataR( void );
-  void SetLines( int line );
-  void SetLName( int i, QString Name ) { LNames.insert( i, Name ); }; // 多分間違ってる
+  void SetLines( int Lines ) { lines = Lines; };
+  int GetLines( void ) { return lines; };
+  void SetLName( int i, QString Name ) { LNames.value( i ) = Name; };
   void makeValid( bool v = true ) { valid = v; };
   int getMonScale( void ) { return MonScale; };
+  QColor getColor( int i ) { return LC[i]; };
 
 public slots:
-  void SetMonScale( int ms );
+  void SetMonScale( int ms ) { MonScale = ms; };;
 
 private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
   void UpDateYWindowRing( void );
+  void CheckASPush( void );
 };
 
 #endif

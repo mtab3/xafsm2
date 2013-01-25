@@ -13,17 +13,20 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   Clear();
   valid = false;
   Groups = 0;
-  SetLineG();
-  SetScaleType();
+
+  for ( int i = 0; i < MAXLINES; i++ ) {
+    setLineG( i, 0 );
+  }
+  for ( int i = 0; i < MAXGRPS; i++ ) {
+    setScaleType( i, FULLSCALE );
+    GNames << "";
+  }
 
   lines = 0;
   cc.SetRealCoord( 0, 0, 1, 1 );
   bgColor = QColor( 255, 255, 255 );
   BLACK = QColor( 0, 0, 0 );
   MCLineC = QColor( 210, 180, 0 );     // mouse cursor line color
-  ASBBorderC = QColor( 0, 220, 220 );  // auto scale button border color
-  ASBOnC = QColor( 170, 255, 170 );    // auto scale button on color
-  ASBOffC = QColor( 140, 180, 140 );   // auto scale button off color
   ASelC = QColor( 0, 255, 120 );      // Area Select Color
 
   upp = 1;
@@ -41,6 +44,11 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
      << QColor( 255,   0,   0 ) << QColor(   0, 255,   0 ) << QColor(   0,   0, 255 )
      << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
      << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
+
+  XShift = XShift0 = xshift = 0;
+  for ( int i = 0; i < MAXLINES; i++ ) {
+    YShift[ i ] = YShift0[ i ] = yshift[ i ] = 0;
+  }
 }
 
 void XYView::Clear( void )
@@ -63,6 +71,8 @@ void XYView::NewPoint( int l, double xx, double yy )
       x[l][ points[l] ] = xx;
       y[l][ points[l] ] = yy;
       points[l]++;
+      if ( xx < origMinx ) origMinx = xx;
+      if ( xx > origMaxx ) origMaxx = xx;
     }
     if ( ( l >= lines )&&( l < MAXLINES - 1 ) )
       lines = l + 1;
@@ -188,7 +198,7 @@ void XYView::Draw( QPainter *p )
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
   // お笑いクリッピング ^^;;;
 
-  ShowAScaleButton( p );
+  cc.ShowAScaleButton( p, autoScale, height() );
 
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
@@ -234,20 +244,19 @@ void XYView::Draw( QPainter *p )
 	}
 	cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, buf );
       }
-      for ( int l = 0; l < lines; l++ ) {
-	if ( LineG[l] == g ) {
-	  if ( g == LeftG ) {
-	    rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
-	  } else {
-	    rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-			  RM*0.9, BM * 0.3 );    // 軸のラベル
-	  }
-	  cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, LNames[g] );
-	  break;  // 同じ軸に属する線が複数あってもラベルを描くのは最初の線だけ
-	}
+      if ( g == LeftG ) {
+	rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
+	cc.DrawText( p, rec, F1, AlRC, SCALESIZE, GNames[g] );
       }
-
+      if ( g == RightG ) {
+	rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
+		      RM*0.9, BM * 0.3 );    // 軸のラベル
+	cc.DrawText( p, rec, F1, AlLC, SCALESIZE, GNames[g] );
+      }
+      
       for ( int l = 0; l < lines; l++ ) {
+	pen1.setColor( LC[ l ] );
+	p->setPen( pen1 );
 	if ( LineG[l] == g ) {
 	  displayedLs++;
 	  if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
@@ -269,22 +278,6 @@ void XYView::Draw( QPainter *p )
     cc.DrawText( p, rec, F1, AlLC, SCALESIZE,
 		 QString( "%1" ).arg( ( cc.s2rx( m.x() ) - center ) * upp ) );
   }
-}
-
-void XYView::ShowAScaleButton( QPainter *p )
-{
-  QFont F1;
-
-  if ( autoScale )
-    p->fillRect( 5, height() - 19, 14, 14, ASBOnC );
-  else 
-    p->fillRect( 5, height() - 19, 14, 14, ASBOffC );
-  p->setPen( ASBBorderC );
-  p->drawRect( 5, height() - 19, 14, 14 );
-
-  p->setPen( BLACK );
-  QRectF rec = QRectF( 24, height()-17, 90, 11 );
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "A. Scale" );
 }
 
 void XYView::CheckASPush( void )

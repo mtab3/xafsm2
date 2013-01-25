@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QLayout>
 
+#include "Data.h"
 #include "XYView.h"
 #include "TYView.h"
 #include "MCAView.h"
@@ -18,6 +19,7 @@ class ViewCTRL : public QObject
   QWidget* ViewBase;
   void* nowView;
   VTYPE nowVType;
+  DATATYPE nowDType;
   bool deletable;
 
  public:
@@ -31,6 +33,8 @@ class ViewCTRL : public QObject
   bool deleteView( void );
   bool isDeletable( void ) { return deletable; };
   void setIsDeletable( bool Deletable ) { deletable = Deletable; };
+  void setNowDType ( DATATYPE dtype ) { nowDType = dtype; };
+  DATATYPE getNowDType ( void ) { return nowDType; };
 };
 
 

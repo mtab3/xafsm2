@@ -48,6 +48,9 @@ void MCAView::paintEvent( QPaintEvent * )
 
 void MCAView::Draw( QPainter *p )
 {
+  if ( valid != true ) 
+    return;
+
   int w = width();
   int h = height();
 

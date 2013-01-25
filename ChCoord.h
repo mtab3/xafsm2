@@ -10,6 +10,9 @@ class ChCoord : public QObject
 {
   Q_OBJECT
 
+  QColor ASBBorderC, ASBOnC, ASBOffC;
+  QColor BLACK;
+
   double sminx, smaxx, sminy, smaxy;
   double rminx, rmaxx, rminy, rmaxy;
   double rminx0, rmaxx0, rminy0, rmaxy0;
@@ -60,6 +63,7 @@ class ChCoord : public QObject
 
   void DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
+  void ShowAScaleButton( QPainter *p, bool autoScale, int height );
 };
 
 #endif

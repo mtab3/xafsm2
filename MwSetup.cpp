@@ -198,7 +198,18 @@ void MainWindow::saveScanData( void )
   }
   QTextStream out( &f );
 
+  AUnit *am = AMotors.value( ScanMotor );
+
+  out << "# XafsM2 Scan Data\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  out << "#\t";
+  for ( int i = 0; i < mUnits.count(); i++ )
+    out << mUnits.at(i)->getName() << "\t";
+  out << am->getName() << "\t";
+  out << SPSUnit->itemText( SPSSelU ) << "\t";
+  out << SPSUPP << "\t";
+  out << am->getCenter() << "\n";
+
   int points = ScanView->getPoints( 1 );
 
   for ( int i = 0; i < points; i++ ) {
@@ -485,8 +496,8 @@ void MainWindow::ScanStart( void )
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
+    ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
-    ScanViewC->setIsDeletable( false );
 
     ScanMotor = MotorN->currentIndex();
     am = AMotors.value( ScanMotor );
@@ -542,13 +553,15 @@ void MainWindow::ScanStart( void )
     GoMotor->setEnabled( false );
 
     ScanView->Clear();
-    ScanView->SetLGroups( 2 );     // グラフの線が所属するグループは 2つ
-    ScanView->SetLineG( 0, 1 );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
-    ScanView->SetScaleType( FULLSCALE, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
-    ScanView->SetLRGroup( 0, 1 );      // 左軸に関係付けるのは group 0 右軸は group 1
-    ScanView->SetScaleType( FULLSCALE, FULLSCALE );
+    ScanView->setGroups( 2 );     // グラフの線が所属するグループは 2つ
+    ScanView->setLineG( 0, 0 );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->setLineG( 1, 1 );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->setScaleType( 0, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->setScaleType( 1, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->SetLGroup( 0 );      // 左軸に関係付けるのは group 0 右軸は group 1
+    ScanView->SetLGroup( 1 );      // 左軸に関係付けるのは group 0 右軸は group 1
     for ( int i = 0; i < mUnits.count(); i++ )
-      ScanView->SetLineName( i, mUnits.at(i)->getName() );
+      ScanView->SetGName( i, mUnits.at(i)->getName() );
     ScanView->SetXName( am->getName() );
     ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
     ScanView->setUpp( SPSUPP );
@@ -558,11 +571,40 @@ void MainWindow::ScanStart( void )
 
     ScanStage = 0;
     ScanTimer->start( 100 );
-  } else {
     ScanViewC->setIsDeletable( false );
+  } else {
+    ScanViewC->setIsDeletable( true );
     ScanStop0();
   }
 }
+
+
+void MainWindow::ClearXViewScreenForScan( XYView *view )
+{
+  view->Clear();
+  view->setGroups( 2 );      // 線が属するグループの数は 2 つ
+  view->setLineG( 0, 0 );     // 0 番目はグループ 0, 1 番目はグループ 1
+  view->setLineG( 1, 1 );     // 
+  view->setScaleType( 0, FULLSCALE );
+  view->setScaleType( 1, FULLSCALE );
+                                  // グループ 0 は I0 型、グループ 1 はフルスケール
+  view->SetLGroup( 0 );        // 左軸を使うのはグループ 1, 右軸を使うのは 0
+  view->SetRGroup( 1 );        // 左軸を使うのはグループ 1, 右軸を使うのは 0
+  //  view->SetLineName( 0, tr( "I0" ) );     // 線 0 の軸の名前
+  //  view->SetLineName( 1, tr( "mu(E)" ) );  // 線 1 の軸の名前
+  //  view->SetXName( tr( "[keV]" ) );
+  view->setAutoScale( true );
+  view->makeValid( true );
+}
+
+#if 0
+    for ( int i = 0; i < mUnits.count(); i++ )
+      ScanView->SetLineName( i, mUnits.at(i)->getName() );
+    ScanView->SetXName( am->getName() );
+    ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
+    ScanView->setUpp( SPSUPP );
+    ScanView->setCenter( am->getCenter() );
+#endif
 
 void MainWindow::ScanStop0( void )
 {
@@ -601,6 +643,7 @@ void MainWindow::Monitor( void )
 	}
 	MonOut.setDevice( &MonFile );
 
+	MonOut << "# XafsM2 Monitor Data\n";
 	MonOut << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
 	       << "\n";
       }
@@ -608,6 +651,7 @@ void MainWindow::Monitor( void )
       monRecF = false;
     }
 
+    MonitorViewC->setNowDType( MONDATA );
     MonitorView = (TYView*)(MonitorViewC->getView());
     
     inMonitor = 1;
@@ -642,9 +686,9 @@ void MainWindow::Monitor( void )
     mUnits.setDwellTime();
 
     if ( monRecF ) {
-      MonOut << "# sec";
+      MonOut << "#\tsec";
       for ( int i = 0; i < mUnits.count(); i++ ) {
-	MonOut << QString( tr( "\t %1[%2]" )
+	MonOut << QString( tr( "\t%1[%2]" )
 			   .arg( mUnits.getName( i ) )
 			   .arg( mUnits.getUnit( i ) ) );
       }

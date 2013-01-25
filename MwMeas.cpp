@@ -434,18 +434,21 @@ void MainWindow::SelectedRBFN( const QString &fname )
   ShowBLKs();
 }
 
-void MainWindow::ClearXViewScreenForMeas( void )
+void MainWindow::ClearXViewScreenForMeas( XYView *view )
 {
-  MeasView->Clear();
-  MeasView->SetLGroups( 2 );      // 線が属するグループの数は 2 つ
-  MeasView->SetLineG( 0, 1 );     // 0 番目はグループ 0, 1 番目はグループ 1
-  MeasView->SetScaleType( I0TYPE, FULLSCALE );
+  view->Clear();
+  view->setGroups( 2 );      // 線が属するグループの数は 2 つ
+  view->setLineG( 0, 0 );     // 0 番目はグループ 0, 1 番目はグループ 1
+  view->setLineG( 1, 1 );     // 
+  view->setScaleType( 0, I0TYPE );
+  view->setScaleType( 1, FULLSCALE );
                                   // グループ 0 は I0 型、グループ 1 はフルスケール
-  MeasView->SetLRGroup( 1, 0 );        // 左軸を使うのはグループ 1, 右軸を使うのは 0
-  MeasView->SetLineName( 0, tr( "I0" ) );     // 線 0 の軸の名前
-  MeasView->SetLineName( 1, tr( "mu(E)" ) );  // 線 1 の軸の名前
-  MeasView->SetXName( tr( "[keV]" ) );
-  MeasView->makeValid( true );
+  view->SetLGroup( 1 );        // 左軸を使うのはグループ 1
+  view->SetRGroup( 0 );        // 右軸を使うのは 0
+  view->SetGName( 0, tr( "I0" ) );     // グループ 0 の軸の名前
+  view->SetGName( 1, tr( "mu(E)" ) );  // グループ 1 の軸の名前
+  view->SetXName( tr( "[keV]" ) );
+  view->makeValid( true );
 }
 
 bool MainWindow::CheckDetectorSelection( void )
@@ -524,8 +527,9 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
+    MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
-    ClearXViewScreenForMeas();
+    ClearXViewScreenForMeas( MeasView );
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
