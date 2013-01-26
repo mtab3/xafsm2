@@ -97,7 +97,7 @@ private:
 
   /* ReadData */
   QVector<Data*> Datas;
-  void setupReadDataArea();
+  void setupReadDataArea( void );
 
   /* Special Units */
   AUnit *MMainTh;               // main Th ax
@@ -444,6 +444,7 @@ private slots:
   void MeasDarkSequence( void );
 
   void TryToGiveNewView( DATATYPE dtype );
+  void DeleteTheView( void );
 
  signals:
   void GiveNewView( QObject *to, ViewCTRL *view );

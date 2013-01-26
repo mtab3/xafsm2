@@ -9,10 +9,10 @@
 
 #define MAXPOINTS ( 10000 )
 #define MAXLINES  ( 30 )
-#define MAXGRPS   ( 30 )
 
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
+enum LRAX { LEFT_AX, RIGHT_AX };
 
 class XYView : public QFrame, private Ui::XView
 {
@@ -27,18 +27,17 @@ private:
   QColor MCLineC;          // mouse cursor line color
   QColor ASelC;
 
-  int Groups;
-  int LeftG, RightG;
-  int LineG[ MAXLINES ];
-  LINEF LineLR[ MAXGRPS ];
-  SCALET ScaleType[ MAXGRPS ];
-  QVector<QString> GNames;
+  LRAX LineLR[ MAXLINES ];
+  SCALET scaleType[ MAXLINES ];
+  QString LeftName, RightName;
+  QVector<QString> LNames;
   QString XName;
   QString XUnitName;
   bool valid;
   double upp;
   double center;
   bool AreaSelecting;
+  int SelLR[2];
 
   double origMinx, origMaxx;
   double XShift, XShift0, xshift;
@@ -48,8 +47,8 @@ private:
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
-  double miny[ MAXGRPS ];
-  double maxy[ MAXGRPS ];
+  double miny[ MAXLINES ];
+  double maxy[ MAXLINES ];
   double SaveYatNowXp[ MAXLINES ];
 
   MouseC m;
@@ -64,35 +63,34 @@ public:
 
   void NewPoint( int l, double xx, double yy );
   void Clear( void );
-  void setGroups( int g ) { Groups = g; };
-  int getGroups( void ) { return Groups; };
-  // XYView では、複数の線を同時に描けるが、同じスケールで描くものをグループ分けする。
-  void setLineG( int L, int g ) { LineG[ L ] = g; };
-  int getLineG( int L ) { return LineG[ L ]; };
+  // XYView では、複数の線を同時に描けるが、軸として右軸、左軸どちらを使うかを選択する
+  void SetLR( int L, LRAX lr ) { LineLR[ L ] = lr; };
   // スケールのタイプ : フルスケールにするか、I0 の様に少し上にずらすか
   // ループ単位で指定。
-  void setScaleType( int g, SCALET t ) { ScaleType[ g ] = t; };
-  void setColor( int g, QColor c ) { LC.value( g ) = c; };
-  QColor getColor( int g ) { return LC.at( g ); };
+  void SetScaleType( int l, SCALET t ) { scaleType[ l ] = t; };
+  void SetColor( int l, QColor c ) { LC.value( l ) = c; };
+  QColor GetColor( int l ) { return LC.at( l ); };
 
   // 縦軸は左右一本ずつ合計 2本しかないので、縦軸を持てるグループは最大 2 つだけ。
-  void SetLGroup( int leftG = 0 ) { LeftG = leftG; };
-  void SetRGroup( int rightG = 1 ) { RightG = rightG; };
-  void SetGName( int g, QString Name ) { GNames[g] = Name; }; // 多分間違ってる
+  void SetLineName( int l, QString Name ) { LNames[l] = Name; };
+  void SetLeftName( QString Name ) { LeftName = Name; };
+  void SetRightName( QString Name ) { RightName = Name; };
   void SetXName( QString Name ) { XName = Name; };
   void SetXUnitName( QString name ) { XUnitName = name; };
   void makeValid( bool v = true ) { valid = v; };
-  int getPoints( int l );
-  int getLines( void ) { return lines; };
-  double getX( int l, int p );
-  double getY( int l, int p );
+  int GetPoints( int l );
+  int GetLines( void ) { return lines; };
+  double GetX( int l, int p );
+  double GetY( int l, int p );
   void SetWindow( double x1, double y1, double x2, double y2 )
   { cc.SetRealCoord( x1, y1, x2, y2 ); };
   void SetWindow0( double x1, double y1, double x2, double y2 )
     { origMinx = x1; origMaxx = x2; cc.SetRealCoord0( x1, y1, x2, y2 ); };
-  void setUpp( double upp0 ) { upp = upp0; };
-  void setCenter( double center0 ) { center = center0; };
-  void setAutoScale( bool ascale ) { autoScale = ascale; };
+  void SetUpp( double upp0 ) { upp = upp0; };
+  void SetCenter( double center0 ) { center = center0; };
+  void SetAutoScale( bool ascale ) { autoScale = ascale; };
+  void SetLLine( int l ) { SelLR[ LEFT_AX ] = l; };
+  void SetRLine( int l ) { SelLR[ RIGHT_AX ] = l; };
 
 public slots:
 

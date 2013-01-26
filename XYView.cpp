@@ -9,17 +9,16 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 
   autoScale = true;
   AreaSelecting = false;
+  SelLR[ LEFT_AX ] = 0;
+  SelLR[ RIGHT_AX ] = 1;
 
   Clear();
   valid = false;
-  Groups = 0;
 
   for ( int i = 0; i < MAXLINES; i++ ) {
-    setLineG( i, 0 );
-  }
-  for ( int i = 0; i < MAXGRPS; i++ ) {
-    setScaleType( i, FULLSCALE );
-    GNames << "";
+    SetLR( i, LEFT_AX );
+    SetScaleType( i, FULLSCALE );
+    LNames << "";
   }
 
   lines = 0;
@@ -58,7 +57,8 @@ void XYView::Clear( void )
     for ( int j = 0; j < MAXPOINTS; j++ ) {
       x[i][j] = y[i][j] = 0;
     }
-    LineG[i] = 0;
+    LineLR[i] = LEFT_AX;
+    scaleType[i] = FULLSCALE;
   }
   lines = 0;
 }
@@ -79,7 +79,7 @@ void XYView::NewPoint( int l, double xx, double yy )
   }
 }
 
-int XYView::getPoints( int l )
+int XYView::GetPoints( int l )
 {
   if ( l >= lines )
     return -1;
@@ -87,7 +87,7 @@ int XYView::getPoints( int l )
   return points[ l ];
 };
 
-double XYView::getX( int l, int p )
+double XYView::GetX( int l, int p )
 {
   double rv = 0;
 
@@ -98,7 +98,7 @@ double XYView::getX( int l, int p )
   return rv;
 }
 
-double XYView::getY( int l, int p )
+double XYView::GetY( int l, int p )
 {
   double rv = 0;
 
@@ -154,35 +154,55 @@ void XYView::Draw( QPainter *p )
   int AlLC = Qt::AlignLeft | Qt::AlignVCenter;
   int AlRC = Qt::AlignRight | Qt::AlignVCenter;
   double sy, dy;
-  int displayedLs = 0;
-  for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
-    // g 番目のグループに属する線を全部調べて描画スケールを決める。
-    if ( autoScale )
-      UpDateYWindow( g, ScaleType[ g ] );
 
-    if ( autoScale )
-      cc.SetRealY( miny[g], maxy[g] );
-    else
-      cc.SetRealY( miny[g] - YShift[g], maxy[g] - YShift[g] );
-    for ( int l = 0; l < lines; l++ ) { // データプロット
-      if ( LineG[l] == g ) {
-	displayedLs++;
-	pen1.setColor( LC[ l ] );
-	p->setPen( pen1 );
-	nowx = cc.s2rx( m.x() );
-	nowxp = 0;
-	for ( int i = 0; i < points[l] - 1; i++ ) {
-	  p->drawLine( cc.r2sx( x[l][i] ), cc.r2sy( y[l][i] ),
-		       cc.r2sx( x[l][i+1] ), cc.r2sy( y[l][i+1] ) );
-	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
-	    nowxp = i;
-	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
-	    nowxp = i;
-	}
-	SaveYatNowXp[l] = y[l][nowxp];
+  int FindL[ 2 ] = { -1, -1 };
+  double ND[ 2 ] = { 1e300, 1e300 };
+  double x0, x1, y0, y1, hx, hy;
+  double a1, a2;
+  double d, b;
+
+  for ( int l = 0; l < lines; l++ ) { // 先に線だけ描画
+    if ( autoScale ) {
+      UpDateYWindow( l, scaleType[ l ] );
+      cc.SetRealY( miny[l], maxy[l] );
+    } else {
+      cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+    }
+    pen1.setColor( LC[ l ] );
+    p->setPen( pen1 );
+    nowx = cc.s2rx( m.x() );
+    nowxp = 0;
+    for ( int i = 0; i < points[l] - 1; i++ ) {
+      p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
+		   x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
+      if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
+	nowxp = i;
+      if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
+	nowxp = i;
+
+      // マウスがある点から線分(を延長したものに下ろした垂線の足を探す)
+      a1 = x1 - x0;
+      a2 = y1 - y0;
+      b = ( a1 * ( y0 - m.y() ) + a2 * ( m.x() - x0 ) ) / ( a1 * a1 + a2 * a2 );
+      hx = m.x() - b * a2;
+      hy = m.y() + b * a1;
+      if ( hx < x0 ) { hx = x0; hy = y0; }  // 足が線分の外に有ったら
+      if ( hx > x1 ) { hx = x1; hy = y1; }  // 線分の端点で置き換える
+      // その足までの距離が最小になる線を探す
+      if ( ( d = ( hx - m.x() )*( hx - m.x() ) + ( hy - m.y() )*( hy - m.y() ) )
+	   < ND[ LineLR[l] ] ) {
+	ND[ LineLR[l] ] = d;
+	FindL[ LineLR[l] ] = l;
       }
     }
+    SaveYatNowXp[l] = y[l][nowxp];
   }
+  for ( int i = 0; i < 2; i++ ) {
+    if ( ND[ i ] < 25 ) {
+      SelLR[i] =  FindL[i];
+    }
+  }
+
   if ( AreaSelecting ) {
     p->setPen( ASelC );
     p->drawLine( m.sx(), m.sy(), m.sx(), m.y() );
@@ -214,60 +234,54 @@ void XYView::Draw( QPainter *p )
   }
   rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
+  rec = QRectF( cc.r2sx( cc.Rmaxx() )+80, height()-BM+5, 80, BM*0.3 );   // X軸の単位
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XUnitName );
 
-  displayedLs = 0;
-  for ( int g = 0; g < Groups; g++ ) { // グループを順番に回る
-    // g 番目のグループに属する線を全部調べて描画スケールを決める。
-    if ( autoScale )
-      UpDateYWindow( g, ScaleType[ g ] );
-
-    if ( autoScale )
-      cc.SetRealY( miny[g], maxy[g] );
-    else
-      cc.SetRealY( miny[g] - YShift[g], maxy[g] - YShift[g] );
-    if (( g == LeftG )||( g == RightG )) {
-      sy = dy = 0;
-      cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
-      pen1.setWidth( 1 );
-      pen1.setColor( LC[ g ] );
-      p->setPen( pen1 );
-
-      for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
-	buf.sprintf( "%7.5g", yy );
-	if ( g == LeftG ) {  // もし、そのグループが左軸と関連付けられたグループなら
-	  p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
-	  rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 );
-	} else {
-	  p->drawLine( LM, cc.r2sy( yy ), LM+3, cc.r2sy( yy ) );
-	  p->drawLine( width()-RM, cc.r2sy( yy ), width()-RM-3, cc.r2sy( yy ) );
-	  rec = QRectF( width()-RM*0.9, cc.r2sy( yy )-BM*0.3/2, 60, BM * 0.3 );
-	}
-	cc.DrawText( p, rec, F1, ( g == LeftG ) ? AlRC : AlLC, SCALESIZE, buf );
-      }
-      if ( g == LeftG ) {
-	rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
-	cc.DrawText( p, rec, F1, AlRC, SCALESIZE, GNames[g] );
-      }
-      if ( g == RightG ) {
-	rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-		      RM*0.9, BM * 0.3 );    // 軸のラベル
-	cc.DrawText( p, rec, F1, AlLC, SCALESIZE, GNames[g] );
-      }
-      
-      for ( int l = 0; l < lines; l++ ) {
-	pen1.setColor( LC[ l ] );
-	p->setPen( pen1 );
-	if ( LineG[l] == g ) {
-	  displayedLs++;
-	  if ( displayedLs <= 5 ) {  // 先着 5 本の線はマウスポインタ位置の値を表示
-	    rec = QRectF( LM * 1.2 + ( displayedLs - 1 ) * HW / 5.,
-			  cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
-	    cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
-			 QString( "%1" ).arg( SaveYatNowXp[l] ) );
-	  }
-	}
+  for ( int i = 0; i < 2; i++ ) {
+    int l = SelLR[i];
+    if ( autoScale ) {
+      UpDateYWindow( l, scaleType[ l ] );
+      cc.SetRealY( miny[l], maxy[l] );
+    } else {
+      cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+    }
+    sy = dy = 0;
+    cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
+    pen1.setWidth( 1 );
+    pen1.setColor( LC[ l ] );
+    p->setPen( pen1 );
+    
+    for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
+      buf.sprintf( "%7.5g", yy );
+      if ( LineLR[l] == LEFT_AX ) {
+	p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
+	rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 );
+	cc.DrawText( p, rec, F1, AlRC, SCALESIZE, buf );
+      } else {
+	p->drawLine( LM, cc.r2sy( yy ), LM+3, cc.r2sy( yy ) );
+	p->drawLine( width()-RM, cc.r2sy( yy ), width()-RM-3, cc.r2sy( yy ) );
+	rec = QRectF( width()-RM*0.9, cc.r2sy( yy )-BM*0.3/2, 60, BM * 0.3 );
+	cc.DrawText( p, rec, F1, AlLC, SCALESIZE, buf );
       }
     }
+    if ( LineLR[l] == LEFT_AX ) {
+      rec = QRectF( LM * 0.1, cc.r2sy( cc.Rmaxy() )-BM*0.35, 60, BM * 0.3 );
+      cc.DrawText( p, rec, F1, AlRC, SCALESIZE, LeftName );
+    } else {
+      rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
+		    RM*0.9, BM * 0.3 );    // 軸のラベル
+      cc.DrawText( p, rec, F1, AlLC, SCALESIZE, RightName );
+    }    
+    pen1.setColor( LC[ l ] );
+    p->setPen( pen1 );
+    rec = QRectF( LM * 1.2 + i * 2 * HW / 5.,
+		  cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
+    cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
+		 QString( "%1" ).arg( LNames[l] ) );
+    rec = QRectF( LM * 1.2 + ( i * 2 + 1 ) * HW / 5.,
+		  cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
+    cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
+		 QString( "%1" ).arg( SaveYatNowXp[l] ) );
   }
 
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
@@ -289,41 +303,38 @@ void XYView::CheckASPush( void )
     } else {
       autoScale = true;
       XShift = XShift0 = xshift = 0;
-      for ( int g = 0; g < Groups; g++ ) {
-	YShift[g] = YShift0[g] = yshift[g] = 0;
+      for ( int l = 0; l < lines; l++ ) {
+	YShift[l] = YShift0[l] = yshift[l] = 0;
       }
     }
   }
 }
 
-void XYView::UpDateYWindow( int g, SCALET s )
+void XYView::UpDateYWindow( int l, SCALET s )
 {
   bool noPoints = true;
   double nmaxy = -1e300;
   double nminy = +1e300;
 
-  for ( int l = 0; l < lines; l++ ) {
-    if ( LineG[l] == g ) {
-      if ( points[l] > 0 )
-	noPoints = false;
-      for ( int i = 0; i < points[l]; i++ ) {
-	if ( y[l][i] < nminy )
-	  nminy = y[l][i];
-	if ( y[l][i] > nmaxy )
-	  nmaxy = y[l][i];
-      }
-    }
+  if ( points[l] > 0 )
+    noPoints = false;
+  for ( int i = 0; i < points[l]; i++ ) {
+    if ( y[l][i] < nminy )
+      nminy = y[l][i];
+    if ( y[l][i] > nmaxy )
+      nmaxy = y[l][i];
   }
+
   double dy = nmaxy - nminy;
 
   switch( s ) {
   case FULLSCALE:
-    miny[g] = nminy - dy * 0.05;
-    maxy[g] = nmaxy + dy * 0.05;
+    miny[l] = nminy - dy * 0.05;
+    maxy[l] = nmaxy + dy * 0.05;
     break;
   case I0TYPE:
-    miny[g] = nminy - dy * 5;
-    maxy[g] = nmaxy + dy * 1;
+    miny[l] = nminy - dy * 5;
+    maxy[l] = nmaxy + dy * 1;
     break;
   default:
     qDebug() << "Unknown scale type";
@@ -331,8 +342,8 @@ void XYView::UpDateYWindow( int g, SCALET s )
   }
 
   if ( noPoints ) {
-    miny[g] = 0;
-    maxy[g] = 1;
+    miny[l] = 0;
+    maxy[l] = 1;
   }
 }
 
@@ -347,15 +358,15 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
     case Qt::NoModifier:                          // 平行移動
       if ( !autoScale ) {
 	xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
-	for ( int g = 0; g < Groups; g++ ) {
-	  cc.SetRealY( miny[g], maxy[g] );
-	  yshift[g] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
+	for ( int l = 0; l < lines; l++ ) {
+	  cc.SetRealY( miny[l], maxy[l] );
+	  yshift[l] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
 	}
 	XShift = XShift0 + xshift;
 	cc.RecallRealX();
 	cc.SetRealX( cc.Rminx() - XShift, cc.Rmaxx() - XShift );
-	for ( int g = 0; g < Groups; g++ ) 
-	  YShift[g] = YShift0[g] + yshift[g];
+	for ( int l = 0; l < lines; l++ ) 
+	  YShift[l] = YShift0[l] + yshift[l];
       }
       break;
     case Qt::ShiftModifier:                       // 領域選択拡大
@@ -396,9 +407,9 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
       cc.SetRealX0();
       XShift0 = 0;
       xshift = 0;
-      for ( int g = 0; g < Groups; g++ ) {
-	YShift0[g] += yshift[g];
-	yshift[g] = 0;
+      for ( int l = 0; l < lines; l++ ) {
+	YShift0[l] += yshift[l];
+	yshift[l] = 0;
       }
     }
     break;
@@ -414,8 +425,8 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
       }
       cc.SetRealX( nminx, nmaxx );
       cc.SetRealX0();
-      for ( int g = 0; g < Groups; g++ ) {
-	cc.SetRealY( miny[g], maxy[g] );
+      for ( int l = 0; l < lines; l++ ) {
+	cc.SetRealY( miny[l], maxy[l] );
 	nminy = cc.s2ry( m.sy() );
 	nmaxy = cc.s2ry( m.ey() );
 	if ( nminy > nmaxy ) {
@@ -423,8 +434,8 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
 	  nminy = nmaxy;
 	  nmaxy = dummy;
 	}
-	miny[g] = nminy;
-	maxy[g] = nmaxy;
+	miny[l] = nminy;
+	maxy[l] = nmaxy;
       }
     }
     break;
@@ -452,8 +463,8 @@ void XYView::wheelEvent( QWheelEvent *e )
   cc.SetRealX( nminx, nmaxx );
   cc.SetRealX0( nminx, nmaxx );
 
-  for ( int g = 0; g < Groups; g++ ) {
-    cc.SetRealY( miny[g], maxy[g] );
+  for ( int l = 0; l < lines; l++ ) {
+    cc.SetRealY( miny[l], maxy[l] );
     double ry = cc.s2ry( e->y() );
     double dry = cc.Rmaxy() - cc.Rminy();
     if ( step > 0 ) {
@@ -463,8 +474,8 @@ void XYView::wheelEvent( QWheelEvent *e )
     }
     double nmaxy = ry + ( e->y() - cc.Sminy() ) / ( cc.Smaxy() - cc.Sminy() ) * dry;
     double nminy = nmaxy - dry;
-    miny[g] = nminy;
-    maxy[g] = nmaxy;
+    miny[l] = nminy;
+    maxy[l] = nmaxy;
   }
   update();
 }

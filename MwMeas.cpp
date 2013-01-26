@@ -437,17 +437,10 @@ void MainWindow::SelectedRBFN( const QString &fname )
 void MainWindow::ClearXViewScreenForMeas( XYView *view )
 {
   view->Clear();
-  view->setGroups( 2 );      // 線が属するグループの数は 2 つ
-  view->setLineG( 0, 0 );     // 0 番目はグループ 0, 1 番目はグループ 1
-  view->setLineG( 1, 1 );     // 
-  view->setScaleType( 0, I0TYPE );
-  view->setScaleType( 1, FULLSCALE );
-                                  // グループ 0 は I0 型、グループ 1 はフルスケール
-  view->SetLGroup( 1 );        // 左軸を使うのはグループ 1
-  view->SetRGroup( 0 );        // 右軸を使うのは 0
-  view->SetGName( 0, tr( "I0" ) );     // グループ 0 の軸の名前
-  view->SetGName( 1, tr( "mu(E)" ) );  // グループ 1 の軸の名前
-  view->SetXName( tr( "[keV]" ) );
+  view->SetRightName( tr( "I0" ) );
+  view->SetLeftName( tr( "mu(E)" ) );
+  view->SetXName( tr( "Energy" ) );
+  view->SetXUnitName( tr( "[keV]" ) );
   view->makeValid( true );
 }
 
@@ -538,7 +531,6 @@ void MainWindow::StartMeasurement( void )
     for ( int i = 0; i < MCHANNELS; i++ )
       MeasSensF[i] = false;
 
-#if 1           // 下の (elseの) 手続きを簡略化。こっちで正しいはず。
     MeasSensF[ LC ] = true;
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
@@ -577,86 +569,6 @@ void MainWindow::StartMeasurement( void )
 	theNames += " [" + as->getName() + "]";
       }
     }
-
-#else         // 古いコード。上が整理整頓版
-    MeasSensF[ LC ] = true;
-    MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
-    mUnits.addUnit( as = ASensors.value( SelectI0->currentIndex() ) );
-    LC++;
-    if ( ! as->isEnable() ) { // I0 に指定されたセンサーが Stars 経由で生きていないとダメ
-      QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
-      statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg );
-      return;
-    }
-    if ( as->isRangeSelectable() ) {
-      OneOfSensIsRangeSelectable = true;
-      theNames += " [" + as->getName() + "]";
-    }
-    if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
-      MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
-      mUnits.addUnit( as = ASensors.value( SelectI1->currentIndex() ) );
-      LC++;
-      if ( ! as->isEnable() ) { // I1に指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
-      if ( as->isRangeSelectable() ) {
-	OneOfSensIsRangeSelectable = true;
-	theNames += " [" + as->getName() + "]";
-      }
-    }
-    if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
-      MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
-      mUnits.addUnit( as = SFluo );
-      LC++;
-      if ( ! as->isEnable() ) {
-	// 蛍光測定に指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
-      if ( as->isRangeSelectable() ) {
-	OneOfSensIsRangeSelectable = true;
-	theNames += " [" + as->getName() + "]";
-      }
-    }
-    if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
-      MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( as = ASensors.value( SelectAux1->currentIndex() ) );
-      LC++;
-      if ( ! as->isEnable() ) {
-	// AUX1に指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
-      if ( as->isRangeSelectable() ) {
-	OneOfSensIsRangeSelectable = true;
-	theNames += " [" + as->getName() + "]";
-      }
-    }
-    if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
-      MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
-      mUnits.addUnit( as = ASensors.value( SelectAux2->currentIndex() ) );
-      LC++;
-      if ( ! as->isEnable() ) {
-	// AUX2に指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
-      if ( as->isRangeSelectable() ) {
-	OneOfSensIsRangeSelectable = true;
-	theNames += " [" + as->getName() + "]";
-      }
-    }
-#endif
 
     // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
@@ -713,6 +625,17 @@ void MainWindow::StartMeasurement( void )
     MeasChNo = mUnits.count();         // 測定のチャンネル数
     if ( Use19chSSD->isChecked() )
       MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
+
+    MeasView->SetRLine( 0 );
+    MeasView->SetLLine( 1 );
+    MeasView->SetLR( 0, RIGHT_AX );
+    MeasView->SetScaleType( 0, I0TYPE );
+    MeasView->SetLineName( 0, mUnits.at(0)->getName() );
+    for ( int i = 1; i < mUnits.count(); i++ ) {
+      MeasView->SetLR( i, LEFT_AX );
+      MeasView->SetScaleType( i, FULLSCALE );
+      MeasView->SetLineName( i, mUnits.at(i)->getName() );
+    }
 
     CpBlock2SBlock();
     MeasStage = 0;

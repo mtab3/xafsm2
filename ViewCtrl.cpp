@@ -36,6 +36,8 @@ bool ViewCTRL::deleteView( void )
       break;
     }
     nowView = (void *)NULL;
+    nowVType = NONVIEW;
+    nowDType = NONDATA;
     return true;                    // the view is cleaned up
   }
   return false;                     // the view can not be cleaned up

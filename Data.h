@@ -15,12 +15,15 @@ class Data : public QFrame, private Ui::Data
   Q_OBJECT
 
  private:
+  int SettingC;
   QFileDialog *FSDialog;
-  QVector<QLabel*> DColors;
+  QColorDialog *CSDialog;
+  QVector<QPushButton*> DColors;
 
   void CheckFileType( const QString &fname );
   DATATYPE dataType;
   QStringList DataTypeNames;
+  QString FName;
 
   void showMeasData( QTextStream &in, ViewCTRL *view );
   void showScanData( QTextStream &in, ViewCTRL *view );
@@ -38,6 +41,8 @@ class Data : public QFrame, private Ui::Data
 
  public slots:
   void SetColor( int i, const QColor &selcolor );
+  void callCSDialog( void );
+  void newColorSelected( const QColor &c );
 
  signals:
   void AskToGetNewView( DATATYPE dtype );

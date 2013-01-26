@@ -9,16 +9,27 @@
 
 Data::Data( QWidget *p ) : QFrame( p )
 {
+
   setupUi( this );
 
+  SettingC = 0;
   FSDialog = new QFileDialog;
+  CSDialog = new QColorDialog;
+
+  QStringList filters;
+  filters << "*.dat" << "*.*";
 
   FSDialog->setAcceptMode( QFileDialog::AcceptOpen );
   FSDialog->setDirectory( QDir::currentPath() );
-  FSDialog->setFilter( "*.dat" );
+  FSDialog->setNameFilters( filters );
+  
 
   DColors << DColor01 << DColor02 << DColor03 << DColor04 << DColor05
 	  << DColor06 << DColor07 << DColor08 << DColor09 << DColor10;
+  DColors << DColor11 << DColor12 << DColor13 << DColor14 << DColor15
+	  << DColor16 << DColor17 << DColor18 << DColor19 << DColor20;
+  DColors << DColor21 << DColor22 << DColor23 << DColor24 << DColor25
+	  << DColor26 << DColor27 << DColor28 << DColor29 << DColor30;
 
   DataTypeNames << "Measured" << "Scaned" << "Monitored" << "MCA" << "";
 
@@ -26,16 +37,52 @@ Data::Data( QWidget *p ) : QFrame( p )
   connect( FSDialog, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( ShowFName( const QString & ) ) );
   connect( DataShow, SIGNAL( clicked() ), this, SLOT( StartToShowData() ) );
+  for ( int i = 0; i < DColors.count(); i++ ) {
+    connect( DColors.at(i), SIGNAL( clicked() ), this, SLOT( callCSDialog() ) );
+  }
+  connect( CSDialog, SIGNAL( colorSelected( const QColor & ) ),
+	   this, SLOT( newColorSelected( const QColor & ) ) );
 }
 
 Data::~Data( void )
 {
 }
 
+void Data::callCSDialog( void )
+{
+  SettingC = 0;
+  for ( int i = 0; i < DColors.count(); i++ ) {
+    if ( DColors.at(i) == sender() ) {
+      SettingC = i;
+      break;
+    }
+  }
+  CSDialog->show();
+}
+
+void Data::newColorSelected( const QColor &c )
+{
+  SetColor( SettingC, c );
+}
+
 void Data::ShowFName( const QString &fname )
 {
-  SelectedFile->setText( fname );
+  FName = fname;
+  QString dfname = fname;
+#if 0
+  QRect rec;
+  QFontMetrics fm( SelectedFile->font() );
+  rec = fm.boundingRect( dfname );
+  qDebug() << "size of " << SelectedFile->width() << rec.width();
+  while ( ( SelectedFile->width() - 10 )< rec.width() ) {
+    dfname = dfname.mid( 1 );
+    rec = fm.boundingRect( dfname );
+    qDebug() << "size of " << SelectedFile->width() << rec.width();
+  }
+#endif
+  SelectedFile->setText( dfname );
   CheckFileType( fname );
+  StartToShowData();
 }
 
 void Data::CheckFileType( const QString &fname )
@@ -87,18 +134,16 @@ void Data::StartToShowData( void )
 
 void Data::GotNewView( QObject *to, ViewCTRL *view )
 {
-  QString fname;
-
   if ( (Data *)to != this ) {
     emit showMessage( tr( "No View is available." ), 2000 );
     return;
   }
   
-  QFile f( fname = SelectedFile->text() );
+  QFile f( FName );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
-    emit showMessage( tr( "Can not open the file %1." ).arg( fname ), 2000 );
+    emit showMessage( tr( "Can not open the file %1." ).arg( FName ), 2000 );
     return;
   }
 
@@ -130,18 +175,14 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
   XYView *view = (XYView*)viewC->getView();
 
   if ( viewC->getNowDType() == NONDATA ) {
-    view->SetWindow0( 1e300, 0, -1e300, 0 );
     viewC->setNowDType( MEASDATA );
     viewC->setNowVType( XYVIEW );
+    view->SetWindow0( 1e300, 0, -1e300, 0 );
+    view->SetLeftName( "mu(E)" );
+    view->SetRightName( "I0" );
   }
 
-  int L0 = view->getLines();
-  int G0 = view->getGroups();
-  view->setLineG( L0, 0 );
-  for ( int i = L0+1; i < MAXLINES; i++ ) {  // 手抜き!! 何本線を引くかわからないので
-                                          // 未定義部分を全部染めておく
-    view->setLineG( i, 1 );
-  }
+  int L0 = view->GetLines();
 
   while ( ! in.atEnd() ) {
     line = in.readLine();
@@ -157,10 +198,17 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
       }
     }
   }
-  int L = view->getLines();
+  int L = view->GetLines();
   for ( int i = L0; i < L; i++ ) {
-    SetColor( i - L0, view->getColor( view->getLineG( i ) ) );
+    SetColor( i - L0, view->GetColor( i ) );
+    view->SetLR( i, LEFT_AX );  // 一旦全部は左軸
+    view->SetScaleType( i, FULLSCALE );
   }
+  view->SetLR( L0, RIGHT_AX );  // 最初の一本だけ右軸 (I0)
+  view->SetScaleType( L0, I0TYPE );
+  view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
+  view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
+
   view->update();
 }
 
@@ -176,39 +224,40 @@ void Data::showScanData( QTextStream &in, ViewCTRL *viewC )
     viewC->setNowDType( SCANDATA );
     viewC->setNowVType( XYVIEW );
   }
+  view->SetAutoScale( true );
 
-  int L0 = view->getLines();
-  int G0 = view->getGroups();
-  view->setLineG( L0, 0 );
-  for ( int i = L0+1; i < MAXLINES; i++ ) {  // 手抜き!! 何本線を引くかわからないので
-                                          // 未定義部分を全部染めておく
-    view->setLineG( i, 1 );
-  }
+  int L0 = view->GetLines();
 
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();  // 2行空読
   if ( ! in.atEnd() ) line = in.readLine();
   heads = line.split( '\t' );
-  view->SetGName( 0, heads.at( 1 ) );
-  view->SetGName( 1, heads.at( 2 ) );
+  view->SetLineName( L0, heads.at( 1 ) );
+  view->SetLR( L0, RIGHT_AX ); view->SetScaleType( 0, FULLSCALE );
+  view->SetLineName( L0+1, heads.at( 2 ) );
+  view->SetLR( L0+1, LEFT_AX ); view->SetScaleType( 1, FULLSCALE );
+
   view->SetXName( heads.at( 3 ) );
-  view->setUpp( heads.at( 5 ).toDouble() );
-  view->setCenter( heads.at( 6 ).toDouble() );
+  view->SetXUnitName( heads.at( 4 ) );
+  view->SetUpp( heads.at( 5 ).toDouble() );
+  view->SetCenter( heads.at( 6 ).toDouble() );
 
   while ( ! in.atEnd() ) {
     line = in.readLine();
     line = line.simplified();
     vals = line.split( QRegExp( "\\s" ) );
-    int Vals = vals.count();
-    for ( int i = 1; i < Vals; i++ ) {
-      view->NewPoint( L0+(i-1), vals.at( 0 ).toDouble(), vals.at( i ).toDouble() );
-    }
+    view->NewPoint( L0, vals.at( 0 ).toDouble(), vals.at( 1 ).toDouble() );
+    view->NewPoint( L0+1, vals.at( 0 ).toDouble(), vals.at( 2 ).toDouble() );
   }
-  int L = view->getLines();
+  int L = view->GetLines();
   for ( int i = L0; i < L; i++ ) {
-    SetColor( i - L0, view->getColor( view->getLineG( i ) ) );
+    SetColor( i - L0, view->GetColor( i ) );
   }
 
+  view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
+  view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
+  
+  view->makeValid( true );
   view->update();
 }
 

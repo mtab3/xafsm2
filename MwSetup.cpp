@@ -210,10 +210,11 @@ void MainWindow::saveScanData( void )
   out << SPSUPP << "\t";
   out << am->getCenter() << "\n";
 
-  int points = ScanView->getPoints( 1 );
+  int points = ScanView->GetPoints( 1 );
 
   for ( int i = 0; i < points; i++ ) {
-    out << ScanView->getX( 0, i ) << "\t" << ScanView->getY( 0, i ) << "\t" << ScanView->getY( 1, i ) << "\n";
+    out << ScanView->GetX( 0, i )
+	<< "\t" << ScanView->GetY( 0, i ) << "\t" << ScanView->GetY( 1, i ) << "\n";
   }
 
   f.close();
@@ -553,20 +554,19 @@ void MainWindow::ScanStart( void )
     GoMotor->setEnabled( false );
 
     ScanView->Clear();
-    ScanView->setGroups( 2 );     // グラフの線が所属するグループは 2つ
-    ScanView->setLineG( 0, 0 );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
-    ScanView->setLineG( 1, 1 );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
-    ScanView->setScaleType( 0, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
-    ScanView->setScaleType( 1, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
-    ScanView->SetLGroup( 0 );      // 左軸に関係付けるのは group 0 右軸は group 1
-    ScanView->SetLGroup( 1 );      // 左軸に関係付けるのは group 0 右軸は group 1
+    ScanView->SetLR( 0, LEFT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->SetLR( 1, RIGHT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->SetScaleType( 0, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->SetScaleType( 1, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->SetLeftName( " " );
+    ScanView->SetRightName( " " );
     for ( int i = 0; i < mUnits.count(); i++ )
-      ScanView->SetGName( i, mUnits.at(i)->getName() );
+      ScanView->SetLineName( i, mUnits.at(i)->getName() );
     ScanView->SetXName( am->getName() );
     ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
-    ScanView->setUpp( SPSUPP );
-    ScanView->setCenter( am->getCenter() );
-    ScanView->setAutoScale( true );
+    ScanView->SetUpp( SPSUPP );
+    ScanView->SetCenter( am->getCenter() );
+    ScanView->SetAutoScale( true );
     ScanView->makeValid( true );
 
     ScanStage = 0;
@@ -578,33 +578,11 @@ void MainWindow::ScanStart( void )
   }
 }
 
-
 void MainWindow::ClearXViewScreenForScan( XYView *view )
 {
   view->Clear();
-  view->setGroups( 2 );      // 線が属するグループの数は 2 つ
-  view->setLineG( 0, 0 );     // 0 番目はグループ 0, 1 番目はグループ 1
-  view->setLineG( 1, 1 );     // 
-  view->setScaleType( 0, FULLSCALE );
-  view->setScaleType( 1, FULLSCALE );
-                                  // グループ 0 は I0 型、グループ 1 はフルスケール
-  view->SetLGroup( 0 );        // 左軸を使うのはグループ 1, 右軸を使うのは 0
-  view->SetRGroup( 1 );        // 左軸を使うのはグループ 1, 右軸を使うのは 0
-  //  view->SetLineName( 0, tr( "I0" ) );     // 線 0 の軸の名前
-  //  view->SetLineName( 1, tr( "mu(E)" ) );  // 線 1 の軸の名前
-  //  view->SetXName( tr( "[keV]" ) );
-  view->setAutoScale( true );
   view->makeValid( true );
 }
-
-#if 0
-    for ( int i = 0; i < mUnits.count(); i++ )
-      ScanView->SetLineName( i, mUnits.at(i)->getName() );
-    ScanView->SetXName( am->getName() );
-    ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
-    ScanView->setUpp( SPSUPP );
-    ScanView->setCenter( am->getCenter() );
-#endif
 
 void MainWindow::ScanStop0( void )
 {

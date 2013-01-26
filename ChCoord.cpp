@@ -250,12 +250,21 @@ void ChCoord::DrawText( QPainter *p,
 
   if ( f == SCALESIZE ) {
     brec = p->boundingRect( dummyrec, flags, msg );
-    // There was a bug, that call the boundingRect with given 'rec'
+    // There 'was' a bug, that call the boundingRect with given 'rec'
     // Then it returns limitted by the size of rec when the 
     //   drawn text size should bigger than the rectange,
     //   and the results of the resize were wrong. 
-    xr = brec.width() / rec.width();
-    yr = brec.height() / rec.height();
+    if ( rec.width() == 0 ) 
+      xr = 1;
+    else 
+      xr = brec.width() / rec.width();
+    if ( rec.height() == 0 )
+      yr = 1;
+    else 
+      yr = brec.height() / rec.height();
+    if (( xr == 0 )&&( yr == 0 ))
+      xr = yr = 1;
+
     font.setPointSize( fSize / ( ( xr > yr ) ? xr : yr ) );
   }
   p->setFont( font );

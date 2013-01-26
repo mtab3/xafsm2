@@ -10,6 +10,50 @@
     </message>
 </context>
 <context>
+    <name>Data</name>
+    <message>
+        <location filename="Data.ui" line="14"/>
+        <source>Frame</source>
+        <translation>Frame</translation>
+    </message>
+    <message>
+        <location filename="Data.ui" line="66"/>
+        <source>Show</source>
+        <translation>表示</translation>
+    </message>
+    <message>
+        <location filename="Data.ui" line="79"/>
+        <source>  Type : </source>
+        <translation>タイプ : </translation>
+    </message>
+    <message>
+        <location filename="Data.ui" line="89"/>
+        <source>Select</source>
+        <translation>選択</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="47"/>
+        <location filename="Data.cpp" line="101"/>
+        <source>Can not open the file %1.</source>
+        <translation>ファイル [%1] を開けません。</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="55"/>
+        <source>The file %1 is empty.</source>
+        <translation>ファイル [%1] は空です。</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="79"/>
+        <source>The file %1 is not avaliable to show.</source>
+        <translation>ファイル [%1] は表示できません。</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="93"/>
+        <source>No View is available.</source>
+        <translation>使用可能な表示領域がありません。</translation>
+    </message>
+</context>
+<context>
     <name>FrameWGrid</name>
     <message>
         <source>Frame</source>
@@ -24,47 +68,47 @@
         <translation>Frame</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="146"/>
+        <location filename="MCAView.cpp" line="149"/>
         <source>MCA Ch. : </source>
         <translation>MCA Ch. : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="155"/>
+        <location filename="MCAView.cpp" line="158"/>
         <source>Cursor point : </source>
         <translation>カーソル位置: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="163"/>
+        <location filename="MCAView.cpp" line="166"/>
         <source>Val. at Cursor : </source>
         <translation>カーソル位置の値 : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="171"/>
+        <location filename="MCAView.cpp" line="174"/>
         <source>ROI start : </source>
         <translation>ROI始点</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="179"/>
+        <location filename="MCAView.cpp" line="182"/>
         <source>ROI end : </source>
         <translation>ROI終点: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="187"/>
+        <location filename="MCAView.cpp" line="190"/>
         <source>ROI value : </source>
         <translation>ROI積分値: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="195"/>
+        <location filename="MCAView.cpp" line="198"/>
         <source>Real Time : </source>
         <translation>実時間: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="203"/>
+        <location filename="MCAView.cpp" line="206"/>
         <source>Live Time : </source>
         <translation>ライブ時間: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="224"/>
+        <location filename="MCAView.cpp" line="227"/>
         <source>Dead Time : </source>
         <translation>デッドタイム: </translation>
     </message>
@@ -422,16 +466,16 @@ Though, other parameters are fixed at the value on starting.</source>
         <location filename="MainWindow.ui" line="1582"/>
         <location filename="MainWindow.ui" line="4231"/>
         <location filename="Measurement.cpp" line="111"/>
-        <location filename="MwMeas.cpp" line="737"/>
-        <location filename="MwSSDSetUp.cpp" line="330"/>
+        <location filename="MwMeas.cpp" line="664"/>
+        <location filename="MwSSDSetUp.cpp" line="338"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="1598"/>
-        <location filename="MwMeas.cpp" line="745"/>
-        <location filename="MwMeas.cpp" line="767"/>
-        <location filename="MwMeas.cpp" line="798"/>
+        <location filename="MwMeas.cpp" line="672"/>
+        <location filename="MwMeas.cpp" line="694"/>
+        <location filename="MwMeas.cpp" line="725"/>
         <source>Pause</source>
         <translation>一時停止</translation>
     </message>
@@ -487,7 +531,7 @@ Though, other parameters are fixed at the value on starting.</source>
         <location filename="MainWindow.ui" line="1868"/>
         <location filename="MainWindow.ui" line="1924"/>
         <location filename="MainWindow.ui" line="2523"/>
-        <location filename="MwSetup.cpp" line="471"/>
+        <location filename="MwSetup.cpp" line="483"/>
         <source>Go</source>
         <translation>移動</translation>
     </message>
@@ -560,7 +604,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="MainWindow.ui" line="2280"/>
-        <location filename="MwSetup.cpp" line="692"/>
+        <location filename="MwSetup.cpp" line="714"/>
         <source>Mon. Start</source>
         <translation>モニタ開始</translation>
     </message>
@@ -969,62 +1013,67 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>データ読込</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4737"/>
+        <location filename="MainWindow.ui" line="4873"/>
+        <source>Close View</source>
+        <translation>View を閉じる</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="4910"/>
         <source>Log / Record</source>
         <translation>ログ/記録</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4751"/>
+        <location filename="MainWindow.ui" line="4924"/>
         <source>Log File Name:</source>
         <translation>ログファイル名</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4771"/>
+        <location filename="MainWindow.ui" line="4944"/>
         <source>New</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4797"/>
+        <location filename="MainWindow.ui" line="4970"/>
         <source>Add Log Comment:</source>
         <translation>ログコメント追加</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4829"/>
+        <location filename="MainWindow.ui" line="5002"/>
         <source>Stat/Config</source>
         <translation>接続状態</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4858"/>
+        <location filename="MainWindow.ui" line="5031"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4864"/>
+        <location filename="MainWindow.ui" line="5037"/>
         <source>&amp;Config</source>
         <translation>設定(&amp;C)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4875"/>
+        <location filename="MainWindow.ui" line="5048"/>
         <source>&amp;Quit</source>
         <translation>終了(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4880"/>
+        <location filename="MainWindow.ui" line="5053"/>
         <source>Japanese</source>
         <translation>日本語</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4885"/>
+        <location filename="MainWindow.ui" line="5058"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4890"/>
+        <location filename="MainWindow.ui" line="5063"/>
         <source>Set &amp;Lattice Const. Monochro Crystal</source>
         <translation>結晶・格子定数設定(&amp;L)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4895"/>
+        <location filename="MainWindow.ui" line="5068"/>
         <source>Set &amp;Stars Server Address</source>
         <translation>Starsサーバ設定(&amp;S)</translation>
     </message>
@@ -1037,21 +1086,21 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>設定: %1 : %2 に到達</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="54"/>
+        <location filename="MainWindow.cpp" line="56"/>
         <source>Mono: %1 (%2 A)</source>
         <oldsource>Mono: %1 (%2 A)
 </oldsource>
         <translation>分光結晶: %1 (%2 A)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="223"/>
+        <location filename="MainWindow.cpp" line="225"/>
         <source>Current Position [%1] keV</source>
         <oldsource>Current Position [%1] keV
 </oldsource>
         <translation>分光器現在位置 [%1] keV</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="253"/>
+        <location filename="MainWindow.cpp" line="255"/>
         <source>No Scree is available!</source>
         <translation>使用可能な描画領域(View)がありません</translation>
     </message>
@@ -1145,22 +1194,27 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>時間: </translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="445"/>
+        <location filename="MwMeas.cpp" line="440"/>
         <source>I0</source>
         <translation>I0</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="446"/>
+        <location filename="MwMeas.cpp" line="441"/>
         <source>mu(E)</source>
         <translation>μ(E)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="447"/>
+        <location filename="MwMeas.cpp" line="442"/>
+        <source>Energy</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="MwMeas.cpp" line="443"/>
         <source>[keV]</source>
         <translation>[keV]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="501"/>
+        <location filename="MwMeas.cpp" line="497"/>
         <source>Monochro is moving!</source>
         <translation>分光器回転中</translation>
     </message>
@@ -1181,18 +1235,13 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <location filename="Dark.cpp" line="48"/>
-        <location filename="MwMeas.cpp" line="505"/>
-        <location filename="MwMeas.cpp" line="566"/>
-        <location filename="MwMeas.cpp" line="583"/>
-        <location filename="MwMeas.cpp" line="597"/>
-        <location filename="MwMeas.cpp" line="613"/>
-        <location filename="MwMeas.cpp" line="629"/>
-        <location filename="MwMeas.cpp" line="645"/>
-        <location filename="MwSetup.cpp" line="500"/>
-        <location filename="MwSetup.cpp" line="508"/>
-        <location filename="MwSetup.cpp" line="580"/>
-        <location filename="MwSetup.cpp" line="621"/>
-        <location filename="MwSetup.cpp" line="632"/>
+        <location filename="MwMeas.cpp" line="501"/>
+        <location filename="MwMeas.cpp" line="562"/>
+        <location filename="MwSetup.cpp" line="512"/>
+        <location filename="MwSetup.cpp" line="520"/>
+        <location filename="MwSetup.cpp" line="600"/>
+        <location filename="MwSetup.cpp" line="643"/>
+        <location filename="MwSetup.cpp" line="654"/>
         <source>Scan cannot Start : (%1) is disabled</source>
         <translation>%1 が disable なので、測定開始できません。</translation>
     </message>
@@ -1222,34 +1271,34 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>シャッタがーが開いていることを確認し、赤くなっている「シャッター OPEN 確認」ボタンを押して下さい。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="512"/>
+        <location filename="MwMeas.cpp" line="508"/>
         <source>Invalid block data.</source>
         <translation>測定ブロックの指定が誤っています。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="516"/>
+        <location filename="MwMeas.cpp" line="512"/>
         <source>Data File is not Selected!</source>
         <translation>データファイルが選択されていません。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="520"/>
+        <location filename="MwMeas.cpp" line="516"/>
         <source>Detectors are not selected properly!</source>
         <translation>測定のための検出器の指定が正しくありません。</translation>
     </message>
     <message>
         <location filename="Dark.cpp" line="61"/>
-        <location filename="MwMeas.cpp" line="664"/>
+        <location filename="MwMeas.cpp" line="580"/>
         <source>Selected sensors [%1] and [%2] are conflicting.</source>
         <translation>選択した[%1]と[%2]は同時に使えません。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="677"/>
+        <location filename="MwMeas.cpp" line="593"/>
         <source>The Sensor(s)%1 should be range selected.
 Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation>選択した計測器 %1 について、「設定」の画面でレンジを設定しましたか？</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="694"/>
+        <location filename="MwMeas.cpp" line="610"/>
         <source>File [%1] Over Write ?</source>
         <translation>ファイル [%1] を上書きして宜しいですか？</translation>
     </message>
@@ -1258,69 +1307,69 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation type="obsolete">&lt;h1&gt;&lt;center&gt;ファイル [%1] に上書きして宜しいですか?&lt;/center&gt;&lt;/h1&gt;</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="702"/>
+        <location filename="MwMeas.cpp" line="618"/>
         <source>Meas: Start (%1 keV)</source>
         <oldsource>Meas: Start (%1 keV)
 </oldsource>
         <translation>測定: 開始(%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="705"/>
-        <location filename="MwSSDSetUp.cpp" line="280"/>
-        <location filename="MwSetup.cpp" line="418"/>
-        <location filename="MwSetup.cpp" line="540"/>
-        <location filename="MwSetup.cpp" line="670"/>
+        <location filename="MwMeas.cpp" line="621"/>
+        <location filename="MwSSDSetUp.cpp" line="286"/>
+        <location filename="MwSetup.cpp" line="430"/>
+        <location filename="MwSetup.cpp" line="552"/>
+        <location filename="MwSetup.cpp" line="692"/>
         <source>Stop</source>
         <translation>中止</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="721"/>
+        <location filename="MwMeas.cpp" line="648"/>
         <source>Meas: Break (%1 keV)</source>
         <oldsource>Meas: Break (%1 keV)
 </oldsource>
         <translation>測定: 中断(%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="723"/>
-        <location filename="MwMeas.cpp" line="793"/>
+        <location filename="MwMeas.cpp" line="650"/>
+        <location filename="MwMeas.cpp" line="720"/>
         <source>Resume</source>
         <translation>再開</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="733"/>
+        <location filename="MwMeas.cpp" line="660"/>
         <source>Meas: Stopped (%1 keV)</source>
         <oldsource>Meas: Stopped (%1 keV)
 </oldsource>
         <translation>測定: 停止 (%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="734"/>
+        <location filename="MwMeas.cpp" line="661"/>
         <source>The Measurement is Stopped</source>
         <translation>測定が中止されました。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="762"/>
+        <location filename="MwMeas.cpp" line="689"/>
         <source>Meas: Pausing (%1 keV)</source>
         <oldsource>Meas: Pausing (%1 keV)
 </oldsource>
         <translation>測定: ポーズ (%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="765"/>
+        <location filename="MwMeas.cpp" line="692"/>
         <source>Measu: Resume (%1 keV)</source>
         <oldsource>Measu: Resume (%1 keV)
 </oldsource>
         <translation>測定: 再開 (%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="791"/>
+        <location filename="MwMeas.cpp" line="718"/>
         <source>Meas: Pause (%1 keV)</source>
         <oldsource>Meas: Pause (%1 keV)
 </oldsource>
         <translation>測定: ポーズ (%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="796"/>
+        <location filename="MwMeas.cpp" line="723"/>
         <source>Meas: Resume (%1 keV)</source>
         <oldsource>Meas: Resume (%1 keV)
 </oldsource>
@@ -1329,8 +1378,8 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <location filename="MwSSDSetUp.cpp" line="23"/>
         <location filename="MwSSDSetUp.cpp" line="29"/>
-        <location filename="MwSSDSetUp.cpp" line="145"/>
-        <location filename="MwSSDSetUp.cpp" line="162"/>
+        <location filename="MwSSDSetUp.cpp" line="151"/>
+        <location filename="MwSSDSetUp.cpp" line="168"/>
         <source>Active</source>
         <translation>アクティブ</translation>
     </message>
@@ -1348,18 +1397,18 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <location filename="MwSSDSetUp.cpp" line="95"/>
         <location filename="MwSetup.cpp" line="195"/>
-        <location filename="MwSetup.cpp" line="598"/>
+        <location filename="MwSetup.cpp" line="618"/>
         <source>The file [%1] can not open to record the data</source>
         <translation>記録のためのファイル [%1]が開けません。</translation>
     </message>
     <message>
-        <location filename="MwSSDSetUp.cpp" line="149"/>
-        <location filename="MwSSDSetUp.cpp" line="168"/>
+        <location filename="MwSSDSetUp.cpp" line="155"/>
+        <location filename="MwSSDSetUp.cpp" line="174"/>
         <source>Inactive</source>
         <translation>インアクティブ</translation>
     </message>
     <message>
-        <location filename="MwSSDSetUp.cpp" line="274"/>
+        <location filename="MwSSDSetUp.cpp" line="280"/>
         <source>Scan cannot Start : SSD is disabled</source>
         <translation>SSD が disable なので測定が開始できません。</translation>
     </message>
@@ -1369,58 +1418,58 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation>正しいスキャンデータがありません。</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="316"/>
+        <location filename="MwSetup.cpp" line="328"/>
         <source>Current Position of [%1] : [%2] %3</source>
         <oldsource>Current Position of [%1] : [%2] %3
 </oldsource>
         <translation>[%1]の現在位置 : [%2] %3</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="429"/>
-        <location filename="MwSetup.cpp" line="433"/>
+        <location filename="MwSetup.cpp" line="441"/>
+        <location filename="MwSetup.cpp" line="445"/>
         <source>Setup: %1 : GoTo %2 : Speed %3</source>
         <oldsource>Setup: %1 : GoTo %2 : Speed %3
 </oldsource>
         <translation>設定: %1 をスピード %3 で %2 に移動</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="456"/>
-        <location filename="MwSetup.cpp" line="459"/>
+        <location filename="MwSetup.cpp" line="468"/>
+        <location filename="MwSetup.cpp" line="471"/>
         <source>Setup: %1 : Stopped at %2</source>
         <oldsource>Setup: %1 : Stopped at %2
 </oldsource>
         <translation>設定: %1 を %2 で停止</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="485"/>
+        <location filename="MwSetup.cpp" line="497"/>
         <source>No drawing screen is available</source>
         <translation>使用可能な描画領域(View)がありません。</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="529"/>
+        <location filename="MwSetup.cpp" line="541"/>
         <source>Error: Scan Step is 0.</source>
         <translation>エラー: スキャンステップが 0 です。</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="534"/>
+        <location filename="MwSetup.cpp" line="546"/>
         <source>Scan Start (%1 %2)</source>
         <oldsource>Scan Start (%1 %2)
 </oldsource>
         <translation>スキャン: 開始 (%1, %2)</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="587"/>
+        <location filename="MwSetup.cpp" line="607"/>
         <source>No drawing area is avairable</source>
         <translation>使用可能な描画領域(View)がありません。</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="592"/>
+        <location filename="MwSetup.cpp" line="612"/>
         <source>No Record file is selected</source>
         <translation>記録ファイルが選択されていません。</translation>
     </message>
     <message>
-        <location filename="MwSetup.cpp" line="647"/>
-        <source>	 %1[%2]</source>
+        <location filename="MwSetup.cpp" line="669"/>
+        <source>	%1[%2]</source>
         <translation></translation>
     </message>
     <message>
@@ -2312,7 +2361,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
 <context>
     <name>TYView</name>
     <message>
-        <location filename="TYView.cpp" line="120"/>
+        <location filename="TYView.cpp" line="172"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>

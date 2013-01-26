@@ -14,6 +14,12 @@ void MainWindow::setupReadDataArea( void )
     connect( Datas.at(i), SIGNAL( showMessage( QString, int ) ),
 	     this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   }
+  connect( CloseView, SIGNAL( clicked() ), this, SLOT( DeleteTheView() ) );
+}
+
+void MainWindow::DeleteTheView( void )
+{
+  ViewCtrls[ ViewTab->currentIndex() ]->deleteView();
 }
 
 void MainWindow::TryToGiveNewView( DATATYPE dtype )

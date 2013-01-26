@@ -204,7 +204,6 @@ void MainWindow::RecordData( void )
         } else {
           buf.sprintf(" %9.6g", MeasVals[i] );
         }
-	qDebug() << tr( "[%1] = [%2](%3)" ).arg( i ).arg( buf ).arg( MeasVals[i] );
         out << buf;
       }
     }
