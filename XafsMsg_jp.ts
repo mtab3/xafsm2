@@ -17,40 +17,59 @@
         <translation>Frame</translation>
     </message>
     <message>
-        <location filename="Data.ui" line="66"/>
+        <location filename="Data.ui" line="126"/>
         <source>Show</source>
         <translation>表示</translation>
     </message>
     <message>
-        <location filename="Data.ui" line="79"/>
+        <location filename="Data.ui" line="139"/>
         <source>  Type : </source>
         <translation>タイプ : </translation>
     </message>
     <message>
-        <location filename="Data.ui" line="89"/>
+        <location filename="Data.ui" line="301"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="47"/>
-        <location filename="Data.cpp" line="101"/>
+        <location filename="Data.cpp" line="37"/>
+        <source>Measured</source>
+        <translation>XAFS測定</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="37"/>
+        <source>Scaned</source>
+        <translation>スキャン</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="38"/>
+        <source>Monitored</source>
+        <translation>モニタ</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="38"/>
+        <source>MCA</source>
+        <translation>MCA(SSD)</translation>
+    </message>
+    <message>
+        <location filename="Data.cpp" line="110"/>
+        <location filename="Data.cpp" line="157"/>
         <source>Can not open the file %1.</source>
         <translation>ファイル [%1] を開けません。</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="55"/>
+        <location filename="Data.cpp" line="118"/>
         <source>The file %1 is empty.</source>
         <translation>ファイル [%1] は空です。</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="79"/>
+        <location filename="Data.cpp" line="142"/>
         <source>The file %1 is not avaliable to show.</source>
         <translation>ファイル [%1] は表示できません。</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="93"/>
         <source>No View is available.</source>
-        <translation>使用可能な表示領域がありません。</translation>
+        <translation type="obsolete">使用可能な表示領域がありません。</translation>
     </message>
 </context>
 <context>
@@ -1013,7 +1032,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>データ読込</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4873"/>
+        <location filename="MainWindow.ui" line="4899"/>
         <source>Close View</source>
         <translation>View を閉じる</translation>
     </message>

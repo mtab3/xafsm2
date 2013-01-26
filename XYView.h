@@ -68,7 +68,7 @@ public:
   // スケールのタイプ : フルスケールにするか、I0 の様に少し上にずらすか
   // ループ単位で指定。
   void SetScaleType( int l, SCALET t ) { scaleType[ l ] = t; };
-  void SetColor( int l, QColor c ) { LC.value( l ) = c; };
+  void SetColor( int l, QColor c ) { LC[ l ] = c; };
   QColor GetColor( int l ) { return LC.at( l ); };
 
   // 縦軸は左右一本ずつ合計 2本しかないので、縦軸を持てるグループは最大 2 つだけ。

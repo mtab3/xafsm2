@@ -12,7 +12,8 @@ Data::Data( QWidget *p ) : QFrame( p )
 
   setupUi( this );
 
-  SettingC = 0;
+  SettingL = 0;
+  SettingC = QColor( 0, 0, 0 );
   FSDialog = new QFileDialog;
   CSDialog = new QColorDialog;
 
@@ -22,7 +23,9 @@ Data::Data( QWidget *p ) : QFrame( p )
   FSDialog->setAcceptMode( QFileDialog::AcceptOpen );
   FSDialog->setDirectory( QDir::currentPath() );
   FSDialog->setNameFilters( filters );
-  
+
+  view0 = NULL;
+  XYLine0 = XYLines = 0;
 
   DColors << DColor01 << DColor02 << DColor03 << DColor04 << DColor05
 	  << DColor06 << DColor07 << DColor08 << DColor09 << DColor10;
@@ -31,7 +34,8 @@ Data::Data( QWidget *p ) : QFrame( p )
   DColors << DColor21 << DColor22 << DColor23 << DColor24 << DColor25
 	  << DColor26 << DColor27 << DColor28 << DColor29 << DColor30;
 
-  DataTypeNames << "Measured" << "Scaned" << "Monitored" << "MCA" << "";
+  DataTypeNames << tr( "Measured" ) << tr( "Scaned" )
+		<< tr( "Monitored" ) << tr( "MCA" ) << "";
 
   connect( FileSelect, SIGNAL( clicked() ), FSDialog, SLOT( show() ) );
   connect( FSDialog, SIGNAL( fileSelected( const QString & ) ),
@@ -50,10 +54,10 @@ Data::~Data( void )
 
 void Data::callCSDialog( void )
 {
-  SettingC = 0;
+  SettingL = 0;
   for ( int i = 0; i < DColors.count(); i++ ) {
     if ( DColors.at(i) == sender() ) {
-      SettingC = i;
+      SettingL = i;
       break;
     }
   }
@@ -62,7 +66,19 @@ void Data::callCSDialog( void )
 
 void Data::newColorSelected( const QColor &c )
 {
-  SetColor( SettingC, c );
+  SettingC = c;
+  SetColor( SettingL, SettingC );
+  emit GiveMeCurrentView();
+}
+
+void Data::GotCurrentView( void *view )
+{
+  if ( (XYView*)view == view0 ) {
+    if ( SettingL < XYLines ) {
+      view0->SetColor( XYLine0 + SettingL, SettingC );
+      view0->update();
+    }
+  }
 }
 
 void Data::ShowFName( const QString &fname )
@@ -132,13 +148,8 @@ void Data::StartToShowData( void )
   emit AskToGetNewView( dataType );
 }
 
-void Data::GotNewView( QObject *to, ViewCTRL *view )
+void Data::GotNewView( ViewCTRL *view )
 {
-  if ( (Data *)to != this ) {
-    emit showMessage( tr( "No View is available." ), 2000 );
-    return;
-  }
-  
   QFile f( FName );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
@@ -209,6 +220,10 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
   view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
   view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
 
+  XYLine0 = L0;
+  XYLines = L - L0 + 1;
+  view0 = view;
+
   view->update();
 }
 
@@ -256,6 +271,10 @@ void Data::showScanData( QTextStream &in, ViewCTRL *viewC )
 
   view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
   view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
+
+  XYLine0 = L0;
+  XYLines = 2;
+  view0 = view;
   
   view->makeValid( true );
   view->update();

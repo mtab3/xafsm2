@@ -7,6 +7,7 @@
 #include "ui_Data.h"
 
 class ViewCTRL;
+class XYView;
 
 enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, NONDATA };
 
@@ -15,7 +16,8 @@ class Data : public QFrame, private Ui::Data
   Q_OBJECT
 
  private:
-  int SettingC;
+  int SettingL;
+  QColor SettingC;
   QFileDialog *FSDialog;
   QColorDialog *CSDialog;
   QVector<QPushButton*> DColors;
@@ -25,6 +27,9 @@ class Data : public QFrame, private Ui::Data
   QStringList DataTypeNames;
   QString FName;
 
+  XYView *view0;
+  int XYLine0, XYLines; 
+
   void showMeasData( QTextStream &in, ViewCTRL *view );
   void showScanData( QTextStream &in, ViewCTRL *view );
   void showMonData( QTextStream &in, ViewCTRL *view );
@@ -33,11 +38,12 @@ class Data : public QFrame, private Ui::Data
  public:
   Data( QWidget *p = NULL );
   ~Data();
+  void GotNewView( ViewCTRL *view );
+  void GotCurrentView( void *view );
 
  private slots:
   void ShowFName( const QString &fname );
   void StartToShowData( void );
-  void GotNewView( QObject *to, ViewCTRL *view );
 
  public slots:
   void SetColor( int i, const QColor &selcolor );
@@ -47,6 +53,7 @@ class Data : public QFrame, private Ui::Data
  signals:
   void AskToGetNewView( DATATYPE dtype );
   void showMessage( QString msg, int time );
+  void GiveMeCurrentView( void );
 };
 
 #endif

@@ -443,11 +443,12 @@ private slots:
   void MCASequence( void );
   void MeasDarkSequence( void );
 
+  void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype );
   void DeleteTheView( void );
 
  signals:
-  void GiveNewView( QObject *to, ViewCTRL *view );
+  //  void GiveNewView( QObject *to, ViewCTRL *view );
 };
 
 #endif

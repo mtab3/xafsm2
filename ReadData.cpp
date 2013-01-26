@@ -9,12 +9,19 @@ void MainWindow::setupReadDataArea( void )
   for ( int i = 0; i < Datas.count(); i++ ) {
     connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE ) ),
 	     this, SLOT( TryToGiveNewView( DATATYPE ) ) );
-    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
-	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ) );
+    //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
+    //	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ) );
     connect( Datas.at(i), SIGNAL( showMessage( QString, int ) ),
 	     this, SLOT( ShowMessageOnSBar( QString, int ) ) );
+    connect( Datas.at(i), SIGNAL( GiveMeCurrentView( void ) ),
+	     this, SLOT( TryToNoticeCurrentView( void ) ) );
   }
   connect( CloseView, SIGNAL( clicked() ), this, SLOT( DeleteTheView() ) );
+}
+
+void MainWindow::TryToNoticeCurrentView( void )
+{
+  ((Data*)sender())->GotCurrentView( ViewCtrls[ ViewTab->currentIndex() ]->getView() );
 }
 
 void MainWindow::DeleteTheView( void )
@@ -53,5 +60,5 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     break;
   }
 
-  emit( GiveNewView( from, view ) );
+  ((Data*)from)->GotNewView( view );
 }
