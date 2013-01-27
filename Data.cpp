@@ -4,12 +4,12 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "Head9809.h"
 #include "Data.h"
 #include "ViewCtrl.h"
 
 Data::Data( QWidget *p ) : QFrame( p )
 {
-
   setupUi( this );
 
   SettingL = 0;
@@ -179,10 +179,9 @@ void Data::SetColor( int i, const QColor &c )
 
 void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
 {
+  QString HeaderEnd = "    Offset";
   QString line;
   QStringList vals;
-  bool inBody = false;
-  QString HeaderEnd = "    Offset";
   XYView *view = (XYView*)viewC->getView();
 
   if ( viewC->getNowDType() == NONDATA ) {
@@ -195,20 +194,40 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
 
   int L0 = view->GetLines();
 
+  Head9809 head;
+  if ( ! head.readFromStream( in ) ) {
+    qDebug() << "Incomplete file as 9809 format";
+    return;
+  }
+
+  bool TrMode = ( head.getMode() == 0 );
+  double x, I0, I, y;
   while ( ! in.atEnd() ) {
-    line = in.readLine();
-    if ( !inBody ) {
-      if ( line.left( HeaderEnd.length() ) == HeaderEnd )
-	inBody = true;
-    } else {
-      line = line.simplified();
-      vals = line.split( QRegExp( "\\s" ) );
-      int Vals = vals.count();
-      for ( int i = 3; i < Vals - 2; i++ ) {
-	view->NewPoint( L0+i-3, vals.at( Vals - 2 ).toDouble(), vals.at( i ).toDouble() );
+    line = in.readLine().simplified();
+    vals = line.split( QRegExp( "\\s" ) );
+    int Vals = vals.count();
+    x = vals.at( Vals - 2 ).toDouble();
+    I0 = vals.at( 3 ).toDouble();
+    view->NewPoint( L0, x, I0 );
+    for ( int i = 4; i < Vals - 2; i++ ) {
+      I = vals.at( i ).toDouble();
+      if ( TrMode ) {
+	if (( I > 0 )&&( I0 * I > 0 )) {
+	  y = exp( I0 / I );
+	} else {
+	  y = 1;
+	}
+      } else {
+	if ( I0 != 0 ) {
+	  y = I / I0;
+	} else {
+	  y = 1;
+	}
       }
+      view->NewPoint( L0+i-3, x, y );
     }
   }
+
   int L = view->GetLines();
   for ( int i = L0; i < L; i++ ) {
     SetColor( i - L0, view->GetColor( i ) );
