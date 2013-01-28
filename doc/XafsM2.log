@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.9.30)  28 JAN 2013 21:40
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.9.30)  29 JAN 2013 01:17
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -203,12 +203,7 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <17.28> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 44.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 44.
- (./XafsM2.toc
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
-)
+ (./XafsM2.toc)
 \tf@toc=\write3
 \openout3 = `XafsM2.toc'.
 
@@ -222,29 +217,57 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 116.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 116.
- [2]
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 118.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 118.
+
+
+LaTeX Warning: Reference `¸µÁÇÁªÂòÉô' on page 2 undefined on input line 118.
+
+
+LaTeX Warning: Reference `¸µÁÇÁªÂòÉô' on page 2 undefined on input line 120.
+
+
+LaTeX Warning: Reference `¸µÁÇÁªÂò¥Ü¥Ã¥¯¥¹' on page 2 undefined on input line 1
+21.
+
+
+LaTeX Warning: Reference `¸µÁÇÁªÂòÉô' on page 2 undefined on input line 122.
+
+
+LaTeX Warning: Reference `¼þ´üÉ½' on page 2 undefined on input line 123.
+
+[2]
 LaTeX Font Info:    Try loading font information for OMS+txr on input line 135.
 
-
-(/usr/local/share/texmf-dist/tex/latex/txfonts/omstxr.fd
+ (/usr/local/share/texmf-dist/tex/latex/txfonts/omstxr.fd
 File: omstxr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <12> not available
 (Font)              Font shape `OMS/txsy/m/n' tried instead on input line 135.
-File: ElementSelect.png Graphic file (type bmp)
- <ElementSelect.png>
-File: ElemSelectBox.png Graphic file (type bmp)
+File: ElementSelect.eps Graphic file (type eps)
 
-<ElemSelectBox.png>
-File: PeriodicTable.png Graphic file (type bmp)
- <PeriodicTable.png> [3] [4] (./XafsM2.aux) ) 
+<ElementSelect.eps>
+File: ElementSelectBox.eps Graphic file (type eps)
+ <ElementSelectBox.eps>
+File: PeriodicTable.eps Graphic file (type eps)
+ <PeriodicTable.eps> [3] [4]
+(./XafsM2.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 1477 strings out of 95545
- 16186 string characters out of 1190572
- 60902 words of memory out of 1000000
- 4614 multiletter control sequences out of 10000+100000
+ 1474 strings out of 95545
+ 16176 string characters out of 1190572
+ 60878 words of memory out of 1000000
+ 4613 multiletter control sequences out of 10000+100000
  31694 words of font info for 104 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
- 23i,6n,22p,261b,439s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 23i,6n,24p,261b,439s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (6 pages, 13040 bytes).
+Output written on XafsM2.dvi (6 pages, 11812 bytes).
