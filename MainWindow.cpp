@@ -19,6 +19,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   SI0 = SI1 = SFluo = NULL;
 
+  qDebug() << "Modes " << I0 << TRANS << FLUO;
+
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
 

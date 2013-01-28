@@ -201,6 +201,7 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
   }
 
   bool TrMode = ( head.getMode() == 0 );
+  //  QStringList ChModes = head.getChModes();
   double x, I0, I, y;
   while ( ! in.atEnd() ) {
     line = in.readLine().simplified();
@@ -211,6 +212,7 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
     view->NewPoint( L0, x, I0 );
     for ( int i = 4; i < Vals - 2; i++ ) {
       I = vals.at( i ).toDouble();
+      //      if ( ChModes[i-3].toInt() == 1 ) {
       if ( TrMode ) {
 	if (( I > 0 )&&( I0 * I > 0 )) {
 	  y = exp( I0 / I );

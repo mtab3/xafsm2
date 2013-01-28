@@ -473,14 +473,14 @@ bool MainWindow::CheckDetectorSelection( void )
       if ( MeasDispMode[ MC_AUX1 ] == TRANS ) {
 	MeasFileType = TRANS;
       } else {
-	MeasFileType = FLUO;
+	MeasFileType = EXTRA;
       }
     }
     if ( UseAux2->isChecked() ) {
       if ( MeasDispMode[ MC_AUX2 ] == TRANS ) {
 	MeasFileType = TRANS;
       } else {
-	MeasFileType = TRANS;
+	MeasFileType = EXTRA;
       }
     }
   }
@@ -602,6 +602,10 @@ void MainWindow::StartMeasurement( void )
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
       if ( ! MeasureDark() )                // 正常に測れなければだめ
 	return;
+    }
+    Offsets.clear();
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      Offsets << mUnits.at(i)->getDark();
     }
 
     QFileInfo CheckFile( DFName0 + ".dat" );

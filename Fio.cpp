@@ -119,8 +119,8 @@ void MainWindow::WriteHeader( int Rpt )
     out << QString( "      Mode         0         0"
 		    "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
     out << QString( "    Offset         0         0"
-		    "%1%2" ).arg( 0.0, 10, 'f', 3 ).arg( 0.0, 10, 'f', 3 ) << endl;
-    // offset は真面目に扱ってない
+		    "%1%2" ).arg( Offsets[0], 10, 'f', 3 )
+                            .arg( Offsets[1], 10, 'f', 3 ) << endl;
     break;
   case FLUO:
     out << " Angle(c) Angle(o) time/s";
@@ -131,22 +131,22 @@ void MainWindow::WriteHeader( int Rpt )
     out << endl;
     out << QString( "      Mode         0         0" );
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( 2 );
-      // 真面目に書いてない (I0 を含む各チャンネルのモードを書かないといけない)
+      out << QString( "%1" ).arg( MeasDispMode[i], 10 );
     }
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( 2 );
+      out << QString( "%1" ).arg( 5, 10 );
       // 真面目に書いてない (ICRであることと、リセット回数であることを書かないといけない)
+      // 1 : I0, 2 : 透過, 3 : 蛍光, 4 : 電子収量, 5 : その他
+      // というのが公式の定義なので「5」で間違ってはいないが、
+      // PF の実際の蛍光の測定結果で 5 になっているかどうか要確認。
     }
     out << endl;
     out << QString( "    Offset         0         0" );
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( 0.0, 10, 'f', 3 );
+      out << QString( "%1" ).arg( Offsets[i], 10, 'f', 3 );
     }
     out << endl;
-    // offset は真面目に扱ってない
     break;
-  case AUX:
   case EXTRA:  // FLUO との違いは ICR や リセット回数の欄が無いこと
     out << " Angle(c) Angle(o) time/s";
     for ( int i = 0; i < MeasChNo; i++ )
@@ -156,16 +156,14 @@ void MainWindow::WriteHeader( int Rpt )
     out << endl;
     out << QString( "      Mode         0         0" );
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( 2 );
-      // 真面目に書いてない (I0 を含む各チャンネルのモードを書かないといけない)
+      out << QString( "%1" ).arg( MeasDispMode[i], 10 );
     }
     out << endl;
     out << QString( "    Offset         0         0" );
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( 0.0, 10, 'f', 3 );
+      out << QString( "%1" ).arg( Offsets[i], 10, 'f', 3 );
     }
     out << endl;
-    // offset は真面目に扱ってない
     break;
   default:
     qDebug() << "Unknown Measuremet type";

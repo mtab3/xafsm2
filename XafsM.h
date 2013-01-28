@@ -26,7 +26,7 @@ const MSCALED MScales[ MSCALES ] = {
   { H05, " 5 h/div",  5*60*60,   5, "[h]" },
 };
 
-enum MEASMODE{ TRANS, FLUO, AUX, EXTRA, MEASMODES };
+enum MEASMODE{ I0 = 1, TRANS, FLUO, EYIELD, EXTRA, MEASMODES };
 extern const QString CMode[ MEASMODES + 1 ];
 
 enum MEASCHNAME{ MC_I0, MC_I1, MC_SSD, MC_AUX1, MC_AUX2, MCHANNELS };

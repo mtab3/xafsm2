@@ -99,16 +99,16 @@ bool Head9809::readFromStream( QTextStream &in )
   line = in.readLine().mid(1);                     // comment line
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 
-  line = line.mid( 20 );
+  line = in.readLine().mid(1);                     // Mode Line
+  line = line.mid( 30 );                           // 最初の 30桁 (Mode 0 0) は読み飛ばす
   for ( int i = 0; i < line.length() / 10; i++ ) {
     Modes << line.mid( i*10, 10 ).simplified();
   }
   qDebug() << "Modes " << Modes;
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 
-  line = line.mid( 20 );
+  line = in.readLine().mid(1);                   // Offset Line
+  line = line.mid( 30 );                         // 最初の 30桁 (Offset 0 0) は読み飛ばす
   for ( int i = 0; i < line.length() / 10; i++ ) {
     Offsets << line.mid( i*10, 10 ).simplified();
   }
