@@ -310,6 +310,7 @@ private:
   void ShowTotal( void );
   void CpBlock2SBlock( void );
   void WriteHeader( int Rpt );
+  void WriteHeader2( int Rpt );
   void DispMeasDatas( void );
   void RecordData( void );
 

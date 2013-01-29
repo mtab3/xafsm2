@@ -101,11 +101,13 @@ void MainWindow::MeasSequence( void )
       } else if ( MeasR < SelRPT->value()-1 ) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
 	ClearXViewScreenForMeas( MeasView );
+	WriteHeader2( MeasR );
 	MeasR++;
 	MeasStage = 2;
       } else {               // ½ªÎ»
 	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
 	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
+	WriteHeader2( MeasR );
 	MeasTimer->stop();
 	inMeas = 0;
 	MeasStart->setText( tr( "Start" ) );

@@ -172,6 +172,52 @@ void MainWindow::WriteHeader( int Rpt )
   file.close();
 }
 
+void MainWindow::WriteHeader2( int Rpt )
+// スキャン終了時、終了時でないと決まらない情報をヘッダに書き加える。
+{
+  SetDFName( Rpt );   // Generate a file name with repitation number
+
+  QFile file( DFName );
+  if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    return;
+
+  // Writing fixed headers
+  QTextStream in(&file);
+
+  QStringList AllLines;
+  QString line;
+  int pos;
+
+  while ( !in.atEnd() ) {
+    line = in.readLine();
+    if ( ( pos = line.indexOf( "%001%" ) ) > 0 ) {
+      line = line.left( pos )
+	+ QDateTime::currentDateTime().toString("yy.MM.dd hh:mm")
+	+ line.mid( pos + 5 );
+    }
+    if ( ( pos = line.indexOf( "%002%" ) ) > 0 ) {
+      line = line.left( pos )
+	+ QString( "%1" ).arg( nowCurrent, 6, 'f', 1, ' ' ) 
+	+ line.mid( pos + 5 );
+    }
+    AllLines << line;
+  }
+
+  file.close();
+
+  QFile file2( DFName );
+  if ( !file2.open( QIODevice::WriteOnly | QIODevice::Text ) )
+    return;
+
+  // Writing fixed headers
+  QTextStream out(&file2);
+  for ( int i = 0; i < AllLines.count(); i++ ) {
+    out << AllLines[i] << "\n";
+  }
+
+  file2.close();
+}
+
 void MainWindow::RecordData( void )
 {
   SetDFName( MeasR );
