@@ -597,7 +597,7 @@ bool AUnit::InitSensor( void )
     case 2:
       IsBusy2 = true;
       emit ChangedIsBusy2( Driver2 );
-      s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2.1E%1" ).arg( SelectedRange ) );
+      s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
       LocalStage++;
       rv = true;
       break;
