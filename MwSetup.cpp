@@ -78,6 +78,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectD20->addItem( ASensors.value(i)->getName() );
     SelectD21->addItem( ASensors.value(i)->getName() );
     SelectD22->addItem( ASensors.value(i)->getName() );
+    SelectD3->addItem( ASensors.value(i)->getName() );
+    connect( ASensors.value(i), SIGNAL( newDark( double ) ),
+	     this, SLOT( ShowNewDark( double ) ) );
     if ( ASensors.at(i)->isRangeSelectable() ) {
       SelSensToSetRange->addItem( ASensors.at(i)->getName() );
       SensWithRange << ASensors.at(i);
@@ -89,12 +92,22 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
 			 SensWithRange.at(0)->getRangeU() );
   RangeSelect->setValue( SensWithRange.at(0)->getRange() );
+  SetAutoRangeMode( 0 );
+
+  connect( SelectAutoRange, SIGNAL( toggled( bool ) ),
+	   this, SLOT( SelAutoRange( bool ) ) );
   connect( SelSensToSetRange, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( newSensSelected( int ) ) );
   connect( RangeSelect, SIGNAL( valueChanged( int ) ),
 	   this, SLOT( newRangeSelected( int ) ) );
   connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ) );
   connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ) );
+
+  InputDark
+    ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
+  connect( SelectD3, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( NewDarkChSelected( int ) ) );
+  connect( SetDark, SIGNAL( clicked() ), this, SLOT( AskedToSetDark() ) );
 
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
@@ -149,6 +162,29 @@ void MainWindow::newSensSelected( int i )
   RangeSelect->setRange( SensWithRange.at(i)->getRangeL(),
 			 SensWithRange.at(i)->getRangeU() );
   RangeSelect->setValue( SensWithRange.at(i)->getRange() );
+  SetAutoRangeMode( i );
+}
+
+void MainWindow::SetAutoRangeMode( int i )
+{
+  if ( SensWithRange.at(i)->isAutoRangeAvailable() ) {
+    SelectAutoRange->setEnabled( true );
+    if ( SensWithRange.at(i)->isAutoRange() ) {
+      RangeSelect->setEnabled( false );
+      SelectAutoRange->setChecked( true );
+    } else {
+      RangeSelect->setEnabled( true );
+      SelectAutoRange->setChecked( false );
+    }
+  } else {
+    SelectAutoRange->setEnabled( false );
+  }
+}
+
+void MainWindow::SelAutoRange( bool Auto )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )->setAutoRange( Auto );
+  RangeSelect->setEnabled( !Auto );
 }
 
 void MainWindow::newRangeSelected( int i )

@@ -16,6 +16,7 @@ class AUnit : public QObject
   Stars *s;
   bool Enable;          // if the unit is enable on Stars server or not
   int aLine;            // the line number where the definition appears in .def file
+  bool autoRange;
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
@@ -116,7 +117,10 @@ public:
   void setRangeU( int upper ) { RangeU = upper; };
   void setRangeL( int lower ) { RangeL = lower; };
   void setRange( int r ) { SelectedRange = r; };
-  void setDark( double dark ) { Dark = dark; };
+  void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
+  bool isAutoRangeAvailable( void );
+  bool isAutoRange( void ) { return autoRange; };
+  void setAutoRange( bool ar ) { autoRange = ar; };
 
   bool checkNewVal( void )
   {
@@ -225,6 +229,7 @@ public slots:
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
+  void newDark( double dark );
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );

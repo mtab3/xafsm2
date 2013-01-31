@@ -13,12 +13,10 @@ bool Head9809::readFromStream( QTextStream &in )
   QString line;
   QString HeaderEnd = "    Offset";
 
-  qDebug() << "in read header 9809";
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 1 行目
   ID = line.left(5).simplified();
   Location = line.mid( 10 ).split( QRegExp( "\\s+" ) );
-  qDebug() << "Location : " << Location;
   if ( ID != "9809" ) return false;
 
   if ( in.atEnd() ) return false;
@@ -26,26 +24,22 @@ bool Head9809::readFromStream( QTextStream &in )
   FileName = line.mid( 0, 14 ).simplified();
   DateTime1 = line.mid( 16, 14 ).simplified();
   DateTime2 = line.mid( 33, 14 ).simplified();
-  qDebug() << "name dates" << FileName << DateTime1 << DateTime2;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 3 行目
   Sample = line.mid( 0, 80 ).simplified();
-  qDebug() << "Sample description " << Sample;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 4 行目
   Energy = line.mid( 7, 5 ).simplified();
   Current1 = line.mid( 18, 6 ).simplified();
   Current2 = line.mid( 30, 6 ).simplified();
-  qDebug() << "Eng. Cur. Cur." << Energy << Current1 << Current2;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 5 行目
   CrystName = line.mid( 9, 10 ).simplified();
   SpacingD = line.mid( 26, 8 ).simplified();
   InitAngle = line.mid( 54, 9 ).simplified();
-  qDebug() << "Cryst D initAngle " << CrystName << SpacingD << InitAngle;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 6 行目
@@ -54,8 +48,6 @@ bool Head9809::readFromStream( QTextStream &in )
   ModeId = line.mid( 23, 2 ).simplified();
   Repetition = line.mid( 40, 3 ).simplified();
   Points = line.mid( 55, 5 ).simplified();
-  qDebug() << "BL ModeName Mode Rep. Points"
-	   << BeamLine << ModeName << ModeId << Repetition << Points;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 7 行目
@@ -67,8 +59,6 @@ bool Head9809::readFromStream( QTextStream &in )
     Angle = false;
   }
   Blocks = line.mid( 56, 5 ).simplified();
-  qDebug() << "PFName AorE isAorE Blocks "
-	   << ParamFName << AngleOrEnergy << Angle << Blocks;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // 8 行目
@@ -84,8 +74,6 @@ bool Head9809::readFromStream( QTextStream &in )
     BLKSteps  << line.mid( 30, 13 ).simplified();
     BLKTimes  << line.mid( 43, 11 ).simplified();
     BLKNums   << line.mid( 54, 10 ).simplified();
-    qDebug()  << BLKNos.at(i) << BLKStarts.at(i) << BLKEnds.at(i)
-	      << BLKSteps.at(i) << BLKTimes.at(i) << BLKNums.at(i);
   }
 
   if ( in.atEnd() ) return false;
@@ -93,7 +81,6 @@ bool Head9809::readFromStream( QTextStream &in )
   DevName = line.mid( 0, 5 ).simplified();
   DevType = line.mid( 6, 2 ).simplified();
   DevChannels = line.mid( 20, 2 ).simplified();
-  qDebug() << "DevName DevID DevChannels " << DevName << DevType << DevChannels;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // comment line
@@ -104,7 +91,6 @@ bool Head9809::readFromStream( QTextStream &in )
   for ( int i = 0; i < line.length() / 10; i++ ) {
     Modes << line.mid( i*10, 10 ).simplified();
   }
-  qDebug() << "Modes " << Modes;
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                   // Offset Line
@@ -112,7 +98,6 @@ bool Head9809::readFromStream( QTextStream &in )
   for ( int i = 0; i < line.length() / 10; i++ ) {
     Offsets << line.mid( i*10, 10 ).simplified();
   }
-  qDebug() << "Offsets " << Offsets;
   
   return true;
 }

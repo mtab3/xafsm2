@@ -85,17 +85,7 @@ void Data::ShowFName( const QString &fname )
 {
   FName = fname;
   QString dfname = fname;
-#if 0
-  QRect rec;
-  QFontMetrics fm( SelectedFile->font() );
-  rec = fm.boundingRect( dfname );
-  qDebug() << "size of " << SelectedFile->width() << rec.width();
-  while ( ( SelectedFile->width() - 10 )< rec.width() ) {
-    dfname = dfname.mid( 1 );
-    rec = fm.boundingRect( dfname );
-    qDebug() << "size of " << SelectedFile->width() << rec.width();
-  }
-#endif
+
   SelectedFile->setText( dfname );
   CheckFileType( fname );
   StartToShowData();

@@ -63,6 +63,8 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
 
   MyNameOnStars = DefaultName;
 
+  MaxKeys = 0;
+
   QFile file;
   if ( SelectedName != "" ) {
     file.setFileName( SelectedName + ".key" );
@@ -91,11 +93,7 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
       keys << item;
     }
   }
-
-  MaxKeys = 0;
-  foreach( QString i, keys ) {
-    MaxKeys++;
-  }
+  MaxKeys = keys.count();
 
   file.close();
 }

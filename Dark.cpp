@@ -156,3 +156,21 @@ void MainWindow::MeasDarkSequence( void )
     break;
   }
 }
+
+void MainWindow::ShowNewDark( double dark )
+{
+  if ( sender() == ASensors.at( SelectD3->currentIndex() ) ) {
+    InputDark->setText( QString::number( dark ) );
+  }
+}
+
+void MainWindow::NewDarkChSelected( int i )
+{
+  InputDark
+    ->setText( QString::number( ASensors.at( i )->getDark() ) );
+}
+
+void MainWindow::AskedToSetDark( void )
+{
+  ASensors.at( SelectD3->currentIndex() )->setDark( InputDark->text().toDouble() );
+}

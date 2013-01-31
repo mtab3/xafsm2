@@ -394,6 +394,12 @@ private slots:
   void askNowRange( void );
   void askNowRanges( void );
   void GotNowRange( int r );
+  void SelAutoRange( bool Auto );
+  void SetAutoRangeMode( int i );
+
+  void ShowNewDark( double dark );
+  void NewDarkChSelected( int i );
+  void AskedToSetDark( void );
 
   void StartMCA( void );
   void MCAChSelected( int i );

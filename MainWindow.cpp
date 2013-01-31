@@ -19,8 +19,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   SI0 = SI1 = SFluo = NULL;
 
-  qDebug() << "Modes " << I0 << TRANS << FLUO;
-
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
 
@@ -46,7 +44,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   setupView();
   setupCommonArea();
-  setupSetupArea();
+  setupSetupArea();     // AUnit ŠÖŒW‚Ì Initialize Œã‚Å‚È‚¢‚Æ‚¾‚ß
   setupSetupSSDArea();
   setupMeasArea();
   setupReadDataArea();

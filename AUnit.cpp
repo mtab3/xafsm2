@@ -5,6 +5,7 @@
 AUnit::AUnit( QObject *parent ) : QObject( parent )
 {
   Enable = false;
+  autoRange = false;
   Type = "";
   ID = "";
   Uid = "";
@@ -584,8 +585,13 @@ bool AUnit::InitSensor( void )
     case 1:
       IsBusy2 = true;
       emit ChangedIsBusy2( Driver2 );
-      s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "0" );
-      LocalStage++;
+      if ( autoRange ) {
+	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "1" );
+	LocalStage = 3;
+      } else {
+	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "0" );
+	LocalStage = 2;
+      }
       rv = true;
       break;
     case 2:
@@ -864,7 +870,17 @@ void AUnit::ReactGetRange( SMsg msg )
       IsBusy2 = false;
       emit ChangedIsBusy2( Driver2 );
       double range = log10( msg.Vals().at(0).toDouble() / 2.1 );
+      if ( range > RangeU ) range = RangeU;
+      if ( range < RangeL ) range = RangeL;
       emit AskedNowRange( (int)range );
     }
   }
+}
+
+bool AUnit::isAutoRangeAvailable( void )  // PAM と CNT2, OCT2 は AutoRange を選択可
+{
+  if (( Type == "PAM" )||( Type == "CNT2" )||( Type == "OTC2" )) {
+    return true;
+  }
+  return false;
 }

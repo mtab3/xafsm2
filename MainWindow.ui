@@ -1862,6 +1862,9 @@ Though, other parameters are fixed at the value on starting.</string>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
             </widget>
            </item>
           </layout>
@@ -2321,7 +2324,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="4">
+           <item row="1" column="5">
             <widget class="QSpinBox" name="RangeSelect">
              <property name="maximumSize">
               <size>
@@ -2334,7 +2337,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="0" colspan="4">
+           <item row="1" column="0" colspan="5">
             <widget class="QComboBox" name="SelSensToSetRange">
              <property name="styleSheet">
               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
@@ -2344,7 +2347,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
+           <item row="0" column="2">
             <widget class="QLabel" name="label_81">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -2357,7 +2360,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="3" colspan="2">
+           <item row="0" column="4" colspan="2">
             <widget class="QPushButton" name="GetRange">
              <property name="maximumSize">
               <size>
@@ -2376,7 +2379,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
+           <item row="0" column="3">
             <widget class="QPushButton" name="GetAllRange">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected ranges of all of the sensors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -2386,6 +2389,13 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
              <property name="text">
               <string>Get All Range</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QRadioButton" name="SelectAutoRange">
+             <property name="text">
+              <string>Auto Rang</string>
              </property>
             </widget>
            </item>
@@ -5154,7 +5164,7 @@ Though, other parameters are fixed at the value on starting.</string>
      <x>0</x>
      <y>0</y>
      <width>795</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

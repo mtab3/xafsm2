@@ -565,8 +565,10 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
       if ( as->isRangeSelectable() ) {
-	OneOfSensIsRangeSelectable = true;
-	theNames += " [" + as->getName() + "]";
+	if ( ! as->isAutoRange() ) {
+	  OneOfSensIsRangeSelectable = true;
+	  theNames += " [" + as->getName() + "]";
+	}
       }
     }
 
@@ -661,6 +663,18 @@ void MainWindow::StartMeasurement( void )
 
 void MainWindow::SurelyStop( void )
 {
+  if ( inMeasDark ) {
+    MeasDarkTimer->stop();
+    inMeasDark = false;
+    statusbar->showMessage( "", 0 );
+    MeasBackGround->setText( tr( "Measure Background" ) );
+    MeasBackGround
+      ->setStyleSheet( "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+		       "rgba(255, 255, 255, 255));" );
+    MeasDarkStage = 0;
+  }
   NewLogMsg( tr( "Meas: Stopped (%1 keV)" ).arg( CurPosKeV ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
