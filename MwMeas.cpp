@@ -34,8 +34,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelDFND->setFilter( "*.dat" );
   SelWBFND->setFilter( "*.prm" );
   SelRBFND->setFilter( "*.prm" );
+  OverWriteChecked = false;
+  SelectedOrgName.clear();
 
   EditDFName->setText( "test.dat" );
+  connect( EditDFName, SIGNAL( textEdited( const QString & ) ),
+	   this, SLOT( isFileNameChanged( const QString & ) ) );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
@@ -331,6 +335,20 @@ void MainWindow::ChangeBLKstart( void )
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     if ( BLKstart.at(i) == sender() ) {
       BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
+      double step = BLKstep[i]->text().toDouble();
+      if ( step != 0 ) {
+	BlockPoints[i]
+	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+		 /step )+0.5;
+      }
+      if ( i > 0 ) {
+	double step = BLKstep[i-1]->text().toDouble();
+	if ( step != 0 ) {
+	  BlockPoints[i-1]
+	    = fabs(( keV2any(BLKUnit, BlockStart[i]) - keV2any(BLKUnit, BlockStart[i-1]) )
+		   /step )+0.5;
+	}
+      }
       ShowBLKs();
     }
   }
@@ -343,9 +361,11 @@ void MainWindow::ChangeBLKstep( void )
   for ( int i = 0; i < BLKstep.count(); i++ ) {
     if ( BLKstep.at(i) == sender() ) {
       step = BLKstep[i]->text().toDouble();
-      BlockPoints[i]
-	= fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
-	       /step )+0.5;
+      if ( step != 0 ) {
+	BlockPoints[i]
+	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+		 /step )+0.5;
+      }
       ShowBLKs();
     }
   }
@@ -383,6 +403,15 @@ void MainWindow::SelectedNDFN( const QString &fname )
 {
   EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
                                   // Start 時に書き出す。
+  OverWriteChecked = true;
+  SelectedOrgName = fname;
+}
+
+void MainWindow::isFileNameChanged( const QString &fname )
+{
+  if ( fname != SelectedOrgName ) {
+    OverWriteChecked = false;
+  }
 }
 
 void MainWindow::SelectedWBFN( const QString &fname )
@@ -610,8 +639,8 @@ void MainWindow::StartMeasurement( void )
       Offsets << mUnits.at(i)->getDark();
     }
 
-    QFileInfo CheckFile( DFName0 + ".dat" );
-    if ( CheckFile.exists() ) {
+    QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
+    if ( ! OverWriteChecked && CheckFile.exists() ) {
       AskOverWrite
 	->setText( tr( "File [%1] Over Write ?" )
 			     .arg( DFName0 + ".dat" ) );

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>795</width>
+    <width>811</width>
     <height>893</height>
    </rect>
   </property>
@@ -409,7 +409,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="MeasTab">
        <attribute name="title">
@@ -1216,6 +1216,15 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 <layout class="QHBoxLayout" name="horizontalLayout">
                  <item>
                   <widget class="QLabel" name="label">
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(255, 230,190);</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
                    <property name="text">
                     <string>Data File Name</string>
                    </property>
@@ -5163,7 +5172,7 @@ Though, other parameters are fixed at the value on starting.</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>795</width>
+     <width>811</width>
      <height>21</height>
     </rect>
    </property>

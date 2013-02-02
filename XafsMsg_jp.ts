@@ -1015,7 +1015,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     <message>
         <location filename="MainWindow.ui" line="1811"/>
         <source>Check/Set Offset(Dark)</source>
-        <translation>オフセット(ダーク)確認／設定</translation>
+        <translation type="unfinished">バックグラウンド確認／設定</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="2395"/>
