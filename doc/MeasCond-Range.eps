@@ -1,7 +1,7 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 71 708 260 747
+%%BoundingBox: 46 708 286 769
 %%Title: MeasCond-Range
-%%CreationDate: Sun Feb  3 02:43:04 2013
+%%CreationDate: Sun Feb  3 13:59:01 2013
 %%Creator: Tgif-4.2.2-QPL written by William Chia-Wei Cheng (bill.cheng@acm.org)
 %%ProducedBy: (unknown)
 %%Pages: 1
@@ -10,7 +10,7 @@
 %%EndComments
 %%BeginProlog
 
-/tgifdict 62 dict def
+/tgifdict 67 dict def
 tgifdict begin
 
 /tgifellipsedict 6 dict def
@@ -26,6 +26,27 @@ tgifellipsedict /mtrx matrix put
       x y translate
       xrad yrad scale
       0 0 1 0 360 arc
+      savematrix setmatrix
+   end
+ } def
+
+/tgifarrowtipdict 8 dict def
+tgifarrowtipdict /mtrx matrix put
+
+/TGAT % tgifarrowtip
+ { tgifarrowtipdict begin
+      /dy exch def
+      /dx exch def
+      /h exch def
+      /w exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      dy dx atan rotate
+      0 0 moveto
+      w neg h lineto
+      w neg h neg lineto
       savematrix setmatrix
    end
  } def
@@ -113,6 +134,15 @@ tgifellipsedict /mtrx matrix put
    end
  } def
 
+/TGMAX
+ { exch dup 3 1 roll exch dup 3 1 roll gt { pop } { exch pop } ifelse
+ } def
+/TGMIN
+ { exch dup 3 1 roll exch dup 3 1 roll lt { pop } { exch pop } ifelse
+ } def
+/TGSW { stringwidth pop } def
+/tgifstrw 0 def
+
 /bd { bind def } bind def
 
 /GS { gsave } bd
@@ -171,7 +201,7 @@ end
 %%EndSetup
 %%Page: 1 1
 
-%%PageBoundingBox: 71 708 260 747
+%%PageBoundingBox: 46 708 286 769
 tgifdict begin
 /tgifsavedpage save def
 
@@ -1008,12 +1038,192 @@ GS
    GR
 GR
 
+% POLY/OPEN-SPLINE
+1.000 0.000 0.000 RG
+GS
+   NP
+      104 169 M
+      37 47 atan DU cos 10.000 MU 151 exch SU
+      exch sin 10.000 MU 206 exch SU L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      151 206 10.000 4.000 47 37 TGAT
+   1 SG CP F
+   1.000 0.000 0.000 RG
+   NP
+      151 206 10.000 4.000 47 37 TGAT
+   CP F
+GR
+
+% TEXT
+NP
+1.000 0.000 0.000 RG
+   GS
+      1 W
+      85 166 M
+      GS
+            1.000 0.000 0.000 RG
+            /NewCenturySchlbk-Roman FF [24 0 0 -24 0 0] MS
+            (1.) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+1.000 0.000 0.000 RG
+GS
+   NP
+      204 155 M
+      25 18 atan DU cos 10.000 MU 222 exch SU
+      exch sin 10.000 MU 180 exch SU L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      222 180 10.000 4.000 18 25 TGAT
+   1 SG CP F
+   1.000 0.000 0.000 RG
+   NP
+      222 180 10.000 4.000 18 25 TGAT
+   CP F
+GR
+
+% TEXT
+NP
+1.000 0.000 0.000 RG
+   GS
+      1 W
+      486 193 M
+      GS
+            1.000 0.000 0.000 RG
+            /NewCenturySchlbk-Roman FF [24 0 0 -24 0 0] MS
+            (2.) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+1.000 0.000 0.000 RG
+GS
+   NP
+      444 215 M
+      -19 45 atan DU cos 10.000 MU exch sin 10.000 MU RM
+      489 196 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      444 215 10.000 4.000 -45 19 TGAT
+   1 SG CP F
+   1.000 0.000 0.000 RG
+   NP
+      444 215 10.000 4.000 -45 19 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+1.000 0.000 0.000 RG
+GS
+   NP
+      434 179 M
+      -19 45 atan DU cos 10.000 MU exch sin 10.000 MU RM
+      479 160 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      434 179 10.000 4.000 -45 19 TGAT
+   1 SG CP F
+   1.000 0.000 0.000 RG
+   NP
+      434 179 10.000 4.000 -45 19 TGAT
+   CP F
+GR
+
+% TEXT
+NP
+1.000 0.000 0.000 RG
+   GS
+      1 W
+      482 161 M
+      GS
+            1.000 0.000 0.000 RG
+            /NewCenturySchlbk-Roman FF [24 0 0 -24 0 0] MS
+            (3.) SH
+      GR
+   GR
+
+% TEXT
+NP
+1.000 0.000 0.000 RG
+   GS
+      1 W
+      402 161 M
+      GS
+            1.000 0.000 0.000 RG
+            /NewCenturySchlbk-Roman FF [24 0 0 -24 0 0] MS
+            (4.) SH
+      GR
+   GR
+
+% POLY/OPEN-SPLINE
+1.000 0.000 0.000 RG
+GS
+   NP
+      355 179 M
+      -19 45 atan DU cos 10.000 MU exch sin 10.000 MU RM
+      400 160 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      355 179 10.000 4.000 -45 19 TGAT
+   1 SG CP F
+   1.000 0.000 0.000 RG
+   NP
+      355 179 10.000 4.000 -45 19 TGAT
+   CP F
+GR
+
+% TEXT
+NP
+1.000 0.000 0.000 RG
+   GS
+      1 W
+      177 156 M
+      GS
+            1.000 0.000 0.000 RG
+            /NewCenturySchlbk-Roman FF [24 0 0 -24 0 0] MS
+            (5.) SH
+      GR
+   GR
+
 GR
 tgifsavedpage restore
 end
 showpage
 
 %%Trailer
-%MatchingCreationDate: Sun Feb  3 02:43:04 2013
-%%DocumentFonts: 
+%MatchingCreationDate: Sun Feb  3 13:59:01 2013
+%%DocumentFonts: NewCenturySchlbk-Roman
 %%EOF

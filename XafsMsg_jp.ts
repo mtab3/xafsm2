@@ -637,7 +637,7 @@ Though, other parameters are fixed at the value on starting.</source>
     <message>
         <location filename="MainWindow.ui" line="3361"/>
         <source>Monitor Sensors</source>
-        <translation>計測値モニタ</translation>
+        <translation type="unfinished">検出器モニタ</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="2812"/>
@@ -706,7 +706,7 @@ Though, other parameters are fixed at the value on starting.</source>
     <message>
         <location filename="MainWindow.ui" line="2614"/>
         <source>Monitor:</source>
-        <translation>計測器:</translation>
+        <translation type="unfinished">検出器:</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="2992"/>
