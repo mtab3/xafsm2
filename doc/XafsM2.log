@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.9.30)  3 FEB 2013 23:20
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  5 FEB 2013 21:18
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -128,17 +128,14 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `bold'
 (Font)                  U/txexa/m/n --> U/txexa/bx/n on input line 128.
 LaTeX Info: Redefining \not on input line 1042.
-) (./XafsM2.aux
-
-LaTeX Warning: Label `バックグラウンド' multiply defined.
-
-)
+) (./XafsM2.aux)
 \openout1 = `XafsM2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 42.
 LaTeX Font Info:    Try loading font information for OML+txmi on input line 42.
 
- (/usr/local/share/texmf-dist/tex/latex/txfonts/omltxmi.fd
+
+(/usr/local/share/texmf-dist/tex/latex/txfonts/omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    ... okay on input line 42.
@@ -242,53 +239,56 @@ File: ElementSelectBox.eps Graphic file (type eps)
 File: PeriodicTable.eps Graphic file (type eps)
  <PeriodicTable.eps>
 File: Monochro.eps Graphic file (type eps)
- <Monochro.eps>
-
-LaTeX Warning: Command \r invalid in math mode on input line 181.
-
-[3]
+ <Monochro.eps> [3]
 File: MeasTab.eps Graphic file (type eps)
- <MeasTab.eps> [4]
+ <MeasTab.eps>
+[4]
 File: MeasTab-BlockSetUp.eps Graphic file (type eps)
  <MeasTab-BlockSetUp.eps> [5]
 File: MeasTab-Right.eps Graphic file (type eps)
  <MeasTab-Right.eps> [6]
 File: BGMeasB.eps Graphic file (type eps)
-
-<BGMeasB.eps> [7]
+ <BGMeasB.eps> [7]
 File: MeasCond.eps Graphic file (type eps)
- <MeasCond.eps> [8]
 
-LaTeX Warning: Command \r invalid in math mode on input line 424.
-
+<MeasCond.eps> [8]
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
-<MeasCond-MonoCTRL.eps>
+ <MeasCond-MonoCTRL.eps>
 File: MeasCond-Range.eps Graphic file (type eps)
  <MeasCond-Range.eps> [9] [10]
 File: MeasCond-Offset.eps Graphic file (type eps)
- <MeasCond-Offset.eps>
+
+<MeasCond-Offset.eps>
 File: MeasCond-MoveScan.eps Graphic file (type eps)
-
-<MeasCond-MoveScan.eps> [11]
+ <MeasCond-MoveScan.eps> [11]
 File: MeasCond-Monitor.eps Graphic file (type eps)
- <MeasCond-Monitor.eps> [12]
+ <MeasCond-Monitor.eps>
+[12]
 File: SSDTab.eps Graphic file (type eps)
- <SSDTab.eps> [13]
-Overfull \vbox (144.66768pt too high) has occurred while \output is active []
-
-
-[14] [15] [16] (./XafsM2.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+ <SSDTab.eps>
+File: SSDTab-Select1.eps Graphic file (type eps)
+ <SSDTab-Select1.eps>
+File: SSDTab-Select2.eps Graphic file (type eps)
+ <SSDTab-Select2.eps>
+File: SSDTab-Setup.eps Graphic file (type eps)
+ <SSDTab-Setup.eps>
+[13] [14]
+File: FileReadTab.eps Graphic file (type eps)
+ <FileReadTab.eps> [15]
+File: FileReadTab-ALine.eps Graphic file (type eps)
+ <FileReadTab-ALine.eps> [16]
+File: LogTab.eps Graphic file (type eps)
+ <LogTab.eps>
+[17]
+File: StatTab.eps Graphic file (type eps)
+ <StatTab.eps> [18] [19] [20] [21] [22] (./XafsM2.aux) ) 
 Here is how much of TeX's memory you used:
- 1547 strings out of 95545
- 17281 string characters out of 1190572
- 63082 words of memory out of 1000000
- 4673 multiletter control sequences out of 10000+100000
+ 1571 strings out of 95545
+ 17585 string characters out of 1190967
+ 63158 words of memory out of 1000000
+ 4691 multiletter control sequences out of 10000+100000
  42303 words of font info for 137 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
  23i,8n,25p,710b,549s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (19 pages, 74064 bytes).
+Output written on XafsM2.dvi (25 pages, 98688 bytes).

@@ -11,39 +11,43 @@
 \contentsline {subsubsection}{\numberline {4.1.4}データファイル}{8}
 \contentsline {subsubsection}{\numberline {4.1.5}条件確認}{8}
 \contentsline {subsubsection}{\numberline {4.1.6}測定開始}{8}
+\contentsline {subsubsection}{\numberline {4.1.7}測定結果の表示}{8}
 \contentsline {subsection}{\numberline {4.2}条件設定}{8}
-\contentsline {subsubsection}{\numberline {4.2.1}分光器回転}{9}
+\contentsline {subsubsection}{\numberline {4.2.1}分光器回転}{8}
 \contentsline {subsubsection}{\numberline {4.2.2}レンジ選択}{9}
 \contentsline {subsubsection}{\numberline {4.2.3}バックグラウンド確認/設定}{11}
 \contentsline {subsubsection}{\numberline {4.2.4}移動/スキャン}{11}
 \contentsline {subsubsection}{\numberline {4.2.5}検出器モニタ}{12}
 \contentsline {subsection}{\numberline {4.3}SSD設定}{13}
-\contentsline {subsubsection}{\numberline {4.3.1}SSD選択(MCAスペクトル)}{14}
+\contentsline {subsubsection}{\numberline {4.3.1}SSD選択(MCAスペクトル)}{13}
 \contentsline {subsubsection}{\numberline {4.3.2}SSD選択(積算/本測定対象)}{14}
 \contentsline {subsubsection}{\numberline {4.3.3}SSDの各チャンネルの設定}{14}
-\contentsline {subsection}{\numberline {4.4}データ読み込み}{14}
-\contentsline {subsubsection}{\numberline {4.4.1}ファイル選択}{14}
-\contentsline {subsubsection}{\numberline {4.4.2}データファイルの形式}{14}
-\contentsline {subsubsection}{\numberline {4.4.3}Viewを閉じる}{14}
-\contentsline {subsection}{\numberline {4.5}ログ/記録}{14}
-\contentsline {subsection}{\numberline {4.6}状態表示}{14}
-\contentsline {subsubsection}{\numberline {4.6.1}スターズサーバ状態表示}{14}
-\contentsline {subsubsection}{\numberline {4.6.2}ドライバ状態表示}{14}
-\contentsline {section}{\numberline {5}グラフ表示部}{14}
-\contentsline {subsection}{\numberline {5.1}XYView}{14}
-\contentsline {subsection}{\numberline {5.2}TYView}{14}
-\contentsline {subsection}{\numberline {5.3}MCAView}{14}
-\contentsline {section}{\numberline {6}その他の機能}{14}
-\contentsline {subsection}{\numberline {6.1}Starsサーバ選択}{14}
-\contentsline {subsection}{\numberline {6.2}メッセージ表示エリア}{14}
-\contentsline {section}{\numberline {7}標準的な測定操作}{14}
-\contentsline {subsection}{\numberline {7.1}標準的なXAFS測定}{14}
-\contentsline {subsection}{\numberline {7.2}標準的なエネルギー較正}{14}
-\contentsline {subsection}{\numberline {7.3}スキャン}{14}
-\contentsline {subsection}{\numberline {7.4}分光器の$\Delta \theta _1$の較正}{14}
-\contentsline {section}{\numberline {8}起動方法・設定}{14}
-\contentsline {section}{\numberline {9}定義ファイル}{14}
-\contentsline {section}{\numberline {10}XafsM2 で使用可能なデバイス}{14}
-\contentsline {subsubsection}{\numberline {10.0.1}検出器選択設定に現れる検出器の種類}{14}
-\contentsline {section}{\numberline {11}BL5S1 の構成}{15}
-\contentsline {section}{\numberline {12}あとがき}{15}
+\contentsline {subsubsection}{\numberline {4.3.4}MCAスペクトルの表示}{15}
+\contentsline {subsection}{\numberline {4.4}データ読み込み}{15}
+\contentsline {subsubsection}{\numberline {4.4.1}ファイル選択}{15}
+\contentsline {subsubsection}{\numberline {4.4.2}データファイルの形式}{16}
+\contentsline {paragraph}{\bf データタイプ:}{16}
+\contentsline {paragraph}{\bf データの中身:}{17}
+\contentsline {subsubsection}{\numberline {4.4.3}Viewを閉じる}{17}
+\contentsline {subsection}{\numberline {4.5}ログ/記録}{18}
+\contentsline {subsection}{\numberline {4.6}状態表示}{18}
+\contentsline {subsubsection}{\numberline {4.6.1}スターズサーバ状態表示}{20}
+\contentsline {subsubsection}{\numberline {4.6.2}ドライバ状態表示}{20}
+\contentsline {section}{\numberline {5}グラフ表示部}{20}
+\contentsline {subsection}{\numberline {5.1}XYView}{20}
+\contentsline {subsection}{\numberline {5.2}TYView}{20}
+\contentsline {subsection}{\numberline {5.3}MCAView}{20}
+\contentsline {section}{\numberline {6}その他の機能}{20}
+\contentsline {subsection}{\numberline {6.1}Starsサーバ選択}{20}
+\contentsline {subsection}{\numberline {6.2}メッセージ表示エリア}{20}
+\contentsline {section}{\numberline {7}標準的な測定操作}{20}
+\contentsline {subsection}{\numberline {7.1}標準的なXAFS測定}{20}
+\contentsline {subsection}{\numberline {7.2}標準的なエネルギー較正}{20}
+\contentsline {subsection}{\numberline {7.3}スキャン}{20}
+\contentsline {subsection}{\numberline {7.4}分光器の$\Delta \theta _1$の較正}{20}
+\contentsline {section}{\numberline {8}起動方法・設定}{20}
+\contentsline {section}{\numberline {9}定義ファイル}{20}
+\contentsline {section}{\numberline {10}XafsM2 で使用可能なデバイス}{20}
+\contentsline {subsubsection}{\numberline {10.0.1}検出器選択設定に現れる検出器の種類}{20}
+\contentsline {section}{\numberline {11}BL5S1 の構成}{21}
+\contentsline {section}{\numberline {12}あとがき}{21}
