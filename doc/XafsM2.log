@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  5 FEB 2013 21:18
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  7 FEB 2013 17:28
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -249,8 +249,10 @@ File: MeasTab-Right.eps Graphic file (type eps)
  <MeasTab-Right.eps> [6]
 File: BGMeasB.eps Graphic file (type eps)
  <BGMeasB.eps> [7]
-File: MeasCond.eps Graphic file (type eps)
 
+LaTeX Warning: Reference `XYView' on page 8 undefined on input line 403.
+
+File: MeasCond.eps Graphic file (type eps)
 <MeasCond.eps> [8]
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
  <MeasCond-MonoCTRL.eps>
@@ -261,11 +263,16 @@ File: MeasCond-Offset.eps Graphic file (type eps)
 <MeasCond-Offset.eps>
 File: MeasCond-MoveScan.eps Graphic file (type eps)
  <MeasCond-MoveScan.eps> [11]
+
+LaTeX Warning: Reference `XYView' on page 12 undefined on input line 598.
+
 File: MeasCond-Monitor.eps Graphic file (type eps)
- <MeasCond-Monitor.eps>
-[12]
+<MeasCond-Monitor.eps> [12]
+
+LaTeX Warning: Reference `TYView' on page 13 undefined on input line 633.
+
 File: SSDTab.eps Graphic file (type eps)
- <SSDTab.eps>
+<SSDTab.eps>
 File: SSDTab-Select1.eps Graphic file (type eps)
  <SSDTab-Select1.eps>
 File: SSDTab-Select2.eps Graphic file (type eps)
@@ -281,14 +288,18 @@ File: LogTab.eps Graphic file (type eps)
  <LogTab.eps>
 [17]
 File: StatTab.eps Graphic file (type eps)
- <StatTab.eps> [18] [19] [20] [21] [22] (./XafsM2.aux) ) 
+ <StatTab.eps> [18] [19] [20] [21] [22] [23] (./XafsM2.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 1571 strings out of 95545
- 17585 string characters out of 1190967
- 63158 words of memory out of 1000000
- 4691 multiletter control sequences out of 10000+100000
+ 1572 strings out of 95545
+ 17594 string characters out of 1190967
+ 63147 words of memory out of 1000000
+ 4692 multiletter control sequences out of 10000+100000
  42303 words of font info for 137 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
  23i,8n,25p,710b,549s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (25 pages, 98688 bytes).
+Output written on XafsM2.dvi (26 pages, 109600 bytes).
