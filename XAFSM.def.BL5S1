@@ -243,3 +243,6 @@ SENSOR OTC2 "S032" "GENERAL" "Orc974 ch3(via KTL-2)" "ortec974" "counter03" "cou
 #   "S004"           : The identifier of the second driver
 #   -2               : Upper range limit
 #   -9               : Lower range limit
+
+SENSOR OTC "S033" "GENERAL" "Otc994 ch1" "ortec994" "ch0" "count" YES "S033"
+SENSOR OTC "S034" "GENERAL" "Otc994 ch2" "ortec994" "ch1" "count" YES "S033"

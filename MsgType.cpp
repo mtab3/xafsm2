@@ -73,6 +73,7 @@ const MsgTyp MsgT[] = {
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },
+  { "_IsBusy", EvISBUSY },
 
   { "", NOTMSG },
 };
