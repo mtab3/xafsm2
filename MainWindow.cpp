@@ -42,11 +42,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->SetNewSVPort( starsSV->SSVPort() );
 
   Initialize();
-
   setupView();
   setupCommonArea();
   setupSetupArea();     // AUnit ŠÖŒW‚Ì Initialize Œã‚Å‚È‚¢‚Æ‚¾‚ß
-  setupSetupSSDArea();
+  if ( SFluo != NULL )
+    setupSetupSSDArea();
+  else {
+    MainTab->removeTab( MainTab->indexOf( SSDTab ) );
+  }
   setupMeasArea();
   setupReadDataArea();
 
@@ -116,10 +119,11 @@ void MainWindow::Initialize( void )
   connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
   connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
   resize( 1, 1 );
-
-  getMCASettings( MCACh->text().toInt() );
   SendListNodes();
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+  if ( SFluo != NULL ) {
+    getMCASettings( MCACh->text().toInt() );
+    s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+  }
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
   }
@@ -163,7 +167,8 @@ void MainWindow::InitAndIdentifySensors( void )
     if ( as->getID() == "TotalF" ) { SFluo = as; }
     if ( as->getID() == "ENCTH" ) { EncMainTh = as; }
   }
-  SFluo->setROIs( ROIStart, ROIEnd );
+  if ( SFluo != NULL )
+    SFluo->setROIs( ROIStart, ROIEnd );
   connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
 }
 

@@ -13,6 +13,9 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
 
+  if ( SFluo == NULL ) 
+    Use19chSSD->setEnabled( false );
+
   BLKUnit = KEV;
   ClearBLKs();
   ChangeBLKs( 4 );
