@@ -148,7 +148,7 @@ bool MUnits::getValue( void )
   for ( int i = 0; i < Units.count(); i++ ) {
     ff |= Units.at(i)->au->GetValue();
   }
-  
+
   return ff;
 }
 
