@@ -38,7 +38,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       GoUnit[j]->addItem( QString( UnitName[i].name ) );
     }
   }
-
   GoUnit0->setCurrentIndex( KEV );
   for ( int i = 0; i < GOS; i++ ) {
     GoUnit[i]->setCurrentIndex( KEV );
@@ -51,7 +50,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( GoUnit[i], SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( ShowAllGos() ) );
   }
-
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoPosEdit[i], SIGNAL( editingFinished() ),
 	     this, SLOT( GetNewGos() ) );
@@ -62,7 +60,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
   }
-
   for ( int i = 0; i < MSPEEDS; i++ ) {
     GoMotorS->addItem( MSpeeds[i].MSName );
     SPSMotorS->addItem( MSpeeds[i].MSName );
@@ -89,10 +86,16 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	       this, SLOT( GotNowRange( int ) ) );
     }
   }
-  RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
-			 SensWithRange.at(0)->getRangeU() );
-  RangeSelect->setValue( SensWithRange.at(0)->getRange() );
-  SetAutoRangeMode( 0 );
+  qDebug() << "j";
+
+  if ( SensWithRange.count() > 0 ) {
+    RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
+			   SensWithRange.at(0)->getRangeU() );
+    RangeSelect->setValue( SensWithRange.at(0)->getRange() );
+    SetAutoRangeMode( 0 );
+  }
+
+  qDebug() << "i";
 
   connect( SelectAutoRange, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelAutoRange( bool ) ) );
@@ -102,6 +105,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( newRangeSelected( int ) ) );
   connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ) );
   connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ) );
+
+  qDebug() << "h";
 
   InputDark
     ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
@@ -113,6 +118,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectScale->addItem( MScales[i].MSName );
   }
   MonStage = 0;
+
+  qDebug() << "g";
 
   scanFSel = new QFileDialog;
   scanFSel->setAcceptMode( QFileDialog::AcceptSave );

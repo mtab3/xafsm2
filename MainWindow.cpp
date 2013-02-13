@@ -40,6 +40,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
   s->SetNewSVAddress( starsSV->SSVAddress() );
   s->SetNewSVPort( starsSV->SSVPort() );
+
   Initialize();
 
   setupView();

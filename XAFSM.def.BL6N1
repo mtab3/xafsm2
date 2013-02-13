@@ -1,0 +1,136 @@
+# XAFS-M setting file : Edited 2012/10/03
+
+XAFSName  "XafsM2"
+XAFSKey   "XafsM2"
+XAFSTitle "XafsM2-BL6N1"
+
+#List of STARS drivers which requied by XafsM to have full function
+
+CRYSTAL  "Si(111)"   3.1355316
+CRYSTAL  "Si(333)"   1.0451772
+CRYSTAL  "Ge(111)"   3.2663822
+CRYSTAL  "Ge(333)"   1.0887941
+CRYSTAL  "InSb(111)"   3.74
+CRYSTAL  "YB66(400)"   5.86
+CRYSTAL  "b-alumina(0002)"   11.2
+
+# define Moveable units
+
+# MOTOR PM "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 -11406
+#          # The definition for "Theta" located at the end of the list of motors.
+
+# The parameters following the identifier 'MOTOR' are
+#   PM      : Unit type   PM : puls motor controlled via pm16c04
+#     "THETA"     : Identifier that this is the main axis of the monochromator
+#     "Theta"     : The name of the unit (only for display)
+#     "pm16c04-1" : Stars driver name
+#     "ch3"       : Node name in the stars driver
+#     "deg"       : Name of the metric unit (only for display)
+#     0.000027... : The metric unit / puls
+#     0           : Center position in puls
+
+#MOTOR PM "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 0 INT
+MOTOR PM "M001" "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 INT 0
+
+#   PZ      : Unit type   PZ : piezo actuator controlled via e665
+#     "DTH1P"     : Identifier that this is the dth1p
+#     "Dth1p"     : The name of the unit (only for display)
+#     "e665"      : Stars driver name
+#     ""          : Node name in the stars driver
+#     "um"        : Name of the metric unit (only for display)
+#     0.056       : The metric unit / Volt
+#     -10         : Minimum Voltage
+#     120         : Maximum Voltage
+
+#
+# Following definitions are temporal (not real)
+#
+
+#MOTOR PM "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 0
+#MOTOR PM "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 0
+#MOTOR PM "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 0
+#MOTOR PM "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 0
+#MOTOR PM "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 0
+#MOTOR PM "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 0
+#MOTOR PM "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 0
+#MOTOR PM "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 0
+#MOTOR PM "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 0
+#MOTOR PM "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 0 
+#MOTOR PM "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 0 
+#MOTOR PM "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 0 
+#MOTOR PM "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 0 
+
+MOTOR PM "M002" "THETA" "Theta" "pm16c04" "ch9" "deg" 0.00002 INT -2250000
+
+#MOTOR PM "DTH2"  "Dth2"  "pm16c04" "ch0" "asec" 0.05 0 INT
+#MOTOR PZ "DTH1P" "Dth1p" "e665" "" "um" 0.056 -10 120 REAL     # Need to check the range
+
+# define Sensor units
+
+#SENSOR CNT  "I0" "Counter 0 (I0)" "nct0801" "ch0"  "cps"
+#
+# You can use any other sensor as I0, by selecting it after running the program.
+# Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
+#
+#SENSOR CNT  "I1" "Counter 1 (I1)" "nct0801" "ch1"  "cps"
+
+#SENSOR CNT  "GENERAL" "Counter 2 (I0 via KTL)"      "nct0801" "ch2"  "cps"
+#SENSOR CNT  "GENERAL" "Counter 3 (I1 via KTL)"      "nct0801" "ch3"  "cps"
+# The identifier CNT might be changed CNT2 or something, 
+# to add some additional initialize sequence on the start of measurement
+
+SENSOR PAM "S001" "I1" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
+SENSOR PAM "S002" "I0" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
+
+# The parameters following the identifier 'SENSOR' are
+#   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
+#     "GENERAL"         : Identifier that this is a generally used sensor
+#     "Keithley 6485-1" : The name of the unit (only for display)
+#     "m6485drv-1"      : Stars driver name
+#     ""                : Node name in the stars driver
+#     "mA"              : Name of the metric unit (only for display)
+
+#
+# Following definitions are temporal (not real)
+#
+
+SENSOR ENC "S003" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
+
+SENSOR SSD "S004" "TotalF" "SSD (19ch all)" "QtXmapSSD" "" "count" YES "S004"
+SENSOR SSDP "S005" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S004"
+SENSOR SSDP "S006" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S004"
+SENSOR SSDP "S007" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S004"
+SENSOR SSDP "S008" "SingleF" "SSD-ch03"  "QtXmapSSD"      "3"  "count" YES "S004"
+SENSOR SSDP "S009" "SingleF" "SSD-ch04"  "QtXmapSSD"      "4"  "count" YES "S004"
+SENSOR SSDP "S010" "SingleF" "SSD-ch05"  "QtXmapSSD"      "5"  "count" YES "S004"
+SENSOR SSDP "S011" "SingleF" "SSD-ch06"  "QtXmapSSD"      "6"  "count" YES "S004"
+SENSOR SSDP "S012" "SingleF" "SSD-ch07"  "QtXmapSSD"      "7"  "count" YES "S004"
+SENSOR SSDP "S013" "SingleF" "SSD-ch08"  "QtXmapSSD"      "8"  "count" YES "S004"
+SENSOR SSDP "S014" "SingleF" "SSD-ch19"  "QtXmapSSD"      "9"  "count" YES "S004"
+SENSOR SSDP "S015" "SingleF" "SSD-ch10"  "QtXmapSSD"      "10" "count" YES "S004"
+SENSOR SSDP "S016" "SingleF" "SSD-ch11"  "QtXmapSSD"      "11" "count" YES "S004"
+SENSOR SSDP "S017" "SingleF" "SSD-ch12"  "QtXmapSSD"      "12" "count" YES "S004"
+SENSOR SSDP "S018" "SingleF" "SSD-ch13"  "QtXmapSSD"      "13" "count" YES "S004"
+SENSOR SSDP "S019" "SingleF" "SSD-ch14"  "QtXmapSSD"      "14" "count" YES "S004"
+SENSOR SSDP "S020" "SingleF" "SSD-ch15"  "QtXmapSSD"      "15" "count" YES "S004"
+SENSOR SSDP "S021" "SingleF" "SSD-ch16"  "QtXmapSSD"      "16" "count" YES "S004"
+SENSOR SSDP "S022" "SingleF" "SSD-ch17"  "QtXmapSSD"      "17" "count" YES "S004"
+SENSOR SSDP "S023" "SingleF" "SSD-ch18"  "QtXmapSSD"      "18" "count" YES "S004"
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC      : Unit type   ENC an encorder observed/controlled via nd287
+#     "ENCTH"      : Identifier that this is the main axis of the monochromator
+#     "Encoder Th" : The name of the unit (only for display)
+#     "nd287"      : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+
+
+#
+# For any item you can use "" (double quotation marks) as you want,
+# though, basically it should be used to define strings with 'space'.
+# For example, SENSOR and "SENSOR" cause no difference.
+# However, when the key-word includes 'space', the "" is necessary.
+# For example, "Keithley 6485" shoud not be writtern Keithley 6485.
+#
+
