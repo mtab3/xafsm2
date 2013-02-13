@@ -230,6 +230,11 @@ signals:
   //  void CountFinished( void );
   void newValue( QString value );
   void newDark( double dark );
+  void newCountsInROI( QVector<int> );
+  void newCountsAll( QVector<int> );
+  void newTotalEvents( QVector<int> );
+  void newICRs( QVector<double> );
+
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );

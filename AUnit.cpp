@@ -398,6 +398,10 @@ void AUnit::AskIsBusy( void )
 void AUnit::ReceiveValues( SMsg msg )
 {
   QString buf;
+  QVector<int> rCountsInROI;
+  QVector<int> rCountsAll;
+  QVector<int> rTotalEvents;
+  QVector<double> rICRs;
 
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
     if ( Type == "SSD" ) {   // SSD だけ特殊処理。全チャンネルの合計値を取る
@@ -408,10 +412,21 @@ void AUnit::ReceiveValues( SMsg msg )
 	}
       }
       Value = QString::number( sum );
+      for ( int i = 0; i < 19; i++ ) {
+	rCountsInROI << msg.Vals().at( i + 1 ).toInt();
+	rCountsAll   << msg.Vals().at( i + 20 ).toInt();
+	rTotalEvents << msg.Vals().at( i + 39 ).toInt();
+	rICRs        << msg.Vals().at( i + 58 ).toDouble();
+      }
     } else {
       Value = msg.Vals().at(0);
     }
     Values = msg.Vals();
+    emit newCountsInROI( rCountsInROI );
+    emit newCountsAll( rCountsAll );
+    emit newTotalEvents( rTotalEvents );
+    emit newICRs( rICRs );
+
     emit newValue( Value );
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );
@@ -645,6 +660,9 @@ bool AUnit::InitSensor( void )
 
   return rv;
 }
+
+
+/*** XMAP SSD ***/
 
 bool AUnit::GetMCA( int ch )
 {

@@ -302,6 +302,7 @@ private:
   void SetDFName( int i );
   double MeasVals[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
+  int MeasDispPol[ MCHANNELS ];   // polarity
   bool MeasSensF[ MCHANNELS ];
   double NowDwell;
   bool inMeasDark;

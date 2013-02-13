@@ -148,7 +148,7 @@ void MainWindow::DispMeasDatas( void )
       if ( Val < 1e-10 )
 	Val = 1e-10;
       if ( ( I0 / Val ) > 0 )
-	MeasView->NewPoint( i, GoToKeV, log( I0/Val ) );
+	MeasView->NewPoint( i, GoToKeV, log( I0/Val * MeasDispPol[i] ) );
       else 
 	MeasView->NewPoint( i, GoToKeV, 0 );
     } else {  // MeasDispMode == FLUO
