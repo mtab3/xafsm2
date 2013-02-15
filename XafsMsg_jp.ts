@@ -1174,8 +1174,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>測定: 終了</translation>
     </message>
     <message>
-        <location filename="MwCommon.cpp" line="71"/>
-        <location filename="MwCommon.cpp" line="83"/>
+        <location filename="MwCommon.cpp" line="74"/>
+        <location filename="MwCommon.cpp" line="86"/>
         <source>Absorption edge of the atom is out of range.</source>
         <translation>対象原子の吸収端が測定可能範囲外です。</translation>
     </message>
@@ -1539,22 +1539,22 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation>::Undefined Unit type [%1]</translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="124"/>
+        <location filename="ReadDef.cpp" line="131"/>
         <source>Undefined Key word [%1]</source>
         <translation>Undefined Key word [%1]</translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="205"/>
+        <location filename="ReadDef.cpp" line="212"/>
         <source>UIDs [%1](at line %2) and [%3](at line %4) are duplicated.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="208"/>
+        <location filename="ReadDef.cpp" line="215"/>
         <source>1st one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="210"/>
+        <location filename="ReadDef.cpp" line="217"/>
         <source>2nd one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]</source>
         <translation></translation>
     </message>
