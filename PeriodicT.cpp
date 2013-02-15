@@ -217,3 +217,16 @@ void PeriodicTable::SetPTMasks( int s, int e, int mask )
     }
   }
 }
+
+void PeriodicTable::SetAGColor( AtomGroup *ag )
+{
+  bool ingroup = false;
+  for ( int i = 0; i < PBs; i++ ) {
+    if ( PB[i]->text().simplified() == ag->startAtom.simplified() )
+      ingroup = true;
+    if ( PB[i]->text().simplified() == ag->endAtom.simplified() )
+      break;
+    if ( ingroup )
+      PB[i]->setStyleSheet( "background-color: " + ag->groupColor );
+  }
+}

@@ -40,7 +40,7 @@ void MainWindow::ReadDef( QString fname )
   while( !in.atEnd() ) {
     aline = in.readLine();
     line++;
-    if ( !aline.isEmpty() && aline.at(0) != QChar( '#' ) ) {
+    if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
       //      next = aline.simplified();
       next = nextItem( aline.simplified(), item );
       NewUnit = new AUnit;
@@ -120,7 +120,14 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); CName = item;
 	next = nextItem( next, item ); LatticeC = item;
 	mccd << new MCCD( CName, LatticeC );
-      } else {
+      } else if ( item == "AGROUP" ) {
+	AtomGroup *ag = new AtomGroup;
+	next = nextItem( next, item ); ag->groupId = item.toInt();
+	next = nextItem( next, item ); ag->startAtom = item;
+	next = nextItem( next, item ); ag->endAtom = item;
+	next = nextItem( next, item ); ag->groupColor = item;
+	AtomGroups << ag;
+      }else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
     }

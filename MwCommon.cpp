@@ -29,6 +29,9 @@ void MainWindow::setupCommonArea( void )   /* ‹¤’ÊƒGƒŠƒA */
   PT = new PeriodicTable;
   PT->SetActionOnSelected( PT_STAY );
   PT->SetActionOnClosed( PT_CLOSE );
+  for ( int i = 0; i < AtomGroups.count(); i++ ) {
+    PT->SetAGColor( AtomGroups.at(i) );
+  }
 
   connect( SelectTA, SIGNAL( activated( int ) ), this, SLOT( NewSelA( int ) ) );
   connect( SelectTE, SIGNAL( activated( int ) ), this, SLOT( NewSelE( int ) ) );

@@ -21,6 +21,12 @@ CRYSTAL  "Si(333)"   1.0451772
 CRYSTAL  "Ge(111)"   3.2663822
 CRYSTAL  "Ge(333)"   1.0887941
 
+# define the groups of atoms which can be measured.
+AGROUP 0 "H"  "U"  ""                    # To use user defined color, 
+                                         # clear default color setting for all the atoms
+AGROUP 1 "Cu" "Mo" "#ffff7f"             # "#ffff7f"      is bright-yellow
+AGROUP 2 "Cs" "U"  "rgb(255,170,255)"    # "255,170,255"  is bright-pink
+
 # define Moveable units
 
 # MOTOR PM "M000" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 INT -11776
@@ -246,3 +252,5 @@ SENSOR OTC2 "S032" "GENERAL" "Orc974 ch3(via KTL-2)" "ortec974" "counter03" "cou
 
 SENSOR OTC "S033" "GENERAL" "Otc994 ch1" "ortec994" "ch0" "count" YES "S033"
 SENSOR OTC "S034" "GENERAL" "Otc994 ch2" "ortec994" "ch1" "count" YES "S033"
+
+# The driver ortec994 (by M. Tabuchi) can be used as "OTC" and "OTC2".

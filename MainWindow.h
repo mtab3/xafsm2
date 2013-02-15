@@ -23,6 +23,7 @@
 #include "TYView.h"
 #include "MCAView.h"
 #include "Status.h"
+#include "AtomGroup.h"
 
 class QFileDialog;
 
@@ -58,6 +59,8 @@ private:
   QString XAFSName;
   QString XAFSKey;
   QString XAFSTitle;
+
+  QVector<AtomGroup*> AtomGroups;
 
   /* Tab control */
   QVector<ViewCTRL*> ViewCtrls;

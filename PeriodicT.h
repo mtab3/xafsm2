@@ -4,6 +4,7 @@
 #include <QSignalMapper>
 
 #include "ui_PeriodicT.h"
+#include "AtomGroup.h"
 
 enum PTWHENSELECT { PT_CLOSE, PT_HIDE, PT_STAY, PTWHENSELECTS };
 
@@ -30,6 +31,7 @@ public:
   void SetActionOnClosed( PTWHENSELECT action ) { WhenClosed = action; };
   void SetPTMask( int i, int mask );
   void SetPTMasks( int s, int e, int mask );
+  void SetAGColor( AtomGroup *ag );
 
 private slots:
   void SetPBs( void );
