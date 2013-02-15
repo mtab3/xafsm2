@@ -78,8 +78,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     QString name = ASensors.value(i)->getName(); 
     SelectI0->addItem( name );
     SelectI1->addItem( name );
-    SelectAux1->addItem( name );
-    SelectAux2->addItem( name );
+    if ( ASensors.at(i) != SFluo )
+      SelectAux1->addItem( name );
+    if ( ASensors.at(i) != SFluo )
+      SelectAux2->addItem( name );
     if ( ASensors.value(i)->getID() == "I0" )
       SelectI0->setCurrentIndex( i );
     if ( ASensors.value(i)->getID() == "I1" )
@@ -526,10 +528,8 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
-      QString msg = tr( "Scan cannot Start : (%1) is disabled" )
-	.arg( MMainTh->getName() );
-      statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg );
+      statusbar->showMessage( tr( "Scan cannot Start : (%1) is disabled" )
+			      .arg( MMainTh->getName() ), 2000 );
     }
 
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
@@ -638,10 +638,6 @@ void MainWindow::StartMeasurement( void )
       if ( ! MeasureDark() )                // 正常に測れなければだめ
 	return;
     }
-    Offsets.clear();
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      Offsets << mUnits.at(i)->getDark();
-    }
 
     QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
     if ( ! OverWriteChecked && CheckFile.exists() ) {
@@ -675,7 +671,6 @@ void MainWindow::StartMeasurement( void )
       MeasView->SetScaleType( i, FULLSCALE );
       MeasView->SetLineName( i, mUnits.at(i)->getName() );
     }
-
     CpBlock2SBlock();
     MeasStage = 0;
     //    ClearMeasView();

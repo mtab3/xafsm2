@@ -276,7 +276,6 @@ private:
   void SelSSDs( int i );
   //  void SetSSDactive( bool active );
 
-  QVector<double> Offsets;
   QVector<int> ChModes;
 
   QString fixS( QString s, int l );

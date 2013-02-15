@@ -42,6 +42,7 @@ class AUnit : public QObject
   int RangeL;           // Lower range limit
   int SelectedRange;
   double setTime;       // Actually set time;
+  double setDarkTime;   // Actually set time;
 
   double Center;        // Center position in puls : only for PM
 
@@ -50,6 +51,14 @@ class AUnit : public QObject
 
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;
+  QVector<int> CountsInROI;
+  QVector<int> CountsAll;
+  QVector<int> TotalEvents;
+  QVector<double> ICRs;
+  QVector<double> DarkCountsInROI;    // per second
+  QVector<double> DarkCountsAll;      // per second
+  QVector<double> DarkTotalEvents;    // per second
+  QVector<double> DarkICRs;           // per second
 
   bool IsBusy;
   bool IsBusy2;
@@ -118,6 +127,20 @@ public:
   void setRangeL( int lower ) { RangeL = lower; };
   void setRange( int r ) { SelectedRange = r; };
   void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
+  void setDark( void )
+  {
+    Dark = Value.toDouble() / ( ( setTime != 0 ) ? setTime : 1 );
+    DarkCountsInROI.clear();
+    DarkCountsAll.clear();
+    DarkTotalEvents.clear();
+    for ( int i = 0; i < CountsInROI.count(); i++ ) {
+      DarkCountsInROI << CountsInROI.at(i) / ( ( setTime != 0 ) ? setTime : 1 );
+      DarkCountsAll << CountsAll.at(i) / ( ( setTime != 0 ) ? setTime : 1 );
+      DarkTotalEvents << TotalEvents.at(i) / ( ( setTime != 0 ) ? setTime : 1 );
+    }
+    DarkICRs = ICRs;
+    setDarkTime = setTime;
+  }
   bool isAutoRangeAvailable( void );
   bool isAutoRange( void ) { return autoRange; };
   void setAutoRange( bool ar ) { autoRange = ar; };
@@ -179,6 +202,15 @@ public:
   int getRangeL( void ) { return RangeL; };
   int getRange( void ) { return SelectedRange; };
   double getDark( void ) { return Dark; };
+
+  QVector<int> getCountsInROI( void ) { return CountsInROI; };
+  QVector<int> getCountsAll( void ) { return CountsAll; };
+  QVector<int> getTotalEvents( void ) { return TotalEvents; };
+  QVector<double> getICRs( void ) { return ICRs; };
+  QVector<double> getDarkCountsInROI( void ) { return DarkCountsInROI; };
+  QVector<double> getDarkCountsAll( void ) { return DarkCountsAll; };
+  QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
+  QVector<double> getDarkICRs( void ) { return DarkICRs; };
 
   int getLastSetV( void ) { return lastSetV; };
 

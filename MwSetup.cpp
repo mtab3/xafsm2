@@ -86,7 +86,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	       this, SLOT( GotNowRange( int ) ) );
     }
   }
-  qDebug() << "j";
 
   if ( SensWithRange.count() > 0 ) {
     RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
@@ -94,8 +93,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     RangeSelect->setValue( SensWithRange.at(0)->getRange() );
     SetAutoRangeMode( 0 );
   }
-
-  qDebug() << "i";
 
   connect( SelectAutoRange, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelAutoRange( bool ) ) );
@@ -105,8 +102,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( newRangeSelected( int ) ) );
   connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ) );
   connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ) );
-
-  qDebug() << "h";
 
   InputDark
     ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
@@ -118,8 +113,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectScale->addItem( MScales[i].MSName );
   }
   MonStage = 0;
-
-  qDebug() << "g";
 
   scanFSel = new QFileDialog;
   scanFSel->setAcceptMode( QFileDialog::AcceptSave );

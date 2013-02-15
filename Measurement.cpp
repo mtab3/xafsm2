@@ -135,7 +135,7 @@ bool MainWindow::isBusyMotorInMeas( void )
   return MMainTh->isBusy() || MMainTh->isBusy2();
 }
 
-void MainWindow::DispMeasDatas( void )
+void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
 {
   double I0;
   double Val;

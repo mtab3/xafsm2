@@ -409,7 +409,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="MeasTab">
        <attribute name="title">
@@ -1352,7 +1352,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>I</string>
+                <string>I                 </string>
                </property>
                <property name="autoExclusive">
                 <bool>false</bool>
@@ -5173,7 +5173,7 @@ Though, other parameters are fixed at the value on starting.</string>
      <x>0</x>
      <y>0</y>
      <width>811</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

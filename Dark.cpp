@@ -134,6 +134,9 @@ void MainWindow::MeasDarkSequence( void )
 			 .arg( setTime ).arg( mUnits.at(i)->getName() ), 2000 );
 	mUnits.at(i)->setDark( MeasVals[i] );
       }
+      if ( mUnits.at(i) == SFluo ) {
+	SFluo->setDark();      // 19ch 分のダークを内部空間に保存
+      }
     }
     AskingShutterOpen = true;
     MeasBackGround->setText( tr( "Open Shutter!!" ) );

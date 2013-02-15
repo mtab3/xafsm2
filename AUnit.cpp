@@ -35,6 +35,25 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
 
   SSDPresetType = "REAL";
 
+  CountsInROI.clear();
+  CountsAll.clear();
+  TotalEvents.clear();
+  ICRs.clear();
+  DarkCountsInROI.clear();
+  DarkCountsAll.clear();
+  DarkTotalEvents.clear();
+  DarkICRs.clear();
+  for ( int i = 0; i < 20; i++ ) {
+    CountsInROI << 0;
+    CountsAll << 0;
+    TotalEvents << 0;
+    ICRs << 0;
+    DarkCountsInROI << 0;
+    DarkCountsAll << 0;
+    DarkTotalEvents << 0;
+    DarkICRs << 0;
+  }
+
   IsBusy = false;    // 相手に尋ねる isBusy
   IsBusy2 = false;   // その他のコマンドを投げて返答が返ってくるまで isBusy2
   Value = "";
@@ -398,10 +417,11 @@ void AUnit::AskIsBusy( void )
 void AUnit::ReceiveValues( SMsg msg )
 {
   QString buf;
-  QVector<int> rCountsInROI;
-  QVector<int> rCountsAll;
-  QVector<int> rTotalEvents;
-  QVector<double> rICRs;
+
+  CountsInROI.clear();
+  CountsAll.clear();
+  TotalEvents.clear();
+  ICRs.clear();
 
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
     if ( Type == "SSD" ) {   // SSD だけ特殊処理。全チャンネルの合計値を取る
@@ -413,19 +433,19 @@ void AUnit::ReceiveValues( SMsg msg )
       }
       Value = QString::number( sum );
       for ( int i = 0; i < 19; i++ ) {
-	rCountsInROI << msg.Vals().at( i + 1 ).toInt();
-	rCountsAll   << msg.Vals().at( i + 20 ).toInt();
-	rTotalEvents << msg.Vals().at( i + 39 ).toInt();
-	rICRs        << msg.Vals().at( i + 58 ).toDouble();
+	CountsInROI << msg.Vals().at( i + 1 ).toInt();
+	CountsAll   << msg.Vals().at( i + 20 ).toInt();
+	TotalEvents << msg.Vals().at( i + 39 ).toInt();
+	ICRs        << msg.Vals().at( i + 58 ).toDouble();
       }
     } else {
       Value = msg.Vals().at(0);
     }
     Values = msg.Vals();
-    emit newCountsInROI( rCountsInROI );
-    emit newCountsAll( rCountsAll );
-    emit newTotalEvents( rTotalEvents );
-    emit newICRs( rICRs );
+    //    emit newCountsInROI( rCountsInROI );
+    //    emit newCountsAll( rCountsAll );
+    //    emit newTotalEvents( rTotalEvents );
+    //    emit newICRs( rICRs );
 
     emit newValue( Value );
     IsBusy2 = false;
