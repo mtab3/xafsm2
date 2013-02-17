@@ -23,7 +23,10 @@ private:
   bool setROIrequest;
   double reqsx, reqex;
 
-  QColor Blue, Black, Red, Green, White;
+  int nearX;
+  bool nearf;
+
+  QColor Blue, Black, Red, Green, White, Orange;
 
   void Draw( QPainter *p );
 

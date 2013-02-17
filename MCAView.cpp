@@ -22,6 +22,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   Green = QColor( 0, 255, 0 );
   Blue = QColor( 0, 0, 255 );
   Black = QColor( 0, 0, 0 );
+  Orange = QColor( 255, 200, 0 );
 
   setROIrequest = false;
   reqsx = reqex = 0;
@@ -138,6 +139,11 @@ void MCAView::Draw( QPainter *p )
   int curp;
   emit CurrentValues( MCA[ curp = (int)cc.s2rxLimit( m.x() ) ], sum );
 
+  if ( nearf ) {
+    p->setPen( Orange );
+    p->drawLine( nearX, TM, nearX, TM+VW );
+  }
+
   QFont f;
   QRectF rec;
   p->setPen( Black );
@@ -232,15 +238,44 @@ void MCAView::Draw( QPainter *p )
   LINE++;
 }
 
+#define NEAR ( 10 )
+
 void MCAView::mouseMoveEvent( QMouseEvent *e )
 {
   m.Moved( e );
+  nearf = false;
+  if ( !m.inPress() ) {
+    int dsx = abs( e->x() - m.sx() );
+    int dex = abs( e->x() - m.ex() );
+
+    if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {
+      if ( dsx < dex ) {
+	nearX = m.sx();
+      } else {
+	nearX = m.ex();
+      }
+      nearf = true;
+    }
+  }
   update();
 }
 
 void MCAView::mousePressEvent( QMouseEvent *e )
 {
+  int dsx = abs( e->x() - m.sx() );
+  int dex = abs( e->x() - m.ex() );
+  int setX;
+  if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {
+    if ( dsx < dex ) {
+      setX = m.ex();
+    } else {
+      setX = m.sx();
+    }
+  } else {
+    setX = e->x();
+  }
   m.Pressed( e );
+  m.setSx( setX );
   update();
 }
 

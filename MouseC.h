@@ -21,6 +21,9 @@ class MouseC : public QObject
   void Moved( QMouseEvent *e );
   void Pressed( QMouseEvent *e );
   void Released( QMouseEvent *e );
+  void setBut( Qt::MouseButton b ) { Button = b; };
+  void setMod( Qt::KeyboardModifiers m ) { Mod = m; };
+  void setInP( bool p ) { inpress = p; };
   void setSx( int x ) { Sx = x; };
   void setSy( int y ) { Sy = y; };
   void setEx( int x ) { Ex = x; };
