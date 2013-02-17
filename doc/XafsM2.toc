@@ -39,23 +39,23 @@
 \contentsline {subsection}{\numberline {5.1}XAFS測定、スキャン、モニタデータ表示}{20}
 \contentsline {subsubsection}{\numberline {5.1.1}表示色}{21}
 \contentsline {subsubsection}{\numberline {5.1.2}スケール変更(移動・拡大・縮小)}{21}
-\contentsline {subsection}{\numberline {5.2}MCA測定データ表示}{21}
+\contentsline {subsection}{\numberline {5.2}MCA測定データ表示}{22}
 \contentsline {subsubsection}{\numberline {5.2.1}画面中の情報}{22}
 \contentsline {subsubsection}{\numberline {5.2.2}ROIの設定}{22}
-\contentsline {section}{\numberline {6}その他の機能}{22}
-\contentsline {subsection}{\numberline {6.1}メニューバー}{22}
-\contentsline {subsubsection}{\numberline {6.1.1}結晶・格子定数設定}{22}
-\contentsline {subsubsection}{\numberline {6.1.2}Starsサーバ設定}{22}
+\contentsline {section}{\numberline {6}その他の機能}{23}
+\contentsline {subsection}{\numberline {6.1}メニューバー}{23}
+\contentsline {subsubsection}{\numberline {6.1.1}結晶・格子定数設定}{23}
+\contentsline {subsubsection}{\numberline {6.1.2}Starsサーバ設定}{23}
 \contentsline {section}{\numberline {7}標準的な測定操作}{23}
-\contentsline {section}{\numberline {8}起動方法・設定}{23}
-\contentsline {subsection}{\numberline {8.1}起動方法}{23}
-\contentsline {subsubsection}{\numberline {8.1.1}起動に関連したファイルとその置き場所}{23}
-\contentsline {paragraph}{Windows だけの設定}{23}
+\contentsline {section}{\numberline {8}起動方法・設定}{24}
+\contentsline {subsection}{\numberline {8.1}起動方法}{24}
+\contentsline {subsubsection}{\numberline {8.1.1}起動に関連したファイルとその置き場所}{24}
+\contentsline {paragraph}{Windows だけの設定}{24}
 \contentsline {subsubsection}{\numberline {8.1.2}起動オプション(設定ファイル、動作言語の指定)}{24}
 \contentsline {subsection}{\numberline {8.2}定義ファイル}{24}
-\contentsline {subsubsection}{\numberline {8.2.1}XafsM2 の動作を指定指定するパラメータ}{24}
-\contentsline {subsubsection}{\numberline {8.2.2}駆動軸(モータ類)の定義}{25}
+\contentsline {subsubsection}{\numberline {8.2.1}XafsM2 の動作を指定指定するパラメータ}{25}
+\contentsline {subsubsection}{\numberline {8.2.2}駆動軸(モータ類)の定義}{26}
 \contentsline {subsubsection}{\numberline {8.2.3}検出器(カウンタ、電流計...)の定義}{26}
-\contentsline {subsection}{\numberline {8.3}BL5S1 の構成}{27}
+\contentsline {subsection}{\numberline {8.3}BL5S1 の構成}{28}
 \contentsline {subsection}{\numberline {8.4}BL5S1でのイオンチャンバの接続}{28}
-\contentsline {section}{\numberline {9}あとがき}{28}
+\contentsline {section}{\numberline {9}あとがき}{29}
