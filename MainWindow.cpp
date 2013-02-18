@@ -2,7 +2,7 @@
 
 #include "XafsM.h"
 #include "MainWindow.h"
-#include "SelMC.h"
+#include "SelMC2.h"
 #include "Stars.h"
 
 const QString CMode[ MEASMODES + 1 ] = {
@@ -26,14 +26,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   XAFSKey = myname;
   XAFSTitle = myname;
 
-  starsSV = new StarsSV;
+  starsSV = new StarsSV2;
 
   nowCurrent = 0;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
   ReadDef( DefFileName );
-  selmc = new SelMC( mccd );
+  selmc = new SelMC2( mccd );
 
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
@@ -53,7 +53,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupMeasArea();
   setupReadDataArea();
 
-  StatDisp->setupStatArea( &AMotors, &ASensors );
+  StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
   QString msg = "XafsMsg_" + QLocale::system().name();
   NewLogMsg( msg );
@@ -64,12 +64,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( s, SIGNAL( AskShowStat( QString, int ) ),
 	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
-  connect( action_SelMC, SIGNAL( triggered() ), selmc, SLOT( show() ) );
+  //  connect( action_SelMC, SIGNAL( triggered() ), selmc, SLOT( show() ) );
   connect( selmc, SIGNAL( NewLogMsg( QString ) ),
 	   this, SLOT( NewLogMsg( QString ) ) );
   connect( selmc, SIGNAL( NewLatticeConstant( double ) ),
 	   this, SLOT( SetNewLatticeConstant( double ) ) );
-  connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ) );
+  //  connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ) );
 
   connect( starsSV, SIGNAL( SSVNewAddress( const QString & ) ),
 	   s, SLOT( SetNewSVAddress( const QString & ) ) );
@@ -81,7 +81,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ) );
   connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
   connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
-  connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
+  //  connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
 
   connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
   connect( s, SIGNAL( AnsListNodes( SMsg ) ), this, SLOT( RcvListNodes( SMsg ) ) );
@@ -104,9 +104,10 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
   connect( MeasDarkTimer, SIGNAL( timeout() ), this, SLOT( MeasDarkSequence() ) );
 
-  connect( s, SIGNAL( ConnectingServer( QString )), StatDisp, SLOT( SetSSVA( QString )));
-  connect( s, SIGNAL( ConnectingPort( qint16 ) ), StatDisp, SLOT( SetSSVP( qint16 ) ) );
+  //  connect( s, SIGNAL( ConnectingServer( QString )), StatDisp, SLOT( SetSSVA( QString )));
+  //  connect( s, SIGNAL( ConnectingPort( qint16 ) ), StatDisp, SLOT( SetSSVP( qint16 ) ) );
   connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ) );
+
   s->AskStatus();
 
   s->MakeConnection();

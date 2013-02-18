@@ -24,7 +24,7 @@ CRYSTAL  "Ge(333)"   1.0887941
 # define the groups of atoms which can be measured.
 AGROUP 0 "H"  "U"  ""                    # To use user defined color, 
                                          # clear default color setting for all the atoms
-AGROUP 1 "Cu" "Mo" "#ffff7f"             # "#ffff7f"      is bright-yellow
+AGROUP 1 "V" "Mo" "#ffff7f"             # "#ffff7f"      is bright-yellow
 AGROUP 2 "Cs" "U"  "rgb(255,170,255)"    # "255,170,255"  is bright-pink
 
 # define Moveable units

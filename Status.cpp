@@ -1,11 +1,13 @@
 #include "Status.h"
+#include "StarsSV2.h"
 
 Status::Status( QWidget *p ) : QScrollArea( p )
 {
   setupUi( this );
 }
 
-void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
+void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
+			    StarsSV2 *StarsSV, SelMC2 *SelMC )
 {
   for ( int i = 0; i < Ams->count(); i++ ) {
     drivers << Ams->at(i);
@@ -34,32 +36,27 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, "
     "stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));";
 
-  QFrame *SSFrame = new QFrame;
-  MainGrid->addWidget( SSFrame, 0, 0, 1, 5 );
-  QGridLayout *SSS = new QGridLayout;
-  SSS->setContentsMargins( 3, 3, 3, 3 );
-  SSS->setVerticalSpacing( 1 );
-  SSFrame->setLayout( SSS );
-  SSFrame->setStyleSheet( TBack );
-  SSFrame->setFrameStyle( QFrame::StyledPanel );
-  QLabel *TS;
-  TS = new QLabel; TS->setText(tr("Stars server :")); SSS->addWidget( TS, 0, 0 );
-  SSAddr = new QLabel; SSAddr->setText(tr("SS Address")); SSS->addWidget( SSAddr, 0, 1 );
-  SSPort = new QLabel; SSPort->setText(tr("SS Port")); SSS->addWidget( SSPort, 0, 2 );
-  SSStat = new QLabel; SSStat->setText(tr("not connected")); SSS->addWidget( SSStat, 0, 3 );
+  int VItems = 0;
+  starsSV = StarsSV;
+  selMC = SelMC;
 
-  SSAddr->setStyleSheet( LBack );
-  SSAddr->setFrameStyle( QFrame::StyledPanel );
-  SSPort->setStyleSheet( LBack );
-  SSPort->setFrameStyle( QFrame::StyledPanel );
-  SSStat->setStyleSheet( NGcolor );
-  SSStat->setFrameStyle( QFrame::StyledPanel );
+  MainGrid->addWidget( starsSV, VItems++, 0, 1, 7 );
+
+  DrvsFrame = new QFrame;
+  DrvsGrid = new QGridLayout;
+  MainGrid->addWidget( DrvsFrame, VItems++, 0, 1, 8 );
+  DrvsFrame->setLayout( DrvsGrid );
+  DrvsFrame->setFrameShape( StyledPanel );
+  DrvsGrid->setContentsMargins( 3, 3, 3, 3 );
+  DrvsGrid->setHorizontalSpacing( 3 );
+  DrvsGrid->setVerticalSpacing( 1 );
+  int DrvVItems = 0;
 
   QRadioButton *RB0 = new QRadioButton;
   RB0->setText( tr( ": Drivers status watch active" ) );
   RB0->setCheckable( true );
   RB0->setChecked( true );
-  MainGrid->addWidget( RB0, 1, 0, 1, 2 );
+  DrvsGrid->addWidget( RB0, DrvVItems++, 0, 1, 2 );
   SWactive = true;
   connect( RB0, SIGNAL( clicked() ), this, SLOT( SelStatWatch() ) );
 
@@ -68,18 +65,19 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
   TT = new QLabel; TT->setText( tr( "Drivers" ) ); TTs << TT;
   TT = new QLabel; TT->setText( tr( "Devices" ) ); TTs << TT;
   TT = new QLabel; TT->setText( tr( "Enable" ) ); TTs << TT;
-  TT = new QLabel; TT->setText( tr( "Clear Enable" ) ); TTs << TT;
+  TT = new QLabel; TT->setText( tr( "Clr. Enable" ) ); TTs << TT;
   TT = new QLabel; TT->setText( tr( "IsBusy" ) ); TTs << TT;
   TT = new QLabel; TT->setText( tr( "Busy Units" ) ); TTs << TT;
   TT = new QLabel; TT->setText( tr( "IsBusy2" ) ); TTs << TT;
   TT = new QLabel; TT->setText( tr( "Busy2 Units" ) ); TTs << TT;
-  TT = new QLabel; TT->setText( tr( "Clear Busys" ) ); TTs << TT;
+  TT = new QLabel; TT->setText( tr( "Clr. Busys" ) ); TTs << TT;
   for ( int i = 0; i < TTs.count(); i++ ) {
     TTs.at(i)->setStyleSheet( TBack );
     TTs.at(i)->setFrameStyle( QFrame::StyledPanel );
     TTs.at(i)->setAlignment( Qt::AlignCenter );
-    MainGrid->addWidget( TTs.at(i), 2, i );
+    DrvsGrid->addWidget( TTs.at(i), DrvVItems, i );
   }
+  DrvVItems++;
 
   QLabel *L1, *LEnable, *LIsB1, *LIsB2;
   QPushButton *CEB, *CBB;
@@ -102,7 +100,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
     L1->setText( Drivers.at(i) );
     L1->setStyleSheet( LBack );
     L1->setFrameStyle( QFrame::StyledPanel );
-    MainGrid->addWidget( L1, i + 3, col++ );
+    DrvsGrid->addWidget( L1, i + DrvVItems, col++ );
 
     CB1 = new QComboBox;
     for ( int j = 0; j < drivers.count(); j++ ) {
@@ -113,7 +111,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
 	  CB1->addItem( drivers.at(j)->getName() );
     }
     CB1->setStyleSheet( CBack );
-    MainGrid->addWidget( CB1, i+3, col++ );
+    DrvsGrid->addWidget( CB1, i + DrvVItems, col++ );
 
     LEnable = new QLabel;
     LENBLs << LEnable;
@@ -122,13 +120,13 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
     LEnable->setLineWidth( 1 );
     LEnable->setMidLineWidth( 2 );
     LEnable->setMinimumWidth( 20 );
-    MainGrid->addWidget( LEnable, i+3, col++, Qt::AlignHCenter );
+    DrvsGrid->addWidget( LEnable, i + DrvVItems, col++, Qt::AlignHCenter );
 
     CEB = new QPushButton;
     CEBs << CEB;
     CEB->setText( tr( "Clear" ) );
     CEB->setStyleSheet( PBBack );
-    MainGrid->addWidget( CEB, i+3, col++ );
+    DrvsGrid->addWidget( CEB, i + DrvVItems, col++ );
     connect( CEB, SIGNAL( clicked() ), this, SLOT( OnClear1() ) );
 
     LIsB1 = new QLabel;
@@ -138,11 +136,11 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
     LIsB1->setLineWidth( 1 );
     LIsB1->setMidLineWidth( 2 );
     LIsB1->setMinimumWidth( 20 );
-    MainGrid->addWidget( LIsB1, i+3, col++, Qt::AlignHCenter );
+    DrvsGrid->addWidget( LIsB1, i + DrvVItems, col++, Qt::AlignHCenter );
 
     IBBx1 = new QComboBox;
     IBBx1s << IBBx1;
-    MainGrid->addWidget( IBBx1, i+3, col++ );
+    DrvsGrid->addWidget( IBBx1, i + DrvVItems, col++ );
 
     LIsB2 = new QLabel;
     LIB2s << LIsB2;
@@ -151,22 +149,24 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
     LIsB2->setLineWidth( 1 );
     LIsB2->setMidLineWidth( 2 );
     LIsB2->setMinimumWidth( 20 );
-    MainGrid->addWidget( LIsB2, i+3, col++, Qt::AlignHCenter );
+    DrvsGrid->addWidget( LIsB2, i + DrvVItems, col++, Qt::AlignHCenter );
 
     IBBx2 = new QComboBox;
     IBBx2s << IBBx2;
-    MainGrid->addWidget( IBBx2, i+3, col++ );
+    DrvsGrid->addWidget( IBBx2, i + DrvVItems, col++ );
 
     CBB = new QPushButton;
     CBBs << CBB;
     CBB->setText( tr( "Clear" ) );
     CBB->setStyleSheet( PBBack );
-    MainGrid->addWidget( CBB, i+3, col++ );
+    DrvsGrid->addWidget( CBB, i + DrvVItems, col++ );
     connect( CBB, SIGNAL( clicked() ), this, SLOT( OnClear2() ) );
 
     OnChangedIsBusy1( Drivers.at(i) );
     OnChangedIsBusy2( Drivers.at(i) );
   }
+
+  MainGrid->addWidget( selMC, VItems++, 0, 1, 4 );
 
   QSizePolicy *HSP, *VSP;
   QLabel *HS, *VS;
@@ -183,9 +183,10 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass )
   HS->setSizePolicy( *HSP );
   VS->setSizePolicy( *VSP );
   MainGrid->addWidget( HS, 0, TTs.count() );
-  MainGrid->addWidget( VS, Drivers.count() + 3, 0 );
+  MainGrid->addWidget( VS, VItems++, 0 );
 }
 
+#if 0
 void Status::SetSSVA( QString Server )
 {
   SSAddr->setText( Server );
@@ -195,15 +196,16 @@ void Status::SetSSVP( qint16 Port )
 {
   SSPort->setText( QString::number( Port ) );
 }
+#endif
 
 void Status::SetSSVStat( bool f )
 {
   if ( f ) {
-    SSStat->setText( tr( "Connected" ) );
-    SSStat->setStyleSheet( OKcolor );
+    starsSV->sStat()->setText( tr( "Connected" ) );
+    starsSV->sStat()->setStyleSheet( OKcolor );
   } else {
-    SSStat->setText( tr( "not Connected" ) );
-    SSStat->setStyleSheet( NGcolor );
+    starsSV->sStat()->setText( tr( "not Connected" ) );
+    starsSV->sStat()->setStyleSheet( NGcolor );
   }
 }
 

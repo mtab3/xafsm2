@@ -5,10 +5,17 @@
 
 #include "ui_ScrollWGrid.h"
 #include "AUnit.h"
+#include "StarsSV2.h"
+#include "SelMC2.h"
 
 class Status : public QScrollArea, private Ui::ScrollWGrid
 {
   Q_OBJECT
+
+  QFrame *DrvsFrame;
+  QGridLayout *DrvsGrid;
+  StarsSV2 *starsSV;
+  SelMC2 *selMC;
 
   QVector<AUnit*> drivers;
   QStringList Drivers;
@@ -26,11 +33,12 @@ class Status : public QScrollArea, private Ui::ScrollWGrid
 public:
   Status( QWidget *parent = 0 );
 
-  void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass );
+  void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass,
+		      StarsSV2 *starsSV, SelMC2 *selMC );
 
 public slots:
-  void SetSSVA( QString Server );
-  void SetSSVP( qint16 Port );
+  //  void SetSSVA( QString Server );
+  //  void SetSSVP( qint16 Port );
   void SetSSVStat( bool f );
 
   void SelStatWatch( void );

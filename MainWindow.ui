@@ -421,7 +421,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -5099,6 +5099,9 @@ Though, other parameters are fixed at the value on starting.</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+          </property>
           <property name="text">
            <string>Close View</string>
           </property>
@@ -5144,6 +5147,9 @@ Though, other parameters are fixed at the value on starting.</string>
           </item>
           <item>
            <widget class="QToolButton" name="LogFileSelect">
+            <property name="styleSheet">
+             <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+            </property>
             <property name="text">
              <string>New</string>
             </property>
@@ -5202,6 +5208,9 @@ Though, other parameters are fixed at the value on starting.</string>
        </layout>
       </widget>
       <widget class="QWidget" name="StatTab">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <attribute name="title">
         <string>Stat/Config</string>
        </attribute>
@@ -5236,15 +5245,7 @@ Though, other parameters are fixed at the value on starting.</string>
     </property>
     <addaction name="action_Quit"/>
    </widget>
-   <widget class="QMenu" name="menu_Config">
-    <property name="title">
-     <string>&amp;Config</string>
-    </property>
-    <addaction name="action_SelMC"/>
-    <addaction name="action_SetSSV"/>
-   </widget>
    <addaction name="menu_File"/>
-   <addaction name="menu_Config"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Quit">

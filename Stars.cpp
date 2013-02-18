@@ -119,10 +119,11 @@ void Stars::ReConnect( void )
 
 void Stars::AskStatus( void )
 {
-  if ( ss == NULL )
+  if ( ss == NULL ) {
     emit SSisActive( false );
-  else 
+  } else {
     emit SSisActive( ss->state() == QAbstractSocket::ConnectedState );
+  }
   emit ConnectingServer( StarsServer );
   emit ConnectingPort( StarsSPort );
 }

@@ -16,7 +16,7 @@
   <property name="widgetResizable">
    <bool>true</bool>
   </property>
-  <widget class="QWidget" name="scrollAreaWidgetContents">
+  <widget class="QWidget" name="AreaBase">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -24,6 +24,9 @@
      <width>396</width>
      <height>296</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="margin">
@@ -33,7 +36,11 @@
      <number>1</number>
     </property>
     <item row="0" column="0">
-     <layout class="QGridLayout" name="MainGrid"/>
+     <layout class="QGridLayout" name="MainGrid">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+     </layout>
     </item>
    </layout>
   </widget>

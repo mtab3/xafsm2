@@ -9,8 +9,9 @@
 
 #include "Mccd.h"
 #include "ui_MainWindow.h"
-#include "SelMC.h"
-#include "StarsSV.h"
+#include "SelMC2.h"
+#include "StarsSV2.h"
+#include "SelMC2.h"
 
 #include "ViewCtrl.h"
 #include "XafsM.h"
@@ -75,8 +76,8 @@ private:
   void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
 
   /* cfg. */
-  SelMC *selmc;
-  StarsSV *starsSV;
+  SelMC2 *selmc;
+  StarsSV2 *starsSV;
   /* cfg. */
 
   double CurPosKeV;
