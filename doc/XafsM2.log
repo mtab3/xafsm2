@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  17 FEB 2013 23:06
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  18 FEB 2013 16:51
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -237,92 +237,95 @@ File: ElementSelectBox.eps Graphic file (type eps)
 
 <ElementSelectBox.eps>
 File: PeriodicTable.eps Graphic file (type eps)
- <PeriodicTable.eps>
+ <PeriodicTable.eps> [3]
 File: Monochro.eps Graphic file (type eps)
- <Monochro.eps> [3]
+ <Monochro.eps>
+File: MessageArea.eps Graphic file (type eps)
 
-LaTeX Warning: Reference `エネルギー較正' on page 4 undefined on input line 199
-.
+<MessageArea.eps>
+File: Tabs.eps Graphic file (type eps)
+ <Tabs.eps> [4
 
+]
 File: MeasTab.eps Graphic file (type eps)
-<MeasTab.eps> [4]
+ <MeasTab.eps>
 File: MeasTab-BlockSetUp.eps Graphic file (type eps)
- <MeasTab-BlockSetUp.eps> [5]
+ <MeasTab-BlockSetUp.eps>
+[5]
 File: MeasTab-Right.eps Graphic file (type eps)
- <MeasTab-Right.eps> [6]
+ <MeasTab-Right.eps> [6] [7]
 File: BGMeasB.eps Graphic file (type eps)
+ <BGMeasB.eps> [8]
 
-<BGMeasB.eps> [7]
-
-LaTeX Warning: Reference `XYView' on page 8 undefined on input line 412.
+LaTeX Warning: Reference `XYView' on page 9 undefined on input line 424.
 
 File: MeasCond.eps Graphic file (type eps)
-<MeasCond.eps> [8]
+<MeasCond.eps> [9]
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
  <MeasCond-MonoCTRL.eps>
 File: MeasCond-Range.eps Graphic file (type eps)
- <MeasCond-Range.eps> [9] [10]
+ <MeasCond-Range.eps> [10] [11]
 File: MeasCond-Offset.eps Graphic file (type eps)
 
 <MeasCond-Offset.eps>
 File: MeasCond-MoveScan.eps Graphic file (type eps)
- <MeasCond-MoveScan.eps> [11]
+ <MeasCond-MoveScan.eps> [12]
 File: MeasCond-Monitor.eps Graphic file (type eps)
  <MeasCond-Monitor.eps>
-[12]
+[13]
 File: SSDTab.eps Graphic file (type eps)
  <SSDTab.eps>
 File: SSDTab-Select1.eps Graphic file (type eps)
  <SSDTab-Select1.eps>
 File: SSDTab-Select2.eps Graphic file (type eps)
- <SSDTab-Select2.eps>
+ <SSDTab-Select2.eps> [14]
 File: SSDTab-Setup.eps Graphic file (type eps)
- <SSDTab-Setup.eps>
-[13] [14]
+
+<SSDTab-Setup.eps> [15]
 File: FileReadTab.eps Graphic file (type eps)
- <FileReadTab.eps> [15] [16]
+ <FileReadTab.eps> [16]
 File: FileReadTab-ALine.eps Graphic file (type eps)
- <FileReadTab-ALine.eps>
+ <FileReadTab-ALine.eps> [17]
 File: LogTab.eps Graphic file (type eps)
- <LogTab.eps>
-[17]
+
+<LogTab.eps> [18]
 File: StatTab.eps Graphic file (type eps)
- <StatTab.eps> [18] [19]
+ <StatTab.eps> [19] [20] [21]
 File: TXYView.eps Graphic file (type eps)
- <TXYView.eps> [20] [21]
+ <TXYView.eps> [22]
 File: MCAView.eps Graphic file (type eps)
- <MCAView.eps> [22]
-[23] [24] [25] (I search kanjifont definition file: . . )
+
+<MCAView.eps> [23] [24] [25] (I search kanjifont definition file: . . )
 (I search font definition file: . . . . . . . )
-LaTeX Font Info:    Try loading font information for OT1+txtt on input line 121
-4.
+LaTeX Font Info:    Try loading font information for OT1+txtt on input line 124
+0.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/ot1txtt.fd
 File: ot1txtt.fd 2000/12/15 v3.1
 ) [26]
-Overfull \hbox (13.71407pt too wide) in paragraph at lines 1276--1276
+Overfull \hbox (13.71407pt too wide) in paragraph at lines 1305--1305
 []\OT1/txtt/m/n/10.95 SENSOR CNT2 "S002" "GENERAL" "I0 via KTL" "nct0801" "ch2"
  "count" YES "S000" "S004" -2 -9[] 
  []
 
 
-Overfull \hbox (25.21153pt too wide) in paragraph at lines 1276--1276
+Overfull \hbox (25.21153pt too wide) in paragraph at lines 1305--1305
 []\OT1/txtt/m/n/10.95 SENSOR OTC2 "S031" "GENERAL" "Otc974 ch2" "ortec974" "ch0
 2" "count" YES "S027" "S004" -2 -9[] 
  []
 
-[27] [28] [29] (./XafsM2.aux)
+[27] [28] [29] [30] (./XafsM2.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 1617 strings out of 95545
- 18194 string characters out of 1190967
- 63167 words of memory out of 1000000
- 4723 multiletter control sequences out of 10000+100000
+ 1622 strings out of 95545
+ 18256 string characters out of 1190967
+ 63186 words of memory out of 1000000
+ 4726 multiletter control sequences out of 10000+100000
  42855 words of font info for 139 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
- 25i,8n,25p,710b,549s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 25i,8n,25p,710b,559s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (32 pages, 140080 bytes).
+Output written on XafsM2.dvi (33 pages, 142500 bytes).
