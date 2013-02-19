@@ -7,6 +7,7 @@
 #include "AUnit.h"
 #include "StarsSV2.h"
 #include "SelMC2.h"
+#include "Conditions.h"
 
 class Status : public QScrollArea, private Ui::ScrollWGrid
 {
@@ -16,6 +17,7 @@ class Status : public QScrollArea, private Ui::ScrollWGrid
   QGridLayout *DrvsGrid;
   StarsSV2 *starsSV;
   SelMC2 *selMC;
+  Conditions *conds;
 
   QVector<AUnit*> drivers;
   QStringList Drivers;
@@ -30,11 +32,15 @@ class Status : public QScrollArea, private Ui::ScrollWGrid
   QString OKcolor, NGcolor;
   QLabel *SSAddr, *SSPort, *SSStat;
 
+  QLineEdit *EncV;
+  QPushButton *EncB;
+  QString OrigV;
+
 public:
   Status( QWidget *parent = 0 );
 
   void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass,
-		      StarsSV2 *starsSV, SelMC2 *selMC );
+		      StarsSV2 *starsSV, SelMC2 *selMC, Conditions *conds );
 
 public slots:
   //  void SetSSVA( QString Server );
@@ -48,8 +54,12 @@ public slots:
   void OnClear1( void );
   void OnClear2( void );
 
+  void newEncTh( QString th );
+  void setEnc( void );
+
 signals:
   void NeedListNodes( void );
+  void setEncNewTh( QString Orig, QString newv );
 };
 
 #endif

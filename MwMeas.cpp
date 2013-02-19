@@ -522,6 +522,8 @@ void MainWindow::StartMeasurement( void )
 {
   AUnit *as;
 
+  EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
+
   if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
@@ -650,8 +652,12 @@ void MainWindow::StartMeasurement( void )
       AskingOverwrite = false;
     }
 
-    NewLogMsg( tr( "Meas: Start (%1 keV)" ).arg( CurPosKeV ) );
-    InitialKeV = CurPosKeV;
+    NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
+    InitialKeV = deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( "background-color: yellow" );
@@ -679,7 +685,11 @@ void MainWindow::StartMeasurement( void )
   } else {
     StopP->show();
     SinPause = inPause;
-    NewLogMsg( tr( "Meas: Break (%1 keV)" ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
@@ -703,7 +713,11 @@ void MainWindow::SurelyStop( void )
 		       "rgba(255, 255, 255, 255));" );
     MeasDarkStage = 0;
   }
-  NewLogMsg( tr( "Meas: Stopped (%1 keV)" ).arg( CurPosKeV ) );
+  NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	     .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	     .arg( SelectedCurPosDeg( XENC ) )
+	     .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = 0;
@@ -732,10 +746,18 @@ void MainWindow::GoingOn( void )
   MeasStart->setEnabled( true );
   MeasPause->setEnabled( true );
   if ( SinPause == 1 ) {
-    NewLogMsg( tr( "Meas: Pausing (%1 keV)" ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Pausing %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
   } else {
-    NewLogMsg( tr( "Measu: Resume (%1 keV)" ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause
@@ -761,12 +783,20 @@ void MainWindow::CpBlock2SBlock( void )
 void MainWindow::PauseMeasurement( void )
 {
   if ( inPause == 0 ) {
-    NewLogMsg( tr( "Meas: Pause (%1 keV)" ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Pause %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
   } else {
-    NewLogMsg( tr( "Meas: Resume (%1 keV)" ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause

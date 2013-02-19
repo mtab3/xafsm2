@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  19 FEB 2013 09:01
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  19 FEB 2013 23:42
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -258,10 +258,10 @@ File: MeasTab-Right.eps Graphic file (type eps)
 File: BGMeasB.eps Graphic file (type eps)
  <BGMeasB.eps> [8]
 File: MeasCond.eps Graphic file (type eps)
- <MeasCond.eps> [9]
+ <MeasCond.eps>
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
 
-<MeasCond-MonoCTRL.eps>
+<MeasCond-MonoCTRL.eps> [9]
 File: MeasCond-Range.eps Graphic file (type eps)
  <MeasCond-Range.eps> [10]
 File: MeasCond-Offset.eps Graphic file (type eps)
@@ -270,9 +270,9 @@ File: MeasCond-Offset.eps Graphic file (type eps)
 File: MeasCond-MoveScan.eps Graphic file (type eps)
  <MeasCond-MoveScan.eps> [12]
 File: MeasCond-Monitor.eps Graphic file (type eps)
- <MeasCond-Monitor.eps> [13]
+ <MeasCond-Monitor.eps>
 File: SSDTab.eps Graphic file (type eps)
- <SSDTab.eps>
+ <SSDTab.eps> [13]
 File: SSDTab-Select1.eps Graphic file (type eps)
 
 <SSDTab-Select1.eps>
@@ -286,10 +286,10 @@ File: FileReadTab.eps Graphic file (type eps)
 File: FileReadTab-ALine.eps Graphic file (type eps)
  <FileReadTab-ALine.eps> [17]
 File: LogTab.eps Graphic file (type eps)
- <LogTab.eps> [18]
+ <LogTab.eps>
 File: StatTab.eps Graphic file (type eps)
-
-<StatTab.eps>
+ <StatTab.eps>
+[18]
 File: SelStars.eps Graphic file (type eps)
  <SelStars.eps> [19]
 File: SelMC.eps Graphic file (type eps)
@@ -301,7 +301,7 @@ File: MCAView.eps Graphic file (type eps)
 <MCAView.eps> [23] [24] [25] (I search kanjifont definition file: . . )
 (I search font definition file: . . . . . . . )
 LaTeX Font Info:    Try loading font information for OT1+txtt on input line 125
-2.
+3.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/ot1txtt.fd
 File: ot1txtt.fd 2000/12/15 v3.1
@@ -314,10 +314,10 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  1615 strings out of 95545
  18136 string characters out of 1190967
- 63315 words of memory out of 1000000
+ 63249 words of memory out of 1000000
  4718 multiletter control sequences out of 10000+100000
  40114 words of font info for 130 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
- 23i,8n,25p,261b,572s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 23i,8n,25p,710b,559s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (33 pages, 140492 bytes).
+Output written on XafsM2.dvi (33 pages, 140516 bytes).

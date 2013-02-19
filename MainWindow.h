@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QTime>
+#include <QFileDialog>
 
 #include <math.h>
 
@@ -25,8 +26,7 @@
 #include "MCAView.h"
 #include "Status.h"
 #include "AtomGroup.h"
-
-class QFileDialog;
+#include "Conditions.h"
 
 #define PI ( 3.1415926535 )
 #define CC ( 2.99792458e8 )
@@ -45,6 +45,7 @@ const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
+enum ENCORPM { XENC, XPM };
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -78,9 +79,9 @@ private:
   /* cfg. */
   SelMC2 *selmc;
   StarsSV2 *starsSV;
+  Conditions *conds;
   /* cfg. */
-
-  double CurPosKeV;
+  
   double nowCurrent;
 
   /* MCA */
@@ -126,6 +127,8 @@ private:
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
+  double oldDeg;             // ShowCurThPos での重複実行を避けるため。
+  bool AllInited, MotorsInited, SensorsInited;
 
   void setupLogArea( void );
   void setupCommonArea( void );
@@ -139,6 +142,10 @@ private:
 
   /* InterFace.cpp */ /**********************************************/
 
+  double SelectedCurPosDeg( ENCORPM EncOrPM );
+  QString viewEncOrPM( ENCORPM EncOrPM )
+  { return ( EncOrPM == XENC ) ? "Encorder" : "PM"; };
+  // return Mono. Chro. deg. measured by selected way
   void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
 #if 0
   double GetCurPosKeV( void );   // Read out current Pos. of Mon. in keV
@@ -287,8 +294,9 @@ private:
   int TP;
   double TT0;
   int inMeas, inPause, SinPause;
-  int cMeasTab;          // Tab No. on which the current measurement result is displayed
+  int cMeasTab;       // Tab No. on which the current measurement result is displayed
   int inMoveTh;
+  ENCORPM EncOrPM;    // Selected x-axis on the start of XAFS measurement
   int MeasStage, SMeasStage;
   int MeasR, MeasB, MeasS;
   double GoToKeV;
@@ -463,6 +471,8 @@ private slots:
   void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype );
   void DeleteTheView( void );
+
+  void setEncNewTh( QString orig, QString newv );
 
  signals:
   //  void GiveNewView( QObject *to, ViewCTRL *view );

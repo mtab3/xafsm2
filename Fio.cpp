@@ -279,23 +279,45 @@ void MainWindow::WriteHeader2( int Rpt )
   file2.close();
 }
 
+
+// エンコーダの角度で記録するか選択した角度で記録するかは
+//     conds->isEncAsTh()
+// で決まる。
+// 選択したのがどちらかは
+//     EncOrPM
+// でわかる。
+// 何にせよ、全部の値を最後に記録するかどうかは
+//     conds->isAddInfos()
+// で決まる。
+//
 void MainWindow::RecordData( void )
 {
   SetDFName( MeasR );
   QFile file( DFName );
+  double recTh;
+  double encTh, PMTh;
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
     QTextStream out( &file );
     QString buf;
     // 行の先頭は 目標角度、エンコーダ読み角度、測定時間、I0
     // Should be changed depending on the detector (ammeter or counter)
 
+    encTh = SelectedCurPosDeg( XENC );  // エンコーダと
+    PMTh = SelectedCurPosDeg( XPM );    // PM のそれぞれで見た角度
+    // エンコーダの角度で記録するか、選択した角度で記録するか決定
+    if ( conds->isEncAsTh() ) {
+      recTh = encTh;
+    } else {
+      recTh = SelectedCurPosDeg( EncOrPM );
+    }
+    // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
     if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9d",
-                   keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
+      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9d",                 // 整数 : %9d
+                   keV2deg( GoToKeV ), recTh,
                    NowDwell, (int)MeasVals[ MC_I0 ] );
     } else {
-      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9.6g",
-                   keV2deg( GoToKeV ), EncMainTh->value().toDouble(),
+      buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9.6g",               // 実数 : %9.6g
+                   keV2deg( GoToKeV ), recTh,
                    NowDwell, MeasVals[ MC_I0 ] );
     }
     out << buf;
@@ -326,26 +348,22 @@ void MainWindow::RecordData( void )
 	}
       }
     }
-#if 0
-    for ( int i = 1; i < MCHANNELS; i++ ) {
-      if ( MeasSensF[i] ) {
-        // Quick hack for pico-ammeter
-        if ( (int)(MeasVals[i]) == MeasVals[i] ) {
-          buf.sprintf(" %9d", (int)MeasVals[i] );
-        } else {
-          buf.sprintf(" %9.6g", MeasVals[i] );
-        }
-        out << buf;
-      }
+    // 末尾に情報追加。
+    // 設定エネルギー、エンコーダ読みの角度、エンコーダの読みのエネルギー換算、
+    //                 PM計算角、PM計算角のエネルギー換算
+    //
+    // ルーチンの頭に読んでしまった値を使ってるのは、このルーチン実行中に
+    // 裏で AUnit 内部の value が変わってしまうのを警戒して。(ないはずだけど)
+    //
+    if ( conds->isAddInfos() ) {
+      buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",
+		   GoToKeV,
+		   encTh, deg2keV( encTh ),
+		   PMTh, deg2keV( PMTh ) );
+      out << buf;
     }
-#endif
-    // 末尾にエネルギーの情報追加。
-    buf.sprintf( " %9.5f" " %9.5f",
-                 GoToKeV,
-                 deg2keV( EncMainTh->value().toDouble() ) );
-    out << buf << endl;
+    out << endl;
     file.close();
   }
-
 }
 

@@ -62,5 +62,5 @@ void MainWindow::SetNewLFName( const QString &name )
 void MainWindow::AddLogComment( void )
 {
   NewLogMsg( LogComment->text() );
-  LogComment->setText( "" );
+   LogComment->setText( "" );
 }

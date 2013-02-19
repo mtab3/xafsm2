@@ -17,7 +17,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+  MMainTh = EncMainTh = NULL;
   SI0 = SI1 = SFluo = NULL;
+  oldDeg = -100;
+  AllInited = MotorsInited = SensorsInited = false;
+  EncOrPM = XENC;
 
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
@@ -53,10 +57,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupMeasArea();
   setupReadDataArea();
 
-  StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc );
+  conds = new Conditions;
+  conds->setEncAsTh( true );
+  conds->setAddInfos( true );
+
+  StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
-  QString msg = "XafsMsg_" + QLocale::system().name();
-  NewLogMsg( msg );
+  //  QString msg = "XafsMsg_" + QLocale::system().name();
+  //  NewLogMsg( msg );
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)" ) )
 	     .arg( mccd[ selmc->MC() ]->getMCName() )
 	     .arg( mccd[ selmc->MC() ]->getD() ) );
@@ -117,8 +125,11 @@ void MainWindow::Initialize( void )
 {
   InitAndIdentifyMotors();
   InitAndIdentifySensors();
-  connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
-  connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
+  if ( ! AllInited ) {
+    AllInited = true;
+    connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
+    connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
+  }
   resize( 1, 1 );
   SendListNodes();
   if ( SFluo != NULL ) {
@@ -151,9 +162,14 @@ void MainWindow::InitAndIdentifyMotors( void )
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
     am->Initialize( s );
-    if ( am->getID() == "THETA" ) { MMainTh = am; }
+    if ( am->getID() == "THETA" ) {
+      if ( MMainTh != NULL ) {
+	disconnect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+      }
+      MMainTh = am;
+      connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+    }
   }
-  connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
 }
 
 void MainWindow::InitAndIdentifySensors( void )
@@ -166,11 +182,33 @@ void MainWindow::InitAndIdentifySensors( void )
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
-    if ( as->getID() == "ENCTH" ) { EncMainTh = as; }
+    if ( as->getID() == "ENCTH" ) {
+      if ( EncMainTh != NULL ) {
+	disconnect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
+		    StatDisp, SLOT( newEncTh( QString ) ) );
+      }
+      EncMainTh = as;
+      connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+      connect( EncMainTh, SIGNAL( newValue( QString ) ),
+	       StatDisp, SLOT( newEncTh( QString ) ) );
+    }
   }
+  
   if ( SFluo != NULL )
     SFluo->setROIs( ROIStart, ROIEnd );
-  connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+  if ( ! SensorsInited ) {
+    SensorsInited = true;
+    connect( StatDisp, SIGNAL( setEncNewTh( QString, QString ) ),
+	     this, SLOT( setEncNewTh( QString, QString ) ) );
+  }
+}
+
+void MainWindow::setEncNewTh( QString orig, QString newv )
+{
+  NewLogMsg( tr( "Encorder is set from %1 to %2" )
+	     .arg( orig ).arg( newv ) );
+  EncMainTh->SetValue( newv.toDouble() );
 }
 
 void MainWindow::RcvListNodes( SMsg msg )
@@ -212,10 +250,9 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
   }
 }
 
-
 void MainWindow::ShowCurThPos( void )
 {
-  QString buf;
+  QString buf1, buf2;
   double deg;
 
   if ( SelThEncorder->isChecked() ) {
@@ -223,15 +260,36 @@ void MainWindow::ShowCurThPos( void )
   } else {
     deg = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
   }
+  if ( deg != oldDeg ) {
+    oldDeg = deg;
 
-  buf.sprintf( UnitName[KEV].form, deg );
-  ShowCurrentAngle->setText( buf );
-  buf.sprintf( UnitName[DEG].form, CurPosKeV = deg2keV( deg ) );
-  ShowCurrentEnergy->setText( buf );
-  
-  NewLogMsg( tr( "Current Position [%1] keV" ).arg( buf ) );
+    buf1.sprintf( UnitName[KEV].form, deg );
+    ShowCurrentAngle->setText( buf1 );
+    buf2.sprintf( UnitName[DEG].form, deg2keV( deg ) );
+    ShowCurrentEnergy->setText( buf2 );
+    
+    NewLogMsg( tr( "Current Position [%1] deg [%2] keV" ).arg( buf1 ).arg( buf2 ) );
+  }
 }
 
+double MainWindow::SelectedCurPosDeg( ENCORPM EncOrPM )
+{
+  double rv;
+
+  switch( EncOrPM ) {
+  case XENC:
+    rv = EncMainTh->value().toDouble();
+    break;
+  case XPM:
+    rv = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
+    break;
+  default:
+    qDebug() << "Selected Enc or PM is wrong, anyway return Encorder !";
+    rv = EncMainTh->value().toDouble();
+    break;
+  }
+  return rv;
+}
 
 ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
 {

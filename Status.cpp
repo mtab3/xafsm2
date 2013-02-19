@@ -7,7 +7,7 @@ Status::Status( QWidget *p ) : QScrollArea( p )
 }
 
 void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
-			    StarsSV2 *StarsSV, SelMC2 *SelMC )
+			    StarsSV2 *StarsSV, SelMC2 *SelMC, Conditions *Conds )
 {
   for ( int i = 0; i < Ams->count(); i++ ) {
     drivers << Ams->at(i);
@@ -29,6 +29,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
 
   OKcolor = "background-color: #aaffaa";
   NGcolor = "background-color: #ffaaaa";
+  QString WBack = "background-color: #ffffff";
   QString TBack = "background-color: #eeffee";
   QString LBack = "background-color: #f8f8e0";
   QString CBack = "background-color: #f0f0f0";
@@ -39,6 +40,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   int VItems = 0;
   starsSV = StarsSV;
   selMC = SelMC;
+  conds = Conds;
 
   MainGrid->addWidget( starsSV, VItems++, 0, 1, 7 );
 
@@ -166,7 +168,35 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
     OnChangedIsBusy2( Drivers.at(i) );
   }
 
-  MainGrid->addWidget( selMC, VItems++, 0, 1, 4 );
+  MainGrid->addWidget( selMC, VItems, 0, 1, 4 );
+
+  QFrame *EncFrame = new QFrame;
+  QGridLayout *EncGrid = new QGridLayout;
+  MainGrid->addWidget( EncFrame, VItems++, 4, 1, 3 );
+  EncFrame->setLayout( EncGrid );
+  EncFrame->setFrameShape( StyledPanel );
+  EncFrame->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
+  EncGrid->setContentsMargins( 3, 3, 3, 3 );
+  EncGrid->setHorizontalSpacing( 3 );
+  EncGrid->setVerticalSpacing( 1 );
+  QLabel *EncL1 = new QLabel;
+  EncL1->setText( tr( "Encorder" ) );
+  EncL1->setStyleSheet( TBack );
+  EncL1->setFrameStyle( QFrame::StyledPanel );
+  EncL1->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
+  EncGrid->addWidget( EncL1, 0, 0 );
+  EncV = new QLineEdit;
+  EncV->setText( tr( "   " ) );
+  EncV->setStyleSheet( WBack );
+  EncGrid->addWidget( EncV, 0, 1 );
+  EncB = new QPushButton;
+  EncB->setText( tr( "Set" ) );
+  EncB->setStyleSheet( PBBack );
+  EncB->setMaximumWidth( 40 );
+  EncGrid->addWidget( EncB, 0, 2 );
+  connect( EncB, SIGNAL( clicked() ), this, SLOT( setEnc() ) );
+
+  MainGrid->addWidget( conds, VItems++, 0, 1, 4 );
 
   QSizePolicy *HSP, *VSP;
   QLabel *HS, *VS;
@@ -185,18 +215,6 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   MainGrid->addWidget( HS, 0, TTs.count() );
   MainGrid->addWidget( VS, VItems++, 0 );
 }
-
-#if 0
-void Status::SetSSVA( QString Server )
-{
-  SSAddr->setText( Server );
-}
-
-void Status::SetSSVP( qint16 Port )
-{
-  SSPort->setText( QString::number( Port ) );
-}
-#endif
 
 void Status::SetSSVStat( bool f )
 {
@@ -346,4 +364,15 @@ void Status::SelStatWatch( void )
       }
     }
   }
+}
+
+void Status::newEncTh( QString th )
+{
+  OrigV = th;
+  EncV->setText( th );
+}
+
+void Status::setEnc( void )
+{
+  emit setEncNewTh( OrigV, EncV->text() );
 }
