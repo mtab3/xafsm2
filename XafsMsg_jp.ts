@@ -1115,7 +1115,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     <message>
         <location filename="MainWindow.ui" line="5215"/>
         <source>Stat/Config</source>
-        <translation>接続状態</translation>
+        <translation>状態/設定</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="5244"/>
@@ -2451,6 +2451,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <location filename="Status.cpp" line="68"/>
         <source>Clr. Enable</source>
         <translation>Clr. Enable</translation>
+    </message>
+    <message>
+        <location filename="Status.cpp" line="73"/>
+        <source>Clr. Busys</source>
+        <translation>Clr. Busys</translation>
     </message>
     <message>
         <source>Clear Enable</source>

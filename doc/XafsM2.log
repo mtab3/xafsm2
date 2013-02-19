@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  18 FEB 2013 16:51
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  19 FEB 2013 09:01
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -128,71 +128,74 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `bold'
 (Font)                  U/txexa/m/n --> U/txexa/bx/n on input line 128.
 LaTeX Info: Redefining \not on input line 1042.
-) (./XafsM2.aux)
+) (./XafsM2.aux
+
+LaTeX Warning: Label `Starsとの接続' multiply defined.
+
+)
 \openout1 = `XafsM2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 42.
-LaTeX Font Info:    Try loading font information for OML+txmi on input line 42.
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 44.
+LaTeX Font Info:    Try loading font information for OML+txmi on input line 44.
 
-
-(/usr/local/share/texmf-dist/tex/latex/txfonts/omltxmi.fd
+ (/usr/local/share/texmf-dist/tex/latex/txfonts/omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 42.
-LaTeX Font Info:    Try loading font information for OMS+txsy on input line 42.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 44.
+LaTeX Font Info:    Try loading font information for OMS+txsy on input line 44.
 
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/omstxsy.fd
 File: omstxsy.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 42.
-LaTeX Font Info:    Try loading font information for OMX+txex on input line 42.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 44.
+LaTeX Font Info:    Try loading font information for OMX+txex on input line 44.
 
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/omxtxex.fd
 File: omxtxex.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 42.
-LaTeX Font Info:    Try loading font information for U+txexa on input line 42.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 44.
+LaTeX Font Info:    Try loading font information for U+txexa on input line 44.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/utxexa.fd
 File: utxexa.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 42.
-LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 44.
+LaTeX Font Info:    ... okay on input line 44.
 
 (I search kanjifont definition file: . . ) (I search font definition file: . .
 . . . . . )
-LaTeX Font Info:    Try loading font information for OT1+txr on input line 42.
+LaTeX Font Info:    Try loading font information for OT1+txr on input line 44.
  (/usr/local/share/texmf-dist/tex/latex/txfonts/ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txmia on input line 45.
+LaTeX Font Info:    Try loading font information for U+txmia on input line 47.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsya on input line 45.
+LaTeX Font Info:    Try loading font information for U+txsya on input line 47.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/utxsya.fd
 File: utxsya.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsyb on input line 45.
+LaTeX Font Info:    Try loading font information for U+txsyb on input line 47.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/utxsyb.fd
 File: utxsyb.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsyc on input line 45.
+LaTeX Font Info:    Try loading font information for U+txsyc on input line 47.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
@@ -200,9 +203,9 @@ File: utxsyc.fd 2000/12/15 v3.1
 
 ]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <17.28> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 46.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 48.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 46.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 48.
  (./XafsM2.toc
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
@@ -219,18 +222,18 @@ File: OutLookAll.eps Graphic file (type eps)
 File: OutLook1.eps Graphic file (type eps)
  <OutLook1.eps>
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 117.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 119.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 117.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 119.
  [2]
-LaTeX Font Info:    Try loading font information for OMS+txr on input line 137.
+LaTeX Font Info:    Try loading font information for OMS+txr on input line 139.
 
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/omstxr.fd
 File: omstxr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <12> not available
-(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 137.
+(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 139.
 File: ElementSelect.eps Graphic file (type eps)
  <ElementSelect.eps>
 File: ElementSelectBox.eps Graphic file (type eps)
@@ -242,90 +245,79 @@ File: Monochro.eps Graphic file (type eps)
  <Monochro.eps>
 File: MessageArea.eps Graphic file (type eps)
 
-<MessageArea.eps>
-File: Tabs.eps Graphic file (type eps)
- <Tabs.eps> [4
+<MessageArea.eps> [4
 
 ]
 File: MeasTab.eps Graphic file (type eps)
  <MeasTab.eps>
 File: MeasTab-BlockSetUp.eps Graphic file (type eps)
- <MeasTab-BlockSetUp.eps>
-[5]
+ <MeasTab-BlockSetUp.eps> [5]
 File: MeasTab-Right.eps Graphic file (type eps)
- <MeasTab-Right.eps> [6] [7]
+
+<MeasTab-Right.eps> [6] [7]
 File: BGMeasB.eps Graphic file (type eps)
  <BGMeasB.eps> [8]
-
-LaTeX Warning: Reference `XYView' on page 9 undefined on input line 424.
-
 File: MeasCond.eps Graphic file (type eps)
-<MeasCond.eps> [9]
+ <MeasCond.eps> [9]
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
- <MeasCond-MonoCTRL.eps>
-File: MeasCond-Range.eps Graphic file (type eps)
- <MeasCond-Range.eps> [10] [11]
-File: MeasCond-Offset.eps Graphic file (type eps)
 
-<MeasCond-Offset.eps>
+<MeasCond-MonoCTRL.eps>
+File: MeasCond-Range.eps Graphic file (type eps)
+ <MeasCond-Range.eps> [10]
+File: MeasCond-Offset.eps Graphic file (type eps)
+ <MeasCond-Offset.eps>
+[11]
 File: MeasCond-MoveScan.eps Graphic file (type eps)
  <MeasCond-MoveScan.eps> [12]
 File: MeasCond-Monitor.eps Graphic file (type eps)
- <MeasCond-Monitor.eps>
-[13]
+ <MeasCond-Monitor.eps> [13]
 File: SSDTab.eps Graphic file (type eps)
  <SSDTab.eps>
 File: SSDTab-Select1.eps Graphic file (type eps)
- <SSDTab-Select1.eps>
-File: SSDTab-Select2.eps Graphic file (type eps)
- <SSDTab-Select2.eps> [14]
-File: SSDTab-Setup.eps Graphic file (type eps)
 
-<SSDTab-Setup.eps> [15]
+<SSDTab-Select1.eps>
+File: SSDTab-Select2.eps Graphic file (type eps)
+ <SSDTab-Select2.eps>
+File: SSDTab-Setup.eps Graphic file (type eps)
+ <SSDTab-Setup.eps> [14] [15]
 File: FileReadTab.eps Graphic file (type eps)
- <FileReadTab.eps> [16]
+
+<FileReadTab.eps> [16]
 File: FileReadTab-ALine.eps Graphic file (type eps)
  <FileReadTab-ALine.eps> [17]
 File: LogTab.eps Graphic file (type eps)
-
-<LogTab.eps> [18]
+ <LogTab.eps> [18]
 File: StatTab.eps Graphic file (type eps)
- <StatTab.eps> [19] [20] [21]
+
+<StatTab.eps>
+File: SelStars.eps Graphic file (type eps)
+ <SelStars.eps> [19]
+File: SelMC.eps Graphic file (type eps)
+ <SelMC.eps> [20] [21]
 File: TXYView.eps Graphic file (type eps)
  <TXYView.eps> [22]
 File: MCAView.eps Graphic file (type eps)
 
 <MCAView.eps> [23] [24] [25] (I search kanjifont definition file: . . )
 (I search font definition file: . . . . . . . )
-LaTeX Font Info:    Try loading font information for OT1+txtt on input line 124
-0.
+LaTeX Font Info:    Try loading font information for OT1+txtt on input line 125
+2.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/ot1txtt.fd
 File: ot1txtt.fd 2000/12/15 v3.1
-) [26]
-Overfull \hbox (13.71407pt too wide) in paragraph at lines 1305--1305
-[]\OT1/txtt/m/n/10.95 SENSOR CNT2 "S002" "GENERAL" "I0 via KTL" "nct0801" "ch2"
- "count" YES "S000" "S004" -2 -9[] 
- []
+) [26] [27] [28]
+[29] [30] (./XafsM2.aux)
 
-
-Overfull \hbox (25.21153pt too wide) in paragraph at lines 1305--1305
-[]\OT1/txtt/m/n/10.95 SENSOR OTC2 "S031" "GENERAL" "Otc974 ch2" "ortec974" "ch0
-2" "count" YES "S027" "S004" -2 -9[] 
- []
-
-[27] [28] [29] [30] (./XafsM2.aux)
-
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 1622 strings out of 95545
- 18256 string characters out of 1190967
- 63186 words of memory out of 1000000
- 4726 multiletter control sequences out of 10000+100000
- 42855 words of font info for 139 fonts, out of 500000 for 2000
+ 1615 strings out of 95545
+ 18136 string characters out of 1190967
+ 63315 words of memory out of 1000000
+ 4718 multiletter control sequences out of 10000+100000
+ 40114 words of font info for 130 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
- 25i,8n,25p,710b,559s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 23i,8n,25p,261b,572s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (33 pages, 142500 bytes).
+Output written on XafsM2.dvi (33 pages, 140492 bytes).
