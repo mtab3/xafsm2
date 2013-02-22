@@ -69,6 +69,8 @@ void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
   connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
 	   this, SLOT( ShowNewMCALiveTime( int ) ) );
 
+  connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ) );
+
   inMCAMeas = false;
   validMCAData = false;
   MCAData = NULL;
@@ -77,6 +79,17 @@ void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
   //  oldMCACh = -1;
 
   SelSSDs( 0 );
+}
+
+void MainWindow::setAllROIs( void )
+{
+  QString start = ROIStart[ MCACh->text().toInt() ];
+  QString end  = ROIEnd[ MCACh->text().toInt() ];
+
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    ROIStart[ i ] = start;
+    ROIEnd[ i ] = end;
+  }
 }
 
 void MainWindow::saveMCAData( void )
@@ -192,12 +205,13 @@ void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤
   if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
   }
-  for ( int i = 0; i < 19; i++ ) {
+  for ( int i = 0; i < MaxSSDs; i++ ) {
     ROIStart[i] = "0";
     ROIEnd[i] = QString::number( MCALength - 1 );
   }
-  ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
-  ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
+  int ch = MCACh->text().toInt();
+  ROIStartInput->setText( ROIStart[ ch ] );
+  ROIEndInput->setText( ROIEnd[ ch ] );
 }
 
 void MainWindow::newROIStart( const QString &newv )
@@ -223,8 +237,8 @@ void MainWindow::MCAChSelected( int i )
   if ( i == cMCACh )
     return;
 
-  if ( i < 0 ) { MCACh->setValue( 18 ); i = 18; }
-  if ( i > 18 ) { MCACh->setValue( 0 ); i = 0; }
+  if ( i < 0 ) { MCACh->setValue( MaxSSDs - 1 ); i = MaxSSDs - 1; }
+  if ( i >= MaxSSDs ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
   getMCASettings( cMCACh );
   ROIStartInput->setText( ROIStart[ cMCACh ] );

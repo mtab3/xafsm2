@@ -665,7 +665,8 @@ void MainWindow::StartMeasurement( void )
     
     MeasChNo = mUnits.count();         // 測定のチャンネル数
     if ( Use19chSSD->isChecked() )
-      MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
+      MeasChNo += ( MaxSSDs -1 );
+    // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
 
     MeasView->SetRLine( 0 );
     MeasView->SetLLine( 1 );
@@ -739,6 +740,7 @@ void MainWindow::SurelyStop( void )
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
   }
+  MeasViewC->setIsDeletable( true );
 }
 
 void MainWindow::GoingOn( void )

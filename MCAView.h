@@ -20,13 +20,16 @@ private:
   bool dispLog;
 
   ChCoord cc;
-  bool setROIrequest;
-  double reqsx, reqex;
+  double rROIsx, rROIex;
+  double AA, BB;    // 横軸の補正係数
+  double MaxE; // 表示の最大エネルギー
 
   int nearX;
   bool nearf;
 
-  QColor Blue, Black, Red, Green, White, Orange;
+  QColor Black, White;
+  QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
+  QColor GridC, MCursorC;
 
   void Draw( QPainter *p );
 
@@ -50,7 +53,7 @@ public:
 
 public slots:
   void setLog( bool f ) { dispLog = f; update(); };
-  void setROI( int s, int e );
+  void setROI( int s, int e );   // MCA pixel
 
 signals:
   void CurrentValues( int atCur, int inROI );

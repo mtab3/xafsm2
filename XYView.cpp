@@ -202,6 +202,8 @@ void XYView::Draw( QPainter *p )
       SelLR[i] =  FindL[i];
     }
   }
+  // Œ©‚Â‚¯‚½“_‚Éü‚ðˆø‚­
+  //  p->drawLine( m.x(), m.y(), hx, hy );
 
   if ( AreaSelecting ) {
     p->setPen( ASelC );
@@ -277,7 +279,7 @@ void XYView::Draw( QPainter *p )
     rec = QRectF( LM * 1.2 + i * 2 * HW / 5.,
 		  cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
     cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
-		 QString( "%1" ).arg( LNames[l] ) );
+		 QString( "%1: %2" ).arg( l ).arg( LNames[l] ) );
     rec = QRectF( LM * 1.2 + ( i * 2 + 1 ) * HW / 5.,
 		  cc.r2sy( cc.Rmaxy() )-TM*0.9, HW / 5, TM * 0.8 );
     cc.DrawText( p, rec, F1, AlRC, SCALESIZE,

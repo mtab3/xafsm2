@@ -24,7 +24,7 @@ CRYSTAL  "Ge(333)"   1.0887941
 # define the groups of atoms which can be measured.
 AGROUP 0 "H"  "U"  ""                    # To use user defined color, 
                                          # clear default color setting for all the atoms
-AGROUP 1 "Cu" "Mo" "#ffff7f"             # "#ffff7f"      is bright-yellow
+AGROUP 1 "V" "Mo" "#ffff7f"              # "#ffff7f"      is bright-yellow
 AGROUP 2 "Cs" "U"  "rgb(255,170,255)"    # "255,170,255"  is bright-pink
 
 # define Moveable units
@@ -50,22 +50,22 @@ MOTOR PM "M001" "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 INT 0
 # MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
 
 #
-# Following definitions are temporal (not real)
+# Following definitions connecting to pm16c04-3 are real
 #
 
-MOTOR PM "M002" "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 INT 0
-MOTOR PM "M003" "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 INT 0
-MOTOR PM "M004" "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 INT 0
-MOTOR PM "M005" "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 INT 0
-MOTOR PM "M006" "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 INT 0
-MOTOR PM "M007" "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 INT 0
-MOTOR PM "M008" "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 INT 0
-MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 INT 0
-MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 INT 0
-MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 INT 0
-MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 INT 0
-MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 INT 0
-MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch12" "mm" 0.001 INT 0
+MOTOR PM "M002" "STAGEZ" "Stage Z" "pm16c04-3" "ch12" "mm" 0.00003333 INT 0
+MOTOR PM "M003" "STAGEX" "Stage X" "pm16c04-3" "ch10" "mm" 0.0004 INT 0
+MOTOR PM "M004" "STAGEY" "Stage Y" "pm16c04-3" "ch11" "mm" 0.0004 INT 0
+MOTOR PM "M005" "4WSZa"   "4WS-Z open"   "pm16c04-3" "ch0" "mm" 0.002 INT 0
+MOTOR PM "M006" "4WSXa"   "4WS-X open"   "pm16c04-3" "ch1" "mm" 0.002 INT 0
+MOTOR PM "M007" "4WSZb"   "4WS-Z move"   "pm16c04-3" "ch2" "mm" 0.002 INT 0
+MOTOR PM "M008" "4WSXb"   "4WS-X move"   "pm16c04-3" "ch3" "mm" 0.002 INT 0
+MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch4"  "mm" 0.004 INT 0
+MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch5"  "mm" 0.004 INT 0
+MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch6" "mm" 0.0005 INT 0
+MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch7"  "mm" 0.0005 INT 0
+MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch8" "deg" 0.004 INT 0
+MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch9" "deg" 0.00153 INT 0
 
 MOTOR PM "M015" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 INT -11776
 MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 INT 0
@@ -105,8 +105,8 @@ MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0
 
 # define Sensor units
 
-SENSOR CNT2 "S002" "I00" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
-SENSOR CNT2 "S003" "I01" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000" "S005" -2 -9
+SENSOR CNT2 "S002" "I0" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
+SENSOR CNT2 "S003" "I1" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000" "S005" -2 -9
 #SENSOR CNT2 "S002" "I0" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000" "S004" -2 -9
 #SENSOR CNT2 "S003" "I1" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "count" YES "S000" "S005" -2 -9
 
@@ -128,8 +128,8 @@ SENSOR CNT2 "S003" "I01" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S
 #   -2               : Upper range limit
 #   -9               : Lower range limit
 
-SENSOR PAM "S004" "I0" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
-SENSOR PAM "S005" "I1" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
+SENSOR PAM "S004" "I00" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
+SENSOR PAM "S005" "I01" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
 #SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "simmotor" "SNSkth1" "mA" NO ""
 #SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 

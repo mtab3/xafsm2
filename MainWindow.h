@@ -35,14 +35,6 @@
 #define E2A ( 2 * PI * hb * CC / EE * 1e10 )
 #define KE2A ( 2 * PI * hb * CC / EE / 1000. * 1e10 )
 
-/******************************************************************************/
-/* Don't change these numbers ! without deep considerations.                  */
-/* Window design of the program is assuming these values are as defined here. */
-/******************************************************************************/
-const int GOS = 4;            // Presetted Go To Positions
-const int MaxBLKs = 8;        // Max Blocks
-const int MaxSSDs = 19;       // Max SSD elements
-/******************************************************************************/
 
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
@@ -85,8 +77,9 @@ private:
   double nowCurrent;
 
   /* MCA */
-  QString ROIStart[19];
-  QString ROIEnd[19];
+  double MCACorrect[ MaxSSDs ];
+  QString ROIStart[ MaxSSDs ];
+  QString ROIEnd[ MaxSSDs ];
   int MCALength;
   bool inMCAMeas;
   bool validMCAData;
@@ -147,19 +140,7 @@ private:
   { return ( EncOrPM == XENC ) ? "Encorder" : "PM"; };
   // return Mono. Chro. deg. measured by selected way
   void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
-#if 0
-  double GetCurPosKeV( void );   // Read out current Pos. of Mon. in keV
-  int isFinishedCurMove( void ); 
-  void MeasureICH( int devNo, double dwell );
-  void MeasureSSD( double dwell );
-  void MeasureAUX( int devNo, double dwell );
-  void ReadOutTransData( double NowKeV );
-  void ReadOutSSDData( double NowKeV );
-  void ReadOutAUXData( int ch, double NowKeV );
-  int isFinishedMeasICH( int devNo );
-  int isFinishedMeasSSD( void );
-  int isFinishedMeasAUX( int devNo );
-#endif
+
 
   /* Dummy Functions for Dummy Interface */
   void DummyDelayMotionStart( double keV );
@@ -447,6 +428,7 @@ private slots:
   void SelSSDs20( void );
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
+  void setAllROIs( void );
   
   void StartMeasurement( void );
   void PauseMeasurement( void );

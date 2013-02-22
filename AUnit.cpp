@@ -428,17 +428,17 @@ void AUnit::ReceiveValues( SMsg msg )
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
     if ( Type == "SSD" ) {   // SSD だけ特殊処理。全チャンネルの合計値を取る
       int sum = 0;
-      for ( int i = 0; i < 19; i++ ) {
+      for ( int i = 0; i < MaxSSDs; i++ ) {
 	if ( SSDUsingCh[i] ) {
 	  sum += msg.Vals().at( i + 1 ).toInt();
 	}
       }
       Value = QString::number( sum );
-      for ( int i = 0; i < 19; i++ ) {
+      for ( int i = 0; i < MaxSSDs; i++ ) {
 	CountsInROI << msg.Vals().at( i + 1 ).toInt();
-	CountsAll   << msg.Vals().at( i + 20 ).toInt();
-	TotalEvents << msg.Vals().at( i + 39 ).toInt();
-	ICRs        << msg.Vals().at( i + 58 ).toDouble();
+	CountsAll   << msg.Vals().at( i + 1 + MaxSSDs ).toInt();
+	TotalEvents << msg.Vals().at( i + 1 + MaxSSDs * 2 ).toInt();
+	ICRs        << msg.Vals().at( i + 1 + MaxSSDs * 3 ).toDouble();
       }
     } else {
       Value = msg.Vals().at(0);
@@ -670,7 +670,7 @@ bool AUnit::InitSensor( void )
       IsBusy2 = true;
       emit ChangedIsBusy2( Driver );
       ROIs = ROIStart[0] + " " + ROIEnd[0];
-      for ( int i = 1; i < 19; i++ ) {
+      for ( int i = 1; i < MaxSSDs; i++ ) {
 	ROIs += " " + ROIStart[i] + " " + ROIEnd[i];
       }
       s->SendCMD2( "Init", Driver, "SetROIs", ROIs );

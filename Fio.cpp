@@ -174,14 +174,15 @@ void MainWindow::WriteHeader( int Rpt )
       if ( mUnits.at(i) != SFluo ) {
 	out << QString( "%1" ).arg( cnt, 10 );
       } else {
-	for ( int j = 0; j < 19; j++ ) {
+	for ( int j = 0; j < MaxSSDs; j++ ) {
 	  out << QString( "%1" ).arg( cnt, 10 );  // 19ch SSD
 	  cnt++;
 	}
 	out << QString( "%1" ).arg( 0, 10 );    // resets
 	cnt++;
-	for ( int j = 0; j < 19; j++ ) {
-	  out << QString( "%1" ).arg( cnt - 21, 10 );  // ICR  19ch SSD の番号とそろえる
+	for ( int j = 0; j < MaxSSDs; j++ ) {
+	  out << QString( "%1" ).arg( cnt - MaxSSDs - 2, 10 );
+	  // ICR  19ch SSD の番号とそろえる
 	  cnt++;
 	}
 	cnt--;
@@ -195,11 +196,11 @@ void MainWindow::WriteHeader( int Rpt )
       if ( mUnits.at(i) != SFluo ) {
 	out << QString( "%1" ).arg( MeasDispMode[i], 10 );
       } else {
-	for ( int j = 0; j < 19; j++ ) {
+	for ( int j = 0; j < MaxSSDs; j++ ) {
 	  out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
 	}
 	out << QString( "%1" ).arg( 5, 10 );    // resets
-	for ( int j = 0; j < 19; j++ ) {
+	for ( int j = 0; j < MaxSSDs; j++ ) {
 	  out << QString( "%1" ).arg( 5, 10 );  // ICR
 	}
       }
@@ -213,12 +214,12 @@ void MainWindow::WriteHeader( int Rpt )
       } else {
 	QVector<double> darks;
 	darks = SFluo->getDarkCountsInROI();
-	for ( int j = 0; j < 19; j++ ) {            // 19ch SSD -- in ROI
+	for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
 	  out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
 	}
 	out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
 	darks = SFluo->getDarkICRs();
-	for ( int j = 0; j < 19; j++ ) {             // 19ch SSD -- ICR
+	for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
 	  out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
 	}
       }
@@ -335,14 +336,14 @@ void MainWindow::RecordData( void )
         out << buf;
       } else {
 	QVector<int> vals = SFluo->getCountsInROI();
-	for ( int j = 0; j < 19; j++ ) {   // 19ch SSD  in ROI
+	for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
           buf.sprintf(" %9d", vals[j] );
 	  out << buf;
 	}
 	buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる
 	out << buf;
 	QVector<double> icrs = SFluo->getICRs();
-	for ( int j = 0; j < 19; j++ ) {   // 19ch SSD  ICR ( per second )
+	for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
           buf.sprintf(" %9.6g", icrs[j] );
 	  out << buf;
 	}

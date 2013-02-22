@@ -1,6 +1,15 @@
 #ifndef XAFSM_H
 #define XAFSM_H
 
+/******************************************************************************/
+/* Don't change these numbers ! without deep considerations.                  */
+/* Window design of the program is assuming these values are as defined here. */
+/******************************************************************************/
+const int GOS = 4;            // Presetted Go To Positions
+const int MaxBLKs = 8;        // Max Blocks
+const int MaxSSDs = 19;       // Max SSD elements
+/******************************************************************************/
+
 extern QString DefFileName;
 
 //const int TicPDiv = 50;   // ƒ‚ƒjƒ^[‚Ì 1ŒrüŠÔ‚É‘ª’è‚·‚é‰ñ”
