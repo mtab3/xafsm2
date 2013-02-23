@@ -5,6 +5,7 @@
 #include "MouseC.h"
 #include "ChCoord.h"
 #include "FluoDBase.h"
+#include "KeV2Pix.h"
 
 class MCAView : public QFrame, private Ui::MCAView
 {
@@ -20,10 +21,10 @@ private:
 
   bool dispLog;
   FluoDBase *fdbase;
+  KeV2Pix *k2p;
 
   ChCoord cc;
   double rROIsx, rROIex;
-  double AA, BB;    // 横軸の補正係数
   double MaxE; // 表示の最大エネルギー
 
   int nearX;
@@ -41,10 +42,13 @@ private:
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
   MouseC m;
+
 public:
   MCAView( QWidget *parent = NULL );
   ~MCAView( void );
 
+  void setKeV2Pix( KeV2Pix *K2P ) { k2p = K2P; };
+  void setFDBase( FluoDBase *FDBase ) { fdbase = FDBase; };
   int *setMCAdataPointer( int length );
   void SetRealTime( double rt ) { realTime = rt; };
   void SetLiveTime( double lt ) { liveTime = lt; };

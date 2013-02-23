@@ -17,6 +17,18 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+  kev2pix = new KeV2Pix;
+  fdbase = new FluoDBase;
+#if 0
+  int dim = kev2pix->getDim();
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    const QVector<double>& ab = kev2pix->getAB( i );
+    for ( int j = 0; j < dim + 1; j++ ) {
+      qDebug() << "ab[i][j] = " << ab[j];
+    }
+  }
+#endif
+
   MMainTh = EncMainTh = NULL;
   SI0 = SI1 = SFluo = NULL;
   oldDeg = -100;
@@ -300,7 +312,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
   case TYVIEW:
     newView = (void *)(new TYView); break;
   case MCAVIEW:
-    newView = (void *)(new MCAView); break;
+    newView = (void *)(new MCAView);
+    ((MCAView *)newView)->setKeV2Pix( kev2pix );
+    ((MCAView *)newView)->setFDBase( fdbase );
+    break;
   default:
     return NULL;
   }
