@@ -4,8 +4,13 @@
 #include <QObject>
 #include <QVector>
 
-struct Fluo
+class Fluo
 {
+ public:
+  Fluo() {};
+
+  bool operator<( const Fluo &one ) const { return val < one.val; }; 
+
   QString fullName;
   QString aName;
   QString transName;
@@ -19,9 +24,12 @@ class FluoDBase : public QObject
 
  public:  
   FluoDBase();
+  QVector<Fluo> nears( double E, double range );
+  QVector<Fluo> nears( double E );
+  int nearest( double E, int s, int e );
 
  private:
-  QVector<Fluo*> fluos;
+  QVector<Fluo> fluos;
 };
 
 #endif

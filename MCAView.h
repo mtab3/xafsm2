@@ -25,14 +25,14 @@ private:
 
   ChCoord cc;
   double rROIsx, rROIex;
-  double MaxE; // 表示の最大エネルギー
+  double MinE, MaxE; // 表示の最小、最大エネルギー
 
   int nearX;
   bool nearf;
 
   QColor Black, White;
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
-  QColor GridC, MCursorC;
+  QColor GridC, MCursorC, AListC;
 
   void Draw( QPainter *p );
 
@@ -41,6 +41,7 @@ private:
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
+  void wheelEvent( QWheelEvent *e );
   MouseC m;
 
 public:

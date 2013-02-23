@@ -27,7 +27,7 @@ void KeV2Pix::MakeUpAB( int Dim )
     ab[i][1] = 0.01;
   }
 
-  QString fname = "KeV2MCApix.txt";
+  QString fname = ":KeV2MCApix.txt";
   QFile f( fname );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {

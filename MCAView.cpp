@@ -22,6 +22,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   realTime = 0;
   liveTime = 0;
   MaxE = 20.;
+  MinE = 0.;
 
   valid = false;
   dispLog = false;
@@ -32,8 +33,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   MCursorC = QColor( 255, 0, 0 );
   ROIRangeC = QColor( 170, 210, 0 );
   ExROIRangeC = QColor( 0, 100, 230 );
-  ROIEdgeC = QColor( 255, 200, 0 );   // ROI の端点表示
+  ROIEdgeC = QColor( 255, 200, 0 );  // ROI の端点表示
   GridC = QColor( 100, 100, 190 );   // グリッドの色
+  AListC = QColor( 100, 0, 100 );        // 元素名リスト 
 
   rROIsx = 0;
   rROIex = 20;
@@ -116,7 +118,7 @@ void MCAView::Draw( QPainter *p )
     max = max0;
   }
   //  cc.SetRealCoord( 0, 0, MCALen-1, max );
-  cc.SetRealCoord( 0, 0, MaxE, max );          // 今や横軸は MCA pixel ではなく、
+  cc.SetRealCoord( MinE, 0, MaxE, max );          // 今や横軸は MCA pixel ではなく、
                                                // エネルギ-[keV]
   // 正しく調整されていると MCP pixel = エネルギー[eV]/10 になっているはず。
 
@@ -203,6 +205,30 @@ void MCAView::Draw( QPainter *p )
   // エネルギー換算したマウスカーソル位置に対応する MCA pixel
   int curp = k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) );
   emit CurrentValues( MCA[ curp ], sum );
+
+  // マウスカーソル付近の元素リスト
+  double mE;
+  QVector<Fluo> nears = fdbase->nears( mE = cc.s2rx( m.x() ) );
+  p->setPen( AListC );
+  bool isUpper = ( mE > ( MaxE + MinE ) / 2 );
+  for ( int i = 0; i < nears.count(); i++ ) {
+    int pp;
+    double v = nears[i].val;
+    pp = ( isUpper ) ? i : ( nears.count() - i - 1 );
+    p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+pp) );
+    p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+pp), 
+		 cc.r2sx( v ) + ( ( isUpper ) ? -dLM * 0.5 : dLM * 0.5 ),
+		 TM+VW-dVW*(4+pp) );
+    if ( isUpper ) {
+      rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
+      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
+		   nears[i].fullName );
+    } else {
+      rec.setRect( cc.r2sx( v ) + dLM * 0.5, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
+      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		   nears[i].fullName );
+    }
+  }
 
   if ( nearf ) {              // マウスカーソルが ROI の両端に近いと認識しているときは
                               // 近いと思っている方の橋を強調? 表示
@@ -383,4 +409,23 @@ void MCAView::setROI( int s, int e )   // MCA pixel
 {
   rROIsx = k2p->p2E( MCACh, s );
   rROIex = k2p->p2E( MCACh, e );
+}
+
+void MCAView::wheelEvent( QWheelEvent *e )
+{
+  double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
+  double rx = cc.s2rx( e->x() );
+  double drx = MaxE - MinE;
+  if ( step > 0 ) {
+    drx *= 0.9;
+  } else {
+    drx /= 0.9;
+  }
+  MinE = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
+  MaxE = MinE + drx;
+
+  if ( MinE < 0 ) MinE = 0;
+  if ( MaxE > 20 ) MaxE = 20;
+
+  update();
 }
