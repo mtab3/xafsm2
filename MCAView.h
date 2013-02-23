@@ -4,6 +4,7 @@
 #include "ui_MCAView.h"
 #include "MouseC.h"
 #include "ChCoord.h"
+#include "FluoDBase.h"
 
 class MCAView : public QFrame, private Ui::MCAView
 {
@@ -18,6 +19,7 @@ private:
   double liveTime;
 
   bool dispLog;
+  FluoDBase *fdbase;
 
   ChCoord cc;
   double rROIsx, rROIex;

@@ -26,6 +26,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   valid = false;
   dispLog = false;
+  fdbase = new FluoDBase;
 
   Black = QColor( 0, 0, 0 );
   White = QColor( 255, 255, 255 );
