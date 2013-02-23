@@ -4,6 +4,7 @@
 #include "ui_MCAView.h"
 #include "MouseC.h"
 #include "ChCoord.h"
+#include "KeV2Pix.h"
 
 class MCAView : public QFrame, private Ui::MCAView
 {
@@ -18,10 +19,10 @@ private:
   double liveTime;
 
   bool dispLog;
+  KeV2Pix *k2p;
 
   ChCoord cc;
   double rROIsx, rROIex;
-  double AA, BB;    // 横軸の補正係数
   double MaxE; // 表示の最大エネルギー
 
   int nearX;
@@ -43,6 +44,7 @@ public:
   MCAView( QWidget *parent = NULL );
   ~MCAView( void );
 
+  void setKeV2Pix( KeV2Pix *K2P ) { k2p = K2P; };
   int *setMCAdataPointer( int length );
   void SetRealTime( double rt ) { realTime = rt; };
   void SetLiveTime( double lt ) { liveTime = lt; };

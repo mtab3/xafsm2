@@ -15,13 +15,12 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
 
+  k2p = NULL;
   MCA = NULL;
   MCALen = 0;
   MCACh = -1;
   realTime = 0;
   liveTime = 0;
-  AA = 0.01;
-  BB = 0;
   MaxE = 20.;
 
   valid = false;
@@ -79,6 +78,8 @@ void MCAView::Draw( QPainter *p )
   QFont f;
   QRectF rec;
 
+  k2p->setMCALen( MCALen );
+
   int w = width();
   int h = height();
 
@@ -133,12 +134,12 @@ void MCAView::Draw( QPainter *p )
     wrROIex = tmp;
   }
   if ( m.inPress() ) {
-    emit newROI( (int)( ( wrROIsx - BB ) / AA ), (int)( ( wrROIex - BB ) / AA ) );
+    emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
   int sum = 0;
   for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
-    double E = i * AA + BB;                  // 画面 pixel から MCA pixel への換算
+    double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
     if (( E >= wrROIsx )&&( E <= wrROIex )) {
       p->setPen( ROIRangeC );
       sum += MCA[i];
@@ -199,8 +200,8 @@ void MCAView::Draw( QPainter *p )
     p->setPen( MCursorC );
     p->drawLine( m.x(), TM, m.x(), TM+VW );
   }
-  int curp = ( cc.s2rxLimit( m.x() ) - BB ) / AA;  // マウスカーソル位置の MCA 値 pixel
-  if ( curp >= MCALen ) curp = MCALen - 1;
+  // エネルギー換算したマウスカーソル位置に対応する MCA pixel
+  int curp = k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) );
   emit CurrentValues( MCA[ curp ], sum );
 
   if ( nearf ) {              // マウスカーソルが ROI の両端に近いと認識しているときは
@@ -237,7 +238,7 @@ void MCAView::Draw( QPainter *p )
 	       tr( "Cur. [ch] : " ) );
   rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( (int)(( cc.s2rxLimit( m.x() ) - BB ) / AA ) ) );
+	       QString::number( k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) ) ) );
   LINE++;
 
   // カーソル位置の MCA 値
@@ -380,6 +381,6 @@ void MCAView::mouseDoubleClickEvent( QMouseEvent * ) {}
 
 void MCAView::setROI( int s, int e )   // MCA pixel
 {
-  rROIsx = (double)s * AA + BB;
-  rROIex = (double)e * AA + BB;
+  rROIsx = k2p->p2E( MCACh, s );
+  rROIex = k2p->p2E( MCACh, e );
 }

@@ -27,6 +27,8 @@
 #include "Status.h"
 #include "AtomGroup.h"
 #include "Conditions.h"
+#include "KeV2Pix.h"
+
 
 #define PI ( 3.1415926535 )
 #define CC ( 2.99792458e8 )
@@ -77,6 +79,7 @@ private:
   double nowCurrent;
 
   /* MCA */
+  KeV2Pix *kev2pix;
   double MCACorrect[ MaxSSDs ];
   QString ROIStart[ MaxSSDs ];
   QString ROIEnd[ MaxSSDs ];
