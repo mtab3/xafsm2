@@ -7,13 +7,19 @@
 // 横軸には 3つの単位がある。
 // MCA pixel, eV (実Energy), 描画 pixel
 // MCAView 内の横軸は基本的に keV
-// MCA pixel -> keV : MCA pixel * a = keV
-// keV -> MCA pixel : keV / a = MCA pixel
+// MCA pixel -> keV : k2p->p2E( MCA pixel ) = keV
+// keV -> MCA pixel : k2p->p2E( keV ) = MCA pixel
+//    k2p は keV-to-Pixel のつもり。ネーミングがまずいか...
 // 描画 pixel との換算は一度 keV を通って cc.r2sx, cc.s2rx,...
+
+#define NEAR ( 10 )     // ROI のエッジに近いと判断する距離(画面 pixel)
+#define NEAR2 ( 10 )    // 据え置きカーソルに近いと判断する距離
 
 MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
+
+  setToolTip( "" );
 
   k2p = NULL;
   MCA = NULL;
@@ -23,6 +29,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   liveTime = 0;
   MaxE = 20.;
   MinE = 0.;
+  mMode = M_NO;
 
   valid = false;
   dispLog = false;
@@ -30,12 +37,14 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   Black = QColor( 0, 0, 0 );
   White = QColor( 255, 255, 255 );
 
-  MCursorC = QColor( 255, 0, 0 );
-  ROIRangeC = QColor( 170, 210, 0 );
-  ExROIRangeC = QColor( 0, 100, 230 );
-  ROIEdgeC = QColor( 255, 200, 0 );  // ROI の端点表示
-  GridC = QColor( 100, 100, 190 );   // グリッドの色
-  AListC = QColor( 100, 0, 100 );        // 元素名リスト 
+  MCursorC    = QColor( 255,   0,   0 );  // マウスカーソル色
+  MCursorC2   = QColor(   0, 200, 245 );  // 据え置きカーソル色
+  MCursorC3   = QColor( 250, 180,   0 );  // マウスが近い時の据え置きカーソル色
+  ROIRangeC   = QColor( 170, 210,   0 );  // ROI 内のスペクトル色
+  ExROIRangeC = QColor(   0, 100, 230 );  // ROI 外のスペクトル色
+  ROIEdgeC    = QColor( 250, 180,   0 );  // ROI の端点表示
+  GridC       = QColor( 100, 100, 190 );  // グリッドの色
+  AListC      = QColor( 200,   0, 100 );  // 元素名リスト 
 
   rROIsx = 0;
   rROIex = 20;
@@ -122,10 +131,11 @@ void MCAView::Draw( QPainter *p )
                                                // エネルギ-[keV]
   // 正しく調整されていると MCP pixel = エネルギー[eV]/10 になっているはず。
 
+  double rmx = cc.s2rx( m.x() );
   double wrROIsx = rROIsx;  // wrROI.. working-real-ROI.., rROI.. real-ROI..
   double wrROIex;
   if ( m.inPress() ) {      // マウスボタンを押してる時は、「終点」はマウスの現在位置
-    wrROIex = cc.s2rx( m.x() );
+    wrROIex = rmx;
   } else {
     wrROIex = rROIex;       // そうでなければ最後にボタンを離した位置
   }
@@ -135,7 +145,7 @@ void MCAView::Draw( QPainter *p )
     wrROIsx = wrROIex;
     wrROIex = tmp;
   }
-  if ( m.inPress() ) {
+  if ( m.inPress() && ( mMode == M_ROI ) ) {
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
@@ -202,15 +212,30 @@ void MCAView::Draw( QPainter *p )
     p->setPen( MCursorC );
     p->drawLine( m.x(), TM, m.x(), TM+VW );
   }
+
   // エネルギー換算したマウスカーソル位置に対応する MCA pixel
   int curp = k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) );
   emit CurrentValues( MCA[ curp ], sum );
 
+  if ( nearf ) {              // マウスカーソルが ROI の両端に近いと認識しているときは
+                              // 近いと思っている方の橋を強調? 表示
+    p->setPen( ROIEdgeC );
+    p->drawLine( nearX, TM, nearX, TM+VW );
+  }
+
+  for ( int i = 0; i < cPoints.count(); i++ ) {  // 据え置きカーソル位置に縦棒
+    int cpx = cc.r2sx( cPoints[i] );
+    if ( abs( cpx - m.x() ) < NEAR2 )
+      p->setPen( MCursorC3 );
+    else
+      p->setPen( MCursorC2 );
+    p->drawLine( cpx, TM, cpx, TM+VW );
+  }
+
   // マウスカーソル付近の元素リスト
-  double mE;
-  QVector<Fluo> nears = fdbase->nears( mE = cc.s2rx( m.x() ) );
+  QVector<Fluo> nears = fdbase->nears( rmx );
   p->setPen( AListC );
-  bool isUpper = ( mE > ( MaxE + MinE ) / 2 );
+  bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
   for ( int i = 0; i < nears.count(); i++ ) {
     int pp;
     double v = nears[i].val;
@@ -219,21 +244,15 @@ void MCAView::Draw( QPainter *p )
     p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+pp), 
 		 cc.r2sx( v ) + ( ( isUpper ) ? -dLM * 0.5 : dLM * 0.5 ),
 		 TM+VW-dVW*(4+pp) );
+    QString show = QString( "%1 %2" )
+      .arg( nears[i].fullName ).arg( nears[i].val );
     if ( isUpper ) {
       rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
-      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-		   nears[i].fullName );
+      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, show );
     } else {
       rec.setRect( cc.r2sx( v ) + dLM * 0.5, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
-      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		   nears[i].fullName );
+      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, show );
     }
-  }
-
-  if ( nearf ) {              // マウスカーソルが ROI の両端に近いと認識しているときは
-                              // 近いと思っている方の橋を強調? 表示
-    p->setPen( ROIEdgeC );
-    p->drawLine( nearX, TM, nearX, TM+VW );
   }
 
   p->setPen( Black );
@@ -249,56 +268,68 @@ void MCAView::Draw( QPainter *p )
     LINE++;
   }
 
-  // カーソル位置( 実エネルギー換算 )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
+  // カーソル(タイトル)
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Cur. [keV] : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
+	       tr( "Cursor" ) );
+  LINE++;
+
+  // カーソル位置( 実エネルギー換算 )
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
+  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+	       tr( " Pos. [keV] : " ) );
+  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( cc.s2rxLimit( m.x() ) ) );
+	       QString::number( cc.s2rxLimit( m.x() ), 'f', 3 ) );
   LINE++;
 
   // カーソル位置( MCA pixel )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Cur. [ch] : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
+	       tr( " Pos. [ch] : " ) );
+  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) ) ) );
   LINE++;
 
   // カーソル位置の MCA 値
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Val. Cur : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
+	       tr( " Val. : " ) );
+  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( MCA[ curp ] ) );
   LINE++;
 
-  // ROI のスタート位置 ( MCA pixel )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
+  // ROI タイトル
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "ROI s [keV] : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
+	       tr( "ROI " ) );
+  LINE++;
+
+  // ROI のスタート位置 ( MCA pixel )
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
+  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+	       tr( " Start [keV] : " ) );
+  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( wrROIsx ) );
+	       QString::number( wrROIsx, 'g', 3 ) );
   LINE++;
 
   // ROI の終了位置 ( MCA pixel )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "ROI e [keV] : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
+	       tr( " End [keV] : " ) );
+  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( wrROIex ) );
+	       QString::number( wrROIex , 'g', 3 ) );
   LINE++;
 
   // ROI 内の積分値
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
+  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "ROI value : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
+	       tr( " Count : " ) );
+  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( sum ) );
   LINE++;
@@ -306,10 +337,10 @@ void MCAView::Draw( QPainter *p )
   // ROI 内の積分値を LiveTime で割った cps
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "CPS in ROI : " ) );
+	       tr( "   CPS : " ) );
   rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( sum / (( realTime == 0 )? 1 : realTime )) );
+	       QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'f', 2 ) );
   LINE++;
 
   // Real Time
@@ -354,15 +385,13 @@ void MCAView::Draw( QPainter *p )
   LINE++;
 }
 
-#define NEAR ( 10 )
-
 void MCAView::mouseMoveEvent( QMouseEvent *e )
 {
   m.Moved( e );
   nearf = false;
   if ( !m.inPress() ) {
-    int dsx = abs( e->x() - m.sx() );
-    int dex = abs( e->x() - m.ex() );
+    int dsx = fabs( e->x() - m.sx() );
+    int dex = fabs( e->x() - m.ex() );
 
     if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {
       if ( dsx < dex ) {
@@ -378,29 +407,57 @@ void MCAView::mouseMoveEvent( QMouseEvent *e )
 
 void MCAView::mousePressEvent( QMouseEvent *e )
 {
-  int dsx = abs( e->x() - m.sx() );
-  int dex = abs( e->x() - m.ex() );
-  int setX;
-  if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {
-    if ( dsx < dex ) {
-      setX = m.ex();
-    } else {
-      setX = m.sx();
+  if ( e->button() == Qt::LeftButton ) {   // 左ボタンで ROI 設定モード
+    mMode = M_ROI;
+    int dsx = fabs( e->x() - m.sx() );
+    int dex = fabs( e->x() - m.ex() );
+    int setX;
+    if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {   // 近くに既設の ROI の端点があるか
+      if ( dsx < dex ) {                        // あれば ROI 変更
+	setX = m.ex();
+      } else {
+	setX = m.sx();
+      }
+    } else {                                    // なければ ROI 新規
+      setX = e->x();
     }
-  } else {
-    setX = e->x();
+    m.Pressed( e );
+    m.setSx( setX );
+    rROIsx = cc.s2rx( m.sx() );
+    update();
   }
-  m.Pressed( e );
-  m.setSx( setX );
-  rROIsx = cc.s2rx( m.sx() );
-  update();
+  if ( e->button() == Qt::RightButton ) {  // 右ボタンで カーソル設置/削除
+    double checkp = cc.s2rx( e->x() );
+    bool del = false;
+    int nearp = -1;
+    double nearv = 1e300;
+    for ( int i = 0; i < cPoints.count(); i++ ) { // 既設のカーソルが近くにあるか
+      if ( fabs( cPoints[i] - checkp ) < nearv ) {  // 一番近い既設カーソルを探す
+	nearp = i;
+	nearv = fabs( cPoints[i] - checkp );
+      }
+    }
+    if ( nearp >= 0 ) {
+      if ( fabs( cc.r2sx( cPoints[ nearp ] ) - e->x() ) < NEAR2 ) {
+	                                          // 最近接がNEAR以下の場所だったら
+	cPoints.remove( nearp );                  // その点を削除
+	del = true;
+      }
+    }
+    if ( ! del ) {    // 削除したカーソルがなければカーソル設置
+      cPoints << checkp;
+    }
+  }
 }
 
 void MCAView::mouseReleaseEvent( QMouseEvent *e )
 {
-  m.Released( e );
-  rROIex = cc.s2rx( m.ex() );
-  update();
+  if ( mMode == M_ROI ) {
+    mMode = M_NO;
+    m.Released( e );
+    rROIex = cc.s2rx( m.ex() );
+    update();
+  }
 }
 
 void MCAView::mouseDoubleClickEvent( QMouseEvent * ) {}

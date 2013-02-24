@@ -7,6 +7,9 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
 
+  setToolTip( "By clicking the 'A. Scale' (Auto Scale) button at left-bottom corner, "
+	      "the auto-scale mode is toggled on and off." );
+
   autoScale = true;
   AreaSelecting = false;
   SelLR[ LEFT_AX ] = 0;

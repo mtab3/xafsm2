@@ -39,7 +39,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>By clicking the 'A. Scale' (Auto Scale) button at left-bottom corner, the auto-scale mode is toggled on and off.</string>
+       <string>.</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(245, 240, 220);</string>

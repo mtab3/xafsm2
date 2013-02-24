@@ -569,9 +569,9 @@ void MainWindow::ScanStart( void )
     ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs );
     ScanSTP = SPSstep->text().toDouble() / SPSUPP;
     if ( ScanEP > ScanSP ) {
-      ScanSTP = abs( ScanSTP );
+      ScanSTP = fabs( ScanSTP );
     } else {
-      ScanSTP = - abs( ScanSTP );
+      ScanSTP = - fabs( ScanSTP );
     }
     if ( ScanSTP == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );

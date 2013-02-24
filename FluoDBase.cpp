@@ -24,11 +24,11 @@ FluoDBase::FluoDBase( void ) : QObject()
   while ( !in.atEnd() ) {
     items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
     if ( items[0] != "" ) {
-      for ( int i = 3; i < items.count() && i < 9; i++ ) {
+      for ( int i = 2; i < items.count() && i < 9; i++ ) {
 	if ( items[i].toDouble() != 0 ) {
 	  Fluo *fluo = new Fluo;
 	  fluo->aName = items[0];
-	  fluo->transName = TNames[ i - 3 ];
+	  fluo->transName = TNames[ i - 2 ];
 	  fluo->aNumber = items[1].toInt();
 	  fluo->val = items[i].toDouble() / 1000.;
 	  fluo->fullName = fluo->aName + " " + fluo->transName;

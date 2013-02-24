@@ -7,6 +7,8 @@
 #include "FluoDBase.h"
 #include "KeV2Pix.h"
 
+enum MMODE { M_ROI, M_POINT, M_NO };
+
 class MCAView : public QFrame, private Ui::MCAView
 {
   Q_OBJECT
@@ -23,16 +25,18 @@ private:
   FluoDBase *fdbase;
   KeV2Pix *k2p;
 
+  MMODE mMode;
   ChCoord cc;
-  double rROIsx, rROIex;
-  double MinE, MaxE; // 表示の最小、最大エネルギー
+  double rROIsx, rROIex;   // ROI の範囲
+  double MinE, MaxE;       // 表示の最小、最大エネルギー
+  QVector<double> cPoints; // カーソル表示を残す点
 
   int nearX;
   bool nearf;
 
   QColor Black, White;
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
-  QColor GridC, MCursorC, AListC;
+  QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
 
   void Draw( QPainter *p );
 
