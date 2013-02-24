@@ -43,16 +43,19 @@ FluoDBase::FluoDBase( void ) : QObject()
 }
 
 QVector<Fluo> FluoDBase::nears( double E )
+// nears( E, range ) の簡易版。10keV で、range = +/- 0.25 になる。
 {
   if ( E < 0 ) {
     QVector<Fluo> rv;
     return rv;
   }
-  return nears( E, sqrt( E ) / 50 + 0.1 );
+  return nears( E, E / 50 + 0.05 );
 }
 
 
 QVector<Fluo> FluoDBase::nears( double E, double range )
+// 指定エネルギー E の前後 range の範囲に入る元素リスト作成。
+// 最初は E に近いもの順にしてたけど、今はエネルギーの小さいもの順
 {
   if ( E < 0 ) {
     QVector<Fluo> rv;
@@ -77,6 +80,7 @@ QVector<Fluo> FluoDBase::nears( double E, double range )
 }
 
 int FluoDBase::nearest( double E, int s, int e )
+// 2 分探索をやった後、最後の詰めが自信ないので最終候補全員比較
 {
   if ( ( e - s ) < 2 ) {
     int ss = s - 1;
