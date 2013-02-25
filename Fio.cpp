@@ -61,7 +61,7 @@ void MainWindow::WriteHeader( int Rpt )
       << "%001%" << endl; // 置換用のマーク 001 番目 14桁終了日時 "yy.MM.dd hh:mm"
   out << " " << fixS( EditCMT->text(), 80 ) << endl;
   out << " " << "Ring : " << "  1.2 GeV"
-      << QString( "  %1 mA - " ).arg( nowCurrent, 6, 'f', 1, ' ' )
+      << QString( "  %1 mA - " ).arg( SLS->value().toDouble(), 6, 'f', 1, ' ' )
       << "%002%"          // 置換用のマーク 002 番目 実数6.1リング電流
       << " mA" << endl;
   out << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )   // Si(111)
@@ -259,7 +259,7 @@ void MainWindow::WriteHeader2( int Rpt )
     }
     if ( ( pos = line.indexOf( "%002%" ) ) > 0 ) {
       line = line.left( pos )
-	+ QString( "%1" ).arg( nowCurrent, 6, 'f', 1, ' ' ) 
+	+ QString( "%1" ).arg( SLS->value().toDouble(), 6, 'f', 1, ' ' ) 
 	+ line.mid( pos + 5 );
     }
     AllLines << line;

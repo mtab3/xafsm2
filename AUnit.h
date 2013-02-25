@@ -77,7 +77,7 @@ class AUnit : public QObject
 
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
-		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2 );
+		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2, int lsr );
 
 public:
   AUnit( QObject *parent = 0 );
@@ -257,6 +257,7 @@ public slots:
   void ReactGetRealTime( SMsg msg );
   void ReactGetLiveTime( SMsg msg );
   void ReactGetRange( SMsg msg );
+  void OnReportCurrent( SMsg msg );
 
 signals:
   //  void CountFinished( void );
@@ -274,6 +275,7 @@ signals:
   void ReceivedNewMCAValue( void );
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
+  void NewRingCurrent( QString val, QStringList vals );
 };
 
 #endif

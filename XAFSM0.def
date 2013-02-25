@@ -252,3 +252,20 @@ SENSOR OTC "S033" "GENERAL" "Otc994 ch1" "ortec994" "ch0" "count" YES "S033"
 SENSOR OTC "S034" "GENERAL" "Otc994 ch2" "ortec994" "ch1" "count" YES "S033"
 
 # The driver ortec994 (by M. Tabuchi) can be used as "OTC" and "OTC2".
+
+SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
+
+#The sensor 'LSR' add newly on Feb. 25, 2013.
+#   LSR              : Unit type LSR : Brigde to the ring-network
+#   "S035"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "LS"             : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Ring CUrrent Monitor"" : The name of the unit (only for display)
+#   "LS"             : Stars driver name
+#   "Ring"           : Node name in the stars driver
+#   "mA"             : Name of the metric unit (only for display)
+#   NO               : If the sensor has a parente (group leader) or not. YES or NO
+#   ""               : The identifier of the parent (group reader)
+

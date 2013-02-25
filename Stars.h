@@ -126,6 +126,7 @@ signals:
   void EvDisconnected( SMsg msg );
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );
+  void EvReportCurrent( SMsg msg );
 };
 
 #endif

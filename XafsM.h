@@ -11,6 +11,7 @@ const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
 extern QString DefFileName;
+extern bool newFluoMode;
 
 //const int TicPDiv = 50;   // ƒ‚ƒjƒ^[‚Ì 1ŒrüŠÔ‚É‘ª’è‚·‚é‰ñ”
 const int DivPScr = 6;    // ‚±‚Ì•Ó‚ğ‚©‚¦‚é‚Æ‚«‚Í XView.h ‚Ì RingMax ‚É‚à’ˆÓ

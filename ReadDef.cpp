@@ -98,6 +98,7 @@ void MainWindow::ReadDef( QString fname )
 	    NewUnit->setRangeL( item.toInt() );     // レンジ下限値
 	  } else if ( type == "SSDP" ) {
 	  } else if ( type == "SSD" ) {
+	  } else if ( type == "LSR" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }

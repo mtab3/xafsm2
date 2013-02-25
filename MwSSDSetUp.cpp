@@ -83,12 +83,13 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 
 void MainWindow::setAllROIs( void )
 {
-  QString start = ROIStart[ MCACh->text().toInt() ];
-  QString end  = ROIEnd[ MCACh->text().toInt() ];
+  int ch = MCACh->text().toInt();
+  double startE = kev2pix->p2E( ch, ROIStart[ ch ].toDouble() );
+  double endE = kev2pix->p2E( ch, ROIEnd[ MCACh->text().toInt() ].toDouble() );
 
   for ( int i = 0; i < MaxSSDs; i++ ) {
-    ROIStart[ i ] = start;
-    ROIEnd[ i ] = end;
+    ROIStart[ i ] = QString::number( kev2pix->E2p( i, startE ) );
+    ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
 }
 

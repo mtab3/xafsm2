@@ -74,5 +74,7 @@ const MsgTyp MsgT[] = {
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },
 
+  { "_ReportCurrent", EvREPORTCURRENT },
+
   { "", NOTMSG },
 };

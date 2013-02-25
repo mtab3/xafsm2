@@ -9,11 +9,13 @@
 
 enum LANG { English, Japanese, LANGS };
 QString DefFileName;
+bool newFluoMode;
 
 int main( int argc, char *argv[] )
 {
   LANG Lang = Japanese;
   DefFileName = "XAFSM.def";
+  newFluoMode = false;
 
   QString myname = QString( argv[0] )
     .section( "/", -1 )  // "/" を区切りに切り出したトークンの右から数えて1つめ
@@ -23,6 +25,7 @@ int main( int argc, char *argv[] )
     // 残ったファイル名に対して "." を区切りに切り出した最初のトークン
 
   for ( int i = 1; i < argc; i++ ) {
+    if ( QString( argv[i] ) == "-nF" ) { newFluoMode = true; };
     if ( QString( argv[i] ) == "-j" ) { Lang = Japanese; };
     if ( QString( argv[i] ) == "-e" ) { Lang = English; };
     if ( QString( argv[i] ) == "-d" ) {

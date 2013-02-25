@@ -17,6 +17,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+#if 0       // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るためなので
+            // 今は止めておいてもいい。
+  T = new QTime;
+  T->start();
+#endif
+
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
 #if 0
@@ -30,7 +36,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 #endif
 
   MMainTh = EncMainTh = NULL;
-  SI0 = SI1 = SFluo = NULL;
+  SLS = SI0 = SI1 = SFluo = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
@@ -43,8 +49,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   XAFSTitle = myname;
 
   starsSV = new StarsSV2;
-
-  nowCurrent = 0;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
 
@@ -194,6 +198,15 @@ void MainWindow::InitAndIdentifySensors( void )
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
+    if ( as->getID() == "LS" ) {
+      if ( SLS != NULL ) {
+	disconnect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
+		    this, SLOT( ShowNewRingCurrent( QString, QStringList ) ) );
+      }
+      SLS = as;
+      connect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
+		  this, SLOT( ShowNewRingCurrent( QString, QStringList ) ) );
+    }
     if ( as->getID() == "ENCTH" ) {
       if ( EncMainTh != NULL ) {
 	disconnect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
@@ -348,4 +361,9 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     }
   }
   return ViewCtrls[ ViewTab->currentIndex() ];
+}
+
+void MainWindow::ShowNewRingCurrent( QString Val, QStringList Vals )
+{
+  RingCurrent->setText( Val );
 }

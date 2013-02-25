@@ -50,6 +50,7 @@ public:
 
 private:
 
+  QTime *T;
   Status* StatDisp;
 
   QString XAFSName;
@@ -76,8 +77,6 @@ private:
   Conditions *conds;
   /* cfg. */
   
-  double nowCurrent;
-
   /* MCA */
   KeV2Pix *kev2pix;
   FluoDBase *fdbase;
@@ -102,8 +101,8 @@ private:
   void setupReadDataArea( void );
 
   /* Special Units */
-  AUnit *MMainTh;               // main Th ax
-  AUnit *SI0, *SI1, *SFluo;       // I0, I1, and Fluorescence
+  AUnit *MMainTh;                 // main Th ax
+  AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh;
 
   void InitAndIdentifyMotors( void );
@@ -349,6 +348,7 @@ private slots:
   //  double CurrentAngle( void );
   void ShowCurThPos( void );
   void ShowCurMotorPos( SMsg msg );
+  void ShowNewRingCurrent( QString Val, QStringList Vals );
 
   void MMRel( void );
   void MMAbs( void );
