@@ -95,6 +95,8 @@ private:
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
   QFileDialog *MCAFSel;
+  PeriodicTable *PT2;
+  QString NonSelC, SelectC;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -433,7 +435,8 @@ private slots:
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   void setAllROIs( void );
-  
+  void AtomToggled( bool f, int i );
+
   void StartMeasurement( void );
   void PauseMeasurement( void );
   void SurelyStop( void );

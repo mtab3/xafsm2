@@ -8,6 +8,7 @@ PeriodicTable::PeriodicTable() : QMainWindow()
 
   SetPBs();
 
+  isExclusive = true;
   SelectedAtom = -1;
   WhenSelected = PT_STAY;
   WhenClosed = PT_HIDE;
@@ -22,6 +23,128 @@ PeriodicTable::PeriodicTable() : QMainWindow()
   }
   connect( PBMap, SIGNAL( mapped( int ) ), this, SLOT( doPB( int ) ) );
   connect( Close, SIGNAL( clicked() ), this, SLOT( PTClose() ) );
+  connect( SetAll, SIGNAL( clicked() ), this, SLOT( setAll() ) );
+  connect( SetNone, SIGNAL( clicked() ), this, SLOT( setNone() ) );
+
+  AllNoneBs->setVisible( false );
+}
+
+QStringList PeriodicTable::getSelectedAtoms( void )
+{
+  QStringList atoms;
+
+  for ( int i = 0; i < PBs; i++ ) {
+    if ( PB[i]->isChecked() )
+      atoms << PB[i]->text().simplified();
+  }
+  return atoms;
+}
+
+void PeriodicTable::setAll( void )
+{
+  for ( int i = 0; i < PBs; i++ ) {
+    if ( PB[i]->isCheckable() ) {
+      PB[i]->setChecked( true );
+      emit AtomToggled( true, i );
+    }
+  }
+}
+
+void PeriodicTable::setNone( void )
+{
+  for ( int i = 0; i < PBs; i++ ) {
+    if ( PB[i]->isCheckable() ) {
+      PB[i]->setChecked( false );
+      emit AtomToggled( false, i );
+    }
+  }
+}
+
+void PeriodicTable::doPB( int i )
+{
+  SelectedAtom = i+1;
+
+  //  printf( "AN = %d\n", SelectedAtom );
+
+  emit AtomSelected( SelectedAtom );
+  emit AtomToggled( PB[i]->isChecked(), i );
+  switch( WhenSelected ) {
+  case PT_CLOSE:
+    close();
+    break;
+  case PT_HIDE:
+    hide();
+    break;
+  case PT_STAY:
+    break;
+  }
+}
+
+void PeriodicTable::PTClose( void )
+{
+  emit PTClosing( SelectedAtom );
+
+  switch( WhenClosed ) {
+  case PT_CLOSE:
+    close();
+    break;
+  case PT_HIDE:
+    hide();
+    break;
+  default:
+    close();
+    break;
+  }
+}
+
+void PeriodicTable::SetPTMask( int i, int mask )
+{
+  if ( ( i >= 1 )&&( i <= PBs ) ) {
+    PTMask[i] = mask;     // mask 番号は 1 始まり
+    if ( mask == 0 ) {
+      PB[i-1]->setEnabled( FALSE );
+      //      printf( "disable %d", i );
+    } else {
+      PB[i-1]->setEnabled( TRUE );
+      //      printf( "enable %d", i );
+    }
+  }
+}
+
+void PeriodicTable::SetPTMasks( int s, int e, int mask )
+{
+  for ( int i = s; i <= e; i++ ) {
+    if ( ( i >= 1 )&&( i <= PBs ) ) {
+      PTMask[i] = mask;     // mask 番号は 1 始まり
+      if ( mask == 0 ) {
+	PB[i-1]->setEnabled( FALSE );
+	//	printf( "disable %d", i );
+      } else {
+	PB[i-1]->setEnabled( TRUE );
+	//	printf( "enable %d", i );
+      }
+    }
+  }
+}
+
+void PeriodicTable::SetAGColor( AtomGroup *ag )
+{
+  bool ingroup = false;
+  for ( int i = 0; i < PBs; i++ ) {
+    if ( PB[i]->text().simplified() == ag->startAtom.simplified() )
+      ingroup = true;
+    if ( PB[i]->text().simplified() == ag->endAtom.simplified() )
+      break;
+    if ( ingroup )
+      PB[i]->setStyleSheet( "background-color: " + ag->groupColor );
+  }
+}
+
+void PeriodicTable::SetCheckable( bool f )
+{
+  for ( int i = 0; i < PBs; i++ ) {
+    PB[i]->setCheckable( f );
+  }
 }
 
 void PeriodicTable::SetPBs( void )
@@ -150,83 +273,4 @@ void PeriodicTable::SetPBs( void )
 
   PB[ PBs++ ] = PB111;
   PB[ PBs++ ] = PB112;
-}
-
-void PeriodicTable::doPB( int i )
-{
-  SelectedAtom = i+1;
-
-  //  printf( "AN = %d\n", SelectedAtom );
-
-  emit AtomSelected( SelectedAtom );
-  switch( WhenSelected ) {
-  case PT_CLOSE:
-    close();
-    break;
-  case PT_HIDE:
-    hide();
-    break;
-  case PT_STAY:
-    break;
-  }
-}
-
-void PeriodicTable::PTClose( void )
-{
-  emit PTClosing( SelectedAtom );
-
-  switch( WhenClosed ) {
-  case PT_CLOSE:
-    close();
-    break;
-  case PT_HIDE:
-    hide();
-    break;
-  default:
-    close();
-    break;
-  }
-}
-
-void PeriodicTable::SetPTMask( int i, int mask )
-{
-  if ( ( i >= 1 )&&( i <= PBs ) ) {
-    PTMask[i] = mask;     // mask 番号は 1 始まり
-    if ( mask == 0 ) {
-      PB[i-1]->setEnabled( FALSE );
-      //      printf( "disable %d", i );
-    } else {
-      PB[i-1]->setEnabled( TRUE );
-      //      printf( "enable %d", i );
-    }
-  }
-}
-
-void PeriodicTable::SetPTMasks( int s, int e, int mask )
-{
-  for ( int i = s; i <= e; i++ ) {
-    if ( ( i >= 1 )&&( i <= PBs ) ) {
-      PTMask[i] = mask;     // mask 番号は 1 始まり
-      if ( mask == 0 ) {
-	PB[i-1]->setEnabled( FALSE );
-	//	printf( "disable %d", i );
-      } else {
-	PB[i-1]->setEnabled( TRUE );
-	//	printf( "enable %d", i );
-      }
-    }
-  }
-}
-
-void PeriodicTable::SetAGColor( AtomGroup *ag )
-{
-  bool ingroup = false;
-  for ( int i = 0; i < PBs; i++ ) {
-    if ( PB[i]->text().simplified() == ag->startAtom.simplified() )
-      ingroup = true;
-    if ( PB[i]->text().simplified() == ag->endAtom.simplified() )
-      break;
-    if ( ingroup )
-      PB[i]->setStyleSheet( "background-color: " + ag->groupColor );
-  }
 }

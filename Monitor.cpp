@@ -52,25 +52,29 @@ void MainWindow::MonSequence( void )
 			    MeasVals[0], MeasVals[1], MeasVals[2] );
     MonitorView->update();
 
-#if 0        // SSD 全チャンネルのデータを時系列で ssd.dat に書く
-    if ( SFluo != NULL ) {
-      QFile f( "ssd.dat" );
-      f.open( QIODevice::Append | QIODevice::Text );
-      QTextStream out( &f );
-      QVector<int> CinROI = SFluo->getCountsInROI();
-      QVector<int> CAll =  SFluo->getCountsAll();
-      QVector<int> TotalE = SFluo->getCountsAll();
-      QVector<double> ICRs = SFluo->getICRs();
-      QString buf;
-      out << T->elapsed();
-      for ( int i = 0; i < CinROI.count(); i++ ) buf += QString( " %1" ).arg( CinROI[i] );
-      for ( int i = 0; i < CAll.count(); i++ ) buf += QString( " %1" ).arg( CAll[i] );
-      for ( int i = 0; i < TotalE.count(); i++ ) buf += QString( " %1" ).arg( TotalE[i] );
-      for ( int i = 0; i < ICRs.count(); i++ ) buf += QString( " %1" ).arg( ICRs[i] );
-      out << buf << "\n";
-      f.close();
+    if ( conds->isRecordAllSSDChs() ) {
+      if ( SFluo != NULL ) {
+	QFile f( "ssd.dat" );
+	f.open( QIODevice::Append | QIODevice::Text );
+	QTextStream out( &f );
+	QVector<int> CinROI = SFluo->getCountsInROI();
+	QVector<int> CAll =  SFluo->getCountsAll();
+	QVector<int> TotalE = SFluo->getCountsAll();
+	QVector<double> ICRs = SFluo->getICRs();
+	QString buf;
+	out << T->elapsed();
+	for ( int i = 0; i < CinROI.count(); i++ )
+	  buf += QString( " %1" ).arg( CinROI[i] );
+	for ( int i = 0; i < CAll.count(); i++ )
+	  buf += QString( " %1" ).arg( CAll[i] );
+	for ( int i = 0; i < TotalE.count(); i++ )
+	  buf += QString( " %1" ).arg( TotalE[i] );
+	for ( int i = 0; i < ICRs.count(); i++ )
+	  buf += QString( " %1" ).arg( ICRs[i] );
+	out << buf << "\n";
+	f.close();
+      }
     }
-#endif
 
     if ( monRecF ) {
       MonOut << (double)etime/1000;

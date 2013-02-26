@@ -79,6 +79,29 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   //  oldMCACh = -1;
 
   SelSSDs( 0 );
+
+  NonSelC = "#ccccaa";
+  SelectC = "#ffffdd";
+  PT2 = new PeriodicTable;
+  PT2->SetActionOnSelected( PT_STAY );
+  PT2->SetActionOnClosed( PT_CLOSE );
+  PT2->SetCheckable( true );
+  PT2->ShowAllNoneBs( true );
+  for ( int i = 0; i < PT->Atoms(); i++ ) {
+    PT2->SetAColor( i, NonSelC );
+  }
+  connect( SelectElmNames, SIGNAL( clicked() ), PT2, SLOT( show() ) );
+  connect( PT2, SIGNAL( AtomToggled( bool, int ) ),
+	   this, SLOT( AtomToggled( bool, int ) ) );
+  PT2->setAll();
+}
+
+void MainWindow::AtomToggled( bool f, int i )
+{
+  PT2->SetAColor( i, f ? SelectC : NonSelC );
+  if ( cMCAView != NULL ) {
+    cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
+  }
 }
 
 void MainWindow::setAllROIs( void )
@@ -189,7 +212,6 @@ void MainWindow::SelSSDs( int ch )
     }
   }
 }
-
 
 void MainWindow::getMCASettings( int ch )
 {
@@ -315,6 +337,8 @@ void MainWindow::StartMCA( void )
 		    this, SLOT( setNewROI( int, int ) ) );
 	disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
 		    cMCAView, SLOT( setLog( bool ) ) );
+	disconnect( DispElmNames, SIGNAL( toggled( bool ) ),
+	       cMCAView, SLOT( setShowElements( bool ) ) );
 	cMCAViewC->setIsDeletable( true );
       }
       
@@ -322,6 +346,7 @@ void MainWindow::StartMCA( void )
 	return;
       cMCAViewC->setNowDType( MCADATA );
       cMCAView = (MCAView*)(cMCAViewC->getView());
+      cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
       
       MCAData = cMCAView->setMCAdataPointer( MCALength );
       validMCAData = true;
@@ -335,6 +360,8 @@ void MainWindow::StartMCA( void )
 	       this, SLOT( setNewROI( int, int ) ) );
       connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
 	       cMCAView, SLOT( setLog( bool ) ) );
+      connect( DispElmNames, SIGNAL( toggled( bool ) ),
+	       cMCAView, SLOT( setShowElements( bool ) ) );
 
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       if ( StartResume == MCA_START )

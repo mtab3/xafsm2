@@ -15,6 +15,7 @@ class MCAView : public QFrame, private Ui::MCAView
 
 private:
   int valid;
+  //  QVecotot<int *> MCAs;
   int *MCA;
   int MCALen;
   int MCACh;
@@ -24,12 +25,14 @@ private:
   bool dispLog;
   FluoDBase *fdbase;
   KeV2Pix *k2p;
+  bool showElements;
 
   MMODE mMode;
   ChCoord cc;
   double rROIsx, rROIex;   // ROI の範囲
   double MinE, MaxE;       // 表示の最小、最大エネルギー
   QVector<double> cPoints; // カーソル表示を残す点
+  QStringList selectedAtoms;
 
   int nearX;
   bool nearf;
@@ -61,10 +64,12 @@ public:
   void makeValid( bool v ) { valid = v; };
   double getRealTime( void ) { return realTime; };
   double getLiveTime( void ) { return liveTime; };
+  void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; };
 
 public slots:
   void setLog( bool f ) { dispLog = f; update(); };
   void setROI( int s, int e );   // MCA pixel
+  void setShowElements( bool show ) { showElements = show; };
 
 signals:
   void CurrentValues( int atCur, int inROI );

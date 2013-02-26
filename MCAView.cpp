@@ -232,26 +232,30 @@ void MCAView::Draw( QPainter *p )
     p->drawLine( cpx, TM, cpx, TM+VW );
   }
 
-  // マウスカーソル付近の元素リスト
-  QVector<Fluo> nears = fdbase->nears( rmx );
-  p->setPen( AListC );
-  bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
-  for ( int i = 0; i < nears.count(); i++ ) {
-    int pp;
-    double v = nears[i].val;
-    pp = ( isUpper ) ? i : ( nears.count() - i - 1 );
-    p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+pp) );
-    p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+pp), 
-		 cc.r2sx( v ) + ( ( isUpper ) ? -dLM * 0.5 : dLM * 0.5 ),
-		 TM+VW-dVW*(4+pp) );
-    QString show = QString( "%1 %2" )
-      .arg( nears[i].fullName ).arg( nears[i].val );
-    if ( isUpper ) {
-      rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
-      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, show );
-    } else {
-      rec.setRect( cc.r2sx( v ) + dLM * 0.5, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
-      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, show );
+  if ( showElements ) {
+    if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
+      // マウスカーソル付近の元素リスト
+      QVector<Fluo> nears = fdbase->nears( rmx );
+      p->setPen( AListC );
+      bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
+      for ( int i = 0; i < nears.count(); i++ ) {
+	int pp;
+	double v = nears[i].val;
+	pp = ( isUpper ) ? i : ( nears.count() - i - 1 );
+	p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+pp) );
+	p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+pp), 
+		     cc.r2sx( v ) + ( ( isUpper ) ? -dLM * 0.5 : dLM * 0.5 ),
+		     TM+VW-dVW*(4+pp) );
+	QString show = QString( "%1 %2" )
+	  .arg( nears[i].fullName ).arg( nears[i].val );
+	if ( isUpper ) {
+	  rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
+	  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, show );
+	} else {
+	  rec.setRect( cc.r2sx( v ) + dLM * 0.5, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
+	  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, show );
+	}
+      }
     }
   }
 

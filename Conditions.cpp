@@ -25,3 +25,8 @@ bool Conditions::isAddInfos( void )
 {
   return SelAddInfos->isChecked();
 }
+
+bool Conditions::isRecordAllSSDChs( void ) 
+{
+  return RecordAllSSDChs->isChecked();
+}

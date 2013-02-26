@@ -8,10 +8,10 @@
 
 FluoDBase::FluoDBase( void ) : QObject()
 {
-  QFile f( ":xray-KLIII.dat" );
+  QFile f( ":xray-KLIII.txt" );
 
   if ( !f.open( QIODevice::ReadOnly ) ) {
-    qDebug() << "Cannot open [xray-KLIII.dat]";
+    qDebug() << "Cannot open [xray-KLIII.txt]";
     return;
   }
 

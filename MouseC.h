@@ -34,6 +34,7 @@ class MouseC : public QObject
   int sy( void ) { return Sy; };
   int ex( void ) { return Ex; };
   int ey( void ) { return Ey; };
+  Qt::KeyboardModifiers getMod( void ) { return Mod; };
 
   Qt::MouseButton button( void ) { return Button; };
   //it will return, 'OR' operated following values : 

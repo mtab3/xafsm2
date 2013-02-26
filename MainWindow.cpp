@@ -17,11 +17,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
-#if 0       // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るためなので
-            // 今は止めておいてもいい。
+  // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
   T->start();
-#endif
 
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
@@ -328,6 +326,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     newView = (void *)(new MCAView);
     ((MCAView *)newView)->setKeV2Pix( kev2pix );
     ((MCAView *)newView)->setFDBase( fdbase );
+    ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
     break;
   default:
     return NULL;

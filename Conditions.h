@@ -14,6 +14,7 @@ public:
   void setAddInfos( bool addInfos );
   bool isEncAsTh( void );
   bool isAddInfos( void );
+  bool isRecordAllSSDChs( void );
 };
 
 #endif
