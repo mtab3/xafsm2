@@ -543,9 +543,24 @@ bool MainWindow::CheckDetectorSelection( void )
 
 void MainWindow::StartMeasurement( void )
 {
+  // ・測定対象の検出器
+  // ・表示されるもの
+  // ・ファイルに記録するもの
+  // という 3 つの似てるけど違うものがある
+  // 例えば、I0 と 19ch-SSD で測定する場合
+  // ・測定対象の検出器       : I0, SFluo (19ch を束ねた検出器)  : mUnits で管理
+  // ・表示するもの           : I0, Total (19ch の合計), 各チャンネル(19個)
+  //                 元ネタになるデータそのものは mUnits で管理されてる
+  //                 SFluo が何番目に来るかだけ記録しておけば後は、
+  //                 ちょっとした例外処理でなんとかなりそうな気がする
+  // ・ファイルに記録するもの : I0, 各チャンネル(19個)
+  //                 元ネタになるデータそのものは mUnits で管理されてる
+  //                 mUnits を流用し SFluo を 19 チャンネルに展開することで対応できてる
+  // 
   AUnit *as;
 
   EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
+  SFluoLine = -1;
 
   if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
@@ -574,33 +589,31 @@ void MainWindow::StartMeasurement( void )
     QString theNames = "";
     int LC = 0;
     mUnits.clearUnits();
-    for ( int i = 0; i < MCHANNELS; i++ )
-      MeasSensF[i] = false;
 
-    MeasSensF[ LC ] = true;
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++;
-    if ( MeasSensF[ LC ] = UseI1->isChecked() ) {
+    if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
     }
-    if ( MeasSensF[ LC ] = Use19chSSD->isChecked() ) {
+    if ( Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
+      SFluoLine = LC;
       LC++;
     }
-    if ( MeasSensF[ LC ] = UseAux1->isChecked() ) {
+    if ( UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
     }
-    if ( MeasSensF[ LC ] = UseAux2->isChecked() ) {
+    if ( UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );

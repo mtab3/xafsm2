@@ -169,7 +169,7 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
   if ( MeasFileType == TRANS ) {       // I0 と I だけを選んだ単純なケースなら
     MeasView->NewPoint( i, GoToKeV, MeasVals[1] );   // I の値も表示する
   }
-  if ( MeasFileType == FLUO ) {
+  if ( SFluoLine >= 0 ) {   // 普通に選択されたデータの後に19ch 分のデータを展開
     QStringList vals = SFluo->values();
     for ( int j = 0; j < MaxSSDs; j++ ) {
       MeasView->NewPoint( i + j, GoToKeV, (double)vals[j].toInt() / I0 );
@@ -183,7 +183,7 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   double sum[ MAXPOINTS ];
   double *y;
 
-  if ( MeasFileType != FLUO )            // 19ch SSD を使った蛍光測定の場合だけ
+  if ( SFluoLine >= 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;
   if ( MeasView == NULL )                // View が割り振られてなければ何もしない
     return;
@@ -195,13 +195,13 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   qDebug() << "MeasP" << MeasP;
   for ( int l = 0; l < MaxSSDs; l++ ) {  // 選択し直された SSD の ch に関して
     if ( SSDbs2[l]->isChecked() ) {
-      y = MeasView->GetYp( l + 2 );
+      y = MeasView->GetYp( mUnits.count() + l );
       for ( int i = 0; i < MeasP; i++ ) {  // 合計をとりなおす
 	sum[i] += y[i];
       }
     }
   }
-  y = MeasView->GetYp( 1 );
+  y = MeasView->GetYp( SFluoLine );
   for ( int i = 0; i < MeasP; i++ ) {
     y[i] = sum[i];
   }

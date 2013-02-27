@@ -213,6 +213,7 @@ private:
   ViewCTRL *ScanViewC;
   XYView *ScanView;
   QFileDialog *scanFSel;
+  int SFluoLine;
 
   QString RadioBOn;
   QString RadioBOff;
@@ -232,6 +233,7 @@ private:
   ViewCTRL *MonitorViewC;
   TYView *MonitorView;
   QFileDialog *monFSel;
+  bool MonSensF[ 3 ];
 
   QVector<AUnit*> SensWithRange;
 
@@ -301,7 +303,6 @@ private:
   double MeasVals[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
   int MeasDispPol[ MCHANNELS ];   // polarity
-  bool MeasSensF[ MCHANNELS ];
   double NowDwell;
   bool inMeasDark;
   bool AskingShutterClose;

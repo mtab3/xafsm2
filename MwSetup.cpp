@@ -673,7 +673,7 @@ void MainWindow::Monitor( void )
 
     mUnits.clearUnits();
     mUnits.addUnit( as0 );
-    MeasSensF[0] = true;
+    MonSensF[0] = true;
     if ( SelectD21Sel->isChecked() ) {
       if ( ! as1->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
@@ -683,7 +683,7 @@ void MainWindow::Monitor( void )
 	return;
       }
       mUnits.addUnit( as1 );
-      MeasSensF[1] = true;
+      MonSensF[1] = true;
     }
     if ( SelectD22Sel->isChecked() ) {
       if ( ! as2->isEnable() ) {
@@ -694,7 +694,7 @@ void MainWindow::Monitor( void )
 	return;
       }
       mUnits.addUnit( as2 );
-      MeasSensF[2] = true;
+      MonSensF[2] = true;
     }
     mUnits.setDwellTimes( DwellT20->text().toDouble() );
     mUnits.setDwellTime();
@@ -720,9 +720,9 @@ void MainWindow::Monitor( void )
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ) );
     connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
-    if ( MeasSensF[1] )
+    if ( MonSensF[1] )
       connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
-    if ( MeasSensF[2] )
+    if ( MonSensF[2] )
       connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 		 
     MStart->setText( tr( "Stop" ) );
@@ -741,9 +741,9 @@ void MainWindow::Monitor( void )
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ) );
     disconnect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
-    if ( MeasSensF[1] )
+    if ( MonSensF[1] )
       disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
-    if ( MeasSensF[2] )
+    if ( MonSensF[2] )
       disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
     MonitorViewC->setIsDeletable( true );
