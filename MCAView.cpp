@@ -112,10 +112,13 @@ void MCAView::Draw( QPainter *p )
   p->fillRect( 0, 0, w, h, White );
 
   double max;
-  double max0 = 0;    // y 軸方向の表示スケール決定のため最大値を探す
+  double max0 = 0;    // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
   for ( int i = 0; i < MCALen; i++ ) {
-    if ( MCA[i] > max0 ) {
-      max0 = MCA[i];
+    double E = k2p->p2E( MCACh, i );
+    if (( E > MinE )&&( E < MaxE )) {
+      if ( MCA[i] > max0 ) {
+	max0 = MCA[i];
+      }
     }
   }
   if ( dispLog ) {   // log スケールだったら最大値も log をとって縦軸のスケールにする

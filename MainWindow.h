@@ -242,6 +242,7 @@ private:
 
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> SSDbs2;
+  QVector<QPushButton *> GSBs;
   QString SSDActive;
   QString SSDnotActive;
   //  MEASMODE MeasMode;
@@ -284,7 +285,7 @@ private:
   int inMoveTh;
   ENCORPM EncOrPM;    // Selected x-axis on the start of XAFS measurement
   int MeasStage, SMeasStage;
-  int MeasR, MeasB, MeasS;
+  int MeasR, MeasB, MeasS, MeasP;
   double GoToKeV;
   double InitialKeV;
   double r[ 100 ];
@@ -436,6 +437,8 @@ private slots:
   void NewRpt( void );
   void setAllROIs( void );
   void AtomToggled( bool f, int i );
+  void MCAViewDisconnects( void );
+  void MCAViewConnects( void );
 
   void StartMeasurement( void );
   void PauseMeasurement( void );
@@ -444,6 +447,11 @@ private slots:
   void OkOverWrite( void );
   void RangeSelOK( void );
   void isFileNameChanged( const QString & );
+  void onMeasFinishWorks( void );
+  void MeasViewDisconnects( void );
+  void MeasViewConnects( void );
+  void SelectAGB( bool f );
+  void ReCalcSSDTotal( int i, bool f );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );
@@ -464,6 +472,8 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
 
  signals:
+  void SelectedSSD( int i, bool f );
+  void SelectedAGB( int i, bool f );
   //  void GiveNewView( QObject *to, ViewCTRL *view );
 };
 

@@ -187,10 +187,12 @@ void MainWindow::SelSSDs20( void )
 	SSDbs2.at(i)->setStyleSheet( SSDActive );
 	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
 	SFluo->setSSDUsingCh( i, true );
+	emit SelectedSSD( i, true );
       } else {
 	SSDbs2.at(i)->setStyleSheet( SSDnotActive );
 	SSDbs2.at(i)->setToolTip( tr( "Inactive" ) );
 	SFluo->setSSDUsingCh( i, false );
+	emit SelectedSSD( i, false );
       }
     }
   }
@@ -331,14 +333,7 @@ void MainWindow::StartMCA( void )
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
     if ( StartResume == MCA_START ) {
       if ( cMCAView != NULL ) {
-	disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
-		    this, SLOT( showCurrentValues( int, int ) ) );
-	disconnect( cMCAView, SIGNAL( newROI( int, int ) ),
-		    this, SLOT( setNewROI( int, int ) ) );
-	disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-		    cMCAView, SLOT( setLog( bool ) ) );
-	disconnect( DispElmNames, SIGNAL( toggled( bool ) ),
-	       cMCAView, SLOT( setShowElements( bool ) ) );
+	MCAViewDisconnects();
 	cMCAViewC->setIsDeletable( true );
       }
       
@@ -353,15 +348,7 @@ void MainWindow::StartMCA( void )
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
       cMCAView->makeValid( true );
-      
-      connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
-	       this, SLOT( showCurrentValues( int, int ) ) );
-      connect( cMCAView, SIGNAL( newROI( int, int ) ),
-	       this, SLOT( setNewROI( int, int ) ) );
-      connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	       cMCAView, SLOT( setLog( bool ) ) );
-      connect( DispElmNames, SIGNAL( toggled( bool ) ),
-	       cMCAView, SLOT( setShowElements( bool ) ) );
+      MCAViewConnects();
 
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       if ( StartResume == MCA_START )
@@ -383,6 +370,30 @@ void MainWindow::StartMCA( void )
 			     " rgba(225, 235, 225, 255), stop:1"
 			     " rgba(255, 255, 255, 255));" );
   }
+}
+
+void MainWindow::MCAViewDisconnects( void )
+{
+  disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
+	      this, SLOT( showCurrentValues( int, int ) ) );
+  disconnect( cMCAView, SIGNAL( newROI( int, int ) ),
+	      this, SLOT( setNewROI( int, int ) ) );
+  disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
+	      cMCAView, SLOT( setLog( bool ) ) );
+  disconnect( DispElmNames, SIGNAL( toggled( bool ) ),
+	      cMCAView, SLOT( setShowElements( bool ) ) );
+}
+
+void MainWindow::MCAViewConnects( void )
+{
+  connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
+	   this, SLOT( showCurrentValues( int, int ) ) );
+  connect( cMCAView, SIGNAL( newROI( int, int ) ),
+	   this, SLOT( setNewROI( int, int ) ) );
+  connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
+	   cMCAView, SLOT( setLog( bool ) ) );
+  connect( DispElmNames, SIGNAL( toggled( bool ) ),
+	   cMCAView, SLOT( setShowElements( bool ) ) );
 }
 
 void MainWindow::showCurrentValues( int atCur, int inROI )

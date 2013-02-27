@@ -44,6 +44,7 @@ private:
   double YShift[ MAXLINES ], YShift0[ MAXLINES ], yshift[ MAXLINES ];
 
   int lines;
+  bool dispf[ MAXLINES ];
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];
   double y[ MAXLINES ][ MAXPOINTS ];
@@ -82,6 +83,8 @@ public:
   int GetLines( void ) { return lines; };
   double GetX( int l, int p );
   double GetY( int l, int p );
+  double *GetXp( int l ) { return x[l]; };
+  double *GetYp( int l ) { return y[l]; };
   void SetWindow( double x1, double y1, double x2, double y2 )
   { cc.SetRealCoord( x1, y1, x2, y2 ); };
   void SetWindow0( double x1, double y1, double x2, double y2 )
@@ -93,6 +96,7 @@ public:
   void SetRLine( int l ) { SelLR[ RIGHT_AX ] = l; };
 
 public slots:
+  void ChooseAG( int i, bool f );
 
 private:
   void paintEvent( QPaintEvent *event );

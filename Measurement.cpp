@@ -45,6 +45,7 @@ void MainWindow::MeasSequence( void )
     break;
   case 2:
     MeasB = 0;    // Measurement Block count
+    MeasP = 0;    // Measurement point count
     statusbar->showMessage( tr( "Writing Header." ), 2000 );
     WriteHeader( MeasR );
     MeasStage = 3;
@@ -117,9 +118,7 @@ void MainWindow::MeasSequence( void )
 			   "rgba(225, 235, 225, 255), stop:1 "
 			   "rgba(255, 255, 255, 255));" );
 	MeasPause->setEnabled( false );
-	if ( OnFinishP->currentIndex() == (int)RETURN ) {
-	  MoveCurThPosKeV( InitialKeV );
-	}
+	onMeasFinishWorks();
       }
     }
     break;
@@ -128,6 +127,15 @@ void MainWindow::MeasSequence( void )
       MeasStage = 10;
     break;
   }
+}
+
+void MainWindow::onMeasFinishWorks( void )
+{
+  MeasPause->setEnabled( false );
+  if ( OnFinishP->currentIndex() == (int)RETURN ) {
+    MoveCurThPosKeV( InitialKeV );
+  }
+  MeasViewC->setIsDeletable( true );
 }
 
 bool MainWindow::isBusyMotorInMeas( void )
@@ -139,10 +147,11 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
 {
   double I0;
   double Val;
+  int i;
 
   I0 = MeasVals[ MC_I0 ];
   MeasView->NewPoint( 0, GoToKeV, I0 );
-  for ( int i = 1; i < mUnits.count(); i++ ) {
+  for ( i = 1; i < mUnits.count(); i++ ) {
     Val = MeasVals[i];
     if ( MeasDispMode[i] == TRANS ) {
       if ( Val < 1e-10 )
@@ -157,4 +166,44 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
       MeasView->NewPoint( i, GoToKeV, Val/I0 );
     }
   }
+  if ( MeasFileType == TRANS ) {       // I0 と I だけを選んだ単純なケースなら
+    MeasView->NewPoint( i, GoToKeV, MeasVals[1] );   // I の値も表示する
+  }
+  if ( MeasFileType == FLUO ) {
+    QStringList vals = SFluo->values();
+    for ( int j = 0; j < MaxSSDs; j++ ) {
+      MeasView->NewPoint( i + j, GoToKeV, (double)vals[j].toInt() / I0 );
+    }
+  }
+  MeasP++;
+}
+
+void MainWindow::ReCalcSSDTotal( int, bool )
+{
+  double sum[ MAXPOINTS ];
+  double *y;
+
+  if ( MeasFileType != FLUO )            // 19ch SSD を使った蛍光測定の場合だけ
+    return;
+  if ( MeasView == NULL )                // View が割り振られてなければ何もしない
+    return;
+
+  for ( int i = 0; i < MeasP; i++ ) {
+    sum[i] = 0;
+  }
+
+  qDebug() << "MeasP" << MeasP;
+  for ( int l = 0; l < MaxSSDs; l++ ) {  // 選択し直された SSD の ch に関して
+    if ( SSDbs2[l]->isChecked() ) {
+      y = MeasView->GetYp( l + 2 );
+      for ( int i = 0; i < MeasP; i++ ) {  // 合計をとりなおす
+	sum[i] += y[i];
+      }
+    }
+  }
+  y = MeasView->GetYp( 1 );
+  for ( int i = 0; i < MeasP; i++ ) {
+    y[i] = sum[i];
+  }
+  MeasView->update();
 }

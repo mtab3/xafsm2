@@ -12,6 +12,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
+  GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
+       << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
+       << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
+       << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
+       << GSB21 << GSB22 << GSB23 << GSB24;
 
   if ( SFluo == NULL ) 
     Use19chSSD->setEnabled( false );
@@ -147,6 +152,24 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MeasDarkStage = 0;
   AskingShutterClose = false;
   AskingShutterOpen = false;
+
+  MeasView = NULL;
+
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
+  }
+}
+
+void MainWindow::SelectAGB( bool f )
+{
+  int i;
+  for ( i = 0; i < GSBs.count(); i++ ) {
+    if ( sender() == GSBs[i] )
+      break;
+  }
+  if ( i < GSBs.count() ) {
+    emit SelectedAGB( i, f );
+  }
 }
 
 void MainWindow::ClearBLKs( void )
@@ -546,13 +569,6 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
-    if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
-      // グラフ表示領域が確保できないとダメ
-      return;
-    }
-    MeasViewC->setNowDType( MEASDATA );
-    MeasView = (XYView*)(MeasViewC->getView());
-    ClearXViewScreenForMeas( MeasView );
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
@@ -641,6 +657,20 @@ void MainWindow::StartMeasurement( void )
 	return;
     }
 
+    if ( MeasView != NULL )
+      MeasViewDisconnects();
+    if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
+      // グラフ表示領域が確保できないとダメ
+      return;
+    }
+    MeasViewC->setNowDType( MEASDATA );
+    MeasView = (XYView*)(MeasViewC->getView());
+    ClearXViewScreenForMeas( MeasView );
+    MeasViewConnects();
+    for ( int i = 0; i < GSBs.count(); i++ ) {
+      emit SelectedAGB( i, GSBs[i]->isChecked() );
+    }
+
     QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
     if ( ! OverWriteChecked && CheckFile.exists() ) {
       AskOverWrite
@@ -696,7 +726,6 @@ void MainWindow::StartMeasurement( void )
     MeasPause->setStyleSheet( "background-color: yellow" );
     MeasPause->setEnabled( false );
     MeasStart->setEnabled( false );
-    MeasViewC->setIsDeletable( true );
   }
 }
 
@@ -736,11 +765,7 @@ void MainWindow::SurelyStop( void )
 		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
 		     "rgba(225, 235, 225, 255), stop:1 "
 		     "rgba(255, 255, 255, 255));" );
-  MeasPause->setEnabled( false );
-  if ( OnFinishP->currentIndex() == (int)RETURN ) {
-    MoveCurThPosKeV( InitialKeV );
-  }
-  MeasViewC->setIsDeletable( true );
+  onMeasFinishWorks();
 }
 
 void MainWindow::GoingOn( void )
@@ -817,4 +842,20 @@ void MainWindow::OkOverWrite( void )
 void MainWindow::RangeSelOK( void )
 {
   MakingSureOfRangeSelect = false;
+}
+
+void MainWindow::MeasViewDisconnects( void )
+{
+  disconnect( this, SIGNAL( SelectedAGB( int, bool ) ), 
+	      MeasView, SLOT( ChooseAG( int, bool ) ) );
+  disconnect( this, SIGNAL( SelectedSSD( int, bool ) ),
+	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
+}
+
+void MainWindow::MeasViewConnects( void )
+{
+  connect( this, SIGNAL( SelectedAGB( int, bool ) ), 
+	      MeasView, SLOT( ChooseAG( int, bool ) ) );
+  disconnect( this, SIGNAL( SelectedSSD( int, bool ) ),
+	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
 }
