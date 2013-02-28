@@ -144,10 +144,14 @@ bool MainWindow::isBusyMotorInMeas( void )
 }
 
 void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
-{
+{   // ここでのラインの並びと MwMeas で GSBs に表示している名前の順はあってない可能性大
+    // I1 (mu ではなく)の出てくる場所がおかしいはず
+    // (I と 19ch 両方選んだとかそんな時だけだけど)
+
   double I0;
   double Val;
   int i;
+  int DLC = 0;
 
   I0 = MeasVals[ MC_I0 ];
   MeasView->NewPoint( 0, GoToKeV, I0 );
@@ -156,25 +160,31 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
     if ( MeasDispMode[i] == TRANS ) {
       if ( Val < 1e-10 )
 	Val = 1e-10;
-      if ( ( I0 / Val ) > 0 )
-	MeasView->NewPoint( i, GoToKeV, log( I0/Val * MeasDispPol[i] ) );
-      else 
-	MeasView->NewPoint( i, GoToKeV, 0 );
+      if ( ( I0 / Val ) > 0 ) {
+	MeasView->NewPoint( DLC, GoToKeV, log( I0/Val * MeasDispPol[i] ) );
+	DLC++;
+      } else {
+	MeasView->NewPoint( DLC, GoToKeV, 0 );
+	DLC++;
+      }
     } else {  // MeasDispMode == FLUO
       if ( I0 < 1e-20 )
 	I0 = 1e-20;
-      MeasView->NewPoint( i, GoToKeV, Val/I0 );
+      MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
+      DLC++;
+      QStringList vals = SFluo->values();
+      for ( int j = 0; j < MaxSSDs; j++ ) {
+	MeasView->NewPoint( DLC + SFluoLine + 1, GoToKeV, (double)vals[j].toInt() / I0 );
+	qDebug() << "disp " << j << "th line at " << DLC + j;
+	DLC++;
+      }
     }
   }
   if ( MeasFileType == TRANS ) {       // I0 と I だけを選んだ単純なケースなら
-    MeasView->NewPoint( i, GoToKeV, MeasVals[1] );   // I の値も表示する
+    MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I の値も表示する
+    DLC++;
   }
-  if ( SFluoLine >= 0 ) {   // 普通に選択されたデータの後に19ch 分のデータを展開
-    QStringList vals = SFluo->values();
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      MeasView->NewPoint( i + j, GoToKeV, (double)vals[j].toInt() / I0 );
-    }
-  }
+
   MeasP++;
 }
 
@@ -182,6 +192,8 @@ void MainWindow::ReCalcSSDTotal( int, bool )
 {
   double sum[ MAXPOINTS ];
   double *y;
+
+  qDebug() << "in ReCalc";
 
   if ( SFluoLine >= 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;
@@ -195,7 +207,7 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   qDebug() << "MeasP" << MeasP;
   for ( int l = 0; l < MaxSSDs; l++ ) {  // 選択し直された SSD の ch に関して
     if ( SSDbs2[l]->isChecked() ) {
-      y = MeasView->GetYp( mUnits.count() + l );
+      y = MeasView->GetYp( SFluoLine + 1 + l );
       for ( int i = 0; i < MeasP; i++ ) {  // 合計をとりなおす
 	sum[i] += y[i];
       }

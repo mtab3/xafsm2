@@ -477,7 +477,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>350</height>
+        <height>400</height>
        </size>
       </property>
       <property name="currentIndex">
@@ -2247,6 +2247,9 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
              <property name="checked">
               <bool>true</bool>
+             </property>
+             <property name="flat">
+              <bool>false</bool>
              </property>
             </widget>
            </item>

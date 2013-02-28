@@ -42,6 +42,19 @@ FluoDBase::FluoDBase( void ) : QObject()
   qSort( fluos.begin(), fluos.end() );
 }
 
+QVector<Fluo> FluoDBase::inRange( double Es, double Ee )
+{
+  QVector<Fluo> rv;
+
+  for ( int i = 0; i < fluos.count(); i++ ) {
+    if (( fluos[i].val > Es )&&( fluos[i].val < Ee )) {
+      rv << fluos[i];
+    }
+  }
+
+  return rv;
+}
+
 QVector<Fluo> FluoDBase::nears( double E )
 // nears( E, range ) の簡易版。10keV で、range = +/- 0.25 になる。
 {

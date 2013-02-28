@@ -181,6 +181,7 @@ void MainWindow::SelSSDs0( void )
 
 void MainWindow::SelSSDs20( void )
 {
+  qDebug() << "in Sel SSDs 2";
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
     if ( sender() == SSDbs2.at(i) ) {
       if ( SSDbs2.at(i)->isChecked() ) {
@@ -188,11 +189,13 @@ void MainWindow::SelSSDs20( void )
 	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
 	SFluo->setSSDUsingCh( i, true );
 	emit SelectedSSD( i, true );
+	qDebug() << "in Sel SSDs 2 emit " << i << true;
       } else {
 	SSDbs2.at(i)->setStyleSheet( SSDnotActive );
 	SSDbs2.at(i)->setToolTip( tr( "Inactive" ) );
 	SFluo->setSSDUsingCh( i, false );
 	emit SelectedSSD( i, false );
+	qDebug() << "in Sel SSDs 2 emit " << i << false;
       }
     }
   }

@@ -327,7 +327,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setKeV2Pix( kev2pix );
     ((MCAView *)newView)->setFDBase( fdbase );
     ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
-    //    ShowAlwaysSelElm->
+    ((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
     break;
   default:
     return NULL;

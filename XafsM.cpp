@@ -58,7 +58,7 @@ int main( int argc, char *argv[] )
   QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "Shift-JIS" ) );
   // const char * "" を暗黙に QString に変換する時のコーディング指定
 
-  app.setStyle( "plastique" );
+  app.setStyle( "Cleanlooks" );
 
   MainWindow *mw = new MainWindow( myname );
   mw->show();

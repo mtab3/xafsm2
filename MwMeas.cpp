@@ -168,6 +168,7 @@ void MainWindow::SelectAGB( bool f )
       break;
   }
   if ( i < GSBs.count() ) {
+    qDebug() << "button " << i;
     emit SelectedAGB( i, f );
   }
 }
@@ -590,17 +591,21 @@ void MainWindow::StartMeasurement( void )
     int LC = 0;    // mUnits に登録するユニットに対応したカウント
     int DLC = 0;   // 表示するラインに対応したカウント
     mUnits.clearUnits();
+    for ( int i = 0; i < GSBs.count(); i++ )
+      GSBs[i]->setText( "" );
 
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 
+    qDebug() << "I0 " << DLC;
     GSBs[DLC++]->setText( "I0" );
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
+      qDebug() << "I1 " << DLC;
       GSBs[DLC++]->setText( "I1" );
       GSBs[DLC++]->setText( "mu" );
     }
@@ -609,9 +614,11 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
       LC++;
-      GSBs[DLC++]->setText( "FT" );
+      qDebug() << "FT " << DLC;
       SFluoLine = DLC;
+      GSBs[DLC++]->setText( "FT" );
       for ( int i = 0; i < MaxSSDs; i++ ) {
+	qDebug() << "SSD " << i << DLC;
 	GSBs[DLC++]->setText( QString::number( i ) );
       }
     }
@@ -879,6 +886,6 @@ void MainWindow::MeasViewConnects( void )
 {
   connect( this, SIGNAL( SelectedAGB( int, bool ) ), 
 	      MeasView, SLOT( ChooseAG( int, bool ) ) );
-  disconnect( this, SIGNAL( SelectedSSD( int, bool ) ),
+  connect( this, SIGNAL( SelectedSSD( int, bool ) ),
 	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
 }

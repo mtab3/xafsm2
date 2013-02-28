@@ -165,6 +165,12 @@ void XYView::Draw( QPainter *p )
   double a1, a2;
   double d, b;
 
+  QString dd;
+  for ( int i = 0; i < lines; i++ ) {
+    dd += QString( "(%1 %2) " ).arg( i ).arg( dispf[ i ] );
+  }
+  qDebug() << dd;
+
   for ( int l = 0; l < lines; l++ ) { // æ‚Éü‚¾‚¯•`‰æ
     if ( dispf[ l ] ) {
       if ( autoScale ) {
@@ -490,6 +496,7 @@ void XYView::wheelEvent( QWheelEvent *e )
 
 void XYView::ChooseAG( int i, bool f )
 {
+  qDebug() << "selected " << i;
   dispf[ i ] = f;
   update();
 }

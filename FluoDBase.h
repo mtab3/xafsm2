@@ -26,6 +26,7 @@ class FluoDBase : public QObject
   FluoDBase();
   QVector<Fluo> nears( double E, double range );
   QVector<Fluo> nears( double E );
+  QVector<Fluo> inRange( double Es, double Ee );
   int nearest( double E, int s, int e );
 
  private:
