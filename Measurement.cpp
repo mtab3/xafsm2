@@ -144,20 +144,22 @@ bool MainWindow::isBusyMotorInMeas( void )
 }
 
 void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
-{   // ここでのラインの並びと MwMeas で GSBs に表示している名前の順はあってない可能性大
-    // I1 (mu ではなく)の出てくる場所がおかしいはず
-    // (I と 19ch 両方選んだとかそんな時だけだけど)
-
+{
   double I0;
   double Val;
   int i;
   int DLC = 0;
 
   I0 = MeasVals[ MC_I0 ];
-  MeasView->NewPoint( 0, GoToKeV, I0 );
+  MeasView->NewPoint( DLC, GoToKeV, I0 );
+  DLC++;
   for ( i = 1; i < mUnits.count(); i++ ) {
     Val = MeasVals[i];
     if ( MeasDispMode[i] == TRANS ) {
+      if (( i == 1 )&&( isSI1 )) {
+	MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I の値も表示する
+	DLC++;
+      }
       if ( Val < 1e-10 )
 	Val = 1e-10;
       if ( ( I0 / Val ) > 0 ) {
@@ -174,15 +176,10 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
       DLC++;
       QStringList vals = SFluo->values();
       for ( int j = 0; j < MaxSSDs; j++ ) {
-	MeasView->NewPoint( DLC + SFluoLine + 1, GoToKeV, (double)vals[j].toInt() / I0 );
-	qDebug() << "disp " << j << "th line at " << DLC + j;
+	MeasView->NewPoint( DLC, GoToKeV, (double)vals[j].toInt() / I0 );
 	DLC++;
       }
     }
-  }
-  if ( MeasFileType == TRANS ) {       // I0 と I だけを選んだ単純なケースなら
-    MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I の値も表示する
-    DLC++;
   }
 
   MeasP++;

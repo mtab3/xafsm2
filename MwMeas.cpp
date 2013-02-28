@@ -562,6 +562,7 @@ void MainWindow::StartMeasurement( void )
 
   EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
   SFluoLine = -1;
+  isSI1 = false;
 
   if ( inMeas == 0 ) {           // Šù‚É‘ª’è‚ªis’†‚Å‚È‚¯‚ê‚Î
     if ( MMainTh->isBusy() ) {   // •ªŒõŠí‚ª‰ñ‚Á‚Ä‚½‚çƒ_ƒ
@@ -598,14 +599,13 @@ void MainWindow::StartMeasurement( void )
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 
-    qDebug() << "I0 " << DLC;
     GSBs[DLC++]->setText( "I0" );
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 ‚Í TRANS ‚ÉŒÅ’è
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
-      qDebug() << "I1 " << DLC;
+      isSI1 = true;
       GSBs[DLC++]->setText( "I1" );
       GSBs[DLC++]->setText( "mu" );
     }
@@ -614,11 +614,9 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
       LC++;
-      qDebug() << "FT " << DLC;
       SFluoLine = DLC;
       GSBs[DLC++]->setText( "FT" );
       for ( int i = 0; i < MaxSSDs; i++ ) {
-	qDebug() << "SSD " << i << DLC;
 	GSBs[DLC++]->setText( QString::number( i ) );
       }
     }

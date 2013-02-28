@@ -214,6 +214,7 @@ private:
   XYView *ScanView;
   QFileDialog *scanFSel;
   int SFluoLine;
+  bool isSI1;
 
   QString RadioBOn;
   QString RadioBOff;
