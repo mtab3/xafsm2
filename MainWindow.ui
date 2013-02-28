@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>811</width>
-    <height>893</height>
+    <height>940</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -412,6 +412,9 @@
       </item>
       <item row="0" column="2">
        <widget class="QFrame" name="frame_18">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(245, 240, 220);</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -4861,7 +4864,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </size>
              </property>
              <property name="text">
-              <string>       ROI end</string>
+              <string>      ROI end</string>
              </property>
             </widget>
            </item>
@@ -4874,7 +4877,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </size>
              </property>
              <property name="text">
-              <string>          In ROI</string>
+              <string>         In ROI</string>
              </property>
             </widget>
            </item>

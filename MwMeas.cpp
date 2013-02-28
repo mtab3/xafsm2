@@ -592,13 +592,16 @@ void MainWindow::StartMeasurement( void )
     int LC = 0;    // mUnits に登録するユニットに対応したカウント
     int DLC = 0;   // 表示するラインに対応したカウント
     mUnits.clearUnits();
-    for ( int i = 0; i < GSBs.count(); i++ )
+    for ( int i = 0; i < GSBs.count(); i++ ) {
       GSBs[i]->setText( "" );
+      GSBs[i]->setChecked( false );
+    }
 
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 
+    GSBs[DLC]->setChecked( true );
     GSBs[DLC++]->setText( "I0" );
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
@@ -607,6 +610,7 @@ void MainWindow::StartMeasurement( void )
       LC++;
       isSI1 = true;
       GSBs[DLC++]->setText( "I1" );
+      GSBs[DLC]->setChecked( true );
       GSBs[DLC++]->setText( "mu" );
     }
     if ( Use19chSSD->isChecked() ) {
@@ -615,6 +619,7 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( SFluo );
       LC++;
       SFluoLine = DLC;
+      GSBs[DLC]->setChecked( true );
       GSBs[DLC++]->setText( "FT" );
       for ( int i = 0; i < MaxSSDs; i++ ) {
 	GSBs[DLC++]->setText( QString::number( i ) );
@@ -625,6 +630,7 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
+      GSBs[DLC]->setChecked( true );
       GSBs[DLC++]->setText( "A1" );
     }
     if ( UseAux2->isChecked() ) {
@@ -632,6 +638,7 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
       LC++;
+      GSBs[DLC]->setChecked( true );
       GSBs[DLC++]->setText( "A2" );
     }
 
