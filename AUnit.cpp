@@ -452,10 +452,6 @@ void AUnit::ReceiveValues( SMsg msg )
       Value = msg.Vals().at(0);
     }
     Values = msg.Vals();
-    //    emit newCountsInROI( rCountsInROI );
-    //    emit newCountsAll( rCountsAll );
-    //    emit newTotalEvents( rTotalEvents );
-    //    emit newICRs( rICRs );
 
     emit newValue( Value );
     IsBusy2 = false;

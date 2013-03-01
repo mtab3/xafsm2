@@ -158,18 +158,18 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   for ( int i = 0; i < GSBs.count(); i++ ) {
     connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
   }
+  connect( this, SIGNAL( SelectedSSD( int, bool ) ),
+	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
 }
 
 void MainWindow::SelectAGB( bool f )
 {
-  int i;
-  for ( i = 0; i < GSBs.count(); i++ ) {
+  if ( MeasView == NULL )
+    return;
+    
+  for ( int i = 0; i < GSBs.count(); i++ ) {
     if ( sender() == GSBs[i] )
-      break;
-  }
-  if ( i < GSBs.count() ) {
-    qDebug() << "button " << i;
-    emit SelectedAGB( i, f );
+	MeasView->ChooseAG( i, f );
   }
 }
 
@@ -692,8 +692,10 @@ void MainWindow::StartMeasurement( void )
 	return;
     }
 
+#if 0
     if ( MeasView != NULL )
       MeasViewDisconnects();
+#endif
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       // グラフ表示領域が確保できないとダメ
       return;
@@ -701,9 +703,11 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
+#if 0
     MeasViewConnects();
+#endif
     for ( int i = 0; i < GSBs.count(); i++ ) {
-      emit SelectedAGB( i, GSBs[i]->isChecked() );
+      MeasView->ChooseAG( i, GSBs[i]->isChecked() );
     }
 
     QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
@@ -879,18 +883,3 @@ void MainWindow::RangeSelOK( void )
   MakingSureOfRangeSelect = false;
 }
 
-void MainWindow::MeasViewDisconnects( void )
-{
-  disconnect( this, SIGNAL( SelectedAGB( int, bool ) ), 
-	      MeasView, SLOT( ChooseAG( int, bool ) ) );
-  disconnect( this, SIGNAL( SelectedSSD( int, bool ) ),
-	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
-}
-
-void MainWindow::MeasViewConnects( void )
-{
-  connect( this, SIGNAL( SelectedAGB( int, bool ) ), 
-	      MeasView, SLOT( ChooseAG( int, bool ) ) );
-  connect( this, SIGNAL( SelectedSSD( int, bool ) ),
-	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
-}

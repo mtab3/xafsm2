@@ -339,6 +339,7 @@ private slots:
   void RcvListNodes( SMsg msg );
   void SomeDrvIsConnected( SMsg msg );
   void SomeDrvIsDisconnected( SMsg msg );
+  void Hide( bool f );
 
   void ShowMessageOnSBar( QString msg, int time );
   void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
@@ -450,10 +451,10 @@ private slots:
   void RangeSelOK( void );
   void isFileNameChanged( const QString & );
   void onMeasFinishWorks( void );
-  void MeasViewDisconnects( void );
-  void MeasViewConnects( void );
   void SelectAGB( bool f );
   void ReCalcSSDTotal( int i, bool f );
+  void NoticeMCAViewSetDisplayLog( bool f );
+  void NoticeMCAViewSetShowElements( bool f );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

@@ -174,9 +174,9 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
 	I0 = 1e-20;
       MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
       DLC++;
-      QStringList vals = SFluo->values();
+      QVector<int> vals = SFluo->getCountsInROI();
       for ( int j = 0; j < MaxSSDs; j++ ) {
-	MeasView->NewPoint( DLC, GoToKeV, (double)vals[j].toInt() / I0 );
+	MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 );
 	DLC++;
       }
     }
@@ -190,9 +190,7 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   double sum[ MAXPOINTS ];
   double *y;
 
-  qDebug() << "in ReCalc";
-
-  if ( SFluoLine >= 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
+  if ( SFluoLine < 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;
   if ( MeasView == NULL )                // View が割り振られてなければ何もしない
     return;
@@ -201,7 +199,6 @@ void MainWindow::ReCalcSSDTotal( int, bool )
     sum[i] = 0;
   }
 
-  qDebug() << "MeasP" << MeasP;
   for ( int l = 0; l < MaxSSDs; l++ ) {  // 選択し直された SSD の ch に関して
     if ( SSDbs2[l]->isChecked() ) {
       y = MeasView->GetYp( SFluoLine + 1 + l );

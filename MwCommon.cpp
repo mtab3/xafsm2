@@ -41,6 +41,17 @@ void MainWindow::setupCommonArea( void )   /* ‹¤’ÊƒGƒŠƒA */
   connect( ManTEkeV, SIGNAL( editingFinished() ), SLOT( ManSelTEkeV() ) );
   connect( ShowPT, SIGNAL( clicked() ), PT, SLOT( show() ) );
   connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ) );
+
+  connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( Hide( bool ) ) );
+}
+
+void MainWindow::Hide( bool f ) 
+{
+  if ( f ) {
+    MainTab->hide();
+  } else {
+    MainTab->show();
+  }
 }
 
 void MainWindow::NewSelA( int i )

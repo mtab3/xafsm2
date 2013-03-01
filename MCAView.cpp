@@ -1,6 +1,3 @@
-
-#include <QtGui>
-
 #include "XafsM.h"
 #include "MCAView.h"
 
@@ -19,6 +16,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
 
+  Parent = parent;
   setToolTip( "" );
 
   k2p = NULL;
@@ -48,12 +46,22 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   rROIsx = 0;
   rROIex = 20;
+
+  // data-disp で表示した時、にマズイかも
+  connect( this, SIGNAL( CurrentValues( int, int ) ),
+	   Parent, SLOT( showCurrentValues( int, int ) ) );
+  connect( this, SIGNAL( newROI( int, int ) ),
+	   Parent, SLOT( setNewROI( int, int ) ) );
 }
 
 MCAView::~MCAView( void )
 {
   if ( MCA != NULL )
     delete MCA;
+  disconnect( this, SIGNAL( CurrentValues( int, int ) ),
+	   Parent, SLOT( showCurrentValues( int, int ) ) );
+  disconnect( this, SIGNAL( newROI( int, int ) ),
+	   Parent, SLOT( setNewROI( int, int ) ) );
 }
 
 int *MCAView::setMCAdataPointer( int len )

@@ -94,6 +94,23 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( PT2, SIGNAL( AtomToggled( bool, int ) ),
 	   this, SLOT( AtomToggled( bool, int ) ) );
   PT2->setAll();
+
+  connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
+	   this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ) );
+  connect( DispElmNames, SIGNAL( toggled( bool ) ),
+	   this, SLOT( NoticeMCAViewSetShowElements( bool ) ) );
+}
+
+void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
+{
+  if ( cMCAView != NULL )
+    cMCAView->setLog( f );
+}
+
+void MainWindow::NoticeMCAViewSetShowElements( bool f )
+{
+  if ( cMCAView != NULL )
+    cMCAView->setShowElements( f );
 }
 
 void MainWindow::AtomToggled( bool f, int i )
@@ -374,38 +391,56 @@ void MainWindow::StartMCA( void )
 
 void MainWindow::MCAViewDisconnects( void )
 {
+#if 0
+  // MCAView -> MainWindow への connect は MCAView 内で繋ぐ
+  // data-disp で表示した時、にマズイかも
   disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
 	      this, SLOT( showCurrentValues( int, int ) ) );
   disconnect( cMCAView, SIGNAL( newROI( int, int ) ),
 	      this, SLOT( setNewROI( int, int ) ) );
+  // MainWindow -> MCAView への connect はなくす (直接の関数呼び出しにする)
+  // こっちは OK
   disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
 	      cMCAView, SLOT( setLog( bool ) ) );
   disconnect( DispElmNames, SIGNAL( toggled( bool ) ),
 	      cMCAView, SLOT( setShowElements( bool ) ) );
+#endif
+  //  disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
+  //	      this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ) );
 }
 
 void MainWindow::MCAViewConnects( void )
 {
+#if 0
+  // MCAView -> MainWindow への connect は MCAView 内で繋ぐ
+  // data-disp で表示した時、にマズイかも
   connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
 	   this, SLOT( showCurrentValues( int, int ) ) );
   connect( cMCAView, SIGNAL( newROI( int, int ) ),
 	   this, SLOT( setNewROI( int, int ) ) );
+  // MainWindow -> MCAView への connect はなくす (直接の関数呼び出しにする)
+  // こっちは OK
   connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
 	   cMCAView, SLOT( setLog( bool ) ) );
   connect( DispElmNames, SIGNAL( toggled( bool ) ),
 	   cMCAView, SLOT( setShowElements( bool ) ) );
+#endif
 }
 
 void MainWindow::showCurrentValues( int atCur, int inROI )
 {
-  ValAtCurDisp->setText( QString::number( atCur ) );
-  ValInROIDisp->setText( QString::number( inROI ) );
+  if ( sender() == cMCAView ) {
+    ValAtCurDisp->setText( QString::number( atCur ) );
+    ValInROIDisp->setText( QString::number( inROI ) );
+  }
 }
 
 void MainWindow::setNewROI( int s, int e )
 {
-  ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
-  ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+  if ( sender() == cMCAView ) {
+    ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
+    ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+  }
 }
 
 void MainWindow::MCASequence( void )

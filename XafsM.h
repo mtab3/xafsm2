@@ -1,6 +1,8 @@
 #ifndef XAFSM_H
 #define XAFSM_H
 
+#include <QString>
+
 /******************************************************************************/
 /* Don't change these numbers ! without deep considerations.                  */
 /* Window design of the program is assuming these values are as defined here. */

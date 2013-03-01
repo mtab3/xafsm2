@@ -123,6 +123,186 @@
     </item>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_26">
+      <item row="0" column="1">
+       <widget class="QFrame" name="frame_3">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(245, 240, 220);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <property name="margin">
+          <number>5</number>
+         </property>
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Cur. Pos.: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="6">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="SelThEncorder">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually the &amp;quot;Encorder&amp;quot; should be selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Encorder</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="SelThCalcPulse">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The &amp;quot;Calc from Pulse&amp;quot; should not be used for usual measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Calc from Pulse</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="ShowCurrentEnergy">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 221);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string>10.0000</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QLabel" name="label_25">
+           <property name="text">
+            <string>Deg.  </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_26">
+           <property name="text">
+            <string>KeV  </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3" colspan="2">
+          <widget class="QLabel" name="ShowCurrentAngle">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 221);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string>10.0000</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QFrame" name="frame_18">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(245, 240, 220);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_45">
+         <property name="margin">
+          <number>5</number>
+         </property>
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <item row="1" column="0">
+          <widget class="QLabel" name="RingCurrent">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 221);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_72">
+           <property name="text">
+            <string>mA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>RIng Current</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QFrame" name="frame_4">
         <property name="sizePolicy">
@@ -293,185 +473,35 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QFrame" name="frame_3">
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(245, 240, 220);</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <property name="margin">
-          <number>5</number>
-         </property>
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_22">
-           <property name="text">
-            <string>Cur. Pos.: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="6">
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="SelThEncorder">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually the &amp;quot;Encorder&amp;quot; should be selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="text">
-              <string>Encorder</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="SelThCalcPulse">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The &amp;quot;Calc from Pulse&amp;quot; should not be used for usual measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="text">
-              <string>Calc from Pulse</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="ShowCurrentEnergy">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 221);</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="text">
-            <string>10.0000</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="5">
-          <widget class="QLabel" name="label_25">
-           <property name="text">
-            <string>Deg.  </string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_26">
-           <property name="text">
-            <string>KeV  </string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3" colspan="2">
-          <widget class="QLabel" name="ShowCurrentAngle">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 221);</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="text">
-            <string>10.0000</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QFrame" name="frame_18">
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(245, 240, 220);</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_45">
-         <property name="margin">
-          <number>5</number>
-         </property>
-         <property name="spacing">
-          <number>3</number>
-         </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="RingCurrent">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(255, 255, 221);</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="label_72">
-           <property name="text">
-            <string>mA</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>RIng Current</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+      <item row="0" column="3">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="HideCTRLPanel">
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Hide Tabs of Measurements and Settings</string>
+          </property>
+          <property name="text">
+           <string>Hide</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_28">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -5848,7 +5878,7 @@ Though, other parameters are fixed at the value on starting.</string>
      <x>0</x>
      <y>0</y>
      <width>811</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

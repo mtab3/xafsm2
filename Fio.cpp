@@ -336,8 +336,10 @@ void MainWindow::RecordData( void )
         out << buf;
       } else {
 	QVector<int> vals = SFluo->getCountsInROI();
+	QVector<double> darks = SFluo->getDarkCountsInROI();
 	for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
-          buf.sprintf(" %9d", vals[j] );
+          buf.sprintf(" %9d",
+		      (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
 	  out << buf;
 	}
 	buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる

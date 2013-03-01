@@ -7,10 +7,14 @@ ViewCTRL::ViewCTRL( void )
 
 bool ViewCTRL::setView( void *view, VTYPE vtype )
 {
-  if ( nowView != NULL ) {
-    if ( ! deleteView() ) {
-      return false;                // new view is rejected to be set 
-    }                              // since it can not be cleaned up.
+  if ( nowView != NULL ) {           // 現在の View は使用中
+    if ( vtype == nowVType ) {       // 表示しようとしているのと同じ種類のグラフなら
+      if ( ! deleteView() ) {        // 乗っ取りを企てる。
+	return false;                // ダメなら諦める。
+      }
+    } else {
+      return false;                  // 違う種類のグラフなら諦める
+    }
   }
   nowView = view;
   nowVType = vtype;

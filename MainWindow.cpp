@@ -323,7 +323,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
   case TYVIEW:
     newView = (void *)(new TYView); break;
   case MCAVIEW:
-    newView = (void *)(new MCAView);
+    newView = (void *)(new MCAView( this ));
     ((MCAView *)newView)->setKeV2Pix( kev2pix );
     ((MCAView *)newView)->setFDBase( fdbase );
     ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
@@ -363,7 +363,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
   return ViewCtrls[ ViewTab->currentIndex() ];
 }
 
-void MainWindow::ShowNewRingCurrent( QString Val, QStringList Vals )
+void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
 {
   RingCurrent->setText( Val );
 }

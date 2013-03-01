@@ -1,6 +1,8 @@
 #ifndef MCAVIEW_H
 #define MCAVIEW_H
 
+#include <QWidget>
+
 #include "ui_MCAView.h"
 #include "MouseC.h"
 #include "ChCoord.h"
@@ -14,6 +16,8 @@ class MCAView : public QFrame, private Ui::MCAView
   Q_OBJECT
 
 private:
+  QWidget *Parent;
+
   int valid;
   //  QVecotot<int *> MCAs;
   int *MCA;
