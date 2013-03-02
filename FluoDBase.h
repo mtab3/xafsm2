@@ -11,6 +11,7 @@ class Fluo
 
   bool operator<( const Fluo &one ) const { return val < one.val; }; 
 
+  bool dispf;
   QString fullName;
   QString aName;
   QString transName;
@@ -31,6 +32,9 @@ class FluoDBase : public QObject
 
  private:
   QVector<Fluo> fluos;
+
+ public slots:
+  void ElementSelected( bool f, int i );
 };
 
 #endif

@@ -243,42 +243,78 @@ void MCAView::Draw( QPainter *p )
     p->drawLine( cpx, TM, cpx, TM+VW );
   }
 
-  if ( showElements ) {
+  if ( showElements ) {   // 元素名表示
     if ( showElementsAlways ) {
+      // 元素名常時表示の場合
+      int dispx, dispw;
+      int lines = 16;            // 元素名は最大10段表示
+      QVector<int> lend;         // 格段の最終表示位置
+      for ( int i = 0; i < lines; i++ ) { lend << 0; }
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
 	QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE );
 	p->setPen( AListC );
 	for ( int i = 0; i < inRange.count(); i++ ) {
-	  double v = inRange[i].val;
-	  p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*3 );
-	  QString show = QString( "%1 %2" )
-	    .arg( inRange[i].fullName ).arg( inRange[i].val );
-	  rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+0.5), dLM * 9.5, dVW );
-	  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, show );
+	  if ( inRange[i].dispf ) {
+	    double v = inRange[i].val;
+	    QString show = inRange[i].fullName;
+	    if ( showElementsEnergy )
+	      show += " " + QString::number( inRange[i].val );
+	    dispx = cc.r2sx( v ) - dLM * 10;
+	    dispw = dLM * 9.5;
+	    int j;
+	    for ( j = 0; j < lines; j++ ) {
+	      if ( lend[j] < dispx ) {
+		p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+j) );
+		p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+j),
+			     cc.r2sx( v ) - dLM * 0.5, TM+VW-dVW*(4+j) );
+		rec.setRect( dispx, TM+VW-dVW*(4+j+0.5), dispw, dVW );
+		cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
+			     show );
+		lend[j] = dispx + dispw;
+		break;
+	      }
+	    }
+	    if ( j >= lines ) {
+	      p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+j) );
+	      p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+j),
+			   cc.r2sx( v ) - dLM * 0.5, TM+VW-dVW*(4+j) );
+	      rec.setRect( dispx, TM+VW-dVW*(4+j+0.5), dispw, dVW );
+	      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
+			   show );
+	      lend[j] = dispx + dispw;
+	    }
+	  }
 	}
       }
     } else {
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
-	// マウスカーソル付近の元素リスト
+	// マウスカーソル付近のみ元素名表示の場合
 	QVector<Fluo> nears = fdbase->nears( rmx );
 	p->setPen( AListC );
 	bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
 	for ( int i = 0; i < nears.count(); i++ ) {
 	  int pp;
-	  double v = nears[i].val;
-	  pp = ( isUpper ) ? i : ( nears.count() - i - 1 );
-	  p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+pp) );
-	  p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+pp), 
-		       cc.r2sx( v ) + ( ( isUpper ) ? -dLM * 0.5 : dLM * 0.5 ),
-		       TM+VW-dVW*(4+pp) );
-	  QString show = QString( "%1 %2" )
-	    .arg( nears[i].fullName ).arg( nears[i].val );
-	  if ( isUpper ) {
-	    rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
-	    cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, show );
-	  } else {
-	    rec.setRect( cc.r2sx( v ) + dLM * 0.5, TM+VW-dVW*(4+pp+0.5), dLM * 9.5, dVW );
-	    cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, show );
+	  if ( nears[i].dispf ) {
+	    double v = nears[i].val;
+	    pp = ( isUpper ) ? i : ( nears.count() - i - 1 );
+	    p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+pp) );
+	    p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+pp), 
+			 cc.r2sx( v ) + ( ( isUpper ) ? -dLM * 0.5 : dLM * 0.5 ),
+			 TM+VW-dVW*(4+pp) );
+	    QString show = nears[i].fullName;
+	    if ( showElementsEnergy )
+	      show += " " + QString::number( nears[i].val );
+	    if ( isUpper ) {
+	      rec.setRect( cc.r2sx( v ) - dLM * 10, TM+VW-dVW*(4+pp+0.5),
+			   dLM * 9.5, dVW );
+	      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
+			   show );
+	    } else {
+	      rec.setRect( cc.r2sx( v ) + dLM * 0.5, TM+VW-dVW*(4+pp+0.5),
+			   dLM * 9.5, dVW );
+	      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+			   show );
+	    }
 	  }
 	}
       }

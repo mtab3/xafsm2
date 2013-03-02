@@ -72,8 +72,10 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupReadDataArea();
 
   conds = new Conditions;
+#if 0
   conds->setEncAsTh( true );
   conds->setAddInfos( true );
+#endif
 
   StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
@@ -131,7 +133,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ) );
 
   s->AskStatus();
-
   s->MakeConnection();
 }
 
@@ -328,6 +329,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setFDBase( fdbase );
     ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
     ((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
+    ((MCAView *)newView)->setShowElementsEnergy( ShowElmEnergy->isChecked() );
     break;
   default:
     return NULL;

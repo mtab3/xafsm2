@@ -31,6 +31,7 @@ private:
   KeV2Pix *k2p;
   bool showElements;
   bool showElementsAlways;
+  bool showElementsEnergy;
 
   MMODE mMode;
   ChCoord cc;
@@ -76,6 +77,7 @@ public slots:
   void setROI( int s, int e );   // MCA pixel
   void setShowElements( bool show ) { showElements = show; };
   void setShowElementsAlways( bool show ) { showElementsAlways = show; };
+  void setShowElementsEnergy( bool show ) { showElementsEnergy = show; };
 
 signals:
   void CurrentValues( int atCur, int inROI );

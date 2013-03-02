@@ -196,7 +196,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   EncGrid->addWidget( EncB, 0, 2 );
   connect( EncB, SIGNAL( clicked() ), this, SLOT( setEnc() ) );
 
-  MainGrid->addWidget( conds, VItems++, 0, 1, 4 );
+  MainGrid->addWidget( conds, VItems++, 0, 1, 8 );
 
   QSizePolicy *HSP, *VSP;
   QLabel *HS, *VS;

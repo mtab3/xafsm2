@@ -341,7 +341,7 @@ void MainWindow::ShowTotal( void )
     TP += BlockPoints[i];
     TT0 += BlockPoints[i] * BlockDwell[i];
   } 
-  double TT = TT0;
+  double TT = TT0 + TP * 600. / 480.;    // Cu-Ka で 480点測定に10分余分にかかる
   buf.sprintf( "%4d", TP * SelRPT->value() );
   TPoints->setText( tr( "Points: " ) + buf );
   TT *= SelRPT->value();
@@ -692,10 +692,6 @@ void MainWindow::StartMeasurement( void )
 	return;
     }
 
-#if 0
-    if ( MeasView != NULL )
-      MeasViewDisconnects();
-#endif
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       // グラフ表示領域が確保できないとダメ
       return;
@@ -703,9 +699,6 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
-#if 0
-    MeasViewConnects();
-#endif
     for ( int i = 0; i < GSBs.count(); i++ ) {
       MeasView->ChooseAG( i, GSBs[i]->isChecked() );
     }
@@ -733,10 +726,10 @@ void MainWindow::StartMeasurement( void )
     MeasPause->setEnabled( true );
     
     MeasChNo = mUnits.count();         // 測定のチャンネル数
-    if ( Use19chSSD->isChecked() )
-      MeasChNo += ( MaxSSDs -1 );
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
-
+    if ( Use19chSSD->isChecked() ) {
+      MeasChNo += ( MaxSSDs -1 );
+    }
     MeasView->SetRLine( 0 );
     MeasView->SetLLine( 1 );
     MeasView->SetLR( 0, RIGHT_AX );

@@ -10,8 +10,11 @@ class Conditions : public QFrame, private Ui::Conditions
 public:
   Conditions();
 
+#if 0
   void setEncAsTh( bool encAsTh );
   void setAddInfos( bool addInfos );
+#endif
+
   bool isEncAsTh( void );
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );

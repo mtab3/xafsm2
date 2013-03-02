@@ -91,14 +91,18 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
     PT2->SetAColor( i, NonSelC );
   }
   connect( SelectElmNames, SIGNAL( clicked() ), PT2, SLOT( show() ) );
-  connect( PT2, SIGNAL( AtomToggled( bool, int ) ),
-	   this, SLOT( AtomToggled( bool, int ) ) );
   PT2->setAll();
+  connect( PT2, SIGNAL( AtomToggled( bool, int ) ),
+	   fdbase, SLOT( ElementSelected( bool, int ) ) );
 
   connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
 	   this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ) );
   connect( DispElmNames, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewSetShowElements( bool ) ) );
+  connect( ShowAlwaysSelElm, SIGNAL( toggled( bool ) ),
+	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
+  connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
+	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
 }
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
@@ -113,12 +117,16 @@ void MainWindow::NoticeMCAViewSetShowElements( bool f )
     cMCAView->setShowElements( f );
 }
 
-void MainWindow::AtomToggled( bool f, int i )
+void MainWindow::NoticeMCAViewShowAlwaysSelElm( bool f )
 {
-  PT2->SetAColor( i, f ? SelectC : NonSelC );
-  if ( cMCAView != NULL ) {
-    cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
-  }
+  if ( cMCAView != NULL )
+    cMCAView->setShowElementsAlways( f );
+}
+
+void MainWindow::NoticeMCAViewShowElmEnergy( bool f )
+{
+  if ( cMCAView != NULL )
+    cMCAView->setShowElementsEnergy( f );
 }
 
 void MainWindow::setAllROIs( void )

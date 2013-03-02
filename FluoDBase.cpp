@@ -27,6 +27,7 @@ FluoDBase::FluoDBase( void ) : QObject()
       for ( int i = 2; i < items.count() && i < 9; i++ ) {
 	if ( items[i].toDouble() != 0 ) {
 	  Fluo *fluo = new Fluo;
+	  fluo->dispf = true;
 	  fluo->aName = items[0];
 	  fluo->transName = TNames[ i - 2 ];
 	  fluo->aNumber = items[1].toInt();
@@ -115,5 +116,14 @@ int FluoDBase::nearest( double E, int s, int e )
     return nearest( E, np, e );
   } else {
     return nearest( E, s, np );
+  }
+}
+
+void FluoDBase::ElementSelected( bool f, int eNo )
+{
+  for ( int i = 0; i < fluos.count(); i++ ) {
+    if ( fluos[i].aNumber - 1 == eNo ) {
+      fluos[i].dispf = f;
+    }
   }
 }

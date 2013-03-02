@@ -19,7 +19,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   IsInt = false;
   HasParent = false;
   theParent = NULL;
-  for ( int i = 0; i < 20; i++ ) {
+  for ( int i = 0; i < MaxSSDs; i++ ) {
     MCARealTime[i] = MCALiveTime[i] = 0;
     SSDUsingCh[i] = true;
   }
@@ -43,7 +43,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   DarkCountsAll.clear();
   DarkTotalEvents.clear();
   DarkICRs.clear();
-  for ( int i = 0; i < 20; i++ ) {
+  for ( int i = 0; i < MaxSSDs; i++ ) {
     CountsInROI << 0;
     CountsAll << 0;
     TotalEvents << 0;

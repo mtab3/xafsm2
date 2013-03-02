@@ -439,7 +439,6 @@ private slots:
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   void setAllROIs( void );
-  void AtomToggled( bool f, int i );
   void MCAViewDisconnects( void );
   void MCAViewConnects( void );
 
@@ -455,6 +454,8 @@ private slots:
   void ReCalcSSDTotal( int i, bool f );
   void NoticeMCAViewSetDisplayLog( bool f );
   void NoticeMCAViewSetShowElements( bool f );
+  void NoticeMCAViewShowAlwaysSelElm( bool f );
+  void NoticeMCAViewShowElmEnergy( bool f );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

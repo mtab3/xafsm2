@@ -68,9 +68,9 @@ class AUnit : public QObject
   QStringList Values;
   QStringList MCAValues;
   QStringList MCAStats;
-  double MCARealTime[ 20 ];
-  double MCALiveTime[ 20 ];
-  bool SSDUsingCh[ 20 ];       // Only 19 is necessary, 20 is only for safety.
+  double MCARealTime[ MaxSSDs + 1 ];
+  double MCALiveTime[ MaxSSDs + 1 ];
+  bool SSDUsingCh[ MaxSSDs + 1 ];       // Only 19 is necessary, 20 is only for safety.
 
   int LocalStage;
   int lastSetV;
@@ -121,7 +121,7 @@ public:
   QString getSSDPresetType( void ) { return SSDPresetType; };
   void setROIs( QString *roistart, QString *roiend )
   { ROIStart = roistart; ROIEnd = roiend; };
-  void setSSDUsingCh( int i, bool f ) { if ( i < 19 ) SSDUsingCh[i] = f; };
+  void setSSDUsingCh( int i, bool f ) { if ( i < MaxSSDs ) SSDUsingCh[i] = f; };
   void setRangeSelectable( bool f ) { RangeSelectable = f; };
   void setRangeU( int upper ) { RangeU = upper; };
   void setRangeL( int lower ) { RangeL = lower; };
@@ -196,7 +196,8 @@ public:
   double stat( STATELM i );
   double realTime( int ch );
   double liveTime( int ch );
-  bool getSSDUsingCh( int i ) { if ( i < 19 ) return SSDUsingCh[i]; else return false; };
+  bool getSSDUsingCh( int i )
+  { if ( i < MaxSSDs ) return SSDUsingCh[i]; else return false; };
   bool isRangeSelectable( void ) { return RangeSelectable; };
   int getRangeU( void ) { return RangeU; };
   int getRangeL( void ) { return RangeL; };
