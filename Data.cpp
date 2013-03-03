@@ -12,6 +12,8 @@ Data::Data( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
+  u = new Units;
+
   SettingL = 0;
   SettingC = QColor( 0, 0, 0 );
   FSDialog = new QFileDialog;
@@ -182,7 +184,7 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
     view->SetRightName( "I0" );
   }
 
-  int L0 = view->GetLines();
+  int L0 = view->GetLines();  // ここで描画をはじめる前にすでに描画されている線の数
 
   Head9809 head;
   if ( ! head.readFromStream( in ) ) {
@@ -190,37 +192,42 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
     return;
   }
 
-  bool TrMode = ( head.getMode() == 0 );
-  //  QStringList ChModes = head.getChModes();
-  double x, I0, I, y;
+  //  bool TrMode = ( head.getMode() == 0 );
+  // 混在測定を許すのでファイル全体モードは
+  // あまり意味がない。
+
+  // 最初の x(to go), x(enc), dwell は抜いたデータのモードだけ返って来る。
+  QStringList ChModes0 = head.getChModes();
+
+  QVector<int> ChModes;
+  for ( int i = 0; i < ChModes0.count(); i++ ) {
+    ChModes << ChModes0[i].toInt();
+  }
+
+  bool dispf;
+  double x, I00, I, y;
+  I00 = 1;
   while ( ! in.atEnd() ) {
     line = in.readLine().simplified();
     vals = line.split( QRegExp( "\\s" ) );
     int Vals = vals.count();
-    x = vals.at( Vals - 2 ).toDouble();
-    I0 = vals.at( 3 ).toDouble();
-    view->NewPoint( L0, x, I0 );
-    for ( int i = 4; i < Vals - 2; i++ ) {
+    x = u->deg2keV( vals[0].toDouble() );
+    for ( int i = 3; i < Vals; i++ ) {
+      dispf = true;
       I = vals.at( i ).toDouble();
-      //      if ( ChModes[i-3].toInt() == 1 ) {
-      if ( TrMode ) {
-	if (( I > 0 )&&( I0 * I > 0 )) {
-	  y = exp( I0 / I );
-	} else {
-	  y = 1;
-	}
-      } else {
-	if ( I0 != 0 ) {
-	  y = I / I0;
-	} else {
-	  y = 1;
-	}
+      switch( ChModes[i-3] ) {
+      case I0:    y = I; I00 = I; break;
+      case TRANS: y = ( I != 0 ) ?  exp( fabs( I00 / I ) ) : 1; break;
+      case FLUO:  y = ( I00 != 0 ) ? I / I00 : 1; break;
+      default: dispf = false; break;
       }
-      view->NewPoint( L0+i-3, x, y );
+      if ( dispf ) {
+	view->NewPoint( L0+i-3, x, y );
+      }
     }
   }
 
-  int L = view->GetLines();
+  int L = view->GetLines();       // ここで描画した線もいれた線の数
   for ( int i = L0; i < L; i++ ) {
     SetColor( i - L0, view->GetColor( i ) );
     view->SetLR( i, LEFT_AX );  // 一旦全部は左軸
@@ -231,8 +238,8 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
   view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
   view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
 
-  XYLine0 = L0;
-  XYLines = L - L0 + 1;
+  XYLine0 = L0;          // このクラスで管理する線の番号の最初と、
+  XYLines = L - L0 + 1;  // その本数
   view0 = view;
 
   view->update();

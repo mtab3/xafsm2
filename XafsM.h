@@ -55,17 +55,6 @@ const MSPEEDD MSpeeds[ MSPEEDS ] = {
   { HIGH,   "High" },
 };
 
-struct UNITNAME {
-  QString name;
-  const char *form;
-};
-enum UNIT { EV, KEV, ANGS, DEG, UNITS };
-const UNITNAME UnitName[ UNITS ] = {
-  { "eV",  (const char*)"% 7.1f", },
-  { "keV", (const char*)"% 7.4f", },
-  { "A",   (const char*)"% 7.4f", },
-  { "deg", (const char*)"% 7.4f", },
-};
 
 enum ONFIN { RETURN, STAY, ONFINS };
 

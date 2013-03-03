@@ -36,16 +36,16 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 
   LC << QColor(   0,   0,   0 )
      << QColor( 255,   0,   0 ) << QColor(   0,   0, 255 ) << QColor(   0, 255,   0 )
-     << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
-     << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 )
+     << QColor( 200, 200,   0 ) << QColor( 240,   0, 240 ) << QColor(   0, 240, 240 )
+     << QColor( 160,   0,   0 ) << QColor(   0, 160,   0 ) << QColor(   0,   0, 160 )
      << QColor(   0,   0,   0 )
      << QColor( 255,   0,   0 ) << QColor(   0, 255,   0 ) << QColor(   0,   0, 255 )
-     << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
-     << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 )
+     << QColor( 200, 200,   0 ) << QColor( 240,   0, 240 ) << QColor(   0, 240, 240 )
+     << QColor( 160,   0,   0 ) << QColor(   0, 160,   0 ) << QColor(   0,   0, 160 )
      << QColor(   0,   0,   0 )
      << QColor( 255,   0,   0 ) << QColor(   0, 255,   0 ) << QColor(   0,   0, 255 )
-     << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
-     << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
+     << QColor( 200, 200,   0 ) << QColor( 240,   0, 240 ) << QColor(   0, 240, 240 )
+     << QColor( 160,   0,   0 ) << QColor(   0, 160,   0 ) << QColor(   0,   0, 160 );
 
   XShift = XShift0 = xshift = 0;
   for ( int i = 0; i < MAXLINES; i++ ) {

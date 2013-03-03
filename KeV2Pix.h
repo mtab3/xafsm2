@@ -23,7 +23,7 @@ class KeV2Pix : public QObject
  private:
   int dim;
   int MCALen;
-  QVector<double> ab[ MaxSSDs ];
+  QVector<double> ab[ MaxSSDs ];   // 現状 ab は、Pixel -> keV への変換行列
 
   bool calcAB( QVector<double> &x, QVector<double> &y, double *ab );
 };

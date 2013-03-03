@@ -138,7 +138,7 @@ void MCAView::Draw( QPainter *p )
     max = max0;
   }
   //  cc.SetRealCoord( 0, 0, MCALen-1, max );
-  cc.SetRealCoord( MinE, 0, MaxE, max );          // 今や横軸は MCA pixel ではなく、
+  cc.SetRealCoord( MinE, 0, MaxE, max );       // 今や横軸は MCA pixel ではなく、
                                                // エネルギ-[keV]
   // 正しく調整されていると MCP pixel = エネルギー[eV]/10 になっているはず。
 
@@ -246,8 +246,8 @@ void MCAView::Draw( QPainter *p )
   if ( showElements ) {   // 元素名表示
     if ( showElementsAlways ) {
       // 元素名常時表示の場合
-      int dispx, dispw;
-      int lines = 16;            // 元素名は最大10段表示
+      int dispx1, dispw;
+      int lines = 16;            // 元素名は最大16段表示
       QVector<int> lend;         // 格段の最終表示位置
       for ( int i = 0; i < lines; i++ ) { lend << 0; }
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
@@ -259,18 +259,18 @@ void MCAView::Draw( QPainter *p )
 	    QString show = inRange[i].fullName;
 	    if ( showElementsEnergy )
 	      show += " " + QString::number( inRange[i].val );
-	    dispx = cc.r2sx( v ) - dLM * 10;
+	    dispx1 = cc.r2sx( v ) - dLM * 10;
 	    dispw = dLM * 9.5;
 	    int j;
 	    for ( j = 0; j < lines; j++ ) {
-	      if ( lend[j] < dispx ) {
+	      if ( lend[j] < dispx1 ) {
 		p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+j) );
 		p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+j),
 			     cc.r2sx( v ) - dLM * 0.5, TM+VW-dVW*(4+j) );
-		rec.setRect( dispx, TM+VW-dVW*(4+j+0.5), dispw, dVW );
+		rec.setRect( dispx1, TM+VW-dVW*(4+j+0.5), dispw, dVW );
 		cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
 			     show );
-		lend[j] = dispx + dispw;
+		lend[j] = dispx1 + dispw;
 		break;
 	      }
 	    }
@@ -278,10 +278,10 @@ void MCAView::Draw( QPainter *p )
 	      p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+j) );
 	      p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+j),
 			   cc.r2sx( v ) - dLM * 0.5, TM+VW-dVW*(4+j) );
-	      rec.setRect( dispx, TM+VW-dVW*(4+j+0.5), dispw, dVW );
+	      rec.setRect( dispx1, TM+VW-dVW*(4+j+0.5), dispw, dVW );
 	      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
 			   show );
-	      lend[j] = dispx + dispw;
+	      lend[j] = dispx1 + dispw;
 	    }
 	  }
 	}

@@ -66,7 +66,7 @@ void MainWindow::WriteHeader( int Rpt )
       << " mA" << endl;
   out << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )   // Si(111)
       << QString( "    D= %1 A    " ).arg( mccd[ selmc->MC() ]->getD(), 8, 'f', 5, ' ' )
-      << QString( "Initial angle=%1 deg" ).arg( keV2deg( InitialKeV ), 9, 'f', 5, ' ' ) 
+      << QString( "Initial angle=%1 deg" ).arg( u->keV2deg( InitialKeV ), 9, 'f', 5, ' ' ) 
       << endl;
   out << " " << fixS( BLNAME, 5 ) << "    "
       << fixS( CMode[ MeasFileType ], 13 ) << QString( "(%1)" ).arg( MeasFileType, 2 )
@@ -102,9 +102,9 @@ void MainWindow::WriteHeader( int Rpt )
       out << " "
           << QString( "%1     %2%3%4%5%6" )
              .arg( i+1, 5 )
-             .arg( any2keV( SBLKUnit, SBlockStart[i] ) * 1000, 10, 'f', 2 )
-             .arg( any2keV( SBLKUnit, SBlockStart[i+1] ) * 1000, 10, 'f', 2 )
-             .arg( any2keV( SBLKUnit, SBlockStep[i] ) * 1000, 13, 'f', 2 )
+             .arg( u->any2keV( SBLKUnit, SBlockStart[i] ) * 1000, 10, 'f', 2 )
+             .arg( u->any2keV( SBLKUnit, SBlockStart[i+1] ) * 1000, 10, 'f', 2 )
+             .arg( u->any2keV( SBLKUnit, SBlockStep[i] ) * 1000, 13, 'f', 2 )
              .arg( SBlockDwell[i], 11, 'f', 2 )
              .arg( SBlockPoints[i], 10 )
           << endl;
@@ -314,11 +314,11 @@ void MainWindow::RecordData( void )
     // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
     if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
       buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9d",                 // 整数 : %9d
-                   keV2deg( GoToKeV ), recTh,
+                   u->keV2deg( GoToKeV ), recTh,
                    NowDwell, (int)MeasVals[ MC_I0 ] );
     } else {
       buf.sprintf( "%10.5f" " %9.5f" " %9.2f" " %9.6g",               // 実数 : %9.6g
-                   keV2deg( GoToKeV ), recTh,
+                   u->keV2deg( GoToKeV ), recTh,
                    NowDwell, MeasVals[ MC_I0 ] );
     }
     out << buf;
@@ -361,8 +361,8 @@ void MainWindow::RecordData( void )
     if ( conds->isAddInfos() ) {
       buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",
 		   GoToKeV,
-		   encTh, deg2keV( encTh ),
-		   PMTh, deg2keV( PMTh ) );
+		   encTh, u->deg2keV( encTh ),
+		   PMTh, u->deg2keV( PMTh ) );
       out << buf;
     }
     out << endl;

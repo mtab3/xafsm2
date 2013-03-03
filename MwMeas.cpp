@@ -297,11 +297,12 @@ void MainWindow::ShowBLKs( void )
   int i;
 
   for ( i = 0; i < MaxBLKs; i++ ) {
-    buf.sprintf( UnitName[ BLKUnit ].form, keV2any( BLKUnit, BlockStart[i] ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
     BLKstart[i]->setText( buf );
     if ( BlockPoints[i] > 0 ) {
       buf.sprintf( UnitName[ BLKUnit ].form,
-	       ( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	       ( u->keV2any(BLKUnit, BlockStart[i+1])
+		 - u->keV2any(BLKUnit, BlockStart[i]) )
 	       / BlockPoints[ i ] );
       BLKstep[i]->setText( buf );
     } else {
@@ -312,7 +313,7 @@ void MainWindow::ShowBLKs( void )
     buf.sprintf( "% 4d", BlockPoints[i] );
     BLKpoints[i]->setText( buf );
   }
-  buf.sprintf( UnitName[ BLKUnit ].form, keV2any( BLKUnit, BlockStart[i] ) );
+  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
   BLKstart[i]->setText( buf );
 
   ShowTotal();
@@ -359,18 +360,20 @@ void MainWindow::ChangeBLKstart( void )
 {
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     if ( BLKstart.at(i) == sender() ) {
-      BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
+      BlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
       double step = BLKstep[i]->text().toDouble();
       if ( step != 0 ) {
 	BlockPoints[i]
-	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
+		   - u->keV2any(BLKUnit, BlockStart[i]) )
 		 /step )+0.5;
       }
       if ( i > 0 ) {
 	double step = BLKstep[i-1]->text().toDouble();
 	if ( step != 0 ) {
 	  BlockPoints[i-1]
-	    = fabs(( keV2any(BLKUnit, BlockStart[i]) - keV2any(BLKUnit, BlockStart[i-1]) )
+	    = fabs(( u->keV2any(BLKUnit, BlockStart[i])
+		     - u->keV2any(BLKUnit, BlockStart[i-1]) )
 		   /step )+0.5;
 	}
       }
@@ -388,7 +391,8 @@ void MainWindow::ChangeBLKstep( void )
       step = BLKstep[i]->text().toDouble();
       if ( step != 0 ) {
 	BlockPoints[i]
-	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
+		   - u->keV2any(BLKUnit, BlockStart[i]) )
 		 /step )+0.5;
       }
       ShowBLKs();
@@ -715,11 +719,11 @@ void MainWindow::StartMeasurement( void )
     }
 
     NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
-    InitialKeV = deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
+    InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( "background-color: yellow" );
@@ -749,9 +753,9 @@ void MainWindow::StartMeasurement( void )
     StopP->show();
     SinPause = inPause;
     NewLogMsg( tr( "Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
@@ -776,9 +780,9 @@ void MainWindow::SurelyStop( void )
     MeasDarkStage = 0;
   }
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	     .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	     .arg( SelectedCurPosDeg( XENC ) )
-	     .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	     .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
@@ -806,16 +810,16 @@ void MainWindow::GoingOn( void )
   MeasPause->setEnabled( true );
   if ( SinPause == 1 ) {
     NewLogMsg( tr( "Meas: Pausing %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
   } else {
     NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
@@ -843,18 +847,18 @@ void MainWindow::PauseMeasurement( void )
 {
   if ( inPause == 0 ) {
     NewLogMsg( tr( "Meas: Pause %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
   } else {
     NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );

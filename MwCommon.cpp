@@ -9,7 +9,7 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
 
-  MonoCryD = mccd[ selmc->MC() ]->getD();     // Si (111) 
+  u->setD( mccd[ selmc->MC() ]->getD() );     // default D is Si (111) 
 
   SelectedA = Cu;
   SelectedE = Kedge;
@@ -56,7 +56,7 @@ void MainWindow::Hide( bool f )
 
 void MainWindow::NewSelA( int i )
 {
-  if ( keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
+  if ( u->keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
     SelectedA = (AtomNo)i;
     SelectTA->setCurrentIndex( i );
     ShowTAE();
@@ -64,7 +64,7 @@ void MainWindow::NewSelA( int i )
   } else {
     // エネルギーが範囲外だった場合、
     if ( SelectedE != Kedge ) {   // もし L エッジを選択していたら、K エッジを試してみる。
-      if ( keV2deg( Vic[ i ].AE[ Kedge ] ) > 0 ) {
+      if ( u->keV2deg( Vic[ i ].AE[ Kedge ] ) > 0 ) {
 	SelectedA = (AtomNo)i;
 	SelectedE = Kedge;
 	SelectTA->setCurrentIndex( i );
@@ -74,7 +74,7 @@ void MainWindow::NewSelA( int i )
 	return;
       }
     } else {  // もし K エッジを選択していたら LIII を試してみる
-      if ( keV2deg( Vic[ i ].AE[ LIIIedge ] ) > 0 ) {
+      if ( u->keV2deg( Vic[ i ].AE[ LIIIedge ] ) > 0 ) {
 	SelectedA = (AtomNo)i;
 	SelectedE = LIIIedge;
 	SelectTA->setCurrentIndex( i );
@@ -91,7 +91,7 @@ void MainWindow::NewSelA( int i )
 
 void MainWindow::NewSelE( int i )
 {
-  if ( keV2deg( Vic[ SelectedA ].AE[ i ] ) > 0 ) {
+  if ( u->keV2deg( Vic[ SelectedA ].AE[ i ] ) > 0 ) {
     SelectedE = (AbEN)i;
     ShowTAE();
     SetNewGos();
@@ -105,7 +105,7 @@ void MainWindow::ShowTAE( void )
 {
   QString buf;
   
-  buf.sprintf( UnitName[DEG].form, keV2deg( Vic[SelectedA].AE[SelectedE] ) );
+  buf.sprintf( UnitName[DEG].form, u->keV2deg( Vic[SelectedA].AE[SelectedE] ) );
   ManTEdeg->setText( buf );
   buf.sprintf( UnitName[KEV].form, Vic[SelectedA].AE[SelectedE] );
   ManTEkeV->setText( buf );
@@ -115,7 +115,7 @@ void MainWindow::ManSelTEdeg( void )
 {
   QString buf;
 
-  buf.sprintf( UnitName[KEV].form, deg2keV( ManTEdeg->text().toDouble() ) );
+  buf.sprintf( UnitName[KEV].form, u->deg2keV( ManTEdeg->text().toDouble() ) );
   ManTEkeV->setText( buf );
   SetNewGos();
 }
@@ -124,7 +124,7 @@ void MainWindow::ManSelTEkeV( void )
 {
   QString buf;
 
-  buf.sprintf( UnitName[DEG].form, keV2deg( ManTEkeV->text().toDouble() ) );
+  buf.sprintf( UnitName[DEG].form, u->keV2deg( ManTEkeV->text().toDouble() ) );
   ManTEdeg->setText( buf );
   SetNewGos();
 }
@@ -139,9 +139,9 @@ void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置
   MMainTh->setIsBusy( true );
 
   if ( SelThEncorder->isChecked() ) {
-    MMainTh->SetValue( ( keV2deg( keV ) - EncMainTh->value().toDouble() )
+    MMainTh->SetValue( ( u->keV2deg( keV ) - EncMainTh->value().toDouble() )
 		       / MMainTh->getUPP() + MMainTh->value().toInt() );
   } else {
-    MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
+    MMainTh->SetValue( u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
   }
 }

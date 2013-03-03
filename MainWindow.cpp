@@ -23,6 +23,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
+  u = new Units;
 #if 0
   int dim = kev2pix->getDim();
   for ( int i = 0; i < MaxSSDs; i++ ) {
@@ -92,7 +93,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( selmc, SIGNAL( NewLogMsg( QString ) ),
 	   this, SLOT( NewLogMsg( QString ) ) );
   connect( selmc, SIGNAL( NewLatticeConstant( double ) ),
-	   this, SLOT( SetNewLatticeConstant( double ) ) );
+	   u, SLOT( setD( double ) ) );
   //  connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ) );
 
   connect( starsSV, SIGNAL( SSVNewAddress( const QString & ) ),
@@ -289,7 +290,7 @@ void MainWindow::ShowCurThPos( void )
 
     buf1.sprintf( UnitName[KEV].form, deg );
     ShowCurrentAngle->setText( buf1 );
-    buf2.sprintf( UnitName[DEG].form, deg2keV( deg ) );
+    buf2.sprintf( UnitName[DEG].form, u->deg2keV( deg ) );
     ShowCurrentEnergy->setText( buf2 );
     
     NewLogMsg( tr( "Current Position [%1] deg [%2] keV" ).arg( buf1 ).arg( buf2 ) );

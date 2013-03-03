@@ -58,10 +58,10 @@ void MainWindow::MeasSequence( void )
     // break;       MeasStage == 2 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)
   case 4:
-    Delta = keV2any( SBLKUnit, SBlockStart[MeasB+1] )
-      - keV2any( SBLKUnit, SBlockStart[MeasB] );
-    GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
-		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
+    Delta = u->keV2any( SBLKUnit, SBlockStart[MeasB+1] )
+      - u->keV2any( SBLKUnit, SBlockStart[MeasB] );
+    GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
+		       + u->keV2any( SBLKUnit, SBlockStart[MeasB] ) );
     MoveCurThPosKeV( GoToKeV );     // 軸の移動
     mUnits.clearStage();
     if ( mUnits.isParent() )

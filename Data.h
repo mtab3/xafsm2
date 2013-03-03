@@ -5,6 +5,7 @@
 #include <QColorDialog>
 
 #include "ui_Data.h"
+#include "Units.h"
 
 class ViewCTRL;
 class XYView;
@@ -16,6 +17,8 @@ class Data : public QFrame, private Ui::Data
   Q_OBJECT
 
  private:
+  Units *u;
+
   int SettingL;
   QColor SettingC;
   QFileDialog *FSDialog;

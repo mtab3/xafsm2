@@ -388,13 +388,13 @@ void MainWindow::ShowGo( int i )
   QString buf;
 
   UNIT unit = (UNIT)GoUnit[i]->currentIndex();
-  buf.sprintf( UnitName[unit].form, keV2any( unit, GoPosKeV[ i ] ) );
+  buf.sprintf( UnitName[unit].form, u->keV2any( unit, GoPosKeV[ i ] ) );
   GoPosEdit[i]->setText( buf );
 }
 
 void MainWindow::GetNewGo( int i )
 {
-  GoPosKeV[i] = any2keV( (UNIT)GoUnit[i]->currentIndex(),
+  GoPosKeV[i] = u->any2keV( (UNIT)GoUnit[i]->currentIndex(),
 			 GoPosEdit[i]->text().toDouble() );
 }
 
