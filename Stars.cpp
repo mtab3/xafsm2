@@ -10,10 +10,21 @@
 Stars::Stars( void ) : QObject()
 {
   ss = NULL;
+  emit SSisActive( false );
   StarsServer = STARSSERVER;
   StarsSPort  = STARSPORT;
   newSetting = true;
   ConnectionStage = CSTAGE0;
+}
+
+Stars::~Stars( void ) 
+{
+  if ( ss != NULL ) {
+    ss->disconnectFromHost();
+    delete ss;
+    ss = NULL;
+    emit SSisActive( false );
+  }
 }
 
 void Stars::SetNewSVAddress( const QString &item )
@@ -25,6 +36,7 @@ void Stars::SetNewSVAddress( const QString &item )
     delete ss;
     ss = NULL;
     newSetting = true;
+    emit SSisActive( false );
   }
 
   emit RecordSSVHistoryA( item );
@@ -39,6 +51,7 @@ void Stars::SetNewSVPort( const QString &item )
     delete ss;
     ss = NULL;
     newSetting = true;
+    emit SSisActive( false );
   }
 
   emit RecordSSVHistoryP( item );
@@ -49,7 +62,8 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
   bool FileOK = false;
 
   MyNameOnStars = DefaultName;
-  qDebug() << "set name " << MyNameOnStars;
+
+  MaxKeys = 0;
 
   QFile file;
   if ( SelectedName != "" ) {
@@ -79,11 +93,7 @@ void Stars::ReadStarsKeys( QString SelectedName, QString DefaultName )
       keys << item;
     }
   }
-
-  MaxKeys = 0;
-  foreach( QString i, keys ) {
-    MaxKeys++;
-  }
+  MaxKeys = keys.count();
 
   file.close();
 }
@@ -101,9 +111,21 @@ void Stars::ReConnect( void )
     delete ss;
     ss = NULL;
     newSetting = true;
+    emit SSisActive( false );
   }
 
   emit ReConnected();
+}
+
+void Stars::AskStatus( void )
+{
+  if ( ss == NULL ) {
+    emit SSisActive( false );
+  } else {
+    emit SSisActive( ss->state() == QAbstractSocket::ConnectedState );
+  }
+  emit ConnectingServer( StarsServer );
+  emit ConnectingPort( StarsSPort );
 }
 
 /** サーバとの接続 **/
@@ -120,8 +142,10 @@ void Stars::MakeConnection( void )
       if ( ss == NULL )
 	ss = new QTcpSocket;
       
-      emit AskRecord( tr( "Connecting Stars Server [%1] [%2] as [%3]" ).
-		      arg( StarsServer ).arg( StarsSPort ).arg( MyNameOnStars ) );
+      emit ConnectingServer( StarsServer );
+      emit ConnectingPort( StarsSPort );
+      emit AskRecord( tr( "Connecting Stars Server [%1] [%2] as [%3]" )
+		      .arg( StarsServer ).arg( StarsSPort ).arg( MyNameOnStars ) );
       ConnectionStage = CSTAGE0;
       connect( ss, SIGNAL( readyRead( void ) ),
 	       this, SLOT( ReceiveMessageFromStars( void ) ) );
@@ -141,7 +165,6 @@ void Stars::ReceiveMessageFromStars( void )
   case CSTAGE0: 
     RBuf = ss->readLine( 4000 );
     RBuf = RBuf.simplified();
-    qDebug() << "My Name on Stars " << MyNameOnStars;
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;
     ss->write( WBuf.toAscii() );
@@ -157,17 +180,24 @@ void Stars::ReceiveMessageFromStars( void )
       ConnectionStage = CSTAGEEND;
       emit AskRecord( tr( "Success to connect." ) );
       emit ConnectionIsReady();
+      emit SSisActive( true );
     }
     break;
   case CSTAGEEND:
     while( ss->canReadLine() ) {
-      RBuf = ss->readLine( 4000 );
+      RBuf = ss->readLine( 160000 );
+      // 160000 / 8000 = 20  dummy MCA でも 1チャンネルの数字が 20byte 以下なら大丈夫
       RBuf = RBuf.simplified();
       
       switch( smsg.ParseMsg( RBuf ) ) {
       case RES_MSG:
 	emit AskRecord( tr( "Receive an answer from Stars [%1]" ).arg( RBuf.data() ) );
+	if ( smsg.Val() == "Er:" ) {
+	  emit ReceiveError( smsg ); break;
+	}
 	switch( smsg.Msgt() ) {
+	case LISTNODES:
+	  emit AnsListNodes( smsg ); break;
 	case GETVALUE:
 	  emit AnsGetValue( smsg ); break;
 	case GETSPEEDSELECTED:
@@ -192,6 +222,10 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetNPLCycles( smsg ); break;
 	case RUN:
 	  emit AnsRun( smsg ); break;
+	case SETRANGE:
+	  emit AnsSetRange( smsg ); break;
+	case GETRANGE:
+	  emit AnsGetRange( smsg ); break;
 	case SCANCW:
 	  emit AnsScanCw( smsg ); break;
 	case SCANCCW:
@@ -220,6 +254,56 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsCounterReset( smsg ); break;
 	case COUNTSTART:
 	  emit AnsCountStart( smsg ); break;
+	case SETPRESETTYPE:
+	  emit AnsSetPresetType( smsg ); break;
+	case SETPRESETVALUE:
+	  emit AnsSetPresetValue( smsg ); break;
+	case GETVALUES:
+	  emit AnsGetValues( smsg ); break;
+	case RUNSTART:
+	  emit AnsRunStart( smsg ); break;
+	case RUNSTOP:
+	  emit AnsRunStop( smsg ); break;
+	case RESUME:
+	  emit AnsResume( smsg ); break;
+	case GETREALTIME:
+	  emit AnsGetRealTime( smsg ); break;
+	case GETLIVETIME:
+	  emit AnsGetLiveTime( smsg ); break;
+	case GETSTATUS:
+	  emit AnsGetStatus( smsg ); break;
+	case SETROI:
+	  emit AnsSetROI( smsg ); break;
+	case SETROIS:
+	  emit AnsSetROIs( smsg ); break;
+	case SETCALIBRATION:
+	  emit AnsSetCalibration( smsg ); break;
+	case SETTHRESHOLD:
+	  emit AnsSetThreshold( smsg ); break;
+	case SETPEAKINGTIME:
+	  emit AnsSetPeakingTime( smsg ); break;
+	case SETDYNAMICRANGE:
+	  emit AnsSetDynamicRange( smsg ); break;
+	case GETCALIBRATION:
+	  emit AnsGetCalibration( smsg ); break;
+	case GETTHRESHOLD:
+	  emit AnsGetThreshold( smsg ); break;
+	case GETPEAKINGTIME:
+	  emit AnsGetPeakingTime( smsg ); break;
+	case GETDYNAMICRANGE:
+	  emit AnsGetDynamicRange( smsg ); break;
+	case GETPREAMPGAIN:
+	  emit AnsGetPreAMPGain( smsg ); break;
+	case GETMCALENGTH:
+	  emit AnsGetMCALength( smsg ); break;
+	case GETMCA:
+	  emit AnsGetMCA( smsg ); break;
+	case GETSTATISTICS:
+	  emit AnsGetStatistics( smsg ); break;
+	case SETMODE:
+	  emit AnsSetMode( smsg ); break;
+	case SETCOUNTPRESET:
+	  emit AnsSetCountPreset( smsg ); break;
 	default:
 	  break;
 	}
@@ -231,6 +315,12 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit EvChangedValue( smsg ); break;
 	case EvISBUSY: 
 	  emit EvIsBusy( smsg ); break;
+	case EvCONNECTED: 
+	  emit EvConnected( smsg ); break;
+	case EvDISCONNECTED: 
+	  emit EvDisconnected( smsg ); break;
+	case EvREPORTCURRENT: 
+	  emit EvReportCurrent( smsg ); break;
 	default: 
 	  break;
 	}
@@ -245,37 +335,8 @@ void Stars::ReceiveMessageFromStars( void )
   }
 }
 
-#if 0
-bool Stars::SendCMD( QString dev, QString cmd1, QString cmd2 )
-{
-  if ( MakeConnection() == false ) {
-    emit AskRecord( tr( "Failure to connect Stars." ) );
-    return false;          // コネクションをはれないと false
-  }
-
-  if ( ConnectionStage != CSTAGEEND )
-    return;
-
-  QString Cmd = dev + " " + cmd1;
-  if ( !cmd2.isEmpty() )
-    Cmd += " " + cmd2;
-  Cmd += "\n";
-
-  emit AskRecord( tr( "Sending a message [%1] to Stars" ).arg( Cmd ) );
-  ss->write( Cmd.toAscii() );
-
-  return true;
-}
-#endif
-
 bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
 {
-#if 0
-  if ( MakeConnection() == false ) {
-    emit AskRecord( tr( "Failure to connect Stars." ) );
-    return false;          // コネクションをはれないと false
-  }
-#endif
   if ( ConnectionStage != CSTAGEEND )
     return false;
 

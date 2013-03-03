@@ -4,46 +4,97 @@
 #include <QString>
 
 enum MSGTYPE {
-  GETVALUE,                  // 0
+  LISTNODES,
+
+  // PM16C and keithley
+  GETVALUE, 
   GETSPEEDSELECTED,
   SPEEDHIGH,
   SPEEDMIDDLE,
-  SPEEDLOW,                  // 4
+  SPEEDLOW, 
   STOP,
   REMOTE,
   STOPEMERGENCY,
   STANDBY,
-  RESET,                     // 9
+  RESET,
   SETDATAFORMAT,
   SETZEROCHECK,
   SETAUTORANGE,
   SETNPLCYCLES,
-  RUN,                       // 14
+  RUN,
+  SETRANGE,
+  GETRANGE,
   SCANCW,
   SCANCCW,
   READ,
   ISBUSY,
 
-  SETABSOLUTEVOLTAGE,        // 19
+  // piezo
+  SETABSOLUTEVOLTAGE,
   SETABSOLUTEPOSITION,
   SETRELATIVEVOLTAGE,
   SETRELATIVEPOSITION,
   SETSPEEDHIGH,
-  SETSPEEDMIDDLE,            // 24
+  SETSPEEDMIDDLE,
   SETSPEEDLOW,
 
+  // NCT08
   SETSTOPMODE,
   SETTIMERPRESET,
   COUNTERRESET,
-  COUNTSTART,                // 29
+  COUNTSTART,
 
+  // MCA SSD
+  SETPRESETTYPE,
+  SETPRESETVALUE,
+  GETVALUES,
+  RUNSTART,
+  RUNSTOP,
+  RESUME,
+  GETREALTIME,
+  GETLIVETIME,
+  GETSTATUS,
+  SETROI,
+  SETROIS,
+  SETCALIBRATION,
+  SETTHRESHOLD,
+  SETPEAKINGTIME,
+  SETDYNAMICRANGE,
+  GETCALIBRATION,
+  GETTHRESHOLD,
+  GETPEAKINGTIME,
+  GETDYNAMICRANGE,
+  GETPREAMPGAIN,
+  GETMCALENGTH,
+  GETMCA,
+  GETSTATISTICS,
+
+  // ortec974
+  // RESET,          //  already is
+  SETMODE,
+  SETCOUNTPRESET,
+  // COUNTERRESET,   // already is 
+  // RUN,            // already is
+  // STOP,           // already is
+  // GETVALUE,       // already is
+  // _EvChangedIsBusy  // already is
+  // _EvChangedValue   // already is
+
+  EvCONNECTED,
+  EvDISCONNECTED,
   EvCHANGEDVALUE,
   EvISBUSY,
-  NOTMSG,                    // 32
+  EvREPORTCURRENT,
+  NOTMSG,
 };
 
-extern const QString MsgType[];
-extern MSGTYPE MsgTypeV[];
+
+struct MsgTyp {
+  QString T;
+  MSGTYPE V;
+};
+
+extern const MsgTyp MsgT[];
 
 #endif
 

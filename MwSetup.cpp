@@ -11,6 +11,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   inMonitor = 0;
   inSPSing = 0;
 
+  ScanView = NULL;
+  MonitorView = NULL;
+
   RadioBOn = "background-color: rgb(255,255,000)";
   RadioBOff = "background-color: rgb(210,210,230)";
   GoMRelAbs = REL;
@@ -21,6 +24,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoMSpeed = MIDDLE;
 
   setupMDispFirstTime = true;
+  monRecF = false;
 
   GoPosKeV[0] = Eg - 0.50;
   GoPosKeV[1] = Eg - 0.05;
@@ -34,7 +38,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       GoUnit[j]->addItem( QString( UnitName[i].name ) );
     }
   }
-
   GoUnit0->setCurrentIndex( KEV );
   for ( int i = 0; i < GOS; i++ ) {
     GoUnit[i]->setCurrentIndex( KEV );
@@ -47,7 +50,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( GoUnit[i], SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( ShowAllGos() ) );
   }
-
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoPosEdit[i], SIGNAL( editingFinished() ),
 	     this, SLOT( GetNewGos() ) );
@@ -58,7 +60,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
   }
-
   for ( int i = 0; i < MSPEEDS; i++ ) {
     GoMotorS->addItem( MSpeeds[i].MSName );
     SPSMotorS->addItem( MSpeeds[i].MSName );
@@ -70,15 +71,58 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
+    SelectD10->addItem( ASensors.value(i)->getName() );
     SelectD20->addItem( ASensors.value(i)->getName() );
     SelectD21->addItem( ASensors.value(i)->getName() );
     SelectD22->addItem( ASensors.value(i)->getName() );
+    SelectD3->addItem( ASensors.value(i)->getName() );
+    connect( ASensors.value(i), SIGNAL( newDark( double ) ),
+	     this, SLOT( ShowNewDark( double ) ) );
+    if ( ASensors.at(i)->isRangeSelectable() ) {
+      SelSensToSetRange->addItem( ASensors.at(i)->getName() );
+      SensWithRange << ASensors.at(i);
+      ASensors.at(i)->setRange( ASensors.at(i)->getRangeU() );
+      connect( ASensors.at(i), SIGNAL( AskedNowRange( int ) ),
+	       this, SLOT( GotNowRange( int ) ) );
+    }
   }
+
+  if ( SensWithRange.count() > 0 ) {
+    RangeSelect->setRange( SensWithRange.at(0)->getRangeL(),
+			   SensWithRange.at(0)->getRangeU() );
+    RangeSelect->setValue( SensWithRange.at(0)->getRange() );
+    SetAutoRangeMode( 0 );
+  }
+
+  connect( SelectAutoRange, SIGNAL( toggled( bool ) ),
+	   this, SLOT( SelAutoRange( bool ) ) );
+  connect( SelSensToSetRange, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelected( int ) ) );
+  connect( RangeSelect, SIGNAL( valueChanged( int ) ),
+	   this, SLOT( newRangeSelected( int ) ) );
+  connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ) );
+  connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ) );
+
+  InputDark
+    ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
+  connect( SelectD3, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( NewDarkChSelected( int ) ) );
+  connect( SetDark, SIGNAL( clicked() ), this, SLOT( AskedToSetDark() ) );
 
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
   }
   MonStage = 0;
+
+  scanFSel = new QFileDialog;
+  scanFSel->setAcceptMode( QFileDialog::AcceptSave );
+  scanFSel->setDirectory( QDir::currentPath() );
+  scanFSel->setFilter( "*.dat" );
+
+  monFSel = new QFileDialog;
+  monFSel->setAcceptMode( QFileDialog::AcceptSave );
+  monFSel->setDirectory( QDir::currentPath() );
+  monFSel->setFilter( "*.dat" );
 
   connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ) );
   connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ) );
@@ -102,6 +146,124 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( SetUpMMAbs, SIGNAL( clicked() ), this, SLOT( MMAbs() ) );
   connect( SetUpSPSRel, SIGNAL( clicked() ), this, SLOT( SPSRel() ) );
   connect( SetUpSPSAbs, SIGNAL( clicked() ), this, SLOT( SPSAbs() ) );
+
+  connect( SelMonRecFile, SIGNAL( clicked() ), monFSel, SLOT( show() ) );
+  connect( monFSel, SIGNAL( fileSelected( const QString & ) ),
+	   this, SLOT( setSelectedMonFName( const QString & ) ) );
+
+  connect( SelScanRecFile, SIGNAL( clicked() ), scanFSel, SLOT( show() ) );
+  connect( scanFSel, SIGNAL( fileSelected( const QString & ) ),
+	   this, SLOT( setSelectedScanFName( const QString & ) ) );
+  connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
+}
+
+void MainWindow::newSensSelected( int i )
+{
+  RangeSelect->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+  RangeSelect->setValue( SensWithRange.at(i)->getRange() );
+  SetAutoRangeMode( i );
+}
+
+void MainWindow::SetAutoRangeMode( int i )
+{
+  if ( SensWithRange.at(i)->isAutoRangeAvailable() ) {
+    SelectAutoRange->setEnabled( true );
+    if ( SensWithRange.at(i)->isAutoRange() ) {
+      RangeSelect->setEnabled( false );
+      SelectAutoRange->setChecked( true );
+    } else {
+      RangeSelect->setEnabled( true );
+      SelectAutoRange->setChecked( false );
+    }
+  } else {
+    SelectAutoRange->setEnabled( false );
+  }
+}
+
+void MainWindow::SelAutoRange( bool Auto )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )->setAutoRange( Auto );
+  RangeSelect->setEnabled( !Auto );
+}
+
+void MainWindow::newRangeSelected( int i )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )->setRange( i );
+}
+
+void MainWindow::askNowRange( void )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )->GetRange();
+}
+
+void MainWindow::askNowRanges( void )
+{
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    SensWithRange.at( i )->GetRange();
+  }
+}
+
+void MainWindow::GotNowRange( int r ) // This function is pure SLOT as it used 'sender()'
+{
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if ( SensWithRange.at( i ) == sender() ) {
+      SensWithRange.at( i )->setRange( r );
+      if ( i == SelSensToSetRange->currentIndex() )
+	RangeSelect->setValue( r );
+    }
+  }
+}
+
+void MainWindow::saveScanData( void )
+{
+  if ( ScanView == NULL ) {
+    statusbar->showMessage( tr( "Scan data is not valid" ), 2000 );
+    return;
+  }
+  if ( ScanRecFile->text().isEmpty() ) {
+    statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
+    return;
+  }
+
+  QFile f( ScanRecFile->text() );
+  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+    statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+			    2000 );
+    return;
+  }
+  QTextStream out( &f );
+
+  AUnit *am = AMotors.value( ScanMotor );
+
+  out << "# XafsM2 Scan Data\n";
+  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  out << "#\t";
+  for ( int i = 0; i < mUnits.count(); i++ )
+    out << mUnits.at(i)->getName() << "\t";
+  out << am->getName() << "\t";
+  out << SPSUnit->itemText( SPSSelU ) << "\t";
+  out << SPSUPP << "\t";
+  out << am->getCenter() << "\n";
+
+  int points = ScanView->GetPoints( 1 );
+
+  for ( int i = 0; i < points; i++ ) {
+    out << ScanView->GetX( 0, i )
+	<< "\t" << ScanView->GetY( 0, i ) << "\t" << ScanView->GetY( 1, i ) << "\n";
+  }
+
+  f.close();
+}
+
+void MainWindow::setSelectedMonFName( const QString &fname )
+{
+  MonRecFile->setText( fname );
+}
+
+void MainWindow::setSelectedScanFName( const QString &fname )
+{
+  ScanRecFile->setText( fname );
 }
 
 void MainWindow::MMRel( void )
@@ -171,19 +333,25 @@ void MainWindow::ShowGoMSpeed( void )
 void MainWindow::ShowCurMotorPos( SMsg msg )
 {
   QString buf;
+  QString val0;
   QString val;
 
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
   if ( ( msg.From() == am->getDevCh() )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) ) ) {
-    MCurPosPuls->setText( msg.Val() );
+    if ( ( am->getType() == "SC" ) && ( msg.Msgt() == GETVALUE ) ) {
+      val0 = msg.Vals().at(1);
+    } else {
+      val0 = msg.Val();
+    }
+    MCurPosPuls->setText( val0 );
     val = QString::number
-      ( ( msg.Val().toDouble() - am->getCenter() ) * am->getUPP() );
+      ( ( val0.toDouble() - am->getCenter() ) * am->getUPP() );
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
       if ( GoMRelAbs == ABS ) {
-	GoMotorPosPuls->setText( msg.Val() );
+	GoMotorPosPuls->setText( val0 );
 	GoMotorPosUnit->setText( val );
 	setupMDispFirstTime = false;
       } else {
@@ -193,7 +361,7 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
       }
     }
     if ( am->checkNewVal() ) {
-      NewLogMsg( tr( "Current Position of [%1] : [%2] %3\n" )
+      NewLogMsg( tr( "Current Position of [%1] : [%2] %3" )
 		 .arg( am->getName() )
 		 .arg( val )
 		 .arg( am->getUnit() ) );
@@ -304,13 +472,13 @@ void MainWindow::GoMAtPuls( double Pos )
   am->SetValue( Pos );
   am->setIsBusy( true );
 
-  MoveID = startTimer( 100 );
+  GoTimer->start( 100 );
 
-  NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
+  NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
 	     .arg( am->getName() )
 	     .arg( GoMotorPosPuls->text().toInt() )
 	     .arg( MSpeeds[ MovingS ].MSName ) );
-  statusbar->showMessage( QString( tr( "Setup: %1 : GoTo %2 : Speed %3\n" ) )
+  statusbar->showMessage( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
 			  .arg( am->getName() )
 			  .arg( GoMotorPosPuls->text().toInt() )
 			  .arg( MSpeeds[ MovingS ].MSName ),
@@ -333,10 +501,10 @@ void MainWindow::GoMStop( void )
   am->Stop();
   GoMStop0();
 
-  NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2\n" ) )
+  NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2" ) )
 	     .arg( am->getName() )
 	     .arg( am->value() ) );
-  statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2\n" ) )
+  statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2" ) )
 			  .arg( am->getName() )
 			  .arg( am->value() ), 1000 );
 }
@@ -345,24 +513,53 @@ void MainWindow::GoMStop0( void )
 {
   inMMove = 0;
 
-  killTimer( MoveID );
+  GoTimer->stop();
   GoMotor->setEnabled( true );
   SPSScan->setEnabled( true );
   GoMotor->setText( tr( "Go" ) );
-  GoMotor->setStyleSheet( "" );
+  GoMotor->setStyleSheet( "background-color: "
+			  "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+			  "rgba(225, 235, 225, 255), stop:1 "
+			  "rgba(255, 255, 255, 255));" );
   
 }
 
 void MainWindow::ScanStart( void )
 {
-  AUnit *am, *as;
+  AUnit *am, *as, *as1 = NULL;
 
   if ( inSPSing == 0 ) {
-    ScanMotor = MotorN->currentIndex();
-    ScanSensor = SelectD1->currentIndex();
-    am = AMotors.value( ScanMotor );
-    as = ASensors.value( ScanSensor );
+    if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
+      statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
+      return;
+    }
+    ScanViewC->setNowDType( SCANDATA );
+    ScanView = (XYView*)(ScanViewC->getView());
 
+    ScanMotor = MotorN->currentIndex();
+    am = AMotors.value( ScanMotor );
+    mUnits.clearUnits();
+    mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ) );
+    mUnits.addUnit( as1 = ASensors.value( SelectD10->currentIndex() ) );
+    mUnits.setDwellTimes( SPSdwell->text().toDouble() );
+    mUnits.setDwellTime();
+
+    if ( ! am->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( am->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return;
+    }
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( ! mUnits.at(i)->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( mUnits.at(i)->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+    }
     MovingS = SPSMotorS->currentIndex();  // motor speed;
 
     SPSSelU = SPSUnit->currentIndex();
@@ -372,44 +569,55 @@ void MainWindow::ScanStart( void )
     ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs );
     ScanSTP = SPSstep->text().toDouble() / SPSUPP;
     if ( ScanEP > ScanSP ) {
-      ScanSTP = abs( ScanSTP );
+      ScanSTP = fabs( ScanSTP );
     } else {
-      ScanSTP = - abs( ScanSTP );
+      ScanSTP = - fabs( ScanSTP );
     }
-    ScanDT = SPSdwell->text().toDouble();
     if ( ScanSTP == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
     }
     inSPSing = 1;
 
-    NewLogMsg( QString( tr( "Scan Start (%1 %2)\n" ) )
+    NewLogMsg( QString( tr( "Scan Start (%1 %2)" ) )
 	       .arg( am->getName() )
 	       .arg( as->getName() ) );
     
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
-    as->SetTime( ScanDT );
 
     SPSScan->setText( tr( "Stop" ) );
     SPSScan->setStyleSheet( "background-color: yellow" );
     GoMotor->setEnabled( false );
 
-    SPSView = XViews[ ViewTab->currentIndex() ];
-    SPSView->Clear();
-    SPSView->SetSLines( 0, 1 );
-    SPSView->SetLineF( RIGHT, LEFT );
-    SPSView->SetScaleT( I0TYPE, FULLSCALE );
-    SPSView->SetLName( 0, tr( "I0" ) );
-    SPSView->SetLName( 1, as->getName() );
-    SPSView->SetXName( am->getName() );
-    SPSView->SetGType( XYPLOT );
-    SPSView->makeValid( true );
+    ScanView->Clear();
+    ScanView->SetLR( 0, LEFT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->SetLR( 1, RIGHT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+    ScanView->SetScaleType( 0, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->SetScaleType( 1, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    ScanView->SetLeftName( " " );
+    ScanView->SetRightName( " " );
+    for ( int i = 0; i < mUnits.count(); i++ )
+      ScanView->SetLineName( i, mUnits.at(i)->getName() );
+    ScanView->SetXName( am->getName() );
+    ScanView->SetXUnitName( SPSUnit->itemText( SPSSelU ) );
+    ScanView->SetUpp( SPSUPP );
+    ScanView->SetCenter( am->getCenter() );
+    ScanView->SetAutoScale( true );
+    ScanView->makeValid( true );
 
     ScanStage = 0;
-    SPSID = startTimer( 100 );
+    ScanTimer->start( 100 );
+    ScanViewC->setIsDeletable( false );
   } else {
+    ScanViewC->setIsDeletable( true );
     ScanStop0();
   }
+}
+
+void MainWindow::ClearXViewScreenForScan( XYView *view )
+{
+  view->Clear();
+  view->makeValid( true );
 }
 
 void MainWindow::ScanStop0( void )
@@ -424,73 +632,126 @@ void MainWindow::Monitor( void )
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
   if ( inMonitor == 0 ) {
+    if ( ! as0->isEnable() ) {
+      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	.arg( as0->getName() );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return;
+    }
+    if ( ( MonitorViewC = SetUpNewView( TYVIEW ) ) == NULL ) {
+      statusbar->showMessage( tr( "No drawing area is avairable" ) );
+      return;
+    }
+    if ( IsMonRec->isChecked() ) {
+      if ( MonRecFile->text().isEmpty() ) {
+	statusbar->showMessage( tr ( "No Record file is selected" ) );
+	return;
+      } else {
+	monRecF = true;
+	MonFile.setFileName( MonRecFile->text() );
+	if ( !MonFile.open( QIODevice::Append | QIODevice::Text ) ) {
+	  statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+				      2000 );
+	  return;
+	}
+	MonOut.setDevice( &MonFile );
+
+	MonOut << "# XafsM2 Monitor Data\n";
+	MonOut << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
+	       << "\n";
+      }
+    } else {
+      monRecF = false;
+    }
+
+    MonitorViewC->setNowDType( MONDATA );
+    MonitorView = (TYView*)(MonitorViewC->getView());
+    
     inMonitor = 1;
     MonStage = 0;   // 計測のサイクル
 
-    for ( int i = 0; i < MCHANNELS; i++ )
-      MeasSensF[i] = false;
-    MeasSens[0] = as0;   MeasSensF[0] = true;
-    MeasSens[1] = as1;   MeasSensF[1] = SelectD21Sel->isChecked();
-    MeasSens[2] = as2;   MeasSensF[2] = SelectD22Sel->isChecked();
-
-    MeasSensDT[0] = DwellT20->text().toDouble();
-    MeasSensDT[1] = DwellT21->text().toDouble();
-    MeasSensDT[2] = DwellT22->text().toDouble();
-
-    OneOfTheSensorIsCounter = false;
-    for ( int i = 0; i < MCHANNELS; i++ ) {
-      if ( MeasSens[i]->getType() == "CNT" ) {
-	OneOfTheSensorIsCounter = true;
-	TheCounter = MeasSens[i];
-	break;
+    mUnits.clearUnits();
+    mUnits.addUnit( as0 );
+    MonSensF[0] = true;
+    if ( SelectD21Sel->isChecked() ) {
+      if ( ! as1->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as1->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
       }
+      mUnits.addUnit( as1 );
+      MonSensF[1] = true;
+    }
+    if ( SelectD22Sel->isChecked() ) {
+      if ( ! as2->isEnable() ) {
+	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	  .arg( as2->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+      mUnits.addUnit( as2 );
+      MonSensF[2] = true;
+    }
+    mUnits.setDwellTimes( DwellT20->text().toDouble() );
+    mUnits.setDwellTime();
+
+    if ( monRecF ) {
+      MonOut << "#\tsec";
+      for ( int i = 0; i < mUnits.count(); i++ ) {
+	MonOut << QString( tr( "\t%1[%2]" )
+			   .arg( mUnits.getName( i ) )
+			   .arg( mUnits.getUnit( i ) ) );
+      }
+      MonOut << "\n";
     }
 
-    MonView = XViews[ ViewTab->currentIndex() ];
-    MonView->ClearDataR();
-    MonView->SetLineF( RIGHT, LEFT, LEFT );   // 現状意味なし
-    //    MonView->SetScaleT( I0TYPE, FULLSCALE, FULLSCALE );   // 現状意味なし
-    MonView->SetDrawF( MeasSensF );
-    //    MonView->SetLName( 0, tr( "I0" ) );
-    int LineCount = 0;
-    for ( int i = 0; i < 3; i++ ) {
-      if ( MeasSensF[i] ) {
-	MonView->SetLName( LineCount, MeasSens[i]->getName() );
-	LineCount++;
-      }
+    MonitorView->ClearDataR();
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      MonitorView->SetLName( i, mUnits.getName( i ) );
     }
-    MonView->SetGType( MONITOR );                            // 確認
-    MonView->makeValid( true );                              // 確認
+    MonitorView->SetLines( mUnits.count() );
+    MonitorView->makeValid( true );
 
-    MonView->SetMonScale( SelectScale->currentIndex() );
+    MonitorView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
-	     MonView, SLOT( SetMonScale( int ) ) );
+	     MonitorView, SLOT( SetMonScale( int ) ) );
     connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
-    if ( MeasSensF[1] )
+    if ( MonSensF[1] )
       connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
-    if ( MeasSensF[2] )
+    if ( MonSensF[2] )
       connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 		 
-
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( "background-color: yellow" );
 
+    MonitorViewC->setIsDeletable( false );
     MonTime.restart();
-    MonID = startTimer( 50 );    /* 50msタイマーセット */
+    MonTimer->start( 100 );
   } else {
-    killTimer( MonID );
+    if ( monRecF ) {
+      MonFile.close();
+    }
+    MonTimer->stop();
     inMonitor = 0;
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
-	     MonView, SLOT( SetMonScale( int ) ) );
+	     MonitorView, SLOT( SetMonScale( int ) ) );
     disconnect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
-    if ( MeasSensF[1] )
+    if ( MonSensF[1] )
       disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
-    if ( MeasSensF[2] )
+    if ( MonSensF[2] )
       disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
+    MonitorViewC->setIsDeletable( true );
     MStart->setText( tr( "Mon. Start" ) );
-    MStart->setStyleSheet( "" );
+    MStart->setStyleSheet( "background-color: "
+			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+			   "rgba(225, 235, 225, 255), stop:1 "
+			   "rgba(255, 255, 255, 255));" );
   }
 }
 

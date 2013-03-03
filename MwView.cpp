@@ -4,8 +4,19 @@
 
 void MainWindow::setupView( void )
 {
-  XViews << View1 << View2 << View3 << View4 << View5
-	 << View6 << View7 << View8 << View9 << View10;
-}
+  QVector<QWidget*> ViewBases;
+  ViewBases << VT1 << VT2 << VT3 << VT4 << VT5 << VT6 << VT7 << VT8 << VT9 << VT10;
 
+  ViewCTRL *viewCtrl;
+
+  for ( int i = 0; i < ViewBases.count(); i++ ) {
+    viewCtrl = new ViewCTRL;
+    viewCtrl->setViewBase( ViewBases.at(i) );
+    viewCtrl->setNowView( (void *)NULL );
+    viewCtrl->setNowVType( NONVIEW );
+    viewCtrl->setNowDType( NONDATA );
+    viewCtrl->setIsDeletable( true );
+    ViewCtrls << viewCtrl;
+  }
+}
 

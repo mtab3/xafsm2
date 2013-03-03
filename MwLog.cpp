@@ -20,15 +20,19 @@ void MainWindow::NewLogMsg( QString msg )
 {
   if ( msg.simplified().isEmpty() )
     return;
+  if ( ! msg.endsWith( "\n" ) )
+    msg += "\n";
 
   msg = QDateTime::currentDateTime().toString( "hh:mm:ss> " ) + msg;
+  
   LogMsgs->insertPlainText( msg );
   LogMsgs->moveCursor( QTextCursor::End );
 
   QFile file( LogFileName->text() );
   if ( !file.open( QIODevice::Append ) ) {
-    printf( "Cannot open Log File [%s]\n", LogFileName->text().toAscii().data() );
-    exit( 1 );
+    statusbar->showMessage( tr( "Cannot open Log File [%1]\n" )
+			    .arg( LogFileName->text() ) );
+    return;
   }
   QTextStream out( &file );
   out << msg;
@@ -57,6 +61,6 @@ void MainWindow::SetNewLFName( const QString &name )
 
 void MainWindow::AddLogComment( void )
 {
-  NewLogMsg( LogComment->text() + "\n" );
-  LogComment->setText( "" );
+  NewLogMsg( LogComment->text() );
+   LogComment->setText( "" );
 }

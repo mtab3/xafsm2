@@ -1,71 +1,215 @@
-#include <QWidget>
-
 #include "MainWindow.h"
-#include "Stars.h"
 
-/* ˆÈ‰º Stars ‚Æ‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìƒ‰ƒbƒpŠÖ” */
-
-#if 0
-double MainWindow::CurrentAngle( void )
+void MainWindow::MeasSequence( void )
 {
-  if ( SelThEncorder->isChecked() ) {
-    return EncMainTh->value().toDouble();
-  } else {
-    return ( MMainTh->value().toInt() - MMainTh->getCenter() ) * MMainTh->getUPP();
+  double Delta;
+  bool a1, a2;
+
+  if ( inMeasDark )
+    return;
+
+  if (( AskingOverwrite )||( MakingSureOfRangeSelect ))
+    return;
+
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
+    return;
+  }
+
+  switch( MeasStage ) {
+    /* 
+       0: Â¬Äê³«»Ï Repeat = 0
+       1: Block = 0
+       2: Step = 0, setDwellTIme
+       3: Goto a Position with a Block and a Step
+       4: prepare to triger Sensors (only for cnt08)
+       5: Triger Sensors (for all)
+       6: Read out Sensors
+       10: Draw (Resume point from 99:)
+          Step++; if ( Step < MaxStep ) goto 3
+          Block++; if ( Block < MaxBlock ) goto 2
+          Repeat++; if ( Repeat < MaxRepeat ) toto 1
+          when reach here, finish.
+       99: pause ¤Î»þÍÑ¤Î¥¹¥Æ¡¼¥¸
+    */
+  case 0:
+    mUnits.clearStage();
+    MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
+    statusbar->showMessage( tr( "Start Measurement!" ) );
+    MeasStage = 1;
+  case 1:
+    if ( mUnits.init() == false ) {  // true :: initializing
+      MeasR = 0;    // Measurement Repeat count
+      mUnits.clearStage();
+      MeasStage = 2;
+    }
+    break;
+  case 2:
+    MeasB = 0;    // Measurement Block count
+    MeasP = 0;    // Measurement point count
+    statusbar->showMessage( tr( "Writing Header." ), 2000 );
+    WriteHeader( MeasR );
+    MeasStage = 3;
+    // break;       MeasStage == 1 ¤ÎÆ°ºî¤Ï¥ì¥¹¥Ý¥ó¥¹¤òÂÔ¤ÄÉ¬Í×¤Ê¤·
+  case 3: 
+    MeasS = 0;    // Measurement Step count in each block
+    mUnits.setDwellTimes( NowDwell = SBlockDwell[0] );
+    mUnits.setDwellTime();
+    MeasStage = 4;
+    // break;       MeasStage == 2 ¤â¥ì¥¹¥Ý¥ó¥¹¤òÂÔ¤ÄÉ¬Í×¤Ê¤·
+    //              (¤³¤³¤ÇÁàºî¤·¤¿¤Î¤Ï¥»¥ó¥µ¡¼¤Ç, Stage == 3 ¤Ç¥»¥ó¥µ¡¼¤òÁàºî¤·¤Ê¤¤¤«¤é)
+  case 4:
+    Delta = keV2any( SBLKUnit, SBlockStart[MeasB+1] )
+      - keV2any( SBLKUnit, SBlockStart[MeasB] );
+    GoToKeV = any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
+		       + keV2any( SBLKUnit, SBlockStart[MeasB] ) );
+    MoveCurThPosKeV( GoToKeV );     // ¼´¤Î°ÜÆ°
+    mUnits.clearStage();
+    if ( mUnits.isParent() )
+      MeasStage = 5;
+    else
+      MeasStage = 6;
+    break;
+  case 5:
+    if ( mUnits.getValue0() == false ) { // only for counters
+      mUnits.clearStage();
+      MeasStage = 6;
+    }
+    break;
+  case 6:
+    if ( mUnits.getValue() == false ) {  // true :: Getting
+      mUnits.clearStage();
+      MeasStage = 7;
+    }
+    break;
+  case 7:
+    mUnits.readValue( MeasVals, true );  // true : correct dark
+    DispMeasDatas();
+    RecordData();
+    MeasStage = 10;
+    if ( inPause == 1 ) {
+      MeasStage = 99;          // PauseStage
+    }
+    // don't break
+  case 10:                     // This label is resume point from pausing
+    MeasView->update();
+    MeasS++;
+    if ( inPause == 0 ) {
+      if ( MeasS < SBlockPoints[ MeasB ] ) {
+	MeasStage = 4;
+      } else if ( MeasB < SBlocks-1 ) {
+	MeasB++;
+	MeasStage = 3;
+      } else if ( MeasR < SelRPT->value()-1 ) {
+	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
+	ClearXViewScreenForMeas( MeasView );
+	WriteHeader2( MeasR );
+	MeasR++;
+	MeasStage = 2;
+      } else {               // ½ªÎ»
+	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
+	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
+	WriteHeader2( MeasR );
+	MeasTimer->stop();
+	inMeas = 0;
+	MeasStart->setText( tr( "Start" ) );
+	MeasStart
+	  ->setStyleSheet( "background-color: "
+			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+			   "rgba(225, 235, 225, 255), stop:1 "
+			   "rgba(255, 255, 255, 255));" );
+	MeasPause->setEnabled( false );
+	onMeasFinishWorks();
+      }
+    }
+    break;
+  case 99:
+    if ( inPause == 0 )
+      MeasStage = 10;
+    break;
   }
 }
-#endif
 
-void MainWindow::MoveCurThPosKeV( double keV ) // •ªŒõŠí‚ÌˆÚ“®Žw—ß(keV’PˆÊ‚ÅˆÊ’uŽw’è)
+void MainWindow::onMeasFinishWorks( void )
 {
-  MMainTh->setIsBusy( true );
-
-#if 0
-  // ‚Ç‚Á‚¿‚Å‚àˆ«‚­‚Í‚È‚¢‚ªA‚±‚Á‚¿‚Ì‚Ù‚¤‚ªƒƒWƒbƒN‚ÍƒVƒ“ƒvƒ‹AŒë·‚Í‘å‚«‚¢‚©‚à
-  // CurrentAngle ‚ðŽg‚¤‚Ì‚ð‚â‚ß‚½‚Ì‚ÅA‚±‚Á‚¿‚à‚â‚ß‚é
-  MMainTh->setValue( ( keV2deg( keV ) - CurrentAngle() ) / MMainTh->getUPP()
-		     + MMainTh->value().toInt() );
-#else
-  if ( SelThEncorder->isChecked() ) {
-    MMainTh->SetValue( ( keV2deg( keV ) - EncMainTh->value().toDouble() )
-		       / MMainTh->getUPP() + MMainTh->value().toInt() );
-  } else {
-    MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
+  MeasPause->setEnabled( false );
+  if ( OnFinishP->currentIndex() == (int)RETURN ) {
+    MoveCurThPosKeV( InitialKeV );
   }
-#endif 
+  MeasViewC->setIsDeletable( true );
 }
 
-#if 0
-void MainWindow::ReadOutTransData( double NowKeV ) // “§‰ß–@‚Ì‘ª’èŒ‹‰Ê‚ð“¾‚Ä‹L˜^‚·‚é
+bool MainWindow::isBusyMotorInMeas( void )
 {
-  double I0 = atof( sks->GetValue( "ion-ch", IONCH0 - IONCH0 ) );
-  double I = atof( sks->GetValue( "ion-ch", IONCH1 - IONCH0 ) );
-  NowView->NewPoint( 0, NowKeV, I0 );
-  NowView->NewPoint( 1, NowKeV, log( I0/I ) );
+  return MMainTh->isBusy() || MMainTh->isBusy2();
 }
 
-void MainWindow::ReadOutSSDData( double NowKeV ) // ŒuŒõ–@‚Ì‘ª’èŒ‹‰Ê‚ð“¾‚Ä‹L˜^‚·‚é
+void MainWindow::DispMeasDatas( void )  // É½¼¨¤Ï dark ¤ÎÊäÀµ¤Ê¤·
 {
-  double I0 = atof( sks->GetValue( "ion-ch", IONCH0 - IONCH0 ) );
-  QString rv = sks->GetValue( "SSD" );
-  QStringList rvs = rv.simplified().split( QChar( ' ' ) );
-  printf( "SSD rv[0] = %f, rv = %s\n", rvs[0].toDouble(), rv.toAscii().data() );
+  double I0;
+  double Val;
+  int i;
+  int DLC = 0;
 
-  double sum = 0;
-  NowView->NewPoint( 0, NowKeV, I0 );
-  for ( int i = 0; i < 19; i++ ) {
-    sum += rvs[i].toDouble();
-    NowView->NewPoint( i+2, NowKeV, rvs[i].toDouble() / I0 );
+  I0 = MeasVals[ MC_I0 ];
+  MeasView->NewPoint( DLC, GoToKeV, I0 );
+  DLC++;
+  for ( i = 1; i < mUnits.count(); i++ ) {
+    Val = MeasVals[i];
+    if ( MeasDispMode[i] == TRANS ) {
+      if (( i == 1 )&&( isSI1 )) {
+	MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I ¤ÎÃÍ¤âÉ½¼¨¤¹¤ë
+	DLC++;
+      }
+      if ( Val < 1e-10 )
+	Val = 1e-10;
+      if ( ( I0 / Val ) > 0 ) {
+	MeasView->NewPoint( DLC, GoToKeV, log( I0/Val * MeasDispPol[i] ) );
+	DLC++;
+      } else {
+	MeasView->NewPoint( DLC, GoToKeV, 0 );
+	DLC++;
+      }
+    } else {  // MeasDispMode == FLUO
+      if ( I0 < 1e-20 )
+	I0 = 1e-20;
+      MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
+      DLC++;
+      QVector<int> vals = SFluo->getCountsInROI();
+      for ( int j = 0; j < MaxSSDs; j++ ) {
+	MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 );
+	DLC++;
+      }
+    }
   }
-  NowView->NewPoint( 1, NowKeV, sum / I0 );
+
+  MeasP++;
 }
 
-void MainWindow::ReadOutAUXData( int devNo, double NowKeV )
-                                         // ŠO•”“ü—Í‚ðŽg‚Á‚½‘ª’èŒ‹‰Ê‚ð“¾‚Ä‹L˜^‚·‚é
+void MainWindow::ReCalcSSDTotal( int, bool )
 {
-  double I0 = atof( sks->GetValue( "ion-ch", IONCH0 - IONCH0 ) );
-  double I = atof( sks->GetValue( "aux-in", devNo - AUXCH0 ) );
-  NowView->NewPoint( 0, NowKeV, I0 );
-  NowView->NewPoint( 1, NowKeV, log( I0/I ) );
+  double sum[ MAXPOINTS ];
+  double *y;
+
+  if ( SFluoLine < 0 )                  // 19ch SSD ¤ò»È¤Ã¤¿·Ö¸÷Â¬Äê¤Î¾ì¹ç¤À¤±
+    return;
+  if ( MeasView == NULL )                // View ¤¬³ä¤ê¿¶¤é¤ì¤Æ¤Ê¤±¤ì¤Ð²¿¤â¤·¤Ê¤¤
+    return;
+
+  for ( int i = 0; i < MeasP; i++ ) {
+    sum[i] = 0;
+  }
+
+  for ( int l = 0; l < MaxSSDs; l++ ) {  // ÁªÂò¤·Ä¾¤µ¤ì¤¿ SSD ¤Î ch ¤Ë´Ø¤·¤Æ
+    if ( SSDbs2[l]->isChecked() ) {
+      y = MeasView->GetYp( SFluoLine + 1 + l );
+      for ( int i = 0; i < MeasP; i++ ) {  // ¹ç·×¤ò¤È¤ê¤Ê¤ª¤¹
+	sum[i] += y[i];
+      }
+    }
+  }
+  y = MeasView->GetYp( SFluoLine );
+  for ( int i = 0; i < MeasP; i++ ) {
+    y[i] = sum[i];
+  }
+  MeasView->update();
 }
-#endif

@@ -1,0 +1,15 @@
+
+翻訳ファイルの準備の仕方
+
+1) lupdata-qt4 XafsM2.pro
+   XafsMsg_jp.ts ができる or 更新される。
+   ここで ts ファイルの名前が XafsMsg_jp になるのは ... XafsM2.pro に書かれてるから。
+   XafsMsg_jp.ts があるときに qmake すると勝手に、これが XafsM2.pro に入る。
+   入ってなかったら自力で、TRANSLATIONS += XafsMsg_jp.ts を .pro に入れる。
+
+2) linguist-qt4 XafsMsg_jp.ts
+   頑張って翻訳する。
+   できたら file -> リリース で XafsMsg_jp.qm ができる。
+
+3) mv/cp XafsMsg_jp.qm XafsMsg_ja_JP.qm
+   この名前はどうでもいい？　これでないとダメ？

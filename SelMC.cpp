@@ -41,7 +41,7 @@ void SelMC::HaveChgMC( int index )
   SelectMonoCry->setEnabled( false );
   ShowMCLC->setText( QString( tr( "%1 A" ) ).arg( mccd[ SelectedCry ]->getD() ) );
   emit NewLatticeConstant( mccd[ SelectedCry ]->getD() );
-  emit NewLogMsg( QString( tr( "Mono: Cnaged to %1 (%2 A)\n" ) )
+  emit NewLogMsg( QString( tr( "Mono: Cnaged to %1 (%2 A)" ) )
 		  .arg( mccd[ SelectedCry ]->getMCName() )
 		  .arg( mccd[ SelectedCry ]->getD() ) );
 }

@@ -4,30 +4,31 @@
 
 void MainWindow::setupMeasArea( void )   /* 測定エリア */
 {
-  BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05 << BLKs06 << BLKs07;
-  BLKstep  << BLKstep01 << BLKstep02 << BLKstep03 << BLKstep04 << BLKstep05 << BLKstep06;
-  BLKdwell << BLKdwell01 << BLKdwell02 << BLKdwell03
-	   << BLKdwell04 << BLKdwell05 << BLKdwell06;
-  BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03
-	    << BLKpoints04 << BLKpoints05 << BLKpoints06;
-  SSD << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
-      << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
-      << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
-      << SSDE16 << SSDE17 << SSDE18 << SSDE19;
+  BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05
+	   << BLKs06 << BLKs07 << BLKs08 << BLKs09;
+  BLKstep  << BLKstep01 << BLKstep02 << BLKstep03 << BLKstep04 << BLKstep05
+	   << BLKstep06 << BLKstep07 << BLKstep08;
+  BLKdwell << BLKdwell01 << BLKdwell02 << BLKdwell03 << BLKdwell04 << BLKdwell05
+	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
+  BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
+	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
+  GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
+       << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
+       << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
+       << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
+       << GSB21 << GSB22 << GSB23 << GSB24;
+
+  if ( SFluo == NULL ) 
+    Use19chSSD->setEnabled( false );
 
   BLKUnit = KEV;
   ClearBLKs();
   ChangeBLKs( 4 );
   for ( int i = 0; i < UNITS; i++ ) {
-    SelBLKUnit->addItem( QString( UnitName[i].name ) );
+    SelBLKUnit->addItem( UnitName[i].name );
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    SSD[i]->setStyleSheet( "background-color: #eeffee" );
-    SSD[i]->setToolTip( tr( "Active" ) );
-  }
-  //  SetSSDactive( true );
 
   SelDFND = new QFileDialog;
   SelWBFND = new QFileDialog;
@@ -41,8 +42,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelDFND->setFilter( "*.dat" );
   SelWBFND->setFilter( "*.prm" );
   SelRBFND->setFilter( "*.prm" );
+  OverWriteChecked = false;
+  SelectedOrgName.clear();
 
   EditDFName->setText( "test.dat" );
+  connect( EditDFName, SIGNAL( textEdited( const QString & ) ),
+	   this, SLOT( isFileNameChanged( const QString & ) ) );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
@@ -51,7 +56,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   QPushButton *tmpB;
   TP = 0;
   TT0 = 0;
-  MeasID = 0;
   inMeas = 0;
   inPause = 0;
   MeasStage = 0;
@@ -69,12 +73,20 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
   AskOverWrite->setDefaultButton( tmpB );
 
+  MakeSureOfRangeSelect = new QMessageBox;
+  tmpB = MakeSureOfRangeSelect->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  MakeSureOfRangeSelect->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
+  MakeSureOfRangeSelect->setDefaultButton( tmpB );
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
     QString name = ASensors.value(i)->getName(); 
     SelectI0->addItem( name );
     SelectI1->addItem( name );
-    SelectAux1->addItem( name );
-    SelectAux2->addItem( name );
+    if ( ASensors.at(i) != SFluo )
+      SelectAux1->addItem( name );
+    if ( ASensors.at(i) != SFluo )
+      SelectAux2->addItem( name );
     if ( ASensors.value(i)->getID() == "I0" )
       SelectI0->setCurrentIndex( i );
     if ( ASensors.value(i)->getID() == "I1" )
@@ -85,46 +97,27 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
       SelectAux2->setCurrentIndex( i );
   }
   UseI1->setChecked( true );
-#if 0
-  UseI1->setAutoExclusive( false );
-  Use19chSSD->setAutoExclusive( false );
-  UseAux1->setAutoExclusive( false );
-  UseAux2->setAutoExclusive( false );
-#endif
 
-  ModeA1->addItem( "log(I0/A1)" );
   ModeA1->addItem( "A1/I0" );
-  ModeA2->addItem( "log(I0/A2)" );
+  ModeA1->addItem( "log(I0/A1)" );
+  ModeA1->addItem( "log(-I0/A1)" );
   ModeA2->addItem( "A2/I0" );
-  
-  connect( BLKstart[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart00()) );
-  connect( BLKstart[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart01()) );
-  connect( BLKstart[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart02()) );
-  connect( BLKstart[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart03()) );
-  connect( BLKstart[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart04()) );
-  connect( BLKstart[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart05()) );
-  connect( BLKstart[6], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart06()) );
+  ModeA2->addItem( "log(I0/A2)" );
+  ModeA2->addItem( "log(-I0/A2)" );
 
-  connect( BLKstep[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep00()) );
-  connect( BLKstep[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep01()) );
-  connect( BLKstep[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep02()) );
-  connect( BLKstep[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep03()) );
-  connect( BLKstep[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep04()) );
-  connect( BLKstep[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep05()) );
-
-  connect( BLKdwell[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell00()) );
-  connect( BLKdwell[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell01()) );
-  connect( BLKdwell[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell02()) );
-  connect( BLKdwell[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell03()) );
-  connect( BLKdwell[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell04()) );
-  connect( BLKdwell[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell05()) );
-
-  connect( BLKpoints[0], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints00()) );
-  connect( BLKpoints[1], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints01()) );
-  connect( BLKpoints[2], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints02()) );
-  connect( BLKpoints[3], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints03()) );
-  connect( BLKpoints[4], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints04()) );
-  connect( BLKpoints[5], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints05()) );
+  for ( int i = 0; i < BLKstart.count(); i++ ) {
+    connect( BLKstart.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart()) );
+  }
+  for ( int i = 0; i < BLKstep.count(); i++ ) {
+    connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
+  }
+  for ( int i = 0; i < BLKdwell.count(); i++ ) {
+    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell()) );
+  }
+  for ( int i = 0; i < BLKpoints.count(); i++ ) {
+    connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
+	     this, SLOT(ChangeBLKpoints()) );
+  }
 
   connect( SelBLKUnit, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( ChangeBLKUnit( int ) ) );
@@ -139,31 +132,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   this, SLOT( SelectedWBFN( const QString & ) ) );
   connect( SelRBFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedRBFN( const QString & ) ) );
-#if 0
-  connect( ModeTrans, SIGNAL( clicked() ), this, SLOT( Mode2Tr() ) );
-  connect( ModeFluo, SIGNAL( clicked() ), this, SLOT( Mode2Fl() ) );
-  connect( ModeAux, SIGNAL( clicked() ), this, SLOT( Mode2Au() ) );
-#endif
-
-  connect( SSD[0],  SIGNAL( clicked() ), this, SLOT( SelSSDs00() ) );
-  connect( SSD[1],  SIGNAL( clicked() ), this, SLOT( SelSSDs01() ) );
-  connect( SSD[2],  SIGNAL( clicked() ), this, SLOT( SelSSDs02() ) );
-  connect( SSD[3],  SIGNAL( clicked() ), this, SLOT( SelSSDs03() ) );
-  connect( SSD[4],  SIGNAL( clicked() ), this, SLOT( SelSSDs04() ) );
-  connect( SSD[5],  SIGNAL( clicked() ), this, SLOT( SelSSDs05() ) );
-  connect( SSD[6],  SIGNAL( clicked() ), this, SLOT( SelSSDs06() ) );
-  connect( SSD[7],  SIGNAL( clicked() ), this, SLOT( SelSSDs07() ) );
-  connect( SSD[8],  SIGNAL( clicked() ), this, SLOT( SelSSDs08() ) );
-  connect( SSD[9],  SIGNAL( clicked() ), this, SLOT( SelSSDs09() ) );
-  connect( SSD[10], SIGNAL( clicked() ), this, SLOT( SelSSDs10() ) );
-  connect( SSD[11], SIGNAL( clicked() ), this, SLOT( SelSSDs11() ) );
-  connect( SSD[12], SIGNAL( clicked() ), this, SLOT( SelSSDs12() ) );
-  connect( SSD[13], SIGNAL( clicked() ), this, SLOT( SelSSDs13() ) );
-  connect( SSD[14], SIGNAL( clicked() ), this, SLOT( SelSSDs14() ) );
-  connect( SSD[15], SIGNAL( clicked() ), this, SLOT( SelSSDs15() ) );
-  connect( SSD[16], SIGNAL( clicked() ), this, SLOT( SelSSDs16() ) );
-  connect( SSD[17], SIGNAL( clicked() ), this, SLOT( SelSSDs17() ) );
-  connect( SSD[18], SIGNAL( clicked() ), this, SLOT( SelSSDs18() ) );
 
   connect( SelDFName, SIGNAL( clicked() ), SelDFND, SLOT( show() ) );
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
@@ -176,6 +144,33 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( NewRpt() ) );
   connect( AskOverWrite, SIGNAL( accepted() ), this, SLOT( OkOverWrite() ) );
   connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
+  connect( MakeSureOfRangeSelect, SIGNAL( accepted() ), this, SLOT( RangeSelOK() ) );
+  connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
+  connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ) );
+
+  inMeasDark = false;
+  MeasDarkStage = 0;
+  AskingShutterClose = false;
+  AskingShutterOpen = false;
+
+  MeasView = NULL;
+
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
+  }
+  connect( this, SIGNAL( SelectedSSD( int, bool ) ),
+	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
+}
+
+void MainWindow::SelectAGB( bool f )
+{
+  if ( MeasView == NULL )
+    return;
+    
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    if ( sender() == GSBs[i] )
+	MeasView->ChooseAG( i, f );
+  }
 }
 
 void MainWindow::ClearBLKs( void )
@@ -346,7 +341,7 @@ void MainWindow::ShowTotal( void )
     TP += BlockPoints[i];
     TT0 += BlockPoints[i] * BlockDwell[i];
   } 
-  double TT = TT0;
+  double TT = TT0 + TP * 600. / 480.;    // Cu-Ka で 480点測定に10分余分にかかる
   buf.sprintf( "%4d", TP * SelRPT->value() );
   TPoints->setText( tr( "Points: " ) + buf );
   TT *= SelRPT->value();
@@ -360,62 +355,65 @@ void MainWindow::ShowTotal( void )
   TTime->setText( tr( "Time: " ) + buf );
 }
 
-void MainWindow::ChangeBLKstart00( void ) { ChangeBLKstart( 0 ); }
-void MainWindow::ChangeBLKstart01( void ) { ChangeBLKstart( 1 ); }
-void MainWindow::ChangeBLKstart02( void ) { ChangeBLKstart( 2 ); }
-void MainWindow::ChangeBLKstart03( void ) { ChangeBLKstart( 3 ); }
-void MainWindow::ChangeBLKstart04( void ) { ChangeBLKstart( 4 ); }
-void MainWindow::ChangeBLKstart05( void ) { ChangeBLKstart( 5 ); }
-void MainWindow::ChangeBLKstart06( void ) { ChangeBLKstart( 6 ); }
-
-void MainWindow::ChangeBLKstart( int i )
+void MainWindow::ChangeBLKstart( void )
 {
-  BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
-  ShowBLKs();
+  for ( int i = 0; i < BLKstart.count(); i++ ) {
+    if ( BLKstart.at(i) == sender() ) {
+      BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
+      double step = BLKstep[i]->text().toDouble();
+      if ( step != 0 ) {
+	BlockPoints[i]
+	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+		 /step )+0.5;
+      }
+      if ( i > 0 ) {
+	double step = BLKstep[i-1]->text().toDouble();
+	if ( step != 0 ) {
+	  BlockPoints[i-1]
+	    = fabs(( keV2any(BLKUnit, BlockStart[i]) - keV2any(BLKUnit, BlockStart[i-1]) )
+		   /step )+0.5;
+	}
+      }
+      ShowBLKs();
+    }
+  }
 }
 
-void MainWindow::ChangeBLKstep00( void ) { ChangeBLKstep( 0 ); }
-void MainWindow::ChangeBLKstep01( void ) { ChangeBLKstep( 1 ); }
-void MainWindow::ChangeBLKstep02( void ) { ChangeBLKstep( 2 ); }
-void MainWindow::ChangeBLKstep03( void ) { ChangeBLKstep( 3 ); }
-void MainWindow::ChangeBLKstep04( void ) { ChangeBLKstep( 4 ); }
-void MainWindow::ChangeBLKstep05( void ) { ChangeBLKstep( 5 ); }
-
-void MainWindow::ChangeBLKstep( int i )
+void MainWindow::ChangeBLKstep( void )
 {
   double step;
 
-  step = BLKstep[i]->text().toDouble();
-  BlockPoints[i]
-    = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
-	   /step )+0.5;
-  ShowBLKs();
+  for ( int i = 0; i < BLKstep.count(); i++ ) {
+    if ( BLKstep.at(i) == sender() ) {
+      step = BLKstep[i]->text().toDouble();
+      if ( step != 0 ) {
+	BlockPoints[i]
+	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+		 /step )+0.5;
+      }
+      ShowBLKs();
+    }
+  }
 }
 
-void MainWindow::ChangeBLKpoints00( void ) { ChangeBLKpoints( 0 ); }
-void MainWindow::ChangeBLKpoints01( void ) { ChangeBLKpoints( 1 ); }
-void MainWindow::ChangeBLKpoints02( void ) { ChangeBLKpoints( 2 ); }
-void MainWindow::ChangeBLKpoints03( void ) { ChangeBLKpoints( 3 ); }
-void MainWindow::ChangeBLKpoints04( void ) { ChangeBLKpoints( 4 ); }
-void MainWindow::ChangeBLKpoints05( void ) { ChangeBLKpoints( 5 ); }
-
-void MainWindow::ChangeBLKpoints( int i )
+void MainWindow::ChangeBLKpoints( void )
 {
-  BlockPoints[i] = BLKpoints[i]->text().toDouble();
-  ShowBLKs();
+  for ( int i = 0; i < BLKpoints.count(); i++ ) {
+    if ( BLKpoints.at(i) == sender() ) {
+      BlockPoints[i] = BLKpoints[i]->text().toDouble();
+      ShowBLKs();
+    }
+  }
 }
 
-void MainWindow::ChangeBLKdwell00( void ) { ChangeBLKdwell( 0 ); }
-void MainWindow::ChangeBLKdwell01( void ) { ChangeBLKdwell( 1 ); }
-void MainWindow::ChangeBLKdwell02( void ) { ChangeBLKdwell( 2 ); }
-void MainWindow::ChangeBLKdwell03( void ) { ChangeBLKdwell( 3 ); }
-void MainWindow::ChangeBLKdwell04( void ) { ChangeBLKdwell( 4 ); }
-void MainWindow::ChangeBLKdwell05( void ) { ChangeBLKdwell( 5 ); }
-
-void MainWindow::ChangeBLKdwell( int i )
+void MainWindow::ChangeBLKdwell( void )
 {
-  BlockDwell[i] = BLKdwell[i]->text().toDouble();
-  ShowBLKs();
+  for ( int i = 0; i < BLKdwell.count(); i++ ) {
+    if ( BLKdwell.at(i) == sender() ) {
+      BlockDwell[i] = BLKdwell[i]->text().toDouble();
+      ShowBLKs();
+    }
+  }
 }
 
 void MainWindow::SetDwells( void )
@@ -426,72 +424,19 @@ void MainWindow::SetDwells( void )
   ShowBLKs();
 }
 
-#if 0
-void MainWindow::Mode2Tr( void )
-{
-  MeasMode = TRANS;
-  SetSSDactive( false );
-}
-
-void MainWindow::Mode2Fl( void )
-{
-  MeasMode = FLUO;
-  SetSSDactive( true );
-}
-
-void MainWindow::Mode2Au( void )
-{
-  MeasMode = AUX;
-  SetSSDactive( false );
-}
-#endif
-
-#if 0
-void MainWindow::SetSSDactive( bool active )
-{
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    SSD[i]->setEnabled( active );
-  }
-}
-#endif
-
-void MainWindow::SelSSDs00( void ) { SelSSDs(  0 ); }
-void MainWindow::SelSSDs01( void ) { SelSSDs(  1 ); }
-void MainWindow::SelSSDs02( void ) { SelSSDs(  2 ); }
-void MainWindow::SelSSDs03( void ) { SelSSDs(  3 ); }
-void MainWindow::SelSSDs04( void ) { SelSSDs(  4 ); }
-void MainWindow::SelSSDs05( void ) { SelSSDs(  5 ); }
-void MainWindow::SelSSDs06( void ) { SelSSDs(  6 ); }
-void MainWindow::SelSSDs07( void ) { SelSSDs(  7 ); }
-void MainWindow::SelSSDs08( void ) { SelSSDs(  8 ); }
-void MainWindow::SelSSDs09( void ) { SelSSDs(  9 ); }
-void MainWindow::SelSSDs10( void ) { SelSSDs( 10 ); }
-void MainWindow::SelSSDs11( void ) { SelSSDs( 11 ); }
-void MainWindow::SelSSDs12( void ) { SelSSDs( 12 ); }
-void MainWindow::SelSSDs13( void ) { SelSSDs( 13 ); }
-void MainWindow::SelSSDs14( void ) { SelSSDs( 14 ); }
-void MainWindow::SelSSDs15( void ) { SelSSDs( 15 ); }
-void MainWindow::SelSSDs16( void ) { SelSSDs( 16 ); }
-void MainWindow::SelSSDs17( void ) { SelSSDs( 17 ); }
-void MainWindow::SelSSDs18( void ) { SelSSDs( 18 ); }
-
-void MainWindow::SelSSDs( int i )
-{
-  if ( SSD[i]->isChecked() ) {
-    SelectedSSD[i] = 0;
-    SSD[i]->setStyleSheet( "background-color: #aabbaa" );
-    SSD[i]->setToolTip( tr( "Inactive" ) );
-  } else {
-    SelectedSSD[i] = 1;
-    SSD[i]->setStyleSheet( "background-color: #eeffee" );
-    SSD[i]->setToolTip( tr( "Active" ) );
-  }
-}
-
 void MainWindow::SelectedNDFN( const QString &fname )
 {
   EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
                                   // Start 時に書き出す。
+  OverWriteChecked = true;
+  SelectedOrgName = fname;
+}
+
+void MainWindow::isFileNameChanged( const QString &fname )
+{
+  if ( fname != SelectedOrgName ) {
+    OverWriteChecked = false;
+  }
 }
 
 void MainWindow::SelectedWBFN( const QString &fname )
@@ -543,20 +488,14 @@ void MainWindow::SelectedRBFN( const QString &fname )
   ShowBLKs();
 }
 
-void MainWindow::ClearNowView( void )
+void MainWindow::ClearXViewScreenForMeas( XYView *view )
 {
-  NowView = XViews[ ViewTab->currentIndex() ];
-  NowView->Clear();
-  NowView->SetSLines( 0, 1 );
-  NowView->SetLineF( RIGHT, LEFT,
-		     LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT,
-		     LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT, LEFT );
-  NowView->SetScaleT( I0TYPE, FULLSCALE );
-  NowView->SetLName( 0, tr( "I0" ) );
-  NowView->SetLName( 1, tr( "mu(E)" ) );
-  NowView->SetXName( tr( "[keV]" ) );
-  NowView->makeValid( true );
-  NowView->SetGType( XYPLOT );
+  view->Clear();
+  view->SetRightName( tr( "I0" ) );
+  view->SetLeftName( tr( "mu(E)" ) );
+  view->SetXName( tr( "Energy" ) );
+  view->SetXUnitName( tr( "[keV]" ) );
+  view->makeValid( true );
 }
 
 bool MainWindow::CheckDetectorSelection( void )
@@ -570,19 +509,34 @@ bool MainWindow::CheckDetectorSelection( void )
   if ( UseAux1->isChecked() ) NoOfSelectedSens++;
   if ( UseAux2->isChecked() ) NoOfSelectedSens++;
 
-  if ( NoOfSelectedSens == 0 )
+  if ( NoOfSelectedSens == 0 )  // I0 以外に一つはセンサが選ばれていなければダメ
     return false;
 
-  if ( NoOfSelectedSens == 1 ) {
-    if ( ( UseI1->isChecked()
-	   && ( ASensors.value( SelectI1->currentIndex() )->getType() == "CNT" ) )
-	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == TRANS ) )
-	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == TRANS ) ) )
-      MeasFileType = TRANS;
-    if ( Use19chSSD->isChecked() 
-	 || ( UseAux1->isChecked() && ( MeasDispMode[ MC_AUX1 ] == FLUO ) )
-	 || ( UseAux2->isChecked() && ( MeasDispMode[ MC_AUX2 ] == FLUO ) ) )
+  if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
+    if ( UseI1->isChecked() ) {
+      AUnit *as = ASensors.value( SelectI1->currentIndex() );
+      if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
+	  ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
+	MeasFileType = TRANS;
+      }  // その他は EXTRA
+    }
+    if ( Use19chSSD->isChecked() ) {
       MeasFileType = FLUO;
+    }
+    if ( UseAux1->isChecked() ) {
+      if ( MeasDispMode[ MC_AUX1 ] == TRANS ) {
+	MeasFileType = TRANS;
+      } else {
+	MeasFileType = EXTRA;
+      }
+    }
+    if ( UseAux2->isChecked() ) {
+      if ( MeasDispMode[ MC_AUX2 ] == TRANS ) {
+	MeasFileType = TRANS;
+      } else {
+	MeasFileType = EXTRA;
+      }
+    }
   }
 
   return true;
@@ -590,86 +544,215 @@ bool MainWindow::CheckDetectorSelection( void )
 
 void MainWindow::StartMeasurement( void )
 {
-  if ( inMeas == 0 ) {
-    if ( MMainTh->getIsBusy() ) {
+  // ・測定対象の検出器
+  // ・表示されるもの
+  // ・ファイルに記録するもの
+  // という 3 つの似てるけど違うものがある
+  // 例えば、I0 と 19ch-SSD で測定する場合
+  // ・測定対象の検出器       : I0, SFluo (19ch を束ねた検出器)  : mUnits で管理
+  // ・表示するもの           : I0, Total (19ch の合計), 各チャンネル(19個)
+  //                 元ネタになるデータそのものは mUnits で管理されてる
+  //                 SFluo が何番目に来るかだけ記録しておけば後は、
+  //                 ちょっとした例外処理でなんとかなりそうな気がする
+  // ・ファイルに記録するもの : I0, 各チャンネル(19個)
+  //                 元ネタになるデータそのものは mUnits で管理されてる
+  //                 mUnits を流用し SFluo を 19 チャンネルに展開することで対応できてる
+  // 
+  AUnit *as;
+
+  EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
+  SFluoLine = -1;
+  isSI1 = false;
+
+  if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
+    if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
     }
-    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {
+    if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
+      statusbar->showMessage( tr( "Scan cannot Start : (%1) is disabled" )
+			      .arg( MMainTh->getName() ), 2000 );
+    }
+
+    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
-    if ( GetDFName0() == 0 ) {
+    if ( GetDFName0() == 0 ) {  // データファイルが選択されていなかったらダメ
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
     }
-    if ( CheckDetectorSelection() == false ) {
+    if ( CheckDetectorSelection() == false ) { // I0 以外に一つは選ばれてないとダメ
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
 
-    QFileInfo CheckFile( DFName0 + ".dat" );
-    if ( CheckFile.exists() ) {
-      AskOverWrite->setText( tr( "<h1><center>File [%1] Over Write ?</center></h1>" )
-			     .arg( DFName ) );
+    bool OneOfSensIsRangeSelectable = false;
+    QString theNames = "";
+    int LC = 0;    // mUnits に登録するユニットに対応したカウント
+    int DLC = 0;   // 表示するラインに対応したカウント
+    mUnits.clearUnits();
+    for ( int i = 0; i < GSBs.count(); i++ ) {
+      GSBs[i]->setText( "" );
+      GSBs[i]->setChecked( false );
+    }
+
+    MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
+    MeasDispPol[ LC ] = 1;          // polarity +
+    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
+    LC++; 
+    GSBs[DLC]->setChecked( true );
+    GSBs[DLC++]->setText( "I0" );
+    if ( UseI1->isChecked() ) {
+      MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
+      MeasDispPol[ LC ] = 1;          // polarity +
+      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
+      LC++;
+      isSI1 = true;
+      GSBs[DLC++]->setText( "I1" );
+      GSBs[DLC]->setChecked( true );
+      GSBs[DLC++]->setText( "mu" );
+    }
+    if ( Use19chSSD->isChecked() ) {
+      MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
+      MeasDispPol[ LC ] = 1;          // polarity +
+      mUnits.addUnit( SFluo );
+      LC++;
+      SFluoLine = DLC;
+      GSBs[DLC]->setChecked( true );
+      GSBs[DLC++]->setText( "FT" );
+      for ( int i = 0; i < MaxSSDs; i++ ) {
+	GSBs[DLC++]->setText( QString::number( i ) );
+      }
+    }
+    if ( UseAux1->isChecked() ) {
+      MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
+      MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
+      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
+      LC++;
+      GSBs[DLC]->setChecked( true );
+      GSBs[DLC++]->setText( "A1" );
+    }
+    if ( UseAux2->isChecked() ) {
+      MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
+      MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
+      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
+      LC++;
+      GSBs[DLC]->setChecked( true );
+      GSBs[DLC++]->setText( "A2" );
+    }
+
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      as = mUnits.at(i);
+      if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
+	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+      if ( as->isRangeSelectable() ) {
+	if ( ! as->isAutoRange() ) {
+	  OneOfSensIsRangeSelectable = true;
+	  theNames += " [" + as->getName() + "]";
+	}
+      }
+    }
+
+    // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
+    // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
+    // 両方を同時には測定に使えない
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if (( mUnits.at(i)->getType() == "CNT2" )||( mUnits.at(i)->getType() == "OTC2" )) {
+	for ( int j = 0; j < mUnits.count(); j++ ) {
+	  if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
+	    QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
+	      .arg( mUnits.at(i)->getName() )
+	      .arg( mUnits.at(j)->getName() );
+	    statusbar->showMessage( msg, 2000 );
+	    NewLogMsg( msg );
+	    return;
+	  }
+	}
+      }
+    }
+    if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
+                                        // 設定済みかどうか確認する (測定開始をブロック)
+      MakeSureOfRangeSelect
+	->setText( tr( "The Sensor(s)%1 should be range selected.\n"
+		       "Have you selected the range in 'Setup Condition'" )
+		   .arg( theNames ) );
+      MakeSureOfRangeSelect->show();
+      MakingSureOfRangeSelect = true;
+    } else {
+      MakingSureOfRangeSelect = false;
+    }
+
+    if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
+      if ( ! MeasureDark() )                // 正常に測れなければだめ
+	return;
+    }
+
+    if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
+      // グラフ表示領域が確保できないとダメ
+      return;
+    }
+    MeasViewC->setNowDType( MEASDATA );
+    MeasView = (XYView*)(MeasViewC->getView());
+    ClearXViewScreenForMeas( MeasView );
+    for ( int i = 0; i < GSBs.count(); i++ ) {
+      MeasView->ChooseAG( i, GSBs[i]->isChecked() );
+    }
+
+    QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
+    if ( ! OverWriteChecked && CheckFile.exists() ) {
+      AskOverWrite
+	->setText( tr( "File [%1] Over Write ?" )
+			     .arg( DFName0 + ".dat" ) );
       AskOverWrite->show();
       AskingOverwrite = true;
     } else {
       AskingOverwrite = false;
     }
 
-    MeasDispMode[ MC_I0 ] = TRANS;     // I0 にモードはないのでダミー
-    MeasDispMode[ MC_I1 ] = TRANS;     // I1 は TRANS に固定
-    MeasDispMode[ MC_SSD ] = FLUO;      // SSD は FLUO に固定
-    MeasDispMode[ MC_AUX1 ] = ( ModeA1->currentIndex() == 0 ) ? TRANS : FLUO;
-    MeasDispMode[ MC_AUX2 ] = ( ModeA2->currentIndex() == 0 ) ? TRANS : FLUO;
-
-    NewLogMsg( QString( tr( "Meas: Start (%1 keV)\n" ) )
-	       .arg( CurPosKeV ) );
-    InitialKeV = CurPosKeV;
+    NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
+    InitialKeV = deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( "background-color: yellow" );
     MeasPause->setEnabled( true );
     
-    MeasSens[ MC_I0 ] = ASensors.value( SelectI0->currentIndex() );
-    MeasSens[ MC_I1 ] = ASensors.value( SelectI1->currentIndex() );
-    MeasSens[ MC_SSD ] = SFluo;
-    MeasSens[ MC_AUX1 ] = ASensors.value( SelectAux1->currentIndex() );
-    MeasSens[ MC_AUX2 ] = ASensors.value( SelectAux2->currentIndex() );
-    
-    for ( int i = 0; i < MCHANNELS; i++ )
-      MeasSensF[i] = false;
-    MeasSensF[ MC_I0 ] = true;
-    MeasSensF[ MC_I1 ] = UseI1->isChecked();
-    MeasSensF[ MC_SSD ] = Use19chSSD->isChecked();
-    MeasSensF[ MC_AUX1 ] = UseAux1->isChecked();
-    MeasSensF[ MC_AUX2 ] = UseAux2->isChecked();
-    
-    OneOfTheSensorIsCounter = false;   // 使おうとするディテクタの中にカウンタがあるか
-    TheCounter = 0;       // そのデテクタの番号
-    MeasChNo = 0;         // 測定のチャンネル数
-    for ( int i = 0; i < 5; i++ ) {
-      if ( MeasSensF[i] ) {
-	MeasChNo++;
-	if ( MeasSens[i]->getType() == "CNT" ) {
-	  OneOfTheSensorIsCounter = true;
-	  TheCounter = MeasSens[i];
-	  break;
-	}
-      }
+    MeasChNo = mUnits.count();         // 測定のチャンネル数
+    // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
+    if ( Use19chSSD->isChecked() ) {
+      MeasChNo += ( MaxSSDs -1 );
     }
-    if ( MeasSensF[ MC_SSD ] )
-      MeasChNo += 18; // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
-    
+    MeasView->SetRLine( 0 );
+    MeasView->SetLLine( 1 );
+    MeasView->SetLR( 0, RIGHT_AX );
+    MeasView->SetScaleType( 0, I0TYPE );
+    MeasView->SetLineName( 0, mUnits.at(0)->getName() );
+    for ( int i = 1; i < mUnits.count(); i++ ) {
+      MeasView->SetLR( i, LEFT_AX );
+      MeasView->SetScaleType( i, FULLSCALE );
+      MeasView->SetLineName( i, mUnits.at(i)->getName() );
+    }
     CpBlock2SBlock();
     MeasStage = 0;
-    ClearNowView();
-    MeasID = startTimer( 100 );
+    //    ClearMeasView();
+    MeasViewC->setIsDeletable( false );
+    MeasTimer->start( 100 );
   } else {
     StopP->show();
     SinPause = inPause;
-    NewLogMsg( QString( tr( "Meas: Break (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
@@ -680,20 +763,41 @@ void MainWindow::StartMeasurement( void )
 
 void MainWindow::SurelyStop( void )
 {
-  NewLogMsg( QString( tr( "Meas: Stopped (%1 keV)\n" ) ).arg( CurPosKeV ) );
+  if ( inMeasDark ) {
+    MeasDarkTimer->stop();
+    inMeasDark = false;
+    statusbar->showMessage( "", 0 );
+    MeasBackGround->setText( tr( "Measure Background" ) );
+    MeasBackGround
+      ->setStyleSheet( "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+		       "rgba(255, 255, 255, 255));" );
+    MeasDarkStage = 0;
+  }
+  NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	     .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	     .arg( SelectedCurPosDeg( XENC ) )
+	     .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
-  killTimer( MeasID );
+  MeasTimer->stop();
   inMeas = 0;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( "" );
+  MeasStart
+    ->setStyleSheet( "background-color: "
+		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		     "rgba(225, 235, 225, 255), stop:1 "
+		     "rgba(255, 255, 255, 255));" );
   MeasStart->setEnabled( true );
   inPause = 0;
   MeasPause->setText( tr( "Pause" ) );
-  MeasPause->setStyleSheet( "" );
-  MeasPause->setEnabled( false );
-  if ( OnFinishP->currentIndex() == (int)RETURN ) {
-    MoveCurThPosKeV( InitialKeV );
-  }
+  MeasPause
+    ->setStyleSheet( "background-color: "
+		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		     "rgba(225, 235, 225, 255), stop:1 "
+		     "rgba(255, 255, 255, 255));" );
+  onMeasFinishWorks();
 }
 
 void MainWindow::GoingOn( void )
@@ -701,13 +805,25 @@ void MainWindow::GoingOn( void )
   MeasStart->setEnabled( true );
   MeasPause->setEnabled( true );
   if ( SinPause == 1 ) {
-    NewLogMsg( QString( tr( "Meas: Pausing (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Pausing %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
   } else {
-    NewLogMsg( QString( tr( "Measu: Resume (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
-    MeasPause->setStyleSheet( "" );
+    MeasPause
+      ->setStyleSheet( "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+		       "rgba(255, 255, 255, 255));" );
   }
 }
 
@@ -726,15 +842,27 @@ void MainWindow::CpBlock2SBlock( void )
 void MainWindow::PauseMeasurement( void )
 {
   if ( inPause == 0 ) {
-    NewLogMsg( QString( tr( "Meas: Pause (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Pause %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( "background-color: yellow" );
   } else {
-    NewLogMsg( QString( tr( "Meas: Resume (%1 keV)\n" ) ).arg( CurPosKeV ) );
+    NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
+	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( SelectedCurPosDeg( XENC ) )
+	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
-    MeasPause->setStyleSheet( "" );
+    MeasPause
+      ->setStyleSheet( "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+		       "rgba(255, 255, 255, 255));" );
   }
 }
 
@@ -742,3 +870,9 @@ void MainWindow::OkOverWrite( void )
 {
   AskingOverwrite = false;
 }
+
+void MainWindow::RangeSelOK( void )
+{
+  MakingSureOfRangeSelect = false;
+}
+

@@ -24,11 +24,7 @@ class Stars : public QObject
 
   QString MyNameOnStars;
 
-  char buf[ 20480 ];
-
   CONNECTIONSTAGE ConnectionStage;
-
-  char buf2[ 10240 ];
 
   QString StarsServer;
   qint16  StarsSPort;
@@ -42,6 +38,7 @@ class Stars : public QObject
 
 public:
   Stars( void );
+  ~Stars( void );
   void ReadStarsKeys( QString SelectedName, QString DefaultName );
   QString GetKey( int nkey );
 
@@ -54,14 +51,22 @@ public slots:
   void SetNewSVPort( const QString &item );
   void ReceiveMessageFromStars( void );
   void ReConnect( void );
+  void AskStatus( void );
 
 signals:
+  void ConnectingServer( QString SSVA );
+  void ConnectingPort( qint16 SSVP );
   void ConnectionIsReady( void );
+  void SSisActive( bool f );
+
   void AskShowStat( QString msg, int time );
   void AskRecord( QString msg );
   void RecordSSVHistoryA( const QString &item );
   void RecordSSVHistoryP( const QString &item );
   void ReConnected( void );
+  void ReceiveError( SMsg msg );
+
+  void AnsListNodes( SMsg msg );
 
   void AnsRemote( SMsg msg );
   void AnsGetValue( SMsg msg );
@@ -74,6 +79,8 @@ signals:
   void AnsSetAutoRange( SMsg msg );
   void AnsSetNPLCycles( SMsg msg );
   void AnsRun( SMsg msg );
+  void AnsSetRange( SMsg msg );
+  void AnsGetRange( SMsg msg );
   void AnsScanCw( SMsg msg );
   void AnsScanCcw( SMsg msg );
   void AnsRead( SMsg msg );
@@ -89,8 +96,37 @@ signals:
   void AnsCounterReset( SMsg msg );
   void AnsCountStart( SMsg msg );
 
+  void AnsSetPresetType( SMsg msg );
+  void AnsSetPresetValue( SMsg msg );
+  void AnsGetValues( SMsg msg );
+  void AnsRunStart( SMsg msg );
+  void AnsRunStop( SMsg msg );
+  void AnsResume( SMsg msg );
+  void AnsGetRealTime( SMsg msg );
+  void AnsGetLiveTime( SMsg msg );
+  void AnsGetStatus( SMsg msg );
+  void AnsSetROI( SMsg msg );
+  void AnsSetROIs( SMsg msg );
+  void AnsSetCalibration( SMsg msg );
+  void AnsSetThreshold( SMsg msg );
+  void AnsSetPeakingTime( SMsg msg );
+  void AnsSetDynamicRange( SMsg msg );
+  void AnsGetCalibration( SMsg msg );
+  void AnsGetThreshold( SMsg msg );
+  void AnsGetPeakingTime( SMsg msg );
+  void AnsGetDynamicRange( SMsg msg );
+  void AnsGetPreAMPGain( SMsg msg );
+  void AnsGetMCALength( SMsg msg );
+  void AnsGetMCA( SMsg msg );
+  void AnsGetStatistics( SMsg msg );
+  void AnsSetMode( SMsg msg );
+  void AnsSetCountPreset( SMsg msg );
+
+  void EvConnected( SMsg msg );
+  void EvDisconnected( SMsg msg );
   void EvChangedValue( SMsg msg );
   void EvIsBusy( SMsg msg );
+  void EvReportCurrent( SMsg msg );
 };
 
 #endif
