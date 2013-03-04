@@ -331,6 +331,10 @@ private slots:
   void ManSelTEkeV( void );
   void SetAllGoUnits( int i );
   void ShowAllGos( void );
+  void clearGSBs( void );
+  void SetGSBFlags( QVector<bool> flgs );
+  void SetGSBLabels( QStringList lbls );
+
   void GetNewGos( void );
   void GoToPosKeV1( void ) { MoveCurThPosKeV( GoPosKeV[0] ); }
   void GoToPosKeV2( void ) { MoveCurThPosKeV( GoPosKeV[1] ); }

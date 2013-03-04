@@ -12,11 +12,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
-  GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
-       << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
-       << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
-       << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
-       << GSB21 << GSB22 << GSB23 << GSB24;
 
   if ( SFluo == NULL ) 
     Use19chSSD->setEnabled( false );
@@ -155,23 +150,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasView = NULL;
 
-  for ( int i = 0; i < GSBs.count(); i++ ) {
-    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
-  }
   connect( this, SIGNAL( SelectedSSD( int, bool ) ),
 	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
 }
 
-void MainWindow::SelectAGB( bool f )
-{
-  if ( MeasView == NULL )
-    return;
-    
-  for ( int i = 0; i < GSBs.count(); i++ ) {
-    if ( sender() == GSBs[i] )
-	MeasView->ChooseAG( i, f );
-  }
-}
 
 void MainWindow::ClearBLKs( void )
 {
@@ -594,39 +576,38 @@ void MainWindow::StartMeasurement( void )
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
     int LC = 0;    // mUnits に登録するユニットに対応したカウント
-    int DLC = 0;   // 表示するラインに対応したカウント
+    //    int DLC = 0;   // 表示するラインに対応したカウント
     mUnits.clearUnits();
-    for ( int i = 0; i < GSBs.count(); i++ ) {
-      GSBs[i]->setText( "" );
-      GSBs[i]->setChecked( false );
-    }
+    clearGSBs();
+    QStringList GSBLabels;
+    QVector<bool> GSBFlags;
 
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 
-    GSBs[DLC]->setChecked( true );
-    GSBs[DLC++]->setText( "I0" );
+    GSBFlags << true;
+    GSBLabels << "I0";
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
       isSI1 = true;
-      GSBs[DLC++]->setText( "I1" );
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "mu" );
+      GSBFlags << true << false;
+      GSBLabels << "I1" << "mu";
     }
     if ( Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
       LC++;
-      SFluoLine = DLC;
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "FT" );
+      SFluoLine = GSBLabels.count();
+      GSBFlags << true;
+      GSBLabels << "FL";
       for ( int i = 0; i < MaxSSDs; i++ ) {
-	GSBs[DLC++]->setText( QString::number( i ) );
+	GSBFlags << false;
+	GSBLabels << QString::number( i );
       }
     }
     if ( UseAux1->isChecked() ) {
@@ -634,17 +615,19 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "A1" );
+      GSBFlags << true;
+      GSBLabels << "A1";
     }
     if ( UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
       LC++;
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "A2" );
+      GSBFlags << true;
+      GSBLabels << "A2";
     }
+    SetGSBFlags( GSBFlags );
+    SetGSBLabels( GSBLabels );
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
@@ -748,7 +731,7 @@ void MainWindow::StartMeasurement( void )
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
-    MeasTimer->start( 100 );
+    MeasTimer->start( 30 );
   } else {
     StopP->show();
     SinPause = inPause;

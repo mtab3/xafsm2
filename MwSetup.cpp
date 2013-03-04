@@ -4,6 +4,9 @@
 
 void MainWindow::setupSetupArea( void )   /* İ’èƒGƒŠƒA */
 {
+  GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
+  GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
+
   double Eg = ManTEkeV->text().toDouble();
 
   //  inMove = 0;

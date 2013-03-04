@@ -22,6 +22,8 @@ class ViewCTRL : public QObject
   DATATYPE nowDType;
   bool deletable;
 
+  QStringList BNames;
+
  public:
   ViewCTRL( void );
 
@@ -35,6 +37,8 @@ class ViewCTRL : public QObject
   void setIsDeletable( bool Deletable ) { deletable = Deletable; };
   void setNowDType ( DATATYPE dtype ) { nowDType = dtype; };
   DATATYPE getNowDType ( void ) { return nowDType; };
+  void setBNames( QStringList bn ) { BNames = bn; };
+  QStringList getBNames( void ) { return BNames; };
 };
 
 

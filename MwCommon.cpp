@@ -6,9 +6,6 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
 {
   QString buf;
 
-  GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
-  GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
-
   u->setD( mccd[ selmc->MC() ]->getD() );     // default D is Si (111) 
 
   SelectedA = Cu;
@@ -43,7 +40,55 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ) );
 
   connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( Hide( bool ) ) );
+
+
+
+  GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
+       << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
+       << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
+       << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
+       << GSB21 << GSB22 << GSB23 << GSB24;
+
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
+  }
 }
+
+void MainWindow::clearGSBs( void )
+{
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    GSBs[i]->setText( "" );
+    GSBs[i]->setChecked( false );
+  }
+}
+
+void MainWindow::SetGSBFlags( QVector<bool> flgs )
+{
+  for ( int i = 0; i < flgs.count(); i++ ) {
+    GSBs[i]->setChecked( flgs[i] );
+  }
+}
+
+void MainWindow::SetGSBLabels( QStringList lbls )
+{
+  for ( int i = 0; i < lbls.count(); i++ ) {
+    GSBs[i]->setText( lbls[i] );
+  }
+}
+
+void MainWindow::SelectAGB( bool f )
+{
+  if ( MeasView == NULL )
+    return;
+    
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    if ( sender() == GSBs[i] )
+	MeasView->ChooseAG( i, f );
+  }
+}
+
+
+
 
 void MainWindow::Hide( bool f ) 
 {
