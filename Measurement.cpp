@@ -200,7 +200,7 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   }
 
   for ( int l = 0; l < MaxSSDs; l++ ) {  // 選択し直された SSD の ch に関して
-    if ( SSDbs2[l]->isChecked() ) {
+    if ( SSDbs2[l]->isChecked() == PBTrue ) {
       y = MeasView->GetYp( SFluoLine + 1 + l );
       for ( int i = 0; i < MeasP; i++ ) {  // 合計をとりなおす
 	sum[i] += y[i];

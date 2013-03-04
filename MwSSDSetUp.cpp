@@ -6,9 +6,6 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
-  SSDActive = "background-color: #ccffcc";
-  SSDnotActive = "background-color: #aabbaa";
-
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -27,7 +24,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
     SSDbs2[i]->setStyleSheet( SSDActive );
     SSDbs2[i]->setToolTip( tr( "Active" ) );
-    SSDbs2[i]->setChecked( true );
+    SSDbs2[i]->setChecked( PBTrue );
     connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ) );
   }
 
@@ -208,7 +205,7 @@ void MainWindow::SelSSDs20( void )
 {
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
     if ( sender() == SSDbs2.at(i) ) {
-      if ( SSDbs2.at(i)->isChecked() ) {
+      if ( SSDbs2.at(i)->isChecked() == PBTrue ) {
 	SSDbs2.at(i)->setStyleSheet( SSDActive );
 	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
 	SFluo->setSSDUsingCh( i, true );
@@ -227,13 +224,13 @@ void MainWindow::SelSSDs( int ch )
 {
   for ( int i = 0; i < SSDbs.count(); i++ ) {
     if ( i == ch ) {
-      SSDbs[i]->setChecked( true );
+      SSDbs[i]->setChecked( PBTrue );
       SSDbs[i]->setStyleSheet( SSDActive );
       SSDbs[i]->setToolTip( tr( "Active" ) );
       MCACh->setValue( i );
       MCAChSelected( i );
     } else {
-      SSDbs[i]->setChecked( false );
+      SSDbs[i]->setChecked( PBFalse );
       SSDbs[i]->setStyleSheet( SSDnotActive );
       SSDbs[i]->setToolTip( tr( "Inactive" ) );
     }
@@ -348,7 +345,7 @@ void MainWindow::StartMCA( void )
     }
 
     MCAStart->setText( tr( "Stop" ) );
-    MCAStart->setStyleSheet( "background-color: yellow" );
+    MCAStart->setStyleSheet( InActive );
 
     inMCAMeas = true;
 
@@ -390,10 +387,7 @@ void MainWindow::StartMCA( void )
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
-    MCAStart->setStyleSheet( "background-color: "
-			     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0"
-			     " rgba(225, 235, 225, 255), stop:1"
-			     " rgba(255, 255, 255, 255));" );
+    MCAStart->setStyleSheet( NormalB );
   }
 }
 

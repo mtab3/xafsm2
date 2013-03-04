@@ -160,7 +160,6 @@ void Data::GotNewView( ViewCTRL *view )
   default: break;
   }
 
-
   f.close();
 }
 

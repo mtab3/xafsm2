@@ -9,7 +9,7 @@ bool MainWindow::MeasureDark( void )
     if ( AskingShutterClose ) {
       AskingShutterClose = false;
       MeasBackGround->setText( tr( "BG Measuring" ) );
-      MeasBackGround->setStyleSheet( "background-color: yellow" );
+      MeasBackGround->setStyleSheet( InActive );
       return false;
     } else if ( AskingShutterOpen ) {
       AskingShutterOpen = false;
@@ -73,7 +73,7 @@ bool MainWindow::MeasureDark( void )
   AskingShutterClose = true;
   AskingShutterOpen = false;
   MeasBackGround->setText( tr( "Close Shutter!!" ) );
-  MeasBackGround->setStyleSheet( "background-color: red" );
+  MeasBackGround->setStyleSheet( AlartRed );
   MeasDarkStage = 0;
   statusbar->showMessage( tr( "Make sure that shutte is closed."
 			      "  Then push the 'red' button." ), 0 );
@@ -140,7 +140,7 @@ void MainWindow::MeasDarkSequence( void )
     }
     AskingShutterOpen = true;
     MeasBackGround->setText( tr( "Open Shutter!!" ) );
-    MeasBackGround->setStyleSheet( "background-color: red" );
+    MeasBackGround->setStyleSheet( AlartRed );
     statusbar->showMessage( tr( "Make sure that shutte is opened."
 				"  Then push the 'red' button." ), 0 );
     MeasDarkStage = 6;
@@ -150,10 +150,7 @@ void MainWindow::MeasDarkSequence( void )
     statusbar->showMessage( "", 0 );
     MeasBackGround->setText( tr( "Measure Background" ) );
     MeasBackGround
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
+      ->setStyleSheet( NormalB );
     MeasDarkStage = 0;
     MeasDarkTimer->stop();
     break;

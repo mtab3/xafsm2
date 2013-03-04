@@ -58,7 +58,7 @@ void MainWindow::clearGSBs( void )
 {
   for ( int i = 0; i < GSBs.count(); i++ ) {
     GSBs[i]->setText( "" );
-    GSBs[i]->setChecked( false );
+    GSBs[i]->setChecked( PBFalse );
   }
 }
 
@@ -83,7 +83,7 @@ void MainWindow::SelectAGB( bool f )
     
   for ( int i = 0; i < GSBs.count(); i++ ) {
     if ( sender() == GSBs[i] )
-	MeasView->ChooseAG( i, f );
+      MeasView->ChooseAG( i, f == PBTrue );
   }
 }
 

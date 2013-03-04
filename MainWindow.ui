@@ -963,6 +963,12 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
              <item row="0" column="0" colspan="2">
               <widget class="QLabel" name="label_91">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 230,190);</string>
                </property>
@@ -1000,6 +1006,12 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 230,190);</string>
                </property>
@@ -1014,96 +1026,136 @@ Though, other parameters are fixed at the value on starting.</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QRadioButton" name="UseMeasured">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Use Measured</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1" colspan="3">
-              <widget class="QLabel" name="label_7">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Meas. Bacground Time.[s] </string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3" colspan="2">
-              <widget class="QPushButton" name="MeasBackGround">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>When it is displayed as &quot;Shutter Close!&quot;, check the shutter is closed and push the button.
-When it is displayed as &quot;Shutter Open!, check the shutter is opend and push the button.</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Meas. Background</string>
-               </property>
-              </widget>
+             <item row="0" column="1">
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <item>
+                <spacer name="horizontalSpacer_12">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_7">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Meas. Bacground Time.[s] </string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="MeasBackTime">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="ShowMeasuredBack">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Show BGs</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item row="1" column="0" colspan="2">
-              <widget class="QRadioButton" name="MeasBackBeforeMeas">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Meas. before Scan</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="5">
-              <widget class="QPushButton" name="ShowMeasuredBack">
-               <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-               </property>
-               <property name="text">
-                <string>Show Measured</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="4" colspan="2">
-              <widget class="QLineEdit" name="MeasBackTime">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <spacer name="horizontalSpacer_11">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="MeasBackBeforeMeas">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Meas. before Scan</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="UseMeasured">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Use Measured</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="MeasBackGround">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>When it is displayed as &quot;Shutter Close!&quot;, check the shutter is closed and push the button.
+When it is displayed as &quot;Shutter Open!, check the shutter is opend and push the button.</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Meas. Background</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -2733,7 +2785,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(210, 210,230);</string>
+                    <string notr="true">background-color: rgb(200, 200,190);</string>
                    </property>
                    <property name="text">
                     <string>H</string>
@@ -2767,7 +2819,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 000);</string>
+                    <string notr="true">background-color: rgb(250, 250, 200);</string>
                    </property>
                    <property name="text">
                     <string>M</string>
@@ -2804,7 +2856,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(210, 210,230);</string>
+                    <string notr="true">background-color: rgb(200, 200,190);</string>
                    </property>
                    <property name="text">
                     <string>L</string>
@@ -3700,7 +3752,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 <bool>true</bool>
                </property>
                <property name="checked">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="autoExclusive">
                 <bool>false</bool>
@@ -5322,6 +5374,25 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="StatTab">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <attribute name="title">
+        <string>Stat/Config</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_36">
+        <property name="margin">
+         <number>6</number>
+        </property>
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_37"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="LogTab">
        <property name="styleSheet">
         <string notr="true">background-color: rgb(215, 225, 210);</string>
@@ -5417,25 +5488,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </size>
           </property>
          </spacer>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="StatTab">
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <attribute name="title">
-        <string>Stat/Config</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_36">
-        <property name="margin">
-         <number>6</number>
-        </property>
-        <property name="spacing">
-         <number>3</number>
-        </property>
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_37"/>
         </item>
        </layout>
       </widget>
@@ -5858,6 +5910,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
          </property>
          <property name="checked">
           <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

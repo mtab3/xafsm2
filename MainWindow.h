@@ -172,10 +172,7 @@ private:
   XYView *ScanView;
   QFileDialog *scanFSel;
   int SFluoLine;
-  bool isSI1;
-
-  QString RadioBOn;
-  QString RadioBOff;
+  bool isSI1, isSFluo;
 
   //  bool MeasCntIs;
   //  int MeasCntNo;
@@ -204,8 +201,6 @@ private:
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> SSDbs2;
   QVector<QPushButton *> GSBs;
-  QString SSDActive;
-  QString SSDnotActive;
   //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;
@@ -280,7 +275,6 @@ private:
   ViewCTRL *MeasViewC;
   XYView *MeasView;
   void setupView( void );
-
 
   bool CheckDetectorSelection( void );
 

@@ -12,6 +12,22 @@ const int MaxBLKs = 8;        // Max Blocks
 const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
+const QString RadioBOn = "background-color: rgb(250,250,200)";
+const QString RadioBOff = "background-color: rgb(200,200,190)";
+const QString NormalB = "background-color: "
+		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		       "rgba(225, 235, 225, 255), stop:1 "
+                       "rgba(255, 255, 255, 255));";
+const QString InActive = "background-color: rgb(250,250,180)"; 
+const QString AlartRed = "background-color: rgb(250,200,200)";
+const QString SSDActive = "background-color: #f0f0d0";
+const QString SSDnotActive = "";
+//const QString SSDActive = RadioBOn;
+//const QString SSDnotActive = RadioBOff;
+
+const bool PBTrue = false;   // PushButton を Checkable にすると、押した時、暗いのに
+const bool PBFalse = true;   // true になるので、定数名で反転させて使う
+
 extern QString DefFileName;
 extern bool newFluoMode;
 

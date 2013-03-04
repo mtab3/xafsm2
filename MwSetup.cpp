@@ -17,8 +17,6 @@ void MainWindow::setupSetupArea( void )   /* Ý’èƒGƒŠƒA */
   ScanView = NULL;
   MonitorView = NULL;
 
-  RadioBOn = "background-color: rgb(255,255,000)";
-  RadioBOff = "background-color: rgb(210,210,230)";
   GoMRelAbs = REL;
   SPSRelAbs = REL;
   ShowGoMRelAbs();
@@ -467,7 +465,7 @@ void MainWindow::GoMAtPuls( double Pos )
   }
 
   GoMotor->setText( tr( "Stop" ) );
-  GoMotor->setStyleSheet( "background-color: yellow" );
+  GoMotor->setStyleSheet( InActive );
 
   SPSScan->setEnabled( false );
 
@@ -520,11 +518,7 @@ void MainWindow::GoMStop0( void )
   GoMotor->setEnabled( true );
   SPSScan->setEnabled( true );
   GoMotor->setText( tr( "Go" ) );
-  GoMotor->setStyleSheet( "background-color: "
-			  "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-			  "rgba(225, 235, 225, 255), stop:1 "
-			  "rgba(255, 255, 255, 255));" );
-  
+  GoMotor->setStyleSheet( NormalB );
 }
 
 void MainWindow::ScanStart( void )
@@ -589,7 +583,7 @@ void MainWindow::ScanStart( void )
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
 
     SPSScan->setText( tr( "Stop" ) );
-    SPSScan->setStyleSheet( "background-color: yellow" );
+    SPSScan->setStyleSheet( InActive );
     GoMotor->setEnabled( false );
 
     ScanView->Clear();
@@ -729,7 +723,7 @@ void MainWindow::Monitor( void )
       connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 		 
     MStart->setText( tr( "Stop" ) );
-    MStart->setStyleSheet( "background-color: yellow" );
+    MStart->setStyleSheet( InActive );
 
     MonitorViewC->setIsDeletable( false );
     MonTime.restart();
@@ -751,10 +745,7 @@ void MainWindow::Monitor( void )
 
     MonitorViewC->setIsDeletable( true );
     MStart->setText( tr( "Mon. Start" ) );
-    MStart->setStyleSheet( "background-color: "
-			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-			   "rgba(225, 235, 225, 255), stop:1 "
-			   "rgba(255, 255, 255, 255));" );
+    MStart->setStyleSheet( NormalB );
   }
 }
 
