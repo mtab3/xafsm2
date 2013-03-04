@@ -204,6 +204,7 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
   }
 
   bool dispf;
+  QVector<double> ys;
   double x, I00, I, y;
   I00 = 1;
   while ( ! in.atEnd() ) {
@@ -220,8 +221,11 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
       case FLUO:  y = ( I00 != 0 ) ? I / I00 : 1; break;
       default: dispf = false; break;
       }
+      ys << y;
+    }
+    for ( int i = 3; i < Vals; i++ ) {
       if ( dispf ) {
-	view->NewPoint( L0+i-3, x, y );
+	view->NewPoint( L0+i-3, x, ys[i-3] );
       }
     }
   }
