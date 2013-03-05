@@ -219,6 +219,13 @@ void MainWindow::InitAndIdentifySensors( void )
 	       StatDisp, SLOT( newEncTh( QString ) ) );
     }
   }
+  for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo ‚ªŠm’è‚µ‚Ä‚©‚ç
+    as = ASensors.value(i);
+    if (( as->getTheParent() == SFluo )&&( as != SFluo )) {
+      connect( SFluo, SIGNAL( newValue( QString ) ), as, SLOT( getNewValue( QString ) ) );
+      connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ) );
+    }
+  }
   
   if ( SFluo != NULL )
     SFluo->setROIs( ROIStart, ROIEnd );

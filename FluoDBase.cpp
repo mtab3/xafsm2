@@ -43,7 +43,7 @@ FluoDBase::FluoDBase( void ) : QObject()
   qSort( fluos.begin(), fluos.end() );
 }
 
-QVector<Fluo> FluoDBase::inRange( double Es, double Ee )
+QVector<Fluo> FluoDBase::inRange( double Es, double Ee, double dE )
 {
   QVector<Fluo> rv;
 
@@ -53,21 +53,41 @@ QVector<Fluo> FluoDBase::inRange( double Es, double Ee )
     }
   }
 
+  rv = removeTooNears( rv, dE );  // rv はソート済み
+
   return rv;
 }
 
-QVector<Fluo> FluoDBase::nears( double E )
+QVector<Fluo> FluoDBase::removeTooNears( QVector<Fluo> list, double dE )
+// list はソート済みと仮定する
+{
+  double val0;
+  int no0;
+
+  for ( int i = 0; i < list.count(); i++ ) {
+    val0 = list[i].val;
+    no0 = list[i].aNumber;
+    for ( int j = i+1; j < list.count() && (( list[j].val - val0 ) < dE ); j++ ) {
+      if ( list[j].aNumber == no0 )
+	list.remove( j );
+    }
+  }
+
+  return list;
+}
+
+QVector<Fluo> FluoDBase::nears( double E, double dE )
 // nears( E, range ) の簡易版。10keV で、range = +/- 0.25 になる。
 {
   if ( E < 0 ) {
     QVector<Fluo> rv;
     return rv;
   }
-  return nears( E, E / 50 + 0.05 );
+  return nears( E, E / 50 + 0.05, dE );
 }
 
 
-QVector<Fluo> FluoDBase::nears( double E, double range )
+QVector<Fluo> FluoDBase::nears( double E, double range, double dE )
 // 指定エネルギー E の前後 range の範囲に入る元素リスト作成。
 // 最初は E に近いもの順にしてたけど、今はエネルギーの小さいもの順
 {
@@ -90,6 +110,9 @@ QVector<Fluo> FluoDBase::nears( double E, double range )
     d--;
   }
   qSort( nFluos.begin(), nFluos.end() );
+
+  nFluos = removeTooNears( nFluos, dE );  // ソート済み
+
   return nFluos;
 }
 

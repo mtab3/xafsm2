@@ -11,6 +11,7 @@
 
 #define NEAR ( 10 )     // ROI のエッジに近いと判断する距離(画面 pixel)
 #define NEAR2 ( 10 )    // 据え置きカーソルに近いと判断する距離
+#define NEAR3 ( 3 )     // 蛍光ピーク位置が近いと判断する距離
 
 MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 {
@@ -251,7 +252,8 @@ void MCAView::Draw( QPainter *p )
       QVector<int> lend;         // 格段の最終表示位置
       for ( int i = 0; i < lines; i++ ) { lend << 0; }
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
-	QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE );
+	QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE,
+						 cc.s2rx( NEAR3 ) - cc.s2rx( 0 ) );
 	p->setPen( AListC );
 	for ( int i = 0; i < inRange.count(); i++ ) {
 	  if ( inRange[i].dispf ) {
@@ -289,7 +291,7 @@ void MCAView::Draw( QPainter *p )
     } else {
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
 	// マウスカーソル付近のみ元素名表示の場合
-	QVector<Fluo> nears = fdbase->nears( rmx );
+	QVector<Fluo> nears = fdbase->nears( rmx, cc.s2rx( NEAR3 ) - cc.s2rx( 0 ) );
 	p->setPen( AListC );
 	bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
 	for ( int i = 0; i < nears.count(); i++ ) {

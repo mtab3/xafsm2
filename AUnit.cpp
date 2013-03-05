@@ -940,3 +940,13 @@ void AUnit::OnReportCurrent( SMsg msg )
     }
   }
 }
+
+void AUnit::getNewValue( QString )
+{
+  Value = QString::number( theParent->getCountsInROI().at( Ch.toInt() ) );
+}
+
+void AUnit::getNewDark( double )
+{
+  Dark = theParent->getDarkCountsInROI().at( Ch.toInt() );
+}

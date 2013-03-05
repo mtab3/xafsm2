@@ -32,6 +32,7 @@
 #include "Conditions.h"
 #include "KeV2Pix.h"
 #include "FluoDBase.h"
+#include "DarkTable.h"
 
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
@@ -226,6 +227,7 @@ private:
   void ClearBLKs( void );
   void ShowBLKs( void );
   void WriteBF( void );
+  DarkTable *darkTable;
 
   void SelSSDs( int i );
   //  void SetSSDactive( bool active );
@@ -328,6 +330,7 @@ private slots:
   void clearGSBs( void );
   void SetGSBFlags( QVector<bool> flgs );
   void SetGSBLabels( QStringList lbls );
+  void ShowMB( void );
 
   void GetNewGos( void );
   void GoToPosKeV1( void ) { MoveCurThPosKeV( GoPosKeV[0] ); }

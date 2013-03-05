@@ -514,7 +514,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -3741,8 +3741,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>46</width>
-                 <height>24</height>
+                 <width>0</width>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -3778,8 +3778,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>46</width>
-                 <height>24</height>
+                 <width>0</width>
+                 <height>0</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -4882,8 +4882,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>46</width>
-                 <height>24</height>
+                 <width>0</width>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -5091,8 +5091,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>46</width>
-                 <height>24</height>
+                 <width>0</width>
+                 <height>0</height>
                 </size>
                </property>
                <property name="styleSheet">

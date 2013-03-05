@@ -24,7 +24,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
 
-
   SelDFND = new QFileDialog;
   SelWBFND = new QFileDialog;
   SelRBFND = new QFileDialog;
@@ -152,8 +151,27 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   connect( this, SIGNAL( SelectedSSD( int, bool ) ),
 	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
+
+  darkTable = new DarkTable;
+  connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ) );
 }
 
+void MainWindow::ShowMB( void )
+{
+  QTableWidgetItem *item;
+
+  darkTable->clearItems();
+
+  darkTable->setRowCol( ASensors.count(), 2 );
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    item = new QTableWidgetItem ( ASensors.at( i )->getName() );
+    darkTable->setItem( i, 0, item );
+    item = new QTableWidgetItem ( QString::number( ASensors.at( i )->getDark() ) );
+    item->setTextAlignment( Qt::AlignRight | Qt::AlignVCenter );
+    darkTable->setItem( i, 1, item );
+  }
+  darkTable->show();
+}
 
 void MainWindow::ClearBLKs( void )
 {
@@ -324,7 +342,7 @@ void MainWindow::ShowTotal( void )
     TP += BlockPoints[i];
     TT0 += BlockPoints[i] * BlockDwell[i];
   } 
-  double TT = TT0 + TP * 600. / 480.;    // Cu-Ka で 480点測定に10分余分にかかる
+  double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
   buf.sprintf( "%4d", TP * SelRPT->value() );
   TPoints->setText( tr( "Points: " ) + buf );
   TT *= SelRPT->value();

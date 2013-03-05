@@ -139,7 +139,7 @@ SSDの一部のチャンネルに、
         <translation>Frame</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="330"/>
+        <location filename="MCAView.cpp" line="332"/>
         <source>MCA Ch. : </source>
         <translation>MCA Ch. : </translation>
     </message>
@@ -188,62 +188,62 @@ SSDの一部のチャンネルに、
         <translation type="obsolete">ROI内[cps] : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="340"/>
+        <location filename="MCAView.cpp" line="342"/>
         <source>Cursor</source>
         <translation>カーソル</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="346"/>
+        <location filename="MCAView.cpp" line="348"/>
         <source> Pos. [keV] : </source>
         <translation> 位置[keV] : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="355"/>
+        <location filename="MCAView.cpp" line="357"/>
         <source> Pos. [ch] : </source>
         <translation> 位置[ch] : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="364"/>
+        <location filename="MCAView.cpp" line="366"/>
         <source> Val. : </source>
         <translation> 値 : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="373"/>
+        <location filename="MCAView.cpp" line="375"/>
         <source>ROI </source>
         <translation>ROI </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="379"/>
+        <location filename="MCAView.cpp" line="381"/>
         <source> Start [keV] : </source>
         <translation> 始点[keV] : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="388"/>
+        <location filename="MCAView.cpp" line="390"/>
         <source> End [keV] : </source>
         <translation> 終点[keV] : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="397"/>
+        <location filename="MCAView.cpp" line="399"/>
         <source> Count : </source>
         <translation> カウント : </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="406"/>
+        <location filename="MCAView.cpp" line="408"/>
         <source>   CPS : </source>
         <translation>   CPS :</translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="415"/>
+        <location filename="MCAView.cpp" line="417"/>
         <source>Real Time : </source>
         <translation>実時間: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="424"/>
+        <location filename="MCAView.cpp" line="426"/>
         <source>Live Time : </source>
         <translation>ライブ時間: </translation>
     </message>
     <message>
-        <location filename="MCAView.cpp" line="446"/>
+        <location filename="MCAView.cpp" line="448"/>
         <source>Dead Time : </source>
         <translation>デッドタイム: </translation>
     </message>

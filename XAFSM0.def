@@ -187,8 +187,8 @@ SENSOR SSDP "S023" "SingleF" "SSD-ch16"  "QtXmapSSD"      "16" "count" YES "S006
 SENSOR SSDP "S024" "SingleF" "SSD-ch17"  "QtXmapSSD"      "17" "count" YES "S006"
 SENSOR SSDP "S025" "SingleF" "SSD-ch18"  "QtXmapSSD"      "18" "count" YES "S006"
 
-#SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
-SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
+SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
+#SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC      : Unit type   ENC an encorder observed/controlled via nd287
