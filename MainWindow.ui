@@ -514,7 +514,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -3726,7 +3726,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </item>
             </layout>
            </item>
-           <item row="2" column="0" colspan="2">
+           <item row="3" column="0" colspan="2">
             <layout class="QGridLayout" name="SSDSelectLayout">
              <property name="spacing">
               <number>1</number>
@@ -4129,6 +4129,60 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="checked">
                 <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_98">
+               <property name="text">
+                <string>Down</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_15">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_99">
+               <property name="text">
+                <string>Stream</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_16">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_100">
+               <property name="text">
+                <string>Up</string>
                </property>
               </widget>
              </item>
@@ -4800,7 +4854,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="1" column="0" colspan="2">
+           <item row="2" column="0" colspan="2">
             <layout class="QGridLayout" name="SSDSelectLayout_2">
              <property name="spacing">
               <number>1</number>
@@ -5142,8 +5196,63 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </item>
             </layout>
            </item>
+           <item row="1" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Down</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_13">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_74">
+               <property name="text">
+                <string>Stream</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_14">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_79">
+               <property name="text">
+                <string>Up</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
           </layout>
           <zorder></zorder>
+          <zorder>horizontalLayoutWidget</zorder>
          </widget>
         </item>
         <item row="4" column="2">
@@ -5987,7 +6096,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
      <x>0</x>
      <y>0</y>
      <width>820</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
