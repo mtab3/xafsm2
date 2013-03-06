@@ -274,6 +274,7 @@ private:
 
   QString NewLFName( void );
 
+  int oldCurrentView;
   ViewCTRL *MeasViewC;
   XYView *MeasView;
   void setupView( void );

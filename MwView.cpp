@@ -19,6 +19,8 @@ void MainWindow::setupView( void )
     ViewCtrls << viewCtrl;
   }
 
+  oldCurrentView = 0;
+
   connect( ViewTab, SIGNAL( currentChanged( int ) ),
 	   this, SLOT( ShowButtonsForATab( int ) ) );
 }
@@ -37,4 +39,5 @@ void MainWindow::ShowButtonsForATab( int i )
   lbls = ViewCtrls[i]->getGSBLabels();
   SetGSBLabels( lbls );
   SetGSBFlags( ViewCtrls[i]->getGSBFlags() );
+  oldCurrentView = i;
 }

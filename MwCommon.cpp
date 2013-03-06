@@ -64,6 +64,7 @@ void MainWindow::SetGSBFlags( QVector<bool> flgs )
 {
   for ( int i = 0; i < flgs.count(); i++ ) {
     GSBs[i]->setChecked( flgs[i] );
+    qDebug() << "button " << i << flgs[i];
   }
 }
 
@@ -80,8 +81,10 @@ void MainWindow::SelectAGB( bool f )
     return;
     
   for ( int i = 0; i < GSBs.count(); i++ ) {
-    if ( sender() == GSBs[i] )
+    if ( sender() == GSBs[i] ) {
+      qDebug() << "select agb " << i << f << ( f == PBTrue);
       MeasView->ChooseAG( i, f == PBTrue );
+    }
   }
 }
 
