@@ -5252,7 +5252,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
           </layout>
           <zorder></zorder>
-          <zorder>horizontalLayoutWidget</zorder>
          </widget>
         </item>
         <item row="4" column="2">
