@@ -25,8 +25,8 @@ const QString SSDnotActive = "";
 //const QString SSDActive = RadioBOn;
 //const QString SSDnotActive = RadioBOff;
 
-const bool PBTrue = false;   // PushButton を Checkable にすると、押した時、暗いのに
-const bool PBFalse = true;   // true になるので、定数名で反転させて使う
+#define PBTrue    ( false )   // PushButton を Checkable にすると、押した時、暗いのに
+#define PBFalse   ( true  )   // true になるので、定数名で反転させて使う
 
 extern QString DefFileName;
 extern bool newFluoMode;

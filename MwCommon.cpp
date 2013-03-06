@@ -41,8 +41,6 @@ void MainWindow::setupCommonArea( void )   /* ã§í ÉGÉäÉA */
 
   connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( Hide( bool ) ) );
 
-
-
   GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
        << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
@@ -86,9 +84,6 @@ void MainWindow::SelectAGB( bool f )
       MeasView->ChooseAG( i, f == PBTrue );
   }
 }
-
-
-
 
 void MainWindow::Hide( bool f ) 
 {

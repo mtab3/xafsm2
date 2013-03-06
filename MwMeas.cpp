@@ -106,7 +106,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
   }
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
-    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell()) );
+    connect( BLKdwell.at(i), SIGNAL( textChanged( const QString & ) ),
+	     this, SLOT(ChangeBLKdwell( const QString & )) );
   }
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
@@ -410,7 +411,7 @@ void MainWindow::ChangeBLKpoints( void )
   }
 }
 
-void MainWindow::ChangeBLKdwell( void )
+void MainWindow::ChangeBLKdwell( const QString & )
 {
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
     if ( BLKdwell.at(i) == sender() ) {
@@ -596,24 +597,23 @@ void MainWindow::StartMeasurement( void )
     int LC = 0;    // mUnits に登録するユニットに対応したカウント
     //    int DLC = 0;   // 表示するラインに対応したカウント
     mUnits.clearUnits();
-    clearGSBs();
-    QStringList GSBLabels;
-    QVector<bool> GSBFlags;
+    clearGSBs();              // ボタンの表示をクリア
+    aGSBS aGsb;
+    QVector<aGSBS> GSBSs;
 
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 
-    GSBFlags << PBTrue;
-    GSBLabels << "I0";
+    aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
       isSI1 = true;
-      GSBFlags << PBTrue << PBFalse;
-      GSBLabels << "I1" << "mu";
+      aGsb.stat = PBFalse; aGsb.label = "I1"; GSBSs << aGsb;
+      aGsb.stat = PBTrue;  aGsb.label = "mu"; GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
@@ -621,12 +621,10 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( SFluo );
       LC++;
       isSFluo = true;
-      SFluoLine = GSBLabels.count();
-      GSBFlags << PBTrue;
-      GSBLabels << "FL";
+      SFluoLine = GSBSs.count();
+      aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
       for ( int i = 0; i < MaxSSDs; i++ ) {
-	GSBFlags << PBFalse;
-	GSBLabels << QString::number( i );
+	aGsb.stat = PBFalse; aGsb.label = QString::number( i ); GSBSs << aGsb;
       }
     }
     if ( UseAux1->isChecked() ) {
@@ -634,19 +632,15 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
-      GSBFlags << PBTrue;
-      GSBLabels << "A1";
+      aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
     }
     if ( UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
       LC++;
-      GSBFlags << PBTrue;
-      GSBLabels << "A2";
+      aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
     }
-    SetGSBFlags( GSBFlags );
-    SetGSBLabels( GSBLabels );
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
@@ -708,6 +702,8 @@ void MainWindow::StartMeasurement( void )
     for ( int i = 0; i < GSBs.count(); i++ ) {
       MeasView->ChooseAG( i, GSBs[i]->isChecked() == PBTrue );
     }
+    MeasViewC->setGSBStats( GSBSs );
+    ShowButtonsForCurrentTab();
 
     QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
     if ( ! OverWriteChecked && CheckFile.exists() ) {

@@ -18,5 +18,23 @@ void MainWindow::setupView( void )
     viewCtrl->setIsDeletable( true );
     ViewCtrls << viewCtrl;
   }
+
+  connect( ViewTab, SIGNAL( currentChanged( int ) ),
+	   this, SLOT( ShowButtonsForATab( int ) ) );
 }
 
+void MainWindow::ShowButtonsForCurrentTab( void )
+{
+  ShowButtonsForATab( ViewTab->currentIndex() );
+}
+
+
+void MainWindow::ShowButtonsForATab( int i )
+{
+  QStringList lbls;
+
+  clearGSBs();
+  lbls = ViewCtrls[i]->getGSBLabels();
+  SetGSBLabels( lbls );
+  SetGSBFlags( ViewCtrls[i]->getGSBFlags() );
+}

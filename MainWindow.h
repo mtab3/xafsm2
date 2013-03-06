@@ -303,7 +303,7 @@ private slots:
   void ChangeBLKstart( void );
   void ChangeBLKstep( void );
   void ChangeBLKpoints( void );
-  void ChangeBLKdwell( void );
+  void ChangeBLKdwell( const QString &dtime );
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );
@@ -431,6 +431,8 @@ private slots:
   void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype );
   void DeleteTheView( void );
+  void ShowButtonsForCurrentTab( void );
+  void ShowButtonsForATab( int i );
 
   void setEncNewTh( QString orig, QString newv );
 

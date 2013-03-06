@@ -142,6 +142,8 @@ void Data::StartToShowData( void )
 
 void Data::GotNewView( ViewCTRL *view )
 {
+  viewCtrl = view;
+
   QFile f( FName );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
@@ -191,42 +193,56 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
     return;
   }
 
-  //  bool TrMode = ( head.getMode() == 0 );
+  int TrMode = head.getMode();
   // 混在測定を許すのでファイル全体モードは
   // あまり意味がない。
 
   // 最初の x(to go), x(enc), dwell は抜いたデータのモードだけ返って来る。
   QStringList ChModes0 = head.getChModes();
+  int cols = ChModes0.count();
+  bool aFluo = false;
 
-  QVector<int> ChModes;
+  QVector<int> ChModes;    // 返ってきたモードを数字に直しておく
   for ( int i = 0; i < ChModes0.count(); i++ ) {
     ChModes << ChModes0[i].toInt();
   }
+  int I0col = -1;
+  for ( int i = 0; i < cols; i++ ) {
+    if ( ChModes[i] == I0 ) {         // 先に I0 を探さないと計算できない
+      I0col = i + 3;
+    }
+    if ( ChModes[i] == FLUO ) {       // 蛍光モードが少なくとも一チャンネルある
+      aFluo = true;
+    }
+  }
+  if ( I0col == -1 ) {                // I0 が見つからなければ表示できない
+    qDebug() << "No I0 data is found.";
+    return;
+  }
 
   bool dispf;
-  QVector<double> ys;
-  double x, I00, I, y;
-  I00 = 1;
+  double x, y, I00, I, totalf;
   while ( ! in.atEnd() ) {
+    totalf = 0;
     line = in.readLine().simplified();
     vals = line.split( QRegExp( "\\s" ) );
-    int Vals = vals.count();
     x = u->deg2keV( vals[0].toDouble() );
-    for ( int i = 3; i < Vals; i++ ) {
+    I00 = vals.at( I0col ).toDouble();
+    for ( int i = 0; i < cols; i++ ) {
       dispf = true;
-      I = vals.at( i ).toDouble();
-      switch( ChModes[i-3] ) {
-      case I0:    y = I; I00 = I; break;
-      case TRANS: y = ( I != 0 ) ?  exp( fabs( I00 / I ) ) : 1; break;
-      case FLUO:  y = ( I00 != 0 ) ? I / I00 : 1; break;
+      I = vals.at( i + 3 ).toDouble();
+      switch( ChModes[i] ) {
+      case I0:    y = I; break;
+      case TRANS: y = ( I != 0 ) ?  log( fabs( I00 / I ) ) : 1; break;
+      case FLUO:  y = ( I00 != 0 ) ? I / I00 : 1; totalf += y; break;
       default: dispf = false; break;
       }
-      ys << y;
-    }
-    for ( int i = 3; i < Vals; i++ ) {
       if ( dispf ) {
-	view->NewPoint( L0+i-3, x, ys[i-3] );
+	view->NewPoint( L0+i, x, y );
       }
+    }
+    if ( aFluo ) {
+      view->NewPoint( L0+cols, x, totalf );
     }
   }
 

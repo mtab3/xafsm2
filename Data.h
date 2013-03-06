@@ -30,6 +30,7 @@ class Data : public QFrame, private Ui::Data
   QStringList DataTypeNames;
   QString FName;
 
+  ViewCTRL *viewCtrl;
   XYView *view0;
   int XYLine0, XYLines; 
 

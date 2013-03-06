@@ -52,7 +52,7 @@ void MainWindow::MeasSequence( void )
     // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
   case 3: 
     MeasS = 0;    // Measurement Step count in each block
-    mUnits.setDwellTimes( NowDwell = SBlockDwell[0] );
+    mUnits.setDwellTimes( NowDwell = SBlockDwell[ MeasB ] );
     mUnits.setDwellTime();
     MeasStage = 4;
     // break;       MeasStage == 2 もレスポンスを待つ必要なし
