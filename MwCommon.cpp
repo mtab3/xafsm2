@@ -77,13 +77,15 @@ void MainWindow::SetGSBLabels( QStringList lbls )
 
 void MainWindow::SelectAGB( bool f )
 {
-  if ( MeasView == NULL )
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() != MEASDATA )
     return;
-    
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getView() == NULL )
+    return;
+  
   for ( int i = 0; i < GSBs.count(); i++ ) {
     if ( sender() == GSBs[i] ) {
-      qDebug() << "select agb " << i << f << ( f == PBTrue);
-      MeasView->ChooseAG( i, f == PBTrue );
+      ((XYView*)(ViewCtrls[ ViewTab->currentIndex() ]->getView()))
+	->ChooseAG( i, f == PBTrue );
     }
   }
 }

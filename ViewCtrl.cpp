@@ -3,6 +3,12 @@
 
 ViewCTRL::ViewCTRL( void )
 {
+  ViewBase = NULL;
+  nowView = NULL;
+  nowVType = NONVIEW;
+  nowDType = NONDATA;
+  deletable = true;
+  gsbStat = NULL;
 }
 
 bool ViewCTRL::setView( void *view, VTYPE vtype )
@@ -45,6 +51,7 @@ bool ViewCTRL::deleteView( void )
     nowDType = NONDATA;
     gsbStat->clear();
     delete gsbStat;
+    gsbStat = NULL;
     return true;                    // the view is cleaned up
   }
   return false;                     // the view can not be cleaned up
@@ -70,8 +77,9 @@ void ViewCTRL::setGSBStats( QVector<aGSBS> GSBSs )
 
 QStringList ViewCTRL::getGSBLabels( void )
 {
-  if ( gsbStat != NULL )
+  if ( gsbStat != NULL ) {
     return gsbStat->labels();
+  }
 
   QStringList rv;
   return rv;

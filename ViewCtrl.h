@@ -32,6 +32,8 @@ class ViewCTRL : public QObject
   void setNowVType( VTYPE nvtype ) { nowVType = nvtype; };
   bool setView( void *view, VTYPE vtype );
   void *getView( void ) { return nowView; };
+  VTYPE getVType( void ) { return nowVType; };
+  DATATYPE getDType( void ) { return nowDType; };
   bool deleteView( void );
   bool isDeletable( void ) { return deletable; };
   void setIsDeletable( bool Deletable ) { deletable = Deletable; };
