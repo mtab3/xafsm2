@@ -206,18 +206,28 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
   for ( int i = 0; i < ChModes0.count(); i++ ) {
     ChModes << ChModes0[i].toInt();
   }
-  int I0col = -1;
+  int I0col = -1, I1col = -1;
   for ( int i = 0; i < cols; i++ ) {
     if ( ChModes[i] == I0 ) {         // 先に I0 を探さないと計算できない
       I0col = i + 3;
+    }
+    if ( ChModes[i] == TRANS ) {  // 一時期のバグで I0の mode 番号として 1 でなく、
+                                  // 2 (本来は I1) を書いてしまってるファイルがあるので
+                                  // I0 が見つからなくて I1 があるときは I1 を I0 と
+                                  // みなす。
+      I1col = i + 3;
     }
     if ( ChModes[i] == FLUO ) {       // 蛍光モードが少なくとも一チャンネルある
       aFluo = true;
     }
   }
   if ( I0col == -1 ) {                // I0 が見つからなければ表示できない
-    qDebug() << "No I0 data is found.";
-    return;
+    if ( I1col == -1 ) {
+      qDebug() << "No I0 data is found.";
+      return;
+    } else {
+      I0col = I1col;
+    }
   }
 
   bool dispf;
