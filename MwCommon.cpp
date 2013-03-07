@@ -52,6 +52,27 @@ void MainWindow::setupCommonArea( void )   /* ã§í ÉGÉäÉA */
   }
 }
 
+void MainWindow::saveGSBs( int ch )
+{
+  QVector<bool> dbg;
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    ViewCtrls[ch]->setGSBStat( ch, GSBs[i]->isChecked() == PBTrue );
+    dbg << ( GSBs[i]->isChecked() == PBTrue );
+  }
+  qDebug() << "save " << ch << dbg;
+}
+
+void MainWindow::loadGSBs( int ch )
+{
+  QVector<bool> dbg;
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    GSBs[i]->setText( ViewCtrls[ch]->getAGSBSLabel( i ) );
+    GSBs[i]->setChecked( ViewCtrls[ch]->getAGSBSStat( i ) );
+    dbg << ( GSBs[i]->isChecked() == PBTrue );
+  }
+  qDebug() << "load " << ch << dbg;
+}
+
 void MainWindow::clearGSBs( void )
 {
   for ( int i = 0; i < GSBs.count(); i++ ) {
@@ -64,7 +85,6 @@ void MainWindow::SetGSBFlags( QVector<bool> flgs )
 {
   for ( int i = 0; i < flgs.count(); i++ ) {
     GSBs[i]->setChecked( flgs[i] );
-    qDebug() << "button " << i << flgs[i];
   }
 }
 

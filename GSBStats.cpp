@@ -1,4 +1,6 @@
 
+#include <QDebug>
+
 #include "GSBStats.h"
 
 void GSBStats::init( int n )
@@ -37,6 +39,14 @@ void GSBStats::setAStat( int i, QString Label, bool Stat )
     GSBSs[i]->stat = Stat;
   }
 }
+
+void GSBStats::setAStat( int i, bool Stat )
+{
+  if ( i < GSBSs.count() ) {
+    GSBSs[i]->stat = Stat;
+  }
+}
+
 
 int GSBStats::count( void )
 {

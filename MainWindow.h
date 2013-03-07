@@ -328,6 +328,8 @@ private slots:
   void ManSelTEkeV( void );
   void SetAllGoUnits( int i );
   void ShowAllGos( void );
+  void saveGSBs( int ch );
+  void loadGSBs( int ch );
   void clearGSBs( void );
   void SetGSBFlags( QVector<bool> flgs );
   void SetGSBLabels( QStringList lbls );

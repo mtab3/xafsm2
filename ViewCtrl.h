@@ -41,6 +41,9 @@ class ViewCTRL : public QObject
   DATATYPE getNowDType ( void ) { return nowDType; };
   void addAGSBStat( QString label, bool f );
   void setGSBStats( QVector<aGSBS> GSBSs );
+  void setGSBStat( int button, bool f );
+  QString getAGSBSLabel( int n );
+  bool getAGSBSStat( int n );
   QStringList getGSBLabels( void );
   QVector<bool> getGSBFlags( void );
 };

@@ -24,6 +24,7 @@ class GSBStats : public QObject
   void clear( void );
   void addAStat( QString Label = "", bool Stat = PBFalse );
   void setAStat( int n, QString Label, bool Stat );
+  void setAStat( int n, bool Stat );
   QString getALabel( int n );
   bool getAStat( int n );
   int count( void );

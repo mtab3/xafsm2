@@ -75,6 +75,22 @@ void ViewCTRL::setGSBStats( QVector<aGSBS> GSBSs )
   }
 }
 
+QString ViewCTRL::getAGSBSLabel( int n )
+{
+  if ( gsbStat != NULL )
+    return gsbStat->getALabel( n );
+
+  return "";
+}
+
+bool ViewCTRL::getAGSBSStat( int n )
+{
+  if ( gsbStat != NULL )
+    return gsbStat->getAStat( n );
+
+  return PBFalse;
+}
+
 QStringList ViewCTRL::getGSBLabels( void )
 {
   if ( gsbStat != NULL ) {
@@ -92,4 +108,14 @@ QVector<bool> ViewCTRL::getGSBFlags( void )
 
   QVector<bool> rv;
   return rv;
+}
+
+void ViewCTRL::setGSBStat( int i, bool f ) 
+{
+  if ( gsbStat == NULL )
+    return;
+
+  qDebug() << "bb";
+  gsbStat->setAStat( i, f );
+  qDebug() << "cc";
 }
