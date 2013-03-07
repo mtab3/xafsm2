@@ -35,7 +35,8 @@ void MainWindow::ShowButtonsForATab( int i )
 {
   QStringList lbls;
 
-  saveGSBs( oldCurrentView );
+  if ( i != oldCurrentView )
+    saveGSBs( oldCurrentView );
   clearGSBs();
   loadGSBs( i );
 #if 0

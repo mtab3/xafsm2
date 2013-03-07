@@ -115,7 +115,5 @@ void ViewCTRL::setGSBStat( int i, bool f )
   if ( gsbStat == NULL )
     return;
 
-  qDebug() << "bb";
   gsbStat->setAStat( i, f );
-  qDebug() << "cc";
 }
