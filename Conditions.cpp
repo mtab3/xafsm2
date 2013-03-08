@@ -33,3 +33,8 @@ bool Conditions::isRecordAllSSDChs( void )
   return RecordAllSSDChs->isChecked();
 }
 
+bool Conditions::isUse1303Format( void ) 
+{
+  return Use1303Format->isChecked();
+}
+

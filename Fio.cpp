@@ -45,6 +45,9 @@ QString MainWindow::fixS( QString s, int l )
 
 void MainWindow::WriteHeader( int Rpt )
 {
+  bool newf = conds->isUse1303Format();
+  QString NFM = "";   // new file mark
+
   int cnt;
   SetDFName( Rpt );   // Generate a file name with repitation number
   
@@ -55,33 +58,53 @@ void MainWindow::WriteHeader( int Rpt )
   // Writing fixed headers
   QTextStream out(&file);
 
-  out << " " << fixS( " 9809     AichiSR", 20 ) << fixS( BLNAME, 5 ) << endl;
-  out << " " << fixS( DFName, 14 ) << "  "
+  if ( newf ) {
+    out << "##  1303" << endl;
+    out << "### An extended 9809 format file." << endl;
+    out << "### To convert the 1303 format file to 9809 format file," << endl;
+    out << "###   1) When a line is started with single '#'," << endl;
+    out << "###        the one character should be deleted," << endl;
+    out << "###   2) When a line is started with '##' or '###'," << endl;
+    out << "###        remove the line simply," << endl;
+    out << "###   3) When '###' appears at the middle of a line," << endl;
+    out << "###        the rest of the line including the '###' should be omitted.";
+    out << endl;
+    NFM = "#";
+  }
+
+  out << NFM << " " << fixS( " 9809     AichiSR", 20 ) << fixS( BLNAME, 5 ) << endl;
+
+  out << NFM << " " << fixS( DFName, 14 ) << "  "
       << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << " - "
       << "%001%" << endl; // 置換用のマーク 001 番目 14桁終了日時 "yy.MM.dd hh:mm"
   out << " " << fixS( EditCMT->text(), 80 ) << endl;
-  out << " " << "Ring : " << "  1.2 GeV"
+
+  out << NFM << " " << "Ring : " << "  1.2 GeV"
       << QString( "  %1 mA - " ).arg( SLS->value().toDouble(), 6, 'f', 1, ' ' )
       << "%002%"          // 置換用のマーク 002 番目 実数6.1リング電流
       << " mA" << endl;
-  out << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )   // Si(111)
+
+  out << NFM << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )
       << QString( "    D= %1 A    " ).arg( mccd[ selmc->MC() ]->getD(), 8, 'f', 5, ' ' )
-      << QString( "Initial angle=%1 deg" ).arg( u->keV2deg( InitialKeV ), 9, 'f', 5, ' ' ) 
+      << QString( "Initial angle=%1 deg" ).arg(u->keV2deg( InitialKeV ), 9, 'f', 5, ' ') 
       << endl;
-  out << " " << fixS( BLNAME, 5 ) << "    "
+
+  out << NFM << " " << fixS( BLNAME, 5 ) << "    "
       << fixS( CMode[ MeasFileType ], 13 ) << QString( "(%1)" ).arg( MeasFileType, 2 )
       << QString( "   Repitition=%1" ).arg( MeasR + 1, 3 )
       << QString( "     Points=%1" ).arg( TP, 5 ) << endl;
   
   if ( SBLKUnit == DEG ) {
-    out << " "
+    out << NFM << " "
         << QString( "Param file : %1  angle axis (1)     Block =%2" )
                     .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
     out << endl;
-    out << " "
+
+    out << NFM << " "
         << "Block      Init-ang  final-ang     Step/deg     Time/s       Num" << endl;
+
     for ( int i = 0; i < Blocks; i++ ) {
-      out << " "
+      out << NFM << " "
           << QString( "%1     %2%3%4%5%6" )
 	     .arg( i+1, 5 )
 	     .arg( SBlockStart[i], 10, 'f', 5 )
@@ -92,14 +115,15 @@ void MainWindow::WriteHeader( int Rpt )
           << endl;
     }
   } else {
-    out << " "
+    out << NFM << " "
         << QString( "Param file : %1  energy axis (2)     Block =%2" )
                     .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
     out << endl;
-    out << " "
+
+    out << NFM << " "
         << "Block      Init-Eng  final-Eng     Step/eV     Time/s       Num" << endl;
     for ( int i = 0; i < Blocks; i++ ) {
-      out << " "
+      out << NFM << " "
           << QString( "%1     %2%3%4%5%6" )
              .arg( i+1, 5 )
              .arg( u->any2keV( SBLKUnit, SBlockStart[i] ) * 1000, 10, 'f', 2 )
@@ -110,25 +134,27 @@ void MainWindow::WriteHeader( int Rpt )
           << endl;
     }
   }
-  out << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
+  out << NFM << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
 
   QVector<double> darks;
   switch( MeasFileType ) {
   case TRANS:
-    out << "  Angle(c)  Angle(o)    time/s";
+    out << NFM << "  Angle(c)  Angle(o)    time/s";
     for ( int i = 0; i < MeasChNo; i++ )
       out << QString( "%1" ).arg( i+1, 10 );
     out << endl;
-    out << QString( "      Mode         0         0"
+
+    out << NFM << QString( "      Mode         0         0"
 		    "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
-    out << QString( "    Offset         0         0"
+
+    out << NFM << QString( "    Offset         0         0"
 		    "%1%2" ).arg( mUnits.at(0)->getDark(), 10, 'f', 3 )
                             .arg( mUnits.at(1)->getDark(), 10, 'f', 3 ) << endl;
     break;
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
     // I0 の位置を変えないといけないことが判明。なのでまた分離。
-    out << "  Angle(c)  Angle(o)    time/s";
+    out << NFM << "  Angle(c)  Angle(o)    time/s";
     // FLUO の時 mUnits の要素の並びは必ず I0, 19ch SSD になってるはず
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( j+1, 10 );  // 19ch SSD
@@ -141,7 +167,7 @@ void MainWindow::WriteHeader( int Rpt )
     out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // resets
     out << endl;
 
-    out << QString( "      Mode         0         0" );    // Modes Line
+    out << NFM << QString( "      Mode         0         0" );    // Modes Line
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
     }
@@ -152,7 +178,7 @@ void MainWindow::WriteHeader( int Rpt )
     out << QString( "%1" ).arg( 101, 10 );     // resets
     out << endl;
 
-    out << QString( "    Offset         0         0" );   // Offsets Line ( per socond )
+    out << NFM << QString( "    Offset         0         0" ); //Offsets Line(per socond)
     darks = SFluo->getDarkCountsInROI();
     for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
       out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
@@ -184,7 +210,7 @@ void MainWindow::WriteHeader( int Rpt )
     // になる。
 
   case EXTRA:
-    out << "  Angle(c)  Angle(o)    time/s";
+    out << NFM << "  Angle(c)  Angle(o)    time/s";
     cnt = 1;
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
@@ -207,7 +233,7 @@ void MainWindow::WriteHeader( int Rpt )
     }
     out << endl;
 
-    out << QString( "      Mode         0         0" );    // Modes Line
+    out << NFM << QString( "      Mode         0         0" );    // Modes Line
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
 	out << QString( "%1" ).arg( MeasDispMode[i], 10 );
@@ -223,7 +249,7 @@ void MainWindow::WriteHeader( int Rpt )
     }
     out << endl;
 
-    out << QString( "    Offset         0         0" );   // Offsets Line ( per socond )
+    out << NFM << QString( "    Offset         0         0" ); //Offsets Line(per socond)
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
 	out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
@@ -245,6 +271,23 @@ void MainWindow::WriteHeader( int Rpt )
     break;
   default:
     qDebug() << "Unknown Measuremet type";
+  }
+
+  if ( newf ) {
+    out << "## Channel Names:";
+    for ( int i = 0; i < mUnits.count(); i++ )
+      out << QString( " \"%1\"" ).arg( mUnits.at(i)->getName() );
+    out << endl;
+    
+    out << "## Select Button Names:";
+    for ( int i = 0; i < GSBs.count(); i++ )
+      out << QString( " \"%1\"" ).arg( GSBs[i]->text() );
+    out << endl;
+    
+    out << "## Select Button State:";
+    for ( int i = 0; i < GSBs.count(); i++ )
+      out << QString( " \"%1\"" ).arg( GSBs[i]->isChecked() );
+    out << endl;
   }
 
   file.close();
@@ -389,11 +432,13 @@ void MainWindow::RecordData( void )
     // ルーチンの頭に読んでしまった値を使ってるのは、このルーチン実行中に
     // 裏で AUnit 内部の value が変わってしまうのを警戒して。(ないはずだけど)
     //
-    if ( conds->isAddInfos() ) {
+    if (( conds->isAddInfos() )||( conds->isUse1303Format() )) {
       buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",
 		   GoToKeV,
 		   encTh, u->deg2keV( encTh ),
 		   PMTh, u->deg2keV( PMTh ) );
+      if ( conds->isUse1303Format() )
+	out << " ###";
       out << buf;
     }
     out << endl;

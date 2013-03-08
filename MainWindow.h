@@ -88,6 +88,7 @@ private:
   int MCAStage;
   ViewCTRL *cMCAViewC;
   MCAView *cMCAView;
+  int cMCAViewTabNo;
   int *MCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;

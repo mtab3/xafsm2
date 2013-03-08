@@ -353,7 +353,8 @@ void MainWindow::StartMCA( void )
     //    cMCACh = MCACh->text().toInt();
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
-    if ( StartResume == MCA_START ) {
+    if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
+	 || ( StartResume == MCA_START ) ) {
       if ( cMCAView != NULL ) {
 	MCAViewDisconnects();
 	cMCAViewC->setIsDeletable( true );
@@ -367,6 +368,7 @@ void MainWindow::StartMCA( void )
       
       MCAData = cMCAView->setMCAdataPointer( MCALength );
       validMCAData = true;
+      cMCAViewTabNo = ViewTab->currentIndex();
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
       cMCAView->makeValid( true );
@@ -388,6 +390,7 @@ void MainWindow::StartMCA( void )
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
     MCAStart->setStyleSheet( NormalB );
+    cMCAViewC->setIsDeletable( false );
   }
 }
 

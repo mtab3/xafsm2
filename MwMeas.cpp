@@ -575,7 +575,7 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
-      statusbar->showMessage( tr( "Scan cannot Start : (%1) is disabled" )
+      statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
 			      .arg( MMainTh->getName() ), 2000 );
     }
 
@@ -616,6 +616,13 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBTrue;  aGsb.label = "mu"; GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
+      if ( inMCAMeas ) {   // 19ch 使うときは MCA の測定中はダメ
+	QString msg = tr( "Meas cannot Start : in MCA measurement" )
+	  .arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
@@ -645,7 +652,7 @@ void MainWindow::StartMeasurement( void )
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
+	QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;

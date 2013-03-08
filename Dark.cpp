@@ -23,6 +23,7 @@ bool MainWindow::MeasureDark( void )
     statusbar->showMessage( tr( "Measurement is going on!" ), 2000 );
     return false;
   }
+
   double dt = MeasBackTime->text().toDouble();
   if ( dt < 1 ) {
     dt = 1;
@@ -33,8 +34,15 @@ bool MainWindow::MeasureDark( void )
   mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
   if ( UseI1->isChecked() )
     mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
-  if ( Use19chSSD->isChecked() )
+  if ( Use19chSSD->isChecked() ) {
+    if ( inMCAMeas ) {
+      QString msg = tr( "MCA measurement is going on" );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return false;
+    }
     mUnits.addUnit( SFluo );
+  }
   if ( UseAux1->isChecked() )
     mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
   if ( UseAux2->isChecked() )
