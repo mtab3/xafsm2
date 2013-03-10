@@ -419,6 +419,8 @@ private slots:
   void NoticeMCAViewSetShowElements( bool f );
   void NoticeMCAViewShowAlwaysSelElm( bool f );
   void NoticeMCAViewShowElmEnergy( bool f );
+  void moveToATab( int tab );
+  void NoticeSelectedStats( int tab );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

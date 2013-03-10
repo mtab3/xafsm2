@@ -104,26 +104,42 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setLog( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setLog( f );
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewSetShowElements( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setShowElements( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowElements( f );
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewShowAlwaysSelElm( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setShowElementsAlways( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowElementsAlways( f );
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewShowElmEnergy( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setShowElementsEnergy( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowElementsEnergy( f );
+    }
+  }
 }
 
 void MainWindow::setAllROIs( void )
@@ -362,6 +378,7 @@ void MainWindow::StartMCA( void )
       
       if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
 	return;
+      ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
       cMCAViewC->setNowDType( MCADATA );
       cMCAView = (MCAView*)(cMCAViewC->getView());
       cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );

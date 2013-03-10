@@ -530,6 +530,7 @@ void MainWindow::ScanStart( void )
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
+    ViewTab->setTabText( ViewTab->currentIndex(), "SCAN" );
     ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
 
@@ -640,6 +641,7 @@ void MainWindow::Monitor( void )
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
+    ViewTab->setTabText( ViewTab->currentIndex(), "MON." );
     if ( IsMonRec->isChecked() ) {
       if ( MonRecFile->text().isEmpty() ) {
 	statusbar->showMessage( tr ( "No Record file is selected" ) );

@@ -288,6 +288,14 @@ void MainWindow::WriteHeader( int Rpt )
     for ( int i = 0; i < GSBs.count(); i++ )
       out << QString( " \"%1\"" ).arg( GSBs[i]->isChecked() );
     out << endl;
+
+    if ( isSFluo ) {
+      out << "## Sum up channel : " << SFluoLine << " :";
+      for ( int i = 0; i < 19; i++ ) {
+	out << " " << SFluoLine + i + 1;
+      }
+      out << endl;
+    }
   }
 
   file.close();

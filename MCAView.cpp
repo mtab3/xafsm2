@@ -1,5 +1,6 @@
 #include "XafsM.h"
 #include "MCAView.h"
+#include "PeakFit.h"
 
 // 横軸には 3つの単位がある。
 // MCA pixel, eV (実Energy), 描画 pixel
@@ -29,6 +30,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   MaxE = 20.;
   MinE = 0.;
   mMode = M_NO;
+  yRatio = 1.0;
 
   valid = false;
   dispLog = false;
@@ -120,13 +122,17 @@ void MCAView::Draw( QPainter *p )
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
 
-  double max;
-  double max0 = 0;    // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
+  double min, max;
+  double min0 = 1e300, max0 = 0;
+  // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
   for ( int i = 0; i < MCALen; i++ ) {
     double E = k2p->p2E( MCACh, i );
     if (( E > MinE )&&( E < MaxE )) {
       if ( MCA[i] > max0 ) {
 	max0 = MCA[i];
+      }
+      if ( MCA[i] < min0 ) {
+	min0 = MCA[i];
       }
     }
   }
@@ -135,13 +141,16 @@ void MCAView::Draw( QPainter *p )
       max = log10( max0 );
     else 
       max = 1;
+    if ( min0 > 0 )
+      min = log10( min0 );
+    else 
+      min = 1;
   } else {
     max = max0;
+    min = min0;
   }
-  //  cc.SetRealCoord( 0, 0, MCALen-1, max );
-  cc.SetRealCoord( MinE, 0, MaxE, max );       // 今や横軸は MCA pixel ではなく、
-                                               // エネルギ-[keV]
-  // 正しく調整されていると MCP pixel = エネルギー[eV]/10 になっているはず。
+  // 今や横軸は MCA pixel ではなく、エネルギ-[keV]
+  cc.SetRealCoord( MinE, min, MaxE, ( max - min ) * yRatio + min );
 
   double rmx = cc.s2rx( m.x() );
   double wrROIsx = rROIsx;  // wrROI.. working-real-ROI.., rROI.. real-ROI..
@@ -161,12 +170,17 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
+  QVector<double> xxx, yyy;    // peak fit 用
+  double maxInROI = 0;     // peak fit 用
   int sum = 0;
   for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
     double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
     if (( E >= wrROIsx )&&( E <= wrROIex )) {
       p->setPen( ROIRangeC );
       sum += MCA[i];
+      xxx << E; yyy << MCA[i];
+      if ( MCA[i] > maxInROI )  // peak fit 用
+	maxInROI = MCA[i];
     } else {
       p->setPen( ExROIRangeC );
     }
@@ -178,6 +192,30 @@ void MCAView::Draw( QPainter *p )
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
     }
   }
+
+#if 0
+  qDebug() << "aa";
+  QVector<double> ppp;    // peak fit
+  qDebug() << "bb";
+  ppp << maxInROI << ( ( wrROIsx + wrROIex ) / 2. ) << fabs( ( wrROIsx - wrROIex ) / 2. );
+  qDebug() << "bb";
+  PeakFit *peakF = new PeakFit;
+  qDebug() << "bb";
+  peakF->init( 1, xxx.count() );
+  qDebug() << "bb";
+  peakF->setXYP0( xxx, yyy, ppp );
+  qDebug() << "bb";
+  for ( int i = 0; i < 10; i++ ) {
+    peakF->calcNewP( 0. );
+    qDebug() << "PeakFit " << i << peakF->getP() << peakF->Norm();
+  }
+  qDebug() << "bb";
+  peakF->release();
+  qDebug() << "bb";
+  delete peakF;
+  qDebug() << "bb";
+#endif  
+
   p->setPen( Black );                      // グラフ外枠の四角描画
   p->drawRect( LM, TM, HW, VW );
   p->setPen( GridC );                      // グラフの罫線描画
@@ -538,19 +576,28 @@ void MCAView::setROI( int s, int e )   // MCA pixel
 
 void MCAView::wheelEvent( QWheelEvent *e )
 {
-  double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
-  double rx = cc.s2rx( e->x() );
-  double drx = MaxE - MinE;
-  if ( step > 0 ) {
-    drx *= 0.9;
-  } else {
-    drx /= 0.9;
+  double step = ( e->delta() / 8. ) / 15.;    // deg := e->delta / 8.
+  if ( e->modifiers() & Qt::ShiftModifier ) { // シフトキーを押しながらでは縦軸の拡大縮小
+    if ( step > 0 ) {
+      yRatio *= 0.9;
+    } else {
+      yRatio /= 0.9;
+    }
+    if ( yRatio > 1.0 )
+      yRatio = 1.0;
+  } else {                                    // そうでなければ横軸の拡大縮小
+    double rx = cc.s2rx( e->x() );
+    double drx = MaxE - MinE;
+    if ( step > 0 ) {
+      drx *= 0.9;
+    } else {
+      drx /= 0.9;
+    }
+    MinE = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
+    MaxE = MinE + drx;
+    
+    if ( MinE < 0 ) MinE = 0;
+    if ( MaxE > 20 ) MaxE = 20;
   }
-  MinE = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
-  MaxE = MinE + drx;
-
-  if ( MinE < 0 ) MinE = 0;
-  if ( MaxE > 20 ) MaxE = 20;
-
   update();
 }

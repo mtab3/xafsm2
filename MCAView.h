@@ -39,6 +39,7 @@ private:
   double MinE, MaxE;       // 表示の最小、最大エネルギー
   QVector<double> cPoints; // カーソル表示を残す点
   QStringList selectedAtoms;
+  double yRatio;           // 縦軸の拡大倍率
 
   int nearX;
   bool nearf;
@@ -70,14 +71,14 @@ public:
   void makeValid( bool v ) { valid = v; };
   double getRealTime( void ) { return realTime; };
   double getLiveTime( void ) { return liveTime; };
-  void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; };
+  void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
 
 public slots:
-  void setLog( bool f ) { dispLog = f; update(); };
   void setROI( int s, int e );   // MCA pixel
-  void setShowElements( bool show ) { showElements = show; };
-  void setShowElementsAlways( bool show ) { showElementsAlways = show; };
-  void setShowElementsEnergy( bool show ) { showElementsEnergy = show; };
+  void setLog( bool f ) { dispLog = f; update(); };
+  void setShowElements( bool show ) { showElements = show; update(); };
+  void setShowElementsAlways( bool show ) { showElementsAlways = show; update(); };
+  void setShowElementsEnergy( bool show ) { showElementsEnergy = show; update(); };
 
 signals:
   void CurrentValues( int atCur, int inROI );

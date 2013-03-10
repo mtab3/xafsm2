@@ -372,6 +372,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
       return NULL;
     }
   }
+
   return ViewCtrls[ ViewTab->currentIndex() ];
 }
 

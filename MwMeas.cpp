@@ -703,6 +703,7 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
+    ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
