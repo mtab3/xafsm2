@@ -79,6 +79,7 @@ public slots:
   void setShowElements( bool show ) { showElements = show; update(); };
   void setShowElementsAlways( bool show ) { showElementsAlways = show; update(); };
   void setShowElementsEnergy( bool show ) { showElementsEnergy = show; update(); };
+  void doPeakFit( void );
 
 signals:
   void CurrentValues( int atCur, int inROI );

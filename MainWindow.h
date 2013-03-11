@@ -224,6 +224,7 @@ private:
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
+  int EstimatedMeasurementTimeInSec;
 
   void ClearBLKs( void );
   void ShowBLKs( void );
@@ -421,6 +422,7 @@ private slots:
   void NoticeMCAViewShowElmEnergy( bool f );
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
+  void doPeakFit( void );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );

@@ -119,7 +119,7 @@
       <item row="0" column="0">
        <widget class="QRadioButton" name="radioButton">
         <property name="text">
-         <string>No normalization</string>
+         <string>No normalization    (now 'No' shold be selected always)</string>
         </property>
         <property name="checked">
          <bool>true</bool>

@@ -15,6 +15,7 @@ void MainWindow::MeasSequence( void )
     return;
   }
 
+  NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
   switch( MeasStage ) {
     /* 
        0: Â¬Äê³«»Ï Repeat = 0

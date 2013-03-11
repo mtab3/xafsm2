@@ -150,7 +150,8 @@ void MCAView::Draw( QPainter *p )
     min = min0;
   }
   // 今や横軸は MCA pixel ではなく、エネルギ-[keV]
-  cc.SetRealCoord( MinE, min, MaxE, ( max - min ) * yRatio + min );
+  //  cc.SetRealCoord( MinE, min, MaxE, ( max - min ) * yRatio + min );
+  cc.SetRealCoord( MinE, 0, MaxE, max * yRatio );
 
   double rmx = cc.s2rx( m.x() );
   double wrROIsx = rROIsx;  // wrROI.. working-real-ROI.., rROI.. real-ROI..
@@ -170,17 +171,12 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
-  QVector<double> xxx, yyy;    // peak fit 用
-  double maxInROI = 0;     // peak fit 用
   int sum = 0;
   for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
     double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
     if (( E >= wrROIsx )&&( E <= wrROIex )) {
       p->setPen( ROIRangeC );
       sum += MCA[i];
-      xxx << E; yyy << MCA[i];
-      if ( MCA[i] > maxInROI )  // peak fit 用
-	maxInROI = MCA[i];
     } else {
       p->setPen( ExROIRangeC );
     }
@@ -192,29 +188,6 @@ void MCAView::Draw( QPainter *p )
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
     }
   }
-
-#if 0
-  qDebug() << "aa";
-  QVector<double> ppp;    // peak fit
-  qDebug() << "bb";
-  ppp << maxInROI << ( ( wrROIsx + wrROIex ) / 2. ) << fabs( ( wrROIsx - wrROIex ) / 2. );
-  qDebug() << "bb";
-  PeakFit *peakF = new PeakFit;
-  qDebug() << "bb";
-  peakF->init( 1, xxx.count() );
-  qDebug() << "bb";
-  peakF->setXYP0( xxx, yyy, ppp );
-  qDebug() << "bb";
-  for ( int i = 0; i < 10; i++ ) {
-    peakF->calcNewP( 0. );
-    qDebug() << "PeakFit " << i << peakF->getP() << peakF->Norm();
-  }
-  qDebug() << "bb";
-  peakF->release();
-  qDebug() << "bb";
-  delete peakF;
-  qDebug() << "bb";
-#endif  
 
   p->setPen( Black );                      // グラフ外枠の四角描画
   p->drawRect( LM, TM, HW, VW );
@@ -600,4 +573,41 @@ void MCAView::wheelEvent( QWheelEvent *e )
     if ( MaxE > 20 ) MaxE = 20;
   }
   update();
+}
+
+void MCAView::doPeakFit( void )
+{
+  QVector<double> xxx, yyy;    // peak fit 用
+  double maxInROI = 0;     // peak fit 用
+  qDebug() << "aa1";
+  for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
+    double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
+    if (( E >= rROIsx )&&( E <= rROIex )) {
+      xxx << E;
+      yyy << MCA[i];
+      if ( MCA[i] > maxInROI )  // peak fit 用
+	maxInROI = MCA[i];
+    }
+  }
+  qDebug() << "aa2";
+  QVector<double> ppp;    // peak fit
+  qDebug() << "bb3";
+  ppp << maxInROI << ( ( rROIsx + rROIex ) / 2. ) << fabs( ( rROIsx - rROIex ) / 2. );
+  ppp << 0 << 0;
+  qDebug() << "bb4";
+  PeakFit *peakF = new PeakFit;
+  qDebug() << "bb5";
+  peakF->init( 1, xxx.count() );
+  qDebug() << "bb6";
+  peakF->setXYP0( xxx, yyy, ppp );
+  qDebug() << "bb7";
+  for ( int i = 0; i < 1; i++ ) {
+    peakF->calcNewP( 0. );
+    qDebug() << "PeakFit " << i << peakF->getP() << peakF->Norm();
+  }
+  qDebug() << "bb8";
+  peakF->release();
+  qDebug() << "bb9";
+  delete peakF;
+  qDebug() << "bb10";
 }

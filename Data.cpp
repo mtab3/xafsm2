@@ -193,7 +193,7 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
     return;
   }
 
-  int TrMode = head.getMode();
+  //  int TrMode = head.getMode();
   // 混在測定を許すのでファイル全体モードは
   // あまり意味がない。
 

@@ -50,6 +50,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   QPushButton *tmpB;
   TP = 0;
   TT0 = 0;
+  EstimatedMeasurementTimeInSec = 0;
   inMeas = 0;
   inPause = 0;
   MeasStage = 0;
@@ -347,6 +348,7 @@ void MainWindow::ShowTotal( void )
   buf.sprintf( "%4d", TP * SelRPT->value() );
   TPoints->setText( tr( "Points: " ) + buf );
   TT *= SelRPT->value();
+  EstimatedMeasurementTimeInSec = TT;
   int Th = (int)( TT / 3600 );
   TT -= Th * 3600;
   int Tm = (int)( TT / 60 );
@@ -617,8 +619,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( Use19chSSD->isChecked() ) {
       if ( inMCAMeas ) {   // 19ch 使うときは MCA の測定中はダメ
-	QString msg = tr( "Meas cannot Start : in MCA measurement" )
-	  .arg( as->getName() );
+	QString msg = tr( "Meas cannot Start : in MCA measurement" );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -751,6 +752,12 @@ void MainWindow::StartMeasurement( void )
       MeasView->SetLineName( i, mUnits.at(i)->getName() );
     }
     CpBlock2SBlock();
+    
+    StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
+    NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
+    EndTimeDisp->setText( QDateTime::currentDateTime()
+			  .addSecs( EstimatedMeasurementTimeInSec )
+			  .toString("yy.MM.dd hh:mm:ss") );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );

@@ -100,6 +100,17 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
+  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+}
+
+void MainWindow::doPeakFit( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->doPeakFit();
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )

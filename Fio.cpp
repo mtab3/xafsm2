@@ -1,3 +1,6 @@
+// 2013.3.11 : 19ch SSD を使った時の ICR を icr[cps] x dwell-time に変更
+//             これまでは cps だった
+
 #include <QtGui>
 #include <math.h>
 
@@ -426,7 +429,7 @@ void MainWindow::RecordData( void )
 	}
 	QVector<double> icrs = SFluo->getICRs();
 	for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
-          buf.sprintf(" %9.6g", icrs[j] );
+          buf.sprintf(" %9d", (int)( icrs[j] * NowDwell ) );
 	  out << buf;
 	}
 	buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる
