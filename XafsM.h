@@ -2,6 +2,7 @@
 #define XAFSM_H
 
 #include <QString>
+#include <QVector>
 
 /******************************************************************************/
 /* Don't change these numbers ! without deep considerations.                  */
@@ -75,5 +76,22 @@ const MSPEEDD MSpeeds[ MSPEEDS ] = {
 enum ONFIN { RETURN, STAY, ONFINS };
 
 enum RELABS { REL, ABS };
+
+struct GasComp {
+  QString AName;
+  double comp;
+};
+
+struct Gas {
+  QString Name;
+  QVector<GasComp*> GasComps;
+};
+
+struct IonChLength {
+  QString Name;
+  QString ID;
+  double length;
+  QString UName;
+};
 
 #endif

@@ -64,6 +64,8 @@ private:
   void ReadDef( QString fname );
   QString nextItem( QString start, QString &item );
   QVector<MCCD*> mccd;
+  QVector<Gas*> Gases;
+  QVector<IonChLength*> ICLengths;
   void CheckDuplicateUID( void );
   void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
 
@@ -405,6 +407,8 @@ private slots:
   void setAllROIs( void );
   void MCAViewDisconnects( void );
   void MCAViewConnects( void );
+
+  void calcMuT( int ch, int gas, double keV );
 
   void StartMeasurement( void );
   void PauseMeasurement( void );

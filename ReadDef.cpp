@@ -128,7 +128,28 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); ag->endAtom = item;
 	next = nextItem( next, item ); ag->groupColor = item;
 	AtomGroups << ag;
-      }else {
+      } else if ( item == "GAS" ) {
+	Gas *gas = new Gas;
+	next = nextItem( next, item ); gas->Name = item;
+	next = nextItem( next, item );
+	double comp1, comp2;
+	while ( item != "" ) {
+	  GasComp *gascomp = new GasComp;
+	  gascomp->AName = item;   next = nextItem( next, item ); 
+	  comp1 = item.toDouble(); next = nextItem( next, item ); 
+	  comp2 = item.toDouble(); next = nextItem( next, item ); 
+	  gascomp->comp = comp1 * comp2;
+	  gas->GasComps << gascomp;
+	}
+	Gases << gas;
+      } else if ( item == "ICLENGTH" ) {
+	IonChLength *iclen = new IonChLength;
+	next = nextItem( next, item ); iclen->Name = item;
+	next = nextItem( next, item ); iclen->ID = item;
+	next = nextItem( next, item ); iclen->length = item.toDouble();
+	next = nextItem( next, item ); iclen->UName = item;
+	ICLengths << iclen;
+      } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
     }
