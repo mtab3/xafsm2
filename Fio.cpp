@@ -1,5 +1,7 @@
 // 2013.3.11 : 19ch SSD を使った時の ICR を icr[cps] x dwell-time に変更
 //             これまでは cps だった
+// 2013.3.14 : 19ch SSD を使った時の SCA を sca[cps] x dwell-time に変更
+//             これまでは cps だった (asakura)
 
 #include <QtGui>
 #include <math.h>
@@ -217,20 +219,20 @@ void MainWindow::WriteHeader( int Rpt )
     cnt = 1;
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
-	out << QString( "%1" ).arg( cnt, 10 );
+        out << QString( "%1" ).arg( cnt, 10 );
       } else {
-	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  out << QString( "%1" ).arg( cnt, 10 );  // 19ch SSD
-	  cnt++;
-	}
-	out << QString( "%1" ).arg( 0, 10 );    // resets
-	cnt++;
-	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  out << QString( "%1" ).arg( cnt - MaxSSDs - 2, 10 );
-	  // ICR  19ch SSD の番号とそろえる
-	  cnt++;
-	}
-	cnt--;
+        for ( int j = 0; j < MaxSSDs; j++ ) {
+          out << QString( "%1" ).arg( cnt, 10 );  // 19ch SSD
+          cnt++;
+        }
+        out << QString( "%1" ).arg( 0, 10 );    // resets
+        cnt++;
+        for ( int j = 0; j < MaxSSDs; j++ ) {
+          out << QString( "%1" ).arg( cnt - MaxSSDs - 2, 10 );
+          // ICR  19ch SSD の番号とそろえる
+          cnt++;
+        }
+        cnt--;
       }
       cnt++;
     }
@@ -239,15 +241,15 @@ void MainWindow::WriteHeader( int Rpt )
     out << NFM << QString( "      Mode         0         0" );    // Modes Line
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
-	out << QString( "%1" ).arg( MeasDispMode[i], 10 );
+        out << QString( "%1" ).arg( MeasDispMode[i], 10 );
       } else {
-	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
-	}
-	out << QString( "%1" ).arg( 5, 10 );    // resets
-	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  out << QString( "%1" ).arg( 5, 10 );  // ICR
-	}
+        for ( int j = 0; j < MaxSSDs; j++ ) {
+          out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
+        }
+        out << QString( "%1" ).arg( 5, 10 );    // resets
+        for ( int j = 0; j < MaxSSDs; j++ ) {
+          out << QString( "%1" ).arg( 5, 10 );  // ICR
+        }
       }
     }
     out << endl;
@@ -255,18 +257,18 @@ void MainWindow::WriteHeader( int Rpt )
     out << NFM << QString( "    Offset         0         0" ); //Offsets Line(per socond)
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
-	out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+        out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
       } else {
-	QVector<double> darks;
-	darks = SFluo->getDarkCountsInROI();
-	for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
-	  out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
-	}
-	out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
-	darks = SFluo->getDarkICRs();
-	for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
-	  out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
-	}
+        QVector<double> darks;
+        darks = SFluo->getDarkCountsInROI();
+        for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
+          out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+        }
+        out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
+        darks = SFluo->getDarkICRs();
+        for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
+          out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+        }
       }
     }
     out << endl;
@@ -295,7 +297,7 @@ void MainWindow::WriteHeader( int Rpt )
     if ( isSFluo ) {
       out << "## Sum up channel : " << SFluoLine << " :";
       for ( int i = 0; i < 19; i++ ) {
-	out << " " << SFluoLine + i + 1;
+        out << " " << SFluoLine + i + 1;
       }
       out << endl;
     }
@@ -381,18 +383,18 @@ void MainWindow::RecordData( void )
     } else {
       recTh = SelectedCurPosDeg( EncOrPM );
     }
-    buf.sprintf( "%10.5f" " %9.5f" " %9.2f", 
-		 u->keV2deg( GoToKeV ), recTh, NowDwell );
+    buf.sprintf( "%10.5f" " %9.5f" " %9.2f",
+                 u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
 
     if ( MeasFileType != FLUO ) {
       // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-	buf.sprintf( " %9d",                 // 整数 : %9d
-		     (int)MeasVals[ MC_I0 ] );
+        buf.sprintf( " %9d",                 // 整数 : %9d
+                     (int)MeasVals[ MC_I0 ] );
       } else {
-	buf.sprintf( " %9.6g",               // 実数 : %9.6g
-		     MeasVals[ MC_I0 ] );
+        buf.sprintf( " %9.6g",               // 実数 : %9.6g
+                     MeasVals[ MC_I0 ] );
       }
       out << buf;
     }
@@ -401,7 +403,7 @@ void MainWindow::RecordData( void )
     for ( int i = 1; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
         // Quick hack for pico-ammeter
-	double v = mUnits.at(i)->value().toDouble();
+        double v = mUnits.at(i)->value().toDouble();
         if ( (int)(v) == v ) {
           buf.sprintf(" %9d", (int)v );
         } else {
@@ -409,31 +411,32 @@ void MainWindow::RecordData( void )
         }
         out << buf;
       } else {
-	QVector<int> vals = SFluo->getCountsInROI();
-	QVector<double> darks = SFluo->getDarkCountsInROI();
-	for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
+        QVector<int> vals = SFluo->getCountsInROI();
+        QVector<double> darks = SFluo->getDarkCountsInROI();
+        for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
           buf.sprintf(" %9d",
-		      (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
-	  out << buf;
-	}
-	if ( MeasFileType == FLUO ) {
-	  // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
-	  if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-	    buf.sprintf( " %9d",                 // 整数 : %9d
-			 (int)MeasVals[ MC_I0 ] );
-	  } else {
-	    buf.sprintf( " %9.6g",               // 実数 : %9.6g
-			 MeasVals[ MC_I0 ] );
-	  }
-	  out << buf;
-	}
-	QVector<double> icrs = SFluo->getICRs();
-	for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
+                      //(int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) ); Asakura
+                      (int)( ( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) * NowDwell ) );
+          out << buf;
+        }
+        if ( MeasFileType == FLUO ) {
+          // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
+          if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
+            buf.sprintf( " %9d",                 // 整数 : %9d
+                         (int)MeasVals[ MC_I0 ] );
+          } else {
+            buf.sprintf( " %9.6g",               // 実数 : %9.6g
+                         MeasVals[ MC_I0 ] );
+          }
+          out << buf;
+        }
+        QVector<double> icrs = SFluo->getICRs();
+        for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
           buf.sprintf(" %9d", (int)( icrs[j] * NowDwell ) );
-	  out << buf;
-	}
-	buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる
-	out << buf;
+          out << buf;
+        }
+        buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる
+        out << buf;
       }
     }
     // 末尾に情報追加。
@@ -449,7 +452,7 @@ void MainWindow::RecordData( void )
 		   encTh, u->deg2keV( encTh ),
 		   PMTh, u->deg2keV( PMTh ) );
       if ( conds->isUse1303Format() )
-	out << " ###";
+        out << " ###";
       out << buf;
     }
     out << endl;

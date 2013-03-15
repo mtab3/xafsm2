@@ -248,7 +248,7 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
       default: dispf = false; break;
       }
       if ( dispf ) {
-	view->NewPoint( L0+i, x, y );
+        view->NewPoint( L0+i, x, y );
       }
     }
     if ( aFluo ) {

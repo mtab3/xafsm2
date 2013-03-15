@@ -168,22 +168,22 @@ void XYView::Draw( QPainter *p )
   for ( int l = 0; l < lines; l++ ) { // 先に線だけ描画
     if ( dispf[ l ] ) {
       if ( autoScale ) {
-	UpDateYWindow( l, scaleType[ l ] );
-	cc.SetRealY( miny[l], maxy[l] );
+        UpDateYWindow( l, scaleType[ l ] );
+        cc.SetRealY( miny[l], maxy[l] );
       } else {
-	cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+        cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
       }
       pen1.setColor( LC[ l ] );
       p->setPen( pen1 );
       nowx = cc.s2rx( m.x() );
       nowxp = 0;
       for ( int i = 0; i < points[l] - 1; i++ ) {
-	p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
-		     x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
-	if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
-	  nowxp = i;
-	if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
-	  nowxp = i;
+        p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
+                     x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
+        if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
+          nowxp = i;
+        if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
+          nowxp = i;
 	
 	// マウスがある点から線分(を延長したものに下ろした垂線の足を探す)
 	a1 = x1 - x0;
@@ -192,13 +192,13 @@ void XYView::Draw( QPainter *p )
 	hx = m.x() - b * a2;
 	hy = m.y() + b * a1;
 	if ( hx < x0 ) { hx = x0; hy = y0; }  // 足が線分の外に有ったら
-	if ( hx > x1 ) { hx = x1; hy = y1; }  // 線分の端点で置き換える
-	// その足までの距離が最小になる線を探す
-	if ( ( d = ( hx - m.x() )*( hx - m.x() ) + ( hy - m.y() )*( hy - m.y() ) )
-	     < ND[ LineLR[l] ] ) {
-	  ND[ LineLR[l] ] = d;
-	  FindL[ LineLR[l] ] = l;
-	}
+ if ( hx > x1 ) { hx = x1; hy = y1; }  // 線分の端点で置き換える
+ // その足までの距離が最小になる線を探す
+ if ( ( d = ( hx - m.x() )*( hx - m.x() ) + ( hy - m.y() )*( hy - m.y() ) )
+      < ND[ LineLR[l] ] ) {
+   ND[ LineLR[l] ] = d;
+   FindL[ LineLR[l] ] = l;
+ }
       }
       SaveYatNowXp[l] = y[l][nowxp];
     }

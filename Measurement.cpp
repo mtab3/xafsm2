@@ -158,27 +158,29 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
     Val = MeasVals[i];
     if ( MeasDispMode[i] == TRANS ) {
       if (( i == 1 )&&( isSI1 )) {
-	MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I の値も表示する
-	DLC++;
+        MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I の値も表示する
+        DLC++;
       }
       if ( Val < 1e-10 )
-	Val = 1e-10;
+        Val = 1e-10;
       if ( ( I0 / Val ) > 0 ) {
-	MeasView->NewPoint( DLC, GoToKeV, log( I0/Val * MeasDispPol[i] ) );
-	DLC++;
+        MeasView->NewPoint( DLC, GoToKeV, log( I0/Val * MeasDispPol[i] ) );
+        DLC++;
       } else {
-	MeasView->NewPoint( DLC, GoToKeV, 0 );
-	DLC++;
+        MeasView->NewPoint( DLC, GoToKeV, 0 );
+        DLC++;
       }
     } else {  // MeasDispMode == FLUO
       if ( I0 < 1e-20 )
-	I0 = 1e-20;
-      MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
+        I0 = 1e-20;
+      //MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
+      MeasView->NewPoint( DLC, GoToKeV, Val/I0 * NowDwell ); // asakura
       DLC++;
       QVector<int> vals = SFluo->getCountsInROI();
       for ( int j = 0; j < MaxSSDs; j++ ) {
-	MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 );
-	DLC++;
+        //MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 );
+        MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 * NowDwell ); // asakura
+        DLC++;
       }
     }
   }
