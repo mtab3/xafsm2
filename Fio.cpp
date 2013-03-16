@@ -362,8 +362,12 @@ void MainWindow::WriteHeader2( int Rpt )
 // 何にせよ、全部の値を最後に記録するかどうかは
 //     conds->isAddInfos()
 // で決まる。
-//
+
 void MainWindow::RecordData( void )
+// MeasVals は dark 補正済み count
+// dark 補正済み cps が欲しければ MeasCPSs
+// (dark 補正がかかっているのは Measurement で readValue するとき
+//  dark 補正のオプションを付けているから)
 {
   SetDFName( MeasR );
   QFile file( DFName );
@@ -411,12 +415,20 @@ void MainWindow::RecordData( void )
         }
         out << buf;
       } else {
-        QVector<int> vals = SFluo->getCountsInROI();
-        QVector<double> darks = SFluo->getDarkCountsInROI();
+        QVector<int> vals = SFluo->getCountsInROI();           // vals は count
+        QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps 
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
           buf.sprintf(" %9d",
-                      //(int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) ); Asakura
-                      (int)( ( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) * NowDwell ) );
+		      (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );  // Orig.
+	  // オリジナル(count)に戻した。ファイルに書くのはカウントだったはず
+	  // cps にする場合でも by H.A. は間違ってた。
+	  // vals[j] は count, darks[j] は cps なので、H.A 風にやるなら NowDwell で割る
+	  // ただそれだと、darks に関しては、一度時間を掛けてまた割ってることになるので
+	  // vals を時間で割ったほうがいい。
+	  // さらには NowDwell は、「設定しようとした時間」なので
+	  // 「設定された時間」 GetSetTime() を使ったほうが良い
+//      (int)( ( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) * NowDwell ) ); // by H.A.
+//      (int)( vals[j] / SFluo->GetSetTime() - darks[j] );  // by. M.T. (cps version)
           out << buf;
         }
         if ( MeasFileType == FLUO ) {
@@ -432,7 +444,7 @@ void MainWindow::RecordData( void )
         }
         QVector<double> icrs = SFluo->getICRs();
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
-          buf.sprintf(" %9d", (int)( icrs[j] * NowDwell ) );
+          buf.sprintf(" %9d", (int)( icrs[j] * NowDwell ) );      // by H.A.
           out << buf;
         }
         buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる

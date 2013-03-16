@@ -129,7 +129,9 @@ void MainWindow::MeasDarkSequence( void )
     break;
   case 5:
     double setTime;
-    mUnits.readValue( MeasVals, false );   // false :: not correct dark
+    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
+    // 前は MeasCPSs は無かったので MeasVals (count) を cps に直す計算をここでやってる。
+    // 直しても良いけどそのままにしておく
     for ( int i = 0; i < mUnits.count(); i++ ) {
       setTime = mUnits.at(i)->GetSetTime();
       if ( setTime > 0 ) {

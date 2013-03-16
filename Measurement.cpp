@@ -83,7 +83,7 @@ void MainWindow::MeasSequence( void )
     }
     break;
   case 7:
-    mUnits.readValue( MeasVals, true );  // true : correct dark
+    mUnits.readValue( MeasVals, MeasCPSs, true );  // true : correct dark
     DispMeasDatas();
     RecordData();
     MeasStage = 10;
@@ -144,21 +144,21 @@ bool MainWindow::isBusyMotorInMeas( void )
   return MMainTh->isBusy() || MMainTh->isBusy2();
 }
 
-void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
+void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダーク補正済み
 {
   double I0;
   double Val;
   int i;
-  int DLC = 0;
+  int DLC = 0;   // display line count
 
-  I0 = MeasVals[ MC_I0 ];
+  I0 = MeasCPSs[ MC_I0 ];
   MeasView->NewPoint( DLC, GoToKeV, I0 );
   DLC++;
   for ( i = 1; i < mUnits.count(); i++ ) {
-    Val = MeasVals[i];
+    Val = MeasCPSs[i];
     if ( MeasDispMode[i] == TRANS ) {
       if (( i == 1 )&&( isSI1 )) {
-        MeasView->NewPoint( DLC, GoToKeV, MeasVals[1] );   // I の値も表示する
+        MeasView->NewPoint( DLC, GoToKeV, MeasCPSs[1] );   // I の値も表示する
         DLC++;
       }
       if ( Val < 1e-10 )
@@ -171,16 +171,25 @@ void MainWindow::DispMeasDatas( void )  // 表示は dark の補正なし
         DLC++;
       }
     } else {  // MeasDispMode == FLUO
+      // MeasDispMode == FLUO の時は必ず 19ch SSD になっているがホントは違う
       if ( I0 < 1e-20 )
         I0 = 1e-20;
-      //MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
-      MeasView->NewPoint( DLC, GoToKeV, Val/I0 * NowDwell ); // asakura
+      //MeasView->NewPoint( DLC, GoToKeV, Val/I0 * NowDwell ); // by H.A.
+      MeasView->NewPoint( DLC, GoToKeV, Val/I0 ); // ここで Val は cps にしてあるので OK
       DLC++;
-      QVector<int> vals = SFluo->getCountsInROI();
-      for ( int j = 0; j < MaxSSDs; j++ ) {
-        //MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 );
-        MeasView->NewPoint( DLC, GoToKeV, (double)vals[j] / I0 * NowDwell ); // asakura
-        DLC++;
+      if ( ( isSFluo )&&( ( DLC - 1 ) == SFluoLine ) ) {
+	QVector<int> vals = SFluo->getCountsInROI();
+	QVector<double> darks = SFluo->getDarkCountsInROI();
+	for ( int j = 0; j < MaxSSDs; j++ ) {
+	  //MeasView->NewPoint( DLC, GoToKeV,
+	  //                    (double)vals[j] / I0 );            // Orig.
+	  //MeasView->NewPoint( DLC, GoToKeV,
+          //                    (double)vals[j] / I0 * NowDwell ); // by H.A.
+	  MeasView->NewPoint( DLC, GoToKeV,
+			      (double)vals[j] / I0 / SFluo->GetSetTime() // by M.T.
+			      - darks[j] );
+	  DLC++;
+	}
       }
     }
   }

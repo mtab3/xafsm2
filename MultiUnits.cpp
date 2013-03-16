@@ -38,7 +38,7 @@ void MUnits::addUnit( AUnit *au )
   }
 }
 
-void MUnits::setDwellTimes( double dt )
+void MUnits::setDwellTimes( double dt )   // 親子全員に同じ時間を配る
 {
   for ( int i = 0; i < Units.count(); i++ ) {
     Units.at(i)->dt = dt;
@@ -153,7 +153,7 @@ bool MUnits::getValue( void )
   return ff;
 }
 
-void MUnits::readValue( double *rvs, bool correctBack )
+void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
   for ( int i = 0; i < Units.count(); i++ ) {
@@ -167,6 +167,7 @@ void MUnits::readValue( double *rvs, bool correctBack )
     rvs[i] = Units.at(i)->au->value().toDouble();
     if ( correctBack )
       rvs[i] -= Units.at(i)->au->getDark() * Units.at(i)->au->GetSetTime();
+    cps[i] = rvs[i] / Units.at(i)->au->GetSetTime();
 #endif
   }
 }
