@@ -12,11 +12,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
-  GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
-       << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
-       << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
-       << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
-       << GSB21 << GSB22 << GSB23 << GSB24;
 
   if ( SFluo == NULL ) 
     Use19chSSD->setEnabled( false );
@@ -28,7 +23,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     SelBLKUnit->addItem( UnitName[i].name );
   }
   SelBLKUnit->setCurrentIndex( BLKUnit );
-
 
   SelDFND = new QFileDialog;
   SelWBFND = new QFileDialog;
@@ -56,6 +50,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   QPushButton *tmpB;
   TP = 0;
   TT0 = 0;
+  EstimatedMeasurementTimeInSec = 0;
   inMeas = 0;
   inPause = 0;
   MeasStage = 0;
@@ -112,7 +107,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
   }
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
-    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKdwell()) );
+    connect( BLKdwell.at(i), SIGNAL( textChanged( const QString & ) ),
+	     this, SLOT(ChangeBLKdwell( const QString & )) );
   }
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
@@ -155,22 +151,28 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasView = NULL;
 
-  for ( int i = 0; i < GSBs.count(); i++ ) {
-    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
-  }
   connect( this, SIGNAL( SelectedSSD( int, bool ) ),
 	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
+
+  darkTable = new DarkTable;
+  connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ) );
 }
 
-void MainWindow::SelectAGB( bool f )
+void MainWindow::ShowMB( void )
 {
-  if ( MeasView == NULL )
-    return;
-    
-  for ( int i = 0; i < GSBs.count(); i++ ) {
-    if ( sender() == GSBs[i] )
-	MeasView->ChooseAG( i, f );
+  QTableWidgetItem *item;
+
+  darkTable->clearItems();
+
+  darkTable->setRowCol( ASensors.count(), 2 );
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    item = new QTableWidgetItem ( ASensors.at( i )->getName() );
+    darkTable->setItem( i, 0, item );
+    item = new QTableWidgetItem ( QString::number( ASensors.at( i )->getDark() ) );
+    item->setTextAlignment( Qt::AlignRight | Qt::AlignVCenter );
+    darkTable->setItem( i, 1, item );
   }
+  darkTable->show();
 }
 
 void MainWindow::ClearBLKs( void )
@@ -297,11 +299,12 @@ void MainWindow::ShowBLKs( void )
   int i;
 
   for ( i = 0; i < MaxBLKs; i++ ) {
-    buf.sprintf( UnitName[ BLKUnit ].form, keV2any( BLKUnit, BlockStart[i] ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
     BLKstart[i]->setText( buf );
     if ( BlockPoints[i] > 0 ) {
       buf.sprintf( UnitName[ BLKUnit ].form,
-	       ( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	       ( u->keV2any(BLKUnit, BlockStart[i+1])
+		 - u->keV2any(BLKUnit, BlockStart[i]) )
 	       / BlockPoints[ i ] );
       BLKstep[i]->setText( buf );
     } else {
@@ -312,7 +315,7 @@ void MainWindow::ShowBLKs( void )
     buf.sprintf( "% 4d", BlockPoints[i] );
     BLKpoints[i]->setText( buf );
   }
-  buf.sprintf( UnitName[ BLKUnit ].form, keV2any( BLKUnit, BlockStart[i] ) );
+  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
   BLKstart[i]->setText( buf );
 
   ShowTotal();
@@ -341,10 +344,11 @@ void MainWindow::ShowTotal( void )
     TP += BlockPoints[i];
     TT0 += BlockPoints[i] * BlockDwell[i];
   } 
-  double TT = TT0 + TP * 600. / 480.;    // Cu-Ka で 480点測定に10分余分にかかる
+  double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
   buf.sprintf( "%4d", TP * SelRPT->value() );
   TPoints->setText( tr( "Points: " ) + buf );
   TT *= SelRPT->value();
+  EstimatedMeasurementTimeInSec = TT;
   int Th = (int)( TT / 3600 );
   TT -= Th * 3600;
   int Tm = (int)( TT / 60 );
@@ -359,18 +363,20 @@ void MainWindow::ChangeBLKstart( void )
 {
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     if ( BLKstart.at(i) == sender() ) {
-      BlockStart[i] = any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
+      BlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
       double step = BLKstep[i]->text().toDouble();
       if ( step != 0 ) {
 	BlockPoints[i]
-	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
+		   - u->keV2any(BLKUnit, BlockStart[i]) )
 		 /step )+0.5;
       }
       if ( i > 0 ) {
 	double step = BLKstep[i-1]->text().toDouble();
 	if ( step != 0 ) {
 	  BlockPoints[i-1]
-	    = fabs(( keV2any(BLKUnit, BlockStart[i]) - keV2any(BLKUnit, BlockStart[i-1]) )
+	    = fabs(( u->keV2any(BLKUnit, BlockStart[i])
+		     - u->keV2any(BLKUnit, BlockStart[i-1]) )
 		   /step )+0.5;
 	}
       }
@@ -388,7 +394,8 @@ void MainWindow::ChangeBLKstep( void )
       step = BLKstep[i]->text().toDouble();
       if ( step != 0 ) {
 	BlockPoints[i]
-	  = fabs(( keV2any(BLKUnit, BlockStart[i+1]) - keV2any(BLKUnit, BlockStart[i]) )
+	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
+		   - u->keV2any(BLKUnit, BlockStart[i]) )
 		 /step )+0.5;
       }
       ShowBLKs();
@@ -406,7 +413,7 @@ void MainWindow::ChangeBLKpoints( void )
   }
 }
 
-void MainWindow::ChangeBLKdwell( void )
+void MainWindow::ChangeBLKdwell( const QString & )
 {
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
     if ( BLKdwell.at(i) == sender() ) {
@@ -562,7 +569,7 @@ void MainWindow::StartMeasurement( void )
 
   EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
   SFluoLine = -1;
-  isSI1 = false;
+  isSFluo = isSI1 = false;
 
   if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
@@ -570,7 +577,7 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
-      statusbar->showMessage( tr( "Scan cannot Start : (%1) is disabled" )
+      statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
 			      .arg( MMainTh->getName() ), 2000 );
     }
 
@@ -590,39 +597,42 @@ void MainWindow::StartMeasurement( void )
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
     int LC = 0;    // mUnits に登録するユニットに対応したカウント
-    int DLC = 0;   // 表示するラインに対応したカウント
+    //    int DLC = 0;   // 表示するラインに対応したカウント
     mUnits.clearUnits();
-    for ( int i = 0; i < GSBs.count(); i++ ) {
-      GSBs[i]->setText( "" );
-      GSBs[i]->setChecked( false );
-    }
+    clearGSBs();              // ボタンの表示をクリア
+    aGSBS aGsb;
+    QVector<aGSBS> GSBSs;
 
     MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 
-    GSBs[DLC]->setChecked( true );
-    GSBs[DLC++]->setText( "I0" );
+    aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
       LC++;
       isSI1 = true;
-      GSBs[DLC++]->setText( "I1" );
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "mu" );
+      aGsb.stat = PBFalse; aGsb.label = "I1"; GSBSs << aGsb;
+      aGsb.stat = PBTrue;  aGsb.label = "mu"; GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
+      if ( inMCAMeas ) {   // 19ch 使うときは MCA の測定中はダメ
+	QString msg = tr( "Meas cannot Start : in MCA measurement" );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
       LC++;
-      SFluoLine = DLC;
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "FT" );
+      isSFluo = true;
+      SFluoLine = GSBSs.count();
+      aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
       for ( int i = 0; i < MaxSSDs; i++ ) {
-	GSBs[DLC++]->setText( QString::number( i ) );
+	aGsb.stat = PBFalse; aGsb.label = QString::number( i ); GSBSs << aGsb;
       }
     }
     if ( UseAux1->isChecked() ) {
@@ -630,22 +640,20 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
       LC++;
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "A1" );
+      aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
     }
     if ( UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
       mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
       LC++;
-      GSBs[DLC]->setChecked( true );
-      GSBs[DLC++]->setText( "A2" );
+      aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
+	QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -696,12 +704,15 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
+    ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
     for ( int i = 0; i < GSBs.count(); i++ ) {
-      MeasView->ChooseAG( i, GSBs[i]->isChecked() );
+      MeasView->ChooseAG( i, GSBs[i]->isChecked() == PBTrue );
     }
+    MeasViewC->setGSBStats( GSBSs );
+    ShowButtonsForCurrentTab();
 
     QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
     if ( ! OverWriteChecked && CheckFile.exists() ) {
@@ -715,14 +726,14 @@ void MainWindow::StartMeasurement( void )
     }
 
     NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
-    InitialKeV = deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
+    InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
-    MeasStart->setStyleSheet( "background-color: yellow" );
+    MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
     
     MeasChNo = mUnits.count();         // 測定のチャンネル数
@@ -741,21 +752,27 @@ void MainWindow::StartMeasurement( void )
       MeasView->SetLineName( i, mUnits.at(i)->getName() );
     }
     CpBlock2SBlock();
+    
+    StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
+    NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
+    EndTimeDisp->setText( QDateTime::currentDateTime()
+			  .addSecs( EstimatedMeasurementTimeInSec )
+			  .toString("yy.MM.dd hh:mm:ss") );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
-    MeasTimer->start( 100 );
+    MeasTimer->start( 30 );
   } else {
     StopP->show();
     SinPause = inPause;
     NewLogMsg( tr( "Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
-    MeasPause->setStyleSheet( "background-color: yellow" );
+    MeasPause->setStyleSheet( InActive );
     MeasPause->setEnabled( false );
     MeasStart->setEnabled( false );
   }
@@ -768,35 +785,23 @@ void MainWindow::SurelyStop( void )
     inMeasDark = false;
     statusbar->showMessage( "", 0 );
     MeasBackGround->setText( tr( "Measure Background" ) );
-    MeasBackGround
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
+    MeasBackGround->setStyleSheet( NormalB );
     MeasDarkStage = 0;
   }
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	     .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	     .arg( SelectedCurPosDeg( XENC ) )
-	     .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	     .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = 0;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart
-    ->setStyleSheet( "background-color: "
-		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		     "rgba(225, 235, 225, 255), stop:1 "
-		     "rgba(255, 255, 255, 255));" );
+  MeasStart->setStyleSheet( NormalB );
   MeasStart->setEnabled( true );
   inPause = 0;
   MeasPause->setText( tr( "Pause" ) );
-  MeasPause
-    ->setStyleSheet( "background-color: "
-		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		     "rgba(225, 235, 225, 255), stop:1 "
-		     "rgba(255, 255, 255, 255));" );
+  MeasPause->setStyleSheet( NormalB );
   onMeasFinishWorks();
 }
 
@@ -806,24 +811,20 @@ void MainWindow::GoingOn( void )
   MeasPause->setEnabled( true );
   if ( SinPause == 1 ) {
     NewLogMsg( tr( "Meas: Pausing %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
   } else {
     NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
-    MeasPause
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
+    MeasPause->setStyleSheet( NormalB );
   }
 }
 
@@ -843,26 +844,22 @@ void MainWindow::PauseMeasurement( void )
 {
   if ( inPause == 0 ) {
     NewLogMsg( tr( "Meas: Pause %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
-    MeasPause->setStyleSheet( "background-color: yellow" );
+    MeasPause->setStyleSheet( InActive );
   } else {
     NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( deg2keV( SelectedCurPosDeg( XENC ) ) )
+	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( deg2keV(SelectedCurPosDeg( XPM ) ) )
+	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 0;
     MeasPause->setText( tr( "Pause" ) );
-    MeasPause
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
+    MeasPause->setStyleSheet( NormalB );
   }
 }
 

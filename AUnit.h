@@ -140,6 +140,7 @@ public:
     }
     DarkICRs = ICRs;
     setDarkTime = setTime;
+    emit newDark( Dark );
   }
   bool isAutoRangeAvailable( void );
   bool isAutoRange( void ) { return autoRange; };
@@ -259,6 +260,9 @@ public slots:
   void ReactGetLiveTime( SMsg msg );
   void ReactGetRange( SMsg msg );
   void OnReportCurrent( SMsg msg );
+
+  void getNewValue( QString v );   // only for SSD childlen
+  void getNewDark( double d );     // only for SSD childlen
 
 signals:
   //  void CountFinished( void );

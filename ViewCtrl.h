@@ -9,6 +9,7 @@
 #include "XYView.h"
 #include "TYView.h"
 #include "MCAView.h"
+#include "GSBStats.h"
 
 enum VTYPE { XYVIEW, TYVIEW, MCAVIEW, NONVIEW };
 
@@ -21,6 +22,7 @@ class ViewCTRL : public QObject
   VTYPE nowVType;
   DATATYPE nowDType;
   bool deletable;
+  GSBStats *gsbStat;
 
  public:
   ViewCTRL( void );
@@ -30,11 +32,20 @@ class ViewCTRL : public QObject
   void setNowVType( VTYPE nvtype ) { nowVType = nvtype; };
   bool setView( void *view, VTYPE vtype );
   void *getView( void ) { return nowView; };
+  VTYPE getVType( void ) { return nowVType; };
+  DATATYPE getDType( void ) { return nowDType; };
   bool deleteView( void );
   bool isDeletable( void ) { return deletable; };
   void setIsDeletable( bool Deletable ) { deletable = Deletable; };
   void setNowDType ( DATATYPE dtype ) { nowDType = dtype; };
   DATATYPE getNowDType ( void ) { return nowDType; };
+  void addAGSBStat( QString label, bool f );
+  void setGSBStats( QVector<aGSBS> GSBSs );
+  void setGSBStat( int button, bool f );
+  QString getAGSBSLabel( int n );
+  bool getAGSBSStat( int n );
+  QStringList getGSBLabels( void );
+  QVector<bool> getGSBFlags( void );
 };
 
 

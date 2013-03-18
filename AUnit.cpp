@@ -548,7 +548,7 @@ double AUnit::SetTime( double dtime )   // in sec
     if ( time > 40 ) time = 40;
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, DevCh, "SetNPLCycles", QString::number( time ) );
-    setTime = time / 60;
+    setTime = time / 60;    // これで「秒」単位の普通の時間に戻ってる
   }
   if (( Type == "CNT" )||( Type == "CNT2" )) {
     IsBusy2 = true;
@@ -563,7 +563,7 @@ double AUnit::SetTime( double dtime )   // in sec
     M = ceil( dtime / pow( 10., N - 1 ) );
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, Driver, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
-    setTime = M * pow( 10, N ) * 0.1;
+    setTime = M * pow( 10, N ) * 0.1;  // これで秒単位の普通の時間に戻ってる
   }
 
   return setTime;
@@ -939,4 +939,14 @@ void AUnit::OnReportCurrent( SMsg msg )
       emit NewRingCurrent( Value, Values );
     }
   }
+}
+
+void AUnit::getNewValue( QString )
+{
+  Value = QString::number( theParent->getCountsInROI().at( Ch.toInt() ) );
+}
+
+void AUnit::getNewDark( double )
+{
+  Dark = theParent->getDarkCountsInROI().at( Ch.toInt() );
 }

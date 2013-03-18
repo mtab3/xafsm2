@@ -18,5 +18,49 @@ void MainWindow::setupView( void )
     viewCtrl->setIsDeletable( true );
     ViewCtrls << viewCtrl;
   }
+
+  oldCurrentView = 0;
+
+  connect( ViewTab, SIGNAL( currentChanged( int ) ),
+	   this, SLOT( moveToATab( int ) ) );
+}
+
+void MainWindow::moveToATab( int tab ) 
+{
+  NoticeSelectedStats( tab );
+  ShowButtonsForATab( tab );   // for XYView, oldCurrentView is set in the function
+}
+
+void MainWindow::ShowButtonsForCurrentTab( void )   // manage graph-select-button
+{
+  ShowButtonsForATab( ViewTab->currentIndex() );
+}
+
+
+void MainWindow::ShowButtonsForATab( int i )   // manage graph-select-button
+{
+  QStringList lbls;
+
+  if ( i != oldCurrentView )
+    saveGSBs( oldCurrentView );
+  clearGSBs();
+  loadGSBs( i );
+#if 0
+  lbls = ViewCtrls[i]->getGSBLabels();
+  SetGSBLabels( lbls );
+  SetGSBFlags( ViewCtrls[i]->getGSBFlags() );
+#endif
+  oldCurrentView = i;
+}
+
+void MainWindow::NoticeSelectedStats( int tab )
+{
+  if ( ViewCtrls[ tab ]->getVType() == MCAVIEW ) {
+    MCAView *view = (MCAView*)(ViewCtrls[ tab ]->getView());
+    view->setLog( SetDisplayLog->isChecked() );
+    view->setShowElements( DispElmNames->isChecked() );
+    view->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
+    view->setShowElementsEnergy( ShowElmEnergy->isChecked() );
+  }
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>687</width>
-    <height>89</height>
+    <height>120</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,38 +57,6 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QFrame" name="frame_2">
-     <property name="styleSheet">
-      <string notr="true">background-color: #eeffee</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <property name="margin">
-       <number>3</number>
-      </property>
-      <property name="spacing">
-       <number>1</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="SelAddInfos">
-        <property name="toolTip">
-         <string>Some additional information is recorded 
-with usual 9809 format datas.</string>
-        </property>
-        <property name="text">
-         <string>Record Addicional Informations for XAFS measurement</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" rowspan="2">
     <widget class="QFrame" name="frame">
      <property name="styleSheet">
@@ -121,6 +89,114 @@ with usual 9809 format datas.</string>
        <widget class="QRadioButton" name="SelSelAsTh">
         <property name="text">
          <string>Selected Encorder or 'calc from PM' is used</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1" rowspan="4">
+    <widget class="QFrame" name="frame_4">
+     <property name="styleSheet">
+      <string notr="true">background-color: #eeffee</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>1</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>1</number>
+      </property>
+      <property name="margin">
+       <number>3</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>No normalization    (now 'No' shold be selected always)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="text">
+         <string>Normalize the SSD-measured value by RealTime</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="radioButton_3">
+        <property name="text">
+         <string>Normalize the SSD-measured value by LiveTime</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame_2">
+     <property name="styleSheet">
+      <string notr="true">background-color: #eeffee</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="margin">
+       <number>3</number>
+      </property>
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="SelAddInfos">
+        <property name="toolTip">
+         <string>Some additional information is recorded 
+with usual 9809 format datas.</string>
+        </property>
+        <property name="text">
+         <string>Record Addicional Informations for XAFS measurement</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QFrame" name="frame_5">
+     <property name="styleSheet">
+      <string notr="true">background-color: #eeffee</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <property name="margin">
+       <number>3</number>
+      </property>
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="Use1303Format">
+        <property name="text">
+         <string>Use 1303 format to record XAFS measurement</string>
         </property>
        </widget>
       </item>

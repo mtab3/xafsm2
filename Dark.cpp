@@ -9,7 +9,7 @@ bool MainWindow::MeasureDark( void )
     if ( AskingShutterClose ) {
       AskingShutterClose = false;
       MeasBackGround->setText( tr( "BG Measuring" ) );
-      MeasBackGround->setStyleSheet( "background-color: yellow" );
+      MeasBackGround->setStyleSheet( InActive );
       return false;
     } else if ( AskingShutterOpen ) {
       AskingShutterOpen = false;
@@ -23,6 +23,7 @@ bool MainWindow::MeasureDark( void )
     statusbar->showMessage( tr( "Measurement is going on!" ), 2000 );
     return false;
   }
+
   double dt = MeasBackTime->text().toDouble();
   if ( dt < 1 ) {
     dt = 1;
@@ -33,8 +34,15 @@ bool MainWindow::MeasureDark( void )
   mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
   if ( UseI1->isChecked() )
     mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
-  if ( Use19chSSD->isChecked() )
+  if ( Use19chSSD->isChecked() ) {
+    if ( inMCAMeas ) {
+      QString msg = tr( "MCA measurement is going on" );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return false;
+    }
     mUnits.addUnit( SFluo );
+  }
   if ( UseAux1->isChecked() )
     mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
   if ( UseAux2->isChecked() )
@@ -73,7 +81,7 @@ bool MainWindow::MeasureDark( void )
   AskingShutterClose = true;
   AskingShutterOpen = false;
   MeasBackGround->setText( tr( "Close Shutter!!" ) );
-  MeasBackGround->setStyleSheet( "background-color: red" );
+  MeasBackGround->setStyleSheet( AlartRed );
   MeasDarkStage = 0;
   statusbar->showMessage( tr( "Make sure that shutte is closed."
 			      "  Then push the 'red' button." ), 0 );
@@ -121,7 +129,9 @@ void MainWindow::MeasDarkSequence( void )
     break;
   case 5:
     double setTime;
-    mUnits.readValue( MeasVals, false );   // false :: not correct dark
+    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
+    // 前は MeasCPSs は無かったので MeasVals (count) を cps に直す計算をここでやってる。
+    // 直しても良いけどそのままにしておく
     for ( int i = 0; i < mUnits.count(); i++ ) {
       setTime = mUnits.at(i)->GetSetTime();
       if ( setTime > 0 ) {
@@ -140,7 +150,7 @@ void MainWindow::MeasDarkSequence( void )
     }
     AskingShutterOpen = true;
     MeasBackGround->setText( tr( "Open Shutter!!" ) );
-    MeasBackGround->setStyleSheet( "background-color: red" );
+    MeasBackGround->setStyleSheet( AlartRed );
     statusbar->showMessage( tr( "Make sure that shutte is opened."
 				"  Then push the 'red' button." ), 0 );
     MeasDarkStage = 6;
@@ -150,10 +160,7 @@ void MainWindow::MeasDarkSequence( void )
     statusbar->showMessage( "", 0 );
     MeasBackGround->setText( tr( "Measure Background" ) );
     MeasBackGround
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
+      ->setStyleSheet( NormalB );
     MeasDarkStage = 0;
     MeasDarkTimer->stop();
     break;

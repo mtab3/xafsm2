@@ -8,11 +8,14 @@
 
 #include <math.h>
 
-#include "Mccd.h"
 #include "ui_MainWindow.h"
+
+#include "Mccd.h"
 #include "SelMC2.h"
 #include "StarsSV2.h"
 #include "SelMC2.h"
+
+#include "Units.h"
 
 #include "ViewCtrl.h"
 #include "XafsM.h"
@@ -29,14 +32,7 @@
 #include "Conditions.h"
 #include "KeV2Pix.h"
 #include "FluoDBase.h"
-
-#define PI ( 3.1415926535 )
-#define CC ( 2.99792458e8 )
-#define hb ( 1.05457266e-34 )
-#define EE ( 1.60217733e-19 )
-#define E2A ( 2 * PI * hb * CC / EE * 1e10 )
-#define KE2A ( 2 * PI * hb * CC / EE / 1000. * 1e10 )
-
+#include "DarkTable.h"
 
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
@@ -68,6 +64,8 @@ private:
   void ReadDef( QString fname );
   QString nextItem( QString start, QString &item );
   QVector<MCCD*> mccd;
+  QVector<Gas*> Gases;
+  QVector<IonChLength*> ICLengths;
   void CheckDuplicateUID( void );
   void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
 
@@ -75,6 +73,7 @@ private:
   SelMC2 *selmc;
   StarsSV2 *starsSV;
   Conditions *conds;
+  Units *u;
   /* cfg. */
   
   /* MCA */
@@ -91,6 +90,7 @@ private:
   int MCAStage;
   ViewCTRL *cMCAViewC;
   MCAView *cMCAView;
+  int cMCAViewTabNo;
   int *MCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
@@ -113,7 +113,6 @@ private:
   QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
 
   Stars *s;
-  double MonoCryD;
 
   MEASMODE MeasFileType;
 
@@ -138,52 +137,15 @@ private:
 
   MUnits mUnits;
 
-  /* InterFace.cpp */ /**********************************************/
+  /***********************************************/
 
   double SelectedCurPosDeg( ENCORPM EncOrPM );
-  QString viewEncOrPM( ENCORPM EncOrPM )
-  { return ( EncOrPM == XENC ) ? "Encorder" : "PM"; };
+  //  QString viewEncOrPM( ENCORPM EncOrPM )
+  //  { return ( EncOrPM == XENC ) ? "Encorder" : "PM"; };
   // return Mono. Chro. deg. measured by selected way
   void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
 
-
-  /* Dummy Functions for Dummy Interface */
-  void DummyDelayMotionStart( double keV );
-
-  /* InterFace.cpp */ /**********************************************/
-
-  double eV2deg( double eV ) {
-    double tmp = eV2a( eV )/( 2.* MonoCryD );
-    return ( fabs( tmp ) > 1 ) ? -1 : asin( tmp )/(PI)*180.;
-  }
-  double keV2deg( double eV ) {
-    double tmp = keV2a( eV )/( 2.* MonoCryD );
-    return ( fabs( tmp ) > 1 ) ? -1 : asin( tmp )/(PI)*180.;
-  }
-  double deg2keV( double deg ) { return a2keV( sin( deg / 180. * PI ) * 2.*MonoCryD ); }
-  double deg2eV( double deg ) { return a2eV( sin( deg / 180. * PI ) * 2.*MonoCryD ); }
-  double eV2a( double eV ) { return E2A / eV; }
-  double keV2a( double keV ) { return KE2A / keV; }
-  double a2eV( double a ) { return E2A / a; }
-  double a2keV( double a ) { return KE2A / a; }
-  double keV2any( UNIT i, double keV ) {
-    switch( (int)i ) {
-    case EV: return keV * 1000;
-    case KEV: return keV;
-    case DEG: return keV2deg( keV );
-    case ANGS: return keV2a( keV );
-    }
-    return 0;
-  }
-  double any2keV( UNIT i, double any ) {
-    switch( (int)i ) {
-    case EV: return any / 1000.;
-    case KEV: return any;
-    case DEG: return deg2keV( any );
-    case ANGS: return a2keV( any );
-    }
-    return 0;
-  }
+  /***********************************************/
 
   void GoMAtPuls( double Pos );
   void GoMStop0( void );
@@ -214,10 +176,7 @@ private:
   XYView *ScanView;
   QFileDialog *scanFSel;
   int SFluoLine;
-  bool isSI1;
-
-  QString RadioBOn;
-  QString RadioBOff;
+  bool isSI1, isSFluo;
 
   //  bool MeasCntIs;
   //  int MeasCntNo;
@@ -246,8 +205,6 @@ private:
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> SSDbs2;
   QVector<QPushButton *> GSBs;
-  QString SSDActive;
-  QString SSDnotActive;
   //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;
@@ -269,10 +226,12 @@ private:
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
+  int EstimatedMeasurementTimeInSec;
 
   void ClearBLKs( void );
   void ShowBLKs( void );
   void WriteBF( void );
+  DarkTable *darkTable;
 
   void SelSSDs( int i );
   //  void SetSSDactive( bool active );
@@ -302,6 +261,7 @@ private:
   int GetDFName0( void );
   void SetDFName( int i );
   double MeasVals[ MCHANNELS ];
+  double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
   int MeasDispPol[ MCHANNELS ];   // polarity
   double NowDwell;
@@ -319,10 +279,10 @@ private:
 
   QString NewLFName( void );
 
+  int oldCurrentView;
   ViewCTRL *MeasViewC;
   XYView *MeasView;
   void setupView( void );
-
 
   bool CheckDetectorSelection( void );
 
@@ -342,14 +302,14 @@ private slots:
   void Hide( bool f );
 
   void ShowMessageOnSBar( QString msg, int time );
-  void SetNewLatticeConstant( double LC ) { MonoCryD = LC; };
+  //  void SetNewLatticeConstant( double LC ) { u->setD( LC ); };
 
   bool MeasureDark( void );
 
   void ChangeBLKstart( void );
   void ChangeBLKstep( void );
   void ChangeBLKpoints( void );
-  void ChangeBLKdwell( void );
+  void ChangeBLKdwell( const QString &dtime );
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );
@@ -373,6 +333,13 @@ private slots:
   void ManSelTEkeV( void );
   void SetAllGoUnits( int i );
   void ShowAllGos( void );
+  void saveGSBs( int ch );
+  void loadGSBs( int ch );
+  void clearGSBs( void );
+  void SetGSBFlags( QVector<bool> flgs );
+  void SetGSBLabels( QStringList lbls );
+  void ShowMB( void );
+
   void GetNewGos( void );
   void GoToPosKeV1( void ) { MoveCurThPosKeV( GoPosKeV[0] ); }
   void GoToPosKeV2( void ) { MoveCurThPosKeV( GoPosKeV[1] ); }
@@ -442,6 +409,8 @@ private slots:
   void MCAViewDisconnects( void );
   void MCAViewConnects( void );
 
+  void calcMuT( int ch, int gas, double keV );
+
   void StartMeasurement( void );
   void PauseMeasurement( void );
   void SurelyStop( void );
@@ -456,6 +425,9 @@ private slots:
   void NoticeMCAViewSetShowElements( bool f );
   void NoticeMCAViewShowAlwaysSelElm( bool f );
   void NoticeMCAViewShowElmEnergy( bool f );
+  void moveToATab( int tab );
+  void NoticeSelectedStats( int tab );
+  void doPeakFit( void );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );
@@ -472,6 +444,8 @@ private slots:
   void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype );
   void DeleteTheView( void );
+  void ShowButtonsForCurrentTab( void );
+  void ShowButtonsForATab( int i );
 
   void setEncNewTh( QString orig, QString newv );
 

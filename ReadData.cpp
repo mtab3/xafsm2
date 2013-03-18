@@ -26,6 +26,8 @@ void MainWindow::TryToNoticeCurrentView( void )
 
 void MainWindow::DeleteTheView( void )
 {
+  ViewTab->setTabText( ViewTab->currentIndex(),
+		       QString( "View%1" ).arg( ViewTab->currentIndex()+1 ) );
   ViewCtrls[ ViewTab->currentIndex() ]->deleteView();
 }
 
@@ -39,6 +41,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     view = ViewCtrls[ ViewTab->currentIndex() ];
     if ( view->getNowDType() != dtype ) {
       view = SetUpNewView( XYVIEW );
+      ViewTab->setTabText( ViewTab->currentIndex(), "D-XAFS" );
       ClearXViewScreenForMeas( (XYView*)(view->getView()) );
     }
     break;
@@ -46,14 +49,17 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     view = ViewCtrls[ ViewTab->currentIndex() ];
     if ( view->getNowDType() != dtype ) {
       view = SetUpNewView( XYVIEW );
+      ViewTab->setTabText( ViewTab->currentIndex(), "D-SCAN" );
       ClearXViewScreenForScan( (XYView*)(view->getView()) );
     }
     break;
   case MONDATA:   // MONDATA と MCADATA は重ね書きは諦める。
     view = SetUpNewView( TYVIEW );
+    ViewTab->setTabText( ViewTab->currentIndex(), "D-MON." );
     break;
   case MCADATA:
     view = SetUpNewView( MCAVIEW );
+    ViewTab->setTabText( ViewTab->currentIndex(), "D-MCA" );
     break;
   default:
     view = NULL;

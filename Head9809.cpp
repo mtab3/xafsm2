@@ -87,14 +87,16 @@ bool Head9809::readFromStream( QTextStream &in )
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // Mode Line
-  line = line.mid( 30 );                           // 最初の 30桁 (Mode 0 0) は読み飛ばす
-  for ( int i = 0; i < line.length() / 10; i++ ) {
+                             // スペース区切りでなく、固定長 10桁と思ってパースしてる
+  line = line.mid( 30 );     // 最初の 30桁 (Mode 0 0) は読み飛ばす
+  for ( int i = 0; i < ceil( line.length() / 10. ); i++ ) {
     Modes << line.mid( i*10, 10 ).simplified();
   }
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                   // Offset Line
-  line = line.mid( 30 );                         // 最初の 30桁 (Offset 0 0) は読み飛ばす
+                             // スペース区切りでなく、固定長 10桁と思ってパースしてる
+  line = line.mid( 30 );     // 最初の 30桁 (Offset 0 0) は読み飛ばす
   for ( int i = 0; i < line.length() / 10; i++ ) {
     Offsets << line.mid( i*10, 10 ).simplified();
   }

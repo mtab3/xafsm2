@@ -47,7 +47,7 @@ void MainWindow::MonSequence( void )
     break;
   case 5:
     int etime;
-    mUnits.readValue( MeasVals, false );   // false :: not correct dark
+    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
     MonitorView->NewPointR( etime = MonTime.elapsed(),
 			    MeasVals[0], MeasVals[1], MeasVals[2] );
     MonitorView->update();

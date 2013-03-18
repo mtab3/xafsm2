@@ -6,9 +6,6 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
-  SSDActive = "background-color: #ccffcc";
-  SSDnotActive = "background-color: #aabbaa";
-
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -27,7 +24,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
     SSDbs2[i]->setStyleSheet( SSDActive );
     SSDbs2[i]->setToolTip( tr( "Active" ) );
-    SSDbs2[i]->setChecked( true );
+    SSDbs2[i]->setChecked( PBTrue );
     connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ) );
   }
 
@@ -103,30 +100,57 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
+  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+}
+
+void MainWindow::doPeakFit( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->doPeakFit();
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setLog( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setLog( f );
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewSetShowElements( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setShowElements( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowElements( f );
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewShowAlwaysSelElm( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setShowElementsAlways( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowElementsAlways( f );
+    }
+  }
 }
 
 void MainWindow::NoticeMCAViewShowElmEnergy( bool f )
 {
-  if ( cMCAView != NULL )
-    cMCAView->setShowElementsEnergy( f );
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowElementsEnergy( f );
+    }
+  }
 }
 
 void MainWindow::setAllROIs( void )
@@ -208,7 +232,7 @@ void MainWindow::SelSSDs20( void )
 {
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
     if ( sender() == SSDbs2.at(i) ) {
-      if ( SSDbs2.at(i)->isChecked() ) {
+      if ( SSDbs2.at(i)->isChecked() == PBTrue ) {
 	SSDbs2.at(i)->setStyleSheet( SSDActive );
 	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
 	SFluo->setSSDUsingCh( i, true );
@@ -227,13 +251,13 @@ void MainWindow::SelSSDs( int ch )
 {
   for ( int i = 0; i < SSDbs.count(); i++ ) {
     if ( i == ch ) {
-      SSDbs[i]->setChecked( true );
+      SSDbs[i]->setChecked( PBTrue );
       SSDbs[i]->setStyleSheet( SSDActive );
       SSDbs[i]->setToolTip( tr( "Active" ) );
       MCACh->setValue( i );
       MCAChSelected( i );
     } else {
-      SSDbs[i]->setChecked( false );
+      SSDbs[i]->setChecked( PBFalse );
       SSDbs[i]->setStyleSheet( SSDnotActive );
       SSDbs[i]->setToolTip( tr( "Inactive" ) );
     }
@@ -348,7 +372,7 @@ void MainWindow::StartMCA( void )
     }
 
     MCAStart->setText( tr( "Stop" ) );
-    MCAStart->setStyleSheet( "background-color: yellow" );
+    MCAStart->setStyleSheet( InActive );
 
     inMCAMeas = true;
 
@@ -356,7 +380,8 @@ void MainWindow::StartMCA( void )
     //    cMCACh = MCACh->text().toInt();
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
-    if ( StartResume == MCA_START ) {
+    if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
+	 || ( StartResume == MCA_START ) ) {
       if ( cMCAView != NULL ) {
 	MCAViewDisconnects();
 	cMCAViewC->setIsDeletable( true );
@@ -364,12 +389,14 @@ void MainWindow::StartMCA( void )
       
       if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
 	return;
+      ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
       cMCAViewC->setNowDType( MCADATA );
       cMCAView = (MCAView*)(cMCAViewC->getView());
       cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
       
       MCAData = cMCAView->setMCAdataPointer( MCALength );
       validMCAData = true;
+      cMCAViewTabNo = ViewTab->currentIndex();
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
       cMCAView->makeValid( true );
@@ -390,10 +417,8 @@ void MainWindow::StartMCA( void )
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
-    MCAStart->setStyleSheet( "background-color: "
-			     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0"
-			     " rgba(225, 235, 225, 255), stop:1"
-			     " rgba(255, 255, 255, 255));" );
+    MCAStart->setStyleSheet( NormalB );
+    cMCAViewC->setIsDeletable( false );
   }
 }
 

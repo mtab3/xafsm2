@@ -7,8 +7,8 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
 
-  setToolTip( "By clicking the 'A. Scale' (Auto Scale) button at left-bottom corner, "
-	      "the auto-scale mode is toggled on and off." );
+  setToolTip( tr( "By clicking the 'A. Scale' (Auto Scale) button at left-bottom corner, "
+		  "the auto-scale mode is toggled on and off." ) );
 
   valid = false;
   cc.SetRealCoord( 0, 0, 1, 1 );

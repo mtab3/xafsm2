@@ -4,6 +4,9 @@
 
 void MainWindow::setupSetupArea( void )   /* 設定エリア */
 {
+  GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
+  GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
+
   double Eg = ManTEkeV->text().toDouble();
 
   //  inMove = 0;
@@ -14,8 +17,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   ScanView = NULL;
   MonitorView = NULL;
 
-  RadioBOn = "background-color: rgb(255,255,000)";
-  RadioBOff = "background-color: rgb(210,210,230)";
   GoMRelAbs = REL;
   SPSRelAbs = REL;
   ShowGoMRelAbs();
@@ -388,13 +389,13 @@ void MainWindow::ShowGo( int i )
   QString buf;
 
   UNIT unit = (UNIT)GoUnit[i]->currentIndex();
-  buf.sprintf( UnitName[unit].form, keV2any( unit, GoPosKeV[ i ] ) );
+  buf.sprintf( UnitName[unit].form, u->keV2any( unit, GoPosKeV[ i ] ) );
   GoPosEdit[i]->setText( buf );
 }
 
 void MainWindow::GetNewGo( int i )
 {
-  GoPosKeV[i] = any2keV( (UNIT)GoUnit[i]->currentIndex(),
+  GoPosKeV[i] = u->any2keV( (UNIT)GoUnit[i]->currentIndex(),
 			 GoPosEdit[i]->text().toDouble() );
 }
 
@@ -464,7 +465,7 @@ void MainWindow::GoMAtPuls( double Pos )
   }
 
   GoMotor->setText( tr( "Stop" ) );
-  GoMotor->setStyleSheet( "background-color: yellow" );
+  GoMotor->setStyleSheet( InActive );
 
   SPSScan->setEnabled( false );
 
@@ -517,11 +518,7 @@ void MainWindow::GoMStop0( void )
   GoMotor->setEnabled( true );
   SPSScan->setEnabled( true );
   GoMotor->setText( tr( "Go" ) );
-  GoMotor->setStyleSheet( "background-color: "
-			  "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-			  "rgba(225, 235, 225, 255), stop:1 "
-			  "rgba(255, 255, 255, 255));" );
-  
+  GoMotor->setStyleSheet( NormalB );
 }
 
 void MainWindow::ScanStart( void )
@@ -533,6 +530,7 @@ void MainWindow::ScanStart( void )
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
+    ViewTab->setTabText( ViewTab->currentIndex(), "SCAN" );
     ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
 
@@ -586,7 +584,7 @@ void MainWindow::ScanStart( void )
     am->SetSpeed( MSpeeds[ MovingS ].MSid );
 
     SPSScan->setText( tr( "Stop" ) );
-    SPSScan->setStyleSheet( "background-color: yellow" );
+    SPSScan->setStyleSheet( InActive );
     GoMotor->setEnabled( false );
 
     ScanView->Clear();
@@ -643,6 +641,7 @@ void MainWindow::Monitor( void )
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
+    ViewTab->setTabText( ViewTab->currentIndex(), "MON." );
     if ( IsMonRec->isChecked() ) {
       if ( MonRecFile->text().isEmpty() ) {
 	statusbar->showMessage( tr ( "No Record file is selected" ) );
@@ -726,7 +725,7 @@ void MainWindow::Monitor( void )
       connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 		 
     MStart->setText( tr( "Stop" ) );
-    MStart->setStyleSheet( "background-color: yellow" );
+    MStart->setStyleSheet( InActive );
 
     MonitorViewC->setIsDeletable( false );
     MonTime.restart();
@@ -748,10 +747,7 @@ void MainWindow::Monitor( void )
 
     MonitorViewC->setIsDeletable( true );
     MStart->setText( tr( "Mon. Start" ) );
-    MStart->setStyleSheet( "background-color: "
-			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-			   "rgba(225, 235, 225, 255), stop:1 "
-			   "rgba(255, 255, 255, 255));" );
+    MStart->setStyleSheet( NormalB );
   }
 }
 

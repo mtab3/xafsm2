@@ -1,5 +1,6 @@
 #include "XafsM.h"
 #include "MCAView.h"
+#include "PeakFit.h"
 
 // 横軸には 3つの単位がある。
 // MCA pixel, eV (実Energy), 描画 pixel
@@ -11,6 +12,7 @@
 
 #define NEAR ( 10 )     // ROI のエッジに近いと判断する距離(画面 pixel)
 #define NEAR2 ( 10 )    // 据え置きカーソルに近いと判断する距離
+#define NEAR3 ( 3 )     // 蛍光ピーク位置が近いと判断する距離
 
 MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 {
@@ -28,6 +30,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   MaxE = 20.;
   MinE = 0.;
   mMode = M_NO;
+  yRatio = 1.0;
 
   valid = false;
   dispLog = false;
@@ -119,13 +122,17 @@ void MCAView::Draw( QPainter *p )
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
 
-  double max;
-  double max0 = 0;    // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
+  double min, max;
+  double min0 = 1e300, max0 = 0;
+  // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
   for ( int i = 0; i < MCALen; i++ ) {
     double E = k2p->p2E( MCACh, i );
     if (( E > MinE )&&( E < MaxE )) {
       if ( MCA[i] > max0 ) {
 	max0 = MCA[i];
+      }
+      if ( MCA[i] < min0 ) {
+	min0 = MCA[i];
       }
     }
   }
@@ -134,13 +141,17 @@ void MCAView::Draw( QPainter *p )
       max = log10( max0 );
     else 
       max = 1;
+    if ( min0 > 0 )
+      min = log10( min0 );
+    else 
+      min = 1;
   } else {
     max = max0;
+    min = min0;
   }
-  //  cc.SetRealCoord( 0, 0, MCALen-1, max );
-  cc.SetRealCoord( MinE, 0, MaxE, max );          // 今や横軸は MCA pixel ではなく、
-                                               // エネルギ-[keV]
-  // 正しく調整されていると MCP pixel = エネルギー[eV]/10 になっているはず。
+  // 今や横軸は MCA pixel ではなく、エネルギ-[keV]
+  //  cc.SetRealCoord( MinE, min, MaxE, ( max - min ) * yRatio + min );
+  cc.SetRealCoord( MinE, 0, MaxE, max * yRatio );
 
   double rmx = cc.s2rx( m.x() );
   double wrROIsx = rROIsx;  // wrROI.. working-real-ROI.., rROI.. real-ROI..
@@ -177,6 +188,7 @@ void MCAView::Draw( QPainter *p )
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
     }
   }
+
   p->setPen( Black );                      // グラフ外枠の四角描画
   p->drawRect( LM, TM, HW, VW );
   p->setPen( GridC );                      // グラフの罫線描画
@@ -246,12 +258,13 @@ void MCAView::Draw( QPainter *p )
   if ( showElements ) {   // 元素名表示
     if ( showElementsAlways ) {
       // 元素名常時表示の場合
-      int dispx, dispw;
-      int lines = 16;            // 元素名は最大10段表示
+      int dispx1, dispw;
+      int lines = 16;            // 元素名は最大16段表示
       QVector<int> lend;         // 格段の最終表示位置
       for ( int i = 0; i < lines; i++ ) { lend << 0; }
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
-	QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE );
+	QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE,
+						 cc.s2rx( NEAR3 ) - cc.s2rx( 0 ) );
 	p->setPen( AListC );
 	for ( int i = 0; i < inRange.count(); i++ ) {
 	  if ( inRange[i].dispf ) {
@@ -259,18 +272,18 @@ void MCAView::Draw( QPainter *p )
 	    QString show = inRange[i].fullName;
 	    if ( showElementsEnergy )
 	      show += " " + QString::number( inRange[i].val );
-	    dispx = cc.r2sx( v ) - dLM * 10;
+	    dispx1 = cc.r2sx( v ) - dLM * 10;
 	    dispw = dLM * 9.5;
 	    int j;
 	    for ( j = 0; j < lines; j++ ) {
-	      if ( lend[j] < dispx ) {
+	      if ( lend[j] < dispx1 ) {
 		p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+j) );
 		p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+j),
 			     cc.r2sx( v ) - dLM * 0.5, TM+VW-dVW*(4+j) );
-		rec.setRect( dispx, TM+VW-dVW*(4+j+0.5), dispw, dVW );
+		rec.setRect( dispx1, TM+VW-dVW*(4+j+0.5), dispw, dVW );
 		cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
 			     show );
-		lend[j] = dispx + dispw;
+		lend[j] = dispx1 + dispw;
 		break;
 	      }
 	    }
@@ -278,10 +291,10 @@ void MCAView::Draw( QPainter *p )
 	      p->drawLine( cc.r2sx( v ), TM+VW, cc.r2sx( v ), TM+VW-dVW*(3+j) );
 	      p->drawLine( cc.r2sx( v ), TM+VW-dVW*(3+j),
 			   cc.r2sx( v ) - dLM * 0.5, TM+VW-dVW*(4+j) );
-	      rec.setRect( dispx, TM+VW-dVW*(4+j+0.5), dispw, dVW );
+	      rec.setRect( dispx1, TM+VW-dVW*(4+j+0.5), dispw, dVW );
 	      cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE,
 			   show );
-	      lend[j] = dispx + dispw;
+	      lend[j] = dispx1 + dispw;
 	    }
 	  }
 	}
@@ -289,7 +302,7 @@ void MCAView::Draw( QPainter *p )
     } else {
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
 	// マウスカーソル付近のみ元素名表示の場合
-	QVector<Fluo> nears = fdbase->nears( rmx );
+	QVector<Fluo> nears = fdbase->nears( rmx, cc.s2rx( NEAR3 ) - cc.s2rx( 0 ) );
 	p->setPen( AListC );
 	bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
 	for ( int i = 0; i < nears.count(); i++ ) {
@@ -536,19 +549,65 @@ void MCAView::setROI( int s, int e )   // MCA pixel
 
 void MCAView::wheelEvent( QWheelEvent *e )
 {
-  double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
-  double rx = cc.s2rx( e->x() );
-  double drx = MaxE - MinE;
-  if ( step > 0 ) {
-    drx *= 0.9;
-  } else {
-    drx /= 0.9;
+  double step = ( e->delta() / 8. ) / 15.;    // deg := e->delta / 8.
+  if ( e->modifiers() & Qt::ShiftModifier ) { // シフトキーを押しながらでは縦軸の拡大縮小
+    if ( step > 0 ) {
+      yRatio *= 0.9;
+    } else {
+      yRatio /= 0.9;
+    }
+    if ( yRatio > 1.0 )
+      yRatio = 1.0;
+  } else {                                    // そうでなければ横軸の拡大縮小
+    double rx = cc.s2rx( e->x() );
+    double drx = MaxE - MinE;
+    if ( step > 0 ) {
+      drx *= 0.9;
+    } else {
+      drx /= 0.9;
+    }
+    MinE = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
+    MaxE = MinE + drx;
+    
+    if ( MinE < 0 ) MinE = 0;
+    if ( MaxE > 20 ) MaxE = 20;
   }
-  MinE = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
-  MaxE = MinE + drx;
-
-  if ( MinE < 0 ) MinE = 0;
-  if ( MaxE > 20 ) MaxE = 20;
-
   update();
+}
+
+void MCAView::doPeakFit( void )
+{
+  QVector<double> xxx, yyy;    // peak fit 用
+  double maxInROI = 0;     // peak fit 用
+  qDebug() << "aa1";
+  for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
+    double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
+    if (( E >= rROIsx )&&( E <= rROIex )) {
+      xxx << E;
+      yyy << MCA[i];
+      if ( MCA[i] > maxInROI )  // peak fit 用
+	maxInROI = MCA[i];
+    }
+  }
+  qDebug() << "aa2";
+  QVector<double> ppp;    // peak fit
+  qDebug() << "bb3";
+  ppp << maxInROI << ( ( rROIsx + rROIex ) / 2. ) << fabs( ( rROIsx - rROIex ) / 2. );
+  ppp << 0 << 0;
+  qDebug() << "bb4";
+  PeakFit *peakF = new PeakFit;
+  qDebug() << "bb5";
+  peakF->init( 1, xxx.count() );
+  qDebug() << "bb6";
+  peakF->setXYP0( xxx, yyy, ppp );
+  qDebug() << "bb7";
+  for ( int i = 0; i < 1; i++ ) {
+    peakF->calcNewP( 0. );
+    qDebug() << "PeakFit " << i << peakF->getP() << peakF->Norm();
+  }
+  qDebug() << "bb8";
+  peakF->release();
+  qDebug() << "bb9";
+  delete peakF;
+  qDebug() << "bb10";
 }

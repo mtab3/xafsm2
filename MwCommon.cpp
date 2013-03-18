@@ -6,10 +6,7 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
 {
   QString buf;
 
-  GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
-  GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
-
-  MonoCryD = mccd[ selmc->MC() ]->getD();     // Si (111) 
+  u->setD( mccd[ selmc->MC() ]->getD() );     // default D is Si (111) 
 
   SelectedA = Cu;
   SelectedE = Kedge;
@@ -43,6 +40,102 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ) );
 
   connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( Hide( bool ) ) );
+
+  int i0 = 0, i1 = 0;
+  for ( int i = 0; i < ICLengths.count(); i++ ) {
+    I0ChSelect->addItem( ICLengths[i]->Name );
+    I1ChSelect->addItem( ICLengths[i]->Name );
+    if ( ICLengths[i]->ID == "I0" )
+      i0 = i;
+    if ( ICLengths[i]->ID == "I1" )
+      i1 = i;
+  }
+  I0ChSelect->setCurrentIndex( i0 );
+  I1ChSelect->setCurrentIndex( i1 );
+
+  GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
+       << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
+       << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
+       << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
+       << GSB21 << GSB22 << GSB23 << GSB24;
+
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
+  }
+}
+
+void MainWindow::calcMuT( int ch, int gas, double keV )
+{
+  int an;
+  double total = 0;
+  double lambda = u->keV2a( keV );
+
+  for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
+    an = -1;
+    for ( int j = 0; j < ATOMS; j++ ) {
+      if ( A[j].AName == Gases[gas]->GasComps[i]->AName ) {
+	an = j;
+	break;
+      }
+    }
+    if ( an > 0 ) {
+      for ( int j = 0; j < 5; j++ ) {
+	//	if ( Vics[an].
+      }
+    }
+  }
+}
+
+void MainWindow::saveGSBs( int ch )
+{
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    ViewCtrls[ch]->setGSBStat( i, GSBs[i]->isChecked() );
+  }
+}
+
+void MainWindow::loadGSBs( int ch )
+{
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    GSBs[i]->setText( ViewCtrls[ch]->getAGSBSLabel( i ) );
+    GSBs[i]->setChecked( ViewCtrls[ch]->getAGSBSStat( i ) );
+  }
+}
+
+void MainWindow::clearGSBs( void )
+{
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    GSBs[i]->setText( "" );
+    GSBs[i]->setChecked( PBFalse );
+  }
+}
+
+void MainWindow::SetGSBFlags( QVector<bool> flgs )
+{
+  for ( int i = 0; i < flgs.count(); i++ ) {
+    GSBs[i]->setChecked( flgs[i] );
+  }
+}
+
+void MainWindow::SetGSBLabels( QStringList lbls )
+{
+  for ( int i = 0; i < lbls.count(); i++ ) {
+    GSBs[i]->setText( lbls[i] );
+  }
+}
+
+void MainWindow::SelectAGB( bool f )
+{
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() != MEASDATA )
+    return;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getView() == NULL )
+    return;
+  
+  for ( int i = 0; i < GSBs.count(); i++ ) {
+    if ( sender() == GSBs[i] ) {
+      ((XYView*)(ViewCtrls[ ViewTab->currentIndex() ]->getView()))
+	->ChooseAG( i, f == PBTrue );
+    }
+  }
 }
 
 void MainWindow::Hide( bool f ) 
@@ -56,7 +149,7 @@ void MainWindow::Hide( bool f )
 
 void MainWindow::NewSelA( int i )
 {
-  if ( keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
+  if ( u->keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
     SelectedA = (AtomNo)i;
     SelectTA->setCurrentIndex( i );
     ShowTAE();
@@ -64,7 +157,7 @@ void MainWindow::NewSelA( int i )
   } else {
     // エネルギーが範囲外だった場合、
     if ( SelectedE != Kedge ) {   // もし L エッジを選択していたら、K エッジを試してみる。
-      if ( keV2deg( Vic[ i ].AE[ Kedge ] ) > 0 ) {
+      if ( u->keV2deg( Vic[ i ].AE[ Kedge ] ) > 0 ) {
 	SelectedA = (AtomNo)i;
 	SelectedE = Kedge;
 	SelectTA->setCurrentIndex( i );
@@ -74,7 +167,7 @@ void MainWindow::NewSelA( int i )
 	return;
       }
     } else {  // もし K エッジを選択していたら LIII を試してみる
-      if ( keV2deg( Vic[ i ].AE[ LIIIedge ] ) > 0 ) {
+      if ( u->keV2deg( Vic[ i ].AE[ LIIIedge ] ) > 0 ) {
 	SelectedA = (AtomNo)i;
 	SelectedE = LIIIedge;
 	SelectTA->setCurrentIndex( i );
@@ -91,7 +184,7 @@ void MainWindow::NewSelA( int i )
 
 void MainWindow::NewSelE( int i )
 {
-  if ( keV2deg( Vic[ SelectedA ].AE[ i ] ) > 0 ) {
+  if ( u->keV2deg( Vic[ SelectedA ].AE[ i ] ) > 0 ) {
     SelectedE = (AbEN)i;
     ShowTAE();
     SetNewGos();
@@ -105,7 +198,7 @@ void MainWindow::ShowTAE( void )
 {
   QString buf;
   
-  buf.sprintf( UnitName[DEG].form, keV2deg( Vic[SelectedA].AE[SelectedE] ) );
+  buf.sprintf( UnitName[DEG].form, u->keV2deg( Vic[SelectedA].AE[SelectedE] ) );
   ManTEdeg->setText( buf );
   buf.sprintf( UnitName[KEV].form, Vic[SelectedA].AE[SelectedE] );
   ManTEkeV->setText( buf );
@@ -115,7 +208,7 @@ void MainWindow::ManSelTEdeg( void )
 {
   QString buf;
 
-  buf.sprintf( UnitName[KEV].form, deg2keV( ManTEdeg->text().toDouble() ) );
+  buf.sprintf( UnitName[KEV].form, u->deg2keV( ManTEdeg->text().toDouble() ) );
   ManTEkeV->setText( buf );
   SetNewGos();
 }
@@ -124,7 +217,7 @@ void MainWindow::ManSelTEkeV( void )
 {
   QString buf;
 
-  buf.sprintf( UnitName[DEG].form, keV2deg( ManTEkeV->text().toDouble() ) );
+  buf.sprintf( UnitName[DEG].form, u->keV2deg( ManTEkeV->text().toDouble() ) );
   ManTEdeg->setText( buf );
   SetNewGos();
 }
@@ -139,9 +232,9 @@ void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置
   MMainTh->setIsBusy( true );
 
   if ( SelThEncorder->isChecked() ) {
-    MMainTh->SetValue( ( keV2deg( keV ) - EncMainTh->value().toDouble() )
+    MMainTh->SetValue( ( u->keV2deg( keV ) - EncMainTh->value().toDouble() )
 		       / MMainTh->getUPP() + MMainTh->value().toInt() );
   } else {
-    MMainTh->SetValue( keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
+    MMainTh->SetValue( u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
   }
 }
