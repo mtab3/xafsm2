@@ -134,11 +134,12 @@ void MainWindow::WriteHeader( int Rpt )
           << endl;
     }
   }
-  out << NFM << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
-
+  
+  // ssd camac 3 20
   QVector<double> darks;
   switch( MeasFileType ) {
   case TRANS:
+    out << NFM << " " << QString( "ORTEC( 0)     NDCH =%1" ).arg( 3, 2 ) << endl;
     out << NFM << "  Angle(c)  Angle(o)    time/s";
     for ( int i = 0; i < MeasChNo; i++ )
       out << QString( "%1" ).arg( i+1, 10 );
@@ -153,6 +154,7 @@ void MainWindow::WriteHeader( int Rpt )
     break;
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
+    out << NFM << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( 20, 2 ) << endl;
     // I0 の位置を変えないといけないことが判明。なのでまた分離。
     out << NFM << "  Angle(c)  Angle(o)    time/s";
     // FLUO の時 mUnits の要素の並びは必ず I0, 19ch SSD になってるはず
@@ -210,6 +212,7 @@ void MainWindow::WriteHeader( int Rpt )
     // になる。
 
   case EXTRA:
+    out << NFM << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
     out << NFM << "  Angle(c)  Angle(o)    time/s";
     cnt = 1;
     for ( int i = 0; i < mUnits.count(); i++ ) {
