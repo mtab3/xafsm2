@@ -603,7 +603,7 @@ void MainWindow::StartMeasurement( void )
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
-    MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
+    MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
     LC++; 

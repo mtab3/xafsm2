@@ -1,8 +1,3 @@
-// 2013.3.11 : 19ch SSD を使った時の ICR を icr[cps] x dwell-time に変更
-//             これまでは cps だった
-// 2013.3.14 : 19ch SSD を使った時の SCA を sca[cps] x dwell-time に変更
-//             これまでは cps だった (asakura)
-
 #include <QtGui>
 #include <math.h>
 
@@ -176,7 +171,7 @@ void MainWindow::WriteHeader( int Rpt )
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
     }
-    out << QString( "%1" ).arg( 1, 10 );       // I0
+    out << QString( "%1" ).arg( 1, 10 );       // I0 : I0 は決め打ちで 1
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO + 100, 10 );  // ICR
     }

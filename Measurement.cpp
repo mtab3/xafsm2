@@ -86,6 +86,7 @@ void MainWindow::MeasSequence( void )
     mUnits.readValue( MeasVals, MeasCPSs, true );  // true : correct dark
     DispMeasDatas();
     RecordData();
+    MeasP++;
     MeasStage = 10;
     if ( inPause == 1 ) {
       MeasStage = 99;          // PauseStage
@@ -193,8 +194,6 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue §Œ√ ≥¨§«•¿°º•Ø ‰¿µ∫
       }
     }
   }
-
-  MeasP++;
 }
 
 void MainWindow::ReCalcSSDTotal( int, bool )
