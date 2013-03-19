@@ -52,7 +52,7 @@ void MainWindow::ScanSequence( void )
     }
     break;
   case 5:
-    mUnits.readValue( MeasVals, false );   // false :: not correct dark
+    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
     if ( ScanNormalize->isChecked() ) {
       if ( MeasVals[1] != 0 )
 	ScanView->NewPoint( 0, NowScanP, MeasVals[0] / MeasVals[1] );

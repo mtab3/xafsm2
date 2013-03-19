@@ -261,6 +261,7 @@ private:
   int GetDFName0( void );
   void SetDFName( int i );
   double MeasVals[ MCHANNELS ];
+  double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
   int MeasDispPol[ MCHANNELS ];   // polarity
   double NowDwell;
