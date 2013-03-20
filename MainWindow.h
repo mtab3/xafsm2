@@ -409,8 +409,6 @@ private slots:
   void MCAViewDisconnects( void );
   void MCAViewConnects( void );
 
-  void calcMuT( int ch, int gas, double keV );
-
   void StartMeasurement( void );
   void PauseMeasurement( void );
   void SurelyStop( void );
@@ -428,6 +426,10 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   void doPeakFit( void );
+
+  double calcMuT( int ch, int gas, double keV );
+  double calcAMuT( int an, double keV );
+  QVector<Element> ParseCompString( const QString& cmp );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );
@@ -448,6 +450,7 @@ private slots:
   void ShowButtonsForATab( int i );
 
   void setEncNewTh( QString orig, QString newv );
+  void SetNewGases( void );
 
  signals:
   void SelectedSSD( int i, bool f );

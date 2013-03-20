@@ -156,6 +156,57 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
 
   darkTable = new DarkTable;
   connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ) );
+
+  int i0 = 0, i1 = 0;
+  for ( int i = 0; i < ICLengths.count(); i++ ) {
+    I0ChSelect->addItem( ICLengths[i]->Name );
+    I1ChSelect->addItem( ICLengths[i]->Name );
+    if ( ICLengths[i]->ID == "I0" )
+      i0 = i;
+    if ( ICLengths[i]->ID == "I1" )
+      i1 = i;
+  }
+  I0ChSelect->setCurrentIndex( i0 );
+  I1ChSelect->setCurrentIndex( i1 );
+  SetNewGases();
+  connect( I0ChSelect, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( SetNewGases() ) );
+  connect( I1ChSelect, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( SetNewGases() ) );
+  connect( ManTEkeV, SIGNAL( textChanged( const QString & ) ),
+	   this, SLOT( SetNewGases() ) );
+}
+
+void MainWindow::SetNewGases( void )
+{
+  I0Recommend->clear();
+  double trans, near = 100;
+  int Rec = 0;
+  for ( int i = 0; i < Gases.count(); i++ ) {
+    double mut = calcMuT( I0ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
+    trans = exp( -mut );
+    I0Recommend
+      ->addItem( QString( "%1: %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
+    if ( fabs( trans - 0.9 ) < near ) {
+      near = fabs( trans - 0.9 );
+      Rec = i;
+    }
+  }
+  I0Recommend->setCurrentIndex( Rec );
+  near = 100;
+  Rec = 0;
+  I1Recommend->clear();
+  for ( int i = 0; i < Gases.count(); i++ ) {
+    double mut = calcMuT( I1ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
+    trans = exp( -mut );
+    I1Recommend
+      ->addItem( QString( "%1: %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
+    if ( fabs( trans - 0.1 ) < near ) {
+      near = fabs( trans - 0.1 );
+      Rec = i;
+    }
+  }
+  I1Recommend->setCurrentIndex( Rec );
 }
 
 void MainWindow::ShowMB( void )
