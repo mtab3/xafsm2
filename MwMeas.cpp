@@ -186,7 +186,7 @@ void MainWindow::SetNewGases( void )
     double mut = calcMuT( I0ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
     trans = exp( -mut );
     I0Recommend
-      ->addItem( QString( "%1: %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
+      ->addItem( QString( "%1 :  %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
     if ( fabs( trans - 0.9 ) < near ) {
       near = fabs( trans - 0.9 );
       Rec = i;
