@@ -7,11 +7,14 @@ double MainWindow::calcMuT( int ch, int gas, double keV )
 {
   QVector<Element> list;
   double mut0, mut;
-  double compAll = 0;
+  double compAll = 1.0;
 
+#if 0        // ガス組成を合計で規格化しない
+             //  --> 合計が 1 にならない場合は加圧 or 減圧を表す
   for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
     compAll += Gases[gas]->GasComps[i]->comp;
   }
+#endif
 
   mut = 0;
   for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
@@ -24,6 +27,7 @@ double MainWindow::calcMuT( int ch, int gas, double keV )
   }
   // ここまでで mut は指定の混合ガスが標準状態 1mol/cm2 あるときの mut になってる
   // すなわち、t = 22.4 * 1000 [cm] の時の mut
+  // ---> 1mol/cm2 ではなく [comp の合計 mol]/cm2 に変わった。
 
   return mut * ICLengths[ ch ]->length / ( 22.4 * 1000 );
 }

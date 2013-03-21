@@ -27,15 +27,18 @@ CRYSTAL  "Ge(333)"   1.0887941
 # "He:N2 30:70"  : the name of the gas only for display
 # followings are definitions of componets of the gas
 #   "N2"         : the chemical form of the gas. 
-#   0.70         : the ratio of the N2 in the gas. 
+#   0.70         : the partial pressure of the N2. (The total does not have to be 1.)
 #   "He"         ....
 #
+GAS      "He         "            "He" 0.75 ""
+GAS      "He:N2 75:25"  "N2" 0.25 "He" 0.75 ""
+GAS      "He:N2 50:50"  "N2" 0.50 "He" 0.50 ""
 GAS      "He:N2 30:70"  "N2" 0.70 "He" 0.30 ""
 GAS      "N2         "  "N2" 1.00           ""
 GAS      "N2:Ar 85:15"  "N2" 0.85 "Ar" 0.15 ""
 GAS      "N2:Ar 75:25"  "N2" 0.75 "Ar" 0.25 ""
 GAS      "N2:Ar 50:50"  "N2" 0.50 "Ar" 0.50 ""
-GAS      "Ar         "  "Ar" 1.00 ""
+GAS      "Ar         "            "Ar" 1.00 ""
 
 # 'ICLENGTH' lines provide information for ion-chambers
 # ICLENGTH        : the identifier of the line
