@@ -77,6 +77,9 @@ private:
   /* cfg. */
   
   /* MCA */
+  bool hasConnected;
+  QTcpSocket *dLink;
+  QDataStream *dLinkStream;
   KeV2Pix *kev2pix;
   FluoDBase *fdbase;
   double MCACorrect[ MaxSSDs ];
@@ -426,6 +429,8 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   void doPeakFit( void );
+  void ConnectToDataLinkServer( QString host, qint16 port );
+  void receiveMCAs( void );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );

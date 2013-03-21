@@ -49,6 +49,8 @@ class AUnit : public QObject
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
+  QString DataLinkHostName;
+  qint16 DataLinkHostPort;
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;
   QVector<int> CountsInROI;
@@ -260,6 +262,7 @@ public slots:
   void ReactGetLiveTime( SMsg msg );
   void ReactGetRange( SMsg msg );
   void OnReportCurrent( SMsg msg );
+  void ReactGetDataLinkCh( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
@@ -281,6 +284,7 @@ signals:
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );
+  void DataLinkServerIsReady( QString host, qint16 port );
 };
 
 #endif

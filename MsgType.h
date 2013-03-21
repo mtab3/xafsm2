@@ -68,6 +68,8 @@ enum MSGTYPE {
   GETMCALENGTH,
   GETMCA,
   GETSTATISTICS,
+  GETDATALINKCH,
+  GETMCAS,
 
   // ortec974
   // RESET,          //  already is

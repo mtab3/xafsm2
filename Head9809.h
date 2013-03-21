@@ -35,6 +35,7 @@ class Head9809 : public QObject
   bool readFromStream( QTextStream &in );
 
   int getMode( void ) { return ModeId.toInt(); };
+  QString getModeName( void ) { return ModeName; };
   QStringList getChModes( void ) { return Modes; };
 };
 
