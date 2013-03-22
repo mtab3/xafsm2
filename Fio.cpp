@@ -86,7 +86,7 @@ void MainWindow::WriteHeader( int Rpt )
 
   out << NFM << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )
       << QString( "    D= %1 A    " ).arg( mccd[ selmc->MC() ]->getD(), 8, 'f', 5, ' ' )
-      << QString( "Initial angle=%1 deg" ).arg(u->keV2deg( InitialKeV ), 9, 'f', 5, ' ') 
+      << QString( "Initial angle=%1 deg" ).arg(u->keV2deg( InitialKeV ), 9, 'f', 5, ' ')
       << endl;
 
   out << NFM << " " << fixS( BLNAME, 5 ) << "    "
@@ -97,7 +97,7 @@ void MainWindow::WriteHeader( int Rpt )
   if ( SBLKUnit == DEG ) {
     out << NFM << " "
         << QString( "Param file : %1  angle axis (1)     Block =%2" )
-                    .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
+           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
     out << endl;
 
     out << NFM << " "
@@ -106,8 +106,8 @@ void MainWindow::WriteHeader( int Rpt )
     for ( int i = 0; i < Blocks; i++ ) {
       out << NFM << " "
           << QString( "%1     %2%3%4%5%6" )
-	     .arg( i+1, 5 )
-	     .arg( SBlockStart[i], 10, 'f', 5 )
+             .arg( i+1, 5 )
+             .arg( SBlockStart[i], 10, 'f', 5 )
              .arg( SBlockStart[i+1], 10, 'f', 5 )
              .arg( SBlockStep[i], 13, 'f', 6 )
              .arg( SBlockDwell[i], 11, 'f', 2 )
@@ -117,7 +117,7 @@ void MainWindow::WriteHeader( int Rpt )
   } else {
     out << NFM << " "
         << QString( "Param file : %1  energy axis (2)     Block =%2" )
-                    .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
+           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
     out << endl;
 
     out << NFM << " "
@@ -146,11 +146,11 @@ void MainWindow::WriteHeader( int Rpt )
     out << endl;
 
     out << NFM << QString( "      Mode         0         0"
-		    "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
+                           "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
 
     out << NFM << QString( "    Offset         0         0"
-		    "%1%2" ).arg( mUnits.at(0)->getDark(), 10, 'f', 3 )
-                            .arg( mUnits.at(1)->getDark(), 10, 'f', 3 ) << endl;
+                           "%1%2" ).arg( mUnits.at(0)->getDark(), 10, 'f', 3 )
+           .arg( mUnits.at(1)->getDark(), 10, 'f', 3 ) << endl;
     break;
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
@@ -324,13 +324,13 @@ void MainWindow::WriteHeader2( int Rpt )
     line = in.readLine();
     if ( ( pos = line.indexOf( "%001%" ) ) > 0 ) {
       line = line.left( pos )
-	+ QDateTime::currentDateTime().toString("yy.MM.dd hh:mm")
-	+ line.mid( pos + 5 );
+          + QDateTime::currentDateTime().toString("yy.MM.dd hh:mm")
+          + line.mid( pos + 5 );
     }
     if ( ( pos = line.indexOf( "%002%" ) ) > 0 ) {
       line = line.left( pos )
-	+ QString( "%1" ).arg( SLS->value().toDouble(), 6, 'f', 1, ' ' ) 
-	+ line.mid( pos + 5 );
+          + QString( "%1" ).arg( SLS->value().toDouble(), 6, 'f', 1, ' ' )
+          + line.mid( pos + 5 );
     }
     AllLines << line;
   }
@@ -348,6 +348,11 @@ void MainWindow::WriteHeader2( int Rpt )
   }
 
   file2.close();
+
+  // Playing a sound
+  QSound *sound=new QSound("finished.wav");
+  sound->setLoops(3);
+  sound->play();
 }
 
 
@@ -405,7 +410,10 @@ void MainWindow::RecordData( void )
     for ( int i = 1; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
         // Quick hack for pico-ammeter
-        double v = mUnits.at(i)->value().toDouble();
+        //double v = mUnits.at(i)->value().toDouble();
+        double v = mUnits.at(i)->value().toDouble() - mUnits.at(i)->getDark() * NowDwell; // asakura
+        if ( v < 1e-10 )
+          v = 0.0;
         if ( (int)(v) == v ) {
           buf.sprintf(" %9d", (int)v );
         } else {
@@ -458,9 +466,9 @@ void MainWindow::RecordData( void )
     //
     if (( conds->isAddInfos() )||( conds->isUse1303Format() )) {
       buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",
-		   GoToKeV,
-		   encTh, u->deg2keV( encTh ),
-		   PMTh, u->deg2keV( PMTh ) );
+                   GoToKeV,
+                   encTh, u->deg2keV( encTh ),
+                   PMTh, u->deg2keV( PMTh ) );
       if ( conds->isUse1303Format() )
         out << " ###";
       out << buf;

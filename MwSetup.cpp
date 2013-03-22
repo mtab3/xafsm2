@@ -67,7 +67,7 @@ void MainWindow::setupSetupArea( void )   /* Ý’èƒGƒŠƒA */
   }
   AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
-  SPSUnit->addItem( "Puls" );
+  SPSUnit->addItem( "Pulse" );
   SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
