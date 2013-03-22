@@ -177,7 +177,9 @@ void MainWindow::saveMCAData0( void )
     return;
 
   connect( this, SIGNAL( NewMCAsAvailable() ), this, SLOT( saveMCAData() ) );
+#if 0
   SFluo->
+#endif
 }
 
 void MainWindow::saveMCAData( void )
