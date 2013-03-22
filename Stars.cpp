@@ -300,6 +300,10 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGetMCA( smsg ); break;
 	case GETSTATISTICS:
 	  emit AnsGetStatistics( smsg ); break;
+	case GETDATALINKCH:
+	  emit AnsGetDataLinkCh( smsg ); break;
+	case GETMCAS:
+	  emit AnsGetMCAs( smsg ); break;
 	case SETMODE:
 	  emit AnsSetMode( smsg ); break;
 	case SETCOUNTPRESET:

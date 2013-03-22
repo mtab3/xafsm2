@@ -53,6 +53,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
     DarkTotalEvents << 0;
     DarkICRs << 0;
   }
+  DataLinkHostName = "";
+  DataLinkHostPort = 0;
 
   IsBusy = false;    // 相手に尋ねる isBusy
   IsBusy2 = false;   // その他のコマンドを投げて返答が返ってくるまで isBusy2
@@ -197,8 +199,12 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetRealTime( SMsg ) ), this, SLOT( ReactGetRealTime( SMsg ) ) );
     connect( s, SIGNAL( AnsGetLiveTime( SMsg ) ), this, SLOT( ReactGetLiveTime( SMsg ) ) );
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
+	     this, SLOT( ReactGetDataLinkCh( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetMCAs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
+    s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR
   //                                                          SSDP(Xmap)だけ
@@ -891,6 +897,18 @@ double AUnit::liveTime( int ch )
   }
 
   return rv;
+}
+
+void AUnit::ReactGetDataLinkCh( SMsg msg )
+{
+  if ( Type == "SSD" ) {
+    if ( msg.From() == Driver ) {
+      IsBusy2 = false;
+      DataLinkHostName = msg.Vals().at(0);
+      DataLinkHostPort = msg.Vals().at(1).toInt();
+      emit DataLinkServerIsReady( DataLinkHostName, DataLinkHostPort );
+    }
+  }
 }
 
 bool AUnit::GetRange( void )

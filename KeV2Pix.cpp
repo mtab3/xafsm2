@@ -8,7 +8,7 @@
 
 KeV2Pix::KeV2Pix( void ) : QObject()
 {
-  MakeUpAB( 1 );    // デフォルトは 1次の最小自乗
+  MakeUpAB( 2 );    // 2次の最小自乗にした
 }
 
 void KeV2Pix::MakeUpAB( int Dim )
@@ -21,10 +21,12 @@ void KeV2Pix::MakeUpAB( int Dim )
   for ( int i = 0; i < MaxSSDs; i++ ) {
     for ( int j = 0; j < dim + 1; j++ ) {
       ab[i] << 0;
+      ba[i] << 0;
     }
   }
   for ( int i = 0; i < MaxSSDs; i++ ) {
     ab[i][1] = 0.01;
+    ba[i][1] = 100;
   }
 
   QString fname = ":KeV2MCApix.txt";
@@ -62,7 +64,23 @@ void KeV2Pix::MakeUpAB( int Dim )
 	ab[i][j] = ab0[j];
       }
     }
+
+    double ba0[ dim + 2 ];
+    if ( !calcAB( KeVs, Chs[ i ], ba0 ) ) {       // keV -> MCApix に直す係数を求める
+      qDebug() << "ba can not be calculated for " << i;
+    } else {
+      for ( int j = 0; j < dim + 1; j++ ) {
+	ba[i][j] = ba0[j];
+      }
+    }
   }
+
+#if 0
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    qDebug() << "ab " << ab[i][0] << ab[i][1] << "ba " << ba[i][0] << ba[i][1];
+  }
+#endif
+
 }
 
 double KeV2Pix::p2E( int i, int p )
@@ -81,13 +99,16 @@ double KeV2Pix::p2E( int i, int p )
 
 int KeV2Pix::E2p( int i, double E )
 {
-  double rv;
+  if (( i < 0 )||( i >= MaxSSDs ))
+    return E * 100;
 
-  if (( i < 0 )||( i >= MaxSSDs )||( dim < 1 ) ) {
-    rv = E * 100;
-  } else {
-    rv = ( E - ab[i][0] ) / ab[i][1];
-  }
+  double rv = 0;
+  double e = 1.0;
+  for ( int j = 0; j < dim + 1; j++ ) {
+    rv += ba[i][j] * e;
+    e *= E;
+  } 
+
   int irv = (int)( rv + 0.5 );
   if ( irv < 0 ) irv = 0;
   if ( irv > MCALen ) irv = MCALen - 1;

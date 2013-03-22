@@ -78,7 +78,7 @@ enum ONFIN { RETURN, STAY, ONFINS };
 enum RELABS { REL, ABS };
 
 struct GasComp {
-  QString AName;
+  QString GasForm;
   double comp;
 };
 

@@ -6,6 +6,8 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
+  hasConnected = false;
+
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -581,5 +583,36 @@ void MainWindow::clearMCA( void )
       MCAStage = 0;
       cMCAView->update();
     }
+  }
+}
+
+void MainWindow::ConnectToDataLinkServer( QString host, qint16 port )
+{
+  if ( !hasConnected ) {
+    hasConnected = true;
+    qDebug() << "data link server" << host << port;
+    dLink = new QTcpSocket;
+    dLinkStream = new QDataStream( dLink );
+    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ) );
+    dLink->connectToHost( host, port );
+  }
+}
+
+void MainWindow::receiveMCAs( void )
+{
+  int ch, len, size, bytes;
+  unsigned long *mca;
+
+  dLink->waitForBytesWritten( 10 );
+  qDebug() << "receive data via dLink";
+  for ( int i = 0; i < 19; i++ ) {
+    while ( dLink->bytesAvailable() < 12 );
+    *dLinkStream >> ch >> len >> size;
+    qDebug() << "receiced data info " << ch << len << size;
+    while ( dLink->bytesAvailable() < len * size );
+    mca = new unsigned long[ len ];
+    bytes = dLinkStream->readRawData( (char *)mca, len * size );
+    qDebug() << "receiced data bytes ?" << bytes;
+    delete mca;
   }
 }

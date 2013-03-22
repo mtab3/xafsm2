@@ -151,6 +151,8 @@ void MainWindow::Initialize( void )
   if ( SFluo != NULL ) {
     getMCASettings( MCACh->text().toInt() );
     s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+    connect( SFluo, SIGNAL( DataLinkServerIsReady( QString, qint16 ) ),
+	     this, SLOT( ConnectToDataLinkServer( QString, qint16 ) ) );
   }
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );

@@ -77,6 +77,9 @@ private:
   /* cfg. */
   
   /* MCA */
+  bool hasConnected;
+  QTcpSocket *dLink;
+  QDataStream *dLinkStream;
   KeV2Pix *kev2pix;
   FluoDBase *fdbase;
   double MCACorrect[ MaxSSDs ];
@@ -409,8 +412,6 @@ private slots:
   void MCAViewDisconnects( void );
   void MCAViewConnects( void );
 
-  void calcMuT( int ch, int gas, double keV );
-
   void StartMeasurement( void );
   void PauseMeasurement( void );
   void SurelyStop( void );
@@ -428,6 +429,12 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   void doPeakFit( void );
+  void ConnectToDataLinkServer( QString host, qint16 port );
+  void receiveMCAs( void );
+
+  double calcMuT( int ch, int gas, double keV );
+  double calcAMuT( int an, double keV );
+  QVector<Element> ParseCompString( const QString& cmp );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );
@@ -448,6 +455,7 @@ private slots:
   void ShowButtonsForATab( int i );
 
   void setEncNewTh( QString orig, QString newv );
+  void SetNewGases( void );
 
  signals:
   void SelectedSSD( int i, bool f );
