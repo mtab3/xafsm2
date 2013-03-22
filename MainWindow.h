@@ -77,6 +77,14 @@ private:
   /* cfg. */
   
   /* MCA */
+  bool hasConnected;
+  QTcpSocket *dLink;
+  QDataStream *dLinkStream;
+  int dLinkCount;
+  char *MCAs;
+  unsigned long *mcas[ MaxSSDs ];
+  bool MCAsReady;    // MCAs に有効なデータがある true, 無い false
+  bool MCAsFree;     // MCAs を書きつぶして良い   true, だめ false
   KeV2Pix *kev2pix;
   FluoDBase *fdbase;
   double MCACorrect[ MaxSSDs ];
@@ -97,6 +105,7 @@ private:
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;
+
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -389,6 +398,7 @@ private slots:
   void clearMCA( void );
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
+  void saveMCAData0( void );
   void saveMCAData( void );
 
   void ChangeBLKUnit( int i );
@@ -409,8 +419,6 @@ private slots:
   void MCAViewDisconnects( void );
   void MCAViewConnects( void );
 
-  void calcMuT( int ch, int gas, double keV );
-
   void StartMeasurement( void );
   void PauseMeasurement( void );
   void SurelyStop( void );
@@ -428,6 +436,12 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   void doPeakFit( void );
+  void ConnectToDataLinkServer( QString host, qint16 port );
+  void receiveMCAs( void );
+
+  double calcMuT( int ch, int gas, double keV );
+  double calcAMuT( int an, double keV );
+  QVector<Element> ParseCompString( const QString& cmp );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );
@@ -448,11 +462,14 @@ private slots:
   void ShowButtonsForATab( int i );
 
   void setEncNewTh( QString orig, QString newv );
+  void SetNewGases( void );
+  void showMCAs( void );
 
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
   //  void GiveNewView( QObject *to, ViewCTRL *view );
+  void NewMCAsAvailable( void );
 };
 
 #endif

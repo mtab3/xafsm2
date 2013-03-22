@@ -49,6 +49,8 @@ class AUnit : public QObject
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
+  QString DataLinkHostName;
+  qint16 DataLinkHostPort;
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;
   QVector<int> CountsInROI;
@@ -73,7 +75,8 @@ class AUnit : public QObject
   bool SSDUsingCh[ MaxSSDs + 1 ];       // Only 19 is necessary, 20 is only for safety.
 
   int LocalStage;
-  int lastSetV;
+  int ilastSetV;
+  double dlastSetV;
 
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
@@ -214,7 +217,8 @@ public:
   QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
   QVector<double> getDarkICRs( void ) { return DarkICRs; };
 
-  int getLastSetV( void ) { return lastSetV; };
+  int getILastSetV( void ) { return ilastSetV; };
+  double getDLastSetV( void ) { return dlastSetV; };
 
   // only for PM
   double getCenter( void ) { return Center; };
@@ -238,6 +242,7 @@ public:
   double SetTime( double dtime );   // in sec
   void Stop( void );
   bool GetMCA( int ch );
+  bool GetMCAs( void );
   bool GetStat( void );
   bool SetRealTime( double val );
   bool SetLiveTime( double val );
@@ -260,6 +265,7 @@ public slots:
   void ReactGetLiveTime( SMsg msg );
   void ReactGetRange( SMsg msg );
   void OnReportCurrent( SMsg msg );
+  void ReactGetDataLinkCh( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
@@ -281,6 +287,7 @@ signals:
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );
+  void DataLinkServerIsReady( QString host, qint16 port );
 };
 
 #endif

@@ -132,13 +132,10 @@ void MainWindow::ReadDef( QString fname )
 	Gas *gas = new Gas;
 	next = nextItem( next, item ); gas->Name = item;
 	next = nextItem( next, item );
-	double comp1, comp2;
 	while ( item != "" ) {
 	  GasComp *gascomp = new GasComp;
-	  gascomp->AName = item;   next = nextItem( next, item ); 
-	  comp1 = item.toDouble(); next = nextItem( next, item ); 
-	  comp2 = item.toDouble(); next = nextItem( next, item ); 
-	  gascomp->comp = comp1 * comp2;
+	  gascomp->GasForm = item; next = nextItem( next, item ); 
+	  gascomp->comp = item.toDouble(); next = nextItem( next, item ); 
 	  gas->GasComps << gascomp;
 	}
 	Gases << gas;

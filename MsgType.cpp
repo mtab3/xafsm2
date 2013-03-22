@@ -69,6 +69,9 @@ const MsgTyp MsgT[] = {
   { "@SetMode", SETMODE },
   { "@SetCountPreset", SETCOUNTPRESET },
 
+  { "@GetDataLinkCh", GETDATALINKCH },
+  { "@GetMCAs", GETMCAS },
+
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },

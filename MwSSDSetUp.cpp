@@ -6,6 +6,12 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
+  hasConnected = false;
+
+  dLink = NULL;
+  dLinkStream = NULL;
+  MCAs = NULL;
+
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -59,7 +65,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
-  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
+  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData0() ) );
   connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ) );
   connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
 	   this, SLOT( ShowNewMCARealTime( int ) ) );
@@ -163,6 +169,15 @@ void MainWindow::setAllROIs( void )
     ROIStart[ i ] = QString::number( kev2pix->E2p( i, startE ) );
     ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
+}
+
+void MainWindow::saveMCAData0( void )
+{
+  if ( SFluo == NULL )
+    return;
+
+  connect( this, SIGNAL( NewMCAsAvailable() ), this, SLOT( saveMCAData() ) );
+  SFluo->
 }
 
 void MainWindow::saveMCAData( void )
@@ -581,5 +596,54 @@ void MainWindow::clearMCA( void )
       MCAStage = 0;
       cMCAView->update();
     }
+  }
+}
+
+
+#define MCABUFSIZE ( 311752 )    // ( 3 vals * 8 byte + 2048 MCAch * 8byte ) * 19 ch
+
+void MainWindow::ConnectToDataLinkServer( QString host, qint16 port )
+{
+  if ( !hasConnected ) {
+    hasConnected = true;
+    qDebug() << "data link server" << host << port;
+    if ( dLink != NULL ) delete dLink;
+    dLink = new QTcpSocket;
+    if ( dLinkStream != NULL ) delete dLinkStream;
+    dLinkStream = new QDataStream( dLink );
+    if ( MCAs != NULL )
+      delete [] MCAs;
+    MCAs = new char [ MCABUFSIZE ];
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      mcas[i] = (unsigned long *)( MCAs + ( 2048 * 8 + 3 * 8 ) * i );
+    }
+    dLinkCount = 0;
+    MCAsReady = false;  // MCAs のバッファに有効なデータが無い
+    MCAsFree = true;    // MCAs のバッファを書き潰して良い
+    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ) );
+    connect( this, SIGNAL( NewMCAsAvailable() ), this, SLOT( showMCAs() ) );
+    dLink->connectToHost( host, port );
+  }
+}
+
+void MainWindow::receiveMCAs( void )
+{
+  uint bytes0, bytes;
+
+  bytes0 = dLink->bytesAvailable();
+  if ( dLinkCount + bytes0 <= MCABUFSIZE )
+    bytes = bytes0;
+  else
+    bytes = MCABUFSIZE - dLinkCount;
+
+  bytes = dLinkStream->readRawData( MCAs + dLinkCount, bytes );
+
+  dLinkCount += bytes;
+  qDebug() << bytes0 << bytes << dLinkCount << MCABUFSIZE;
+  if ( dLinkCount >= MCABUFSIZE ) {
+    MCAsReady = true;          // MCAs のバッファに有効なデータがある
+    MCAsFree = false;          // MCAs のバッファを書き潰してはいけない。
+                               // (GetMCAs を発行してはいけない)
+    emit NewMCAsAvailable();
   }
 }

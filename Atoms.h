@@ -2,6 +2,18 @@
 #ifndef ATOMS_H
 #define ATOMS_H
 
+
+enum TYPEF { ENAME, ENUM, BOPEN, BCLOSE, BBOPEN, BBCLOSE };
+
+struct Element {
+  TYPEF special;
+  QString Name;
+  int aNum;
+  double Num;
+  double Weight;
+};
+
+
 enum AtomNo {           /* Œ´q–¼‚Ì•Ï”‚ÉŒ´q”Ô†‚ğ‘ã“ü */
     START,
      H,                                                                 He,
