@@ -33,7 +33,12 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   MaxV = 0;          // only for PZ
   MinV = 0;          // only for PZ
 
-  SSDPresetType = "REAL";
+  SSDPresetType = "REAL";   // for MCA/SSD
+  hasConnected = false;
+  dLink = NULL;
+  dLinkStream = NULL;
+  MCAs0 = NULL;
+  MCAs = NULL;
 
   CountsInROI.clear();
   CountsAll.clear();
@@ -202,7 +207,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
     connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
 	     this, SLOT( ReactGetDataLinkCh( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetMCAs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    //connect( s, SIGNAL( AnsGetMCAs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
     s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
@@ -260,7 +265,7 @@ bool AUnit::GetValue( void )
 {
   bool rv = false;
 
-  //                PZ                          // この GetValue まだ対応してない
+  //                PZ                    // この GetValue まだ対応してない
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR
   if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0 ) ) {
     IsBusy2 = true;
@@ -910,7 +915,7 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
       IsBusy2 = false;
       DataLinkHostName = msg.Vals().at(0);
       DataLinkHostPort = msg.Vals().at(1).toInt();
-      emit DataLinkServerIsReady( DataLinkHostName, DataLinkHostPort );
+      ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
     }
   }
 }
@@ -982,4 +987,76 @@ void AUnit::getNewValue( QString )
 void AUnit::getNewDark( double )
 {
   Dark = theParent->getDarkCountsInROI().at( Ch.toInt() );
+}
+
+
+#define MCAHEAD    ( 3 * 8 )             // 3 values * 8 bytes
+#define AMCABUF    ( MCAHEAD + 2048 * 8 )  // MCAHEAD + 2048 MCAch * 8byte
+#define MCABUFSIZE ( AMCABUF * 19 )      // AMCABUF * 19 ch
+
+void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
+{
+  if ( !hasConnected ) {
+    hasConnected = true;
+    qDebug() << "data link server" << host << port;
+    if ( dLink != NULL ) delete dLink;
+    dLink = new QTcpSocket;
+    if ( dLinkStream != NULL ) delete dLinkStream;
+    dLinkStream = new QDataStream( dLink );
+    if ( MCAs0 != NULL )
+      delete [] MCAs0;
+    MCAs0 = new char [ MCABUFSIZE ];
+    dLinkCount = 0;
+    MCAsReady = false;  // MCAs のバッファに有効なデータが無い
+    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ) );
+    dLink->connectToHost( host, port );
+  }
+}
+
+void AUnit::receiveMCAs( void )
+{
+  uint bytes0, bytes;
+
+  bytes0 = dLink->bytesAvailable();
+  // 今届いた分を全部読んでもバッファサイズより小さいなら
+  if ( dLinkCount + bytes0 <= MCABUFSIZE )
+    bytes = bytes0;                    // 全部読む
+  else
+    bytes = MCABUFSIZE - dLinkCount;   // 大きいなら、読める分だけ読む
+
+  bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
+
+  dLinkCount += bytes;
+  qDebug() << bytes0 << bytes << dLinkCount << MCABUFSIZE;
+  if ( dLinkCount >= MCABUFSIZE ) {
+    IsBusy2 = false;
+    emit ChangedIsBusy2( Driver );
+    dLinkCount = 0;
+    if ( MCAs != NULL ) delete [] MCAs;
+    MCAs = MCAs0;
+    MCAs0 = new char [ MCABUFSIZE ];
+    MCAsReady = true;          // MCAs のバッファに有効なデータがある
+    emit NewMCAsAvailable( MCAs );
+  }
+}
+
+unsigned long AUnit::getAMCAdata( int ch, int pixel )
+{
+  if ( !MCAsReady )
+    return 0;
+  return *((unsigned long*)( MCAs + AMCABUF * ch + MCAHEAD ) + pixel );
+}
+
+unsigned long *AUnit::getAMCA( int ch )
+{
+  if ( !MCAsReady )
+    return NULL;
+  return (unsigned long*)( MCAs + AMCABUF * ch + MCAHEAD );
+}
+
+unsigned long *AUnit::getAMCAHead( int ch )
+{
+  if ( !MCAsReady )
+    return NULL;
+  return (unsigned long*)( MCAs + AMCABUF * ch );
 }

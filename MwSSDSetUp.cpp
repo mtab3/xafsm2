@@ -6,12 +6,6 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
-  hasConnected = false;
-
-  dLink = NULL;
-  dLinkStream = NULL;
-  MCAs = NULL;
-
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -176,10 +170,9 @@ void MainWindow::saveMCAData0( void )
   if ( SFluo == NULL )
     return;
 
-  connect( this, SIGNAL( NewMCAsAvailable() ), this, SLOT( saveMCAData() ) );
-#if 0
-  SFluo->
-#endif
+  connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
+	   this, SLOT( saveMCAData() ) );
+  SFluo->GetMCAs();
 }
 
 void MainWindow::saveMCAData( void )
@@ -192,6 +185,11 @@ void MainWindow::saveMCAData( void )
     statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
     return;
   }
+
+#if 0
+  for ( int i = 0; i < 1000; i++ ) {   // 1000面セーブ時間測定用
+    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
+#endif
 
   QFile f( MCARecFile->text() );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
@@ -209,11 +207,26 @@ void MainWindow::saveMCAData( void )
               << cMCAView->getRealTime() << " " << cMCAView->getLiveTime() << " "
               << ROIStartInput->text().toInt() << " " << ROIEndInput->text().toInt()
               << "\n";
-  for ( int i = 0; i < MCALength; i++ ) {
-    out << i << "\t" << MCAData[i] << "\n";
-  }
+
+  WriteMCAData( out );
 
   f.close();
+
+#if 0
+  }
+#endif
+}
+
+void MainWindow::WriteMCAData( QTextStream &out )
+{
+  for ( int i = 0; i < MCALength; i++ ) {
+    out << i;
+    for ( int j = 0; j < MaxSSDs; j++ ) {
+      out << "\t" << kev2pix->p2E( j, i );
+      out << "\t" << SFluo->getAMCAdata( j, i );
+    }
+    out << "\n";
+  }
 }
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
@@ -400,7 +413,6 @@ void MainWindow::StartMCA( void )
     if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
 	 || ( StartResume == MCA_START ) ) {
       if ( cMCAView != NULL ) {
-	MCAViewDisconnects();
 	cMCAViewC->setIsDeletable( true );
       }
       
@@ -417,7 +429,6 @@ void MainWindow::StartMCA( void )
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
       cMCAView->makeValid( true );
-      MCAViewConnects();
 
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       if ( StartResume == MCA_START )
@@ -437,44 +448,6 @@ void MainWindow::StartMCA( void )
     MCAStart->setStyleSheet( NormalB );
     cMCAViewC->setIsDeletable( false );
   }
-}
-
-void MainWindow::MCAViewDisconnects( void )
-{
-#if 0
-  // MCAView -> MainWindow への connect は MCAView 内で繋ぐ
-  // data-disp で表示した時、にマズイかも
-  disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
-	      this, SLOT( showCurrentValues( int, int ) ) );
-  disconnect( cMCAView, SIGNAL( newROI( int, int ) ),
-	      this, SLOT( setNewROI( int, int ) ) );
-  // MainWindow -> MCAView への connect はなくす (直接の関数呼び出しにする)
-  // こっちは OK
-  disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	      cMCAView, SLOT( setLog( bool ) ) );
-  disconnect( DispElmNames, SIGNAL( toggled( bool ) ),
-	      cMCAView, SLOT( setShowElements( bool ) ) );
-#endif
-  //  disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-  //	      this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ) );
-}
-
-void MainWindow::MCAViewConnects( void )
-{
-#if 0
-  // MCAView -> MainWindow への connect は MCAView 内で繋ぐ
-  // data-disp で表示した時、にマズイかも
-  connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
-	   this, SLOT( showCurrentValues( int, int ) ) );
-  connect( cMCAView, SIGNAL( newROI( int, int ) ),
-	   this, SLOT( setNewROI( int, int ) ) );
-  // MainWindow -> MCAView への connect はなくす (直接の関数呼び出しにする)
-  // こっちは OK
-  connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	   cMCAView, SLOT( setLog( bool ) ) );
-  connect( DispElmNames, SIGNAL( toggled( bool ) ),
-	   cMCAView, SLOT( setShowElements( bool ) ) );
-#endif
 }
 
 void MainWindow::showCurrentValues( int atCur, int inROI )
@@ -601,51 +574,3 @@ void MainWindow::clearMCA( void )
   }
 }
 
-
-#define MCABUFSIZE ( 311752 )    // ( 3 vals * 8 byte + 2048 MCAch * 8byte ) * 19 ch
-
-void MainWindow::ConnectToDataLinkServer( QString host, qint16 port )
-{
-  if ( !hasConnected ) {
-    hasConnected = true;
-    qDebug() << "data link server" << host << port;
-    if ( dLink != NULL ) delete dLink;
-    dLink = new QTcpSocket;
-    if ( dLinkStream != NULL ) delete dLinkStream;
-    dLinkStream = new QDataStream( dLink );
-    if ( MCAs != NULL )
-      delete [] MCAs;
-    MCAs = new char [ MCABUFSIZE ];
-    for ( int i = 0; i < MaxSSDs; i++ ) {
-      mcas[i] = (unsigned long *)( MCAs + ( 2048 * 8 + 3 * 8 ) * i );
-    }
-    dLinkCount = 0;
-    MCAsReady = false;  // MCAs のバッファに有効なデータが無い
-    MCAsFree = true;    // MCAs のバッファを書き潰して良い
-    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ) );
-    connect( this, SIGNAL( NewMCAsAvailable() ), this, SLOT( showMCAs() ) );
-    dLink->connectToHost( host, port );
-  }
-}
-
-void MainWindow::receiveMCAs( void )
-{
-  uint bytes0, bytes;
-
-  bytes0 = dLink->bytesAvailable();
-  if ( dLinkCount + bytes0 <= MCABUFSIZE )
-    bytes = bytes0;
-  else
-    bytes = MCABUFSIZE - dLinkCount;
-
-  bytes = dLinkStream->readRawData( MCAs + dLinkCount, bytes );
-
-  dLinkCount += bytes;
-  qDebug() << bytes0 << bytes << dLinkCount << MCABUFSIZE;
-  if ( dLinkCount >= MCABUFSIZE ) {
-    MCAsReady = true;          // MCAs のバッファに有効なデータがある
-    MCAsFree = false;          // MCAs のバッファを書き潰してはいけない。
-                               // (GetMCAs を発行してはいけない)
-    emit NewMCAsAvailable();
-  }
-}

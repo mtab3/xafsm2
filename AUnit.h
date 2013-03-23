@@ -23,7 +23,7 @@ class AUnit : public QObject
   QString Uid;          // Uniq ID
   QString Uid2;         // 2nd Uid
   QString ID;           // MainTh, StageX, General, ...
-  QString Name;         // Disiplayed name
+  QString Name;         // Displayed name
   QString Driver;
   QString Driver2;      // 2nd Driver
   QString Ch;
@@ -48,6 +48,13 @@ class AUnit : public QObject
 
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
+
+  bool hasConnected;
+  QTcpSocket *dLink;
+  QDataStream *dLinkStream;
+  int dLinkCount;
+  char *MCAs0, *MCAs;
+  bool MCAsReady;    // MCAs に有効なデータがある true, 無い false
 
   QString DataLinkHostName;
   qint16 DataLinkHostPort;
@@ -81,6 +88,10 @@ class AUnit : public QObject
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
 		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2, int lsr );
+  void ConnectToDataLinkServer( QString host, qint16 port );
+
+ private slots:
+  void receiveMCAs( void );
 
 public:
   AUnit( QObject *parent = 0 );
@@ -216,6 +227,9 @@ public:
   QVector<double> getDarkCountsAll( void ) { return DarkCountsAll; };
   QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
   QVector<double> getDarkICRs( void ) { return DarkICRs; };
+  unsigned long *getAMCA( int ch );
+  unsigned long *getAMCAHead( int ch );
+  unsigned long getAMCAdata( int ch, int pixel );
 
   int getILastSetV( void ) { return ilastSetV; };
   double getDLastSetV( void ) { return dlastSetV; };
@@ -288,6 +302,7 @@ signals:
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );
   void DataLinkServerIsReady( QString host, qint16 port );
+  void NewMCAsAvailable( char *MCAs );
 };
 
 #endif
