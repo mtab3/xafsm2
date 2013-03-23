@@ -201,13 +201,8 @@ void MainWindow::saveMCAData( void )
 
   out << "# XafsM2 MCA Data\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
-  out << "# " << "MCALength " << "MCA Ch. " << "RealTime " << "LiveTime "
-              << "ROIs " << "ROIe" << "\n";
-  out << "# " << MCALength << " " << cMCACh << " "
-              << cMCAView->getRealTime() << " " << cMCAView->getLiveTime() << " "
-              << ROIStartInput->text().toInt() << " " << ROIEndInput->text().toInt()
-              << "\n";
 
+  WriteMCAHead( out );
   WriteMCAData( out );
 
   f.close();
@@ -215,6 +210,16 @@ void MainWindow::saveMCAData( void )
 #if 0
   }
 #endif
+}
+
+void MainWindow::WriteMCAHead( QTextStream &out )
+{
+  out << "# Channel Status Length RealTime LiveTime ICR\n";
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    MCAHead head = SFluo->getAMCAHead( i );
+    out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
+                << head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\n";
+  }
 }
 
 void MainWindow::WriteMCAData( QTextStream &out )

@@ -990,9 +990,11 @@ void AUnit::getNewDark( double )
 }
 
 
-#define MCAHEAD    ( 3 * 8 )             // 3 values * 8 bytes
-#define AMCABUF    ( MCAHEAD + 2048 * 8 )  // MCAHEAD + 2048 MCAch * 8byte
-#define MCABUFSIZE ( AMCABUF * 19 )      // AMCABUF * 19 ch
+#define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
+// qint64  ch, stat, mcaLength
+// qreal64 realTime, liveTime, icr
+#define AMCABUF    ( MCAHEAD + 2048 * 8 ) // MCAHEAD + 2048 pixels * 8byte
+#define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
 
 void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
 {
@@ -1054,9 +1056,17 @@ unsigned long *AUnit::getAMCA( int ch )
   return (unsigned long*)( MCAs + AMCABUF * ch + MCAHEAD );
 }
 
-unsigned long *AUnit::getAMCAHead( int ch )
+MCAHead AUnit::getAMCAHead( int ch )
 {
+  MCAHead rv;
+
   if ( !MCAsReady )
-    return NULL;
-  return (unsigned long*)( MCAs + AMCABUF * ch );
+    return rv;
+  rv.ch       = *(qint64*) ( MCAs + AMCABUF * ch +  0 );
+  rv.stat     = *(qint64*) ( MCAs + AMCABUF * ch +  8 );
+  rv.len      = *(qint64*) ( MCAs + AMCABUF * ch + 16 );
+  rv.realTime = *(double*)( MCAs + AMCABUF * ch + 24 );
+  rv.liveTime = *(double*)( MCAs + AMCABUF * ch + 32 );
+  rv.icr      = *(double*)( MCAs + AMCABUF * ch + 40 );
+  return rv;
 }

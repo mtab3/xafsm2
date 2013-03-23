@@ -392,6 +392,7 @@ private slots:
   void LiveTimeIsSelected( void );
   void saveMCAData0( void );
   void saveMCAData( void );
+  void WriteMCAHead( QTextStream &out );
   void WriteMCAData( QTextStream &out );
 
   void ChangeBLKUnit( int i );

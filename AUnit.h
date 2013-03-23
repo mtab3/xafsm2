@@ -5,6 +5,7 @@
 
 #include "XafsM.h"
 #include "Stars.h"
+#include "MCAHead.h"
 
 enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
 	       STAT_EVENTS, STAT_ICR, STAT_OCR };
@@ -228,8 +229,8 @@ public:
   QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
   QVector<double> getDarkICRs( void ) { return DarkICRs; };
   unsigned long *getAMCA( int ch );
-  unsigned long *getAMCAHead( int ch );
   unsigned long getAMCAdata( int ch, int pixel );
+  MCAHead getAMCAHead( int ch );
 
   int getILastSetV( void ) { return ilastSetV; };
   double getDLastSetV( void ) { return dlastSetV; };
