@@ -7,6 +7,12 @@
 #include "Stars.h"
 #include "MCAHead.h"
 
+#define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
+// qint64  ch, stat, mcaLength
+// qreal64 realTime, liveTime, icr
+#define AMCABUF    ( MCAHEAD + 2048 * 8 ) // MCAHEAD + 2048 pixels * 8byte
+#define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
+
 enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
 	       STAT_EVENTS, STAT_ICR, STAT_OCR };
 
@@ -256,7 +262,9 @@ public:
   void SetSpeed( MSPEED speed );
   double SetTime( double dtime );   // in sec
   void Stop( void );
+#if 0                   // new mcas
   bool GetMCA( int ch );
+#endif
   bool GetMCAs( void );
   bool GetStat( void );
   bool SetRealTime( double val );
@@ -274,7 +282,9 @@ public slots:
   void SetCurPos( SMsg msg );
   void ReceiveValues( SMsg msg );
 
+#if 0           // new mcas
   void ReactGetMCA( SMsg msg );
+#endif
   void ReactGetStat( SMsg msg );
   void ReactGetRealTime( SMsg msg );
   void ReactGetLiveTime( SMsg msg );
@@ -298,7 +308,9 @@ signals:
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
   void AskedNowRange( int r );
+#if 0           // new mcas
   void ReceivedNewMCAValue( void );
+#endif
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );

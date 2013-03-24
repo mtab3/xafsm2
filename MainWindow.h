@@ -358,7 +358,10 @@ private slots:
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
+#if 0      // new mcas
   void ShowNewMCAStat( void );
+#endif
+  void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
 
@@ -390,7 +393,7 @@ private slots:
   void clearMCA( void );
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
-  void saveMCAData0( void );
+  //  void saveMCAData0( void );
   void saveMCAData( void );
   void WriteMCAHead( QTextStream &out );
   void WriteMCAData( QTextStream &out );

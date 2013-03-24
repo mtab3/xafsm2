@@ -204,7 +204,9 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg ) ) );
     connect( s, SIGNAL( AnsGetRealTime( SMsg ) ), this, SLOT( ReactGetRealTime( SMsg ) ) );
     connect( s, SIGNAL( AnsGetLiveTime( SMsg ) ), this, SLOT( ReactGetLiveTime( SMsg ) ) );
+#if 0               // new   mcas
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
+#endif
     connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
 	     this, SLOT( ReactGetDataLinkCh( SMsg ) ) );
     //connect( s, SIGNAL( AnsGetMCAs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -220,7 +222,9 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+#if 0            // new mcas
     connect( s, SIGNAL( AnsGetMCA( SMsg ) ), this, SLOT( ReactGetMCA( SMsg ) ) );
+#endif 
     s->SendCMD2( "Init", "System", "flgon", DevCh );
   }
 
@@ -705,6 +709,7 @@ bool AUnit::InitSensor( void )
 
 /*** XMAP SSD ***/
 
+#if 0        // new mcas
 bool AUnit::GetMCA( int ch )
 {
   bool rv;
@@ -728,6 +733,7 @@ void AUnit::ReactGetMCA( SMsg msg )
     emit ReceivedNewMCAValue();    // !!!!!!!!!!!!!!!!
   }
 }
+#endif
 
 bool AUnit::GetStat( void )
 {
@@ -937,7 +943,8 @@ bool AUnit::GetRange( void )
 bool AUnit::GetMCAs( void )
 {
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
+    IsBusy2 = true;          // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
+                             //        data-link 経由で完全なデータをもらった時に消す
     emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, DevCh, QString( "GetMCAs" ) );
   }
@@ -989,13 +996,6 @@ void AUnit::getNewDark( double )
   Dark = theParent->getDarkCountsInROI().at( Ch.toInt() );
 }
 
-
-#define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
-// qint64  ch, stat, mcaLength
-// qreal64 realTime, liveTime, icr
-#define AMCABUF    ( MCAHEAD + 2048 * 8 ) // MCAHEAD + 2048 pixels * 8byte
-#define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
-
 void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
 {
   if ( !hasConnected ) {
@@ -1029,7 +1029,7 @@ void AUnit::receiveMCAs( void )
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
 
   dLinkCount += bytes;
-  qDebug() << bytes0 << bytes << dLinkCount << MCABUFSIZE;
+  //  qDebug() << bytes0 << bytes << dLinkCount << MCABUFSIZE;
   if ( dLinkCount >= MCABUFSIZE ) {
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );

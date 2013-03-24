@@ -172,6 +172,7 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
   }
 }
 
+#if 0            // new mcas
 bool MUnits::getMCA( int ch )
 {
   bool ff = false;
@@ -182,3 +183,4 @@ bool MUnits::getMCA( int ch )
   
   return ff;
 }
+#endif

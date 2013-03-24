@@ -59,8 +59,15 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
-  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData0() ) );
+  //  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData0() ) );
+  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
+#if 0                 // new mcas
   connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ) );
+#else
+  connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
+	   this, SLOT( ShowNewMCAStat( char * ) ) );
+#endif
+
   connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
 	   this, SLOT( ShowNewMCARealTime( int ) ) );
   connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
@@ -165,6 +172,7 @@ void MainWindow::setAllROIs( void )
   }
 }
 
+#if 0
 void MainWindow::saveMCAData0( void )
 {
   if ( SFluo == NULL )
@@ -174,6 +182,7 @@ void MainWindow::saveMCAData0( void )
 	   this, SLOT( saveMCAData() ) );
   SFluo->GetMCAs();
 }
+#endif
 
 void MainWindow::saveMCAData( void )
 {
@@ -306,7 +315,11 @@ void MainWindow::getMCASettings( int ch )
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
+#if 0                            // new mcas
   SFluo->GetMCA( ch );
+#else
+  SFluo->GetMCAs();
+#endif
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
@@ -521,16 +534,22 @@ void MainWindow::MCASequence( void )
     }
     break;
   case 4:
+#if 0                    // new mcas
     if ( SFluo->GetMCA( cMCACh ) == false ) {
       SFluo->GetRealTime( cMCACh );
       SFluo->GetLiveTime( cMCACh );
       SFluo->InitLocalStage();
       MCAStage = 4;
     }
+#else
+    SFluo->GetMCAs();
+    MCAStage = 4;
+#endif
     break;
   }
 }
 
+#if 0                   // new mcas
 void MainWindow::ShowNewMCAStat( void )
 {
   QStringList MCA;
@@ -545,6 +564,21 @@ void MainWindow::ShowNewMCAStat( void )
     cMCAView->update();
   }
 }
+#else
+void MainWindow::ShowNewMCAStat( char * )
+{
+  if ( cMCAView != NULL ) {
+    unsigned long *aMca = SFluo->getAMCA( cMCACh );
+    for ( int i = 0; i < MCALength; i++ ) {
+      MCAData[i] = aMca[i];
+    }
+    MCAHead head = SFluo->getAMCAHead( cMCACh );
+    cMCAView->SetRealTime( head.realTime );
+    cMCAView->SetLiveTime( head.liveTime );
+    cMCAView->update();
+  }
+}
+#endif
 
 void MainWindow::ShowNewMCARealTime( int ch )
 {
