@@ -179,7 +179,7 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue ¤ÎÃÊ³¬¤Ç¥À¡¼¥¯ÊäÀµº
       MeasView->NewPoint( DLC, GoToKeV, Val/I0 ); // ¤³¤³¤Ç Val ¤Ï cps ¤Ë¤·¤Æ¤¢¤ë¤Î¤Ç OK
       DLC++;
       if ( ( isSFluo )&&( ( DLC - 1 ) == SFluoLine ) ) {
-	QVector<int> vals = SFluo->getCountsInROI();
+	QVector<unsigned long> vals = SFluo->getCountsInROI();
 	QVector<double> darks = SFluo->getDarkCountsInROI();
 	for ( int j = 0; j < MaxSSDs; j++ ) {
 	  //MeasView->NewPoint( DLC, GoToKeV,

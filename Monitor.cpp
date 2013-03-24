@@ -57,9 +57,9 @@ void MainWindow::MonSequence( void )
 	QFile f( "ssd.dat" );
 	f.open( QIODevice::Append | QIODevice::Text );
 	QTextStream out( &f );
-	QVector<int> CinROI = SFluo->getCountsInROI();
-	QVector<int> CAll =  SFluo->getCountsAll();
-	QVector<int> TotalE = SFluo->getCountsAll();
+	QVector<unsigned long> CinROI = SFluo->getCountsInROI();
+	QVector<unsigned long> CAll =  SFluo->getCountsAll();
+	QVector<unsigned long> TotalE = SFluo->getCountsAll();
 	QVector<double> ICRs = SFluo->getICRs();
 	QString buf;
 	out << T->elapsed();

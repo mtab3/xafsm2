@@ -246,6 +246,7 @@ void AUnit::Initialize( Stars *S )
     GetValue();
   }
   if ( ID == "TotalF" ) {
+    connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALength( SMsg ) ) );
     s->SendCMD2( "SetUpMCA", getDriver(), "GetMCALength" );
   }
   if ( ID == "ENCTH" ) {
@@ -280,7 +281,8 @@ bool AUnit::GetValue( void )
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0 ) ) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
-    s->SendCMD2( Uid, Driver, "GetValues" );
+    //    s->SendCMD2( Uid, Driver, "GetValues" );    // new mcas
+    s->SendCMD2( Uid, Driver, "GetMCAs" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR
   if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0 ) ) {
@@ -986,6 +988,13 @@ void AUnit::OnReportCurrent( SMsg msg )
   }
 }
 
+void AUnit::getMCALength( SMsg msg )
+{
+  if ( msg.From() == Driver ) {
+    MCALength = msg.Val().toInt();
+  }
+}
+
 void AUnit::getNewValue( QString )
 {
   Value = QString::number( theParent->getCountsInROI().at( Ch.toInt() ) );
@@ -1038,6 +1047,36 @@ void AUnit::receiveMCAs( void )
     MCAs = MCAs0;
     MCAs0 = new char [ MCABUFSIZE ];
     MCAsReady = true;          // MCAs のバッファに有効なデータがある
+
+
+    CountsInROI.clear();
+    CountsAll.clear();
+    TotalEvents.clear();
+    ICRs.clear();
+
+    unsigned long sum = 0;
+    unsigned long countsAll, countsInROI;
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      unsigned long *aMCA = getAMCA( i );
+      countsAll = countsInROI = 0;
+      for ( int j = 0; j < (int)MCALength; j++ ) {
+	if ( ( j >= ROIStart[i].toInt() )&&( j <= ROIEnd[i].toInt() ) )
+	  countsInROI += aMCA[j];
+	countsAll += aMCA[j];
+      }
+      CountsAll << countsAll;
+      sum += countsInROI;
+      CountsInROI << countsInROI;
+    }
+
+    Value = QString::number( sum );
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      TotalEvents << 0;
+      ICRs        << getAMCAHead( i ).icr;
+    }
+
+
+
     emit NewMCAsAvailable( MCAs );
   }
 }
@@ -1070,3 +1109,5 @@ MCAHead AUnit::getAMCAHead( int ch )
   rv.icr      = *(double*)( MCAs + AMCABUF * ch + 40 );
   return rv;
 }
+
+

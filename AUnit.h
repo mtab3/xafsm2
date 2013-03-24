@@ -67,9 +67,9 @@ class AUnit : public QObject
   qint16 DataLinkHostPort;
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;
-  QVector<int> CountsInROI;
-  QVector<int> CountsAll;
-  QVector<int> TotalEvents;
+  QVector<unsigned long> CountsInROI;
+  QVector<unsigned long> CountsAll;
+  QVector<unsigned long> TotalEvents;
   QVector<double> ICRs;
   QVector<double> DarkCountsInROI;    // per second
   QVector<double> DarkCountsAll;      // per second
@@ -81,6 +81,7 @@ class AUnit : public QObject
   QString Value;
   double Dark;                 // back ground value normalized for 1 sec
   QString lastVal;
+  unsigned long MCALength;
   QStringList Values;
   QStringList MCAValues;
   QStringList MCAStats;
@@ -226,9 +227,9 @@ public:
   int getRange( void ) { return SelectedRange; };
   double getDark( void ) { return Dark; };
 
-  QVector<int> getCountsInROI( void ) { return CountsInROI; };
-  QVector<int> getCountsAll( void ) { return CountsAll; };
-  QVector<int> getTotalEvents( void ) { return TotalEvents; };
+  QVector<unsigned long> getCountsInROI( void ) { return CountsInROI; };
+  QVector<unsigned long> getCountsAll( void ) { return CountsAll; };
+  QVector<unsigned long> getTotalEvents( void ) { return TotalEvents; };
   QVector<double> getICRs( void ) { return ICRs; };
   QVector<double> getDarkCountsInROI( void ) { return DarkCountsInROI; };
   QVector<double> getDarkCountsAll( void ) { return DarkCountsAll; };
@@ -281,6 +282,7 @@ public slots:
   void SetIsBusyByMsg( SMsg msg );
   void SetCurPos( SMsg msg );
   void ReceiveValues( SMsg msg );
+  void getMCALength( SMsg msg );
 
 #if 0           // new mcas
   void ReactGetMCA( SMsg msg );
