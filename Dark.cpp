@@ -31,9 +31,9 @@ bool MainWindow::MeasureDark( void )
   }
   mUnits.clearUnits();
 
-  mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
+  mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
   if ( UseI1->isChecked() )
-    mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
+    mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
   if ( Use19chSSD->isChecked() ) {
     if ( inMCAMeas ) {
       QString msg = tr( "MCA measurement is going on" );
@@ -44,9 +44,9 @@ bool MainWindow::MeasureDark( void )
     mUnits.addUnit( SFluo );
   }
   if ( UseAux1->isChecked() )
-    mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
+    mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
   if ( UseAux2->isChecked() )
-    mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
+    mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
   mUnits.setDwellTimes( dt );
   mUnits.setDwellTime();
 

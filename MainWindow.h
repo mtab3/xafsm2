@@ -240,6 +240,7 @@ private:
 
   QVector<int> ChModes;
 
+  QVector<AUnit *> I0Sensors, I1Sensors, A1Sensors, A2Sensors;
   QString fixS( QString s, int l );
   QString DFName0, DFName;
   int TP;
@@ -414,6 +415,15 @@ private slots:
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   void setAllROIs( void );
+
+  void newSensSelectedForI0( int index );
+  void newSensSelectedForI1( int index );
+  void newSensSelectedForA1( int index );
+  void newSensSelectedForA2( int index );
+  void newI0Range( int newR );
+  void newI1Range( int newR );
+  void newA1Range( int newR );
+  void newA2Range( int newR );
 
   void StartMeasurement( void );
   void PauseMeasurement( void );

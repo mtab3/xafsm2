@@ -190,7 +190,16 @@ void MainWindow::SelAutoRange( bool Auto )
 
 void MainWindow::newRangeSelected( int i )
 {
-  SensWithRange.at( SelSensToSetRange->currentIndex() )->setRange( i );
+  AUnit *as = SensWithRange[ SelSensToSetRange->currentIndex() ];
+  as->setRange( i );
+  if ( as == I0Sensors[ SelectI0->currentIndex() ] )
+    I0Range->setValue( i );
+  if ( as == I1Sensors[ SelectI1->currentIndex() ] )
+    I1Range->setValue( i );
+  if ( as == A1Sensors[ SelectAux1->currentIndex() ] )
+    A1Range->setValue( i );
+  if ( as == A1Sensors[ SelectAux2->currentIndex() ] )
+    A2Range->setValue( i );
 }
 
 void MainWindow::askNowRange( void )

@@ -2,7 +2,7 @@
 
 #include "MainWindow.h"
 
-void MainWindow::setupMeasArea( void )   /* 測定エリア */
+void MainWindow::setupMeasArea( void )   /* 測定エリア */ /* setupSetupArea が先 */
 {
   BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05
 	   << BLKs06 << BLKs07 << BLKs08 << BLKs09;
@@ -76,12 +76,15 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     QString name = ASensors.value(i)->getName(); 
-    SelectI0->addItem( name );
-    SelectI1->addItem( name );
-    if ( ASensors.at(i) != SFluo )
-      SelectAux1->addItem( name );
-    if ( ASensors.at(i) != SFluo )
-      SelectAux2->addItem( name );
+    SelectI0->addItem( name );  I0Sensors << ASensors[i];
+    SelectI1->addItem( name );  I1Sensors << ASensors[i];
+    if ( ASensors.at(i) != SFluo ) {
+      SelectAux1->addItem( name );   A1Sensors << ASensors[i];
+    }
+    if ( ASensors.at(i) != SFluo ) {
+      SelectAux2->addItem( name );   A2Sensors << ASensors[i];
+    }
+
     if ( ASensors.value(i)->getID() == "I0" )
       SelectI0->setCurrentIndex( i );
     if ( ASensors.value(i)->getID() == "I1" )
@@ -93,12 +96,35 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   UseI1->setChecked( true );
 
+
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
   ModeA1->addItem( "log(-I0/A1)" );
   ModeA2->addItem( "A2/I0" );
   ModeA2->addItem( "log(I0/A2)" );
   ModeA2->addItem( "log(-I0/A2)" );
+
+  I0Range->setEnabled( false );
+  I1Range->setEnabled( false );
+  A1Range->setEnabled( false );
+  A2Range->setEnabled( false );
+  newSensSelectedForI0( SelectI0->currentIndex() );
+  newSensSelectedForI1( SelectI1->currentIndex() );
+  newSensSelectedForA1( SelectAux1->currentIndex() );
+  newSensSelectedForA2( SelectAux2->currentIndex() );
+
+  connect( SelectI0, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForI0( int ) ) );
+  connect( SelectI1, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForI1( int ) ) );
+  connect( SelectAux1, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForA1( int ) ) );
+  connect( SelectAux2, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForA2( int ) ) );
+  connect( I0Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI0Range( int ) ) );
+  connect( I1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI1Range( int ) ) );
+  connect( A1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA1Range( int ) ) );
+  connect( A2Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA2Range( int ) ) );
 
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     connect( BLKstart.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart()) );
@@ -176,6 +202,135 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( ManTEkeV, SIGNAL( textChanged( const QString & ) ),
 	   this, SLOT( SetNewGases() ) );
 }
+
+void MainWindow::newSensSelectedForI0( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( I0Sensors[ index ] == SensWithRange[i] )
+	&&( !I0Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      I0Range->setEnabled( true );
+      I0Range->setRange( SensWithRange[i]->getRangeL(),
+			 SensWithRange[i]->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      I0Range->setValue( SensWithRange[i]->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    I0Range->setEnabled( false );
+    I0Range->setRange( 0, 0 );
+    I0Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newSensSelectedForI1( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( I1Sensors[ index ] == SensWithRange[i] )
+	&&( !I1Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      I1Range->setEnabled( true );
+      I1Range->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      I1Range->setValue( SensWithRange.at(i)->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    I1Range->setEnabled( false );
+    I1Range->setRange( 0, 0 );
+    I1Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newSensSelectedForA1( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( A1Sensors[ index ] == SensWithRange[i] )
+	&&( !A1Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      A1Range->setEnabled( true );
+      A1Range->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      A1Range->setValue( SensWithRange.at(i)->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    A1Range->setEnabled( false );
+    A1Range->setRange( 0, 0 );
+    A1Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newSensSelectedForA2( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( A2Sensors[ index ] == SensWithRange[i] )
+	&&( !A2Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      A2Range->setEnabled( true );
+      A2Range->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      A2Range->setValue( SensWithRange.at(i)->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    A2Range->setEnabled( false );
+    A2Range->setRange( 0, 0 );
+    A2Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newI0Range( int newR )
+{
+  I0Sensors[ SelectI0->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == I0Sensors[ SelectI0->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+void MainWindow::newI1Range( int newR )
+{
+  I1Sensors[ SelectI1->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == I1Sensors[ SelectI1->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+void MainWindow::newA1Range( int newR )
+{
+  A1Sensors[ SelectAux1->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == A1Sensors[ SelectAux1->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+void MainWindow::newA2Range( int newR )
+{
+  A2Sensors[ SelectAux2->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == A2Sensors[ SelectAux2->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
 
 void MainWindow::SetNewGases( void )
 {
@@ -572,7 +727,7 @@ bool MainWindow::CheckDetectorSelection( void )
 
   if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
     if ( UseI1->isChecked() ) {
-      AUnit *as = ASensors.value( SelectI1->currentIndex() );
+      AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
       if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
 	  ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
 	MeasFileType = TRANS;
@@ -656,13 +811,13 @@ void MainWindow::StartMeasurement( void )
 
     MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
-    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
+    mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
-      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
+      mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
       LC++;
       isSI1 = true;
       aGsb.stat = PBFalse; aGsb.label = "I1"; GSBSs << aGsb;
@@ -689,14 +844,14 @@ void MainWindow::StartMeasurement( void )
     if ( UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
-      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
+      mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
       LC++;
       aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
     }
     if ( UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
-      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
+      mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
       LC++;
       aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
     }
