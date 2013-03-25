@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>820</width>
-    <height>977</height>
+    <width>834</width>
+    <height>980</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,103 +24,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_31">
-    <item row="3" column="0">
-     <widget class="QTabWidget" name="ViewTab">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>2</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>700</width>
-        <height>400</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>.</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(245, 240, 220);</string>
-      </property>
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <property name="tabsClosable">
-       <bool>false</bool>
-      </property>
-      <property name="movable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="VT1">
-       <attribute name="title">
-        <string>View 1</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_11"/>
-      </widget>
-      <widget class="QWidget" name="VT2">
-       <attribute name="title">
-        <string>View 2</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_12"/>
-      </widget>
-      <widget class="QWidget" name="VT3">
-       <attribute name="title">
-        <string>View 3</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_14"/>
-      </widget>
-      <widget class="QWidget" name="VT4">
-       <attribute name="title">
-        <string>View 4</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_15"/>
-      </widget>
-      <widget class="QWidget" name="VT5">
-       <attribute name="title">
-        <string>View5</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_16"/>
-      </widget>
-      <widget class="QWidget" name="VT6">
-       <attribute name="title">
-        <string>View6</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_17"/>
-      </widget>
-      <widget class="QWidget" name="VT7">
-       <attribute name="title">
-        <string>View7</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_18"/>
-      </widget>
-      <widget class="QWidget" name="VT8">
-       <attribute name="title">
-        <string>View8</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_20"/>
-      </widget>
-      <widget class="QWidget" name="VT9">
-       <attribute name="title">
-        <string>View9</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_22"/>
-      </widget>
-      <widget class="QWidget" name="VT10">
-       <attribute name="title">
-        <string>View10</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_23"/>
-      </widget>
-     </widget>
-    </item>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_26">
       <item row="0" column="1">
@@ -504,6 +407,103 @@
        </layout>
       </item>
      </layout>
+    </item>
+    <item row="3" column="0">
+     <widget class="QTabWidget" name="ViewTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>2</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>700</width>
+        <height>400</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(245, 240, 220);</string>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="documentMode">
+       <bool>false</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="VT1">
+       <attribute name="title">
+        <string>View 1</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_11"/>
+      </widget>
+      <widget class="QWidget" name="VT2">
+       <attribute name="title">
+        <string>View 2</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_12"/>
+      </widget>
+      <widget class="QWidget" name="VT3">
+       <attribute name="title">
+        <string>View 3</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_14"/>
+      </widget>
+      <widget class="QWidget" name="VT4">
+       <attribute name="title">
+        <string>View 4</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_15"/>
+      </widget>
+      <widget class="QWidget" name="VT5">
+       <attribute name="title">
+        <string>View5</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_16"/>
+      </widget>
+      <widget class="QWidget" name="VT6">
+       <attribute name="title">
+        <string>View6</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_17"/>
+      </widget>
+      <widget class="QWidget" name="VT7">
+       <attribute name="title">
+        <string>View7</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_18"/>
+      </widget>
+      <widget class="QWidget" name="VT8">
+       <attribute name="title">
+        <string>View8</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_20"/>
+      </widget>
+      <widget class="QWidget" name="VT9">
+       <attribute name="title">
+        <string>View9</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_22"/>
+      </widget>
+      <widget class="QWidget" name="VT10">
+       <attribute name="title">
+        <string>View10</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_23"/>
+      </widget>
+     </widget>
     </item>
     <item row="1" column="0">
      <widget class="QTabWidget" name="MainTab">
@@ -5868,234 +5868,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
        <property name="spacing">
         <number>1</number>
        </property>
-       <item row="0" column="20">
-        <widget class="QPushButton" name="GSB21">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>21</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="22">
-        <widget class="QPushButton" name="GSB23">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>23</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="GSB02">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>02</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="21">
-        <widget class="QPushButton" name="GSB22">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>22</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="18">
-        <widget class="QPushButton" name="GSB19">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>19</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="17">
-        <widget class="QPushButton" name="GSB18">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>18</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="14">
-        <widget class="QPushButton" name="GSB15">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>15</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="13">
-        <widget class="QPushButton" name="GSB14">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>14</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="16">
-        <widget class="QPushButton" name="GSB17">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>17</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="15">
-        <widget class="QPushButton" name="GSB16">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>16</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="12">
-        <widget class="QPushButton" name="GSB13">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>13</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="GSB03">
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>03</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="11">
         <widget class="QPushButton" name="GSB12">
          <property name="maximumSize">
@@ -6336,6 +6108,247 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
          </property>
         </widget>
        </item>
+       <item row="0" column="20">
+        <widget class="QPushButton" name="GSB21">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>21</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="22">
+        <widget class="QPushButton" name="GSB23">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>23</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="GSB02">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>02</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="21">
+        <widget class="QPushButton" name="GSB22">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>22</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="18">
+        <widget class="QPushButton" name="GSB19">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>19</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="17">
+        <widget class="QPushButton" name="GSB18">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>18</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="14">
+        <widget class="QPushButton" name="GSB15">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>15</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="13">
+        <widget class="QPushButton" name="GSB14">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>14</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="16">
+        <widget class="QPushButton" name="GSB17">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>17</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="15">
+        <widget class="QPushButton" name="GSB16">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>16</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="12">
+        <widget class="QPushButton" name="GSB13">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>13</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="GSB03">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>03</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="24">
+        <spacer name="horizontalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
     </item>
@@ -6346,8 +6359,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>820</width>
-     <height>23</height>
+     <width>834</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
