@@ -45,7 +45,7 @@ QString MainWindow::fixS( QString s, int l )
 
 void MainWindow::WriteHeader( int Rpt )
 {
-  bool newf = conds->isUse1303Format();
+  bool newf = Use1303Format->isChecked();
   QString NFM = "";   // new file mark
 
   int cnt;
@@ -372,6 +372,15 @@ void MainWindow::RecordData( void )
 // (dark 補正がかかっているのは Measurement で readValue するとき
 //  dark 補正のオプションを付けているから)
 {
+  if ( isSFluo && RecordMCASpectra->isChecked() ) {
+    QFileInfo mcaFile( mcaDir,
+		       QString( "%1-%2-%3.dat" )
+		       .arg( BaseFile.baseName() )
+		       .arg( (int)MeasR, 3, 10, QChar( '0' ) )
+		       .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+    saveMCAData0( mcaFile.canonicalFilePath() );
+  }
+
   SetDFName( MeasR );
   QFile file( DFName );
   double recTh;
@@ -464,12 +473,12 @@ void MainWindow::RecordData( void )
     // ルーチンの頭に読んでしまった値を使ってるのは、このルーチン実行中に
     // 裏で AUnit 内部の value が変わってしまうのを警戒して。(ないはずだけど)
     //
-    if (( conds->isAddInfos() )||( conds->isUse1303Format() )) {
+    if (( conds->isAddInfos() )||( Use1303Format->isChecked() )) {
       buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",
                    GoToKeV,
                    encTh, u->deg2keV( encTh ),
                    PMTh, u->deg2keV( PMTh ) );
-      if ( conds->isUse1303Format() )
+      if ( Use1303Format->isChecked() )
         out << " ###";
       out << buf;
     }

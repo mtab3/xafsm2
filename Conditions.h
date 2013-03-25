@@ -18,7 +18,6 @@ public:
   bool isEncAsTh( void );
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );
-  bool isUse1303Format( void );
 };
 
 #endif

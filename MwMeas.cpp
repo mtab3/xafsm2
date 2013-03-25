@@ -765,8 +765,8 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
-    QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
-    if ( ! OverWriteChecked && CheckFile.exists() ) {
+    BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
+    if ( ! OverWriteChecked && BaseFile.exists() ) {
       AskOverWrite
 	->setText( tr( "File [%1] Over Write ?" )
 			     .arg( DFName0 + ".dat" ) );
@@ -803,6 +803,13 @@ void MainWindow::StartMeasurement( void )
       MeasView->SetLineName( i, mUnits.at(i)->getName() );
     }
     CpBlock2SBlock();
+
+    if ( isSFluo && RecordMCASpectra->isChecked() ) {
+      mcaDir = QDir( BaseFile.canonicalPath() );
+      mcaDir.mkdir( BaseFile.baseName() );
+      mcaDir.cd( BaseFile.baseName() );
+      qDebug() << "the place " << mcaDir.path();
+    }
     
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );

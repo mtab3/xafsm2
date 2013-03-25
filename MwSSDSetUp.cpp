@@ -172,18 +172,6 @@ void MainWindow::setAllROIs( void )
   }
 }
 
-#if 0
-void MainWindow::saveMCAData0( void )
-{
-  if ( SFluo == NULL )
-    return;
-
-  connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
-	   this, SLOT( saveMCAData() ) );
-  SFluo->GetMCAs();
-}
-#endif
-
 void MainWindow::saveMCAData( void )
 {
   if ( !validMCAData ) {
@@ -195,12 +183,16 @@ void MainWindow::saveMCAData( void )
     return;
   }
 
-#if 0
-  for ( int i = 0; i < 1000; i++ ) {   // 1000面セーブ時間測定用
-    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
-#endif
+//  for ( int i = 0; i < 1000; i++ ) {   // 1000面セーブ時間測定用
+//    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
+//    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
+//    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
+  saveMCAData0( MCARecFile->text() );
+}
 
-  QFile f( MCARecFile->text() );
+void MainWindow::saveMCAData0( QString fname )
+{
+  QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
     statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
 			    2000 );
@@ -215,10 +207,6 @@ void MainWindow::saveMCAData( void )
   WriteMCAData( out );
 
   f.close();
-
-#if 0
-  }
-#endif
 }
 
 void MainWindow::WriteMCAHead( QTextStream &out )

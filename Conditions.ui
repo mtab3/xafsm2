@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>687</width>
+    <width>692</width>
     <height>120</height>
    </rect>
   </property>
@@ -95,7 +95,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="1" rowspan="4">
+   <item row="1" column="1" rowspan="3">
     <widget class="QFrame" name="frame_4">
      <property name="styleSheet">
       <string notr="true">background-color: #eeffee</string>
@@ -169,34 +169,6 @@ with usual 9809 format datas.</string>
         </property>
         <property name="text">
          <string>Record Addicional Informations for XAFS measurement</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QFrame" name="frame_5">
-     <property name="styleSheet">
-      <string notr="true">background-color: #eeffee</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <property name="margin">
-       <number>3</number>
-      </property>
-      <property name="spacing">
-       <number>1</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="Use1303Format">
-        <property name="text">
-         <string>Use 1303 format to record XAFS measurement</string>
         </property>
        </widget>
       </item>

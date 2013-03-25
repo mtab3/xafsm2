@@ -97,7 +97,8 @@ private:
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;
-
+  QDir mcaDir;
+  QFileInfo BaseFile;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -393,8 +394,8 @@ private slots:
   void clearMCA( void );
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
-  //  void saveMCAData0( void );
   void saveMCAData( void );
+  void saveMCAData0( QString fname );
   void WriteMCAHead( QTextStream &out );
   void WriteMCAData( QTextStream &out );
 
