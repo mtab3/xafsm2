@@ -184,8 +184,17 @@ void MainWindow::SetAutoRangeMode( int i )
 
 void MainWindow::SelAutoRange( bool Auto )
 {
-  SensWithRange.at( SelSensToSetRange->currentIndex() )->setAutoRange( Auto );
+  AUnit *as = SensWithRange.at( SelSensToSetRange->currentIndex() );
+  as->setAutoRange( Auto );
   RangeSelect->setEnabled( !Auto );
+  if ( I0Sensors[ SelectI0->currentIndex() ] == as )
+    I0Range->setEnabled( !Auto );
+  if ( I1Sensors[ SelectI1->currentIndex() ] == as )
+    I1Range->setEnabled( !Auto );
+  if ( A1Sensors[ SelectAux1->currentIndex() ] == as )
+    A1Range->setEnabled( !Auto );
+  if ( A2Sensors[ SelectAux2->currentIndex() ] == as )
+    A2Range->setEnabled( !Auto );
 }
 
 void MainWindow::newRangeSelected( int i )

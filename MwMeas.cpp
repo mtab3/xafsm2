@@ -889,6 +889,8 @@ void MainWindow::StartMeasurement( void )
 	}
       }
     }
+
+#if 0
     if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
                                         // 設定済みかどうか確認する (測定開始をブロック)
       MakeSureOfRangeSelect
@@ -905,6 +907,7 @@ void MainWindow::StartMeasurement( void )
       if ( ! MeasureDark() )                // 正常に測れなければだめ
 	return;
     }
+#endif
 
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       // グラフ表示領域が確保できないとダメ
