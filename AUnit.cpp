@@ -209,7 +209,6 @@ void AUnit::Initialize( Stars *S )
 #endif
     connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
 	     this, SLOT( ReactGetDataLinkCh( SMsg ) ) );
-    //connect( s, SIGNAL( AnsGetMCAs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
     s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
@@ -923,6 +922,7 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
       IsBusy2 = false;
       DataLinkHostName = msg.Vals().at(0);
       DataLinkHostPort = msg.Vals().at(1).toInt();
+      //      qDebug() << "AAAAAAAAAAAAAAAA" << DataLinkHostName << DataLinkHostPort;
       ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
     }
   }
@@ -1054,10 +1054,10 @@ void AUnit::receiveMCAs( void )
     TotalEvents.clear();
     ICRs.clear();
 
-    unsigned long sum = 0;
-    unsigned long countsAll, countsInROI;
+    quint64 sum = 0;
+    quint64 countsAll, countsInROI;
     for ( int i = 0; i < MaxSSDs; i++ ) {
-      unsigned long *aMCA = getAMCA( i );
+      quint32 *aMCA = getAMCA( i );
       countsAll = countsInROI = 0;
       for ( int j = 0; j < (int)MCALength; j++ ) {
 	if ( ( j >= ROIStart[i].toInt() )&&( j <= ROIEnd[i].toInt() ) )
@@ -1081,18 +1081,18 @@ void AUnit::receiveMCAs( void )
   }
 }
 
-unsigned long AUnit::getAMCAdata( int ch, int pixel )
+quint32 AUnit::getAMCAdata( int ch, int pixel )
 {
   if ( !MCAsReady )
     return 0;
-  return *((unsigned long*)( MCAs + AMCABUF * ch + MCAHEAD ) + pixel );
+  return *((quint32 *)( MCAs + AMCABUF * ch + MCAHEAD ) + pixel );
 }
 
-unsigned long *AUnit::getAMCA( int ch )
+quint32 *AUnit::getAMCA( int ch )
 {
   if ( !MCAsReady )
     return NULL;
-  return (unsigned long*)( MCAs + AMCABUF * ch + MCAHEAD );
+  return (quint32 *)( MCAs + AMCABUF * ch + MCAHEAD );
 }
 
 MCAHead AUnit::getAMCAHead( int ch )
@@ -1101,9 +1101,9 @@ MCAHead AUnit::getAMCAHead( int ch )
 
   if ( !MCAsReady )
     return rv;
-  rv.ch       = *(qint64*) ( MCAs + AMCABUF * ch +  0 );
-  rv.stat     = *(qint64*) ( MCAs + AMCABUF * ch +  8 );
-  rv.len      = *(qint64*) ( MCAs + AMCABUF * ch + 16 );
+  rv.ch       = *(qint64*)( MCAs + AMCABUF * ch +  0 );
+  rv.stat     = *(qint64*)( MCAs + AMCABUF * ch +  8 );
+  rv.len      = *(qint64*)( MCAs + AMCABUF * ch + 16 );
   rv.realTime = *(double*)( MCAs + AMCABUF * ch + 24 );
   rv.liveTime = *(double*)( MCAs + AMCABUF * ch + 32 );
   rv.icr      = *(double*)( MCAs + AMCABUF * ch + 40 );

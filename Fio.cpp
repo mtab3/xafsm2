@@ -430,7 +430,7 @@ void MainWindow::RecordData( void )
         }
         out << buf;
       } else {
-        QVector<unsigned long> vals = SFluo->getCountsInROI(); // vals ¤Ï count
+        QVector<quint64> vals = SFluo->getCountsInROI(); // vals ¤Ï count
         QVector<double> darks = SFluo->getDarkCountsInROI();   // darks ¤Ï cps 
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
           buf.sprintf(" %9d",

@@ -25,6 +25,12 @@ const QString SSDActive = "background-color: #f0f0d0";
 const QString SSDnotActive = "";
 //const QString SSDActive = RadioBOn;
 //const QString SSDnotActive = RadioBOff;
+const QString FILE_OLDOLD  = "background-color: rgb(255,255,255)"; // old-data, old-name
+const QString FILE_NEWNAME = "background-color: rgb(255,230,190)"; // old-data, new-name
+const QString FILE_NEWDATA = "background-color: rgb(255,220,220)"; // new-data, old-name
+const QString FILE_NEWNEW  = "background-color: rgb(255,200,200)"; // new-data, new-name
+const QString FSTATCOLORS[2][2] =
+  { { FILE_OLDOLD, FILE_NEWNAME }, { FILE_NEWDATA, FILE_NEWNEW } };
 
 #define PBTrue    ( false )   // PushButton を Checkable にすると、押した時、暗いのに
 #define PBFalse   ( true  )   // true になるので、定数名で反転させて使う

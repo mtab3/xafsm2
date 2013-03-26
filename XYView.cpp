@@ -21,14 +21,13 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   for ( int i = 0; i < MAXLINES; i++ ) {
     SetLR( i, LEFT_AX );
     SetScaleType( i, FULLSCALE );
-    LNames << "";
   }
 
   lines = 0;
   cc.SetRealCoord( 0, 0, 1, 1 );
   bgColor = QColor( 255, 255, 255 );
   BLACK = QColor( 0, 0, 0 );
-  MCLineC = QColor( 210, 180, 0 );     // mouse cursor line color
+  MCLineC = QColor( 210, 180, 0 );    // mouse cursor line color
   ASelC = QColor( 0, 255, 120 );      // Area Select Color
 
   upp = 1;
@@ -61,8 +60,8 @@ void XYView::Clear( void )
     for ( int j = 0; j < MAXPOINTS; j++ ) {
       x[i][j] = y[i][j] = 0;
     }
-    LineLR[i] = LEFT_AX;
-    scaleType[i] = FULLSCALE;
+    //    LineLR[i] = LEFT_AX;
+    //    scaleType[i] = FULLSCALE;
   }
   lines = 0;
 }

@@ -36,6 +36,7 @@
 
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
+enum OLDNEW { OLD, NEW };
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -148,6 +149,16 @@ private:
   void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
 
   /***********************************************/
+
+  QString FSTATMsgs[2][2];
+  OLDNEW MeasDataStat;
+  OLDNEW MeasNameStat;
+  OLDNEW ScanDataStat;
+  OLDNEW ScanNameStat;
+  OLDNEW MonDataStat;
+  OLDNEW MonNameStat;
+  OLDNEW MCADataStat;
+  OLDNEW MCANameStat;
 
   void GoMAtPuls( double Pos );
   void GoMStop0( void );
@@ -277,6 +288,7 @@ private:
   void CpBlock2SBlock( void );
   void WriteHeader( int Rpt );
   void WriteHeader2( int Rpt );
+  void SetDispMeasModes( void );
   void DispMeasDatas( void );
   void RecordData( void );
 

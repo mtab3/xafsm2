@@ -550,6 +550,8 @@ void MainWindow::ShowTotal( void )
     TP += BlockPoints[i];
     TT0 += BlockPoints[i] * BlockDwell[i];
   } 
+  if ( SelRPT->value() > 30 )
+    SelRPT->setValue( 30 );
   double TT = TT0 + TP * 360. / 480.;    // Cu-Ka ‚Å 480“_‘ª’è‚É6•ª—]•ª‚É‚©‚©‚é?
   buf.sprintf( "%4d", TP * SelRPT->value() );
   TPoints->setText( tr( "Points: " ) + buf );
@@ -950,16 +952,19 @@ void MainWindow::StartMeasurement( void )
     if ( Use19chSSD->isChecked() ) {
       MeasChNo += ( MaxSSDs -1 );
     }
+#if 0
     MeasView->SetRLine( 0 );
     MeasView->SetLLine( 1 );
     MeasView->SetLR( 0, RIGHT_AX );
     MeasView->SetScaleType( 0, I0TYPE );
     MeasView->SetLineName( 0, mUnits.at(0)->getName() );
-    for ( int i = 1; i < mUnits.count(); i++ ) {
-      MeasView->SetLR( i, LEFT_AX );
-      MeasView->SetScaleType( i, FULLSCALE );
-      MeasView->SetLineName( i, mUnits.at(i)->getName() );
+    for ( int j = 1; j < mUnits.count(); j++ ) {
+      MeasView->SetLR( j, LEFT_AX );
+      MeasView->SetScaleType( j, FULLSCALE );
+      MeasView->SetLineName( j, mUnits.at(j)->getName() );
     }
+#endif
+    SetDispMeasModes();
     CpBlock2SBlock();
 
     if ( isSFluo && RecordMCASpectra->isChecked() ) {

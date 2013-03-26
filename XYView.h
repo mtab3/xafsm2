@@ -8,7 +8,7 @@
 #include "ChCoord.h"
 
 #define MAXPOINTS ( 10000 )
-#define MAXLINES  ( 30 )
+#define MAXLINES  ( 900 )
 
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
@@ -30,7 +30,7 @@ private:
   LRAX LineLR[ MAXLINES ];
   SCALET scaleType[ MAXLINES ];
   QString LeftName, RightName;
-  QVector<QString> LNames;
+  QString LNames[ MAXLINES ];
   QString XName;
   QString XUnitName;
   bool valid;
@@ -64,7 +64,12 @@ public:
 
   void NewPoint( int l, double xx, double yy );
   void Clear( void );
-  // XYView では、複数の線を同時に描けるが、軸として右軸、左軸どちらを使うかを選択する
+  // XYView では、複数の線を同時に描ける。
+  // 各線が左軸、右軸どちらに関係しているかを指定するのが SetLR(), LintLR[]
+  // 沢山ある線の中で、左右の軸に実際にスケールを表示する線を選択するのが
+  // SetLLine(), SetRLine(), SelLR[]
+  void SetLLine( int l ) { SelLR[ LEFT_AX ] = l; };
+  void SetRLine( int l ) { SelLR[ RIGHT_AX ] = l; };
   void SetLR( int L, LRAX lr ) { LineLR[ L ] = lr; };
   // スケールのタイプ : フルスケールにするか、I0 の様に少し上にずらすか
   // ループ単位で指定。
@@ -92,8 +97,6 @@ public:
   void SetUpp( double upp0 ) { upp = upp0; };
   void SetCenter( double center0 ) { center = center0; };
   void SetAutoScale( bool ascale ) { autoScale = ascale; };
-  void SetLLine( int l ) { SelLR[ LEFT_AX ] = l; };
-  void SetRLine( int l ) { SelLR[ RIGHT_AX ] = l; };
 
 public slots:
   void ChooseAG( int i, bool f );

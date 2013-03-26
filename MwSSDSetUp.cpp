@@ -556,7 +556,7 @@ void MainWindow::ShowNewMCAStat( void )
 void MainWindow::ShowNewMCAStat( char * )
 {
   if ( cMCAView != NULL ) {
-    unsigned long *aMca = SFluo->getAMCA( cMCACh );
+    unsigned *aMca = SFluo->getAMCA( cMCACh );
     for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = aMca[i];
     }

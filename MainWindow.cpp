@@ -21,6 +21,15 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   T = new QTime;
   T->start();
 
+  FSTATMsgs[0][0] = tr( "" );
+  FSTATMsgs[0][1] = tr( "The name is new, but the data is old." );
+  FSTATMsgs[1][0] = tr( "The data is new, but the name is old." );
+  FSTATMsgs[1][1] = tr( "The data and the name is new, but not saved." );
+  MeasDataStat = MeasNameStat = OLD;
+  ScanDataStat = ScanNameStat = OLD;
+  MonDataStat = MonNameStat = OLD;
+  MCADataStat = MCANameStat = OLD;
+
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
   u = new Units;
@@ -50,10 +59,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   starsSV = new StarsSV2;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
-
   ReadDef( DefFileName );
   selmc = new SelMC2( mccd );
-
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
@@ -64,9 +71,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupView();
   setupCommonArea();
   setupSetupArea();     // AUnit 関係の Initialize 後でないとだめ
-  if ( SFluo != NULL )
+  if ( SFluo != NULL ) {
     setupSetupSSDArea();
-  else {
+  } else {
     MainTab->removeTab( MainTab->indexOf( SSDTab ) );
   }
   setupMeasArea();

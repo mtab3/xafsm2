@@ -104,7 +104,7 @@ void MainWindow::MeasSequence( void )
       } else if ( MeasB < SBlocks-1 ) {
 	MeasB++;
 	MeasStage = 3;
-      } else if ( MeasR < SelRPT->value()-1 ) {
+      } else if (( MeasR < SelRPT->value()-1 )&&( MeasR < 30 )) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
 	ClearXViewScreenForMeas( MeasView );
 	WriteHeader2( MeasR );
@@ -149,6 +149,48 @@ bool MainWindow::isBusyMotorInMeas( void )
   return MMainTh->isBusy() || MMainTh->isBusy2();
 }
 
+void MainWindow::SetDispMeasModes( void )
+{
+  int i;
+  int DLC = 0;   // display line count
+
+  MeasView->SetRLine( 0 );
+  MeasView->SetLLine( 1 );
+  
+  MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
+  MeasView->SetScaleType( DLC, I0TYPE );
+  MeasView->SetLineName( DLC, mUnits.at(0)->getName() );
+  DLC++;
+  for ( i = 1; i < mUnits.count(); i++ ) {
+    if ( MeasDispMode[i] == TRANS ) {
+      if (( i == 1 )&&( isSI1 )) {
+	MeasView->SetLLine( DLC );
+        MeasView->SetLR( DLC, LEFT_AX );                   // I1
+	MeasView->SetScaleType( DLC, FULLSCALE );
+	MeasView->SetLineName( DLC, mUnits.at(i)->getName() );
+        DLC++;
+      }
+      MeasView->SetLR( DLC, LEFT_AX );                     // mu
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, tr( "mu" ) );
+      DLC++;
+    } else {
+      MeasView->SetLR( DLC, LEFT_AX );
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, mUnits.at(i)->getName() );
+      DLC++;
+      if ( ( isSFluo )&&( ( DLC - 1 ) == SFluoLine ) ) {
+	for ( int j = 0; j < MaxSSDs; j++ ) {
+	  MeasView->SetLR( DLC, LEFT_AX );
+	  MeasView->SetScaleType( DLC, FULLSCALE );
+	  MeasView->SetLineName( DLC, QString( "SSD %1" ).arg( j ) );
+	  DLC++;
+	}
+      }
+    }
+  }
+}
+
 void MainWindow::DispMeasDatas( void )  // mUnits->readValue ¤ÎÃÊ³¬¤Ç¥À¡¼¥¯ÊäÀµºÑ¤ß
 {
   double I0;
@@ -183,7 +225,7 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue ¤ÎÃÊ³¬¤Ç¥À¡¼¥¯ÊäÀµº
       MeasView->NewPoint( DLC, GoToKeV, Val/I0 ); // ¤³¤³¤Ç Val ¤Ï cps ¤Ë¤·¤Æ¤¢¤ë¤Î¤Ç OK
       DLC++;
       if ( ( isSFluo )&&( ( DLC - 1 ) == SFluoLine ) ) {
-	QVector<unsigned long> vals = SFluo->getCountsInROI();
+	QVector<quint64> vals = SFluo->getCountsInROI();
 	QVector<double> darks = SFluo->getDarkCountsInROI();
 	for ( int j = 0; j < MaxSSDs; j++ ) {
 	  //MeasView->NewPoint( DLC, GoToKeV,

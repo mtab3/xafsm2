@@ -10,7 +10,7 @@
 #define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
 // qint64  ch, stat, mcaLength
 // qreal64 realTime, liveTime, icr
-#define AMCABUF    ( MCAHEAD + 2048 * 8 ) // MCAHEAD + 2048 pixels * 8byte
+#define AMCABUF    ( MCAHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
 #define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
 
 enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
@@ -67,9 +67,9 @@ class AUnit : public QObject
   qint16 DataLinkHostPort;
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;
-  QVector<unsigned long> CountsInROI;
-  QVector<unsigned long> CountsAll;
-  QVector<unsigned long> TotalEvents;
+  QVector<quint64> CountsInROI;
+  QVector<quint64> CountsAll;
+  QVector<quint64> TotalEvents;
   QVector<double> ICRs;
   QVector<double> DarkCountsInROI;    // per second
   QVector<double> DarkCountsAll;      // per second
@@ -81,7 +81,7 @@ class AUnit : public QObject
   QString Value;
   double Dark;                 // back ground value normalized for 1 sec
   QString lastVal;
-  unsigned long MCALength;
+  quint64 MCALength;
   QStringList Values;
   QStringList MCAValues;
   QStringList MCAStats;
@@ -227,16 +227,16 @@ public:
   int getRange( void ) { return SelectedRange; };
   double getDark( void ) { return Dark; };
 
-  QVector<unsigned long> getCountsInROI( void ) { return CountsInROI; };
-  QVector<unsigned long> getCountsAll( void ) { return CountsAll; };
-  QVector<unsigned long> getTotalEvents( void ) { return TotalEvents; };
+  QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
+  QVector<quint64> getCountsAll( void ) { return CountsAll; };
+  QVector<quint64> getTotalEvents( void ) { return TotalEvents; };
   QVector<double> getICRs( void ) { return ICRs; };
   QVector<double> getDarkCountsInROI( void ) { return DarkCountsInROI; };
   QVector<double> getDarkCountsAll( void ) { return DarkCountsAll; };
   QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
   QVector<double> getDarkICRs( void ) { return DarkICRs; };
-  unsigned long *getAMCA( int ch );
-  unsigned long getAMCAdata( int ch, int pixel );
+  quint32 *getAMCA( int ch );
+  quint32 getAMCAdata( int ch, int pixel );
   MCAHead getAMCAHead( int ch );
 
   int getILastSetV( void ) { return ilastSetV; };
