@@ -183,6 +183,11 @@ void MainWindow::saveMCAData( void )
     return;
   }
 
+  MCADataStat = OLD;
+  MCANameStat = OLD;
+  MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
+  MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
+
 //  for ( int i = 0; i < 1000; i++ ) {   // 1000面セーブ時間測定用
 //    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
@@ -234,6 +239,9 @@ void MainWindow::WriteMCAData( QTextStream &out )
 void MainWindow::setSelectedMCAFName( const QString &fname )
 {
   MCARecFile->setText( fname );
+  MCANameStat = NEW;
+  MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
+  MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
 }
 
 void MainWindow::RealTimeIsSelected( void )
@@ -440,6 +448,10 @@ void MainWindow::StartMCA( void )
       if ( StartResume == MCA_START )
 	for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
     }
+    MCADataStat = NEW;
+    MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
+    MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
+    
     MCAClearRequest = false;
     SFluo->RunStop();
     cMCAViewC->setIsDeletable( false );

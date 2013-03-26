@@ -378,6 +378,7 @@ private slots:
   void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
+  void saveMonData( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
