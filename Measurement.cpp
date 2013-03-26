@@ -33,6 +33,8 @@ void MainWindow::MeasSequence( void )
        99: pause の時用のステージ
     */
   case 0:
+    CurrentRpt->setText( QString::number( 1 ) );
+    CurrentPnt->setText( QString::number( 1 ) );
     mUnits.clearStage();
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
@@ -87,6 +89,7 @@ void MainWindow::MeasSequence( void )
     DispMeasDatas();
     RecordData();
     MeasP++;
+    CurrentPnt->setText( QString::number( MeasP + 1 ) );
     MeasStage = 10;
     if ( inPause == 1 ) {
       MeasStage = 99;          // PauseStage
@@ -106,6 +109,7 @@ void MainWindow::MeasSequence( void )
 	ClearXViewScreenForMeas( MeasView );
 	WriteHeader2( MeasR );
 	MeasR++;
+	CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	MeasStage = 2;
       } else {               // 終了
 	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );

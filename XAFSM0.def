@@ -10,7 +10,7 @@
 # For example, "Keithley 6485" can not be writtern Keithley 6485.
 #
 
-XAFSName  "XafsM2-bsd"
+XAFSName  "XafsM2"
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
 
