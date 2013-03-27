@@ -418,9 +418,8 @@ void MainWindow::RecordData( void )
     // その後に測定データの並び
     for ( int i = 1; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
-        // Quick hack for pico-ammeter
-        //double v = mUnits.at(i)->value().toDouble();
-        double v = mUnits.at(i)->value().toDouble() - mUnits.at(i)->getDark() * NowDwell; // asakura
+        double v = mUnits.at(i)->value().toDouble()
+	  - mUnits.at(i)->getDark() * mUnits.at(i)->GetSetTime();
         if ( v < 1e-10 )
           v = 0.0;
         if ( (int)(v) == v ) {
@@ -434,16 +433,7 @@ void MainWindow::RecordData( void )
         QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps 
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
           buf.sprintf(" %9d",
-		      (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );  // Orig.
-	  // オリジナル(count)に戻した。ファイルに書くのはカウントだったはず
-	  // cps にする場合でも by H.A. は間違ってた。
-	  // vals[j] は count, darks[j] は cps なので、H.A 風にやるなら NowDwell で割る
-	  // ただそれだと、darks に関しては、一度時間を掛けてまた割ってることになるので
-	  // vals を時間で割ったほうがいい。
-	  // さらには NowDwell は、「設定しようとした時間」なので
-	  // 「設定された時間」 GetSetTime() を使ったほうが良い
-//      (int)( ( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) * NowDwell ) ); // by H.A.
-//      (int)( vals[j] / SFluo->GetSetTime() - darks[j] );  // by. M.T. (cps version)
+		      (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
           out << buf;
         }
         if ( MeasFileType == FLUO ) {

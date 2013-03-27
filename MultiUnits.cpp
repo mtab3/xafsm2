@@ -157,18 +157,10 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
   for ( int i = 0; i < Units.count(); i++ ) {
-#if 0                          // values().at(0) is total of all 19 CHs
-    if ( Units.at(i)->au->getType() == "SSD" ) {
-      rvs[i] = Units.at(i)->au->values().at(0).toDouble();
-    } else {
-      rvs[i] = Units.at(i)->au->value().toDouble();
-    }
-#else
     rvs[i] = Units.at(i)->au->value().toDouble();
     if ( correctBack )
       rvs[i] -= Units.at(i)->au->getDark() * Units.at(i)->au->GetSetTime();
     cps[i] = rvs[i] / Units.at(i)->au->GetSetTime();
-#endif
   }
 }
 

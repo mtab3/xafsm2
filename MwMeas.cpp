@@ -563,7 +563,8 @@ void MainWindow::ShowTotal( void )
   TT -= Tm * 60;
   int Ts = (int)TT;
   TT -= Ts;
-  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+  //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+  buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // •bˆÈ‰º‚Ì¸“x‚Í•s—v
   TTime->setText( tr( "Time: " ) + buf );
 }
 

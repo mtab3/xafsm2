@@ -196,7 +196,9 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue §Œ√ ≥¨§«•¿°º•Ø ‰¿µ∫
   double I0;
   double Val;
   int i;
+  int DLC0;
   int DLC = 0;   // display line count
+  double sum;
 
   I0 = MeasCPSs[ MC_I0 ];
   MeasView->NewPoint( DLC, GoToKeV, I0 );
@@ -218,25 +220,27 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue §Œ√ ≥¨§«•¿°º•Ø ‰¿µ∫
         DLC++;
       }
     } else {  // MeasDispMode == FLUO
-      // MeasDispMode == FLUO §Œª˛§œ…¨§∫ 19ch SSD §À§ §√§∆§§§Î§¨•€•Û•»§œ∞„§¶
       if ( I0 < 1e-20 )
         I0 = 1e-20;
-      //MeasView->NewPoint( DLC, GoToKeV, Val/I0 * NowDwell ); // by H.A.
-      MeasView->NewPoint( DLC, GoToKeV, Val/I0 ); // §≥§≥§« Val §œ cps §À§∑§∆§¢§Î§Œ§« OK
-      DLC++;
-      if ( ( isSFluo )&&( ( DLC - 1 ) == SFluoLine ) ) {
+      if ( ( isSFluo )&&( DLC == SFluoLine ) ) {
+	DLC0 = DLC;
+	DLC++;
 	QVector<quint64> vals = SFluo->getCountsInROI();
 	QVector<double> darks = SFluo->getDarkCountsInROI();
+	sum = 0;
 	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  //MeasView->NewPoint( DLC, GoToKeV,
-	  //                    (double)vals[j] / I0 );            // Orig.
-	  //MeasView->NewPoint( DLC, GoToKeV,
-          //                    (double)vals[j] / I0 * NowDwell ); // by H.A.
-	  MeasView->NewPoint( DLC, GoToKeV,
-			      (double)vals[j] / I0 / SFluo->GetSetTime() // by M.T.
-			      - darks[j] );
+	  double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
+	  if ( SSDbs2[j]->isChecked() == PBTrue ) // œ¬§ÚºË§Î§Œ§œ¡™¬Ú§µ§Ï§ø SSD §¿§±
+	    sum += v;
+	  MeasView->NewPoint( DLC, GoToKeV, v );
 	  DLC++;
 	}
+	MeasView->NewPoint( DLC0, GoToKeV, sum );
+	// §≥§≥§« Val §œ cps §À§∑§∆§¢§Î§Œ§« OK
+      } else {
+	MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
+	// §≥§≥§« Val §œ cps §À§∑§∆§¢§Î§Œ§« OK
+	DLC++;
       }
     }
   }
@@ -252,20 +256,22 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   if ( MeasView == NULL )                // View §¨≥‰§Íø∂§È§Ï§∆§ §±§Ï§–≤ø§‚§∑§ §§
     return;
 
-  for ( int i = 0; i < MeasP; i++ ) {
+  int points = MeasView->GetPoints( 0 );
+
+  for ( int i = 0; i < points; i++ ) {
     sum[i] = 0;
   }
 
   for ( int l = 0; l < MaxSSDs; l++ ) {  // ¡™¬Ú§∑ƒæ§µ§Ï§ø SSD §Œ ch §À¥ÿ§∑§∆
     if ( SSDbs2[l]->isChecked() == PBTrue ) {
       y = MeasView->GetYp( SFluoLine + 1 + l );
-      for ( int i = 0; i < MeasP; i++ ) {  // πÁ∑◊§Ú§»§Í§ §™§π
+      for ( int i = 0; i < points; i++ ) {  // πÁ∑◊§Ú§»§Í§ §™§π
 	sum[i] += y[i];
       }
     }
   }
   y = MeasView->GetYp( SFluoLine );
-  for ( int i = 0; i < MeasP; i++ ) {
+  for ( int i = 0; i < points; i++ ) {
     y[i] = sum[i];
   }
   MeasView->update();
