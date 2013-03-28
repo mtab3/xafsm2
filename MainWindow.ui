@@ -1742,12 +1742,15 @@
                 <number>1</number>
                </property>
                <item row="2" column="5">
-                <widget class="QRadioButton" name="Use1303Format">
+                <widget class="QRadioButton" name="MakeInfoFile">
                  <property name="toolTip">
                   <string>Use novel 1303 data format to record the measured data instead of the usual 9809 format.</string>
                  </property>
                  <property name="text">
-                  <string>Use 1303 Format</string>
+                  <string>Make info File</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>

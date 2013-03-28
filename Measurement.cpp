@@ -35,6 +35,7 @@ void MainWindow::MeasSequence( void )
   case 0:
     CurrentRpt->setText( QString::number( 1 ) );
     CurrentPnt->setText( QString::number( 1 ) );
+    WriteInfoFile();
     mUnits.clearStage();
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );

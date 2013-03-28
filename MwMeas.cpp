@@ -803,6 +803,15 @@ void MainWindow::StartMeasurement( void )
       return;
     }
 
+    if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
+      if ( inMCAMeas ) {
+	QString msg = tr( "Meas cannot Start : in MCA measurement" );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+    }
+
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
     int LC = 0;    // mUnits に登録するユニットに対応したカウント
@@ -824,15 +833,9 @@ void MainWindow::StartMeasurement( void )
       LC++;
       isSI1 = true;
       aGsb.stat = PBFalse; aGsb.label = "I1"; GSBSs << aGsb;
-      aGsb.stat = PBTrue;  aGsb.label = "mu"; GSBSs << aGsb;
+      aGsb.stat = PBTrue;  aGsb.label = tr( "mu" ); GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
-      if ( inMCAMeas ) {   // 19ch 使うときは MCA の測定中はダメ
-	QString msg = tr( "Meas cannot Start : in MCA measurement" );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
