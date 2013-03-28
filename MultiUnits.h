@@ -6,7 +6,8 @@
 #include <QObject>
 #include "AUnit.h"
 
-struct MUElement {   // Multi Unit を構成するエレメント。
+struct MUElement
+ {   // Multi Unit を構成するエレメント。
                      //    ユニット(実際にはセンサーだけ)のポインタと、
                      //    dwell time を情報として持つ
   AUnit *au;

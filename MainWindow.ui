@@ -1749,6 +1749,9 @@
                  <property name="text">
                   <string>Use 1303 Format</string>
                  </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
                 </widget>
                </item>
                <item row="2" column="2" rowspan="2">
@@ -1864,6 +1867,9 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                  <property name="text">
                   <string>Record MCA Spectra</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>

@@ -1075,8 +1075,6 @@ void AUnit::receiveMCAs( void )
       ICRs        << getAMCAHead( i ).icr;
     }
 
-
-
     emit NewMCAsAvailable( MCAs );
   }
 }
