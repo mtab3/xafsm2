@@ -325,7 +325,7 @@ private slots:
   void ChangeBLKstart( void );
   void ChangeBLKstep( void );
   void ChangeBLKpoints( void );
-  void ChangeBLKdwell( const QString &dtime );
+  void ChangeBLKdwell( void );
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );

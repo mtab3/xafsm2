@@ -396,7 +396,7 @@ void MainWindow::RecordData( void )
                  u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
 
-    if ( MeasFileType != FLUO ) {
+    if ( MeasFileType != FLUO ) {    // FLUO の時は、I0 は SSD データの後ろ
       // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
         buf.sprintf( " %9d",                 // 整数 : %9d
@@ -425,8 +425,7 @@ void MainWindow::RecordData( void )
         QVector<quint64> vals = SFluo->getCountsInROI(); // vals は count
         QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps 
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
-          buf.sprintf(" %9d",
-		      (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
+          buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
           out << buf;
         }
         if ( MeasFileType == FLUO ) {
@@ -442,7 +441,7 @@ void MainWindow::RecordData( void )
         }
         QVector<double> icrs = SFluo->getICRs();
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
-          buf.sprintf(" %9d", (int)( icrs[j] * NowDwell ) );      // by H.A.
+          buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );      // by H.A.
           out << buf;
         }
         buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる

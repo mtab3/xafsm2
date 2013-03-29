@@ -133,8 +133,7 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */ /* setupSetupArea ‚ªæ
     connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
   }
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
-    connect( BLKdwell.at(i), SIGNAL( textChanged( const QString & ) ),
-	     this, SLOT(ChangeBLKdwell( const QString & )) );
+    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT( ChangeBLKdwell()));
   }
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
@@ -622,7 +621,7 @@ void MainWindow::ChangeBLKpoints( void )
   }
 }
 
-void MainWindow::ChangeBLKdwell( const QString & )
+void MainWindow::ChangeBLKdwell( void )
 {
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
     if ( BLKdwell.at(i) == sender() ) {

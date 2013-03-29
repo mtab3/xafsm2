@@ -557,6 +557,7 @@ double AUnit::SetTime( double dtime )   // in sec
   if (( Type == "SSD" )||( Type == "SSDP" )) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
+    s->SendCMD2( Uid, Driver, "RunStop" );   // コマンド連続発行可能か?
     s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
     setTime = dtime;
   }
