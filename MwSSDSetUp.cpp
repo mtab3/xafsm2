@@ -334,19 +334,30 @@ void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤
 
 void MainWindow::newROIStart( const QString &newv )
 {
-  ROIStart[ MCACh->text().toInt() ] = newv;
-  if ( cMCAView != NULL ) {
-    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-    cMCAView->update();
+  if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+    ROIStart[ MCACh->text().toInt() ] = newv;
+    if ( cMCAView != NULL ) {
+      cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+      cMCAView->update();
+    }
+  } else {
+    statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+    ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
   }
 }
 
+
 void MainWindow::newROIEnd( const QString &newv )
 {
-  ROIEnd[ MCACh->text().toInt() ] = newv;
-  if ( cMCAView != NULL ) {
-    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-    cMCAView->update();
+  if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+    ROIEnd[ MCACh->text().toInt() ] = newv;
+    if ( cMCAView != NULL ) {
+      cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+      cMCAView->update();
+    }
+  } else {
+    statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+    ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
   }
 }
 
@@ -479,8 +490,13 @@ void MainWindow::showCurrentValues( int atCur, int inROI )
 void MainWindow::setNewROI( int s, int e )
 {
   if ( sender() == cMCAView ) {
-    ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
-    ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+    if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+      ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
+      ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+    } else {
+      statusbar
+	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+    }
   }
 }
 

@@ -2,7 +2,8 @@
 
 #include "MainWindow.h"
 
-void MainWindow::setupMeasArea( void )   /* 測定エリア */ /* setupSetupArea が先 */
+void MainWindow::setupMeasArea( void )   /* 測定エリア */
+/* setupSetupArea が先に実行されているというのが前提 */
 {
   BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05
 	   << BLKs06 << BLKs07 << BLKs08 << BLKs09;

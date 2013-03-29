@@ -557,7 +557,7 @@ double AUnit::SetTime( double dtime )   // in sec
   if (( Type == "SSD" )||( Type == "SSDP" )) {
     IsBusy2 = true;
     emit ChangedIsBusy2( Driver );
-    s->SendCMD2( Uid, Driver, "RunStop" );   // コマンド連続発行可能か?
+    s->SendCMD2( Uid, Driver, "RunStop" );   // コマンド連続発行可能か? いちおういけてる
     s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
     setTime = dtime;
   }
@@ -1039,7 +1039,11 @@ void AUnit::receiveMCAs( void )
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
 
   dLinkCount += bytes;
-  //  qDebug() << bytes0 << bytes << dLinkCount << MCABUFSIZE;
+  QString debug = QString( "%1 %2 %3 %4" )
+    .arg( bytes0 ).arg( bytes ).arg( dLinkCount ).arg( MCABUFSIZE );
+  qDebug() << debug;
+  emit LogMsg( debug );
+
   if ( dLinkCount >= MCABUFSIZE ) {
     IsBusy2 = false;
     emit ChangedIsBusy2( Driver );
@@ -1075,7 +1079,8 @@ void AUnit::receiveMCAs( void )
       TotalEvents << 0;
       ICRs        << getAMCAHead( i ).icr;
     }
-
+    qDebug() << "emitted New MCAs";
+    emit LogMsg( "emitted New MCAs" );
     emit NewMCAsAvailable( MCAs );
   }
 }

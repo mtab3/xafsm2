@@ -318,6 +318,8 @@ signals:
   void NewRingCurrent( QString val, QStringList vals );
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
+
+  void LogMsg( QString msg );
 };
 
 #endif

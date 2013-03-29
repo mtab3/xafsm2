@@ -202,6 +202,7 @@ void MainWindow::InitAndIdentifySensors( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
     as->Initialize( s );
+    connect( as, SIGNAL( LogMsg( QString ) ), this, SLOT( NewLogMsg( QString ) ) );
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
