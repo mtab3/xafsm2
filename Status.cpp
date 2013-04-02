@@ -258,7 +258,8 @@ void Status::OnChangedIsBusy1( QString Drv )
   int cnt = DrvUnits.at(drv)->count();
   for ( i = 0; i < cnt; i++ ) {
     if ( DrvUnits.at(drv)->at(i)->isBusy() ) {
-      IBBx1s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->getName() );
+      IBBx1s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->getName()
+			       + ":" + DrvUnits.at(drv)->at(i)->lastFunc());
     }
   }
   if ( IBBx1s.at(drv)->count() > 0 ) {
@@ -285,7 +286,8 @@ void Status::OnChangedIsBusy2( QString Drv )
   int cnt = DrvUnits.at(drv)->count();
   for ( i = 0; i < cnt; i++ ) {
     if ( DrvUnits.at(drv)->at(i)->isBusy2() ) {
-      IBBx2s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->getName() );
+      IBBx2s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->getName()
+			       + ":" + DrvUnits.at(drv)->at(i)->lastFunc2());
     }
   }
   if ( IBBx2s.at(drv)->count() > 0 ) {
@@ -348,7 +350,8 @@ void Status::SelStatWatch( void )
 	cnt = DrvUnits.at(i)->count();
 	for ( int j = 0; j < cnt; j++ ) {
 	  if ( DrvUnits.at(i)->at(j)->isBusy() ) {
-	    IBBx1s.at(i)->addItem( DrvUnits.at(i)->at(j)->getName() );
+	    IBBx1s.at(i)->addItem( DrvUnits.at(i)->at(j)->getName()
+				   + ":" + DrvUnits.at(i)->at(j)->lastFunc() );
 	  }
 	}
 	LIB1s.at(i)->setStyleSheet( ( IBBx1s.at(i)->count() > 0 ) ? NGcolor : OKcolor );
@@ -357,7 +360,8 @@ void Status::SelStatWatch( void )
 	cnt = DrvUnits.at(i)->count();
 	for ( int j = 0; j < cnt; j++ ) {
 	  if ( DrvUnits.at(i)->at(j)->isBusy2() ) {
-	    IBBx2s.at(i)->addItem( DrvUnits.at(i)->at(j)->getName() );
+	    IBBx2s.at(i)->addItem( DrvUnits.at(i)->at(j)->getName()
+				   + ":" + DrvUnits.at(i)->at(j)->lastFunc2() );
 	  }
 	}
 	LIB2s.at(i)->setStyleSheet( ( IBBx2s.at(i)->count() > 0 ) ? NGcolor : OKcolor );

@@ -38,6 +38,8 @@ class AUnit : public QObject
   QString DevCh;        // Driver + "." + Ch
   QString DevCh2;       // 2nd DevCh
   QString Unit;         // metric unit "mm", "mA", ...
+  QString LastFunc;     // last function which enabled isBusy
+  QString LastFunc2;    // last function which enabled isBusy2
   double UPP;           // Unit per Puls : only for PM
   bool IsInt;           // if the controlling unit is integer or not.
   bool HasParent;       // if the unit have parent (group leader).
@@ -226,6 +228,8 @@ public:
   int getRangeL( void ) { return RangeL; };
   int getRange( void ) { return SelectedRange; };
   double getDark( void ) { return Dark; };
+  QString lastFunc( void ) { return LastFunc; };
+  QString lastFunc2( void ) { return LastFunc2; };
 
   QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
   QVector<quint64> getCountsAll( void ) { return CountsAll; };
