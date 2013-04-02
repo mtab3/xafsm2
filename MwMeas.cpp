@@ -846,6 +846,9 @@ void MainWindow::StartMeasurement( void )
       for ( int i = 0; i < MaxSSDs; i++ ) {
 	aGsb.stat = PBFalse; aGsb.label = QString::number( i ); GSBSs << aGsb;
       }
+      SFluo->setSSDPresetType( "REAL" );   // SSD ‚ðŽg‚Á‚½ XAFS ‘ª’è‚Í‹­§“I‚É Real Time
+      SelRealTime->setChecked( true );
+      SelLiveTime->setChecked( false );
     }
     if ( UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;

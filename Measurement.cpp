@@ -53,14 +53,14 @@ void MainWindow::MeasSequence( void )
     statusbar->showMessage( tr( "Writing Header." ), 2000 );
     WriteHeader( MeasR );
     MeasStage = 3;
-    // break;       MeasStage == 1 の動作はレスポンスを待つ必要なし
+    // break;       MeasStage == 2 の動作はレスポンスを待つ必要なし
   case 3: 
     MeasS = 0;    // Measurement Step count in each block
     mUnits.setDwellTimes( NowDwell = SBlockDwell[ MeasB ] );
     mUnits.setDwellTime();
     MeasStage = 4;
-    // break;       MeasStage == 2 もレスポンスを待つ必要なし
-    //              (ここで操作したのはセンサーで, Stage == 3 でセンサーを操作しないから)
+    // break;       MeasStage == 3 もレスポンスを待つ必要なし
+    //              (ここで操作したのはセンサーで, Stage == 4 でセンサーを操作しないから)
   case 4:
     Delta = u->keV2any( SBLKUnit, SBlockStart[MeasB+1] )
       - u->keV2any( SBLKUnit, SBlockStart[MeasB] );
@@ -109,6 +109,7 @@ void MainWindow::MeasSequence( void )
 	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
 	ClearXViewScreenForMeas( MeasView );
 	WriteHeader2( MeasR );
+	WriteInfoFile2();
 	MeasR++;
 	CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	MeasStage = 2;
@@ -116,6 +117,7 @@ void MainWindow::MeasSequence( void )
 	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
 	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
 	WriteHeader2( MeasR );
+	WriteInfoFile2();
 	MeasTimer->stop();
 	inMeas = 0;
 	MeasStart->setText( tr( "Start" ) );

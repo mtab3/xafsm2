@@ -287,6 +287,7 @@ private:
   void ShowTotal( void );
   void CpBlock2SBlock( void );
   void WriteInfoFile( void );
+  void WriteInfoFile2( void );
   void WriteHeader( int Rpt );
   void WriteHeader2( int Rpt );
   void SetDispMeasModes( void );

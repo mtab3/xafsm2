@@ -264,34 +264,62 @@ void MainWindow::WriteHeader( int Rpt )
 
 void MainWindow::WriteInfoFile( void )
 {
+  if ( ! MakeInfoFile->isChecked() )
+    return;
+
   QFile f( DFName0 + ".info" );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
   QTextStream out( &f );
 
-  if ( MakeInfoFile->isChecked() ) {
-    out << "Channel Names:";
-    for ( int i = 0; i < mUnits.count(); i++ )
-      out << QString( " \"%1\"" ).arg( mUnits.at(i)->getName() );
-    out << endl;
-    
-    out << "Select Button Names:";
-    for ( int i = 0; i < GSBs.count(); i++ )
-      out << QString( " \"%1\"" ).arg( GSBs[i]->text() );
-    out << endl;
-    
-    out << "Select Button State:";
-    for ( int i = 0; i < GSBs.count(); i++ )
-      out << QString( " \"%1\"" ).arg( GSBs[i]->isChecked() );
-    out << endl;
-
-    if ( isSFluo ) {
-      out << "Sum up channel : " << SFluoLine << " :";
-      for ( int i = 0; i < 19; i++ ) {
-        out << " " << SFluoLine + i + 1;
-      }
-      out << endl;
+  out << "Version :" << " 1303" << endl;
+  out << "Channel Names:";
+  for ( int i = 0; i < mUnits.count(); i++ )
+    out << QString( " \"%1\"" ).arg( mUnits.at(i)->getName() );
+  out << endl;
+  
+  out << "Select Button Names:";
+  for ( int i = 0; i < GSBs.count(); i++ )
+    out << QString( " \"%1\"" ).arg( GSBs[i]->text() );
+  out << endl;
+  
+  out << "Select Button State:";
+  for ( int i = 0; i < GSBs.count(); i++ )
+    out << QString( " \"%1\"" ).arg( GSBs[i]->isChecked() );
+  out << endl;
+  
+  if ( isSFluo ) {
+    out << "Sum Up Channels: " << SFluoLine << " ";
+    for ( int i = 0; i < 19; i++ ) {
+      out << " " << SFluoLine + i + 1;
     }
+    out << endl;
+  }
+
+  f.close();
+}
+
+void MainWindow::WriteInfoFile2( void )
+{
+  if ( ! MakeInfoFile->isChecked() )
+    return;
+
+  QFile f( DFName0 + ".info" );
+  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
+    return;
+  QTextStream out( &f );
+
+  if ( isSFluo ) {
+    out << "Finally Used SSD Channels:";
+    for ( int i = 0; i < 19; i++ ) {
+      out << " " << i;
+      if ( SSDbs2[i]->isChecked() == PBTrue ) {
+	out << " 1";
+      } else {
+	out << " 0";
+      }
+    }
+    out << endl;
   }
 
   f.close();

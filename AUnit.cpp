@@ -581,7 +581,7 @@ void AUnit::Stop( void )
   }
 }
 
-double AUnit::SetTime( double dtime )   // in sec
+double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数ステップ化できない
 {
   double time;
   long int ltime;
