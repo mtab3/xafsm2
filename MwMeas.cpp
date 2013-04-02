@@ -17,7 +17,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   if ( SFluo == NULL ) 
     Use19chSSD->setEnabled( false );
 
-  BLKUnit = KEV;
+  BLKUnit = (UNIT)DefaultUnit;
   ClearBLKs();
   ChangeBLKs( 4 );
   for ( int i = 0; i < UNITS; i++ ) {
@@ -789,7 +789,10 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
 			      .arg( MMainTh->getName() ), 2000 );
     }
-
+    if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
+      statusbar->showMessage( "The block parameter is out of range.", 2000 );
+      return;
+    }
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
@@ -802,7 +805,6 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
-
     if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
       if ( inMCAMeas ) {
 	QString msg = tr( "Meas cannot Start : in MCA measurement" );
@@ -811,6 +813,7 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
     }
+    
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
@@ -1066,6 +1069,19 @@ void MainWindow::CpBlock2SBlock( void )
     SBlockPoints[i] = BlockPoints[i];
     SBlockDwell[i] = BlockDwell[i];
   }
+}
+
+bool MainWindow::CheckBlockRange( void )
+{
+  Blocks;
+  BLKUnit;
+  for ( int i = 0; i <= Blocks; i++ ) {
+    if (( u->keV2any( EV, u->any2keV( BLKUnit, BlockStart[i] ) ) < MinEnergyInEV )
+	||( u->keV2any( EV, u->any2keV( BLKUnit, BlockStart[i] ) ) > MaxEnergyInEV )) {
+      return false;
+    }
+  }
+  return true;
 }
 
 void MainWindow::PauseMeasurement( void )

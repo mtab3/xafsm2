@@ -1,4 +1,8 @@
-# XAFS-M setting file : Edited 2012/10/03
+# XAFS-M setting file : Edited 2013/04/02
+
+# What is New
+# 2013/04/03 add 'ENERGYRANGE' line
+# 2013/04/03 add 'DEFAULTUNIT' line
 
 #
 # In this definition file,
@@ -46,6 +50,19 @@ GAS      "No.6 Ar         "             "Ar" 1.000 ""
 ICLENGTH "I0 ch (14cm)" "I0" 14 "cm"
 ICLENGTH "I1 ch (28cm)" "I1" 28 "cm"
 ICLENGTH "I2 ch (28cm)" ""   28 "cm"
+
+#
+# Define energy range. 
+# To check the range where the monochromator can go.
+# It should be written in the unit 'eV'.
+#
+ENERGYRANGE 3500 25000
+
+#
+# Define default unit to control monochromator
+# 0: eV, 1: keV, 2: angstrome, 3: deg
+#
+DEFAULTUNIT 0
 
 # define the groups of atoms which can be measured.
 AGROUP 0 "H"  "U"  ""                    # To use user defined color, 

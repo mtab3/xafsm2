@@ -39,9 +39,9 @@ void MainWindow::setupSetupArea( void )   /* Ý’èƒGƒŠƒA */
       GoUnit[j]->addItem( QString( UnitName[i].name ) );
     }
   }
-  GoUnit0->setCurrentIndex( KEV );
+  GoUnit0->setCurrentIndex( DefaultUnit );
   for ( int i = 0; i < GOS; i++ ) {
-    GoUnit[i]->setCurrentIndex( KEV );
+    GoUnit[i]->setCurrentIndex( DefaultUnit );
   }
   ShowAllGos();
 

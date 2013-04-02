@@ -146,6 +146,11 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); iclen->length = item.toDouble();
 	next = nextItem( next, item ); iclen->UName = item;
 	ICLengths << iclen;
+      } else if ( item == "ENERGYRANGE" ) {
+	next = nextItem( next, item ); MinEnergyInEV = item.toDouble();
+	next = nextItem( next, item ); MaxEnergyInEV = item.toDouble();
+      } else if ( item == "DEFAULTUNIT" ) {
+	next = nextItem( next, item ); DefaultUnit = item.toInt();
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

@@ -69,6 +69,8 @@ private:
   QVector<IonChLength*> ICLengths;
   void CheckDuplicateUID( void );
   void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
+  double MinEnergyInEV, MaxEnergyInEV;
+  int DefaultUnit;
 
   /* cfg. */
   SelMC2 *selmc;
@@ -286,6 +288,7 @@ private:
 
   void ShowTotal( void );
   void CpBlock2SBlock( void );
+  bool CheckBlockRange( void );
   void WriteInfoFile( void );
   void WriteInfoFile2( void );
   void WriteHeader( int Rpt );

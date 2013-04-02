@@ -197,6 +197,12 @@ void MainWindow::MoveCurThPosKeV( double keV ) // •ªŒõŠí‚ÌˆÚ“®Žw—ß(keV’PˆÊ‚ÅˆÊ’u
 {
   MMainTh->setIsBusy( true );
 
+  if (( u->keV2any( EV, keV ) < MinEnergyInEV )
+      ||( u->keV2any( EV, keV ) > MaxEnergyInEV )) {
+    statusbar->showMessage( "The position to go is out of range.", 2000 );
+    return;
+  }
+    
   if ( SelThEncorder->isChecked() ) {
     MMainTh->SetValue( ( u->keV2deg( keV ) - EncMainTh->value().toDouble() )
 		       / MMainTh->getUPP() + MMainTh->value().toInt() );
