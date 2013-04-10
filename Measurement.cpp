@@ -5,17 +5,17 @@ void MainWindow::MeasSequence( void )
   double Delta;
   bool a1, a2;
 
-  if ( inMeasDark )
-    return;
+  if ( inMeasDark ) return;
+  if (( AskingOverwrite )||( MakingSureOfRangeSelect )) return;
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
 
-  if (( AskingOverwrite )||( MakingSureOfRangeSelect ))
-    return;
+  NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
 
-  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
+  if ( QXafsMode->isChecked() ) {
+    QXafsMeasSequence();
     return;
   }
 
-  NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
   switch( MeasStage ) {
     /* 
        0: Â¬Äê³«»Ï Repeat = 0

@@ -18,6 +18,7 @@ public:
   bool isEncAsTh( void );
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );
+  bool isMakeInfo( void );
 };
 
 #endif

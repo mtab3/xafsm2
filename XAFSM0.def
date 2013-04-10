@@ -17,6 +17,21 @@ XAFSName  "XafsM2"
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
 
+#
+# Define if Quick-Xafs Mode is available or not
+#
+#  QXAFSMODE 1 6000 15000
+#  QXAFSMODE 0 6000 15000
+#
+# 0 : not available  :: default
+# 1 : available
+#  6000 : standard pps
+# 15000 : highest pps
+#   100 : low speed pps (the value set as Low Speed)
+#   0.1 : run up rate [ms/pps]
+#
+QXAFSMODE 1 6000 15000 100 0.1
+
 # now the keyword STARSDRIVER is obsolete
 
 # 'CRYSTAL' lines define crystals which can be used at the baam line.
@@ -312,3 +327,10 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #   NO               : If the sensor has a parente (group leader) or not. YES or NO
 #   ""               : The identifier of the parent (group reader)
 
+#
+# the DV is Agilent34410
+#
+SENSOR DV "S036" "QXAFS-I0" "Agilent34410-1" "simmotor" "SNSKth1" "V" NO ""
+SENSOR DV "S037" "QXAFS-I1" "Agilent34410-2" "simmotor" "SNSKth2" "V" NO ""
+#SENSOR DV "S036" "QXAFS" "Agilent34410-1" "a34410a-1" "" "V" NO ""
+#SENSOR DV "S037" "QXAFS" "Agilent34410-2" "a34410a-2" "" "V" NO ""

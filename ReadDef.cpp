@@ -99,6 +99,7 @@ void MainWindow::ReadDef( QString fname )
 	  } else if ( type == "SSDP" ) {
 	  } else if ( type == "SSD" ) {
 	  } else if ( type == "LSR" ) {
+	  } else if ( type == "DV" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }
@@ -151,6 +152,12 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); MaxEnergyInEV = item.toDouble();
       } else if ( item == "DEFAULTUNIT" ) {
 	next = nextItem( next, item ); DefaultUnit = item.toInt();
+      } else if ( item == "QXAFSMODE" ) {
+	next = nextItem( next, item ); isQXafsModeAvailable = item.toInt();
+	next = nextItem( next, item ); OrigHSpeed = item.toInt();
+	next = nextItem( next, item ); MaxHSpeed = item.toInt();
+	next = nextItem( next, item ); LowSpeed = item.toInt();
+	next = nextItem( next, item ); RunUpRate = item.toDouble();
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

@@ -30,6 +30,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MonDataStat = MonNameStat = OLD;
   MCADataStat = MCANameStat = OLD;
 
+  isQXafsModeAvailable = false;
+
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
   u = new Units;
@@ -76,6 +78,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   } else {
     MainTab->removeTab( MainTab->indexOf( SSDTab ) );
   }
+  setupQXafsMode();
   setupMeasArea();
   setupReadDataArea();
 
@@ -121,6 +124,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   this, SLOT( SomeDrvIsConnected( SMsg ) ) );
   connect( s, SIGNAL( EvDisconnected( SMsg ) ),
 	   this, SLOT( SomeDrvIsDisconnected( SMsg ) ) );
+
+  if ( ! isQXafsModeAvailable ) {
+    QXafsMode->setChecked( false );
+    QXafsMode->setEnabled( false );
+  }
 
   GoTimer = new QTimer;
   MCATimer = new QTimer;

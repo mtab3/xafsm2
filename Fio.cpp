@@ -264,7 +264,7 @@ void MainWindow::WriteHeader( int Rpt )
 
 void MainWindow::WriteInfoFile( void )
 {
-  if ( ! MakeInfoFile->isChecked() )
+  if ( ! conds->isMakeInfo() )
     return;
 
   QFile f( DFName0 + ".info" );
@@ -301,7 +301,7 @@ void MainWindow::WriteInfoFile( void )
 
 void MainWindow::WriteInfoFile2( void )
 {
-  if ( ! MakeInfoFile->isChecked() )
+  if ( ! conds->isMakeInfo() )
     return;
 
   QFile f( DFName0 + ".info" );

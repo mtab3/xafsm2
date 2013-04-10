@@ -11,6 +11,7 @@ const MsgTyp MsgT[] = {
   { "@SpeedHigh", SPEEDHIGH },
   { "@SpeedMiddle", SPEEDMIDDLE },
   { "@SpeedLow", SPEEDLOW },
+  { "@SetHighSpeed", SETHIGHSPEED },
   { "@Stop", STOP },
   { "@Remote", REMOTE },
   { "@StopEmergency", STOPEMERGENCY },

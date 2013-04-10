@@ -121,7 +121,6 @@ private:
 
   MEASMODE MeasFileType;
 
-
   AtomNo SelectedA;
   PeriodicTable *PT;
   AbEN SelectedE;
@@ -216,6 +215,7 @@ private:
   QVector<QLineEdit *> BLKstep;
   QVector<QLineEdit *> BLKdwell;
   QVector<QLineEdit *> BLKpoints;
+  QVector<QLabel *> BLKlabels;
 
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> SSDbs2;
@@ -311,6 +311,19 @@ private:
   void ClearXViewScreenForScan( XYView *view );
 
   void SetEnableOfUnits( QString drv, bool enable );
+
+  // QXAFS
+  bool isQXafsModeAvailable;
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
+  bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsSteps;
+  double RunUpRate, RunUpTime;
+
+  void setupQXafsMode( void );
+  void CheckQXafsParams( void );
+  void HideBLKs( bool f );
+  void GetPM16CParamsForQXAFS( void );
 
 private slots:
   void Initialize( void );
@@ -486,6 +499,10 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
   void SetNewGases( void );
   //  void showMCAs( void );
+
+  // QXafs
+  void ToggleQXafsMode( bool f );
+  void QXafsMeasSequence( void );
 
  signals:
   void SelectedSSD( int i, bool f );

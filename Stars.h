@@ -72,6 +72,7 @@ signals:
   void AnsGetValue( SMsg msg );
   void AnsSetSpeed( SMsg msg );
   void AnsGetSpeed( SMsg msg );
+  void AnsSetHighSpeed( SMsg msg );
   void AnsStop( SMsg msg );
   void AnsReset( SMsg msg );
   void AnsSetDataFormat( SMsg msg );

@@ -96,8 +96,8 @@ class AUnit : public QObject
   double dlastSetV;
 
  private:
-  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
-		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2, int lsr );
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
+		int cnt2, int sc, int otc, int otc2, int lsr, int dv );
   void ConnectToDataLinkServer( QString host, qint16 port );
 
  private slots:
@@ -265,6 +265,15 @@ public:
   void RunResume( void );
   void AskIsBusy( void );
   void SetSpeed( MSPEED speed );
+  void SetHighSpeed( int speed );
+  void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
+  void SetTimingOutMode( int mode );
+  // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
+  // 34410 triggers rising edge and requires 1us or longer
+  // for EB741 2us is long enough
+  void SetTimingOutStart( int startP );   // start position of timing out
+  void SetTimingOutEnd( int endP );       // end position of timing out
+  void SetTimingOutInterval( int interval );  // timing out interval
   double SetTime( double dtime );   // in sec
   void Stop( void );
 #if 0                   // new mcas

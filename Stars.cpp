@@ -206,6 +206,8 @@ void Stars::ReceiveMessageFromStars( void )
 	case SPEEDMIDDLE:
 	case SPEEDLOW:
 	  emit AnsSetSpeed( smsg ); break;
+	case SETHIGHSPEED:
+	  emit AnsSetHighSpeed( smsg ); break;
 	case REMOTE: break;
 	  emit AnsRemote( smsg ); break;
 	case STOP:

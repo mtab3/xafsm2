@@ -536,7 +536,7 @@
         <property name="spacing">
          <number>1</number>
         </property>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QFrame" name="frame_19">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -833,7 +833,7 @@
                 </widget>
                </item>
                <item row="2" column="0">
-                <widget class="QLabel" name="label_27">
+                <widget class="QLabel" name="BLKL01">
                  <property name="autoFillBackground">
                   <bool>false</bool>
                  </property>
@@ -859,7 +859,7 @@
                 </widget>
                </item>
                <item row="3" column="0">
-                <widget class="QLabel" name="label_47">
+                <widget class="QLabel" name="BLKL02">
                  <property name="text">
                   <string>2</string>
                  </property>
@@ -883,7 +883,7 @@
                 </widget>
                </item>
                <item row="4" column="0">
-                <widget class="QLabel" name="label_68">
+                <widget class="QLabel" name="BLKL03">
                  <property name="text">
                   <string>3</string>
                  </property>
@@ -940,7 +940,10 @@
                 </widget>
                </item>
                <item row="1" column="4">
-                <widget class="QLabel" name="label_82">
+                <widget class="QLabel" name="LDwellOrMeasureTime">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normally the dwell-inputs indicate dwell-times for each measurement step,&lt;/p&gt;&lt;p&gt;but in the Q-XAFS mode, it indicates total measurement time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="text">
                   <string>Dwell [s]</string>
                  </property>
@@ -999,7 +1002,7 @@
                 </widget>
                </item>
                <item row="11" column="3">
-                <widget class="QLabel" name="label_83">
+                <widget class="QLabel" name="BLKLAll">
                  <property name="text">
                   <string>All: </string>
                  </property>
@@ -1051,7 +1054,7 @@
                 </widget>
                </item>
                <item row="5" column="0">
-                <widget class="QLabel" name="label_84">
+                <widget class="QLabel" name="BLKL04">
                  <property name="text">
                   <string>4</string>
                  </property>
@@ -1075,7 +1078,7 @@
                 </widget>
                </item>
                <item row="6" column="0">
-                <widget class="QLabel" name="label_85">
+                <widget class="QLabel" name="BLKL05">
                  <property name="text">
                   <string>5</string>
                  </property>
@@ -1113,7 +1116,7 @@
                 </widget>
                </item>
                <item row="8" column="0">
-                <widget class="QLabel" name="label_86">
+                <widget class="QLabel" name="BLKL06">
                  <property name="text">
                   <string>6</string>
                  </property>
@@ -1123,7 +1126,7 @@
                 </widget>
                </item>
                <item row="11" column="0">
-                <widget class="QLabel" name="label_87">
+                <widget class="QLabel" name="BLKL09">
                  <property name="text">
                   <string>9</string>
                  </property>
@@ -1140,7 +1143,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLabel" name="label_88">
+                <widget class="QLabel" name="LStartPoint">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                    <horstretch>0</horstretch>
@@ -1159,7 +1162,7 @@
                 </widget>
                </item>
                <item row="1" column="2">
-                <widget class="QLabel" name="label_89">
+                <widget class="QLabel" name="LStepOrEndPoint">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                    <horstretch>0</horstretch>
@@ -1178,7 +1181,7 @@
                 </widget>
                </item>
                <item row="1" column="3">
-                <widget class="QLabel" name="label_90">
+                <widget class="QLabel" name="LSteps">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -1246,7 +1249,7 @@
                 </widget>
                </item>
                <item row="9" column="0">
-                <widget class="QLabel" name="label_96">
+                <widget class="QLabel" name="BLKL07">
                  <property name="text">
                   <string>7</string>
                  </property>
@@ -1256,7 +1259,7 @@
                 </widget>
                </item>
                <item row="10" column="0">
-                <widget class="QLabel" name="label_97">
+                <widget class="QLabel" name="BLKL08">
                  <property name="text">
                   <string>8</string>
                  </property>
@@ -1283,12 +1286,19 @@
                </item>
               </layout>
              </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="QMeasOnBackward">
+               <property name="text">
+                <string>Mesure on Backward</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="QFrame" name="frame_7">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -1373,7 +1383,87 @@
           </layout>
          </widget>
         </item>
-        <item row="0" column="3" rowspan="5">
+        <item row="5" column="1">
+         <widget class="QFrame" name="frame_20">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(215, 225, 210);</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_47">
+           <property name="margin">
+            <number>3</number>
+           </property>
+           <property name="spacing">
+            <number>1</number>
+           </property>
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>Current Pos.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>Rpt.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="CurrentRpt">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(250, 255, 240);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_34">
+             <property name="text">
+              <string>Point</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="CurrentPnt">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(250, 255, 240);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3" rowspan="6">
          <layout class="QGridLayout" name="gridLayout_28">
           <property name="spacing">
            <number>1</number>
@@ -1742,15 +1832,15 @@
                 <number>1</number>
                </property>
                <item row="2" column="5">
-                <widget class="QRadioButton" name="MakeInfoFile">
+                <widget class="QRadioButton" name="QXafsMode">
                  <property name="toolTip">
                   <string>Use novel 1303 data format to record the measured data instead of the usual 9809 format.</string>
                  </property>
                  <property name="text">
-                  <string>Make info File</string>
+                  <string>Q-XAFS mode</string>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
@@ -2177,7 +2267,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           </property>
          </spacer>
         </item>
-        <item row="5" column="3">
+        <item row="6" column="3">
          <spacer name="verticalSpacer_7">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -2190,85 +2280,18 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           </property>
          </spacer>
         </item>
-        <item row="4" column="1">
-         <widget class="QFrame" name="frame_20">
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(215, 225, 210);</string>
+        <item row="4" column="0">
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
           </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_47">
-           <property name="margin">
-            <number>3</number>
-           </property>
-           <property name="spacing">
-            <number>1</number>
-           </property>
-           <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string>Current Pos.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>Rpt.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="CurrentRpt">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(250, 255, 240);</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_34">
-             <property name="text">
-              <string>Point</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLabel" name="CurrentPnt">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(250, 255, 240);</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
