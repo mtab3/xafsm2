@@ -42,7 +42,9 @@ void MainWindow::ToggleQXafsMode( bool )
     Use19chSSD->setEnabled( false );
     UseAux1->setEnabled( false );
     UseAux2->setEnabled( false );
+
   } else {
+
     SelBLKs->setEnabled( true );
     ChangeBLKs( SaveNowBlocks );
     HideBLKs( false );
@@ -179,6 +181,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
     // don't break
   case 10:
+    MMainTh->SetHighSpeed( OrigHSpeed );
     statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
     //    WriteHeader2( MeasR );
