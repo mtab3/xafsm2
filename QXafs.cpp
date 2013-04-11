@@ -42,7 +42,9 @@ void MainWindow::ToggleQXafsMode( bool )
     Use19chSSD->setEnabled( false );
     UseAux1->setEnabled( false );
     UseAux2->setEnabled( false );
+
   } else {
+
     SelBLKs->setEnabled( true );
     ChangeBLKs( SaveNowBlocks );
     HideBLKs( false );
