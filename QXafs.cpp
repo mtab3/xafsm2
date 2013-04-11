@@ -106,6 +106,7 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   else 
     QXafsInterval = 1;
   QXafsSteps = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;
+  QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
 
   RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
@@ -136,39 +137,47 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage = 1;
     break;
   case 1:
-    if ( ( mUnits.init() == false ) 
+    if ( ( mUnits.init() == false ) // SetDataSlope までこの中にある
 	 && ( MMainTh->busy2Count() == 0 ) ) {  // true :: initializing
       MeasR = 0;    // Measurement Repeat count
-      mUnits.clearStage();
       MeasStage = 2;
     }
-    MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
     break;
   case 2:
+    mUnits.setDwellTimes( QXafsDwellTime );
+    mUnits.setDwellTime();
+    MeasStage = 3;
+    break;
+  case 3:
+    mUnits.start();
+    MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+    MeasStage = 4;
+    break;
+  case 4:
     MeasR++;
     if ( MeasR > SelRPT->value() ) {// 終了処理に入る!!
-      MeasStage = 10;
+      MeasStage = 99;
       break;
     }
     //    WriteHeader( MeasR );
-    MeasStage = 3;
-  case 3:
+    MeasStage = 5;
+  case 5:
     MMainTh->SetTimingOutMode( 3 );
     MMainTh->SetTimingOutStart( QXafsSP0 );
     MMainTh->SetTimingOutEnd( QXafsEP0 );
     MMainTh->SetTimingOutInterval( QXafsInterval );
     MMainTh->SetTimingOutReady( 1 );
-    MeasStage = 4;
-    break;
-  case 4:
-    MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
-    MeasStage = 5;
-    break;
-  case 5:
-    // ReadOutStage 
     MeasStage = 6;
     break;
   case 6:
+    MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
+    MeasStage = 7;
+    break;
+  case 7:
+    // ReadOutStage 
+    MeasStage = 8;
+    break;
+  case 8:
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       MMainTh->SetTimingOutMode( 3 );
       MMainTh->SetTimingOutStart( QXafsEP0 );
@@ -179,22 +188,22 @@ void MainWindow::QXafsMeasSequence( void )
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
     }
-    MeasStage = 7;
+    MeasStage = 9;
     break;
-  case 7:
+  case 9:
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
-      MeasStage = 8;
+      MeasStage = 10;
     } else {
-      MeasStage = 2;
+      MeasStage = 4;
     }
     break;
-  case 8:
+  case 10:
     // ReadOutStage
-    MeasStage = 2;
+    MeasStage = 4;
     break;
     // don't break
-  case 10:
+  case 99:
     MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
     MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す
     statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );

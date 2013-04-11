@@ -81,6 +81,19 @@ const MsgTyp MsgT[] = {
   { "@GetDataLinkCh", GETDATALINKCH },
   { "@GetMCAs", GETMCAS },
 
+  { "@SetAperture", SETAPERTURE },
+  { "@SetTriggerDelay", SETTRIGGERDELAY },
+  { "@SetSamplingSource", SETSAMPLINGSOURCE },
+  { "@SetTriggerSource", SETTRIGGERSOURCE },
+
+  { "@SetTriggerCounts", SETTRIGGERCOUNTS },
+  { "@SetTriggerSlope", SETTRIGGERSLOPE },
+  { "@GetDataPoints", GETDATAPOINTS },
+  { "@ReadDataPoints", READDATAPOINTS },
+  { "@Abort", ABORT },
+  { "@SetAutoZero", SETAUTOZERO },
+  { "@Record", SETAUTOZERO },
+
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },

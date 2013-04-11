@@ -131,6 +131,18 @@ signals:
   void AnsSetMode( SMsg msg );
   void AnsSetCountPreset( SMsg msg );
 
+  void AnsSetAperture( SMsg msg );
+  void AnsSetTriggerDelay( SMsg msg );
+  void AnsSetSamplingSource( SMsg msg );
+  void AnsSetTriggerSource( SMsg msg );
+  void AnsSetTriggerCounts( SMsg msg );
+  void AnsSetTriggerSlope( SMsg msg );
+  void AnsGetDataPoints( SMsg msg );
+  void AnsReadDataPoints( SMsg msg );
+  void AnsAbort( SMsg msg );
+  void AnsSetAutoZero( SMsg msg );
+  void AnsRecord( SMsg msg );
+
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );
   void EvChangedValue( SMsg msg );

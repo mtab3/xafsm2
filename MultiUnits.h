@@ -41,6 +41,7 @@ class MUnits : public QObject
   void readValue( double *rvs, double *cpss, bool correctBack );
   QString getName( int i ) { return Units.at(i)->au->getName(); };
   QString getUnit( int i ) { return Units.at(i)->au->getUnit(); };
+  bool start( void );
 #if 0
   bool getMCA( int ch );
 #endif

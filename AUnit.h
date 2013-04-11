@@ -52,6 +52,7 @@ class AUnit : public QObject
   int SelectedRange;
   double setTime;       // Actually set time;
   double setDarkTime;   // Actually set time;
+  int points;           // Measured Data Points : 34410
 
   double Center;        // Center position in puls : only for PM
 
@@ -231,6 +232,7 @@ public:
   double getDark( void ) { return Dark; };
   QString lastFunc( void ) { return LastFunc; };
   QString lastFunc2( void ) { return LastFunc2; };
+  int Points( void ) { return points; };
 
   QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
   QVector<quint64> getCountsAll( void ) { return CountsAll; };
@@ -265,6 +267,7 @@ public:
   void RunStop( void );
   void RunResume( void );
   void AskIsBusy( void );
+  bool Start( void );                 // QXAFS
   void SetSpeed( MSPEED speed );
   void SetHighSpeed( int speed );
   void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
@@ -278,6 +281,17 @@ public:
   void SetTimingOutReady( int ready );  // timing out ready
   double SetTime( double dtime );   // in sec
   void Stop( void );
+
+  // 3440
+  void SetTriggerDelay( double time );
+  void SetSamplingSource( QString source );
+  void SetTriggerSource( QString source );
+  void SetTriggerCounts( int count );
+  void SetTriggerSlope( QString type );
+  void GetDataPoints( void );
+  void ReadDataPoints( int points );
+  void Abort( void );
+
 #if 0                   // new mcas
   bool GetMCA( int ch );
 #endif
@@ -315,17 +329,22 @@ public slots:
   void OnReportCurrent( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
 
+  void RcvDataPoints( SMsg msg );
+  void RcvReadData( SMsg msg );
+
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
 
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
+  void newValues( void );
   void newDark( double dark );
   void newCountsInROI( QVector<int> );
   void newCountsAll( QVector<int> );
   void newTotalEvents( QVector<int> );
   void newICRs( QVector<double> );
+  void newDataPoints( int points );
 
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );

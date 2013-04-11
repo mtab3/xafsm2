@@ -322,6 +322,28 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetMode( smsg ); break;
 	case SETCOUNTPRESET:
 	  emit AnsSetCountPreset( smsg ); break;
+	case SETAPERTURE:
+	  emit AnsSetAperture( smsg ); break;
+	case SETTRIGGERDELAY:
+	  emit AnsSetTriggerDelay( smsg ); break;
+	case SETSAMPLINGSOURCE:
+	  emit AnsSetSamplingSource( smsg ); break;
+	case SETTRIGGERSOURCE:
+	  emit AnsSetTriggerSource( smsg ); break;
+	case SETTRIGGERCOUNTS:
+	  emit AnsSetTriggerCounts( smsg ); break;
+	case SETTRIGGERSLOPE:
+	  emit AnsSetTriggerSlope( smsg ); break;
+	case GETDATAPOINTS:
+	  emit AnsGetDataPoints( smsg ); break;
+	case READDATAPOINTS:
+	  emit AnsReadDataPoints( smsg ); break;
+	case ABORT:
+	  emit AnsAbort( smsg ); break;
+	case SETAUTOZERO:
+	  emit AnsSetAutoZero( smsg ); break;
+	case RECORD:
+	  emit AnsRecord( smsg ); break;
 	default:
 	  break;
 	}

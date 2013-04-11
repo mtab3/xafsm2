@@ -318,7 +318,7 @@ private:
   bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsSteps;
-  double RunUpRate, RunUpTime;
+  double RunUpRate, RunUpTime, QXafsDwellTime;
 
   void setupQXafsMode( void );
   void CheckQXafsParams( void );

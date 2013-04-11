@@ -72,6 +72,20 @@ void MUnits::clearStage( void )
   }
 }
 
+bool MUnits::start( void )   // QXAFS
+{
+  bool ff = false;
+
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    ff |= PUnits.at(i)->au->Start();
+  }
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->Start();
+  }
+
+  return ff;
+}
+
 bool MUnits::init( void )
 {
   bool ff = false;
