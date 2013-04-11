@@ -12,6 +12,14 @@ const MsgTyp MsgT[] = {
   { "@SpeedMiddle", SPEEDMIDDLE },
   { "@SpeedLow", SPEEDLOW },
   { "@SetHighSpeed", SETHIGHSPEED },
+
+  { "@SetTimingOutMode", SETTIMINGOUTMODE },
+  { "@SetTimingOutStart", SETTIMINGOUTSTART },
+  { "@SetTimingOutEnd", SETTIMINGOUTEND },
+  { "@SetTimingOutInterval", SETTIMINGOUTINTERVAL },
+  { "@SetTimingOutReady", SETTIMINGOUTREADY },
+  { "@Select", SELECT },
+
   { "@Stop", STOP },
   { "@Remote", REMOTE },
   { "@StopEmergency", STOPEMERGENCY },

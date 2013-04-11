@@ -80,6 +80,7 @@ class AUnit : public QObject
 
   bool IsBusy;
   bool IsBusy2;
+  int Busy2Count;
   QString Value;
   double Dark;                 // back ground value normalized for 1 sec
   QString lastVal;
@@ -274,6 +275,7 @@ public:
   void SetTimingOutStart( int startP );   // start position of timing out
   void SetTimingOutEnd( int endP );       // end position of timing out
   void SetTimingOutInterval( int interval );  // timing out interval
+  void SetTimingOutReady( int ready );  // timing out ready
   double SetTime( double dtime );   // in sec
   void Stop( void );
 #if 0                   // new mcas
@@ -289,6 +291,12 @@ public:
   bool GetLiveTime( int ch );
   bool GetRange( void );
   double GetSetTime( void ) { return setTime; };   // actual set time
+
+  void IsBusy2On( QString drv, QString name );
+  void IsBusy2Off( QString drv );
+  void setBusy2Count( int i ) { Busy2Count = i; };
+  void clrBusy2Count( void ) { Busy2Count = 0; };
+  int busy2Count( void ) { return Busy2Count; };
 
 public slots:
   void ClrBusy( SMsg msg );
@@ -322,6 +330,7 @@ signals:
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
+  void ChangedBusy2Count( QString Drv );
   void AskedNowRange( int r );
 #if 0           // new mcas
   void ReceivedNewMCAValue( void );

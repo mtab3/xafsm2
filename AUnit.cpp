@@ -63,8 +63,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
 
   LastFunc = "";
   LastFunc2 = "";
-  IsBusy = false;    // 相手に尋ねる isBusy
-  IsBusy2 = false;   // その他のコマンドを投げて返答が返ってくるまで isBusy2
+  IsBusy = false;         // 相手に尋ねる isBusy
+  IsBusy2Off( "" );   // その他のコマンドを投げて返答が返ってくるまで isBusy2
   Value = "";
 
   ilastSetV = 0;
@@ -76,12 +76,11 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
 void AUnit::setEnable( bool enable )
 {
   Enable = enable;
-  IsBusy = IsBusy2 = false;
+  IsBusy = false;
   LastFunc = "";
-  LastFunc2 = "";
   emit Enabled( Driver, enable );
   emit ChangedIsBusy1( Driver );
-  emit ChangedIsBusy2( Driver );
+  IsBusy2Off( "" );
 }
 
 bool AUnit::
@@ -247,8 +246,13 @@ void AUnit::Initialize( Stars *S )
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV   // PM だけ
   if ( TypeCHK(  1,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0  ) ) {
-    // SetHighSpeed に対する応答は拾わない
-    //    connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSetTimingOutMode( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSetTimingOutStart( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSetTimingOutEnd( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSetTimingOutInterval( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSetTimingOutReady( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsSelect( SMsg )), this, SLOT(ClrBusy( SMsg )));
   }
 
   // 以下 Unit タイプではなくて、特定のユニットに固有の処理
@@ -269,8 +273,9 @@ void AUnit::Initialize( Stars *S )
     GetValue();
   }
 
-  emit ChangedIsBusy1( Driver );
+  emit ChangedIsBusy1( Driver );    // ここの3つのエミットは念の為
   emit ChangedIsBusy2( Driver );
+  emit ChangedBusy2Count( Driver );
 }
 
 void AUnit::show( void )
@@ -289,32 +294,24 @@ bool AUnit::GetValue( void )
   //                PZ                    // この GetValue まだ対応してない
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV
   if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  1 ) ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetValue";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, QString( "GetValue" ) );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0 ) ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetValue";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetValue" );
     //    s->SendCMD2( Uid, Driver, "GetValues" );    // new mcas
     s->SendCMD2( Uid, Driver, "GetMCAs" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV
   if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0 ) ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetValue";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, "Read" );
     rv = false;
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  1,  0,  0,  0,  0 ) ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetValue";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, "GetValue 0" );
     rv = false;
   }
@@ -330,20 +327,16 @@ bool AUnit::GetValue0( void )
   if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  0,  0,  0,  0 ) ) {
     switch( LocalStage ) {
     case 0:
-      IsBusy2 = true;
-      LastFunc2 = "GetValue0c0";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "GetValue0c0" );
       s->SendCMD2( Uid, Driver, "CounterReset" );
       LocalStage++;
       rv = true;
       break;
     case 1:
-      IsBusy2 = true;
+      IsBusy2On( Driver, "GetValue0c1" );
       IsBusy = true;
-      LastFunc2 = "GetValue0c1";
       LastFunc = "GetValue0c1";
       emit ChangedIsBusy1( Driver );
-      emit ChangedIsBusy2( Driver );
       s->SendCMD2( Uid, Driver, "CountStart" );
       LocalStage++;
       rv = false;
@@ -355,20 +348,16 @@ bool AUnit::GetValue0( void )
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  1,  1,  0,  0 ) ) {
     switch( LocalStage ) {
     case 0:
-      IsBusy2 = true;
-      LastFunc2 = "GetValue0c0";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "GetValue0c0" );
       s->SendCMD2( Uid, Driver, "CounterReset" );
       LocalStage++;
       rv = true;
       break;
     case 1:
-      IsBusy2 = true;
+      IsBusy2On( Driver, "GetValue0c1" );
       IsBusy = true;
-      LastFunc2 = "GetValue0c1";
       LastFunc = "GetValue0c1";
       emit ChangedIsBusy1( Driver );
-      emit ChangedIsBusy2( Driver );
       s->SendCMD2( Uid, Driver, "Run" );
       LocalStage++;
       rv = false;
@@ -381,20 +370,16 @@ bool AUnit::GetValue0( void )
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0 ) ) {
     switch( LocalStage ) {
     case 0:
-      IsBusy2 = true;
-      LastFunc2 = "GetValue0c0";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "GetValue0c0" );
       s->SendCMD2( Uid, Driver, "RunStop" );
       rv = true;
       LocalStage++;
       break;
     case 1:
-      IsBusy2 = true;
+      IsBusy2On( Driver, "GetValue0c1" );
       IsBusy = true;
-      LastFunc2 = "GetValue0c1";
       LastFunc = "GetValue0c1";
       emit ChangedIsBusy1( Driver );
-      emit ChangedIsBusy2( Driver );
       s->SendCMD2( Uid, Driver, "RunStart" );
       rv = false;
       LocalStage++;
@@ -430,6 +415,8 @@ void AUnit::SetValue( double v )
 {
   //  IsBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
   if ( Type == "PM" ) {
+    IsBusy = true;
+    emit ChangedIsBusy1( DevCh );
     s->SendCMD2( Uid, DevCh, "SetValue", QString::number( ilastSetV = (int)v ) );
   }
   if ( Type == "ENC" ) {
@@ -445,7 +432,7 @@ void AUnit::SetSpeed( MSPEED i )
 {
   QString cmd = "SpeedLow";
 
-  //  IsBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
+  //  IsBusy2 = true;    // setspeed に対する応答は無視するので isBusy2 もセットしない
 
   if ( Type == "PM" ) {
     switch( i ) {
@@ -460,9 +447,8 @@ void AUnit::SetSpeed( MSPEED i )
 
 void AUnit::SetHighSpeed( int speed )
 {
-  //  IsBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
-
   if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetHighSpeed" );
     QString cmd = QString( "SetHighSpeed %1" ).arg( speed );
     s->SendCMD2( Uid, DevCh, cmd );
   }
@@ -471,11 +457,11 @@ void AUnit::SetHighSpeed( int speed )
 void AUnit::AssignDispCh( int ch )
 {
   if ( Type == "PM" ) {
+    IsBusy2On( Driver, "AssignDispCh" );
     int num = Ch.toInt();
     if ( Ch.left( 2 ).toUpper() == "CH" )
       num = Ch.mid( 2 ).toInt();
     QString cmd = QString( "Select %1 %2" ).arg( QChar( 'A' + ch ) ).arg( num );
-    qDebug() << cmd;
     s->SendCMD2( Uid, Driver, cmd );
   }
 }
@@ -483,6 +469,7 @@ void AUnit::AssignDispCh( int ch )
 void AUnit::SetTimingOutMode( int mode )
 {
   if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetTimingOutMode" );
     QString cmd = QString( "SetTimingOutMode %1" ).arg( mode );
     s->SendCMD2( Uid, DevCh, cmd );
   }
@@ -491,6 +478,7 @@ void AUnit::SetTimingOutMode( int mode )
 void AUnit::SetTimingOutStart( int startP )
 {
   if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetTimingOutStart" );
     QString cmd = QString( "SetTimingOutStart %1" ).arg( startP );
     s->SendCMD2( Uid, DevCh, cmd );
   }
@@ -499,6 +487,7 @@ void AUnit::SetTimingOutStart( int startP )
 void AUnit::SetTimingOutEnd( int endP )
 {
   if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetTimingOutEnd" );
     QString cmd = QString( "SetTimingOutEnd %1" ).arg( endP );
     s->SendCMD2( Uid, DevCh, cmd );
   }
@@ -507,7 +496,17 @@ void AUnit::SetTimingOutEnd( int endP )
 void AUnit::SetTimingOutInterval( int interval )
 {
   if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetTimingOutInterval" );
     QString cmd = QString( "SetTimingOutInterval %1" ).arg( interval );
+    s->SendCMD2( Uid, DevCh, cmd );
+  }
+}
+
+void AUnit::SetTimingOutReady( int ready )
+{
+  if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetTimingOutReady" );
+    QString cmd = QString( "SetTimingOutReady %1" ).arg( ready );
     s->SendCMD2( Uid, DevCh, cmd );
   }
 }
@@ -558,9 +557,7 @@ void AUnit::ReceiveValues( SMsg msg )
     Values = msg.Vals();
 
     emit newValue( Value );
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
   }
 }
 
@@ -582,9 +579,7 @@ void AUnit::SetCurPos( SMsg msg )
     }
     Values = msg.Vals();
     emit newValue( Value );
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
   }
 }
 
@@ -628,15 +623,11 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
 void AUnit::ClrBusy( SMsg msg )
 {
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
   }
   if ( Has2ndDriver ) {
     if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) {
-      IsBusy2 = false;
-      LastFunc2 = "";
-      emit ChangedIsBusy2( Driver2 );
+      IsBusy2Off( Driver2 );
     }
   }
 }
@@ -655,38 +646,30 @@ double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数ステップ化
   int M, N;
 
   if (( Type == "SSD" )||( Type == "SSDP" )) {
-    IsBusy2 = true;
-    LastFunc2 = "SetTime";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "SetTime" );
     s->SendCMD2( Uid, Driver, "RunStop" );   // コマンド連続発行可能か? いちおういけてる
     s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
     setTime = dtime;
   }
   if ( Type == "PAM" ) {
-    IsBusy2 = true;
-    LastFunc2 = "SetTime";
+    IsBusy2On( Driver, "SetTime" );
     // 1 sec -> 1/60 sec
     time = dtime * 60;
     if ( time < 1 ) time = 1;
     if ( time > 40 ) time = 40;
-    emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, DevCh, "SetNPLCycles", QString::number( time ) );
     setTime = time / 60;    // これで「秒」単位の普通の時間に戻ってる
   }
   if (( Type == "CNT" )||( Type == "CNT2" )) {
-    IsBusy2 = true;
-    LastFunc2 = "SetTime";
+    IsBusy2On( Driver, "SetTime" );
     ltime = dtime * 1e6;
-    emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, Driver, "SetTimerPreset", QString::number( ltime ) );
     setTime = dtime;
   }
   if (( Type == "OTC" )||( Type == "OTC2" )) {
-    IsBusy2 = true;
-    LastFunc2 = "SetTime";
+    IsBusy2On( Driver, "SetTime" );
     N = log10( dtime * 10 );
     M = ceil( dtime / pow( 10., N - 1 ) );
-    emit ChangedIsBusy2( Driver );
     s->SendCMD2( Uid, Driver, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
     setTime = M * pow( 10, N ) * 0.1;  // これで秒単位の普通の時間に戻ってる
   }
@@ -706,33 +689,25 @@ bool AUnit::InitSensor( void )
   if ( Type == "PAM" ) { // Keithley 6845
     switch( LocalStage ) {
     case 0:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c0";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c0" );
       s->SendCMD2( "Scan", DevCh, "Reset", "" );
       LocalStage++;
       rv = true;
       break;
     case 1:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c1";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c1" );
       s->SendCMD2( "Scan", DevCh, "SetAutoRangeEnable", "1" );
       LocalStage++;
       rv = true;
       break;
     case 2:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c2";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c2" );
       s->SendCMD2( "Scan", DevCh, "SetDataFormatElements", "READ" );
       LocalStage++;
       rv = true;
       break;
     case 3:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c3";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c3" );
       s->SendCMD2( "Scan", DevCh, "SetZeroCheckEnable", "0" );
       rv = false;
       LocalStage++;
@@ -746,17 +721,13 @@ bool AUnit::InitSensor( void )
     // keithley なのでそれ用の処理をしておく
     switch( LocalStage ) {
     case 0:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c0";
-      emit ChangedIsBusy2( Driver2 );
+      IsBusy2On( Driver2, "InitSensor-c0" );
       s->SendCMD2( "Scan", DevCh2, "Reset", "" );
       LocalStage++;
       rv = true;
       break;
     case 1:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c1";
-      emit ChangedIsBusy2( Driver2 );
+      IsBusy2On( Driver2, "InitSensor-c1" );
       if ( autoRange ) {
 	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "1" );
 	LocalStage = 3;
@@ -767,17 +738,13 @@ bool AUnit::InitSensor( void )
       rv = true;
       break;
     case 2:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c2";
-      emit ChangedIsBusy2( Driver2 );
+      IsBusy2On( Driver2, "InitSensor-c2" );
       s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
       LocalStage++;
       rv = true;
       break;
     case 3:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c3";
-      emit ChangedIsBusy2( Driver2 );
+      IsBusy2On( Driver2, "InitSensor-c3" );
       s->SendCMD2( "Scan", DevCh2, "SetZeroCheckEnable", "0" );
       rv = false;
       LocalStage++;
@@ -790,25 +757,19 @@ bool AUnit::InitSensor( void )
     QString ROIs = "";
     switch( LocalStage ) {
     case 0:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c0";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c0" );
       s->SendCMD2( "Init", Driver, "RunStop" );
       LocalStage++;
       rv = true;
       break;
     case 1:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c1";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c1" );
       s->SendCMD2( "Init", Driver, "SetPresetType", SSDPresetType );
       LocalStage++;
       rv = true;
       break;
     case 2:
-      IsBusy2 = true;
-      LastFunc2 = "InitSensor-c2";
-      emit ChangedIsBusy2( Driver );
+      IsBusy2On( Driver, "InitSensor-c2" );
       ROIs = ROIStart[0] + " " + ROIEnd[0];
       for ( int i = 1; i < MaxSSDs; i++ ) {
 	ROIs += " " + ROIStart[i] + " " + ROIEnd[i];
@@ -832,9 +793,7 @@ bool AUnit::GetMCA( int ch )
   bool rv;
 
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetMCA";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetMCA" );
     s->SendCMD2( Uid, Driver, "GetMCA", QString::number( ch ) );
     rv = false;
   }
@@ -845,9 +804,7 @@ bool AUnit::GetMCA( int ch )
 void AUnit::ReactGetMCA( SMsg msg )
 {
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
     MCAValues = msg.Vals();
     emit ReceivedNewMCAValue();    // !!!!!!!!!!!!!!!!
   }
@@ -859,9 +816,7 @@ bool AUnit::GetStat( void )
   bool rv;
 
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetStat";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetStat" );
     s->SendCMD2( Uid, Driver, "GetStatistics" );
     rv = false;
   }
@@ -872,9 +827,7 @@ bool AUnit::GetStat( void )
 void AUnit::ReactGetStat( SMsg msg )
 {
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
     MCAStats = msg.Vals();
   }
 }
@@ -908,9 +861,7 @@ bool AUnit::SetRealTime( double val )
   bool rv;
 
   if ( Type == "SSDP" ) {
-    IsBusy2 = true;
-    LastFunc2 = "SetRealTime1";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "SetRealTime1" );
     s->SendCMD2( Uid, DevCh, "SetRealTime", QString::number( val ) );
     rv = false;
   }
@@ -923,9 +874,7 @@ bool AUnit::SetRealTime( int ch, double val )
   bool rv;
 
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
-    LastFunc2 = "SetRealTime2";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "SetRealTime2" );
     s->SendCMD2( Uid, Driver, "SetRealTime",
 		 QString::number( ch ) + " " + QString::number( val ) );
     rv = false;
@@ -939,9 +888,7 @@ bool AUnit::GetRealTime( int ch )
   bool rv;
 
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetRealTime";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetRealTime" );
     s->SendCMD2( Uid, Driver, "GetRealTime", QString::number( ch ) );
     rv = false;
   }
@@ -954,9 +901,7 @@ void AUnit::ReactGetRealTime( SMsg msg )
   int ch;
 
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
     MCARealTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
     emit ReceivedNewMCARealTime( ch );
   }
@@ -978,9 +923,7 @@ bool AUnit::SetLiveTime( double val )
   bool rv;
 
   if ( Type == "SSDP" ) {
-    IsBusy2 = true;
-    LastFunc2 = "SetLiveTime1";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "SetLiveTime1" );
     s->SendCMD2( Uid, DevCh, "SetLiveTime", QString::number( val ) );
     rv = false;
   }
@@ -993,9 +936,7 @@ bool AUnit::SetLiveTime( int ch, double val )
   bool rv;
 
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
-    LastFunc2 = "SetLiveTime2";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "SetLiveTime2" );
     s->SendCMD2( Uid, Driver, "SetLiveTime",
 		 QString::number( ch ) + " " + QString::number( val ) );
     rv = false;
@@ -1009,9 +950,7 @@ bool AUnit::GetLiveTime( int ch )
   bool rv;
 
   if ( Type == "SSD" ) {
-    IsBusy2 = true;
-    LastFunc2 = "GetLiveTime";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver, "GetLiveTime2" );
     s->SendCMD2( Uid, Driver, "GetLiveTime", QString::number( ch ) );
     rv = false;
   }
@@ -1024,9 +963,7 @@ void AUnit::ReactGetLiveTime( SMsg msg )
   int ch;
 
   if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
     MCALiveTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
     emit ReceivedNewMCALiveTime( ch );
   }
@@ -1047,8 +984,7 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
 {
   if ( Type == "SSD" ) {
     if ( msg.From() == Driver ) {
-      IsBusy2 = false;
-      LastFunc2 = "";
+      IsBusy2Off( Driver );
       DataLinkHostName = msg.Vals().at(0);
       DataLinkHostPort = msg.Vals().at(1).toInt();
       //      qDebug() << "AAAAAAAAAAAAAAAA" << DataLinkHostName << DataLinkHostPort;
@@ -1062,9 +998,7 @@ bool AUnit::GetRange( void )
   bool rv = false;
 
   if (( Type == "CNT2" )||( Type == "OTC2" )) {
-    IsBusy2 = true;
-    LastFunc2 = "GetRange";
-    emit ChangedIsBusy2( Driver2 );
+    IsBusy2On( Driver2, "GetRange" );
     s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
     rv = false;
   }
@@ -1075,10 +1009,9 @@ bool AUnit::GetRange( void )
 bool AUnit::GetMCAs( void )
 {
   if ( Type == "SSD" ) {
-    IsBusy2 = true;          // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
-                             //        data-link 経由で完全なデータをもらった時に消す
-    LastFunc2 = "GetMCAs";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2On( Driver2, "GetMCAs" );
+    // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
+    //        data-link 経由で完全なデータをもらった時に消す
     s->SendCMD2( Uid, DevCh, QString( "GetMCAs" ) );
   }
 
@@ -1089,9 +1022,7 @@ void AUnit::ReactGetRange( SMsg msg )
 {
   if (( Type == "CNT2" )||( Type == "OTC2" )) {
     if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) {
-      IsBusy2 = false;
-      LastFunc2 = "";
-      emit ChangedIsBusy2( Driver2 );
+      IsBusy2Off( Driver2 );
       double range = log10( msg.Vals().at(0).toDouble() / 2.1 );
       if ( range > RangeU ) range = RangeU;
       if ( range < RangeL ) range = RangeL;
@@ -1176,9 +1107,7 @@ void AUnit::receiveMCAs( void )
   emit LogMsg( debug );
 
   if ( dLinkCount >= MCABUFSIZE ) {
-    IsBusy2 = false;
-    LastFunc2 = "";
-    emit ChangedIsBusy2( Driver );
+    IsBusy2Off( Driver );
     dLinkCount = 0;
     if ( MCAs != NULL ) delete [] MCAs;
     MCAs = MCAs0;
@@ -1246,4 +1175,21 @@ MCAHead AUnit::getAMCAHead( int ch )
   return rv;
 }
 
+void AUnit::IsBusy2On( QString drv, QString name )
+{
+  IsBusy2 = true;
+  Busy2Count++;
+  LastFunc2 = name;
+  emit ChangedIsBusy2( drv );
+  emit ChangedBusy2Count( drv );
+}
 
+void AUnit::IsBusy2Off( QString drv )
+{
+  IsBusy2 = false;
+  Busy2Count--;
+  if ( Busy2Count < 0 ) Busy2Count = 0;
+  LastFunc2 = "";
+  emit ChangedIsBusy2( drv );
+  emit ChangedBusy2Count( drv );
+}
