@@ -1,7 +1,7 @@
 
 #include "MainWindow.h"
 
-// QXafs ´ØÏ¢¤Î¥¤¥Ë¥·¥ã¥é¥¤¥º setupMeMeas ¤è¤êÁ°¤Ë¸Æ¤Ğ¤ì¤Æ¤ë
+// QXafs é–¢é€£ã®ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚º setupMeMeas ã‚ˆã‚Šå‰ã«å‘¼ã°ã‚Œã¦ã‚‹
 void MainWindow::setupQXafsMode( void )
 {
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
@@ -77,7 +77,7 @@ void MainWindow::HideBLKs( bool f )
   }
 }
 
-void MainWindow::CheckQXafsParams( void )  // BlockPoints ¤Ï Widget ¤«¤éÄ¾ÆÉ¤ß¤·¤Ê¤¤
+void MainWindow::CheckQXafsParams( void )  // BlockPoints ã¯ Widget ã‹ã‚‰ç›´èª­ã¿ã—ãªã„
 {
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
@@ -152,7 +152,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 1:
-    if ( mUnits.init() ) // Reset ¤À¤±
+    if ( mUnits.init() ) // Reset ã ã‘
       break;
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
@@ -167,13 +167,13 @@ void MainWindow::QXafsMeasSequence( void )
     if ( mUnits.QStart() )
       break;
     mUnits.clearStage();
-    MMainTh->SetValue( QXafsSP );   // ½õÁöµ÷Î¥¤ò´Ş¤á¤¿¥¹¥¿¡¼¥ÈÃÏÅÀ¤Ø
+    MMainTh->SetValue( QXafsSP );   // åŠ©èµ°è·é›¢ã‚’å«ã‚ãŸã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¸
     MeasStage++;
     break;
   case 4:      // Repeat Point
     MeasR++;
     WriteQHeader( MeasR, FORWARD );
-    if ( MeasR > SelRPT->value() ) { // µ¬Äê²ó¿ô²ó¤ê½ª¤ï¤Ã¤Æ¤ì¤Ğ½ªÎ»½èÍı¤ËÆş¤ë!!
+    if ( MeasR > SelRPT->value() ) { // è¦å®šå›æ•°å›ã‚Šçµ‚ã‚ã£ã¦ã‚Œã°çµ‚äº†å‡¦ç†ã«å…¥ã‚‹!!
       MeasStage = 99;
       break;
     }
@@ -184,7 +184,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 6:
-    MMainTh->SetValue( QXafsEP );   // ¸ºÂ®µ÷Î¥¤ò´Ş¤á¤¿½ªÎ»ÃÏÅÀ¤Ø
+    MMainTh->SetValue( QXafsEP );   // æ¸›é€Ÿè·é›¢ã‚’å«ã‚ãŸçµ‚äº†åœ°ç‚¹ã¸
     MeasStage++;
     break;
   case 7:
@@ -198,13 +198,12 @@ void MainWindow::QXafsMeasSequence( void )
 	     << mUnits.at(1)->values().count();
     WriteQBody();
     MeasStage++;
-    exit( 1 );
     break;
   case 9:
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
-    if ( QMeasOnBackward->isChecked() ) {   // Ìá¤ê¤âÂ¬Äê¤¹¤ë
+    if ( QMeasOnBackward->isChecked() ) {   // æˆ»ã‚Šã‚‚æ¸¬å®šã™ã‚‹
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
     } else {
       MMainTh->SetTimingOutMode( 0 );
@@ -213,9 +212,9 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 10:
-    MMainTh->SetValue( QXafsSP );   // ½õÁöµ÷Î¥¤ò´Ş¤á¤¿¥¹¥¿¡¼¥ÈÃÏÅÀ¤Ø
+    MMainTh->SetValue( QXafsSP );   // åŠ©èµ°è·é›¢ã‚’å«ã‚ãŸã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¸
     WriteQHeader( MeasR, FORWARD );
-    if ( QMeasOnBackward->isChecked() ) {   // Ìá¤ê¤âÂ¬Äê¤¹¤ë
+    if ( QMeasOnBackward->isChecked() ) {   // æˆ»ã‚Šã‚‚æ¸¬å®šã™ã‚‹
       MeasStage++;
     } else {
       MeasStage = 4; // Repeat Point
@@ -241,8 +240,8 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 99:
-    MMainTh->SetHighSpeed( OrigHSpeed );   // H ¤Î¥¹¥Ô¡¼¥É¤òÉ¸½à¤ËÌá¤¹
-    MMainTh->SetSpeed( GoMSpeed );         // ÁªÂò¤µ¤ì¤Æ¤¤¤¿¥¹¥Ô¡¼¥É¤ËÌá¤¹
+    MMainTh->SetHighSpeed( OrigHSpeed );   // H ã®ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚’æ¨™æº–ã«æˆ»ã™
+    MMainTh->SetSpeed( GoMSpeed );         // é¸æŠã•ã‚Œã¦ã„ãŸã‚¹ãƒ”ãƒ¼ãƒ‰ã«æˆ»ã™
     statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
     //    WriteHeader2( MeasR );

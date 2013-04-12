@@ -77,8 +77,8 @@ bool MUnits::QStart( void )   // QXAFS
 {
   bool ff = false;
 
-  for ( int i = 0; i < PUnits.count(); i++ ) {
-    ff |= PUnits.at(i)->au->QStart();
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->QStart();
   }
 
   return ff;
@@ -89,8 +89,8 @@ bool MUnits::QRead( void )   // QXAFS
 {
   bool ff = false;
 
-  for ( int i = 0; i < PUnits.count(); i++ ) {
-    ff |= PUnits.at(i)->au->QRead();
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->QRead();
   }
 
   return ff;
@@ -101,8 +101,8 @@ bool MUnits::QEnd( void )   // QXAFS
 {
   bool ff = false;
 
-  for ( int i = 0; i < PUnits.count(); i++ ) {
-    ff |= PUnits.at(i)->au->QEnd();
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->QEnd();
   }
 
   return ff;

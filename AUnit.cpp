@@ -316,8 +316,10 @@ bool AUnit::QStart( void )
 {
   bool rv = false;
 
+  qDebug() << "QStart";
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0 ) ) {
+    qDebug() << "QStart2";
     IsBusy2On( Driver, "Start" );
     s->SendCMD2( Uid, Driver, "qInitialize", QString::number( setTime ) );
     rv = false;
@@ -329,9 +331,10 @@ bool AUnit::QStart( void )
 bool AUnit::QRead( void )
 {
   bool rv = false;
-
+  qDebug() << "QRead";
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0 ) ) {
+    qDebug() << "QRead2";
     IsBusy2On( Driver, "Read" );
     s->SendCMD2( Uid, Driver, "qGetData" );
     rv = false;
@@ -344,8 +347,10 @@ bool AUnit::QEnd( void )
 {
   bool rv = false;
 
+  qDebug() << "QEnd";
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0 ) ) {
+    qDebug() << "QEnd2";
     IsBusy2On( Driver, "End" );
     s->SendCMD2( Uid, Driver, "qFinalize" );
     rv = false;
@@ -742,10 +747,10 @@ double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数ステップ化
     setTime = M * pow( 10, N ) * 0.1;  // これで秒単位の普通の時間に戻ってる
   }
   if (( Type == "DV" )||( Type == "DV2" )) {
-    IsBusy2On( Driver, "SetAperture" );
     if ( dtime < 0.0001 ) dtime = 0.0001;
     if ( dtime > 1.0 ) dtime = 1.0;
     if ( Type == "DV2" ) {   // DV の場合、ここでは内部変数 setTime に値を設定するだけ。
+      IsBusy2On( Driver, "SetAperture" );
       s->SendCMD2( Uid, Driver, "SetAperture", QString( "%1" ).arg( dtime ) );
     }
     setTime = dtime;
@@ -827,9 +832,10 @@ void AUnit::Abort( void )
 
 void AUnit::RcvQGetData( SMsg msg )
 {
+  qDebug() << "qGetData";
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == GETDATAPOINTS ) ) ) {
-    if (( Type == "DV" )||( Type == "DV2" )) {
+    if ( Type == "DV" ) {
       Values = msg.Vals();
       emit newQData();
       IsBusy2Off( Driver );
