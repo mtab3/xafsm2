@@ -198,7 +198,6 @@ void MainWindow::QXafsMeasSequence( void )
 	     << mUnits.at(1)->values().count();
     WriteQBody();
     MeasStage++;
-    exit( 1 );
     break;
   case 9:
     if ( mUnits.QEnd() )
