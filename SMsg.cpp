@@ -69,7 +69,9 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
   msg = Message.mid( i2 + 1, i3 - i2 - 1 );
   setMsgType();
 
-  val = Message.mid( i3 + 1 );
+  // val は値が複数並んでたとしてもそれを全部含んだデータ
+  // vals はそれをスペース区切と解釈して切り出して list に入れたもの
+  val = Message.mid( i3 + 1 );         
   vals = val.split( QRegExp( "\\s+" ) );
 
   return MorE;

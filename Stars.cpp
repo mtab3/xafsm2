@@ -344,6 +344,12 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetAutoZero( smsg ); break;
 	case RECORD:
 	  emit AnsRecord( smsg ); break;
+	case QINITIALIZE:
+	  emit AnsQInitialize( smsg ); break;
+	case QGETDATA:
+	  emit AnsQGetData( smsg ); break;
+	case QFINALIZE:
+	  emit AnsQFinalize( smsg ); break;
 	default:
 	  break;
 	}

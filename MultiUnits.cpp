@@ -72,19 +72,42 @@ void MUnits::clearStage( void )
   }
 }
 
-bool MUnits::start( void )   // QXAFS
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
+bool MUnits::QStart( void )   // QXAFS
 {
   bool ff = false;
 
   for ( int i = 0; i < PUnits.count(); i++ ) {
-    ff |= PUnits.at(i)->au->Start();
-  }
-  for ( int i = 0; i < Units.count(); i++ ) {
-    ff |= Units.at(i)->au->Start();
+    ff |= PUnits.at(i)->au->QStart();
   }
 
   return ff;
 }
+
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
+bool MUnits::QRead( void )   // QXAFS
+{
+  bool ff = false;
+
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    ff |= PUnits.at(i)->au->QRead();
+  }
+
+  return ff;
+}
+
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
+bool MUnits::QEnd( void )   // QXAFS
+{
+  bool ff = false;
+
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    ff |= PUnits.at(i)->au->QEnd();
+  }
+
+  return ff;
+}
+
 
 bool MUnits::init( void )
 {

@@ -142,6 +142,9 @@ signals:
   void AnsAbort( SMsg msg );
   void AnsSetAutoZero( SMsg msg );
   void AnsRecord( SMsg msg );
+  void AnsQInitialize( SMsg msg );
+  void AnsQGetData( SMsg msg );
+  void AnsQFinalize( SMsg msg );
 
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

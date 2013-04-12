@@ -34,6 +34,7 @@
 #include "FluoDBase.h"
 #include "DarkTable.h"
 
+enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
@@ -324,6 +325,9 @@ private:
   void CheckQXafsParams( void );
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
+  void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
+  void WriteQHeader( int rpt, DIRECTION dir );
+  void WriteQBody( void );
 
 private slots:
   void Initialize( void );

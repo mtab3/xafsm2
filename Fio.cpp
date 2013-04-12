@@ -494,4 +494,3 @@ void MainWindow::RecordData( void )
     file.close();
   }
 }
-

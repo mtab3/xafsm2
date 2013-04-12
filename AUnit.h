@@ -99,7 +99,7 @@ class AUnit : public QObject
 
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
-		int cnt2, int sc, int otc, int otc2, int lsr, int dv );
+		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2 );
   void ConnectToDataLinkServer( QString host, qint16 port );
 
  private slots:
@@ -267,7 +267,9 @@ public:
   void RunStop( void );
   void RunResume( void );
   void AskIsBusy( void );
-  bool Start( void );                 // QXAFS
+  bool QStart( void );                 // QXAFS
+  bool QRead( void );                 // QXAFS
+  bool QEnd( void );                  // QXAFS
   void SetSpeed( MSPEED speed );
   void SetHighSpeed( int speed );
   void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
@@ -329,8 +331,9 @@ public slots:
   void OnReportCurrent( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
 
-  void RcvDataPoints( SMsg msg );
-  void RcvReadData( SMsg msg );
+  //  void RcvDataPoints( SMsg msg );
+  //  void RcvReadData( SMsg msg );
+  void RcvQGetData( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
@@ -338,13 +341,14 @@ public slots:
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
-  void newValues( void );
+  //  void newValues( void );
   void newDark( double dark );
   void newCountsInROI( QVector<int> );
   void newCountsAll( QVector<int> );
   void newTotalEvents( QVector<int> );
   void newICRs( QVector<double> );
-  void newDataPoints( int points );
+  //  void newDataPoints( int points );
+  void newQData( void );
 
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );

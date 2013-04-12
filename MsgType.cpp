@@ -93,6 +93,9 @@ const MsgTyp MsgT[] = {
   { "@Abort", ABORT },
   { "@SetAutoZero", SETAUTOZERO },
   { "@Record", SETAUTOZERO },
+  { "@qInitialize", QINITIALIZE },
+  { "@qGetData", QGETDATA },
+  { "@qFinalize", QFINALIZE },
 
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },

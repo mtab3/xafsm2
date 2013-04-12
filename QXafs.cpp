@@ -81,7 +81,6 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みし
 {
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
-  int steps = BlockPoints[0];
   double dtime = BLKdwell[0]->text().toDouble();
 
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
@@ -99,6 +98,10 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   int steps = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
+  HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
+  if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
+    HSpeed = MaxHSpeed;
+  }
   MMainTh->SetHighSpeed( HSpeed );
 
   QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();
@@ -125,6 +128,15 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
     .arg( QXafsInterval ).arg( QXafsSteps );
 }
 
+void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
+{
+  MMainTh->SetTimingOutMode( 3 );
+  MMainTh->SetTimingOutStart( sp );
+  MMainTh->SetTimingOutEnd( ep );
+  MMainTh->SetTimingOutInterval( QXafsInterval );
+  MMainTh->SetTimingOutReady( 1 );
+}
+
 void MainWindow::QXafsMeasSequence( void )
 {
   switch( MeasStage ) {
@@ -136,75 +148,86 @@ void MainWindow::QXafsMeasSequence( void )
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     GetPM16CParamsForQXAFS();
     MMainTh->SetSpeed( HIGH );
-    MeasStage = 1;
+    MeasStage++;
     break;
   case 1:
-    if ( ( mUnits.init() == false ) // SetDataSlope までこの中にある
-	 && ( MMainTh->busy2Count() == 0 ) ) {  // true :: initializing
-      MeasR = 0;    // Measurement Repeat count
-      MeasStage = 2;
-    }
+    if ( mUnits.init() ) // Reset だけ
+      break;
+    MeasR = 0;    // Measurement Repeat count
+    MeasStage++;
     break;
   case 2:
-    mUnits.setDwellTimes( QXafsDwellTime );
+    mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
-    MeasStage = 3;
+    mUnits.clearStage();
+    MeasStage++;
     break;
   case 3:
-    mUnits.start();
+    if ( mUnits.QStart() )
+      break;
+    mUnits.clearStage();
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
-    MeasStage = 4;
+    MeasStage++;
     break;
-  case 4:
+  case 4:      // Repeat Point
     MeasR++;
+    WriteQHeader( MeasR, FORWARD );
     if ( MeasR > SelRPT->value() ) {// 終了処理に入る!!
       MeasStage = 99;
       break;
     }
-    //    WriteHeader( MeasR );
-    MeasStage = 5;
+    MeasStage++;
+    //break;
   case 5:
-    MMainTh->SetTimingOutMode( 3 );
-    MMainTh->SetTimingOutStart( QXafsSP0 );
-    MMainTh->SetTimingOutEnd( QXafsEP0 );
-    MMainTh->SetTimingOutInterval( QXafsInterval );
-    MMainTh->SetTimingOutReady( 1 );
-    MeasStage = 6;
+    SetUpMainThToGenerageTriggerSignal( QXafsSP0, QXafsEP0 );
+    MeasStage++;
     break;
   case 6:
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
-    MeasStage = 7;
+    MeasStage++;
     break;
   case 7:
-    // ReadOutStage 
-    MeasStage = 8;
+    if ( mUnits.QRead() )
+      break;
+    mUnits.clearStage();
+    WriteQBody();
+    MeasStage++;
     break;
   case 8:
+    if ( mUnits.QEnd() )
+      break;
+    mUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
-      MMainTh->SetTimingOutMode( 3 );
-      MMainTh->SetTimingOutStart( QXafsEP0 );
-      MMainTh->SetTimingOutEnd( QXafsSP0 );
-      MMainTh->SetTimingOutInterval( QXafsInterval );
-      MMainTh->SetTimingOutReady( 1 );
+      SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
     } else {
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
     }
-    MeasStage = 9;
+    MeasStage++;
     break;
   case 9:
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+    WriteQHeader( MeasR, FORWARD );
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
-      MeasStage = 10;
+      MeasStage++;
     } else {
-      MeasStage = 4;
+      MeasStage = 4; // Repeat Point
     }
     break;
   case 10:
-    // ReadOutStage
-    MeasStage = 4;
+    if ( mUnits.QRead() )
+      break;
+    mUnits.clearStage();
+    WriteQBody();
+    MeasStage++;
     break;
-    // don't break
+  case 11:
+    if ( mUnits.QEnd() )
+      break;
+    mUnits.clearStage();
+    MeasStage = 4;   // Repeat Point
+    break;
+
   case 99:
     MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
     MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す

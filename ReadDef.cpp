@@ -100,6 +100,7 @@ void MainWindow::ReadDef( QString fname )
 	  } else if ( type == "SSD" ) {
 	  } else if ( type == "LSR" ) {
 	  } else if ( type == "DV" ) {
+	  } else if ( type == "DV2" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }
