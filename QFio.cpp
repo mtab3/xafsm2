@@ -39,11 +39,13 @@ void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
   out << "#" << " 1304     AichiSR QXAFS" << endl;
   out << "#" << " Start     : " << SBlockStart[0] << endl;
   out << "#" << " End       : " << SBlockStart[1] << endl;
-  out << "#" << " Dir       : " << ( ( dir == FORWARD ) ? "Forward" : "Backward" ) << endl;
+  out << "#" << " Dir       : " << (( dir == FORWARD ) ? "Forward" : "Backward") << endl;
   out << "#" << " Points    : " << SBlockPoints[0] << endl;
   out << "#" << " ScanTime  : " << SBlockDwell[0] << endl;
   out << "#" << " Date      : " << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << endl;
-  out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
+  if ( SLS != NULL ) 
+    out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
+
   file.close();
 }
 
@@ -57,9 +59,9 @@ void MainWindow::WriteQBody( void )
   int num10 = vals1.count() - 1;
 
   int num = num0;     // I0 と I の測定点数は同じはずだが違ってたらちっさい方
-  if ( num < num1 )  num = num1;
-  if ( num < num00 ) num = num00;  // 実際に送られてきたデータ点数も比べてみて
-  if ( num < num10 ) num = num10;  // とにかく一番ちっさい方
+  if ( num > num1 )  num = num1;
+  if ( num > num00 ) num = num00;  // 実際に送られてきたデータ点数も比べてみて
+  if ( num > num10 ) num = num10;  // とにかく一番ちっさい方
 
   qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
@@ -67,6 +69,7 @@ void MainWindow::WriteQBody( void )
     return;
 
   QTextStream out( &file );
+
   int p = QXafsSP0;
   int d = QXafsInterval;
   int c = MMainTh->getCenter();
