@@ -276,7 +276,7 @@ private:
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
   int GetDFName0( void );
-  void SetDFName( int i );
+  void SetDFName( int rpt );
   double MeasVals[ MCHANNELS ];
   double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
@@ -326,6 +326,7 @@ private:
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
   void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
+  void SetDFName2( int rpt, DIRECTION dir );
   void WriteQHeader( int rpt, DIRECTION dir );
   void WriteQBody( void );
 

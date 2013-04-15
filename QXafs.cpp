@@ -92,36 +92,61 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みし
 }
 
 void MainWindow::GetPM16CParamsForQXAFS( void )
+// 本当は入力時にも計算できる内容だが、
+// 確実を期すため測定直前に "Saved" パラメータを使って計算する
 {
   double sdeg = u->keV2deg( SBlockStart[0] );
   double edeg = u->keV2deg( SBlockStart[1] );
   int steps = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
+  qDebug() << "i51";
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
-    HSpeed = MaxHSpeed;
+    HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
-  MMainTh->SetHighSpeed( HSpeed );
 
-  QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();
-  QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();
+  qDebug() << "i52";
+  QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の始点
+  QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の終点
+  qDebug() << "i53";
   if ( abs( QXafsSP0 - QXafsEP0 ) > steps )
-    QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / steps);
+    QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / steps); // Trigger パルスを出す間隔
   else 
     QXafsInterval = 1;
-  QXafsSteps = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;
-  QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
 
-  RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;
+  qDebug() << "i54";
+  if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
+    // PM16C が出す Trigger は 10us 幅にするので
+    // Interval の時間は念の為 20us とる。
+    QXafsInterval = 2e-5 * HSpeed;         // これより短くなるなら、インターバルを変更
+    SBlockPoints[0] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
+    statusbar
+      ->showMessage( tr( "Selected Steps were too many!  It was changed to be %1" )
+		     .arg( SBlockPoints[0] ), 3000 );
+  }
+
+  qDebug() << "i55";
+  QXafsSteps = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // 測定ステップ数を再計算
+  QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
+  // 1点の積分時間を Trigger パルス間隔の 90% にする
+
+  qDebug() << "i56";
+  RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
+
+  qDebug() << "i57";
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
+  // HSpeed までの加速に必要なパルス数
   if ( QXafsSP0 > QXafsEP0 )
     RunUpPulses *= -1;
-  qDebug() << "RunUpPulses " << HSpeed << LowSpeed << RunUpRate << RunUpPulses << RunUpTime;
+  qDebug() << "RunUpPulses "
+	   << HSpeed << LowSpeed << RunUpRate << RunUpPulses << RunUpTime;
 
-  QXafsSP = QXafsSP0 - RunUpPulses;
-  QXafsEP = QXafsEP0 + RunUpPulses;
+  qDebug() << "i58";
+  QXafsSP = QXafsSP0 - RunUpPulses;   // 測定範囲を加速パルス分広げた範囲の
+  QXafsEP = QXafsEP0 + RunUpPulses;   // 始点と終点
 
+  qDebug() << "i59";
   qDebug() << QString( "Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
     .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate );
   qDebug() << QString( "Interval and Steps %1 %2" )
@@ -142,13 +167,22 @@ void MainWindow::QXafsMeasSequence( void )
   qDebug() << "in measstage " << MeasStage;
   switch( MeasStage ) {
   case 0:
+    qDebug() << "i1";
     CurrentRpt->setText( QString::number( 1 ) );
     //    WriteInfoFile();
+    qDebug() << "i2";
     mUnits.clearStage();
+    qDebug() << "i3";
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
+    qDebug() << "i4";
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
+    qDebug() << "i5";
     GetPM16CParamsForQXAFS();
+    qDebug() << "i6";
+    MMainTh->SetHighSpeed( HSpeed );
+    qDebug() << "i7";
     MMainTh->SetSpeed( HIGH );
+    qDebug() << "i8";
     MeasStage++;
     break;
   case 1:
@@ -212,27 +246,32 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 10:
+    if ( mUnits.QStart() )
+      break;
+    MeasStage++;
+    break;
+  case 11:
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
-    WriteQHeader( MeasR, FORWARD );
+    WriteQHeader( MeasR, BACKWARD );
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       MeasStage++;
     } else {
       MeasStage = 4; // Repeat Point
     }
     break;
-  case 11:
+  case 12:
     if ( mUnits.QRead() )
       break;
     mUnits.clearStage();
     MeasStage++;
     break;
-  case 12:
+  case 13:
     qDebug() << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values().count();
     WriteQBody();
     MeasStage++;
     break;
-  case 13:
+  case 14:
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();

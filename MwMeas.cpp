@@ -605,32 +605,42 @@ void MainWindow::NewRpt( void )
   ShowTotal();
 }
 
-void MainWindow::ShowTotal( void )
+void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数変更時に呼ばれる
 {
   QString buf;
 
-  TP = 0;
-  TT0 = 0;
-  for ( int i = 0; i < Blocks; i++ ) {
-    TP += BlockPoints[i];
-    TT0 += BlockPoints[i] * BlockDwell[i];
-  } 
-  if ( SelRPT->value() > 30 )
-    SelRPT->setValue( 30 );
-  double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
-  buf.sprintf( "%4d", TP * SelRPT->value() );
-  TPoints->setText( tr( "Points: " ) + buf );
-  TT *= SelRPT->value();
-  EstimatedMeasurementTimeInSec = TT;
-  int Th = (int)( TT / 3600 );
-  TT -= Th * 3600;
-  int Tm = (int)( TT / 60 );
-  TT -= Tm * 60;
-  int Ts = (int)TT;
-  TT -= Ts;
-  //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
-  buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // 秒以下の精度は不要
-  TTime->setText( tr( "Time: " ) + buf );
+  if ( SelRPT->value() > 99 ) // 特に意味はないが、反復回数の上限は 99 
+    SelRPT->setValue( 99 );
+
+  if ( ! QXafsMode->isChecked() ) {  // 通常モード
+    TP = 0;                     // 測定の合計点数と、単純積算時間を数える
+    TT0 = 0;
+    for ( int i = 0; i < Blocks; i++ ) {
+      TP += BlockPoints[i];
+      TT0 += BlockPoints[i] * BlockDwell[i];
+    } 
+
+    double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
+    buf.sprintf( "%4d", TP * SelRPT->value() );
+    TPoints->setText( tr( "Points: " ) + buf );
+    TT *= SelRPT->value();
+    EstimatedMeasurementTimeInSec = TT;
+    int Th = (int)( TT / 3600 );
+    TT -= Th * 3600;
+    int Tm = (int)( TT / 60 );
+    TT -= Tm * 60;
+    int Ts = (int)TT;
+    TT -= Ts;
+    //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+    buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // 秒以下の精度は不要
+    TTime->setText( tr( "Time: " ) + buf );
+  } else {    // QXAFS モード
+    //    SelRPT->value() * ( ( 
+    TP = BlockPoints[0];     // 測定の合計点数と、単純積算時間を数える
+    TT0 = BlockDwell[0];     //  
+
+    //    RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
+  }
 }
 
 void MainWindow::ChangeBLKstart( void )
@@ -859,10 +869,12 @@ void MainWindow::StartMeasurement( void )
 			      .arg( MMainTh->getName() ), 2000 );
     }
     if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
+      qDebug() << "aa";
       statusbar->showMessage( "The block parameter is out of range.", 2000 );
       return;
     }
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
+      qDebug() << "bb" << TP << TT0;
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
@@ -883,6 +895,11 @@ void MainWindow::StartMeasurement( void )
       }
     }
     if ( QXafsMode->isChecked() ) {
+      if ( BlockPoints[0] > 9990 ) {
+	statusbar->showMessage( tr( "Measured points are too many.  "
+				    "It should be less than 9990." ), 2000 );
+	return;
+      }
       if ( ! UseI1->isChecked() ) {
 	statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
 	return;
@@ -911,6 +928,7 @@ void MainWindow::StartMeasurement( void )
     // この下の諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々の設定が
     // QXAFS の時も必要かどうか、逆に QXAFS に必要な設定が全部できてるかは
     // 要確認
+    qDebug() << "aa";
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
@@ -926,6 +944,8 @@ void MainWindow::StartMeasurement( void )
     mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
+
+    qDebug() << "bb";
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
@@ -950,6 +970,7 @@ void MainWindow::StartMeasurement( void )
       SelRealTime->setChecked( true );
       SelLiveTime->setChecked( false );
     }
+    qDebug() << "cc";
     if ( UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
@@ -965,6 +986,7 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
     }
 
+    qDebug() << "dd";
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
@@ -981,6 +1003,7 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
+    qDebug() << "ee";
     // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
     // 両方を同時には測定に使えない
@@ -998,6 +1021,7 @@ void MainWindow::StartMeasurement( void )
 	}
       }
     }
+    qDebug() << "ff";
 
 #if 0
     if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
@@ -1022,6 +1046,7 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
+    qDebug() << "gg";
     ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
@@ -1069,6 +1094,7 @@ void MainWindow::StartMeasurement( void )
       qDebug() << "the place " << mcaDir.path();
     }
     
+    qDebug() << "hh";
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()

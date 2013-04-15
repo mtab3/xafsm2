@@ -163,7 +163,9 @@ void Stars::ReceiveMessageFromStars( void )
 
   switch( ConnectionStage ) {
   case CSTAGE0: 
-    RBuf = ss->readLine( 4000 );
+    RBuf = ss->readLine( 160000 ); // Stars のバッファは現在 160kbyte
+                                   // QXafs では 1点16byte のデータが来るので
+                                   // 10,000点が max
     RBuf = RBuf.simplified();
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;

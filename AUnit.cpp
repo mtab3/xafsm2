@@ -833,8 +833,8 @@ void AUnit::Abort( void )
 void AUnit::RcvQGetData( SMsg msg )
 {
   qDebug() << "qGetData";
-  if ( ( msg.From() == DevCh )
-       && ( ( msg.Msgt() == GETDATAPOINTS ) ) ) {
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )
+       && ( ( msg.Msgt() == GETDATAPOINTS ) || ( msg.Msgt() == QGETDATA ) ) ) {
     if ( Type == "DV" ) {
       Values = msg.Vals();
       emit newQData();
