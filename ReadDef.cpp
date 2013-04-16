@@ -84,6 +84,9 @@ void MainWindow::ReadDef( QString fname )
 	  next = nextItem( next, item ); NewUnit->setParent( item );
 	  // ³Æ sensor ¸ÄÊÌ
 	  if ( type == "ENC" ) {
+	  } else if ( type == "ENC2" ) {
+	    next = nextItem( next, item );
+	    NewUnit->setUPP( item );
 	  } else if ( type == "PAM" ) {
 	  } else if ( type == "CNT" ) {
 	  } else if ( type == "OTC" ) {

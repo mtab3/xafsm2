@@ -352,6 +352,14 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsQGetData( smsg ); break;
 	case QFINALIZE:
 	  emit AnsQFinalize( smsg ); break;
+	case STANDBY:
+	  emit AnsStandBy( smsg ); break;
+	case GETDATA:
+	  emit AnsGetData( smsg ); break;
+	case GETSTAT:
+	  emit AnsGetStat( smsg ); break;
+	case TRIGGER:
+	  emit AnsTrigger( smsg ); break;
 	default:
 	  break;
 	}

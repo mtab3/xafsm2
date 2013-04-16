@@ -11,8 +11,6 @@ void MainWindow::MeasSequence( void )
 
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
 
-  qDebug() << "ii";
-
   if ( QXafsMode->isChecked() ) {
     QXafsMeasSequence();
     return;

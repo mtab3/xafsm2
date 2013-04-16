@@ -869,12 +869,10 @@ void MainWindow::StartMeasurement( void )
 			      .arg( MMainTh->getName() ), 2000 );
     }
     if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
-      qDebug() << "aa";
       statusbar->showMessage( "The block parameter is out of range.", 2000 );
       return;
     }
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
-      qDebug() << "bb" << TP << TT0;
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
@@ -928,7 +926,6 @@ void MainWindow::StartMeasurement( void )
     // この下の諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々の設定が
     // QXAFS の時も必要かどうか、逆に QXAFS に必要な設定が全部できてるかは
     // 要確認
-    qDebug() << "aa";
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
@@ -945,7 +942,6 @@ void MainWindow::StartMeasurement( void )
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
 
-    qDebug() << "bb";
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
@@ -970,7 +966,6 @@ void MainWindow::StartMeasurement( void )
       SelRealTime->setChecked( true );
       SelLiveTime->setChecked( false );
     }
-    qDebug() << "cc";
     if ( UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
@@ -985,8 +980,11 @@ void MainWindow::StartMeasurement( void )
       LC++;
       aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
     }
+    if ( QXafsMode->isChecked() ) {
+      if ( Enc2 != NULL )
+	mUnits.addUnit( Enc2 );
+    }
 
-    qDebug() << "dd";
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
@@ -1003,7 +1001,6 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
-    qDebug() << "ee";
     // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
     // 両方を同時には測定に使えない
@@ -1021,7 +1018,6 @@ void MainWindow::StartMeasurement( void )
 	}
       }
     }
-    qDebug() << "ff";
 
 #if 0
     if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
@@ -1046,7 +1042,6 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
-    qDebug() << "gg";
     ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
@@ -1094,7 +1089,6 @@ void MainWindow::StartMeasurement( void )
       qDebug() << "the place " << mcaDir.path();
     }
     
-    qDebug() << "hh";
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()

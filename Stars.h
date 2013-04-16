@@ -145,6 +145,10 @@ signals:
   void AnsQInitialize( SMsg msg );
   void AnsQGetData( SMsg msg );
   void AnsQFinalize( SMsg msg );
+  void AnsStandBy( SMsg msg );
+  void AnsGetData( SMsg msg );
+  void AnsGetStat( SMsg msg );
+  void AnsTrigger( SMsg msg );
 
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

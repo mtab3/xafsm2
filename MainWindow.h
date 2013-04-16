@@ -111,7 +111,7 @@ private:
   /* Special Units */
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
-  AUnit *EncMainTh;
+  AUnit *EncMainTh, *Enc2;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -320,6 +320,7 @@ private:
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsSteps;
   double RunUpRate, RunUpTime, QXafsDwellTime;
+  QString EncValue0, Enc2Value0;
 
   void setupQXafsMode( void );
   void CheckQXafsParams( void );

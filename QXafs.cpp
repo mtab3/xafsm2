@@ -100,22 +100,18 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   int steps = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
-  qDebug() << "i51";
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
     HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
 
-  qDebug() << "i52";
   QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の始点
   QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の終点
-  qDebug() << "i53";
   if ( abs( QXafsSP0 - QXafsEP0 ) > steps )
     QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / steps); // Trigger パルスを出す間隔
   else 
     QXafsInterval = 1;
 
-  qDebug() << "i54";
   if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
@@ -126,15 +122,12 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
 		     .arg( SBlockPoints[0] ), 3000 );
   }
 
-  qDebug() << "i55";
   QXafsSteps = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // 測定ステップ数を再計算
   QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
   // 1点の積分時間を Trigger パルス間隔の 90% にする
 
-  qDebug() << "i56";
   RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
 
-  qDebug() << "i57";
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
   // HSpeed までの加速に必要なパルス数
   if ( QXafsSP0 > QXafsEP0 )
@@ -142,11 +135,9 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   qDebug() << "RunUpPulses "
 	   << HSpeed << LowSpeed << RunUpRate << RunUpPulses << RunUpTime;
 
-  qDebug() << "i58";
   QXafsSP = QXafsSP0 - RunUpPulses;   // 測定範囲を加速パルス分広げた範囲の
   QXafsEP = QXafsEP0 + RunUpPulses;   // 始点と終点
 
-  qDebug() << "i59";
   qDebug() << QString( "Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
     .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate );
   qDebug() << QString( "Interval and Steps %1 %2" )
@@ -164,25 +155,16 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 
 void MainWindow::QXafsMeasSequence( void )
 {
-  qDebug() << "in measstage " << MeasStage;
   switch( MeasStage ) {
   case 0:
-    qDebug() << "i1";
     CurrentRpt->setText( QString::number( 1 ) );
     //    WriteInfoFile();
-    qDebug() << "i2";
     mUnits.clearStage();
-    qDebug() << "i3";
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
-    qDebug() << "i4";
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
-    qDebug() << "i5";
     GetPM16CParamsForQXAFS();
-    qDebug() << "i6";
     MMainTh->SetHighSpeed( HSpeed );
-    qDebug() << "i7";
     MMainTh->SetSpeed( HIGH );
-    qDebug() << "i8";
     MeasStage++;
     break;
   case 1:
@@ -192,6 +174,9 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 2:
+    EncValue0 = EncMainTh->value();
+    if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
+    qDebug() << "Enc and Enc2 " << EncValue0 << Enc2Value0;
     mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
     mUnits.clearStage();
@@ -239,11 +224,12 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
+      MeasStage++;
     } else {
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
+      MeasStage = 11;
     }
-    MeasStage++;
     break;
   case 10:
     if ( mUnits.QStart() )
@@ -252,8 +238,8 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 11:
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
-    WriteQHeader( MeasR, BACKWARD );
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
+      WriteQHeader( MeasR, BACKWARD );
       MeasStage++;
     } else {
       MeasStage = 4; // Repeat Point
@@ -297,5 +283,4 @@ void MainWindow::QXafsMeasSequence( void )
     onMeasFinishWorks();
     break;
   }
-  qDebug() << "out measstage " << MeasStage;
 }

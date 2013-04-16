@@ -45,7 +45,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   }
 #endif
 
-  MMainTh = EncMainTh = NULL;
+  MMainTh = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
@@ -233,6 +233,9 @@ void MainWindow::InitAndIdentifySensors( void )
       connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
       connect( EncMainTh, SIGNAL( newValue( QString ) ),
 	       StatDisp, SLOT( newEncTh( QString ) ) );
+    }
+    if ( as->getID() == "ENCTH2" ) {
+      Enc2 = as;
     }
   }
   

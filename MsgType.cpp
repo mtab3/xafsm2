@@ -97,6 +97,11 @@ const MsgTyp MsgT[] = {
   { "@qGetData", QGETDATA },
   { "@qFinalize", QFINALIZE },
 
+  { "@StandBy", STANDBY },
+  { "@GetData", GETDATA },
+  { "@GetStat", GETSTAT },
+  { "@Trigger", TRIGGER },
+
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },

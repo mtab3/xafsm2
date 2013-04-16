@@ -342,3 +342,18 @@ SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "a34410a-2" "" "V" NO ""
 #
 SENSOR DV2 "S038" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
 SENSOR DV2 "S039" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+
+SENSOR ENC2 "S040" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC2      : Unit type   ENC2 is an encorder with memory
+#     "S040"       : Uniq identifire of the sensor. The identifier must be identical.
+#                  : The identifier can be any string, while it is identical.
+#     "ENCTH2"     : Identifier that this is the main axis of the monochromator
+#     "EIB741"     : The name of the unit (only for display)
+#     "EIB741"     : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+#     YES          : If the sensor has a parente (group leader) or not. YES or NO
+#     "S006"       : The identifier of the parent (group reader)
+#     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg

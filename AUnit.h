@@ -99,7 +99,7 @@ class AUnit : public QObject
 
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
-		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2 );
+		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2, int enc2 );
   void ConnectToDataLinkServer( QString host, qint16 port );
 
  private slots:
@@ -333,6 +333,7 @@ public slots:
 
   //  void RcvDataPoints( SMsg msg );
   //  void RcvReadData( SMsg msg );
+  void RcvStat( SMsg msg );
   void RcvQGetData( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
