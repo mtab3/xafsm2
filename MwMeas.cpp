@@ -13,6 +13,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
+  BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
+	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
 
   if ( SFluo == NULL ) 
     Use19chSSD->setEnabled( false );
@@ -75,10 +77,14 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
   MakeSureOfRangeSelect->setDefaultButton( tmpB );
 
+  bool findQXafsI0, findQXafsI1;
+  findQXafsI0 = findQXafsI1 = false;
   for ( int i = 0; i < ASensors.count(); i++ ) {
     QString name = ASensors.value(i)->getName(); 
     SelectI0->addItem( name );  I0Sensors << ASensors[i];
     SelectI1->addItem( name );  I1Sensors << ASensors[i];
+    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
+    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
     if ( ASensors.at(i) != SFluo ) {
       SelectAux1->addItem( name );   A1Sensors << ASensors[i];
     }
@@ -96,7 +102,13 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
       SelectAux2->setCurrentIndex( i );
   }
   UseI1->setChecked( true );
-
+  if ( (!findQXafsI0)||(!findQXafsI1) ) {
+    isQXafsModeAvailable = false;
+    if ( ! isQXafsModeAvailable ) {
+      QXafsMode->setChecked( false );
+      QXafsMode->setEnabled( false );
+    }
+  }
 
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
@@ -201,6 +213,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   this, SLOT( SetNewGases() ) );
   connect( ManTEkeV, SIGNAL( textChanged( const QString & ) ),
 	   this, SLOT( SetNewGases() ) );
+
+  connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
 }
 
 void MainWindow::newSensSelectedForI0( int index )
@@ -422,60 +436,104 @@ void MainWindow::SetStdEXAFSBLKs( void )
 {
   double Eg = ManTEkeV->text().toDouble();
 
-  BlockStart[0] = Eg - 0.30;
-  BlockStart[1] = Eg - 0.05;
-  BlockStart[2] = Eg + 0.10;
-  BlockStart[3] = Eg + 0.50;
-  BlockStart[4] = Eg + 1.20;
-  for ( int i = 5; i < MaxBLKs+1; i++ )
-    BlockStart[i] = 0;
+  if ( QXafsMode->isChecked() ) {
 
-  BlockPoints[0] = 70;
-  BlockPoints[1] = 150;
-  BlockPoints[2] = 160;
-  BlockPoints[3] = 100;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockPoints[i] = 0;
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg + 1.20;
+    for ( int i = 2; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 600;
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
 
-  BlockDwell[0] = 1.0;
-  BlockDwell[1] = 1.0;
-  BlockDwell[2] = 1.0;
-  BlockDwell[3] = 1.0;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockDwell[i] = 0;
+    // dwell の設定は後
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
 
-  ChangeBLKs( 4 );
+  } else {
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg - 0.05;
+    BlockStart[2] = Eg + 0.10;
+    BlockStart[3] = Eg + 0.50;
+    BlockStart[4] = Eg + 1.20;
+    for ( int i = 5; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 70;
+    BlockPoints[1] = 150;
+    BlockPoints[2] = 160;
+    BlockPoints[3] = 100;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
+    
+    BlockDwell[0] = 1.0;
+    BlockDwell[1] = 1.0;
+    BlockDwell[2] = 1.0;
+    BlockDwell[3] = 1.0;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
+    
+    ChangeBLKs( 4 );
+  }
   ShowBLKs();
+
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();     // dwell は最小時間にセットされる
+    ShowBLKs();
+  }
 }
 
 void MainWindow::SetStdXAFSBLKs( void )
 {
   double Eg = ManTEkeV->text().toDouble();
+    
+  if ( QXafsMode->isChecked() ) {   // QXAFS
 
-  BlockStart[0] = Eg - 0.30;
-  BlockStart[1] = Eg - 0.04;
-  BlockStart[2] = Eg + 0.05;
-  BlockStart[3] = Eg + 0.50;
-  BlockStart[4] = Eg + 1.10;
-  for ( int i = 5; i < MaxBLKs+1; i++ )
-    BlockStart[i] = 0;
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg + 1.10;
+    for ( int i = 2; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 600;
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
 
-  BlockPoints[0] = 40;
-  BlockPoints[1] = 300;
-  BlockPoints[2] = 180;
-  BlockPoints[3] = 100;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockPoints[i] = 0;
+    // dwell の設定は後
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
 
-  BlockDwell[0] = 1.0;
-  BlockDwell[1] = 1.0;
-  BlockDwell[2] = 1.0;
-  BlockDwell[3] = 1.0;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockDwell[i] = 0;
-
-  ChangeBLKs( 4 );
+  } else {                          // Normal XAFS
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg - 0.04;
+    BlockStart[2] = Eg + 0.05;
+    BlockStart[3] = Eg + 0.50;
+    BlockStart[4] = Eg + 1.10;
+    for ( int i = 5; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 40;
+    BlockPoints[1] = 300;
+    BlockPoints[2] = 180;
+    BlockPoints[3] = 100;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
+    
+    BlockDwell[0] = 1.0;
+    BlockDwell[1] = 1.0;
+    BlockDwell[2] = 1.0;
+    BlockDwell[3] = 1.0;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
+    
+    ChangeBLKs( 4 );
+  }
   ShowBLKs();
+
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();       // dwell が可能な最短にセットされる
+    ShowBLKs();
+  }
 }
 
 void MainWindow::SetStdXANESBLKs( void )
@@ -491,12 +549,19 @@ void MainWindow::SetStdXANESBLKs( void )
   for ( int i = 1; i < MaxBLKs; i++ )
     BlockPoints[i] = 0;
 
-  BlockDwell[0] = 1.0;
-  for ( int i = 1; i < MaxBLKs; i++ )
-    BlockDwell[i] = 0;
+  if ( ! QXafsMode->isChecked() ) {
+    BlockDwell[0] = 1.0;
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
+  }    
 
   ChangeBLKs( 1 );
   ShowBLKs();
+
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();   // dwell が最短時間にセットされる
+    ShowBLKs();
+  }
 }
 
 void MainWindow::ShowBLKs( void )
@@ -516,7 +581,7 @@ void MainWindow::ShowBLKs( void )
     } else {
       BLKstep[i]->setText( "0" );
     }
-    buf.sprintf( "% 5.1f", BlockDwell[i] );
+    buf.sprintf( "% 5.2f", BlockDwell[i] );
     BLKdwell[i]->setText( buf );
     buf.sprintf( "% 4d", BlockPoints[i] );
     BLKpoints[i]->setText( buf );
@@ -540,32 +605,42 @@ void MainWindow::NewRpt( void )
   ShowTotal();
 }
 
-void MainWindow::ShowTotal( void )
+void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数変更時に呼ばれる
 {
   QString buf;
 
-  TP = 0;
-  TT0 = 0;
-  for ( int i = 0; i < Blocks; i++ ) {
-    TP += BlockPoints[i];
-    TT0 += BlockPoints[i] * BlockDwell[i];
-  } 
-  if ( SelRPT->value() > 30 )
-    SelRPT->setValue( 30 );
-  double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
-  buf.sprintf( "%4d", TP * SelRPT->value() );
-  TPoints->setText( tr( "Points: " ) + buf );
-  TT *= SelRPT->value();
-  EstimatedMeasurementTimeInSec = TT;
-  int Th = (int)( TT / 3600 );
-  TT -= Th * 3600;
-  int Tm = (int)( TT / 60 );
-  TT -= Tm * 60;
-  int Ts = (int)TT;
-  TT -= Ts;
-  //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
-  buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // 秒以下の精度は不要
-  TTime->setText( tr( "Time: " ) + buf );
+  if ( SelRPT->value() > 99 ) // 特に意味はないが、反復回数の上限は 99 
+    SelRPT->setValue( 99 );
+
+  if ( ! QXafsMode->isChecked() ) {  // 通常モード
+    TP = 0;                     // 測定の合計点数と、単純積算時間を数える
+    TT0 = 0;
+    for ( int i = 0; i < Blocks; i++ ) {
+      TP += BlockPoints[i];
+      TT0 += BlockPoints[i] * BlockDwell[i];
+    } 
+
+    double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
+    buf.sprintf( "%4d", TP * SelRPT->value() );
+    TPoints->setText( tr( "Points: " ) + buf );
+    TT *= SelRPT->value();
+    EstimatedMeasurementTimeInSec = TT;
+    int Th = (int)( TT / 3600 );
+    TT -= Th * 3600;
+    int Tm = (int)( TT / 60 );
+    TT -= Tm * 60;
+    int Ts = (int)TT;
+    TT -= Ts;
+    //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+    buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // 秒以下の精度は不要
+    TTime->setText( tr( "Time: " ) + buf );
+  } else {    // QXAFS モード
+    //    SelRPT->value() * ( ( 
+    TP = BlockPoints[0];     // 測定の合計点数と、単純積算時間を数える
+    TT0 = BlockDwell[0];     //  
+
+    //    RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
+  }
 }
 
 void MainWindow::ChangeBLKstart( void )
@@ -589,6 +664,7 @@ void MainWindow::ChangeBLKstart( void )
 		   /step )+0.5;
 	}
       }
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -607,6 +683,7 @@ void MainWindow::ChangeBLKstep( void )
 		   - u->keV2any(BLKUnit, BlockStart[i]) )
 		 /step )+0.5;
       }
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -617,6 +694,7 @@ void MainWindow::ChangeBLKpoints( void )
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     if ( BLKpoints.at(i) == sender() ) {
       BlockPoints[i] = BLKpoints[i]->text().toDouble();
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -627,6 +705,7 @@ void MainWindow::ChangeBLKdwell( void )
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
     if ( BLKdwell.at(i) == sender() ) {
       BlockDwell[i] = BLKdwell[i]->text().toDouble();
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -813,7 +892,40 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
     }
-    
+    if ( QXafsMode->isChecked() ) {
+      if ( BlockPoints[0] > 9990 ) {
+	statusbar->showMessage( tr( "Measured points are too many.  "
+				    "It should be less than 9990." ), 2000 );
+	return;
+      }
+      if ( ! UseI1->isChecked() ) {
+	statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
+	return;
+      }
+      if ( Use19chSSD->isChecked() ) {
+	statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
+	return;
+      }
+      if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
+	statusbar
+	  ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
+	return;
+      }
+      if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
+	statusbar
+	  ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
+	return;
+      }
+      if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
+	statusbar
+	  ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
+	return;
+      }
+    }
+
+    // この下の諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々の設定が
+    // QXAFS の時も必要かどうか、逆に QXAFS に必要な設定が全部できてるかは
+    // 要確認
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
@@ -829,6 +941,7 @@ void MainWindow::StartMeasurement( void )
     mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
+
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
@@ -866,6 +979,10 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
       LC++;
       aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
+    }
+    if ( QXafsMode->isChecked() ) {
+      if ( Enc2 != NULL )
+	mUnits.addUnit( Enc2 );
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -962,18 +1079,6 @@ void MainWindow::StartMeasurement( void )
     if ( Use19chSSD->isChecked() ) {
       MeasChNo += ( MaxSSDs -1 );
     }
-#if 0
-    MeasView->SetRLine( 0 );
-    MeasView->SetLLine( 1 );
-    MeasView->SetLR( 0, RIGHT_AX );
-    MeasView->SetScaleType( 0, I0TYPE );
-    MeasView->SetLineName( 0, mUnits.at(0)->getName() );
-    for ( int j = 1; j < mUnits.count(); j++ ) {
-      MeasView->SetLR( j, LEFT_AX );
-      MeasView->SetScaleType( j, FULLSCALE );
-      MeasView->SetLineName( j, mUnits.at(j)->getName() );
-    }
-#endif
     SetDispMeasModes();
     CpBlock2SBlock();
 
@@ -1073,11 +1178,9 @@ void MainWindow::CpBlock2SBlock( void )
 
 bool MainWindow::CheckBlockRange( void )
 {
-  Blocks;
-  BLKUnit;
   for ( int i = 0; i <= Blocks; i++ ) {
-    if (( u->keV2any( EV, u->any2keV( BLKUnit, BlockStart[i] ) ) < MinEnergyInEV )
-	||( u->keV2any( EV, u->any2keV( BLKUnit, BlockStart[i] ) ) > MaxEnergyInEV )) {
+    if (( u->keV2any( EV, BlockStart[i] ) < MinEnergyInEV )
+	||( u->keV2any( EV, BlockStart[i] ) > MaxEnergyInEV )) {
       return false;
     }
   }

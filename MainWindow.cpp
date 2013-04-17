@@ -30,6 +30,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MonDataStat = MonNameStat = OLD;
   MCADataStat = MCANameStat = OLD;
 
+  isQXafsModeAvailable = false;
+
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
   u = new Units;
@@ -43,7 +45,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   }
 #endif
 
-  MMainTh = EncMainTh = NULL;
+  MMainTh = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
@@ -76,6 +78,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   } else {
     MainTab->removeTab( MainTab->indexOf( SSDTab ) );
   }
+  setupQXafsMode();
   setupMeasArea();
   setupReadDataArea();
 
@@ -121,6 +124,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   this, SLOT( SomeDrvIsConnected( SMsg ) ) );
   connect( s, SIGNAL( EvDisconnected( SMsg ) ),
 	   this, SLOT( SomeDrvIsDisconnected( SMsg ) ) );
+
+  if ( ! isQXafsModeAvailable ) {
+    QXafsMode->setChecked( false );
+    QXafsMode->setEnabled( false );
+  }
 
   GoTimer = new QTimer;
   MCATimer = new QTimer;
@@ -225,6 +233,9 @@ void MainWindow::InitAndIdentifySensors( void )
       connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
       connect( EncMainTh, SIGNAL( newValue( QString ) ),
 	       StatDisp, SLOT( newEncTh( QString ) ) );
+    }
+    if ( as->getID() == "ENCTH2" ) {
+      Enc2 = as;
     }
   }
   

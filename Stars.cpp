@@ -163,7 +163,9 @@ void Stars::ReceiveMessageFromStars( void )
 
   switch( ConnectionStage ) {
   case CSTAGE0: 
-    RBuf = ss->readLine( 4000 );
+    RBuf = ss->readLine( 160000 ); // Stars のバッファは現在 160kbyte
+                                   // QXafs では 1点16byte のデータが来るので
+                                   // 10,000点が max
     RBuf = RBuf.simplified();
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;
@@ -206,6 +208,20 @@ void Stars::ReceiveMessageFromStars( void )
 	case SPEEDMIDDLE:
 	case SPEEDLOW:
 	  emit AnsSetSpeed( smsg ); break;
+	case SETHIGHSPEED:
+	  emit AnsSetHighSpeed( smsg ); break;
+	case SETTIMINGOUTMODE:
+	  emit AnsSetTimingOutMode( smsg ); break;
+	case SETTIMINGOUTSTART:
+	  emit AnsSetTimingOutStart( smsg ); break;
+	case SETTIMINGOUTEND:
+	  emit AnsSetTimingOutEnd( smsg ); break;
+	case SETTIMINGOUTINTERVAL:
+	  emit AnsSetTimingOutInterval( smsg ); break;
+	case SETTIMINGOUTREADY:
+	  emit AnsSetTimingOutReady( smsg ); break;
+	case SELECT: break;
+	  emit AnsSelect( smsg ); break;
 	case REMOTE: break;
 	  emit AnsRemote( smsg ); break;
 	case STOP:
@@ -308,6 +324,42 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetMode( smsg ); break;
 	case SETCOUNTPRESET:
 	  emit AnsSetCountPreset( smsg ); break;
+	case SETAPERTURE:
+	  emit AnsSetAperture( smsg ); break;
+	case SETTRIGGERDELAY:
+	  emit AnsSetTriggerDelay( smsg ); break;
+	case SETSAMPLINGSOURCE:
+	  emit AnsSetSamplingSource( smsg ); break;
+	case SETTRIGGERSOURCE:
+	  emit AnsSetTriggerSource( smsg ); break;
+	case SETTRIGGERCOUNTS:
+	  emit AnsSetTriggerCounts( smsg ); break;
+	case SETTRIGGERSLOPE:
+	  emit AnsSetTriggerSlope( smsg ); break;
+	case GETDATAPOINTS:
+	  emit AnsGetDataPoints( smsg ); break;
+	case READDATAPOINTS:
+	  emit AnsReadDataPoints( smsg ); break;
+	case ABORT:
+	  emit AnsAbort( smsg ); break;
+	case SETAUTOZERO:
+	  emit AnsSetAutoZero( smsg ); break;
+	case RECORD:
+	  emit AnsRecord( smsg ); break;
+	case QINITIALIZE:
+	  emit AnsQInitialize( smsg ); break;
+	case QGETDATA:
+	  emit AnsQGetData( smsg ); break;
+	case QFINALIZE:
+	  emit AnsQFinalize( smsg ); break;
+	case STANDBY:
+	  emit AnsStandBy( smsg ); break;
+	case GETDATA:
+	  emit AnsGetData( smsg ); break;
+	case GETSTAT:
+	  emit AnsGetStat( smsg ); break;
+	case TRIGGER:
+	  emit AnsTrigger( smsg ); break;
 	default:
 	  break;
 	}

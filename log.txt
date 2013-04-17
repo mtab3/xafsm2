@@ -1,0 +1,99 @@
+17:03:47> XafsM2-bsd.M015>pm16c04-2.ch3 SetHighSpeed 6670
+17:03:47> pm16c04-2.ch3>XafsM2-bsd.M015 @SetHighSpeed 6670 Ok:
+
+17:03:47> XafsM2-bsd.M015>pm16c04-2.ch3 SpeedHigh
+17:03:47> pm16c04-2.ch3>XafsM2-bsd.M015 @SpeedHigh Ok:
+
+17:03:47> XafsM2-bsd.Scan>a34410a-1 Reset                  3ÉÃ
+17:03:50> a34410a-1>XafsM2-bsd.Scan @Reset OK
+
+17:03:47> XafsM2-bsd.Scan>a34410a-2 Reset                  3ÉÃ
+17:03:50> a34410a-2>XafsM2-bsd.Scan @Reset OK
+
+17:03:50> XafsM2-bsd.S036>a34410a-1 qInitialize 0.0149775                  7ÉÃ
+17:03:57> a34410a-1>XafsM2-bsd.S036 @qInitialize 0.0149775 OK
+
+17:03:50> XafsM2-bsd.S037>a34410a-2 qInitialize 0.0149775                  7ÉÃ
+17:03:57> a34410a-2>XafsM2-bsd.S037 @qInitialize 0.0149775 OK
+
+17:03:50> XafsM2-bsd.M015>pm16c04-2.ch3 SetValue 464182         1ÉÃ (½é´ü°ÌÃÖ¤Ø¤Î°ÜÆ°)
+17:03:50> pm16c04-2.ch3>XafsM2-bsd.M015 @SetValue 464182 Ok:
+17:03:51> pm16c04-2.ch3>XafsM2-bsd.Init _ChangedIsBusy 0
+
+17:03:58> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutMode 3
+17:03:58> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutMode 3 Ok:
+
+17:03:58> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutStart 461959
+17:03:58> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutStart 461959 Ok:
+
+17:03:58> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutEnd 395250
+17:03:58> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutEnd 395250 Ok:
+
+17:03:58> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutInterval 111
+17:03:58> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutInterval 111 Ok:
+
+17:03:58> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutReady 1
+17:03:58> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutReady 1 Ok:
+
+17:03:58> XafsM2-bsd.M015>pm16c04-2.ch3 SetValue 393027    11ÉÃ (Á°¸å¤ò²Ã¤¨¤¿10ÉÃ¥¹¥­¥ã¥ó)
+17:03:58> pm16c04-2.ch3>XafsM2-bsd.M015 @SetValue 393027 Ok:
+17:04:09> pm16c04-2.ch3>XafsM2-bsd.Init _ChangedIsBusy 0
+
+17:04:09> XafsM2-bsd.S037>a34410a-2 qGetData              3ÉÃ
+17:04:12> a34410a-2>XafsM2-bsd.S037 @qGetData 601
+
+17:04:09> XafsM2-bsd.S036>a34410a-1 qGetData              3ÉÃ
+17:04:11> a34410a-1>XafsM2-bsd.S036 @qGetData 601
+
+17:04:12> XafsM2-bsd.S036>a34410a-1 qFinalize             1ÉÃ
+17:04:13> a34410a-1>XafsM2-bsd.S036 @qFinalize OK
+
+17:04:12> XafsM2-bsd.S037>a34410a-2 qFinalize             1ÉÃ
+17:04:13> a34410a-2>XafsM2-bsd.S037 @qFinalize OK
+
+17:04:12> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutMode 3
+17:04:12> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutMode 3 Ok:
+
+17:04:12> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutStart 395250
+17:04:12> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutStart 395250 Ok:
+
+17:04:12> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutEnd 461959
+17:04:12> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutEnd 461959 Ok:
+
+17:04:12> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutInterval 111
+17:04:12> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutInterval 111 Ok:
+
+17:04:12> XafsM2-bsd.M015>pm16c04-2.ch3 SetTimingOutReady 1
+17:04:12> pm16c04-2.ch3>XafsM2-bsd.M015 @SetTimingOutReady 1 Ok:
+
+17:04:13> XafsM2-bsd.S036>a34410a-1 qInitialize 0.0149775             7ÉÃ
+17:04:20> a34410a-1>XafsM2-bsd.S036 @qInitialize 0.0149775 OK
+
+17:04:13> XafsM2-bsd.S037>a34410a-2 qInitialize 0.0149775             7ÉÃ
+17:04:20> a34410a-2>XafsM2-bsd.S037 @qInitialize 0.0149775 OK
+
+17:04:20> XafsM2-bsd.M015>pm16c04-2.ch3 SetValue 464182     12ÉÃ(Á°¸å¤ò´Þ¤á¤¿10ÉÃ¥¹¥­¥ã¥ó)
+17:04:20> pm16c04-2.ch3>XafsM2-bsd.M015 @SetValue 464182 Ok:
+17:04:32> pm16c04-2.ch3>XafsM2-bsd.Init _ChangedIsBusy 0
+
+17:04:32> XafsM2-bsd.S036>a34410a-1 qGetData                2ÉÃ
+17:04:34> a34410a-1>XafsM2-bsd.S036 @qGetData 601
+
+17:04:32> XafsM2-bsd.S037>a34410a-2 qGetData                2ÉÃ
+17:04:34> a34410a-2>XafsM2-bsd.S037 @qGetData 601
+
+17:04:34> XafsM2-bsd.S036>a34410a-1 qFinalize                2ÉÃ
+17:04:36> a34410a-1>XafsM2-bsd.S036 @qFinalize OK
+
+17:04:34> XafsM2-bsd.S037>a34410a-2 qFinalize                2ÉÃ
+17:04:36> a34410a-2>XafsM2-bsd.S037 @qFinalize OK
+
+17:04:36> XafsM2-bsd.M015>pm16c04-2.ch3 SetHighSpeed 6000
+17:04:36> pm16c04-2.ch3>XafsM2-bsd.M015 @SetHighSpeed 6000 Ok:
+
+17:04:36> XafsM2-bsd.M015>pm16c04-2.ch3 SpeedMiddle
+17:04:36> pm16c04-2.ch3>XafsM2-bsd.M015 @SpeedMiddle Ok:
+
+17:04:36> XafsM2-bsd.M015>pm16c04-2.ch3 SetValue 464994      1ÉÃ (¸µ°ÌÃÖÉüµ¢)
+17:04:36> pm16c04-2.ch3>XafsM2-bsd.M015 @SetValue 464994 Ok:
+17:04:37> pm16c04-2.ch3>XafsM2-bsd.Init _ChangedIsBusy 

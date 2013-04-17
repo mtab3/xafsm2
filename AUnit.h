@@ -52,6 +52,7 @@ class AUnit : public QObject
   int SelectedRange;
   double setTime;       // Actually set time;
   double setDarkTime;   // Actually set time;
+  int points;           // Measured Data Points : 34410
 
   double Center;        // Center position in puls : only for PM
 
@@ -80,6 +81,7 @@ class AUnit : public QObject
 
   bool IsBusy;
   bool IsBusy2;
+  int Busy2Count;
   QString Value;
   double Dark;                 // back ground value normalized for 1 sec
   QString lastVal;
@@ -96,8 +98,8 @@ class AUnit : public QObject
   double dlastSetV;
 
  private:
-  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
-		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2, int lsr );
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
+		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2, int enc2 );
   void ConnectToDataLinkServer( QString host, qint16 port );
 
  private slots:
@@ -230,6 +232,7 @@ public:
   double getDark( void ) { return Dark; };
   QString lastFunc( void ) { return LastFunc; };
   QString lastFunc2( void ) { return LastFunc2; };
+  int Points( void ) { return points; };
 
   QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
   QVector<quint64> getCountsAll( void ) { return CountsAll; };
@@ -264,9 +267,33 @@ public:
   void RunStop( void );
   void RunResume( void );
   void AskIsBusy( void );
+  bool QStart( void );                 // QXAFS
+  bool QRead( void );                 // QXAFS
+  bool QEnd( void );                  // QXAFS
   void SetSpeed( MSPEED speed );
+  void SetHighSpeed( int speed );
+  void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
+  void SetTimingOutMode( int mode );
+  // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
+  // 34410 triggers rising edge and requires 1us or longer
+  // for EB741 2us is long enough
+  void SetTimingOutStart( int startP );   // start position of timing out
+  void SetTimingOutEnd( int endP );       // end position of timing out
+  void SetTimingOutInterval( int interval );  // timing out interval
+  void SetTimingOutReady( int ready );  // timing out ready
   double SetTime( double dtime );   // in sec
   void Stop( void );
+
+  // 3440
+  void SetTriggerDelay( double time );
+  void SetSamplingSource( QString source );
+  void SetTriggerSource( QString source );
+  void SetTriggerCounts( int count );
+  void SetTriggerSlope( QString type );
+  void GetDataPoints( void );
+  void ReadDataPoints( int points );
+  void Abort( void );
+
 #if 0                   // new mcas
   bool GetMCA( int ch );
 #endif
@@ -280,6 +307,12 @@ public:
   bool GetLiveTime( int ch );
   bool GetRange( void );
   double GetSetTime( void ) { return setTime; };   // actual set time
+
+  void IsBusy2On( QString drv, QString name );
+  void IsBusy2Off( QString drv );
+  void setBusy2Count( int i ) { Busy2Count = i; };
+  void clrBusy2Count( void ) { Busy2Count = 0; };
+  int busy2Count( void ) { return Busy2Count; };
 
 public slots:
   void ClrBusy( SMsg msg );
@@ -298,21 +331,30 @@ public slots:
   void OnReportCurrent( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
 
+  //  void RcvDataPoints( SMsg msg );
+  //  void RcvReadData( SMsg msg );
+  void RcvStat( SMsg msg );
+  void RcvQGetData( SMsg msg );
+
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
 
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
+  //  void newValues( void );
   void newDark( double dark );
   void newCountsInROI( QVector<int> );
   void newCountsAll( QVector<int> );
   void newTotalEvents( QVector<int> );
   void newICRs( QVector<double> );
+  //  void newDataPoints( int points );
+  void newQData( void );
 
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
+  void ChangedBusy2Count( QString Drv );
   void AskedNowRange( int r );
 #if 0           // new mcas
   void ReceivedNewMCAValue( void );

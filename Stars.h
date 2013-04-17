@@ -72,6 +72,13 @@ signals:
   void AnsGetValue( SMsg msg );
   void AnsSetSpeed( SMsg msg );
   void AnsGetSpeed( SMsg msg );
+  void AnsSetHighSpeed( SMsg msg );
+  void AnsSetTimingOutMode( SMsg msg );
+  void AnsSetTimingOutStart( SMsg msg );
+  void AnsSetTimingOutEnd( SMsg msg );
+  void AnsSetTimingOutInterval( SMsg msg );
+  void AnsSetTimingOutReady( SMsg msg );
+  void AnsSelect( SMsg msg );
   void AnsStop( SMsg msg );
   void AnsReset( SMsg msg );
   void AnsSetDataFormat( SMsg msg );
@@ -123,6 +130,25 @@ signals:
   void AnsGetMCAs( SMsg msg );
   void AnsSetMode( SMsg msg );
   void AnsSetCountPreset( SMsg msg );
+
+  void AnsSetAperture( SMsg msg );
+  void AnsSetTriggerDelay( SMsg msg );
+  void AnsSetSamplingSource( SMsg msg );
+  void AnsSetTriggerSource( SMsg msg );
+  void AnsSetTriggerCounts( SMsg msg );
+  void AnsSetTriggerSlope( SMsg msg );
+  void AnsGetDataPoints( SMsg msg );
+  void AnsReadDataPoints( SMsg msg );
+  void AnsAbort( SMsg msg );
+  void AnsSetAutoZero( SMsg msg );
+  void AnsRecord( SMsg msg );
+  void AnsQInitialize( SMsg msg );
+  void AnsQGetData( SMsg msg );
+  void AnsQFinalize( SMsg msg );
+  void AnsStandBy( SMsg msg );
+  void AnsGetData( SMsg msg );
+  void AnsGetStat( SMsg msg );
+  void AnsTrigger( SMsg msg );
 
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

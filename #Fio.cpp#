@@ -59,12 +59,12 @@ void MainWindow::WriteHeader( int Rpt )
 
   out << " " << fixS( DFName, 14 ) << "  "
       << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << " - "
-      << "%001%" << endl; // ÃÖ´¹ÍÑ¤Î¥Ş¡¼¥¯ 001 ÈÖÌÜ 14·å½ªÎ»Æü»ş "yy.MM.dd hh:mm"
+      << "%001%" << endl; // ç½®æ›ç”¨ã®ãƒãƒ¼ã‚¯ 001 ç•ªç›® 14æ¡çµ‚äº†æ—¥æ™‚ "yy.MM.dd hh:mm"
   out << " " << fixS( EditCMT->text(), 80 ) << endl;
 
   out << " " << "Ring : " << "  1.2 GeV"
       << QString( "  %1 mA - " ).arg( ( SLS == NULL ) ? 0 : SLS->value().toDouble(), 6, 'f', 1, ' ' )
-      << "%002%"          // ÃÖ´¹ÍÑ¤Î¥Ş¡¼¥¯ 002 ÈÖÌÜ ¼Â¿ô6.1¥ê¥ó¥°ÅÅÎ®
+      << "%002%"          // ç½®æ›ç”¨ã®ãƒãƒ¼ã‚¯ 002 ç•ªç›® å®Ÿæ•°6.1ãƒªãƒ³ã‚°é›»æµ
       << " mA" << endl;
 
   out << " " << "Mono :   " << fixS( mccd[ selmc->MC() ]->getMCName(), 10 )
@@ -136,17 +136,17 @@ void MainWindow::WriteHeader( int Rpt )
            .arg( mUnits.at(1)->getDark(), 10, 'f', 3 ) << endl;
     break;
 
-  case FLUO:    // FLUO ¤È EXTRA ¤Ï°ìÅÙ¤ÏÆ±¤¸(°ì¤Ä)¤Ë¤Ê¤Ã¤¿¤Î¤Ë¡¢
+  case FLUO:    // FLUO ã¨ EXTRA ã¯ä¸€åº¦ã¯åŒã˜(ä¸€ã¤)ã«ãªã£ãŸã®ã«ã€
     out << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( 20, 2 ) << endl;
-    // I0 ¤Î°ÌÃÖ¤òÊÑ¤¨¤Ê¤¤¤È¤¤¤±¤Ê¤¤¤³¤È¤¬È½ÌÀ¡£¤Ê¤Î¤Ç¤Ş¤¿Ê¬Î¥¡£
+    // I0 ã®ä½ç½®ã‚’å¤‰ãˆãªã„ã¨ã„ã‘ãªã„ã“ã¨ãŒåˆ¤æ˜ã€‚ãªã®ã§ã¾ãŸåˆ†é›¢ã€‚
     out << "  Angle(c)  Angle(o)    time/s";
-    // FLUO ¤Î»ş mUnits ¤ÎÍ×ÁÇ¤ÎÊÂ¤Ó¤ÏÉ¬¤º I0, 19ch SSD ¤Ë¤Ê¤Ã¤Æ¤ë¤Ï¤º
+    // FLUO ã®æ™‚ mUnits ã®è¦ç´ ã®ä¸¦ã³ã¯å¿…ãš I0, 19ch SSD ã«ãªã£ã¦ã‚‹ã¯ãš
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( j+1, 10 );  // 19ch SSD
     }
     out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // I0
     for ( int j = 0; j < MaxSSDs; j++ ) {
-      // ICR  19ch SSD ¤ÎÈÖ¹æ¤È¤½¤í¤¨¤ë
+      // ICR  19ch SSD ã®ç•ªå·ã¨ãã‚ãˆã‚‹
       out << QString( "%1" ).arg( j+1, 10 );
     }
     out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // resets
@@ -156,7 +156,7 @@ void MainWindow::WriteHeader( int Rpt )
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
     }
-    out << QString( "%1" ).arg( 1, 10 );       // I0 : I0 ¤Ï·è¤áÂÇ¤Á¤Ç 1
+    out << QString( "%1" ).arg( 1, 10 );       // I0 : I0 ã¯æ±ºã‚æ‰“ã¡ã§ 1
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO + 100, 10 );  // ICR
     }
@@ -173,26 +173,26 @@ void MainWindow::WriteHeader( int Rpt )
     for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
       out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
     }
-    out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // ¥ê¥»¥Ã¥È²ó¿ô : 0 ¤Ë¤·¤Æ¤ë !!
+    out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // ãƒªã‚»ãƒƒãƒˆå›æ•° : 0 ã«ã—ã¦ã‚‹ !!
     out << endl;
 
     break;
 
-    // EXTRA ¤ÏÌÌÅİ¤¯¤µ¤¤¡£
-    // (ÆÃ¤Ë MeasDispMode ¤ÏÉÁ²è¤ÎÊı¤Ç¤â»È¤¦¤Î¤Ç 19 ch Ê¬³ÈÄ¥¤¹¤ë¤ï¤±¤Ë¤¤¤«¤Ê¤¤)
-    // Use19chSSD->isChecked() == true ¤Ê¤é¡¢19ch SSD ¤ò»È¤¦¡£
-    // ¤½¤Î»ş UseI1->isChecked() == true ¤«¤É¤¦¤«¤Ç
-    // 19ch Ê¬¤Î¥Ç¡¼¥¿¤¬Å¸³«¤µ¤ì¤ë°ÌÃÖ¤¬ÊÑ¤ï¤ë¡£
-    // ¶ñÂÎÅª¤Ë¹Í¤¨¤Æ¤ß¤ë¤È
-    // 19ch SSD : No.   ´ÊÃ±
-    //    MeasChNo Ê¬ i ¥ë¡¼¥×¤ò²ó¤·¤Æ¡¢
-    //    ÁÇÄ¾¤Ë MeasDispMode[i] ¤È¤« Offsets[i] ¤È¤«¤ò½ñ¤±¤Ğ¤¤¤¤
+    // EXTRA ã¯é¢å€’ãã•ã„ã€‚
+    // (ç‰¹ã« MeasDispMode ã¯æç”»ã®æ–¹ã§ã‚‚ä½¿ã†ã®ã§ 19 ch åˆ†æ‹¡å¼µã™ã‚‹ã‚ã‘ã«ã„ã‹ãªã„)
+    // Use19chSSD->isChecked() == true ãªã‚‰ã€19ch SSD ã‚’ä½¿ã†ã€‚
+    // ãã®æ™‚ UseI1->isChecked() == true ã‹ã©ã†ã‹ã§
+    // 19ch åˆ†ã®ãƒ‡ãƒ¼ã‚¿ãŒå±•é–‹ã•ã‚Œã‚‹ä½ç½®ãŒå¤‰ã‚ã‚‹ã€‚
+    // å…·ä½“çš„ã«è€ƒãˆã¦ã¿ã‚‹ã¨
+    // 19ch SSD : No.   ç°¡å˜
+    //    MeasChNo åˆ† i ãƒ«ãƒ¼ãƒ—ã‚’å›ã—ã¦ã€
+    //    ç´ ç›´ã« MeasDispMode[i] ã¨ã‹ Offsets[i] ã¨ã‹ã‚’æ›¸ã‘ã°ã„ã„
     // 19ch SSD : Yes.
     //   I1 : No.
-    //     ³ÑÅÙ¡¢³ÑÅÙ¡¢»ş´Ö¡¢I0¡¢19ch Ê¬Å¸³«¡¢19chÊ¬ ICR¡¢¥ê¥»¥Ã¥È²ó¿ô¡¢¤½¤ÎÂ¾»Ä¤ê
+    //     è§’åº¦ã€è§’åº¦ã€æ™‚é–“ã€I0ã€19ch åˆ†å±•é–‹ã€19chåˆ† ICRã€ãƒªã‚»ãƒƒãƒˆå›æ•°ã€ãã®ä»–æ®‹ã‚Š
     //   I1 : Yes.
-    //     ³ÑÅÙ¡¢³ÑÅÙ¡¢»ş´Ö¡¢I0¡¢I1¡¢19ch Ê¬Å¸³«¡¢19chÊ¬ ICR¡¢¥ê¥»¥Ã¥È²ó¿ô¡¢¤½¤ÎÂ¾»Ä¤ê
-    // ¤Ë¤Ê¤ë¡£
+    //     è§’åº¦ã€è§’åº¦ã€æ™‚é–“ã€I0ã€I1ã€19ch åˆ†å±•é–‹ã€19chåˆ† ICRã€ãƒªã‚»ãƒƒãƒˆå›æ•°ã€ãã®ä»–æ®‹ã‚Š
+    // ã«ãªã‚‹ã€‚
 
   case EXTRA:
     out << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
@@ -210,7 +210,7 @@ void MainWindow::WriteHeader( int Rpt )
         cnt++;
         for ( int j = 0; j < MaxSSDs; j++ ) {
           out << QString( "%1" ).arg( cnt - MaxSSDs - 2, 10 );
-          // ICR  19ch SSD ¤ÎÈÖ¹æ¤È¤½¤í¤¨¤ë
+          // ICR  19ch SSD ã®ç•ªå·ã¨ãã‚ãˆã‚‹
           cnt++;
         }
         cnt--;
@@ -245,7 +245,7 @@ void MainWindow::WriteHeader( int Rpt )
         for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
           out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
         }
-        out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // ¥ê¥»¥Ã¥È²ó¿ô : 0 ¤Ë¤·¤Æ¤ë !!
+        out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // ãƒªã‚»ãƒƒãƒˆå›æ•° : 0 ã«ã—ã¦ã‚‹ !!
         darks = SFluo->getDarkICRs();
         for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
           out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
@@ -326,7 +326,7 @@ void MainWindow::WriteInfoFile2( void )
 }
 
 void MainWindow::WriteHeader2( int Rpt )
-// ¥¹¥­¥ã¥ó½ªÎ»»ş¡¢½ªÎ»»ş¤Ç¤Ê¤¤¤È·è¤Ş¤é¤Ê¤¤¾ğÊó¤ò¥Ø¥Ã¥À¤Ë½ñ¤­²Ã¤¨¤ë¡£
+// ã‚¹ã‚­ãƒ£ãƒ³çµ‚äº†æ™‚ã€çµ‚äº†æ™‚ã§ãªã„ã¨æ±ºã¾ã‚‰ãªã„æƒ…å ±ã‚’ãƒ˜ãƒƒãƒ€ã«æ›¸ãåŠ ãˆã‚‹ã€‚
 {
   SetDFName( Rpt );   // Generate a file name with repitation number
 
@@ -377,21 +377,21 @@ void MainWindow::WriteHeader2( int Rpt )
 }
 
 
-// ¥¨¥ó¥³¡¼¥À¤Î³ÑÅÙ¤Çµ­Ï¿¤¹¤ë¤«ÁªÂò¤·¤¿³ÑÅÙ¤Çµ­Ï¿¤¹¤ë¤«¤Ï
+// ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€ã®è§’åº¦ã§è¨˜éŒ²ã™ã‚‹ã‹é¸æŠã—ãŸè§’åº¦ã§è¨˜éŒ²ã™ã‚‹ã‹ã¯
 //     conds->isEncAsTh()
-// ¤Ç·è¤Ş¤ë¡£
-// ÁªÂò¤·¤¿¤Î¤¬¤É¤Á¤é¤«¤Ï
+// ã§æ±ºã¾ã‚‹ã€‚
+// é¸æŠã—ãŸã®ãŒã©ã¡ã‚‰ã‹ã¯
 //     EncOrPM
-// ¤Ç¤ï¤«¤ë¡£
-// ²¿¤Ë¤»¤è¡¢Á´Éô¤ÎÃÍ¤òºÇ¸å¤Ëµ­Ï¿¤¹¤ë¤«¤É¤¦¤«¤Ï
+// ã§ã‚ã‹ã‚‹ã€‚
+// ä½•ã«ã›ã‚ˆã€å…¨éƒ¨ã®å€¤ã‚’æœ€å¾Œã«è¨˜éŒ²ã™ã‚‹ã‹ã©ã†ã‹ã¯
 //     conds->isAddInfos()
-// ¤Ç·è¤Ş¤ë¡£
+// ã§æ±ºã¾ã‚‹ã€‚
 
 void MainWindow::RecordData( void )
-// MeasVals ¤Ï dark ÊäÀµºÑ¤ß count
-// dark ÊäÀµºÑ¤ß cps ¤¬Íß¤·¤±¤ì¤Ğ MeasCPSs
-// (dark ÊäÀµ¤¬¤«¤«¤Ã¤Æ¤¤¤ë¤Î¤Ï Measurement ¤Ç readValue ¤¹¤ë¤È¤­
-//  dark ÊäÀµ¤Î¥ª¥×¥·¥ç¥ó¤òÉÕ¤±¤Æ¤¤¤ë¤«¤é)
+// MeasVals ã¯ dark è£œæ­£æ¸ˆã¿ count
+// dark è£œæ­£æ¸ˆã¿ cps ãŒæ¬²ã—ã‘ã‚Œã° MeasCPSs
+// (dark è£œæ­£ãŒã‹ã‹ã£ã¦ã„ã‚‹ã®ã¯ Measurement ã§ readValue ã™ã‚‹ã¨ã
+//  dark è£œæ­£ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ä»˜ã‘ã¦ã„ã‚‹ã‹ã‚‰)
 {
   if ( isSFluo && RecordMCASpectra->isChecked() ) {
     QFileInfo mcaFile( mcaDir,
@@ -409,12 +409,12 @@ void MainWindow::RecordData( void )
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
     QTextStream out( &file );
     QString buf;
-    // ¹Ô¤ÎÀèÆ¬¤Ï ÌÜÉ¸³ÑÅÙ¡¢¥¨¥ó¥³¡¼¥ÀÆÉ¤ß³ÑÅÙ¡¢Â¬Äê»ş´Ö¡¢I0
+    // è¡Œã®å…ˆé ­ã¯ ç›®æ¨™è§’åº¦ã€ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€èª­ã¿è§’åº¦ã€æ¸¬å®šæ™‚é–“ã€I0
     // Should be changed depending on the detector (ammeter or counter)
 
-    encTh = SelectedCurPosDeg( XENC );  // ¥¨¥ó¥³¡¼¥À¤È
-    PMTh = SelectedCurPosDeg( XPM );    // PM ¤Î¤½¤ì¤¾¤ì¤Ç¸«¤¿³ÑÅÙ
-    // ¥¨¥ó¥³¡¼¥À¤Î³ÑÅÙ¤Çµ­Ï¿¤¹¤ë¤«¡¢ÁªÂò¤·¤¿³ÑÅÙ¤Çµ­Ï¿¤¹¤ë¤«·èÄê
+    encTh = SelectedCurPosDeg( XENC );  // ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€ã¨
+    PMTh = SelectedCurPosDeg( XPM );    // PM ã®ãã‚Œãã‚Œã§è¦‹ãŸè§’åº¦
+    // ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€ã®è§’åº¦ã§è¨˜éŒ²ã™ã‚‹ã‹ã€é¸æŠã—ãŸè§’åº¦ã§è¨˜éŒ²ã™ã‚‹ã‹æ±ºå®š
     if ( conds->isEncAsTh() ) {
       recTh = encTh;
     } else {
@@ -424,19 +424,19 @@ void MainWindow::RecordData( void )
                  u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
 
-    if ( MeasFileType != FLUO ) {    // FLUO ¤Î»ş¤Ï¡¢I0 ¤Ï SSD ¥Ç¡¼¥¿¤Î¸å¤í
-      // I0 ¤ÎÃÍ¤¬À°¿ô¤«¤É¤¦¤«¤Ç¡¢µ­Ï¿»ş¤Î¥Õ¥©¡¼¥Ş¥Ã¥È¤òÊÑ¤¨¤è¤¦¤È¤·¤Æ¤¤¤ë
+    if ( MeasFileType != FLUO ) {    // FLUO ã®æ™‚ã¯ã€I0 ã¯ SSD ãƒ‡ãƒ¼ã‚¿ã®å¾Œã‚
+      // I0 ã®å€¤ãŒæ•´æ•°ã‹ã©ã†ã‹ã§ã€è¨˜éŒ²æ™‚ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’å¤‰ãˆã‚ˆã†ã¨ã—ã¦ã„ã‚‹
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-        buf.sprintf( " %9d",                 // À°¿ô : %9d
+        buf.sprintf( " %9d",                 // æ•´æ•° : %9d
                      (int)MeasVals[ MC_I0 ] );
       } else {
-        buf.sprintf( " %9.6g",               // ¼Â¿ô : %9.6g
+        buf.sprintf( " %9.6g",               // å®Ÿæ•° : %9.6g
                      MeasVals[ MC_I0 ] );
       }
       out << buf;
     }
 
-    // ¤½¤Î¸å¤ËÂ¬Äê¥Ç¡¼¥¿¤ÎÊÂ¤Ó
+    // ãã®å¾Œã«æ¸¬å®šãƒ‡ãƒ¼ã‚¿ã®ä¸¦ã³
     for ( int i = 1; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {
         double v = mUnits.at(i)->value().toDouble()
@@ -450,19 +450,19 @@ void MainWindow::RecordData( void )
         }
         out << buf;
       } else {
-        QVector<quint64> vals = SFluo->getCountsInROI(); // vals ¤Ï count
-        QVector<double> darks = SFluo->getDarkCountsInROI();   // darks ¤Ï cps 
+        QVector<quint64> vals = SFluo->getCountsInROI(); // vals ã¯ count
+        QVector<double> darks = SFluo->getDarkCountsInROI();   // darks ã¯ cps 
         for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
           buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
           out << buf;
         }
         if ( MeasFileType == FLUO ) {
-          // I0 ¤ÎÃÍ¤¬À°¿ô¤«¤É¤¦¤«¤Ç¡¢µ­Ï¿»ş¤Î¥Õ¥©¡¼¥Ş¥Ã¥È¤òÊÑ¤¨¤è¤¦¤È¤·¤Æ¤¤¤ë
+          // I0 ã®å€¤ãŒæ•´æ•°ã‹ã©ã†ã‹ã§ã€è¨˜éŒ²æ™‚ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’å¤‰ãˆã‚ˆã†ã¨ã—ã¦ã„ã‚‹
           if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-            buf.sprintf( " %9d",                 // À°¿ô : %9d
+            buf.sprintf( " %9d",                 // æ•´æ•° : %9d
                          (int)MeasVals[ MC_I0 ] );
           } else {
-            buf.sprintf( " %9.6g",               // ¼Â¿ô : %9.6g
+            buf.sprintf( " %9.6g",               // å®Ÿæ•° : %9.6g
                          MeasVals[ MC_I0 ] );
           }
           out << buf;
@@ -472,16 +472,16 @@ void MainWindow::RecordData( void )
           buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );      // by H.A.
           out << buf;
         }
-        buf.sprintf(" %9d", 0 );           // ¥ê¥»¥Ã¥È²ó¿ô : 0 ¤Ë¤·¤Æ¤ë
+        buf.sprintf(" %9d", 0 );           // ãƒªã‚»ãƒƒãƒˆå›æ•° : 0 ã«ã—ã¦ã‚‹
         out << buf;
       }
     }
-    // ËöÈø¤Ë¾ğÊóÄÉ²Ã¡£
-    // ÀßÄê¥¨¥Í¥ë¥®¡¼¡¢¥¨¥ó¥³¡¼¥ÀÆÉ¤ß¤Î³ÑÅÙ¡¢¥¨¥ó¥³¡¼¥À¤ÎÆÉ¤ß¤Î¥¨¥Í¥ë¥®¡¼´¹»»¡¢
-    //                 PM·×»»³Ñ¡¢PM·×»»³Ñ¤Î¥¨¥Í¥ë¥®¡¼´¹»»
+    // æœ«å°¾ã«æƒ…å ±è¿½åŠ ã€‚
+    // è¨­å®šã‚¨ãƒãƒ«ã‚®ãƒ¼ã€ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€èª­ã¿ã®è§’åº¦ã€ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€ã®èª­ã¿ã®ã‚¨ãƒãƒ«ã‚®ãƒ¼æ›ç®—ã€
+    //                 PMè¨ˆç®—è§’ã€PMè¨ˆç®—è§’ã®ã‚¨ãƒãƒ«ã‚®ãƒ¼æ›ç®—
     //
-    // ¥ë¡¼¥Á¥ó¤ÎÆ¬¤ËÆÉ¤ó¤Ç¤·¤Ş¤Ã¤¿ÃÍ¤ò»È¤Ã¤Æ¤ë¤Î¤Ï¡¢¤³¤Î¥ë¡¼¥Á¥ó¼Â¹ÔÃæ¤Ë
-    // Î¢¤Ç AUnit ÆâÉô¤Î value ¤¬ÊÑ¤ï¤Ã¤Æ¤·¤Ş¤¦¤Î¤ò·Ù²ü¤·¤Æ¡£(¤Ê¤¤¤Ï¤º¤À¤±¤É)
+    // ãƒ«ãƒ¼ãƒãƒ³ã®é ­ã«èª­ã‚“ã§ã—ã¾ã£ãŸå€¤ã‚’ä½¿ã£ã¦ã‚‹ã®ã¯ã€ã“ã®ãƒ«ãƒ¼ãƒãƒ³å®Ÿè¡Œä¸­ã«
+    // è£ã§ AUnit å†…éƒ¨ã® value ãŒå¤‰ã‚ã£ã¦ã—ã¾ã†ã®ã‚’è­¦æˆ’ã—ã¦ã€‚(ãªã„ã¯ãšã ã‘ã©)
     //
     if ( conds->isAddInfos() ) {
       buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",

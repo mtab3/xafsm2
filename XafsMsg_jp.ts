@@ -4,7 +4,7 @@
 <context>
     <name>AUnit</name>
     <message>
-        <location filename="AUnit.cpp" line="261"/>
+        <location filename="AUnit.cpp" line="278"/>
         <source> TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11] </source>
         <translation>TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11]</translation>
     </message>
@@ -17,12 +17,12 @@
         <translation>Frame</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="81"/>
+        <location filename="Conditions.ui" line="50"/>
         <source>Encorder is always used for Recorded Th</source>
         <translation>θとして常にエンコーダの値を記録する</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="91"/>
+        <location filename="Conditions.ui" line="60"/>
         <source>Selected Encorder or &apos;calc from PM&apos; is used</source>
         <translation>エンコーダかパルスモータの換算値かを選択する</translation>
     </message>
@@ -31,37 +31,47 @@
         <translation type="obsolete">計測時間の補正無し</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="122"/>
+        <location filename="Conditions.ui" line="91"/>
         <source>No normalization    (now &apos;No&apos; shold be selected always)</source>
         <translation>規格化なし(今は、つねにこれを選んで下さい)</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="132"/>
+        <location filename="Conditions.ui" line="101"/>
         <source>Normalize the SSD-measured value by RealTime</source>
         <translation>SSDの測定値を「RealTime」で規格化する</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="139"/>
+        <location filename="Conditions.ui" line="108"/>
         <source>Normalize the SSD-measured value by LiveTime</source>
         <translation>SSDの測定値を「LiveTime」で規格化する</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="167"/>
+        <location filename="Conditions.ui" line="136"/>
+        <location filename="Conditions.ui" line="199"/>
         <source>Some additional information is recorded 
 with usual 9809 format datas.</source>
         <translation>9809形式の通常のデータに加えて、追加の情報を行末に記録する(エンコーダ読み、パルスモータ換算両方の角度とエネルギー)。</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="171"/>
+        <location filename="Conditions.ui" line="140"/>
+        <source>Record Addicional Informations in &quot;.dat&quot; XAFS file</source>
+        <translation>XAFS 測定の &quot;.dat&quot; ファイルに付加的な情報を含める。</translation>
+    </message>
+    <message>
+        <location filename="Conditions.ui" line="203"/>
+        <source>Make &quot;.info&quot; file to record further information on XAFS</source>
+        <translation>XAFS測定の際 &quot;.info&quot; ファイルを作る。</translation>
+    </message>
+    <message>
         <source>Record Addicional Informations for XAFS measurement</source>
-        <translation>XAFS測定の記録ファイルに付加情報を含める</translation>
+        <translation type="obsolete">XAFS測定の記録ファイルに付加情報を含める</translation>
     </message>
     <message>
         <source>Use 1303 format to record XAFS measurement</source>
         <translation type="obsolete">XAFS測定の記録ファイルに 1303 フォーマットを使用する</translation>
     </message>
     <message>
-        <location filename="Conditions.ui" line="50"/>
+        <location filename="Conditions.ui" line="168"/>
         <source>Record All SSD Chs in ssd.dat while Monitoring</source>
         <translation>モニター時に SSD の全チャンネルのデータを記録する(ssd.dat)</translation>
     </message>
@@ -482,49 +492,60 @@ SSDの一部のチャンネルに、
         <translation>XAFS測定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1483"/>
+        <location filename="MainWindow.ui" line="945"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normally the dwell-inputs indicate dwell-times for each measurement step,&lt;/p&gt;&lt;p&gt;but in the Q-XAFS mode, it indicates total measurement time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>通常のXAFS測定では「計測時間」は１点の測定時間を、
+Q-XAFSモードでは１スキャンに必要な時間を表します。</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="1292"/>
+        <source>Mesure on Backward</source>
+        <translation>戻りでも測定を行う</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="1573"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select an ion-chamber for I0.   The recommended gas is displayed in the following field.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>I0 の計測に使うイオンチャンバを選ぶと、推奨される混合ガスが次の欄に表示されます。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1490"/>
+        <location filename="MainWindow.ui" line="1580"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Recommended gas for I0 chamber.&lt;/p&gt;&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>I0 チャンバに使用するお勧め混合ガス。
 表示されたガスに自動的には切り替わらないので手動で切り替える必要があります。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1497"/>
+        <location filename="MainWindow.ui" line="1587"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select an ion-chamber for I1.   The recommended gas is displayed in the following field.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>I1 の計測に使うイオンチャンバを選ぶと、推奨される混合ガスが次の欄に表示されます。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1504"/>
+        <location filename="MainWindow.ui" line="1594"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Recommended gas for I1 chamber.&lt;/p&gt;&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>I1 チャンバに使用するお勧め混合ガス。
 表示されたガスに自動的には切り替わらないので手動で切り替える必要があります。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1605"/>
+        <location filename="MainWindow.ui" line="1695"/>
         <source>Range of the device selected to measure A1.</source>
         <translation>「その他1」を測定する検出器のレンジ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1666"/>
+        <location filename="MainWindow.ui" line="1756"/>
         <source>Range of the device selected to measure I0.</source>
         <translation>I0 を測定する検出器のレンジ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1682"/>
+        <location filename="MainWindow.ui" line="1772"/>
         <source>Range of the device selected to measure I1.</source>
         <translation>I1 を測定する検出器のレンジ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1711"/>
+        <location filename="MainWindow.ui" line="1801"/>
         <source>Range of the device selected to measure A2.</source>
         <translation>「その他2」を測定する検出器のレンジ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1747"/>
+        <location filename="MainWindow.ui" line="1837"/>
         <source>Use novel 1303 data format to record the measured data instead of the usual 9809 format.</source>
         <translation>従来の 9809 フォーマットの代わりに 1303 フォーマットを用いて測定結果を記録する。</translation>
     </message>
@@ -533,12 +554,12 @@ SSDの一部のチャンネルに、
         <translation type="obsolete">1303フォーマット使用</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1869"/>
+        <location filename="MainWindow.ui" line="1959"/>
         <source>When 19ch SSD is used for the measurement, the MCA spectra for each channel is recorded at every measured points.</source>
         <translation>19ch SSDを使用する際、測定の各ステップでの MCA スペクトルを全て(全チャンネル、全ステップ)記録する。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1872"/>
+        <location filename="MainWindow.ui" line="1962"/>
         <source>Record MCA Spectra</source>
         <translation>MCAスペクトル記録</translation>
     </message>
@@ -564,9 +585,9 @@ SSDの一部のチャンネルに、
     </message>
     <message>
         <location filename="MainWindow.ui" line="749"/>
-        <location filename="MainWindow.ui" line="2645"/>
-        <location filename="MainWindow.ui" line="3584"/>
-        <location filename="MainWindow.ui" line="5057"/>
+        <location filename="MainWindow.ui" line="2668"/>
+        <location filename="MainWindow.ui" line="3607"/>
+        <location filename="MainWindow.ui" line="5080"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -587,65 +608,65 @@ SSDの一部のチャンネルに、
     </message>
     <message>
         <location filename="MainWindow.ui" line="844"/>
-        <location filename="MainWindow.ui" line="4123"/>
-        <location filename="MainWindow.ui" line="5450"/>
+        <location filename="MainWindow.ui" line="4146"/>
+        <location filename="MainWindow.ui" line="5479"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="864"/>
-        <location filename="MainWindow.ui" line="4459"/>
-        <location filename="MainWindow.ui" line="5499"/>
+        <location filename="MainWindow.ui" line="4482"/>
+        <location filename="MainWindow.ui" line="5528"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="888"/>
-        <location filename="MainWindow.ui" line="4142"/>
-        <location filename="MainWindow.ui" line="5213"/>
+        <location filename="MainWindow.ui" line="4165"/>
+        <location filename="MainWindow.ui" line="5242"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1056"/>
-        <location filename="MainWindow.ui" line="4161"/>
-        <location filename="MainWindow.ui" line="5263"/>
+        <location filename="MainWindow.ui" line="1059"/>
+        <location filename="MainWindow.ui" line="4184"/>
+        <location filename="MainWindow.ui" line="5292"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1080"/>
-        <location filename="MainWindow.ui" line="4180"/>
-        <location filename="MainWindow.ui" line="5276"/>
+        <location filename="MainWindow.ui" line="1083"/>
+        <location filename="MainWindow.ui" line="4203"/>
+        <location filename="MainWindow.ui" line="5305"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1118"/>
-        <location filename="MainWindow.ui" line="4199"/>
-        <location filename="MainWindow.ui" line="5289"/>
+        <location filename="MainWindow.ui" line="1121"/>
+        <location filename="MainWindow.ui" line="4222"/>
+        <location filename="MainWindow.ui" line="5318"/>
         <source>6</source>
         <translation>6</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1251"/>
-        <location filename="MainWindow.ui" line="4218"/>
-        <location filename="MainWindow.ui" line="5302"/>
+        <location filename="MainWindow.ui" line="1254"/>
+        <location filename="MainWindow.ui" line="4241"/>
+        <location filename="MainWindow.ui" line="5331"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1157"/>
+        <location filename="MainWindow.ui" line="1160"/>
         <source>StartP</source>
         <translation>始点</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1176"/>
+        <location filename="MainWindow.ui" line="1179"/>
         <source>Step</source>
         <translation>間隔</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1189"/>
+        <location filename="MainWindow.ui" line="1192"/>
         <source>Steps</source>
         <translation>刻数</translation>
     </message>
@@ -655,32 +676,32 @@ SSDの一部のチャンネルに、
         <translation>ブロック数</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="945"/>
+        <location filename="MainWindow.ui" line="948"/>
         <source>Dwell [s]</source>
         <translation>計測時間[秒]</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="994"/>
+        <location filename="MainWindow.ui" line="997"/>
         <source>Set all dwell times at once</source>
         <translation>全計測時間を一斉に設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1004"/>
+        <location filename="MainWindow.ui" line="1007"/>
         <source>All: </source>
         <translation>All: </translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2101"/>
+        <location filename="MainWindow.ui" line="2191"/>
         <source>Data File Name</source>
         <translation>データファイル</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2130"/>
+        <location filename="MainWindow.ui" line="2220"/>
         <source>...</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2141"/>
+        <location filename="MainWindow.ui" line="2231"/>
         <source>Comment</source>
         <translation>コメント</translation>
     </message>
@@ -689,7 +710,7 @@ SSDの一部のチャンネルに、
         <translation type="obsolete">検出器選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1436"/>
+        <location filename="MainWindow.ui" line="1526"/>
         <source>    I0</source>
         <translation>　I0</translation>
     </message>
@@ -698,101 +719,102 @@ SSDの一部のチャンネルに、
         <translation type="obsolete">I</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1554"/>
+        <location filename="MainWindow.ui" line="1644"/>
         <source>Aux. 1</source>
         <translation>その他 1</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1570"/>
+        <location filename="MainWindow.ui" line="1660"/>
         <source>Aux. 2</source>
         <translation>その他 2</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1426"/>
+        <location filename="MainWindow.ui" line="1516"/>
         <source>19ch SSD</source>
         <translation>19ch SSD</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1793"/>
+        <location filename="MainWindow.ui" line="1883"/>
         <source>The change of the repitation No. is available, even after starting measurement.
 Though, other parameters are fixed at the value on starting.</source>
         <translation>「繰返し回数」は測定開始後も変更可能(その他の測定に関わるパラメータは測定後に変更しても反映されない)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1810"/>
+        <location filename="MainWindow.ui" line="1900"/>
         <source>Repeat</source>
         <translation>繰返し</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1827"/>
+        <location filename="MainWindow.ui" line="1917"/>
         <source>On Finish</source>
         <translation>終了時動作</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1846"/>
-        <location filename="MainWindow.ui" line="4587"/>
-        <location filename="Measurement.cpp" line="121"/>
-        <location filename="MwMeas.cpp" line="1024"/>
+        <location filename="MainWindow.ui" line="1936"/>
+        <location filename="MainWindow.ui" line="4610"/>
+        <location filename="Measurement.cpp" line="123"/>
+        <location filename="MwMeas.cpp" line="1115"/>
         <location filename="MwSSDSetUp.cpp" line="476"/>
+        <location filename="QXafs.cpp" line="191"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1862"/>
-        <location filename="MwMeas.cpp" line="1028"/>
-        <location filename="MwMeas.cpp" line="1051"/>
-        <location filename="MwMeas.cpp" line="1086"/>
+        <location filename="MainWindow.ui" line="1952"/>
+        <location filename="MwMeas.cpp" line="1119"/>
+        <location filename="MwMeas.cpp" line="1142"/>
+        <location filename="MwMeas.cpp" line="1188"/>
         <source>Pause</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1327"/>
+        <location filename="MainWindow.ui" line="1337"/>
         <source>Check Cond.</source>
         <translation>条件確認</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1334"/>
+        <location filename="MainWindow.ui" line="1344"/>
         <source>Total points which will be measured</source>
         <translation>総測定点数</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1337"/>
+        <location filename="MainWindow.ui" line="1347"/>
         <source>Total points which will be measured
 </source>
         <translation>総測定点数</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1350"/>
+        <location filename="MainWindow.ui" line="1360"/>
         <source>Points:</source>
         <translation>点数:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1357"/>
+        <location filename="MainWindow.ui" line="1367"/>
         <source>Total measurement time</source>
         <translation>予想測定時間</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1369"/>
+        <location filename="MainWindow.ui" line="1379"/>
         <source>Time:</source>
         <translation>時間:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1948"/>
+        <location filename="MainWindow.ui" line="2038"/>
         <source>Meas. Bacground Time.[s] </source>
         <translation>バックグラウンド計測時間 [s] </translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2049"/>
+        <location filename="MainWindow.ui" line="2139"/>
         <source>Meas. Background</source>
         <translation>バックグラウンド計測</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2013"/>
+        <location filename="MainWindow.ui" line="2103"/>
         <source>Meas. before Scan</source>
         <translation>測定前にバックグラウンド計測</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1983"/>
+        <location filename="MainWindow.ui" line="2073"/>
         <source>Show BGs</source>
         <oldsource>Show Measured</oldsource>
         <translation>計測値表示</translation>
@@ -823,292 +845,297 @@ Though, other parameters are fixed at the value on starting.</source>
         <translation>終了時間</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4479"/>
-        <location filename="MainWindow.ui" line="5555"/>
+        <location filename="MainWindow.ui" line="1840"/>
+        <source>Q-XAFS mode</source>
+        <translation>Q-XAFS モード</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="4502"/>
+        <location filename="MainWindow.ui" line="5584"/>
         <source>Down</source>
         <translation>下流</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4499"/>
-        <location filename="MainWindow.ui" line="5575"/>
+        <location filename="MainWindow.ui" line="4522"/>
+        <location filename="MainWindow.ui" line="5604"/>
         <source>Stream</source>
         <translation> </translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4519"/>
-        <location filename="MainWindow.ui" line="5595"/>
+        <location filename="MainWindow.ui" line="4542"/>
+        <location filename="MainWindow.ui" line="5624"/>
         <source>Up</source>
         <translation>上流</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5107"/>
+        <location filename="MainWindow.ui" line="5130"/>
         <source>Show Energy</source>
         <translation>エネルギー表示</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5117"/>
+        <location filename="MainWindow.ui" line="5140"/>
         <source>Fit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5168"/>
+        <location filename="MainWindow.ui" line="5194"/>
         <source>ROI changeable even while the XAFS measurements</source>
         <translation>XAFS測定中もROIの変更を可能にする</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6216"/>
+        <location filename="MainWindow.ui" line="6245"/>
         <source>21</source>
         <translation>21</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6235"/>
+        <location filename="MainWindow.ui" line="6264"/>
         <source>23</source>
         <translation>23</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6254"/>
+        <location filename="MainWindow.ui" line="6283"/>
         <source>02</source>
         <translation>02</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6273"/>
+        <location filename="MainWindow.ui" line="6302"/>
         <source>22</source>
         <translation>22</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6292"/>
+        <location filename="MainWindow.ui" line="6321"/>
         <source>19</source>
         <translation>19</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6425"/>
+        <location filename="MainWindow.ui" line="6454"/>
         <source>03</source>
         <translation>03</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6033"/>
+        <location filename="MainWindow.ui" line="6062"/>
         <source>09</source>
         <translation>09</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6052"/>
+        <location filename="MainWindow.ui" line="6081"/>
         <source>08</source>
         <translation>08</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6071"/>
+        <location filename="MainWindow.ui" line="6100"/>
         <source>07</source>
         <translation>07</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6090"/>
+        <location filename="MainWindow.ui" line="6119"/>
         <source>06</source>
         <translation>06</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6109"/>
+        <location filename="MainWindow.ui" line="6138"/>
         <source>05</source>
         <translation>05</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6134"/>
+        <location filename="MainWindow.ui" line="6163"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6156"/>
+        <location filename="MainWindow.ui" line="6185"/>
         <source>01</source>
         <translation>01</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6175"/>
+        <location filename="MainWindow.ui" line="6204"/>
         <source>04</source>
         <translation>04</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6197"/>
+        <location filename="MainWindow.ui" line="6226"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2277"/>
+        <location filename="MainWindow.ui" line="2300"/>
         <source>Set up Conditions</source>
         <translation>条件設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2930"/>
-        <location filename="MainWindow.ui" line="2959"/>
-        <location filename="MainWindow.ui" line="3002"/>
-        <location filename="MainWindow.ui" line="3061"/>
-        <location filename="MainWindow.ui" line="3379"/>
+        <location filename="MainWindow.ui" line="2953"/>
+        <location filename="MainWindow.ui" line="2982"/>
+        <location filename="MainWindow.ui" line="3025"/>
+        <location filename="MainWindow.ui" line="3084"/>
+        <location filename="MainWindow.ui" line="3402"/>
         <location filename="MwSetup.cpp" line="550"/>
         <source>Go</source>
         <translation>移動</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2966"/>
+        <location filename="MainWindow.ui" line="2989"/>
         <source>Move To (2)</source>
         <translation>移動先 (2)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3009"/>
+        <location filename="MainWindow.ui" line="3032"/>
         <source>Move To (3)</source>
         <translation>移動先 (3)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3068"/>
+        <location filename="MainWindow.ui" line="3091"/>
         <source>Move To (4)</source>
         <translation>移動先 (4)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3091"/>
+        <location filename="MainWindow.ui" line="3114"/>
         <source> Speed </source>
         <translation>スピード</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3153"/>
+        <location filename="MainWindow.ui" line="3176"/>
         <source>H</source>
         <translation>H</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3187"/>
+        <location filename="MainWindow.ui" line="3210"/>
         <source>M</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3224"/>
+        <location filename="MainWindow.ui" line="3247"/>
         <source>L</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3249"/>
+        <location filename="MainWindow.ui" line="3272"/>
         <source>Move Monochro</source>
         <translation>分光器回転</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3271"/>
+        <location filename="MainWindow.ui" line="3294"/>
         <source>Move To (1)</source>
         <translation>移動先 (1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2556"/>
+        <location filename="MainWindow.ui" line="2579"/>
         <source>0.1</source>
         <translation>0.1</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2534"/>
+        <location filename="MainWindow.ui" line="2557"/>
         <source>Value</source>
         <translation>計測値</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2527"/>
+        <location filename="MainWindow.ui" line="2550"/>
         <source>Dwell T.</source>
         <translation>計測時間</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2626"/>
-        <location filename="MainWindow.ui" line="3625"/>
-        <location filename="MainWindow.ui" line="5043"/>
+        <location filename="MainWindow.ui" line="2649"/>
+        <location filename="MainWindow.ui" line="3648"/>
+        <location filename="MainWindow.ui" line="5066"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2578"/>
+        <location filename="MainWindow.ui" line="2601"/>
         <location filename="MwSetup.cpp" line="794"/>
         <source>Mon. Start</source>
         <translation>モニタ開始</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2492"/>
-        <location filename="MainWindow.ui" line="2669"/>
-        <location filename="MainWindow.ui" line="2689"/>
+        <location filename="MainWindow.ui" line="2515"/>
+        <location filename="MainWindow.ui" line="2692"/>
+        <location filename="MainWindow.ui" line="2712"/>
         <source>0.000</source>
         <translation>0.000</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2514"/>
+        <location filename="MainWindow.ui" line="2537"/>
         <source>Monitor Sensors</source>
         <translation>検出器モニタ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3705"/>
+        <location filename="MainWindow.ui" line="3728"/>
         <source> Dwell [s]:</source>
         <translation>計測時間[s]:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3761"/>
+        <location filename="MainWindow.ui" line="3784"/>
         <location filename="Scan.cpp" line="76"/>
         <source>Scan</source>
         <translation>スキャン開始</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3791"/>
+        <location filename="MainWindow.ui" line="3814"/>
         <source>StartP:</source>
         <translation>始点:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3545"/>
-        <location filename="MainWindow.ui" line="3698"/>
+        <location filename="MainWindow.ui" line="3568"/>
+        <location filename="MainWindow.ui" line="3721"/>
         <source>Abs</source>
         <translation>絶対</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3565"/>
+        <location filename="MainWindow.ui" line="3588"/>
         <source>EndP:</source>
         <translation>終点:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3801"/>
+        <location filename="MainWindow.ui" line="3824"/>
         <source>Step:</source>
         <translation>間隔:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3654"/>
-        <location filename="MainWindow.ui" line="3676"/>
+        <location filename="MainWindow.ui" line="3677"/>
+        <location filename="MainWindow.ui" line="3699"/>
         <source>Rel</source>
         <translation>相対</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3386"/>
-        <location filename="MainWindow.ui" line="5003"/>
+        <location filename="MainWindow.ui" line="3409"/>
+        <location filename="MainWindow.ui" line="5026"/>
         <source>Save:</source>
         <translation>保存ファイル:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3396"/>
+        <location filename="MainWindow.ui" line="3419"/>
         <source>puls</source>
         <translation>puls</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3428"/>
+        <location filename="MainWindow.ui" line="3451"/>
         <source>Move To</source>
         <translation>移動先</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3461"/>
+        <location filename="MainWindow.ui" line="3484"/>
         <source>unit</source>
         <translation>単位</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3490"/>
+        <location filename="MainWindow.ui" line="3513"/>
         <source>Position</source>
         <translation>現在位置</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3507"/>
+        <location filename="MainWindow.ui" line="3530"/>
         <source>Monitor:</source>
         <translation>検出器:</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3885"/>
-        <location filename="MainWindow.ui" line="3916"/>
-        <location filename="MainWindow.ui" line="4083"/>
-        <location filename="MainWindow.ui" line="5238"/>
+        <location filename="MainWindow.ui" line="3908"/>
+        <location filename="MainWindow.ui" line="3939"/>
+        <location filename="MainWindow.ui" line="4106"/>
+        <location filename="MainWindow.ui" line="5267"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3836"/>
+        <location filename="MainWindow.ui" line="3859"/>
         <source>Scan/Move a Motor</source>
         <translation>移動/スキャン</translation>
     </message>
@@ -1123,13 +1150,13 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <location filename="Dark.cpp" line="161"/>
-        <location filename="MwMeas.cpp" line="1012"/>
+        <location filename="MwMeas.cpp" line="1103"/>
         <source>Measure Background</source>
         <oldsource>Back Ground</oldsource>
         <translation>バックグラウンド計測</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2029"/>
+        <location filename="MainWindow.ui" line="2119"/>
         <source>Use Measured</source>
         <translation>計測済の値を使用</translation>
     </message>
@@ -1142,75 +1169,75 @@ Though, other parameters are fixed at the value on starting.</source>
         <translation type="obsolete">左下の「A. Scale」 (Auto Scale)と書かれたボタンを押すことで、オートスケールモードをオン・オフできます。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2042"/>
+        <location filename="MainWindow.ui" line="2132"/>
         <source>When it is displayed as &quot;Shutter Close!&quot;, check the shutter is closed and push the button.
 When it is displayed as &quot;Shutter Open!, check the shutter is opend and push the button.</source>
         <translation>「シャッター CLOSE 確認」と表示されたときは、シャッターが閉まっていることを確認してボタンを押して下さい。
 「シャッター OPEN 確認」と表示されたときは、シャッターが開いていることを確認してボタンを押して下さい。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1920"/>
+        <location filename="MainWindow.ui" line="2010"/>
         <source>Back ground</source>
         <translation>バックグラウンド</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3937"/>
+        <location filename="MainWindow.ui" line="3960"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the &apos;Normalize&apos; is checked, the value of the detector selected as &apos;Monitor&apos; is normalized by the value of the detecter selected in the following selection-box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;「規格化」がチェックされていると、「計測器:」で選択した計測器の値を「規格化」で選択した計測器の値で規格化します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3940"/>
+        <location filename="MainWindow.ui" line="3963"/>
         <source>Normalize</source>
         <translation>規格化</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3953"/>
+        <location filename="MainWindow.ui" line="3976"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The value of the selected detecter is always (with or without check the &apos;Normalize&apos;) recorded with the value of the detecter selected as &apos;Monitor&apos; for the scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>「規格化」で選択した測定器の値は、「規格化」をチェックしていてもしていなくても、主たる計測対象の「計測器：」で選択した機器の測定値と共に常に測定ファイルに記録されます。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2289"/>
+        <location filename="MainWindow.ui" line="2312"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select measurement renge of the sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;測定器の測定レンジを選択して下さい。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2325"/>
+        <location filename="MainWindow.ui" line="2348"/>
         <source>Select Range</source>
         <translation>レンジ選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2374"/>
-        <location filename="MainWindow.ui" line="2772"/>
+        <location filename="MainWindow.ui" line="2397"/>
+        <location filename="MainWindow.ui" line="2795"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>指定した計測器の現在のレンジ取得</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2380"/>
+        <location filename="MainWindow.ui" line="2403"/>
         <source>Get Range</source>
         <translation>レンジ取得</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2387"/>
+        <location filename="MainWindow.ui" line="2410"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected ranges of all of the sensors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;レンジ選択のある全計測器の現在のレンジを取得する。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2393"/>
+        <location filename="MainWindow.ui" line="2416"/>
         <source>Get All Range</source>
         <translation>全レンジ取得</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3982"/>
+        <location filename="MainWindow.ui" line="4005"/>
         <source>Set up SSD</source>
         <translation>SSD設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4768"/>
+        <location filename="MainWindow.ui" line="4791"/>
         <source>At Cursor</source>
         <translation>カーソル点</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5132"/>
+        <location filename="MainWindow.ui" line="5155"/>
         <source>Log  </source>
         <translation>Log </translation>
     </message>
@@ -1219,22 +1246,22 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation type="obsolete">eV  ゲイン</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4618"/>
+        <location filename="MainWindow.ui" line="4641"/>
         <source>Clear</source>
         <translation>クリア</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4658"/>
+        <location filename="MainWindow.ui" line="4681"/>
         <source>Live</source>
         <translation>ライブ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4751"/>
+        <location filename="MainWindow.ui" line="4774"/>
         <source>Real</source>
         <translation>リアル</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4761"/>
+        <location filename="MainWindow.ui" line="4784"/>
         <source>Preset:</source>
         <translation>プリセット</translation>
     </message>
@@ -1247,27 +1274,27 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation type="obsolete">積分値</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4829"/>
+        <location filename="MainWindow.ui" line="4852"/>
         <source>u-sec</source>
         <translation>μs</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4836"/>
+        <location filename="MainWindow.ui" line="4859"/>
         <source>eV</source>
         <translation>eV</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4849"/>
+        <location filename="MainWindow.ui" line="4872"/>
         <source>mV/keV</source>
         <translation>mV/keV</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4862"/>
+        <location filename="MainWindow.ui" line="4885"/>
         <source>ROI  Start</source>
         <translation>積分始点</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4875"/>
+        <location filename="MainWindow.ui" line="4898"/>
         <source>Peak. T.</source>
         <translation>ピーキング時間</translation>
     </message>
@@ -1276,288 +1303,287 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation type="obsolete">eV  較正</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4896"/>
+        <location filename="MainWindow.ui" line="4919"/>
         <source>sec</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4903"/>
+        <location filename="MainWindow.ui" line="4926"/>
         <source>Thresh.</source>
         <translation>閾値</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4923"/>
+        <location filename="MainWindow.ui" line="4946"/>
         <source>Dyn. Range</source>
         <translation>ダイナミックレンジ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4936"/>
+        <location filename="MainWindow.ui" line="4959"/>
         <source>SSD No.</source>
         <translation>SSD チャンネル</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1261"/>
-        <location filename="MainWindow.ui" line="4237"/>
-        <location filename="MainWindow.ui" line="5315"/>
+        <location filename="MainWindow.ui" line="1264"/>
+        <location filename="MainWindow.ui" line="4260"/>
+        <location filename="MainWindow.ui" line="5344"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1128"/>
-        <location filename="MainWindow.ui" line="4259"/>
-        <location filename="MainWindow.ui" line="5331"/>
+        <location filename="MainWindow.ui" line="1131"/>
+        <location filename="MainWindow.ui" line="4282"/>
+        <location filename="MainWindow.ui" line="5360"/>
         <source>9</source>
         <translation>9</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1280"/>
+        <location filename="MainWindow.ui" line="1283"/>
         <source>SetUp BLKs</source>
         <translation>測定ブロック設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1463"/>
+        <location filename="MainWindow.ui" line="1553"/>
         <source>Select Detectors</source>
         <translation>検出器選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1786"/>
+        <location filename="MainWindow.ui" line="1876"/>
         <source>Start Meas.</source>
         <translation>測定開始</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4982"/>
+        <location filename="MainWindow.ui" line="5005"/>
         <source>Set Up a SSD Channel</source>
         <translation>SSDの各チャンネルの設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4278"/>
-        <location filename="MainWindow.ui" line="5344"/>
-        <location filename="MainWindow.ui" line="6014"/>
+        <location filename="MainWindow.ui" line="4301"/>
+        <location filename="MainWindow.ui" line="5373"/>
+        <location filename="MainWindow.ui" line="6043"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4297"/>
-        <location filename="MainWindow.ui" line="5357"/>
-        <location filename="MainWindow.ui" line="5995"/>
+        <location filename="MainWindow.ui" line="4320"/>
+        <location filename="MainWindow.ui" line="5386"/>
+        <location filename="MainWindow.ui" line="6024"/>
         <source>11</source>
         <translation>11</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4316"/>
-        <location filename="MainWindow.ui" line="5370"/>
-        <location filename="MainWindow.ui" line="5976"/>
+        <location filename="MainWindow.ui" line="4339"/>
+        <location filename="MainWindow.ui" line="5399"/>
+        <location filename="MainWindow.ui" line="6005"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4335"/>
-        <location filename="MainWindow.ui" line="5383"/>
-        <location filename="MainWindow.ui" line="6406"/>
+        <location filename="MainWindow.ui" line="4358"/>
+        <location filename="MainWindow.ui" line="5412"/>
+        <location filename="MainWindow.ui" line="6435"/>
         <source>13</source>
         <translation>13</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4354"/>
-        <location filename="MainWindow.ui" line="5396"/>
-        <location filename="MainWindow.ui" line="6349"/>
+        <location filename="MainWindow.ui" line="4377"/>
+        <location filename="MainWindow.ui" line="5425"/>
+        <location filename="MainWindow.ui" line="6378"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4373"/>
-        <location filename="MainWindow.ui" line="5409"/>
-        <location filename="MainWindow.ui" line="6330"/>
+        <location filename="MainWindow.ui" line="4396"/>
+        <location filename="MainWindow.ui" line="5438"/>
+        <location filename="MainWindow.ui" line="6359"/>
         <source>15</source>
         <translation>15</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4392"/>
-        <location filename="MainWindow.ui" line="5422"/>
-        <location filename="MainWindow.ui" line="6387"/>
+        <location filename="MainWindow.ui" line="4415"/>
+        <location filename="MainWindow.ui" line="5451"/>
+        <location filename="MainWindow.ui" line="6416"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4411"/>
-        <location filename="MainWindow.ui" line="5463"/>
-        <location filename="MainWindow.ui" line="6368"/>
+        <location filename="MainWindow.ui" line="4434"/>
+        <location filename="MainWindow.ui" line="5492"/>
+        <location filename="MainWindow.ui" line="6397"/>
         <source>17</source>
         <translation>17</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4430"/>
-        <location filename="MainWindow.ui" line="5476"/>
-        <location filename="MainWindow.ui" line="6311"/>
+        <location filename="MainWindow.ui" line="4453"/>
+        <location filename="MainWindow.ui" line="5505"/>
+        <location filename="MainWindow.ui" line="6340"/>
         <source>18</source>
         <translation>18</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4044"/>
+        <location filename="MainWindow.ui" line="4067"/>
         <source>Select a SSD ch (MCA spectrum)</source>
         <oldsource>Select a SSD ch</oldsource>
         <translation>SSD選択(MCAスペクトル)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5528"/>
+        <location filename="MainWindow.ui" line="5557"/>
         <source>Select SSD channels (XAFS meas.)</source>
         <oldsource>Select SSD channels</oldsource>
         <translation>複数SSD選択(積算/本測定対象)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1538"/>
+        <location filename="MainWindow.ui" line="1628"/>
         <source>I                 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2778"/>
+        <location filename="MainWindow.ui" line="2801"/>
         <source>Set Offset</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2800"/>
+        <location filename="MainWindow.ui" line="2823"/>
         <source>Check/Set Offset(Dark)</source>
         <translation>バックグラウンド確認／設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2403"/>
+        <location filename="MainWindow.ui" line="2426"/>
         <source>Auto Rang</source>
         <translation>オートレンジ</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3295"/>
+        <location filename="MainWindow.ui" line="3318"/>
         <source>Move a motor or scan by moving a motor while monitoring a sensor.</source>
         <translation>駆動軸を動かす、もしくは軸を動かしながらスキャンを行う。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2887"/>
+        <location filename="MainWindow.ui" line="2910"/>
         <source>Move the monochromator where you want.</source>
         <translation>分光器の角度設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="3029"/>
+        <location filename="MainWindow.ui" line="3052"/>
         <source>Select an unit for all.</source>
         <translation>全部の単位を一度に設定します。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2400"/>
+        <location filename="MainWindow.ui" line="2423"/>
         <source>When the sensor can be used in auto-range mode, the check button is active.</source>
         <translation>選択した検出器でオートレンジモードが使える場合、このチェックボタンが有効になります。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="1750"/>
         <source>Make info File</source>
-        <translation>Info ファイル作成</translation>
+        <translation type="obsolete">Info ファイル作成</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2214"/>
+        <location filename="MainWindow.ui" line="1407"/>
         <source>Current Pos.</source>
         <translation>現在位置</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2221"/>
+        <location filename="MainWindow.ui" line="1414"/>
         <source>Rpt.</source>
         <translation>回目</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2247"/>
+        <location filename="MainWindow.ui" line="1440"/>
         <source>Point</source>
         <translation>点目</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2594"/>
+        <location filename="MainWindow.ui" line="2617"/>
         <source>Record the data during the monitor.</source>
         <translation>モニータ時のデータを記録します。(モニタ開始前にチェック)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2597"/>
+        <location filename="MainWindow.ui" line="2620"/>
         <source>Record</source>
         <translation>記録</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="2639"/>
+        <location filename="MainWindow.ui" line="2662"/>
         <source>Save the monitored data after the monitoring.</source>
         <translation>(モニタ後)モニタしたデータを記録します。</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5074"/>
+        <location filename="MainWindow.ui" line="5097"/>
         <source>Disp. Elm. Names</source>
         <translation>元素名表示</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5090"/>
+        <location filename="MainWindow.ui" line="5113"/>
         <source>Select Elms.</source>
         <translation>表示元素選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5097"/>
+        <location filename="MainWindow.ui" line="5120"/>
         <source>Show Always</source>
         <translation>選択した元素を常に表示</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5145"/>
+        <location filename="MainWindow.ui" line="5171"/>
         <source>eV        Gain</source>
         <translation>eV       ゲイン</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4803"/>
+        <location filename="MainWindow.ui" line="4826"/>
         <source>      ROI end</source>
         <oldsource>       ROI end</oldsource>
         <translation>     積分終点</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4816"/>
+        <location filename="MainWindow.ui" line="4839"/>
         <source>         In ROI</source>
         <oldsource>          In ROI</oldsource>
         <translation>       積分値</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4882"/>
+        <location filename="MainWindow.ui" line="4905"/>
         <source>eV       Carib.</source>
         <translation>eV        較正.</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="4992"/>
+        <location filename="MainWindow.ui" line="5015"/>
         <source>Set All</source>
         <translation>Set All</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5654"/>
+        <location filename="MainWindow.ui" line="5683"/>
         <source>Read Data</source>
         <translation>データ読込</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5827"/>
+        <location filename="MainWindow.ui" line="5856"/>
         <source>Close View</source>
         <translation>View を閉じる</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5857"/>
+        <location filename="MainWindow.ui" line="5886"/>
         <source>Log / Record</source>
         <translation>ログ/記録</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5871"/>
+        <location filename="MainWindow.ui" line="5900"/>
         <source>Log File Name:</source>
         <translation>ログファイル名</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5894"/>
+        <location filename="MainWindow.ui" line="5923"/>
         <source>New</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5920"/>
+        <location filename="MainWindow.ui" line="5949"/>
         <source>Add Log Comment:</source>
         <translation>ログコメント追加</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="5838"/>
+        <location filename="MainWindow.ui" line="5867"/>
         <source>Stat/Config</source>
         <translation>状態/設定</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6464"/>
+        <location filename="MainWindow.ui" line="6493"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -1566,27 +1592,27 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation type="obsolete">設定(&amp;C)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6473"/>
+        <location filename="MainWindow.ui" line="6502"/>
         <source>&amp;Quit</source>
         <translation>終了(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6478"/>
+        <location filename="MainWindow.ui" line="6507"/>
         <source>Japanese</source>
         <translation>日本語</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6483"/>
+        <location filename="MainWindow.ui" line="6512"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6488"/>
+        <location filename="MainWindow.ui" line="6517"/>
         <source>Set &amp;Lattice Const. Monochro Crystal</source>
         <translation>結晶・格子定数設定(&amp;L)</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="6493"/>
+        <location filename="MainWindow.ui" line="6522"/>
         <source>Set &amp;Stars Server Address</source>
         <translation>Starsサーバ設定(&amp;S)</translation>
     </message>
@@ -1614,19 +1640,19 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>データもファイル名も新しいものですが保存されていません。</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="92"/>
+        <location filename="MainWindow.cpp" line="95"/>
         <source>Mono: %1 (%2 A)</source>
         <oldsource>Mono: %1 (%2 A)
 </oldsource>
         <translation>分光結晶: %1 (%2 A)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="250"/>
+        <location filename="MainWindow.cpp" line="259"/>
         <source>Encorder is set from %1 to %2</source>
         <translation>エンコーダの値を %1 から %2 にセットしました</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="312"/>
+        <location filename="MainWindow.cpp" line="321"/>
         <source>Current Position [%1] deg [%2] keV</source>
         <translation>現在位置 [%1] deg [%2] keV</translation>
     </message>
@@ -1637,7 +1663,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation type="obsolete">分光器現在位置 [%1] keV</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="367"/>
+        <location filename="MainWindow.cpp" line="376"/>
         <source>No Scree is available!</source>
         <translation>使用可能な描画領域(View)がありません</translation>
     </message>
@@ -1659,20 +1685,21 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>測定： %1回目</translation>
     </message>
     <message>
-        <location filename="Measurement.cpp" line="116"/>
+        <location filename="Measurement.cpp" line="117"/>
+        <location filename="QXafs.cpp" line="185"/>
         <source>The Measurement has Finished</source>
         <translation>測定終了</translation>
     </message>
     <message>
-        <location filename="Measurement.cpp" line="117"/>
+        <location filename="Measurement.cpp" line="118"/>
         <source>Meas: Finished</source>
         <oldsource>Meas: Finished
 </oldsource>
         <translation>測定: 終了</translation>
     </message>
     <message>
-        <location filename="Measurement.cpp" line="176"/>
-        <location filename="MwMeas.cpp" line="836"/>
+        <location filename="Measurement.cpp" line="178"/>
+        <location filename="MwMeas.cpp" line="936"/>
         <source>mu</source>
         <translation>μt</translation>
     </message>
@@ -1683,123 +1710,148 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>対象原子の吸収端が測定可能範囲外です。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="47"/>
+        <location filename="MwMeas.cpp" line="49"/>
         <source>Return</source>
         <translation>原位置復帰</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="48"/>
+        <location filename="MwMeas.cpp" line="50"/>
         <source>Stay</source>
         <translation>その場に停止</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="60"/>
-        <location filename="MwMeas.cpp" line="67"/>
-        <location filename="MwMeas.cpp" line="73"/>
+        <location filename="MwMeas.cpp" line="62"/>
+        <location filename="MwMeas.cpp" line="69"/>
+        <location filename="MwMeas.cpp" line="75"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="61"/>
-        <location filename="MwMeas.cpp" line="68"/>
-        <location filename="MwMeas.cpp" line="74"/>
+        <location filename="MwMeas.cpp" line="63"/>
+        <location filename="MwMeas.cpp" line="70"/>
+        <location filename="MwMeas.cpp" line="76"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="62"/>
+        <location filename="MwMeas.cpp" line="64"/>
         <source>&lt;h1&gt;&lt;center&gt;Stop ?&lt;/center&gt;&lt;/h1&gt;</source>
         <translation>終了?</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="63"/>
+        <location filename="MwMeas.cpp" line="65"/>
         <source>Stop or Continue</source>
         <translation>停止／再開</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="69"/>
+        <location filename="MwMeas.cpp" line="71"/>
         <source>Over Write ?</source>
         <translation>上書きしますか?</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="75"/>
+        <location filename="MwMeas.cpp" line="77"/>
         <source>Have you seleced ?</source>
         <translation>選択済み？</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="557"/>
+        <location filename="MwMeas.cpp" line="622"/>
         <source>Points: </source>
         <translation>点数: </translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="568"/>
+        <location filename="MwMeas.cpp" line="633"/>
         <source>Time: </source>
         <translation>時間: </translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="710"/>
+        <location filename="MwMeas.cpp" line="779"/>
         <source>I0</source>
         <translation>I0</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="711"/>
+        <location filename="MwMeas.cpp" line="780"/>
         <source>mu(E)</source>
         <translation>μ(E)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="712"/>
+        <location filename="MwMeas.cpp" line="781"/>
         <source>Energy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="713"/>
+        <location filename="MwMeas.cpp" line="782"/>
         <source>[keV]</source>
         <translation>[keV]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="785"/>
+        <location filename="MwMeas.cpp" line="854"/>
         <source>Monochro is moving!</source>
         <translation>分光器回転中</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="789"/>
-        <location filename="MwMeas.cpp" line="868"/>
+        <location filename="MwMeas.cpp" line="858"/>
+        <location filename="MwMeas.cpp" line="971"/>
         <source>Meas cannot Start : (%1) is disabled</source>
         <translation>(%1) が使用できないため測定を開始できません。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="808"/>
+        <location filename="MwMeas.cpp" line="879"/>
         <source>Meas cannot Start : in MCA measurement</source>
         <translation>MCA 測定中のため XAFS 測定を開始できません</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="943"/>
+        <location filename="MwMeas.cpp" line="887"/>
+        <source>I1 must be selected for QXAFS</source>
+        <translation>Q-XAFS では、I1 は必ず選択する必要があります。</translation>
+    </message>
+    <message>
+        <location filename="MwMeas.cpp" line="891"/>
+        <source>19ch SSD can not be used for QXAFS</source>
+        <translation>Q-XAFS では 19素子SSDは使えません。</translation>
+    </message>
+    <message>
+        <location filename="MwMeas.cpp" line="896"/>
+        <source>Aux1 and 2 can not be used for QXAFS</source>
+        <translation>Q-XAFS では Aux1 および 2 は使用できません。</translation>
+    </message>
+    <message>
+        <location filename="MwMeas.cpp" line="901"/>
+        <source>Selected I0 Sensor can not be used for QXAFS</source>
+        <translation>I0としえて選択した検出器は Q-XAFS には使用できません。</translation>
+    </message>
+    <message>
+        <location filename="MwMeas.cpp" line="906"/>
+        <source>Selected I1 Sensor can not be used for QXAFS</source>
+        <translation>I1としえて選択した検出器は Q-XAFS には使用できません。</translation>
+    </message>
+    <message>
+        <location filename="MwMeas.cpp" line="1046"/>
         <source>Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</source>
         <translation>測定開始 %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="993"/>
+        <location filename="MwMeas.cpp" line="1084"/>
         <source>Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</source>
         <translation>測定中断 %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="1016"/>
+        <location filename="MwMeas.cpp" line="1107"/>
         <source>Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</source>
         <translation>測定中断 : %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="1038"/>
+        <location filename="MwMeas.cpp" line="1129"/>
         <source>Meas: Pausing %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</source>
         <translation>測定中断中 %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="1045"/>
-        <location filename="MwMeas.cpp" line="1080"/>
+        <location filename="MwMeas.cpp" line="1136"/>
+        <location filename="MwMeas.cpp" line="1182"/>
         <source>Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</source>
         <translation>測定再開 %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="1071"/>
+        <location filename="MwMeas.cpp" line="1173"/>
         <source>Meas: Pause %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</source>
         <translation>測定中断 %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]</translation>
     </message>
@@ -1859,34 +1911,34 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <translation>シャッタがーが開いていることを確認し、赤くなっている「シャッター OPEN 確認」ボタンを押して下さい。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="794"/>
+        <location filename="MwMeas.cpp" line="866"/>
         <source>Invalid block data.</source>
         <translation>測定ブロックの指定が誤っています。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="798"/>
+        <location filename="MwMeas.cpp" line="870"/>
         <source>Data File is not Selected!</source>
         <translation>データファイルが選択されていません。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="802"/>
+        <location filename="MwMeas.cpp" line="874"/>
         <source>Detectors are not selected properly!</source>
         <translation>測定のための検出器の指定が正しくありません。</translation>
     </message>
     <message>
         <location filename="Dark.cpp" line="69"/>
-        <location filename="MwMeas.cpp" line="888"/>
+        <location filename="MwMeas.cpp" line="991"/>
         <source>Selected sensors [%1] and [%2] are conflicting.</source>
         <translation>選択した[%1]と[%2]は同時に使えません。</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="903"/>
+        <location filename="MwMeas.cpp" line="1006"/>
         <source>The Sensor(s)%1 should be range selected.
 Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation>選択した計測器 %1 について、「設定」の画面でレンジを設定しましたか？</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="935"/>
+        <location filename="MwMeas.cpp" line="1038"/>
         <source>File [%1] Over Write ?</source>
         <translation>ファイル [%1] を上書きして宜しいですか？</translation>
     </message>
@@ -1901,7 +1953,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation type="obsolete">測定: 開始(%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="950"/>
+        <location filename="MwMeas.cpp" line="1053"/>
         <location filename="MwSSDSetUp.cpp" line="429"/>
         <location filename="MwSetup.cpp" line="497"/>
         <location filename="MwSetup.cpp" line="616"/>
@@ -1916,8 +1968,8 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation type="obsolete">測定: 中断(%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="999"/>
-        <location filename="MwMeas.cpp" line="1077"/>
+        <location filename="MwMeas.cpp" line="1090"/>
+        <location filename="MwMeas.cpp" line="1179"/>
         <source>Resume</source>
         <translation>再開</translation>
     </message>
@@ -1928,7 +1980,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation type="obsolete">測定: 停止 (%1 keV)</translation>
     </message>
     <message>
-        <location filename="MwMeas.cpp" line="1021"/>
+        <location filename="MwMeas.cpp" line="1112"/>
         <source>The Measurement is Stopped</source>
         <translation>測定が中止されました。</translation>
     </message>
@@ -2090,27 +2142,27 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <location filename="ReadDef.cpp" line="79"/>
-        <location filename="ReadDef.cpp" line="103"/>
+        <location filename="ReadDef.cpp" line="104"/>
         <source>::Undefined Unit type [%1]</source>
         <translation>::Undefined Unit type [%1]</translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="150"/>
+        <location filename="ReadDef.cpp" line="162"/>
         <source>Undefined Key word [%1]</source>
         <translation>Undefined Key word [%1]</translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="231"/>
+        <location filename="ReadDef.cpp" line="243"/>
         <source>UIDs [%1](at line %2) and [%3](at line %4) are duplicated.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="234"/>
+        <location filename="ReadDef.cpp" line="246"/>
         <source>1st one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ReadDef.cpp" line="236"/>
+        <location filename="ReadDef.cpp" line="248"/>
         <source>2nd one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]</source>
         <translation></translation>
     </message>
@@ -2136,6 +2188,16 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Cannot open Log File [%1]
 </source>
         <translation>ログファイル[%1]が開けません。</translation>
+    </message>
+    <message>
+        <location filename="QXafs.cpp" line="135"/>
+        <source>Start QXAFS Measurement!</source>
+        <translation>Q-XAFS 測定開始</translation>
+    </message>
+    <message>
+        <location filename="QXafs.cpp" line="186"/>
+        <source>Meas: QXafs Finished</source>
+        <translation>Q-XAFS 測定終了</translation>
     </message>
 </context>
 <context>
@@ -2874,23 +2936,23 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <translation>Stars サーバからのメッセージ [%1]</translation>
     </message>
     <message>
-        <location filename="Stars.cpp" line="316"/>
+        <location filename="Stars.cpp" line="318"/>
         <source>Receive an event from Stars [%1]</source>
         <translation>Stars サーバからのイベント [%1]</translation>
     </message>
     <message>
-        <location filename="Stars.cpp" line="333"/>
+        <location filename="Stars.cpp" line="335"/>
         <source>Receive an unricognized message from Stars [%1]</source>
         <translation>Stars サーバからの解釈できないメッセージ [%1]</translation>
     </message>
     <message>
-        <location filename="Stars.cpp" line="335"/>
+        <location filename="Stars.cpp" line="337"/>
         <source>Others:  [%1] -&gt; [%2] : [%3] [%4]
 </source>
         <translation>Others:  [%1] -&gt; [%2] : [%3] [%4</translation>
     </message>
     <message>
-        <location filename="Stars.cpp" line="352"/>
+        <location filename="Stars.cpp" line="354"/>
         <source>Sending a message [%1] to Stars</source>
         <translation>Stars サーバにメッセージ送信: [%1]</translation>
     </message>

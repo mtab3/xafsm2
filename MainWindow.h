@@ -34,6 +34,7 @@
 #include "FluoDBase.h"
 #include "DarkTable.h"
 
+enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
@@ -110,7 +111,7 @@ private:
   /* Special Units */
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
-  AUnit *EncMainTh;
+  AUnit *EncMainTh, *Enc2;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -120,7 +121,6 @@ private:
   Stars *s;
 
   MEASMODE MeasFileType;
-
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -216,6 +216,7 @@ private:
   QVector<QLineEdit *> BLKstep;
   QVector<QLineEdit *> BLKdwell;
   QVector<QLineEdit *> BLKpoints;
+  QVector<QLabel *> BLKlabels;
 
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> SSDbs2;
@@ -275,7 +276,7 @@ private:
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
   int GetDFName0( void );
-  void SetDFName( int i );
+  void SetDFName( int rpt );
   double MeasVals[ MCHANNELS ];
   double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
@@ -311,6 +312,24 @@ private:
   void ClearXViewScreenForScan( XYView *view );
 
   void SetEnableOfUnits( QString drv, bool enable );
+
+  // QXAFS
+  bool isQXafsModeAvailable;
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
+  bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsSteps;
+  double RunUpRate, RunUpTime, QXafsDwellTime;
+  QString EncValue0, Enc2Value0;
+
+  void setupQXafsMode( void );
+  void CheckQXafsParams( void );
+  void HideBLKs( bool f );
+  void GetPM16CParamsForQXAFS( void );
+  void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
+  void SetDFName2( int rpt, DIRECTION dir );
+  void WriteQHeader( int rpt, DIRECTION dir );
+  void WriteQBody( void );
 
 private slots:
   void Initialize( void );
@@ -486,6 +505,10 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
   void SetNewGases( void );
   //  void showMCAs( void );
+
+  // QXafs
+  void ToggleQXafsMode( bool f );
+  void QXafsMeasSequence( void );
 
  signals:
   void SelectedSSD( int i, bool f );

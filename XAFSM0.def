@@ -2,6 +2,7 @@
 
 # What is New
 # 2013/04/03 add 'ENERGYRANGE' line
+# 2013/04/16 add 'ENC2'        line
 
 #
 # In this definition file,
@@ -16,6 +17,21 @@
 XAFSName  "XafsM2"
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
+
+#
+# Define if Quick-Xafs Mode is available or not
+#
+#  QXAFSMODE 1 6000 15000
+#  QXAFSMODE 0 6000 15000
+#
+# 0 : not available  :: default
+# 1 : available
+#  6000 : standard pps
+# 15000 : highest pps
+#   100 : low speed pps (the value set as Low Speed)
+#   0.1 : run up rate [ms/pps]
+#
+QXAFSMODE 1 6000 15000 100 0.1
 
 # now the keyword STARSDRIVER is obsolete
 
@@ -312,3 +328,33 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #   NO               : If the sensor has a parente (group leader) or not. YES or NO
 #   ""               : The identifier of the parent (group reader)
 
+#
+# the DV is Agilent34410 for QXAFS
+#
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSKth1" "V" NO ""
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSKth2" "V" NO ""
+#SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "a34410a-1" "" "V" NO ""
+#SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "a34410a-2" "" "V" NO ""
+
+#
+# the DV2 is Agilent34410 for normal measurement
+#
+SENSOR DV2 "S038" "GENERAL" "Agilent34410-1" "simmotor" "SNSKth1" "V" NO ""
+SENSOR DV2 "S039" "GENERAL" "Agilent34410-2" "simmotor" "SNSKth2" "V" NO ""
+#SENSOR DV2 "S038" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
+#SENSOR DV2 "S039" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+
+SENSOR ENC2 "S040" "ENCTH2" "Encoder Th" "EIB741" "" "deg" NO "" 2.441406e-6
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC2      : Unit type   ENC2 is an encorder with memory
+#     "S040"       : Uniq identifire of the sensor. The identifier must be identical.
+#                  : The identifier can be any string, while it is identical.
+#     "ENCTH2"     : Identifier that this is the main axis of the monochromator
+#     "EIB741"     : The name of the unit (only for display)
+#     "EIB741"     : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+#     YES          : If the sensor has a parente (group leader) or not. YES or NO
+#     "S006"       : The identifier of the parent (group reader)
+#     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg

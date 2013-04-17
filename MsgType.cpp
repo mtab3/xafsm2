@@ -11,6 +11,15 @@ const MsgTyp MsgT[] = {
   { "@SpeedHigh", SPEEDHIGH },
   { "@SpeedMiddle", SPEEDMIDDLE },
   { "@SpeedLow", SPEEDLOW },
+  { "@SetHighSpeed", SETHIGHSPEED },
+
+  { "@SetTimingOutMode", SETTIMINGOUTMODE },
+  { "@SetTimingOutStart", SETTIMINGOUTSTART },
+  { "@SetTimingOutEnd", SETTIMINGOUTEND },
+  { "@SetTimingOutInterval", SETTIMINGOUTINTERVAL },
+  { "@SetTimingOutReady", SETTIMINGOUTREADY },
+  { "@Select", SELECT },
+
   { "@Stop", STOP },
   { "@Remote", REMOTE },
   { "@StopEmergency", STOPEMERGENCY },
@@ -71,6 +80,27 @@ const MsgTyp MsgT[] = {
 
   { "@GetDataLinkCh", GETDATALINKCH },
   { "@GetMCAs", GETMCAS },
+
+  { "@SetAperture", SETAPERTURE },
+  { "@SetTriggerDelay", SETTRIGGERDELAY },
+  { "@SetSamplingSource", SETSAMPLINGSOURCE },
+  { "@SetTriggerSource", SETTRIGGERSOURCE },
+
+  { "@SetTriggerCounts", SETTRIGGERCOUNTS },
+  { "@SetTriggerSlope", SETTRIGGERSLOPE },
+  { "@GetDataPoints", GETDATAPOINTS },
+  { "@ReadDataPoints", READDATAPOINTS },
+  { "@Abort", ABORT },
+  { "@SetAutoZero", SETAUTOZERO },
+  { "@Record", SETAUTOZERO },
+  { "@qInitialize", QINITIALIZE },
+  { "@qGetData", QGETDATA },
+  { "@qFinalize", QFINALIZE },
+
+  { "@StandBy", STANDBY },
+  { "@GetData", GETDATA },
+  { "@GetStat", GETSTAT },
+  { "@Trigger", TRIGGER },
 
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },
