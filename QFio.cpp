@@ -89,12 +89,20 @@ void MainWindow::WriteQBody( void )
   int c = MMainTh->getCenter();
   double upp = MMainTh->getUPP();
   double deg, deg2;
+  double upp2 = 0;
+  if ( Enc2 != NULL ) {
+    upp2 = Enc2->getUPP();
+  }
   
   for ( int i = 0; i < num; i++ ) {
     deg = ( p - c ) * upp;
     p += d;
-    // deg2 = 
-    out << deg << "\t" << deg << "\t"              // 片方はエンコーダ読みに直す
+    if ( Enc2 == NULL ) {
+      deg2 = deg;
+    } else {
+      deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
+    }
+    out << deg << "\t" << deg2 << "\t"              // 片方はエンコーダ読みに直す
 	<< vals0[i+1].toDouble() << "\t" << vals1[i+1].toDouble() << endl;
   }
 
