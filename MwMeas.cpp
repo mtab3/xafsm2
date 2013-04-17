@@ -892,6 +892,7 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
     }
+
     if ( QXafsMode->isChecked() ) {
       if ( BlockPoints[0] > 9990 ) {
 	statusbar->showMessage( tr( "Measured points are too many.  "
@@ -983,6 +984,7 @@ void MainWindow::StartMeasurement( void )
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL )
 	mUnits.addUnit( Enc2 );
+      mUnits.setOneByOne( false );
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {

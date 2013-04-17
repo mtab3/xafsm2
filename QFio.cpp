@@ -49,33 +49,36 @@ void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
   file.close();
 }
 
+int MainWindow::findMini( QStringList &v1, QStringList &v2, QStringList &v3 )
+{
+  int num1 = v1[0].toInt();
+  int num2 = v2[0].toInt();
+  int num3 = v3[0].toInt();
+  int num10 = v1.count() - 1;
+  int num20 = v2.count() - 1;
+  int num30 = v3.count() - 1;
+
+  int rnum = num1;
+  if ( num2 < rnum ) rnum = num2;
+  if ( num10 < rnum ) rnum = num10;
+  if ( num20 < rnum ) rnum = num20;
+  if (( num3 > 1 )&&( num3 < rnum )) rnum = num3;
+  if (( num30 > 1 )&&( num30 < rnum )) rnum = num30;
+
+  return rnum;
+}
+
 void MainWindow::WriteQBody( void )
 {
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
-  int num0 = vals0[0].toInt();
-  int num1 = vals1[0].toInt();
-  int num00 = vals0.count() - 1;
-  int num10 = vals1.count() - 1;
-
   QStringList vals2;
-  int num2 = 0;
-  int num20 = 0;
-  if ( Enc2 != NULL ) {
+  if ( Enc2 != NULL )
     vals2 = Enc2->values();
-    num2 = vals2[0].toInt();
-    num20 = vals2.count();
-  }
+  else 
+    vals2.clear();
 
-  int num = num0;     // I0 と I の測定点数は同じはずだが違ってたらちっさい方
-  if ( num > num1 )  num = num1;
-  if ( num > num00 ) num = num00;  // 実際に送られてきたデータ点数も比べてみて
-  if ( num > num10 ) num = num10;  // とにかく一番ちっさい方
-  if ( Enc2 != NULL ) {
-    if ( num > num2 ) num = num2;  // とにかく一番ちっさい方
-    if ( num > num20 ) num = num20;  // とにかく一番ちっさい方
-  }
-  qDebug() << "nums " << num << num0 << num1 << num2 << num00 << num10 << num20;
+  int num = findMini( vals0, vals1, vals2 );
 
   qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );

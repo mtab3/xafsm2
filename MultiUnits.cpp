@@ -4,6 +4,7 @@
 
 MUnits::MUnits( QObject *p ) : QObject( p )
 {
+  OneByOne = false;
 }
 
 void MUnits::clearUnits( void )
@@ -72,6 +73,13 @@ void MUnits::clearStage( void )
   }
 }
 
+void MUnits::clearDoneF( void )
+{
+  for ( int i = 0; i < Units.count(); i++ ) {
+    Units.at(i)->done = false;
+  }
+}
+
 // 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
 bool MUnits::QStart( void )   // QXAFS
 {
@@ -90,7 +98,15 @@ bool MUnits::QRead( void )   // QXAFS
   bool ff = false;
 
   for ( int i = 0; i < Units.count(); i++ ) {
-    ff |= Units.at(i)->au->QRead();
+    if ( OneByOne ) {
+      if ( ! Units.at(i)->done ) {
+	ff = Units.at(i)->au->QRead();
+	Units.at(i)->done = true;
+	break;
+      }
+    } else {
+      ff |= Units.at(i)->au->QRead();
+    }
   }
 
   return ff;

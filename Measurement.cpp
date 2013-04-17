@@ -157,8 +157,8 @@ void MainWindow::SetDispMeasModes( void )
   int i;
   int DLC = 0;   // display line count
 
-  MeasView->SetRLine( 0 );
-  MeasView->SetLLine( 1 );
+  MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
+  MeasView->SetLLine( 1 );            //       1 番目のラインを左軸に表示
   
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );

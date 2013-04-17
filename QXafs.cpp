@@ -32,6 +32,9 @@ void MainWindow::ToggleQXafsMode( bool )
     SelBLKs->setEnabled( false );
     HideBLKs( true );
     QMeasOnBackward->setHidden( false );
+    QMinMaxBox->setHidden( false );
+    QMaxSpeed->setHidden( false );
+    QMinTime->setHidden( false );
 
     SaveUse19ChSSD = Use19chSSD->isChecked();
     SaveUseAux1 = UseAux1->isChecked();
@@ -49,6 +52,9 @@ void MainWindow::ToggleQXafsMode( bool )
     ChangeBLKs( SaveNowBlocks );
     HideBLKs( false );
     QMeasOnBackward->setHidden( true );
+    QMinMaxBox->setHidden( true );
+    QMaxSpeed->setHidden( true );
+    QMinTime->setHidden( true );
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
@@ -146,7 +152,7 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
 
 void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 {
-  MMainTh->SetTimingOutMode( 3 );
+  MMainTh->SetTimingOutMode( 3 );          // 10um puls at every interval
   MMainTh->SetTimingOutStart( sp );
   MMainTh->SetTimingOutEnd( ep );
   MMainTh->SetTimingOutInterval( QXafsInterval );
@@ -155,6 +161,8 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 
 void MainWindow::QXafsMeasSequence( void )
 {
+  qDebug() << "in " << MeasStage;
+
   switch( MeasStage ) {
   case 0:
     CurrentRpt->setText( QString::number( 1 ) );
@@ -168,7 +176,8 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 1:
-    if ( mUnits.init() ) // Reset だけ
+    EncMainTh->GetValue();
+    if ( mUnits.init() ) // DV は Reset だけ, ENC2 は GetValue だけ
       break;
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
@@ -183,13 +192,13 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 3:
-    if ( mUnits.QStart() )
-      break;
-    mUnits.clearStage();
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
     MeasStage++;
     break;
   case 4:      // Repeat Point
+    if ( mUnits.QStart() )
+      break;
+    mUnits.clearStage();
     MeasR++;
     WriteQHeader( MeasR, FORWARD );
     if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
@@ -204,6 +213,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 6:
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
+    mUnits.clearDoneF();      // QRead を一台ずつ行うため
     MeasStage++;
     break;
   case 7:
@@ -213,9 +223,10 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     break;
   case 8:
-    qDebug() << mUnits.at(0)->values().count()
-	     << mUnits.at(1)->values().count();
+    qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
+	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count();
     WriteQBody();
+    DispQSpectrum();
     MeasStage++;
     break;
   case 9:
@@ -244,6 +255,7 @@ void MainWindow::QXafsMeasSequence( void )
     } else {
       MeasStage = 4; // Repeat Point
     }
+    mUnits.clearDoneF();      // QRead を一台ずつ行うため
     break;
   case 12:
     if ( mUnits.QRead() )
@@ -252,9 +264,10 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 13:
-    qDebug() << mUnits.at(0)->values().count()
-	     << mUnits.at(1)->values().count();
+    qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
+	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count();
     WriteQBody();
+    DispQSpectrum();
     MeasStage++;
     break;
   case 14:
@@ -265,6 +278,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 99:
+    mUnits.setOneByOne( false );
     MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
     MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す
     statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
@@ -283,4 +297,50 @@ void MainWindow::QXafsMeasSequence( void )
     onMeasFinishWorks();
     break;
   }
+  qDebug() << "out " << MeasStage;
 }
+
+void MainWindow::DispQSpectrum( void )  // ダーク補正どうする？
+{
+  QStringList vals0 = mUnits.at(0)->values();
+  QStringList vals1 = mUnits.at(1)->values();
+  QStringList vals2;
+  if ( Enc2 != NULL )
+    vals2 = Enc2->values();
+  else 
+    vals2.clear();
+  int num = findMini( vals0, vals1, vals2 );
+
+  int p = QXafsSP0;
+  int d = QXafsInterval;
+  int c = MMainTh->getCenter();
+  double upp = MMainTh->getUPP();
+  double deg2;
+  double upp2 = 0;
+  double E, I0, I1;
+  if ( Enc2 != NULL ) {
+    upp2 = Enc2->getUPP();
+  }
+  qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
+
+  for ( int i = 0; i < num; i++ ) {
+    if ( Enc2 == NULL ) {
+      deg2 = ( p - c ) * upp + d * i;
+    } else {
+      deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
+    }
+    E = u->deg2keV( deg2 );
+
+    MeasView->NewPoint( 0, E, I0 = vals0[i+1].toDouble() );
+    MeasView->NewPoint( 1, E, I1 = vals1[i+1].toDouble() );
+    if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
+      MeasView->NewPoint( 2, E, log( I0/I1 ) );
+    } else {
+      MeasView->NewPoint( 2, E, 0 );
+    }
+  }
+  MeasView->update();
+}
+
+
+  

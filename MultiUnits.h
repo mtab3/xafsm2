@@ -7,11 +7,12 @@
 #include "AUnit.h"
 
 struct MUElement
- {   // Multi Unit を構成するエレメント。
-                     //    ユニット(実際にはセンサーだけ)のポインタと、
-                     //    dwell time を情報として持つ
+{ // Multi Unit を構成するエレメント。
+  //    ユニット(実際にはセンサーだけ)のポインタと、
+  //    dwell time を情報として持つ
   AUnit *au;
   double dt;
+  bool done;
 };
 
 class MUnits : public QObject
@@ -20,10 +21,12 @@ class MUnits : public QObject
 
   QVector<MUElement*> Units;     // マルチユニットを構成するエレメントの一覧
   QVector<MUElement*> PUnits;    // エレメントの親の重複なしの一覧
+  bool OneByOne;
 
  public:
   MUnits( QObject *p = 0 );
 
+  void setOneByOne( bool f ) { OneByOne = f; };
   int count( void ) { return Units.count(); };
   AUnit *at( int i ) { return Units.at(i)->au; };
   bool isParent( void ) { return ( PUnits.count() > 0 ); };
@@ -47,6 +50,7 @@ class MUnits : public QObject
 #if 0
   bool getMCA( int ch );
 #endif
+  void clearDoneF( void );
 
 private slots:
   void ShownMessage( QAbstractButton * );

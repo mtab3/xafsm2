@@ -330,6 +330,8 @@ private:
   void SetDFName2( int rpt, DIRECTION dir );
   void WriteQHeader( int rpt, DIRECTION dir );
   void WriteQBody( void );
+  int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
+  void DispQSpectrum( void );
 
 private slots:
   void Initialize( void );
