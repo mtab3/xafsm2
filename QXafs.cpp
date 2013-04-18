@@ -4,8 +4,15 @@
 // QXafs 関連のイニシャライズ setupMeMeas より前に呼ばれてる
 void MainWindow::setupQXafsMode( void )
 {
+  connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
+  connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
+
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QMeasOnBackward->setHidden( true );
+  QMinMaxBox->setHidden( true );
+  QMaxSpeed->setHidden( true );
+  QMinTime->setHidden( true );
+  QSepLine->setHidden( true );
 }
 
 void MainWindow::ToggleQXafsMode( bool )
@@ -35,6 +42,7 @@ void MainWindow::ToggleQXafsMode( bool )
     QMinMaxBox->setHidden( false );
     QMaxSpeed->setHidden( false );
     QMinTime->setHidden( false );
+    QSepLine->setHidden( false );
 
     SaveUse19ChSSD = Use19chSSD->isChecked();
     SaveUseAux1 = UseAux1->isChecked();
@@ -55,6 +63,7 @@ void MainWindow::ToggleQXafsMode( bool )
     QMinMaxBox->setHidden( true );
     QMaxSpeed->setHidden( true );
     QMinTime->setHidden( true );
+    QSepLine->setHidden( true );
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
@@ -90,11 +99,22 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みし
   double dtime = BLKdwell[0]->text().toDouble();
 
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
-  if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
-    HSpeed = MaxHSpeed;
-    dtime = fabs( edeg - sdeg ) / ( HSpeed * MMainTh->getUPP() );
-    BlockDwell[0] = dtime;
+  double MinTimeSpeed = sqrt( fabs( edeg - sdeg ) / MMainTh->getUPP()
+			       / ( 2. * RunUpRate / 1000. ) );
+
+  if ( QMinTime->isChecked() ) {
+    if (( HSpeed > MinTimeSpeed )||( HSpeed < 0 ))
+      HSpeed = MinTimeSpeed;
   }
+  if (( HSpeed > MaxHSpeed )||( HSpeed < 0 ))
+    HSpeed = MaxHSpeed;
+
+  dtime = fabs( edeg - sdeg ) / ( HSpeed * MMainTh->getUPP() );
+  BlockDwell[0] = dtime;
+
+  QString buf;
+  buf.sprintf( "% 5.2f", BlockDwell[0] );
+  BLKdwell[0]->setText( buf );
 }
 
 void MainWindow::GetPM16CParamsForQXAFS( void )
@@ -224,7 +244,8 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 8:
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
-	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count();
+	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
+	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
     WriteQBody();
     DispQSpectrum();
     MeasStage++;
@@ -265,7 +286,8 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 13:
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
-	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count();
+	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
+	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
     WriteQBody();
     DispQSpectrum();
     MeasStage++;

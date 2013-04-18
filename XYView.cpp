@@ -164,6 +164,14 @@ void XYView::Draw( QPainter *p )
   double a1, a2;
   double d, b;
 
+  int linedir[ MAXLINES ];           // x軸の数字の並び
+  for ( int i = 0; i < lines; i++ ) {
+    if ( x[i][0] > x[i][1] )   // 
+      linedir[i] = -1;
+    else 
+      linedir[i] = 1;
+  }
+    
   for ( int l = 0; l < lines; l++ ) { // 先に線だけ描画
     if ( dispf[ l ] ) {
       if ( autoScale ) {
@@ -177,12 +185,16 @@ void XYView::Draw( QPainter *p )
       nowx = cc.s2rx( m.x() );
       nowxp = 0;
       for ( int i = 0; i < points[l] - 1; i++ ) {
-        p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
-                     x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
-        if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))
-          nowxp = i;
-        if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))
-          nowxp = i;
+	if ( linedir[l] * ( x[l][i+1] - x[l][i] ) < 0 ) {
+	  linedir[l] *= -1;
+	} else {
+	  p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
+		       x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
+	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))  // カーソルがある場所に最も近い
+	    nowxp = i;                                    // 点を探して記録
+	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))  // 同上(横軸が降順の場合)
+	    nowxp = i;
+	}
 	
 	// マウスがある点から線分(を延長したものに下ろした垂線の足を探す)
 	a1 = x1 - x0;
@@ -191,13 +203,13 @@ void XYView::Draw( QPainter *p )
 	hx = m.x() - b * a2;
 	hy = m.y() + b * a1;
 	if ( hx < x0 ) { hx = x0; hy = y0; }  // 足が線分の外に有ったら
- if ( hx > x1 ) { hx = x1; hy = y1; }  // 線分の端点で置き換える
- // その足までの距離が最小になる線を探す
- if ( ( d = ( hx - m.x() )*( hx - m.x() ) + ( hy - m.y() )*( hy - m.y() ) )
-      < ND[ LineLR[l] ] ) {
-   ND[ LineLR[l] ] = d;
-   FindL[ LineLR[l] ] = l;
- }
+	if ( hx > x1 ) { hx = x1; hy = y1; }  // 線分の端点で置き換える
+	// その足までの距離が最小になる線を探す
+	if ( ( d = ( hx - m.x() )*( hx - m.x() ) + ( hy - m.y() )*( hy - m.y() ) )
+	     < ND[ LineLR[l] ] ) {
+	  ND[ LineLR[l] ] = d;
+	  FindL[ LineLR[l] ] = l;
+	}
       }
       SaveYatNowXp[l] = y[l][nowxp];
     }
@@ -217,16 +229,16 @@ void XYView::Draw( QPainter *p )
     p->drawLine( m.x(),  m.y(),  m.x(),  m.sy() );
     p->drawLine( m.x(),  m.sy(), m.sx(), m.sy() );
   }
-
+  
   // お笑いクリッピング ^^;;;
   p->fillRect( 0, 0, LM, height(), bgColor );
   p->fillRect( width()-RM, 0, RM, height(), bgColor );
   p->fillRect( 0, 0, width(), TM, bgColor );
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
   // お笑いクリッピング ^^;;;
-
+  
   cc.ShowAScaleButton( p, autoScale, height() );
-
+  
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
@@ -243,7 +255,7 @@ void XYView::Draw( QPainter *p )
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
   rec = QRectF( cc.r2sx( cc.Rmaxx() )+80, height()-BM+5, 80, BM*0.3 );   // X軸の単位
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XUnitName );
-
+  
   for ( int i = 0; i < 2; i++ ) {
     int l = SelLR[i];
     if ( autoScale ) {
@@ -290,7 +302,7 @@ void XYView::Draw( QPainter *p )
     cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
 		 QString( "%1" ).arg( SaveYatNowXp[l] ) );
   }
-
+  
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( m.x(), TM, m.x(), height()-BM );
@@ -322,7 +334,7 @@ void XYView::UpDateYWindow( int l, SCALET s )
   bool noPoints = true;
   double nmaxy = -1e300;
   double nminy = +1e300;
-
+  
   if ( points[l] > 0 )
     noPoints = false;
   for ( int i = 0; i < points[l]; i++ ) {

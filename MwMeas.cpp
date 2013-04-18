@@ -1033,12 +1033,12 @@ void MainWindow::StartMeasurement( void )
     } else {
       MakingSureOfRangeSelect = false;
     }
+#endif
 
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
       if ( ! MeasureDark() )                // 正常に測れなければだめ
 	return;
     }
-#endif
 
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       // グラフ表示領域が確保できないとダメ

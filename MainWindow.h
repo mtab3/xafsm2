@@ -323,7 +323,6 @@ private:
   QString EncValue0, Enc2Value0;
 
   void setupQXafsMode( void );
-  void CheckQXafsParams( void );
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
   void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
@@ -511,6 +510,7 @@ private slots:
   // QXafs
   void ToggleQXafsMode( bool f );
   void QXafsMeasSequence( void );
+  void CheckQXafsParams( void );
 
  signals:
   void SelectedSSD( int i, bool f );
