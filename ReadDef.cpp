@@ -162,6 +162,10 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); MaxHSpeed = item.toInt();
 	next = nextItem( next, item ); LowSpeed = item.toInt();
 	next = nextItem( next, item ); RunUpRate = item.toDouble();
+      } else if ( item == "QXAFSOK" ) {
+	QXafsOk = next.split( QRegExp( "\\s+" ) );
+      } else if ( item == "NORMALOK" ) {
+	NXafsOk = next.split( QRegExp( "\\s+" ) );
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

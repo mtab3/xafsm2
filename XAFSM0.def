@@ -3,6 +3,9 @@
 # What is New
 # 2013/04/03 add 'ENERGYRANGE' line
 # 2013/04/16 add 'ENC2'        line
+# 2013/04/19 add 'QXAFSOK'     line
+#                'NORMALOK'    line
+#
 
 #
 # In this definition file,
@@ -32,6 +35,13 @@ XAFSTitle "XafsM2-BL5S1"
 #   0.1 : run up rate [ms/pps]
 #
 QXAFSMODE 1 6000 15000 100 0.1
+
+#
+# Detectors which can be used for Q-Xafs : QXAFSOK
+# Detectors which can be used for Normal Xafs : NORMALOK
+#
+QXAFSOK DV ENC2
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC
 
 # now the keyword STARSDRIVER is obsolete
 

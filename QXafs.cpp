@@ -109,12 +109,52 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みし
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 ))
     HSpeed = MaxHSpeed;
 
-  dtime = fabs( edeg - sdeg ) / ( HSpeed * MMainTh->getUPP() );
+  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
+  dtime = WidthInPuls / HSpeed;
   BlockDwell[0] = dtime;
 
   QString buf;
   buf.sprintf( "% 5.2f", BlockDwell[0] );
   BLKdwell[0]->setText( buf );
+  ShowQTime( dtime, WidthInPuls );
+}
+
+void MainWindow::ShowQTime( double dtime, double WidthInPuls )
+{
+  // HSpeed までの加速にかかる時間
+  double RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;
+  // その時間で走るパルス数
+  int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
+
+  int Th, Tm, Ts;
+  double TT, TTT;
+  if ( QMeasOnBackward->isChecked() ) {
+    TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 は実測の補正値
+  } else {
+    TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
+  }
+  TTT = TT * SelRPT->value();
+  EstimatedMeasurementTimeInSec = TTT;
+
+  QString buf;
+
+  Th = (int)( TT / 3600 );
+  TT -= Th * 3600;
+  Tm = (int)( TT / 60 );
+  TT -= Tm * 60;
+  Ts = (int)TT;
+  TT -= Ts;
+  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+  TPoints->setText( tr( "Cycle: " ) + buf );
+
+  Th = (int)( TTT / 3600 );
+  TTT -= Th * 3600;
+  Tm = (int)( TTT / 60 );
+  TTT -= Tm * 60;
+   Ts = (int)TTT;
+  TTT -= Ts;
+  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+  TTime->setText( tr( "Total: " ) + buf );
 }
 
 void MainWindow::GetPM16CParamsForQXAFS( void )
@@ -126,7 +166,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   int steps = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
-  HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
+  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
+  HSpeed = WidthInPuls / dtime;
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
     HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
@@ -168,6 +209,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
     .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate );
   qDebug() << QString( "Interval and Steps %1 %2" )
     .arg( QXafsInterval ).arg( QXafsSteps );
+
+  ShowQTime( dtime, WidthInPuls );
 }
 
 void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
@@ -191,7 +234,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     GetPM16CParamsForQXAFS();
-    MMainTh->SetHighSpeed( HSpeed );
+    MMainTh->SetHighSpeed( OrigHSpeed );
     MMainTh->SetSpeed( HIGH );
     MeasStage++;
     break;
@@ -225,6 +268,9 @@ void MainWindow::QXafsMeasSequence( void )
       MeasStage = 99;
       break;
     }
+    CurrentRpt->setText( QString::number( MeasR ) );
+    CurrentPnt->setText( tr( "Fwd" ) );
+    MMainTh->SetHighSpeed( HSpeed );
     MeasStage++;
     //break;
   case 5:
@@ -256,8 +302,10 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
+      CurrentPnt->setText( tr( "Bwd" ) );
       MeasStage++;
     } else {
+      MMainTh->SetHighSpeed( MaxHSpeed );
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
       MeasStage = 11;
@@ -300,26 +348,31 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 99:
-    mUnits.setOneByOne( false );
-    MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
-    MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す
-    statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
-    NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
-    //    WriteHeader2( MeasR );
-    //    WriteInfoFile2();
-    MeasTimer->stop();
-    inMeas = 0;
-    MeasStart->setText( tr( "Start" ) );
-    MeasStart
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
-    MeasPause->setEnabled( false );
-    onMeasFinishWorks();
+    QXafsFinish();
     break;
   }
   qDebug() << "out " << MeasStage;
+}
+
+void MainWindow::QXafsFinish( void )
+{
+  mUnits.setOneByOne( false );           // 「ユニット一つずつ順番に」モードやめる
+  MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
+  MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す
+  statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
+  NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
+  //    WriteHeader2( MeasR );
+  //    WriteInfoFile2();
+  MeasTimer->stop();
+  inMeas = 0;
+  MeasStart->setText( tr( "Start" ) );
+  MeasStart
+    ->setStyleSheet( "background-color: "
+		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+		     "rgba(225, 235, 225, 255), stop:1 "
+		     "rgba(255, 255, 255, 255));" );
+  MeasPause->setEnabled( false );
+  onMeasFinishWorks();
 }
 
 void MainWindow::DispQSpectrum( void )  // ダーク補正どうする？

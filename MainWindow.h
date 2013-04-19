@@ -314,6 +314,7 @@ private:
   void SetEnableOfUnits( QString drv, bool enable );
 
   // QXAFS
+  QStringList QXafsOk, NXafsOk;
   bool isQXafsModeAvailable;
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
   bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
@@ -331,6 +332,10 @@ private:
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
   void DispQSpectrum( void );
+  void QXafsFinish( void );
+  bool CheckOkList( AUnit *as, QStringList OkList );
+  bool theSensorIsAvailable( AUnit *as );
+  void ShowQTime( double dtime, double WidthInPuls );
 
 private slots:
   void Initialize( void );

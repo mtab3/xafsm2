@@ -1,18 +1,14 @@
   9809     AichiSR   BL5S1
- test.dat        13.04.18 16:20 - %001%
+ test.dat        13.04.19 19:38 - %001%
                                                                                  
- Ring :   1.2 GeV   300.5 mA - %002% mA
- Mono :   Si(111)       D=  3.13553 A    Initial angle=  0.32711 deg
- BL5S1    Aux input    ( 2)   Repitition=  1     Points=  620
- Param file : DUMMYNAME.prm   energy axis (2)     Block = 4
+ Ring :   1.2 GeV     3.6 mA - %002% mA
+ Mono :   Si(111)       D=  3.13553 A    Initial angle= 13.16797 deg
+ BL5S1                 ( 5)   Repitition=  1     Points=  200
+ Param file : DUMMYNAME.prm   energy axis (2)     Block = 1
 
  Block      Init-Eng  final-Eng     Step/eV     Time/s       Num
-     1           8.68      8.94         6.50       1.00        40
-     2           8.94      9.03         0.30       1.00       300
-     3           9.03      9.48         2.50       1.00       180
-     4           9.48     10.08         6.00       1.00       100
- ORTEC( 0)     NDCH = 3
+     1           8.95      9.05         0.50       1.00       200
+ SCALE( 2)     NDCH = 2
   Angle(c)  Angle(o)    time/s         1         2
       Mode         0         0         1         2
-    Offset         0         0     0.000     0.000
-  13.15931  13.65460      1.00    856.87   1167.84
+    Offset         0         0    -0.000     0.003

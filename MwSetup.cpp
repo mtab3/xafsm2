@@ -572,8 +572,16 @@ void MainWindow::ScanStart( void )
     mUnits.setDwellTimes( SPSdwell->text().toDouble() );
     mUnits.setDwellTime();
 
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( ! CheckOkList( mUnits.at(i), NXafsOk ) ) {
+	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
+	  .arg( mUnits.at(i)->getName() );
+	statusbar->showMessage( msg, 2000 );
+	return;
+      }
+    }
     if ( ! am->isEnable() ) {
-      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+      QString msg = tr( "Scan cannot Start : (%1) is disabled" )
 	.arg( am->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
@@ -736,6 +744,15 @@ void MainWindow::Monitor( void )
     }
     mUnits.setDwellTimes( DwellT20->text().toDouble() );
     mUnits.setDwellTime();
+
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( ! CheckOkList( mUnits.at(i), NXafsOk ) ) {
+	QString msg = tr( "The Sensor [%1] can use only in QXafs mode." )
+	  .arg( mUnits.at(i)->getName() );
+	statusbar->showMessage( msg, 2000 );
+	return;
+      }
+    }
 
     if ( monRecF ) {
       MonOut << "#\tsec";

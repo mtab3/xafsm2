@@ -859,6 +859,10 @@ void MainWindow::StartMeasurement( void )
   SFluoLine = -1;
   isSFluo = isSI1 = false;
 
+  // 将来の変更
+  // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
+  // だけが選べるようにする。
+
   if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
@@ -893,35 +897,40 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
-    if ( QXafsMode->isChecked() ) {
-      if ( BlockPoints[0] > 9990 ) {
+    if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
+      if ( BlockPoints[0] > 9990 ) {    // 測定点数が 9900 を超えてたらダメ
 	statusbar->showMessage( tr( "Measured points are too many.  "
 				    "It should be less than 9990." ), 2000 );
 	return;
       }
-      if ( ! UseI1->isChecked() ) {
+      if ( ! UseI1->isChecked() ) {     // 今 QXafs は透過専用なので、I1 は必須
 	statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
 	return;
       }
-      if ( Use19chSSD->isChecked() ) {
+      if ( Use19chSSD->isChecked() ) {     // 今 QXafs は透過専用なので、SSDは使えない
 	statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
 	return;
       }
+#if 0
       if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
+                                          // 今 QXafs で AUX は使えない
 	statusbar
 	  ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
 	return;
       }
+      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
       if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
 	statusbar
 	  ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
 	return;
       }
+      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
       if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
 	statusbar
 	  ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
 	return;
       }
+#endif
     }
 
     // この下の諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々の設定が
@@ -989,6 +998,19 @@ void MainWindow::StartMeasurement( void )
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
+      if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs モードで使えるかどうか
+	QString msg;
+	if ( QXafsMode->isChecked() ) {
+	  msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
+	} else {
+	  msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
+	    .arg( as->getName() );
+	}
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
 	QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
@@ -1114,6 +1136,31 @@ void MainWindow::StartMeasurement( void )
     MeasPause->setEnabled( false );
     MeasStart->setEnabled( false );
   }
+}
+
+// Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !
+bool MainWindow::CheckOkList( AUnit *as, QStringList OkList )
+{
+  int j;
+  for ( j = 0; j < OkList.count(); j++ ) {
+    if ( as->getType() == OkList[j] )
+      break;
+  }
+  if ( j >= OkList.count() ) { // 指定されたセンサー type はリストにない
+    return false;
+  }
+  return true;
+}
+
+// 現在のモード ( QXafs or NXafs ) で使えるか
+bool MainWindow::theSensorIsAvailable( AUnit *as )
+{
+  if ( QXafsMode->isChecked() ) {
+    return CheckOkList( as, QXafsOk );
+  } else {
+    return CheckOkList( as, NXafsOk );
+  }
+  return true;  // ここに来ることは無い
 }
 
 void MainWindow::SurelyStop( void )
