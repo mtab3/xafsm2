@@ -7,6 +7,7 @@ void MainWindow::setupQXafsMode( void )
   connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
+  connect( QSingleDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QMeasOnBackward->setHidden( true );
@@ -14,6 +15,27 @@ void MainWindow::setupQXafsMode( void )
   QMaxSpeed->setHidden( true );
   QMinTime->setHidden( true );
   QSepLine->setHidden( true );
+  QSingleDisplay->setHidden( true );
+}
+
+void MainWindow::SetNewRPTLimit( void )
+{
+  if ( QXafsMode->isChecked() ) {
+    if ( QSingleDisplay->isChecked() ) {
+      SelRPT->setMaximum( 999999 );        // 本当は unlimit にしたい。事実上の unlimit
+    } else {
+      if ( QMeasOnBackward->isChecked() ) {
+	SelRPT->setMaximum( 4999 );
+      } else {
+	SelRPT->setMaximum( 9999 );
+      }
+    }
+  } else {
+    SelRPT->setMaximum( 99 );
+  }
+  if ( SelRPT->value() > SelRPT->maximum() ) {
+    SelRPT->setValue( SelRPT->maximum() );
+  }
 }
 
 void MainWindow::ToggleQXafsMode( bool )
@@ -47,6 +69,7 @@ void MainWindow::ToggleQXafsMode( bool )
     QMaxSpeed->setHidden( false );
     QMinTime->setHidden( false );
     QSepLine->setHidden( false );
+    QSingleDisplay->setHidden( false );
 
     SaveUse19ChSSD = Use19chSSD->isChecked();
     SaveUseAux1 = UseAux1->isChecked();
@@ -58,7 +81,7 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux1->setEnabled( false );
     UseAux2->setEnabled( false );
 
-    SelRPT->setMaximum( 9999 );
+    SetNewRPTLimit();
     qDebug() << "rpt max " << SelRPT->maximum();
 
   } else {
@@ -73,6 +96,7 @@ void MainWindow::ToggleQXafsMode( bool )
     QMaxSpeed->setHidden( true );
     QMinTime->setHidden( true );
     QSepLine->setHidden( true );
+    QSingleDisplay->setHidden( true );
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
@@ -83,10 +107,7 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux1->setEnabled( true );
     UseAux2->setEnabled( true );
 
-    SelRPT->setMaximum( 99 );
-    if ( SelRPT->value() > 99 ) {
-      SelRPT->setValue( 99 );
-    }
+    SetNewRPTLimit();
   }
 }
 
@@ -420,6 +441,11 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     upp2 = Enc2->getUPP();
   }
   qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
+
+  if ( QSingleDisplay->isChecked() ) {
+    g = 0;
+    ClearXViewScreenForMeas( MeasView );
+  }
 
   MeasView->SetLR( g*3, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( g*3, I0TYPE );

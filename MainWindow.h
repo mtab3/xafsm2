@@ -516,6 +516,7 @@ private slots:
   void ToggleQXafsMode( bool f );
   void QXafsMeasSequence( void );
   void CheckQXafsParams( void );
+  void SetNewRPTLimit( void );
 
  signals:
   void SelectedSSD( int i, bool f );

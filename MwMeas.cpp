@@ -609,11 +609,6 @@ void MainWindow::ShowTotal( void )  // ShowBlock ‚Ì’†‚©‚ç‚ÆA”½•œ‰ñ”•ÏXŽž‚ÉŒÄ‚
 {
   QString buf;
 
-#if 0     // Ý’è‚Å‚«‚é”‚ÌãŒÀ‚Í SpinBox ‚ÌƒvƒƒpƒeƒB‚Æ‚µ‚ÄÝ’èÏ‚Ý
-  if ( SelRPT->value() > 99 ) // “Á‚ÉˆÓ–¡‚Í‚È‚¢‚ªA”½•œ‰ñ”‚ÌãŒÀ‚Í 99 
-    SelRPT->setValue( 99 );
-#endif
-
   if ( ! QXafsMode->isChecked() ) {  // ’Êíƒ‚[ƒh
     TP = 0;                     // ‘ª’è‚Ì‡Œv“_”‚ÆA’PƒÏŽZŽžŠÔ‚ð”‚¦‚é
     TT0 = 0;
