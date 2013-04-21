@@ -609,8 +609,10 @@ void MainWindow::ShowTotal( void )  // ShowBlock ‚Ì’†‚©‚ç‚ÆA”½•œ‰ñ”•ÏX‚ÉŒÄ‚
 {
   QString buf;
 
+#if 0     // İ’è‚Å‚«‚é”‚ÌãŒÀ‚Í SpinBox ‚ÌƒvƒƒpƒeƒB‚Æ‚µ‚Äİ’èÏ‚İ
   if ( SelRPT->value() > 99 ) // “Á‚ÉˆÓ–¡‚Í‚È‚¢‚ªA”½•œ‰ñ”‚ÌãŒÀ‚Í 99 
     SelRPT->setValue( 99 );
+#endif
 
   if ( ! QXafsMode->isChecked() ) {  // ’Êíƒ‚[ƒh
     TP = 0;                     // ‘ª’è‚Ì‡Œv“_”‚ÆA’PƒÏZŠÔ‚ğ”‚¦‚é
@@ -898,9 +900,9 @@ void MainWindow::StartMeasurement( void )
     }
 
     if ( QXafsMode->isChecked() ) {     // QXafs ƒ‚[ƒh‚Ì‚Ì’Ç‰Áƒ`ƒFƒbƒN
-      if ( BlockPoints[0] > 9990 ) {    // ‘ª’è“_”‚ª 9900 ‚ğ’´‚¦‚Ä‚½‚çƒ_ƒ
+      if ( BlockPoints[0] > 9990 ) {    // ‘ª’è“_”‚ª 9990 ‚ğ’´‚¦‚Ä‚½‚çƒ_ƒ
 	statusbar->showMessage( tr( "Measured points are too many.  "
-				    "It should be less than 9990." ), 2000 );
+			    "It should be less than 9990 in QXAFS mode." ), 2000 );
 	return;
       }
       if ( ! UseI1->isChecked() ) {     // ¡ QXafs ‚Í“§‰ßê—p‚È‚Ì‚ÅAI1 ‚Í•K{
@@ -913,10 +915,9 @@ void MainWindow::StartMeasurement( void )
       }
 #if 0
       if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
-                                          // ¡ QXafs ‚Å AUX ‚Íg‚¦‚È‚¢
+	// ¡ QXafs ‚Å AUX ‚Íg‚¦‚È‚¢
 	statusbar
 	  ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
-	return;
       }
       // ‚±‚ê‚Í«—ˆ•Ï‚¦‚é uQ mode ‰Â”\v‚Æ‚¢‚¤ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚ê‚Î OK‚É‚·‚é
       if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
@@ -931,6 +932,17 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
 #endif
+    } else {   // Normal ƒ‚[ƒhê—p‚Ìƒ`ƒFƒbƒN
+      int TotalPoints = 0;
+      for ( int i = 0; i < Blocks; i++ ) {
+	TotalPoints += BlockPoints[i];
+      } 
+      if ( TotalPoints > 1999 ) {
+	statusbar
+	  ->showMessage( tr( "Measured points are too many.    "
+			     "It should be less than 2000 in normal XAFS mode." ) );
+	return;
+      }	
     }
 
     // ‚±‚Ì‰º‚Ì”X”X”X”X”X”X”X”X”X”X”X”X‚Ìİ’è‚ª
@@ -1066,7 +1078,11 @@ void MainWindow::StartMeasurement( void )
       // ƒOƒ‰ƒt•\¦—Ìˆæ‚ªŠm•Û‚Å‚«‚È‚¢‚Æƒ_ƒ
       return;
     }
-    ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
+    if ( QXafsMode->isChecked() )
+      ViewTab->setTabText( ViewTab->currentIndex(), "QXAFS" );
+    else 
+      ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
+
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );

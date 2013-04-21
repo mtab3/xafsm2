@@ -105,7 +105,7 @@ void MainWindow::MeasSequence( void )
       } else if ( MeasB < SBlocks-1 ) {
 	MeasB++;
 	MeasStage = 3;
-      } else if (( MeasR < SelRPT->value()-1 )&&( MeasR < 30 )) {
+      } else if ( MeasR < SelRPT->value()-1 ) {
 	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
 	ClearXViewScreenForMeas( MeasView );
 	WriteHeader2( MeasR );
@@ -159,7 +159,7 @@ void MainWindow::SetDispMeasModes( void )
 
   MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
   MeasView->SetLLine( 1 );            //       1 番目のラインを左軸に表示
-  
+
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );
   MeasView->SetLineName( DLC, mUnits.at(0)->getName() );

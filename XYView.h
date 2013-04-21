@@ -7,8 +7,46 @@
 #include "MouseC.h"
 #include "ChCoord.h"
 
-#define MAXPOINTS ( 10000 )
-#define MAXLINES  ( 900 )
+#define MAXPOINTS  ( 10000 )
+#define MAXLINENO  ( 30000 )  // 0 ～ 19999      // I0 と I, mu があるので実質 10,000
+#define GROUPLINES ( 3 )      // 何本の線が一つのグループになるか (I0, I, mu)
+#define MAXLINES   ( 600 )    // 内部で準備する線の数 (ほんとは 594 でいいはず)
+// 受け入れられる line No. の最大値
+// (足跡表示の線の数) * (足跡間隔) + 連番表示の線の数
+// のはずだけど、ちょっと怖いので、(足跡表示の線の数) * (足跡間隔)という事にしておく
+
+// l 番目のラインの内部でのライン番号 L を
+//   G1 = ( l / GROUPLINES )
+//   G2 = ( l mod GROUPLINES )
+//   L = ( ( G1 mod CGROUPS ) + B ) * GROUPLINES + G2
+//   B = (int)( G1 / FINTERVAL ) 
+// とすると
+//
+// FINTERVAL = 10, CGROUPS = 10, GROUPLINES = 3 の場合
+// ( 0  1  2)( 3  4  5)( 6  7  8)( 9 10 11)(12 13 14)...(27 28 29)
+//           (30 31 32)(33 34 35)(36 37 38)...                    (57 58 59)
+//                     (60 61 62)(63 64 65)(66 67 68)...                    (97 98 99)
+//                             (100 101 102)...
+// ということで、
+// 1) 総 group 数 100 まで (line 数 300まで)
+//    CGROUPS = 100, FINTERVAL = 100 にしておく
+//    要は、全部の line をそのまま描く (最大 L=300)
+// 2) 総 group 数が 100 を超えた時点で
+//    先頭から 10 group分 (g=0,1,2,...9)を
+//    g = 0, 10, 20, 30, ... 90 にある
+//    g = 0, 10, 20, 30, ... 90 と置き換えて
+//    CGROUPS = 10, FINTERVAL = 10 に変更する
+//    以降、例えば 100 番目のグループについては
+//          G = ( 100 mod 10 ) + (int)( 100 / 10 ) = 10
+//    になって、最初から CGROUPS = 10, FINTERVAL = 10 だった場合と同じ位置に置かれる
+// 3) 総 group 数が 1000 を超えた時点で
+//    0 10 20 ... 990(G=99) 991 992 993 ... 999(G=108,L=324)
+//    先頭から 10 グループ分(G=0,1,...9)を
+//    G = 0, 10, 20, 30, ... 90 にある
+//    g = 0, 200, 400, 600, ... 1800 と置き換えて
+//    CGROUPS = 100, FINTERVAL = 100 に変更する
+//    以降、例えば 1000 番目は G = ( 1000 mod 100 ) + (int)( 1000 / 100 ) = 0 + 10 = 10
+//    0 100 ... 9900(G=99) 9901 9902 ... 9999 (G=198,L=594) が最大
 
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
@@ -43,7 +81,10 @@ private:
   double XShift, XShift0, xshift;
   double YShift[ MAXLINES ], YShift0[ MAXLINES ], yshift[ MAXLINES ];
 
-  int lines;
+  int CGroups, FInterval;      // Continuous drawn groups, Interval of foot print groups
+  int maxGroups;               // 外部から見た時の ライン数 でこれまで指定された最大値
+  int maxLines;
+  int inLines;                 // 内部で使われているライン番号の最大値
   bool dispf[ MAXLINES ];
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];
@@ -58,6 +99,8 @@ private:
   void mouseReleaseEvent( QMouseEvent *e );
   void mouseDoubleClickEvent( QMouseEvent *e );
   void wheelEvent( QWheelEvent *e );
+  int getL( int l );
+  void ReFillFirst10Groups( void );
 
 public:
   XYView( QWidget *parent = NULL );
@@ -85,7 +128,7 @@ public:
   void SetXUnitName( QString name ) { XUnitName = name; };
   void makeValid( bool v = true ) { valid = v; };
   int GetPoints( int l );
-  int GetLines( void ) { return lines; };
+  int GetLines( void ) { return maxLines; };
   double GetX( int l, int p );
   double GetY( int l, int p );
   double *GetXp( int l ) { return x[l]; };

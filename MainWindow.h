@@ -331,7 +331,7 @@ private:
   void WriteQHeader( int rpt, DIRECTION dir );
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
-  void DispQSpectrum( void );
+  void DispQSpectrum( int g );
   void QXafsFinish( void );
   bool CheckOkList( AUnit *as, QStringList OkList );
   bool theSensorIsAvailable( AUnit *as );

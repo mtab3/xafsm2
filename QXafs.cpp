@@ -6,6 +6,7 @@ void MainWindow::setupQXafsMode( void )
 {
   connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
+  connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QMeasOnBackward->setHidden( true );
@@ -18,6 +19,9 @@ void MainWindow::setupQXafsMode( void )
 void MainWindow::ToggleQXafsMode( bool )
 {
   if ( QXafsMode->isChecked() ) {
+
+    // QXAFS モード
+
     SaveSelectedI0 = SelectI0->currentIndex();
     SaveSelectedI1 = SelectI1->currentIndex();
     for ( int i = 0; i < I0Sensors.count(); i++ ) {
@@ -54,7 +58,12 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux1->setEnabled( false );
     UseAux2->setEnabled( false );
 
+    SelRPT->setMaximum( 9999 );
+    qDebug() << "rpt max " << SelRPT->maximum();
+
   } else {
+
+    // NORML XAFS モード
 
     SelBLKs->setEnabled( true );
     ChangeBLKs( SaveNowBlocks );
@@ -73,6 +82,11 @@ void MainWindow::ToggleQXafsMode( bool )
     Use19chSSD->setEnabled( true );
     UseAux1->setEnabled( true );
     UseAux2->setEnabled( true );
+
+    SelRPT->setMaximum( 99 );
+    if ( SelRPT->value() > 99 ) {
+      SelRPT->setValue( 99 );
+    }
   }
 }
 
@@ -128,12 +142,16 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
 
   int Th, Tm, Ts;
   double TT, TTT;
-  if ( QMeasOnBackward->isChecked() ) {
-    TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 は実測の補正値
+  if ( dtime > 0 ) {
+    if ( QMeasOnBackward->isChecked() ) {
+      TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 は実測の補正値
+    } else {
+      TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
+    }
+    TTT = TT * SelRPT->value();
   } else {
-    TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
+    TTT = TT = 0;
   }
-  TTT = TT * SelRPT->value();
   EstimatedMeasurementTimeInSec = TTT;
 
   QString buf;
@@ -224,10 +242,13 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 
 void MainWindow::QXafsMeasSequence( void )
 {
+  int g;
   qDebug() << "in " << MeasStage;
 
   switch( MeasStage ) {
   case 0:
+    MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
+    MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
     CurrentRpt->setText( QString::number( 1 ) );
     //    WriteInfoFile();
     mUnits.clearStage();
@@ -293,7 +314,8 @@ void MainWindow::QXafsMeasSequence( void )
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
     WriteQBody();
-    DispQSpectrum();
+    g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
+    DispQSpectrum( g );
     MeasStage++;
     break;
   case 9:
@@ -337,7 +359,8 @@ void MainWindow::QXafsMeasSequence( void )
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
     WriteQBody();
-    DispQSpectrum();
+    g = ( MeasR - 1 ) * 2 + 1;
+    DispQSpectrum( g );
     MeasStage++;
     break;
   case 14:
@@ -375,7 +398,7 @@ void MainWindow::QXafsFinish( void )
   onMeasFinishWorks();
 }
 
-void MainWindow::DispQSpectrum( void )  // ダーク補正どうする？
+void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 {
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
@@ -398,6 +421,18 @@ void MainWindow::DispQSpectrum( void )  // ダーク補正どうする？
   }
   qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
 
+  MeasView->SetLR( g*3, RIGHT_AX );                        // I0 
+  MeasView->SetScaleType( g*3, I0TYPE );
+  MeasView->SetLineName( g*3, "I0" );
+  
+  MeasView->SetLR( g*3+1, LEFT_AX );                   // I1
+  MeasView->SetScaleType( g*3+1, FULLSCALE );
+  MeasView->SetLineName( g*3+1, "I1" );
+
+  MeasView->SetLR( g*3+2, LEFT_AX );                     // mu
+  MeasView->SetScaleType( g*3+2, FULLSCALE );
+  MeasView->SetLineName( g*3+2, tr( "mu" ) );
+
   for ( int i = 0; i < num; i++ ) {
     if ( Enc2 == NULL ) {
       deg2 = ( p - c ) * upp + d * i;
@@ -406,12 +441,12 @@ void MainWindow::DispQSpectrum( void )  // ダーク補正どうする？
     }
     E = u->deg2keV( deg2 );
 
-    MeasView->NewPoint( 0, E, I0 = vals0[i+1].toDouble() );
-    MeasView->NewPoint( 1, E, I1 = vals1[i+1].toDouble() );
+    MeasView->NewPoint( g*3 + 0, E, I0 = vals0[i+1].toDouble() );
+    MeasView->NewPoint( g*3 + 1, E, I1 = vals1[i+1].toDouble() );
     if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
-      MeasView->NewPoint( 2, E, log( I0/I1 ) );
+      MeasView->NewPoint( g*3 + 2, E, log( I0/I1 ) );
     } else {
-      MeasView->NewPoint( 2, E, 0 );
+      MeasView->NewPoint( g*3 + 2, E, 0 );
     }
   }
   MeasView->update();

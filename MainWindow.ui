@@ -2047,6 +2047,9 @@ Though, other parameters are fixed at the value on starting.</string>
                  <property name="minimum">
                   <number>1</number>
                  </property>
+                 <property name="maximum">
+                  <number>99</number>
+                 </property>
                  <property name="value">
                   <number>1</number>
                  </property>
