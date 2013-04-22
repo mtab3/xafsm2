@@ -7,22 +7,25 @@ void MainWindow::setupQXafsMode( void )
   connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
-  connect( QSingleDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
+  connect( QLimitedDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
+  QConditionBox->setHidden( true );
+#if 0
   QMeasOnBackward->setHidden( true );
   QMinMaxBox->setHidden( true );
   QMaxSpeed->setHidden( true );
   QMinTime->setHidden( true );
   QSepLine->setHidden( true );
-  QSingleDisplay->setHidden( true );
+  QLimitedDisplay->setHidden( true );
+#endif
 }
 
 void MainWindow::SetNewRPTLimit( void )
 {
   if ( QXafsMode->isChecked() ) {
-    if ( QSingleDisplay->isChecked() ) {
-      SelRPT->setMaximum( 999999 );        // 本当は unlimit にしたい。事実上の unlimit
+    if ( QLimitedDisplay->isChecked() ) {
+      SelRPT->setMaximum( 999999 ); // unlimit にしたい。事実上の unlimit のつもり。
     } else {
       if ( QMeasOnBackward->isChecked() ) {
 	SelRPT->setMaximum( 4999 );
@@ -64,12 +67,15 @@ void MainWindow::ToggleQXafsMode( bool )
     ChangeBLKs( 1 );
     SelBLKs->setEnabled( false );
     HideBLKs( true );
+    QConditionBox->setHidden( false );
+#if 0
     QMeasOnBackward->setHidden( false );
     QMinMaxBox->setHidden( false );
     QMaxSpeed->setHidden( false );
     QMinTime->setHidden( false );
     QSepLine->setHidden( false );
-    QSingleDisplay->setHidden( false );
+    QLimitedDisplay->setHidden( false );
+#endif
 
     SaveUse19ChSSD = Use19chSSD->isChecked();
     SaveUseAux1 = UseAux1->isChecked();
@@ -91,12 +97,16 @@ void MainWindow::ToggleQXafsMode( bool )
     SelBLKs->setEnabled( true );
     ChangeBLKs( SaveNowBlocks );
     HideBLKs( false );
+
+    QConditionBox->setHidden( true );
+#if 0
     QMeasOnBackward->setHidden( true );
     QMinMaxBox->setHidden( true );
     QMaxSpeed->setHidden( true );
     QMinTime->setHidden( true );
     QSepLine->setHidden( true );
-    QSingleDisplay->setHidden( true );
+    QLimitedDisplay->setHidden( true );
+#endif
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
@@ -144,13 +154,25 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みし
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 ))
     HSpeed = MaxHSpeed;
 
+  DispQHSpeed->setText( QString::number( HSpeed ) );
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
+
+  if ( WidthInPuls / BlockPoints[0] / HSpeed < 2e-5 ) {
+    // PM16C が出す Trigger は 10us 幅にするので
+    // Interval の時間は念の為 20us とる。
+    int Interval = 2e-5 * HSpeed;         // これより短くなるなら、インターバルを変更
+    BlockPoints[0] = (int)( WidthInPuls / Interval );
+    BLKpoints[0]->setText( QString::number( BlockPoints[0] ) );
+  }
+  if ( BlockPoints[0] > WidthInPuls ) {
+    BlockPoints[0] = WidthInPuls;
+    BLKpoints[0]->setText( QString::number( WidthInPuls ) );
+    BLKstep[0]->setText( QString::number( fabs( edeg - sdeg ) / WidthInPuls ) );
+  }
   dtime = WidthInPuls / HSpeed;
   BlockDwell[0] = dtime;
 
-  QString buf;
-  buf.sprintf( "% 5.2f", BlockDwell[0] );
-  BLKdwell[0]->setText( buf );
+  BLKdwell[0]->setText( QString::number( BlockDwell[0] ) );
   ShowQTime( dtime, WidthInPuls );
 }
 
@@ -202,7 +224,7 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
 {
   double sdeg = u->keV2deg( SBlockStart[0] );
   double edeg = u->keV2deg( SBlockStart[1] );
-  int steps = abs( SBlockPoints[0] );
+  int points = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
@@ -210,11 +232,13 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
     HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
+  DispQHSpeed->setText( QString::number( HSpeed ) );
 
   QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の始点
   QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の終点
-  if ( abs( QXafsSP0 - QXafsEP0 ) > steps )
-    QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / steps); // Trigger パルスを出す間隔
+  if ( abs( QXafsSP0 - QXafsEP0 ) > points )
+    QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / points);
+  // Trigger パルスを出す間隔
   else 
     QXafsInterval = 1;
 
@@ -224,11 +248,11 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
     QXafsInterval = 2e-5 * HSpeed;         // これより短くなるなら、インターバルを変更
     SBlockPoints[0] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
     statusbar
-      ->showMessage( tr( "Selected Steps were too many!  It was changed to be %1" )
+      ->showMessage( tr( "Selected Points were too many!  It was changed to be %1" )
 		     .arg( SBlockPoints[0] ), 3000 );
   }
 
-  QXafsSteps = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // 測定ステップ数を再計算
+  QXafsPoints = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // 測定ステップ数を再計算
   QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
   // 1点の積分時間を Trigger パルス間隔の 90% にする
 
@@ -245,9 +269,9 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   QXafsEP = QXafsEP0 + RunUpPulses;   // 始点と終点
 
   qDebug() << QString( "Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
-    .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate );
-  qDebug() << QString( "Interval and Steps %1 %2" )
-    .arg( QXafsInterval ).arg( QXafsSteps );
+    .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate )
+	   << QString( "Interval and Points %1 %2" )
+    .arg( QXafsInterval ).arg( QXafsPoints );
 
   ShowQTime( dtime, WidthInPuls );
 }
@@ -264,7 +288,7 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 void MainWindow::QXafsMeasSequence( void )
 {
   int g;
-  qDebug() << "in " << MeasStage;
+  //  qDebug() << "in " << MeasStage;
 
   switch( MeasStage ) {
   case 0:
@@ -290,7 +314,7 @@ void MainWindow::QXafsMeasSequence( void )
   case 2:
     EncValue0 = EncMainTh->value();
     if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
-    qDebug() << "Enc and Enc2 " << EncValue0 << Enc2Value0;
+    //    qDebug() << "Enc and Enc2 " << EncValue0 << Enc2Value0;
     mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
     mUnits.clearStage();
@@ -395,7 +419,7 @@ void MainWindow::QXafsMeasSequence( void )
     QXafsFinish();
     break;
   }
-  qDebug() << "out " << MeasStage;
+  //  qDebug() << "out " << MeasStage;
 }
 
 void MainWindow::QXafsFinish( void )
@@ -442,22 +466,27 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   }
   qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
 
-  if ( QSingleDisplay->isChecked() ) {
-    g = 0;
-    ClearXViewScreenForMeas( MeasView );
+  if ( QLimitedDisplay->isChecked() ) {
+    g = g % QLastLines->value();
   }
 
-  MeasView->SetLR( g*3, RIGHT_AX );                        // I0 
+  MeasView->SetLR( g*3, RIGHT_AX );                    // I0 
   MeasView->SetScaleType( g*3, I0TYPE );
   MeasView->SetLineName( g*3, "I0" );
+  MeasView->SetDispF( g*3, true );
+  MeasView->SetPoints( g*3, 0 );
   
   MeasView->SetLR( g*3+1, LEFT_AX );                   // I1
   MeasView->SetScaleType( g*3+1, FULLSCALE );
   MeasView->SetLineName( g*3+1, "I1" );
+  MeasView->SetDispF( g*3+1, false );
+  MeasView->SetPoints( g*3+1, 0 );
 
-  MeasView->SetLR( g*3+2, LEFT_AX );                     // mu
+  MeasView->SetLR( g*3+2, LEFT_AX );                   // mu
   MeasView->SetScaleType( g*3+2, FULLSCALE );
   MeasView->SetLineName( g*3+2, tr( "mu" ) );
+  MeasView->SetDispF( g*3+2, true );
+  MeasView->SetPoints( g*3+2, 0 );
 
   for ( int i = 0; i < num; i++ ) {
     if ( Enc2 == NULL ) {

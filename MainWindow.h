@@ -319,7 +319,7 @@ private:
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
   bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsSteps;
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
   double RunUpRate, RunUpTime, QXafsDwellTime;
   QString EncValue0, Enc2Value0;
 

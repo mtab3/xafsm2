@@ -59,6 +59,7 @@ class XYView : public QFrame, private Ui::XView
 private:
   ChCoord cc;
   bool autoScale;
+  bool QXafsMode;
 
   QColor bgColor, BLACK;
   QVector<QColor> LC;
@@ -111,28 +112,29 @@ public:
   // 各線が左軸、右軸どちらに関係しているかを指定するのが SetLR(), LintLR[]
   // 沢山ある線の中で、左右の軸に実際にスケールを表示する線を選択するのが
   // SetLLine(), SetRLine(), SelLR[]
-  void SetLLine( int l ) { SelLR[ LEFT_AX ] = l; };
-  void SetRLine( int l ) { SelLR[ RIGHT_AX ] = l; };
-  void SetLR( int L, LRAX lr ) { LineLR[ L ] = lr; };
+  void SetLLine( int l ) { SelLR[ LEFT_AX ] = getL( l ); };
+  void SetRLine( int l ) { SelLR[ RIGHT_AX ] = getL( l ); };
+  void SetLR( int L, LRAX lr ) { LineLR[ getL( L ) ] = lr; };
   // スケールのタイプ : フルスケールにするか、I0 の様に少し上にずらすか
   // ループ単位で指定。
-  void SetScaleType( int l, SCALET t ) { scaleType[ l ] = t; };
-  void SetColor( int l, QColor c ) { LC[ l ] = c; };
-  QColor GetColor( int l ) { return LC.at( l ); };
+  void SetScaleType( int l, SCALET t ) { scaleType[ getL( l ) ] = t; };
+  void SetColor( int l, QColor c ) { LC[ getL( l ) ] = c; };
+  QColor GetColor( int l ) { return LC.at( getL( l ) % LC.count() ); };
 
   // 縦軸は左右一本ずつ合計 2本しかないので、縦軸を持てるグループは最大 2 つだけ。
-  void SetLineName( int l, QString Name ) { LNames[l] = Name; };
+  void SetLineName( int l, QString Name ) { LNames[ getL( l ) ] = Name; };
   void SetLeftName( QString Name ) { LeftName = Name; };
   void SetRightName( QString Name ) { RightName = Name; };
   void SetXName( QString Name ) { XName = Name; };
   void SetXUnitName( QString name ) { XUnitName = name; };
   void makeValid( bool v = true ) { valid = v; };
   int GetPoints( int l );
+  void SetPoints( int l, int p ) { points[ getL( l ) ] = p; };
   int GetLines( void ) { return maxLines; };
   double GetX( int l, int p );
   double GetY( int l, int p );
-  double *GetXp( int l ) { return x[l]; };
-  double *GetYp( int l ) { return y[l]; };
+  double *GetXp( int l ) { return x[ getL( l ) ]; };
+  double *GetYp( int l ) { return y[ getL( l ) ]; };
   void SetWindow( double x1, double y1, double x2, double y2 )
   { cc.SetRealCoord( x1, y1, x2, y2 ); };
   void SetWindow0( double x1, double y1, double x2, double y2 )
@@ -140,6 +142,8 @@ public:
   void SetUpp( double upp0 ) { upp = upp0; };
   void SetCenter( double center0 ) { center = center0; };
   void SetAutoScale( bool ascale ) { autoScale = ascale; };
+  void SetDispF( int l, bool f ) { dispf[ getL( l ) ] = f; };
+  void SetQXafsMode( bool f ) { QXafsMode = f; };
 
 public slots:
   void ChooseAG( int i, bool f );

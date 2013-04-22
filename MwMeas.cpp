@@ -573,15 +573,25 @@ void MainWindow::ShowBLKs( void )
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
     BLKstart[i]->setText( buf );
     if ( BlockPoints[i] > 0 ) {
-      buf.sprintf( UnitName[ BLKUnit ].form,
-	       ( u->keV2any(BLKUnit, BlockStart[i+1])
-		 - u->keV2any(BLKUnit, BlockStart[i]) )
-	       / BlockPoints[ i ] );
+      if ( ! QXafsMode->isChecked() ) {
+	buf.sprintf( UnitName[ BLKUnit ].form,
+		     ( u->keV2any(BLKUnit, BlockStart[i+1])
+		       - u->keV2any(BLKUnit, BlockStart[i]) )
+		     / BlockPoints[ i ] );
+      } else {
+	buf = QString::number( ( u->keV2any(BLKUnit, BlockStart[i+1])
+				 - u->keV2any(BLKUnit, BlockStart[i]) )
+			       / BlockPoints[ i ] );
+      }
       BLKstep[i]->setText( buf );
     } else {
       BLKstep[i]->setText( "0" );
     }
-    buf.sprintf( "% 5.2f", BlockDwell[i] );
+    if ( ! QXafsMode->isChecked() ) {
+      buf.sprintf( "% 5.2f", BlockDwell[i] );
+    } else {
+      buf = QString::number( BlockDwell[i] );
+    }
     BLKdwell[i]->setText( buf );
     buf.sprintf( "% 4d", BlockPoints[i] );
     BLKpoints[i]->setText( buf );
@@ -965,7 +975,7 @@ void MainWindow::StartMeasurement( void )
       mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
       LC++;
       isSI1 = true;
-      aGsb.stat = PBFalse; aGsb.label = "I1"; GSBSs << aGsb;
+      aGsb.stat = PBFalse; aGsb.label = tr( "I1" ); GSBSs << aGsb;
       aGsb.stat = PBTrue;  aGsb.label = tr( "mu" ); GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
@@ -1081,6 +1091,11 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
+    if ( QXafsMode->isChecked() ) {
+      MeasView->SetQXafsMode( true );
+    } else {
+      MeasView->SetQXafsMode( false );
+    }
     for ( int i = 0; i < GSBs.count(); i++ ) {
       MeasView->ChooseAG( i, GSBs[i]->isChecked() == PBTrue );
     }

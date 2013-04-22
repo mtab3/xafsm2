@@ -17,6 +17,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 
   Clear();
   valid = false;
+  QXafsMode = false;
 
   for ( int i = 0; i < MAXLINES; i++ ) {
     SetLR( i, LEFT_AX );
@@ -66,6 +67,7 @@ void XYView::Clear( void )
   }
   CGroups = FInterval = 100;    // Continuous drawn lines, Interval of foot print lines
   maxGroups = maxLines = inLines = 0;
+  QXafsMode = false;
 }
 
 void XYView::ReFillFirst10Groups( void )
@@ -101,8 +103,8 @@ void XYView::NewPoint( int l, double xx, double yy )
     l = MAXLINES - 1;
   if ( l > maxLines )
     maxLines = l;
+
   int g = l / GROUPLINES;
-  int gg = l % GROUPLINES;
   if ( g > maxGroups ) {  // 新しいグループ
     if (( maxGroups < 100 )&&( g >= 100 )) {
       ReFillFirst10Groups();
@@ -114,7 +116,10 @@ void XYView::NewPoint( int l, double xx, double yy )
     }
     maxGroups = g;
   }
-  int L = ( ( g % CGroups ) + (int)( g / FInterval ) ) * GROUPLINES + gg;
+
+  int L = getL( l );
+  if ( points[L] == 0 ) {  qDebug() << "L L " << L << getL( l );  }
+
   if ( L > inLines )
     inLines = L;
 
@@ -225,15 +230,17 @@ void XYView::Draw( QPainter *p )
   double d, b;
 
   int linedir[ MAXLINES ];           // x軸の数字の並び
-  for ( int i = 0; i < inLines; i++ ) {
+  for ( int i = 0; i <= inLines; i++ ) {
     if ( x[i][0] > x[i][1] )   // 
       linedir[i] = -1;
     else 
       linedir[i] = 1;
   }
     
-  for ( int l = 0; l < inLines; l++ ) { // 先に線だけ描画
-    if ( dispf[ l ] ) {
+  for ( int l = 0; l <= inLines; l++ ) { // 先に線だけ描画
+    qDebug() << "dispf " << l << dispf[ l ];
+    bool f = ( QXafsMode ) ? dispf[ l % GROUPLINES ] : dispf[ l ];
+    if ( f ) {
       if ( autoScale ) {
         UpDateYWindow( l, scaleType[ l ] );
         cc.SetRealY( miny[l], maxy[l] );
@@ -382,7 +389,7 @@ void XYView::CheckASPush( void )
     } else {
       autoScale = true;
       XShift = XShift0 = xshift = 0;
-      for ( int l = 0; l < inLines; l++ ) {
+      for ( int l = 0; l <= inLines; l++ ) {
 	YShift[l] = YShift0[l] = yshift[l] = 0;
       }
     }
@@ -437,14 +444,14 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
     case Qt::NoModifier:                          // 平行移動
       if ( !autoScale ) {
 	xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
-	for ( int l = 0; l < inLines; l++ ) {
+	for ( int l = 0; l <= inLines; l++ ) {
 	  cc.SetRealY( miny[l], maxy[l] );
 	  yshift[l] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
 	}
 	XShift = XShift0 + xshift;
 	cc.RecallRealX();
 	cc.SetRealX( cc.Rminx() - XShift, cc.Rmaxx() - XShift );
-	for ( int l = 0; l < inLines; l++ ) 
+	for ( int l = 0; l <= inLines; l++ ) 
 	  YShift[l] = YShift0[l] + yshift[l];
       }
       break;
@@ -486,7 +493,7 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
       cc.SetRealX0();
       XShift0 = 0;
       xshift = 0;
-      for ( int l = 0; l < inLines; l++ ) {
+      for ( int l = 0; l <= inLines; l++ ) {
 	YShift0[l] += yshift[l];
 	yshift[l] = 0;
       }
@@ -504,7 +511,7 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
       }
       cc.SetRealX( nminx, nmaxx );
       cc.SetRealX0();
-      for ( int l = 0; l < inLines; l++ ) {
+      for ( int l = 0; l <= inLines; l++ ) {
 	cc.SetRealY( miny[l], maxy[l] );
 	nminy = cc.s2ry( m.sy() );
 	nmaxy = cc.s2ry( m.ey() );
@@ -542,7 +549,7 @@ void XYView::wheelEvent( QWheelEvent *e )
   cc.SetRealX( nminx, nmaxx );
   cc.SetRealX0( nminx, nmaxx );
 
-  for ( int l = 0; l < inLines; l++ ) {
+  for ( int l = 0; l <= inLines; l++ ) {
     cc.SetRealY( miny[l], maxy[l] );
     double ry = cc.s2ry( e->y() );
     double dry = cc.Rmaxy() - cc.Rminy();
@@ -561,6 +568,6 @@ void XYView::wheelEvent( QWheelEvent *e )
 
 void XYView::ChooseAG( int i, bool f )
 {
-  dispf[ i ] = f;
+  dispf[ getL( i ) ] = f;
   update();
 }

@@ -16,7 +16,7 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
       DFName = DFName0 + "-b" + ".dat";
     }
   } else {
-    buf.sprintf( ".%03d", rpt - 1 );
+    buf.sprintf( ".%04d", rpt - 1 );
     if ( dir == FORWARD ) {
       DFName = DFName0 + "-f" + buf;
     } else {
