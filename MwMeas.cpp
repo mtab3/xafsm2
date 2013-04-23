@@ -774,6 +774,7 @@ void MainWindow::SelectedRBFN( const QString &fname )
 
     if ( line[0] == QChar( 'N' ) ) {
       Blocks = line.section( sep, 1, 1 ).toInt();
+      SelBLKs->setValue( Blocks );
     }
     if ( line[0] == QChar( 'U' ) ) {
       BLKUnit = (UNIT)line.section( sep, 1, 1 ).toInt();
