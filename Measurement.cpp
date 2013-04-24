@@ -6,7 +6,7 @@ void MainWindow::MeasSequence( void )
   bool a1, a2;
 
   if ( inMeasDark ) return;
-  if (( AskingOverwrite )||( MakingSureOfRangeSelect )) return;
+  if ( AskingOverwrite ) return;
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
 
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );

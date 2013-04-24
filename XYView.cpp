@@ -238,7 +238,6 @@ void XYView::Draw( QPainter *p )
   }
     
   for ( int l = 0; l <= inLines; l++ ) { // æ‚Éü‚¾‚¯•`‰æ
-    qDebug() << "dispf " << l << dispf[ l ];
     bool f = ( QXafsMode ) ? dispf[ l % GROUPLINES ] : dispf[ l ];
     if ( f ) {
       if ( autoScale ) {

@@ -420,7 +420,7 @@ void MainWindow::RecordData( void )
     } else {
       recTh = SelectedCurPosDeg( EncOrPM );
     }
-    buf.sprintf( "%10.5f" " %9.5f" " %9.2f",
+    buf.sprintf( "%10.6f" " %9.6f" " %9.2f",
                  u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
 

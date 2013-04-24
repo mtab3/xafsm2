@@ -344,8 +344,8 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #
 # the DV is Agilent34410 for QXAFS
 #
-SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "a34410a-1" "" "V" NO ""
-SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "a34410a-2" "" "V" NO ""
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
 
 #
 # the DV2 is Agilent34410 for normal measurement

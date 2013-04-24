@@ -106,7 +106,8 @@ void MainWindow::WriteQBody( void )
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
     out << deg << "\t" << deg2 << "\t"              // 片方はエンコーダ読みに直す
-	<< vals0[i+1].toDouble() << "\t" << vals1[i+1].toDouble() << endl;
+	<< QString::number( vals0[i+1].toDouble(), 'f', 10 ) << "\t"
+	<< QString::number( vals1[i+1].toDouble(), 'f', 10 ) << endl;
   }
 
   file.close();
