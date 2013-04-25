@@ -29,11 +29,11 @@ bool MainWindow::MeasureDark( void )
     dt = 1;
     MeasBackTime->setText( "1" );
   }
-  mUnits.clearUnits();
+  dUnits.clearUnits();
 
-  mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
+  dUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
   if ( UseI1->isChecked() )
-    mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
+    dUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
   if ( Use19chSSD->isChecked() ) {
     if ( inMCAMeas ) {
       QString msg = tr( "MCA measurement is going on" );
@@ -41,17 +41,17 @@ bool MainWindow::MeasureDark( void )
       NewLogMsg( msg );
       return false;
     }
-    mUnits.addUnit( SFluo );
+    dUnits.addUnit( SFluo );
   }
   if ( UseAux1->isChecked() )
-    mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
+    dUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
   if ( UseAux2->isChecked() )
-    mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
-  mUnits.setDwellTimes( dt );
-  mUnits.setDwellTime();
+    dUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
+  dUnits.setDwellTimes( dt );
+  dUnits.setDwellTime();
 
-  for ( int i = 0; i < mUnits.count(); i++ ) {
-    as = mUnits.at(i);
+  for ( int i = 0; i < dUnits.count(); i++ ) {
+    as = dUnits.at(i);
     if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
       QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
@@ -62,13 +62,13 @@ bool MainWindow::MeasureDark( void )
   // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
   // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
   // 両方を同時には測定に使えない
-  for ( int i = 0; i < mUnits.count(); i++ ) {
-    if (( mUnits.at(i)->getType() == "CNT2" )||( mUnits.at(i)->getType() == "OTC2" )) {
-      for ( int j = 0; j < mUnits.count(); j++ ) {
-	if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
+  for ( int i = 0; i < dUnits.count(); i++ ) {
+    if (( dUnits.at(i)->getType() == "CNT2" )||( dUnits.at(i)->getType() == "OTC2" )) {
+      for ( int j = 0; j < dUnits.count(); j++ ) {
+	if ( dUnits.at(i)->get2ndUid() == dUnits.at(j)->getUid() ) {
 	  QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
-	    .arg( mUnits.at(i)->getName() )
-	    .arg( mUnits.at(j)->getName() );
+	    .arg( dUnits.at(i)->getName() )
+	    .arg( dUnits.at(j)->getName() );
 	  statusbar->showMessage( msg, 2000 );
 	  NewLogMsg( msg );
 	  return false;
@@ -92,59 +92,59 @@ bool MainWindow::MeasureDark( void )
 
 void MainWindow::MeasDarkSequence( void )
 {
-  if (( mUnits.isBusy() )||( AskingShutterClose )||( AskingShutterOpen ))
+  if (( dUnits.isBusy() )||( AskingShutterClose )||( AskingShutterOpen ))
     return;
 
   switch( MeasDarkStage ) {
   case 0:
     statusbar->showMessage( "", 0 );
-    mUnits.clearStage();
+    dUnits.clearStage();
     MeasDarkStage = 1;
     break;
   case 1:
-    if ( mUnits.init() == false ) {  // true :: initializing
-      mUnits.clearStage();
+    if ( dUnits.init() == false ) {  // true :: initializing
+      dUnits.clearStage();
       MeasDarkStage = 2;
     }
     break;
   case 2: 
-    mUnits.setDwellTime();
-    if ( mUnits.isParent() ) {
+    dUnits.setDwellTime();
+    if ( dUnits.isParent() ) {
       MeasDarkStage = 3;
     } else {
       MeasDarkStage = 4;
     }
     break;
   case 3:
-    if ( mUnits.getValue0() == false ) { // only for counters and SSDs
-      mUnits.clearStage();
+    if ( dUnits.getValue0() == false ) { // only for counters and SSDs
+      dUnits.clearStage();
       MeasDarkStage = 4;
     }
     break;
   case 4:
-    if ( mUnits.getValue() == false ) {  // true :: Getting
-      mUnits.clearStage();
+    if ( dUnits.getValue() == false ) {  // true :: Getting
+      dUnits.clearStage();
       MeasDarkStage = 5;
     }
     break;
   case 5:
     double setTime;
-    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
+    dUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
     // 前は MeasCPSs は無かったので MeasVals (count) を cps に直す計算をここでやってる。
     // 直しても良いけどそのままにしておく
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      setTime = mUnits.at(i)->GetSetTime();
+    for ( int i = 0; i < dUnits.count(); i++ ) {
+      setTime = dUnits.at(i)->GetSetTime();
       if ( setTime > 0 ) {
-	mUnits.at(i)->setDark( MeasVals[i] / setTime );
+	dUnits.at(i)->setDark( MeasVals[i] / setTime );
       } else {
 	statusbar
 	  ->showMessage( tr( "Invalid dwell time [%1] was set for [%2]."
 			     "However, the background was set "
 			     "as if the time was set at 1sec." )
-			 .arg( setTime ).arg( mUnits.at(i)->getName() ), 2000 );
-	mUnits.at(i)->setDark( MeasVals[i] );
+			 .arg( setTime ).arg( dUnits.at(i)->getName() ), 2000 );
+	dUnits.at(i)->setDark( MeasVals[i] );
       }
-      if ( mUnits.at(i) == SFluo ) {
+      if ( dUnits.at(i) == SFluo ) {
 	SFluo->setDark();      // 19ch 分のダークを内部空間に保存
       }
     }

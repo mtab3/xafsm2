@@ -171,6 +171,7 @@ public:
   bool isAutoRangeAvailable( void );
   bool isAutoRange( void ) { return autoRange; };
   void setAutoRange( bool ar ) { autoRange = ar; };
+  void setGain( int ch, double gain );
 
   bool checkNewVal( void )
   {

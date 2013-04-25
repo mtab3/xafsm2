@@ -969,11 +969,13 @@ void MainWindow::StartMeasurement( void )
     mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
+    qDebug() << "Munits :: add I0";
 
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 ‚Í TRANS ‚ÉŒÅ’è
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
+      qDebug() << "Munits :: add I1";
       LC++;
       isSI1 = true;
       aGsb.stat = PBFalse; aGsb.label = tr( "I1" ); GSBSs << aGsb;
@@ -1009,8 +1011,10 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
     }
     if ( QXafsMode->isChecked() ) {
-      if ( Enc2 != NULL )
+      if ( Enc2 != NULL ) {
 	mUnits.addUnit( Enc2 );
+	qDebug() << "Munits :: add enc2";
+      }
       mUnits.setOneByOne( false );
     }
 

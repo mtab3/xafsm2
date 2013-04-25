@@ -103,6 +103,7 @@ private:
   QString NonSelC, SelectC;
   QDir mcaDir;
   QFileInfo BaseFile;
+  QVector<MCAGain*> MCAGains;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -141,6 +142,7 @@ private:
   QStringList DriverList;
 
   MUnits mUnits;
+  MUnits dUnits;
 
   /***********************************************/
 
@@ -411,6 +413,7 @@ private slots:
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
+  void newGain( const QString &gain );
 #if 0      // new mcas
   void ShowNewMCAStat( void );
 #endif

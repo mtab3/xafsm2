@@ -166,6 +166,11 @@ void MainWindow::ReadDef( QString fname )
 	QXafsOk = next.split( QRegExp( "\\s+" ) );
       } else if ( item == "NORMALOK" ) {
 	NXafsOk = next.split( QRegExp( "\\s+" ) );
+      } else if ( item == "MCAGAIN" ) {
+	MCAGain *mcaGain = new MCAGain;
+	next = nextItem( next, item ); mcaGain->ch = item.toInt();
+	next = nextItem( next, item ); mcaGain->gain = item.toDouble();
+	MCAGains << mcaGain;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

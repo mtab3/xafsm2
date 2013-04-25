@@ -50,6 +50,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
+  MCAGains.clear();
 
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );

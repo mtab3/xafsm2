@@ -1375,6 +1375,13 @@ MCAHead AUnit::getAMCAHead( int ch )
   return rv;
 }
 
+void AUnit::setGain( int ch, double gain )
+{
+  if ( Type == "SSD" ) {
+    s->SendCMD2( Uid, Driver, QString( "SetPreAMPGain %1 %2" ).arg( ch ).arg( gain ) );
+  }
+}
+
 void AUnit::IsBusy2On( QString drv, QString name )
 {
   IsBusy2 = true;

@@ -1,10 +1,10 @@
 # 1304     AichiSR QXAFS base file
-# Start     : 8.97
-# End       : 8.995
+# Start     : 8.6844
+# End       : 10.0844
 # Dir       : Both(Forward and Backward
-# Points    : 83
-# MeasTime  : 0.0105882353[s]
-# SweepTime : 1.01594[s]
-# Repeats   : 1200[cycles]
-# Date      : 13.04.25 15:46
-# Ring Cur. : 300.3[mA]
+# Points    : 600
+# MeasTime  : 0.0066600000[s]
+# SweepTime : 4.44724[s]
+# Repeats   : 1[cycles]
+# Date      : 13.04.25 20:03
+# Ring Cur. : 300.7[mA]

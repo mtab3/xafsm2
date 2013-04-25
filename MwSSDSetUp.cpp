@@ -56,6 +56,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   MCAFSel->setDirectory( QDir::currentPath() );
   MCAFSel->setFilter( "*.dat" );
 
+  connect( GainInput, SIGNAL( textEdited( const QString & ) ), 
+	   this, SLOT( newGain( const QString & ) ) );
+
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
@@ -108,6 +111,16 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
   connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+}
+
+void MainWindow::newGain( const QString &gain )
+{
+  if ( inMCAMeas )
+    return;
+  if ( SFluo == NULL )
+    return;
+
+  
 }
 
 void MainWindow::doPeakFit( void )
@@ -426,6 +439,8 @@ void MainWindow::StartMCA( void )
       return;
     }
 
+    GainInput->setReadOnly( true );
+    GainInput->setStyleSheet( NONEDITABLELINE );
     MCAStart->setText( tr( "Stop" ) );
     MCAStart->setStyleSheet( InActive );
 
@@ -470,6 +485,8 @@ void MainWindow::StartMCA( void )
     MCATimer->start( 100 );
   } else {
     inMCAMeas = false;
+    GainInput->setReadOnly( false );
+    GainInput->setStyleSheet( EDITABLELINE );
     SFluo->RunStop();
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();

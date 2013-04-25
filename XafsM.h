@@ -23,6 +23,8 @@ const QString InActive = "background-color: rgb(250,250,180)";
 const QString AlartRed = "background-color: rgb(250,200,200)";
 const QString SSDActive = "background-color: #f0f0d0";
 const QString SSDnotActive = "";
+const QString EDITABLELINE = "background-color: rgb(255,255,255)";
+const QString NONEDITABLELINE = "background-color: rgb(230,230,230)";
 //const QString SSDActive = RadioBOn;
 //const QString SSDnotActive = RadioBOff;
 
@@ -114,6 +116,11 @@ struct IonChLength {
   QString ID;
   double length;
   QString UName;
+};
+
+struct MCAGain {
+  int ch;
+  double gain;
 };
 
 #endif

@@ -5,6 +5,7 @@
 # 2013/04/03 add 'DEFAULTUNIT' line
 # 2013/04/19 add 'QXAFSOK'     line
 #                'NORMALOK'    line
+# 2013/04/25 add 'MCAGAIN'     line
 #
 
 #
@@ -21,6 +22,12 @@ XAFSName  "XafsM2-bsd"
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
 
+#
+# Preset gains of MCA channels
+#
+# MCAGAIN ch gain
+#
+MCAGAIN 5 0.768
 
 #
 # Define if Quick-Xafs Mode is available or not

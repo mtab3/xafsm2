@@ -289,7 +289,7 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 void MainWindow::QXafsMeasSequence( void )
 {
   int g;
-  //  qDebug() << "in " << MeasStage;
+  qDebug() << "in " << MeasStage;
 
   switch( MeasStage ) {
   case 0:
@@ -357,6 +357,7 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     break;
   case 8:
+    qDebug() << "aa" << mUnits.count();
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
@@ -424,7 +425,7 @@ void MainWindow::QXafsMeasSequence( void )
     QXafsFinish();
     break;
   }
-  //  qDebug() << "out " << MeasStage;
+  qDebug() << "out " << MeasStage;
 }
 
 void MainWindow::QXafsFinish( void )
