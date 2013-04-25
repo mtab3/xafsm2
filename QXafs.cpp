@@ -160,7 +160,8 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みし
   if ( WidthInPuls / BlockPoints[0] / HSpeed < 2e-5 ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
-    int Interval = 2e-5 * HSpeed;         // これより短くなるなら、インターバルを変更
+    // それよりも短くなるなら、インターバルを変更
+    int Interval = 2e-5 * HSpeed;      
     BlockPoints[0] = (int)( WidthInPuls / Interval );
     BLKpoints[0]->setText( QString::number( BlockPoints[0] ) );
   }
@@ -292,6 +293,8 @@ void MainWindow::QXafsMeasSequence( void )
 
   switch( MeasStage ) {
   case 0:
+    GetPM16CParamsForQXAFS();
+    MakeDelegateFile();
     MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
     MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
     CurrentRpt->setText( QString::number( 1 ) );
@@ -299,7 +302,6 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
-    GetPM16CParamsForQXAFS();
     MMainTh->SetHighSpeed( OrigHSpeed );
     MMainTh->SetSpeed( HIGH );
     MeasStage++;
@@ -329,11 +331,11 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     mUnits.clearStage();
     MeasR++;
-    WriteQHeader( MeasR, FORWARD );
     if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
     }
+    WriteQHeader( MeasR, FORWARD );
     CurrentRpt->setText( QString::number( MeasR ) );
     CurrentPnt->setText( tr( "Fwd" ) );
     MMainTh->SetHighSpeed( HSpeed );
@@ -358,6 +360,7 @@ void MainWindow::QXafsMeasSequence( void )
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
+    WriteQHeader2( MeasR, FORWARD );
     WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
     DispQSpectrum( g );
@@ -403,6 +406,7 @@ void MainWindow::QXafsMeasSequence( void )
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
+    WriteQHeader2( MeasR, BACKWARD );
     WriteQBody();
     g = ( MeasR - 1 ) * 2 + 1;
     DispQSpectrum( g );
@@ -416,6 +420,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 99:
+    PlayEndingSound();
     QXafsFinish();
     break;
   }

@@ -294,6 +294,8 @@ private:
   void WriteInfoFile2( void );
   void WriteHeader( int Rpt );
   void WriteHeader2( int Rpt );
+  void WriteHeaderCore( void );
+  void WriteHeaderCore2( void );
   void SetDispMeasModes( void );
   void DispMeasDatas( void );
   void RecordData( void );
@@ -313,6 +315,11 @@ private:
 
   void SetEnableOfUnits( QString drv, bool enable );
 
+  // Sound
+  void PlayGoOnSound( void );
+  void PlayEndingSound( void );
+  void PlaySound( QString name, int times );
+
   // QXAFS
   QStringList QXafsOk, NXafsOk;
   bool isQXafsModeAvailable;
@@ -328,7 +335,9 @@ private:
   void GetPM16CParamsForQXAFS( void );
   void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
   void SetDFName2( int rpt, DIRECTION dir );
+  void MakeDelegateFile( void );
   void WriteQHeader( int rpt, DIRECTION dir );
+  void WriteQHeader2( int rpt, DIRECTION dir );
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
   void DispQSpectrum( int g );

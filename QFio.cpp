@@ -25,28 +25,53 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
   }
 }
 
-void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
+void MainWindow::MakeDelegateFile( void )
 {
-  SetDFName2( rpt, dir );   // Generate a file name with repitation number
-  
-  QFile file( DFName );
+  QFile file( DFName0 + ".dat" );
   if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
   
   // Writing fixed headers
   QTextStream out(&file);
 
-  out << "#" << " 1304     AichiSR QXAFS" << endl;
+  out << "#" << " 1304     AichiSR QXAFS base file" << endl;
   out << "#" << " Start     : " << SBlockStart[0] << endl;
   out << "#" << " End       : " << SBlockStart[1] << endl;
-  out << "#" << " Dir       : " << (( dir == FORWARD ) ? "Forward" : "Backward") << endl;
+  out << "#" << " Dir       : " << ( (QMeasOnBackward->isChecked())
+				     ? "Both(Forward and Backward" : "Single(Forward)" )
+                                << endl;
   out << "#" << " Points    : " << SBlockPoints[0] << endl;
-  out << "#" << " ScanTime  : " << SBlockDwell[0] << endl;
-  out << "#" << " Date      : " << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << endl;
+  out << "#" << " MeasTime  : " << QString::number( QXafsDwellTime, 'f', 10 )
+                                << "[s]" << endl;
+  out << "#" << " SweepTime : " << SBlockDwell[0] << "[s]" << endl;
+  out << "#" << " Repeats   : " << SelRPT->value() << "[cycles]" << endl;
+  out << "#" << " Date      : " << QDateTime::currentDateTime()
+                                     .toString("yy.MM.dd hh:mm") << endl;
   if ( SLS != NULL ) 
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
   file.close();
+
+}
+
+void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
+{
+  SetDFName2( rpt, dir );   // Generate a file name with repitation number
+
+  double sblkdwell = SBlockDwell[0];
+  SBlockDwell[0] = QXafsDwellTime;
+
+  WriteHeaderCore();
+
+  SBlockDwell[0] = sblkdwell;
+}
+
+
+void MainWindow::WriteQHeader2( int rpt, DIRECTION dir )
+{
+  SetDFName2( rpt, dir );   // Generate a file name with repitation number
+
+  WriteHeaderCore2();
 }
 
 int MainWindow::findMini( QStringList &v1, QStringList &v2, QStringList &v3 )
@@ -105,7 +130,8 @@ void MainWindow::WriteQBody( void )
     } else {
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    out << deg << "\t" << deg2 << "\t"              // 片方はエンコーダ読みに直す
+    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
+	<< QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値
 	<< QString::number( vals0[i+1].toDouble(), 'f', 10 ) << "\t"
 	<< QString::number( vals1[i+1].toDouble(), 'f', 10 ) << endl;
   }

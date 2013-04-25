@@ -110,6 +110,7 @@ void MainWindow::MeasSequence( void )
 	ClearXViewScreenForMeas( MeasView );
 	WriteHeader2( MeasR );
 	WriteInfoFile2();
+	PlayGoOnSound();
 	MeasR++;
 	CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	MeasStage = 2;
@@ -117,6 +118,7 @@ void MainWindow::MeasSequence( void )
 	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
 	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
 	WriteHeader2( MeasR );
+	PlayEndingSound();
 	WriteInfoFile2();
 	MeasTimer->stop();
 	inMeas = 0;

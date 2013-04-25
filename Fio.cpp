@@ -8,14 +8,24 @@
 int MainWindow::GetDFName0()
 {
   DFName0 = EditDFName->text();
-
+  
   if ( DFName0.isEmpty() ) {
     return 0;
   }
+  
+  QFileInfo f = QFileInfo( DFName0 ); // path と basename 抽出に使う
+  QFileInfo f2 = QFileInfo( f.absoluteDir().absolutePath(), f.baseName() );
+  // f2 : path と basename の結合を Qt に任せる
+  //      (顕に path + "/" + basename と書きたくない. unix "/", win "\" 問題 )
+  DFName0 = f2.filePath();
+  qDebug() << f.absoluteDir().absolutePath() << f.baseName();
+  qDebug() << "obtained base file name with path" << DFName0;
 
+#if 0	    
   if ( DFName0.toUpper().lastIndexOf( ".DAT" ) == DFName0.length() - 4 ) {
     DFName0 = DFName0.left( DFName0.length() - 4 );
   }
+#endif
 
   return 1;
 }
@@ -45,9 +55,14 @@ QString MainWindow::fixS( QString s, int l )
 
 void MainWindow::WriteHeader( int Rpt )
 {
-  int cnt;
   SetDFName( Rpt );   // Generate a file name with repitation number
-  
+
+  WriteHeaderCore();
+}
+
+void MainWindow::WriteHeaderCore( void )
+{
+  int cnt;
   QFile file( DFName );
   if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
@@ -330,6 +345,11 @@ void MainWindow::WriteHeader2( int Rpt )
 {
   SetDFName( Rpt );   // Generate a file name with repitation number
 
+  WriteHeaderCore2();
+}
+
+void MainWindow::WriteHeaderCore2( void )
+{
   QFile file( DFName );
   if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
     return;
@@ -369,13 +389,7 @@ void MainWindow::WriteHeader2( int Rpt )
   }
 
   file2.close();
-
-  // Playing a sound
-  QSound *sound=new QSound("finished.wav");
-  sound->setLoops(3);
-  sound->play();
 }
-
 
 // エンコーダの角度で記録するか選択した角度で記録するかは
 //     conds->isEncAsTh()
