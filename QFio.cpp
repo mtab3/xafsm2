@@ -132,6 +132,7 @@ void MainWindow::WriteQBody( void )
     }
     out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
 	<< QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値
+	<< QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
 	<< QString::number( vals0[i+1].toDouble(), 'f', 10 ) << "\t"
 	<< QString::number( vals1[i+1].toDouble(), 'f', 10 ) << endl;
   }
