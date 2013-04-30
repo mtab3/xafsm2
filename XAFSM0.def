@@ -264,8 +264,8 @@ SENSOR SSDP "S023" "SingleF" "SSD-ch16"  "QtXmapSSD"      "16" "count" YES "S006
 SENSOR SSDP "S024" "SingleF" "SSD-ch17"  "QtXmapSSD"      "17" "count" YES "S006"
 SENSOR SSDP "S025" "SingleF" "SSD-ch18"  "QtXmapSSD"      "18" "count" YES "S006"
 
-SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
-#SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
+#SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
+SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC      : Unit type   ENC an encorder observed/controlled via nd287
@@ -330,7 +330,8 @@ SENSOR OTC "S034" "GENERAL" "Otc994 ch2" "ortec994" "ch1" "count" YES "S033"
 
 # The driver ortec994 (by M. Tabuchi) can be used as "OTC" and "OTC2".
 
-SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
+SENSOR LSR "S035" "LS" "Ring Current Monitor" "simmotor" "Ring" "mA" NO ""
+#SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 
 #The sensor 'LSR' add newly on Feb. 25, 2013.
 #   LSR              : Unit type LSR : Brigde to the ring-network

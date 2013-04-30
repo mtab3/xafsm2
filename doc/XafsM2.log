@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  19 FEB 2013 23:42
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2013.4.3)  30 APR 2013 18:43
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -220,104 +220,117 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 File: OutLookAll.eps Graphic file (type eps)
  <OutLookAll.eps> [1]
 File: OutLook1.eps Graphic file (type eps)
- <OutLook1.eps>
+ <OutLook1.eps> [2]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 119.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 130.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 119.
- [2]
-LaTeX Font Info:    Try loading font information for OMS+txr on input line 139.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 130.
+LaTeX Font Info:    Try loading font information for OMS+txr on input line 152.
 
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/omstxr.fd
 File: omstxr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <12> not available
-(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 139.
+(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 152.
 File: ElementSelect.eps Graphic file (type eps)
  <ElementSelect.eps>
 File: ElementSelectBox.eps Graphic file (type eps)
 
 <ElementSelectBox.eps>
 File: PeriodicTable.eps Graphic file (type eps)
- <PeriodicTable.eps> [3]
+ <PeriodicTable.eps>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3] [4]
 File: Monochro.eps Graphic file (type eps)
  <Monochro.eps>
 File: MessageArea.eps Graphic file (type eps)
-
-<MessageArea.eps> [4
+ <MessageArea.eps> [5
 
 ]
 File: MeasTab.eps Graphic file (type eps)
  <MeasTab.eps>
 File: MeasTab-BlockSetUp.eps Graphic file (type eps)
- <MeasTab-BlockSetUp.eps> [5]
-File: MeasTab-Right.eps Graphic file (type eps)
 
-<MeasTab-Right.eps> [6] [7]
+<MeasTab-BlockSetUp.eps> [6] [7]
+File: MeasTab-Right.eps Graphic file (type eps)
+ <MeasTab-Right.eps> [8]
 File: BGMeasB.eps Graphic file (type eps)
- <BGMeasB.eps> [8]
+ <BGMeasB.eps> [9]
+
+LaTeX Warning: Reference `Q-XAFS¥â¡¼¥É' on page 10 undefined on input line 480.
+
+
+[10]
 File: MeasCond.eps Graphic file (type eps)
  <MeasCond.eps>
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
-
-<MeasCond-MonoCTRL.eps> [9]
+ <MeasCond-MonoCTRL.eps> [11]
 File: MeasCond-Range.eps Graphic file (type eps)
- <MeasCond-Range.eps> [10]
+ <MeasCond-Range.eps> [12]
 File: MeasCond-Offset.eps Graphic file (type eps)
- <MeasCond-Offset.eps>
-[11]
+
+<MeasCond-Offset.eps>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[13]
 File: MeasCond-MoveScan.eps Graphic file (type eps)
- <MeasCond-MoveScan.eps> [12]
+ <MeasCond-MoveScan.eps> [14]
 File: MeasCond-Monitor.eps Graphic file (type eps)
- <MeasCond-Monitor.eps>
+ <MeasCond-Monitor.eps> [15]
 File: SSDTab.eps Graphic file (type eps)
- <SSDTab.eps> [13]
+ <SSDTab.eps>
 File: SSDTab-Select1.eps Graphic file (type eps)
 
 <SSDTab-Select1.eps>
 File: SSDTab-Select2.eps Graphic file (type eps)
  <SSDTab-Select2.eps>
 File: SSDTab-Setup.eps Graphic file (type eps)
- <SSDTab-Setup.eps> [14] [15]
+ <SSDTab-Setup.eps> [16] [17]
 File: FileReadTab.eps Graphic file (type eps)
 
-<FileReadTab.eps> [16]
+<FileReadTab.eps> [18]
 File: FileReadTab-ALine.eps Graphic file (type eps)
- <FileReadTab-ALine.eps> [17]
+ <FileReadTab-ALine.eps> [19]
 File: LogTab.eps Graphic file (type eps)
- <LogTab.eps>
+ <LogTab.eps> [20]
 File: StatTab.eps Graphic file (type eps)
- <StatTab.eps>
-[18]
+
+<StatTab.eps>
 File: SelStars.eps Graphic file (type eps)
- <SelStars.eps> [19]
+ <SelStars.eps> [21]
 File: SelMC.eps Graphic file (type eps)
- <SelMC.eps> [20] [21]
+ <SelMC.eps> [22] [23]
 File: TXYView.eps Graphic file (type eps)
- <TXYView.eps> [22]
+ <TXYView.eps> [24]
 File: MCAView.eps Graphic file (type eps)
 
-<MCAView.eps> [23] [24] [25] (I search kanjifont definition file: . . )
+<MCAView.eps> [25] [26] [27] (I search kanjifont definition file: . . )
 (I search font definition file: . . . . . . . )
-LaTeX Font Info:    Try loading font information for OT1+txtt on input line 125
-3.
+LaTeX Font Info:    Try loading font information for OT1+txtt on input line 132
+5.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/ot1txtt.fd
 File: ot1txtt.fd 2000/12/15 v3.1
-) [26] [27] [28]
-[29] [30] (./XafsM2.aux)
+) [28] [29] [30]
+[31] [32] (./XafsM2.aux)
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 1615 strings out of 95545
- 18136 string characters out of 1190967
- 63249 words of memory out of 1000000
- 4718 multiletter control sequences out of 10000+100000
+ 1616 strings out of 95545
+ 18150 string characters out of 1190969
+ 63252 words of memory out of 1000000
+ 4719 multiletter control sequences out of 10000+100000
  40114 words of font info for 130 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
  23i,8n,25p,710b,559s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (33 pages, 140516 bytes).
+Output written on XafsM2.dvi (35 pages, 147148 bytes).
