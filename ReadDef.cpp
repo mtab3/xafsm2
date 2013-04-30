@@ -84,6 +84,9 @@ void MainWindow::ReadDef( QString fname )
 	  next = nextItem( next, item ); NewUnit->setParent( item );
 	  // ³Æ sensor ¸ÄÊÌ
 	  if ( type == "ENC" ) {
+	  } else if ( type == "ENC2" ) {
+	    next = nextItem( next, item );
+	    NewUnit->setUPP( item );
 	  } else if ( type == "PAM" ) {
 	  } else if ( type == "CNT" ) {
 	  } else if ( type == "OTC" ) {
@@ -99,6 +102,8 @@ void MainWindow::ReadDef( QString fname )
 	  } else if ( type == "SSDP" ) {
 	  } else if ( type == "SSD" ) {
 	  } else if ( type == "LSR" ) {
+	  } else if ( type == "DV" ) {
+	  } else if ( type == "DV2" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }
@@ -132,13 +137,10 @@ void MainWindow::ReadDef( QString fname )
 	Gas *gas = new Gas;
 	next = nextItem( next, item ); gas->Name = item;
 	next = nextItem( next, item );
-	double comp1, comp2;
 	while ( item != "" ) {
 	  GasComp *gascomp = new GasComp;
-	  gascomp->AName = item;   next = nextItem( next, item ); 
-	  comp1 = item.toDouble(); next = nextItem( next, item ); 
-	  comp2 = item.toDouble(); next = nextItem( next, item ); 
-	  gascomp->comp = comp1 * comp2;
+	  gascomp->GasForm = item; next = nextItem( next, item ); 
+	  gascomp->comp = item.toDouble(); next = nextItem( next, item ); 
 	  gas->GasComps << gascomp;
 	}
 	Gases << gas;
@@ -149,6 +151,26 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); iclen->length = item.toDouble();
 	next = nextItem( next, item ); iclen->UName = item;
 	ICLengths << iclen;
+      } else if ( item == "ENERGYRANGE" ) {
+	next = nextItem( next, item ); MinEnergyInEV = item.toDouble();
+	next = nextItem( next, item ); MaxEnergyInEV = item.toDouble();
+      } else if ( item == "DEFAULTUNIT" ) {
+	next = nextItem( next, item ); DefaultUnit = item.toInt();
+      } else if ( item == "QXAFSMODE" ) {
+	next = nextItem( next, item ); isQXafsModeAvailable = item.toInt();
+	next = nextItem( next, item ); OrigHSpeed = item.toInt();
+	next = nextItem( next, item ); MaxHSpeed = item.toInt();
+	next = nextItem( next, item ); LowSpeed = item.toInt();
+	next = nextItem( next, item ); RunUpRate = item.toDouble();
+      } else if ( item == "QXAFSOK" ) {
+	QXafsOk = next.split( QRegExp( "\\s+" ) );
+      } else if ( item == "NORMALOK" ) {
+	NXafsOk = next.split( QRegExp( "\\s+" ) );
+      } else if ( item == "MCAGAIN" ) {
+	MCAGain *mcaGain = new MCAGain;
+	next = nextItem( next, item ); mcaGain->ch = item.toInt();
+	next = nextItem( next, item ); mcaGain->gain = item.toDouble();
+	MCAGains << mcaGain;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

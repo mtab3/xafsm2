@@ -21,8 +21,7 @@ bool Conditions::isRecordAllSSDChs( void )
   return RecordAllSSDChs->isChecked();
 }
 
-bool Conditions::isUse1303Format( void ) 
+bool Conditions::isMakeInfo( void ) 
 {
-  return Use1303Format->isChecked();
+  return MakeInfoFile->isChecked();
 }
-

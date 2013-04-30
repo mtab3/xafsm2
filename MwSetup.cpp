@@ -39,9 +39,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       GoUnit[j]->addItem( QString( UnitName[i].name ) );
     }
   }
-  GoUnit0->setCurrentIndex( KEV );
+  GoUnit0->setCurrentIndex( DefaultUnit );
   for ( int i = 0; i < GOS; i++ ) {
-    GoUnit[i]->setCurrentIndex( KEV );
+    GoUnit[i]->setCurrentIndex( DefaultUnit );
   }
   ShowAllGos();
 
@@ -67,7 +67,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
   AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
-  SPSUnit->addItem( "Puls" );
+  SPSUnit->addItem( "Pulse" );
   SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
@@ -156,6 +156,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( scanFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedScanFName( const QString & ) ) );
   connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
+  connect( SaveMonData, SIGNAL( clicked() ), this, SLOT( saveMonData() ) );
 }
 
 void MainWindow::newSensSelected( int i )
@@ -184,13 +185,31 @@ void MainWindow::SetAutoRangeMode( int i )
 
 void MainWindow::SelAutoRange( bool Auto )
 {
-  SensWithRange.at( SelSensToSetRange->currentIndex() )->setAutoRange( Auto );
+  AUnit *as = SensWithRange.at( SelSensToSetRange->currentIndex() );
+  as->setAutoRange( Auto );
   RangeSelect->setEnabled( !Auto );
+  if ( I0Sensors[ SelectI0->currentIndex() ] == as )
+    I0Range->setEnabled( !Auto );
+  if ( I1Sensors[ SelectI1->currentIndex() ] == as )
+    I1Range->setEnabled( !Auto );
+  if ( A1Sensors[ SelectAux1->currentIndex() ] == as )
+    A1Range->setEnabled( !Auto );
+  if ( A2Sensors[ SelectAux2->currentIndex() ] == as )
+    A2Range->setEnabled( !Auto );
 }
 
 void MainWindow::newRangeSelected( int i )
 {
-  SensWithRange.at( SelSensToSetRange->currentIndex() )->setRange( i );
+  AUnit *as = SensWithRange[ SelSensToSetRange->currentIndex() ];
+  as->setRange( i );
+  if ( as == I0Sensors[ SelectI0->currentIndex() ] )
+    I0Range->setValue( i );
+  if ( as == I1Sensors[ SelectI1->currentIndex() ] )
+    I1Range->setValue( i );
+  if ( as == A1Sensors[ SelectAux1->currentIndex() ] )
+    A1Range->setValue( i );
+  if ( as == A1Sensors[ SelectAux2->currentIndex() ] )
+    A2Range->setValue( i );
 }
 
 void MainWindow::askNowRange( void )
@@ -233,6 +252,11 @@ void MainWindow::saveScanData( void )
 			    2000 );
     return;
   }
+  ScanDataStat = OLD;
+  ScanNameStat = OLD;
+  ScanRecFile->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
+  ScanRecFile->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
+
   QTextStream out( &f );
 
   AUnit *am = AMotors.value( ScanMotor );
@@ -260,11 +284,17 @@ void MainWindow::saveScanData( void )
 void MainWindow::setSelectedMonFName( const QString &fname )
 {
   MonRecFile->setText( fname );
+  MonNameStat = NEW;
+  MonRecFile->setStyleSheet( FSTATCOLORS[ MonDataStat ][ MonNameStat ] );
+  MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
 }
 
 void MainWindow::setSelectedScanFName( const QString &fname )
 {
   ScanRecFile->setText( fname );
+  ScanNameStat = NEW;
+  ScanRecFile->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
+  ScanRecFile->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 }
 
 void MainWindow::MMRel( void )
@@ -542,8 +572,16 @@ void MainWindow::ScanStart( void )
     mUnits.setDwellTimes( SPSdwell->text().toDouble() );
     mUnits.setDwellTime();
 
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( ! CheckOkList( mUnits.at(i), NXafsOk ) ) {
+	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
+	  .arg( mUnits.at(i)->getName() );
+	statusbar->showMessage( msg, 2000 );
+	return;
+      }
+    }
     if ( ! am->isEnable() ) {
-      QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+      QString msg = tr( "Scan cannot Start : (%1) is disabled" )
 	.arg( am->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
@@ -603,6 +641,10 @@ void MainWindow::ScanStart( void )
     ScanView->SetAutoScale( true );
     ScanView->makeValid( true );
 
+    ScanDataStat = NEW;
+    ScanRecFile->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
+    ScanRecFile->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
+    
     ScanStage = 0;
     ScanTimer->start( 100 );
     ScanViewC->setIsDeletable( false );
@@ -647,6 +689,11 @@ void MainWindow::Monitor( void )
 	statusbar->showMessage( tr ( "No Record file is selected" ) );
 	return;
       } else {
+	MonDataStat = OLD;
+	MonNameStat = OLD;
+	MonRecFile->setStyleSheet( FSTATCOLORS[ MonDataStat ][ MonNameStat ] );
+	MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
+
 	monRecF = true;
 	MonFile.setFileName( MonRecFile->text() );
 	if ( !MonFile.open( QIODevice::Append | QIODevice::Text ) ) {
@@ -698,6 +745,15 @@ void MainWindow::Monitor( void )
     mUnits.setDwellTimes( DwellT20->text().toDouble() );
     mUnits.setDwellTime();
 
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      if ( ! CheckOkList( mUnits.at(i), NXafsOk ) ) {
+	QString msg = tr( "The Sensor [%1] can use only in QXafs mode." )
+	  .arg( mUnits.at(i)->getName() );
+	statusbar->showMessage( msg, 2000 );
+	return;
+      }
+    }
+
     if ( monRecF ) {
       MonOut << "#\tsec";
       for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -727,6 +783,12 @@ void MainWindow::Monitor( void )
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( InActive );
 
+    if ( !monRecF ) {
+      MonDataStat = NEW;
+      MonRecFile->setStyleSheet( FSTATCOLORS[ MonDataStat ][ MonNameStat ] );
+      MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
+    }
+
     MonitorViewC->setIsDeletable( false );
     MonTime.restart();
     MonTimer->start( 100 );
@@ -750,6 +812,56 @@ void MainWindow::Monitor( void )
     MStart->setStyleSheet( NormalB );
   }
 }
+
+void MainWindow::saveMonData( void )
+{
+  if ( MonitorView == NULL ) {
+    statusbar->showMessage( tr( "Monitor data is not valid" ), 2000 );
+    return;
+  }
+  if ( MonRecFile->text().isEmpty() ) {
+    statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
+    return;
+  }
+
+  QFile f( MonRecFile->text() );
+  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+    statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+			    2000 );
+    return;
+  }
+  MonDataStat = OLD;
+  MonNameStat = OLD;
+  MonRecFile->setStyleSheet( FSTATCOLORS[ MonDataStat ][ MonNameStat ] );
+  MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
+
+  QTextStream out( &f );
+
+  out << "# XafsM2 Monitor Data\n";
+  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
+      << "\n";
+  out << "#\tsec";
+  for ( int i = 0; i < mUnits.count(); i++ ) {
+    out << QString( tr( "\t%1[%2]" )
+		    .arg( mUnits.getName( i ) )
+		    .arg( mUnits.getUnit( i ) ) );
+  }
+  out << "\n";
+
+  int points = MonitorView->getDatas();
+  int lines = MonitorView->GetLines();
+
+  for ( int i = 0; i < points; i++ ) {
+    out << (double)(MonitorView->getT( i ))/1000;
+    for ( int j = 0; j < lines; j++ ) {
+      out << "\t" << MonitorView->getY( j, i );
+    }
+    out << "\n";
+  }
+
+  f.close();
+}
+
 
 void MainWindow::newVI0( QString v )
 {

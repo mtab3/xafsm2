@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 
 void MainWindow::setupMeasArea( void )   /* 測定エリア */
+/* setupSetupArea が先に実行されているというのが前提 */
 {
   BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05
 	   << BLKs06 << BLKs07 << BLKs08 << BLKs09;
@@ -12,11 +13,13 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   << BLKdwell06 << BLKdwell07 << BLKdwell08;
   BLKpoints << BLKpoints01 << BLKpoints02 << BLKpoints03 << BLKpoints04 << BLKpoints05
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
+  BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
+	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
 
   if ( SFluo == NULL ) 
     Use19chSSD->setEnabled( false );
 
-  BLKUnit = KEV;
+  BLKUnit = (UNIT)DefaultUnit;
   ClearBLKs();
   ChangeBLKs( 4 );
   for ( int i = 0; i < UNITS; i++ ) {
@@ -74,14 +77,21 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
   MakeSureOfRangeSelect->setDefaultButton( tmpB );
 
+  bool findQXafsI0, findQXafsI1;
+  findQXafsI0 = findQXafsI1 = false;
   for ( int i = 0; i < ASensors.count(); i++ ) {
     QString name = ASensors.value(i)->getName(); 
-    SelectI0->addItem( name );
-    SelectI1->addItem( name );
-    if ( ASensors.at(i) != SFluo )
-      SelectAux1->addItem( name );
-    if ( ASensors.at(i) != SFluo )
-      SelectAux2->addItem( name );
+    SelectI0->addItem( name );  I0Sensors << ASensors[i];
+    SelectI1->addItem( name );  I1Sensors << ASensors[i];
+    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
+    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
+    if ( ASensors.at(i) != SFluo ) {
+      SelectAux1->addItem( name );   A1Sensors << ASensors[i];
+    }
+    if ( ASensors.at(i) != SFluo ) {
+      SelectAux2->addItem( name );   A2Sensors << ASensors[i];
+    }
+
     if ( ASensors.value(i)->getID() == "I0" )
       SelectI0->setCurrentIndex( i );
     if ( ASensors.value(i)->getID() == "I1" )
@@ -92,6 +102,13 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
       SelectAux2->setCurrentIndex( i );
   }
   UseI1->setChecked( true );
+  if ( (!findQXafsI0)||(!findQXafsI1) ) {
+    isQXafsModeAvailable = false;
+    if ( ! isQXafsModeAvailable ) {
+      QXafsMode->setChecked( false );
+      QXafsMode->setEnabled( false );
+    }
+  }
 
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
@@ -100,6 +117,28 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   ModeA2->addItem( "log(I0/A2)" );
   ModeA2->addItem( "log(-I0/A2)" );
 
+  I0Range->setEnabled( false );
+  I1Range->setEnabled( false );
+  A1Range->setEnabled( false );
+  A2Range->setEnabled( false );
+  newSensSelectedForI0( SelectI0->currentIndex() );
+  newSensSelectedForI1( SelectI1->currentIndex() );
+  newSensSelectedForA1( SelectAux1->currentIndex() );
+  newSensSelectedForA2( SelectAux2->currentIndex() );
+
+  connect( SelectI0, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForI0( int ) ) );
+  connect( SelectI1, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForI1( int ) ) );
+  connect( SelectAux1, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForA1( int ) ) );
+  connect( SelectAux2, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( newSensSelectedForA2( int ) ) );
+  connect( I0Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI0Range( int ) ) );
+  connect( I1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI1Range( int ) ) );
+  connect( A1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA1Range( int ) ) );
+  connect( A2Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA2Range( int ) ) );
+
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     connect( BLKstart.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart()) );
   }
@@ -107,8 +146,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
   }
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
-    connect( BLKdwell.at(i), SIGNAL( textChanged( const QString & ) ),
-	     this, SLOT(ChangeBLKdwell( const QString & )) );
+    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT( ChangeBLKdwell()));
   }
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
@@ -156,6 +194,188 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   darkTable = new DarkTable;
   connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ) );
+
+  int i0 = 0, i1 = 0;
+  for ( int i = 0; i < ICLengths.count(); i++ ) {
+    I0ChSelect->addItem( ICLengths[i]->Name );
+    I1ChSelect->addItem( ICLengths[i]->Name );
+    if ( ICLengths[i]->ID == "I0" )
+      i0 = i;
+    if ( ICLengths[i]->ID == "I1" )
+      i1 = i;
+  }
+  I0ChSelect->setCurrentIndex( i0 );
+  I1ChSelect->setCurrentIndex( i1 );
+  SetNewGases();
+  connect( I0ChSelect, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( SetNewGases() ) );
+  connect( I1ChSelect, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( SetNewGases() ) );
+  connect( ManTEkeV, SIGNAL( textChanged( const QString & ) ),
+	   this, SLOT( SetNewGases() ) );
+
+  connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
+}
+
+void MainWindow::newSensSelectedForI0( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( I0Sensors[ index ] == SensWithRange[i] )
+	&&( !I0Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      I0Range->setEnabled( true );
+      I0Range->setRange( SensWithRange[i]->getRangeL(),
+			 SensWithRange[i]->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      I0Range->setValue( SensWithRange[i]->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    I0Range->setEnabled( false );
+    I0Range->setRange( 0, 0 );
+    I0Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newSensSelectedForI1( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( I1Sensors[ index ] == SensWithRange[i] )
+	&&( !I1Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      I1Range->setEnabled( true );
+      I1Range->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      I1Range->setValue( SensWithRange.at(i)->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    I1Range->setEnabled( false );
+    I1Range->setRange( 0, 0 );
+    I1Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newSensSelectedForA1( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( A1Sensors[ index ] == SensWithRange[i] )
+	&&( !A1Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      A1Range->setEnabled( true );
+      A1Range->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      A1Range->setValue( SensWithRange.at(i)->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    A1Range->setEnabled( false );
+    A1Range->setRange( 0, 0 );
+    A1Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newSensSelectedForA2( int index )
+{
+  bool found = false;
+  for ( int i = 0; i < SensWithRange.count(); i++ ) {
+    if (( A2Sensors[ index ] == SensWithRange[i] )
+	&&( !A2Sensors[ index ]->isAutoRange() )) {
+      int nowR = SensWithRange[i]->getRange();
+      found = true;
+      A2Range->setEnabled( true );
+      A2Range->setRange( SensWithRange.at(i)->getRangeL(),
+			 SensWithRange.at(i)->getRangeU() );
+      SensWithRange[i]->setRange( nowR );
+      A2Range->setValue( SensWithRange.at(i)->getRange() );
+      break;
+    }
+  }
+  if ( !found ) {
+    A2Range->setEnabled( false );
+    A2Range->setRange( 0, 0 );
+    A2Range->setValue( 0 );
+  }
+}
+
+void MainWindow::newI0Range( int newR )
+{
+  I0Sensors[ SelectI0->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == I0Sensors[ SelectI0->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+void MainWindow::newI1Range( int newR )
+{
+  I1Sensors[ SelectI1->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == I1Sensors[ SelectI1->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+void MainWindow::newA1Range( int newR )
+{
+  A1Sensors[ SelectAux1->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == A1Sensors[ SelectAux1->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+void MainWindow::newA2Range( int newR )
+{
+  A2Sensors[ SelectAux2->currentIndex() ]->setRange( newR );
+  if ( SensWithRange[ SelSensToSetRange->currentIndex() ] 
+       == A2Sensors[ SelectAux2->currentIndex() ] ) {
+    RangeSelect->setValue( newR );
+  }
+}
+
+
+void MainWindow::SetNewGases( void )
+{
+  I0Recommend->clear();
+  double trans, near = 100;
+  int Rec = 0;
+  for ( int i = 0; i < Gases.count(); i++ ) {
+    double mut = calcMuT( I0ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
+    trans = exp( -mut );
+    I0Recommend
+      ->addItem( QString( "%1 :  %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
+    if ( fabs( trans - 0.9 ) < near ) {
+      near = fabs( trans - 0.9 );
+      Rec = i;
+    }
+  }
+  I0Recommend->setCurrentIndex( Rec );
+  near = 100;
+  Rec = 0;
+  I1Recommend->clear();
+  for ( int i = 0; i < Gases.count(); i++ ) {
+    double mut = calcMuT( I1ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
+    trans = exp( -mut );
+    I1Recommend
+      ->addItem( QString( "%1: %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
+    if ( fabs( trans - 0.1 ) < near ) {
+      near = fabs( trans - 0.1 );
+      Rec = i;
+    }
+  }
+  I1Recommend->setCurrentIndex( Rec );
 }
 
 void MainWindow::ShowMB( void )
@@ -216,60 +436,104 @@ void MainWindow::SetStdEXAFSBLKs( void )
 {
   double Eg = ManTEkeV->text().toDouble();
 
-  BlockStart[0] = Eg - 0.30;
-  BlockStart[1] = Eg - 0.05;
-  BlockStart[2] = Eg + 0.10;
-  BlockStart[3] = Eg + 0.50;
-  BlockStart[4] = Eg + 1.20;
-  for ( int i = 5; i < MaxBLKs+1; i++ )
-    BlockStart[i] = 0;
+  if ( QXafsMode->isChecked() ) {
 
-  BlockPoints[0] = 70;
-  BlockPoints[1] = 150;
-  BlockPoints[2] = 160;
-  BlockPoints[3] = 100;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockPoints[i] = 0;
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg + 1.20;
+    for ( int i = 2; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 600;
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
 
-  BlockDwell[0] = 1.0;
-  BlockDwell[1] = 1.0;
-  BlockDwell[2] = 1.0;
-  BlockDwell[3] = 1.0;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockDwell[i] = 0;
+    // dwell の設定は後
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
 
-  ChangeBLKs( 4 );
+  } else {
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg - 0.05;
+    BlockStart[2] = Eg + 0.10;
+    BlockStart[3] = Eg + 0.50;
+    BlockStart[4] = Eg + 1.20;
+    for ( int i = 5; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 70;
+    BlockPoints[1] = 150;
+    BlockPoints[2] = 160;
+    BlockPoints[3] = 100;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
+    
+    BlockDwell[0] = 1.0;
+    BlockDwell[1] = 1.0;
+    BlockDwell[2] = 1.0;
+    BlockDwell[3] = 1.0;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
+    
+    ChangeBLKs( 4 );
+  }
   ShowBLKs();
+
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();     // dwell は最小時間にセットされる
+    ShowBLKs();
+  }
 }
 
 void MainWindow::SetStdXAFSBLKs( void )
 {
   double Eg = ManTEkeV->text().toDouble();
+    
+  if ( QXafsMode->isChecked() ) {   // QXAFS
 
-  BlockStart[0] = Eg - 0.30;
-  BlockStart[1] = Eg - 0.04;
-  BlockStart[2] = Eg + 0.05;
-  BlockStart[3] = Eg + 0.50;
-  BlockStart[4] = Eg + 1.10;
-  for ( int i = 5; i < MaxBLKs+1; i++ )
-    BlockStart[i] = 0;
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg + 1.10;
+    for ( int i = 2; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 600;
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
 
-  BlockPoints[0] = 40;
-  BlockPoints[1] = 300;
-  BlockPoints[2] = 180;
-  BlockPoints[3] = 100;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockPoints[i] = 0;
+    // dwell の設定は後
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
 
-  BlockDwell[0] = 1.0;
-  BlockDwell[1] = 1.0;
-  BlockDwell[2] = 1.0;
-  BlockDwell[3] = 1.0;
-  for ( int i = 4; i < MaxBLKs; i++ )
-    BlockDwell[i] = 0;
-
-  ChangeBLKs( 4 );
+  } else {                          // Normal XAFS
+    BlockStart[0] = Eg - 0.30;
+    BlockStart[1] = Eg - 0.04;
+    BlockStart[2] = Eg + 0.05;
+    BlockStart[3] = Eg + 0.50;
+    BlockStart[4] = Eg + 1.10;
+    for ( int i = 5; i < MaxBLKs+1; i++ )
+      BlockStart[i] = 0;
+    
+    BlockPoints[0] = 40;
+    BlockPoints[1] = 300;
+    BlockPoints[2] = 180;
+    BlockPoints[3] = 100;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockPoints[i] = 0;
+    
+    BlockDwell[0] = 1.0;
+    BlockDwell[1] = 1.0;
+    BlockDwell[2] = 1.0;
+    BlockDwell[3] = 1.0;
+    for ( int i = 4; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
+    
+    ChangeBLKs( 4 );
+  }
   ShowBLKs();
+
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();       // dwell が可能な最短にセットされる
+    ShowBLKs();
+  }
 }
 
 void MainWindow::SetStdXANESBLKs( void )
@@ -285,12 +549,19 @@ void MainWindow::SetStdXANESBLKs( void )
   for ( int i = 1; i < MaxBLKs; i++ )
     BlockPoints[i] = 0;
 
-  BlockDwell[0] = 1.0;
-  for ( int i = 1; i < MaxBLKs; i++ )
-    BlockDwell[i] = 0;
+  if ( ! QXafsMode->isChecked() ) {
+    BlockDwell[0] = 1.0;
+    for ( int i = 1; i < MaxBLKs; i++ )
+      BlockDwell[i] = 0;
+  }    
 
   ChangeBLKs( 1 );
   ShowBLKs();
+
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();   // dwell が最短時間にセットされる
+    ShowBLKs();
+  }
 }
 
 void MainWindow::ShowBLKs( void )
@@ -302,15 +573,25 @@ void MainWindow::ShowBLKs( void )
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
     BLKstart[i]->setText( buf );
     if ( BlockPoints[i] > 0 ) {
-      buf.sprintf( UnitName[ BLKUnit ].form,
-	       ( u->keV2any(BLKUnit, BlockStart[i+1])
-		 - u->keV2any(BLKUnit, BlockStart[i]) )
-	       / BlockPoints[ i ] );
+      if ( ! QXafsMode->isChecked() ) {
+	buf.sprintf( UnitName[ BLKUnit ].form,
+		     ( u->keV2any(BLKUnit, BlockStart[i+1])
+		       - u->keV2any(BLKUnit, BlockStart[i]) )
+		     / BlockPoints[ i ] );
+      } else {
+	buf = QString::number( ( u->keV2any(BLKUnit, BlockStart[i+1])
+				 - u->keV2any(BLKUnit, BlockStart[i]) )
+			       / BlockPoints[ i ] );
+      }
       BLKstep[i]->setText( buf );
     } else {
       BLKstep[i]->setText( "0" );
     }
-    buf.sprintf( "% 5.1f", BlockDwell[i] );
+    if ( ! QXafsMode->isChecked() ) {
+      buf.sprintf( "% 5.2f", BlockDwell[i] );
+    } else {
+      buf = QString::number( BlockDwell[i] );
+    }
     BLKdwell[i]->setText( buf );
     buf.sprintf( "% 4d", BlockPoints[i] );
     BLKpoints[i]->setText( buf );
@@ -334,29 +615,39 @@ void MainWindow::NewRpt( void )
   ShowTotal();
 }
 
-void MainWindow::ShowTotal( void )
+void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数変更時に呼ばれる
 {
   QString buf;
 
-  TP = 0;
-  TT0 = 0;
-  for ( int i = 0; i < Blocks; i++ ) {
-    TP += BlockPoints[i];
-    TT0 += BlockPoints[i] * BlockDwell[i];
-  } 
-  double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
-  buf.sprintf( "%4d", TP * SelRPT->value() );
-  TPoints->setText( tr( "Points: " ) + buf );
-  TT *= SelRPT->value();
-  EstimatedMeasurementTimeInSec = TT;
-  int Th = (int)( TT / 3600 );
-  TT -= Th * 3600;
-  int Tm = (int)( TT / 60 );
-  TT -= Tm * 60;
-  int Ts = (int)TT;
-  TT -= Ts;
-  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
-  TTime->setText( tr( "Time: " ) + buf );
+  if ( ! QXafsMode->isChecked() ) {  // 通常モード
+    TP = 0;                     // 測定の合計点数と、単純積算時間を数える
+    TT0 = 0;
+    for ( int i = 0; i < Blocks; i++ ) {
+      TP += BlockPoints[i];
+      TT0 += BlockPoints[i] * BlockDwell[i];
+    } 
+
+    double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
+    buf.sprintf( "%4d", TP * SelRPT->value() );
+    TPoints->setText( tr( "Points: " ) + buf );
+    TT *= SelRPT->value();
+    EstimatedMeasurementTimeInSec = TT;
+    int Th = (int)( TT / 3600 );
+    TT -= Th * 3600;
+    int Tm = (int)( TT / 60 );
+    TT -= Tm * 60;
+    int Ts = (int)TT;
+    TT -= Ts;
+    //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
+    buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // 秒以下の精度は不要
+    TTime->setText( tr( "Time: " ) + buf );
+  } else {    // QXAFS モード
+    //    SelRPT->value() * ( ( 
+    TP = BlockPoints[0];     // 測定の合計点数と、単純積算時間を数える
+    TT0 = BlockDwell[0];     //  
+
+    //    RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
+  }
 }
 
 void MainWindow::ChangeBLKstart( void )
@@ -380,6 +671,7 @@ void MainWindow::ChangeBLKstart( void )
 		   /step )+0.5;
 	}
       }
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -398,6 +690,7 @@ void MainWindow::ChangeBLKstep( void )
 		   - u->keV2any(BLKUnit, BlockStart[i]) )
 		 /step )+0.5;
       }
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -408,16 +701,18 @@ void MainWindow::ChangeBLKpoints( void )
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     if ( BLKpoints.at(i) == sender() ) {
       BlockPoints[i] = BLKpoints[i]->text().toDouble();
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
 }
 
-void MainWindow::ChangeBLKdwell( const QString & )
+void MainWindow::ChangeBLKdwell( void )
 {
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
     if ( BLKdwell.at(i) == sender() ) {
       BlockDwell[i] = BLKdwell[i]->text().toDouble();
+      if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
@@ -479,6 +774,7 @@ void MainWindow::SelectedRBFN( const QString &fname )
 
     if ( line[0] == QChar( 'N' ) ) {
       Blocks = line.section( sep, 1, 1 ).toInt();
+      SelBLKs->setValue( Blocks );
     }
     if ( line[0] == QChar( 'U' ) ) {
       BLKUnit = (UNIT)line.section( sep, 1, 1 ).toInt();
@@ -521,7 +817,7 @@ bool MainWindow::CheckDetectorSelection( void )
 
   if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
     if ( UseI1->isChecked() ) {
-      AUnit *as = ASensors.value( SelectI1->currentIndex() );
+      AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
       if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
 	  ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
 	MeasFileType = TRANS;
@@ -571,6 +867,10 @@ void MainWindow::StartMeasurement( void )
   SFluoLine = -1;
   isSFluo = isSI1 = false;
 
+  // 将来の変更
+  // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
+  // だけが選べるようにする。
+
   if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
@@ -580,7 +880,10 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
 			      .arg( MMainTh->getName() ), 2000 );
     }
-
+    if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
+      statusbar->showMessage( "The block parameter is out of range.", 2000 );
+      return;
+    }
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
@@ -593,6 +896,64 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
+    if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
+      if ( inMCAMeas ) {
+	QString msg = tr( "Meas cannot Start : in MCA measurement" );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+    }
+
+    if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
+      if ( BlockPoints[0] > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
+	statusbar->showMessage( tr( "Measured points are too many.  "
+			    "It should be less than 9990 in QXAFS mode." ), 2000 );
+	return;
+      }
+      if ( ! UseI1->isChecked() ) {     // 今 QXafs は透過専用なので、I1 は必須
+	statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
+	return;
+      }
+      if ( Use19chSSD->isChecked() ) {     // 今 QXafs は透過専用なので、SSDは使えない
+	statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
+	return;
+      }
+#if 0
+      if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
+	// 今 QXafs で AUX は使えない
+	statusbar
+	  ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
+      }
+      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
+      if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
+	statusbar
+	  ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
+	return;
+      }
+      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
+      if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
+	statusbar
+	  ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
+	return;
+      }
+#endif
+    } else {   // Normal モード時専用のチェック
+      int TotalPoints = 0;
+      for ( int i = 0; i < Blocks; i++ ) {
+	TotalPoints += BlockPoints[i];
+      } 
+      if ( TotalPoints > 1999 ) {
+	statusbar
+	  ->showMessage( tr( "Measured points are too many.    "
+			     "It should be less than 2000 in normal XAFS mode." ) );
+	return;
+      }	
+    }
+
+    // この下の諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々の設定が
+    // QXAFS の時も必要かどうか、逆に QXAFS に必要な設定が全部できてるかは
+    // 要確認
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
@@ -603,27 +964,24 @@ void MainWindow::StartMeasurement( void )
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
-    MeasDispMode[ LC ] = TRANS;     // I0 にモードはないのでダミー
+    MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
-    mUnits.addUnit( ASensors.value( SelectI0->currentIndex() ) );
+    mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
+    qDebug() << "Munits :: add I0";
+
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
-      mUnits.addUnit( ASensors.value( SelectI1->currentIndex() ) );
+      mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
+      qDebug() << "Munits :: add I1";
       LC++;
       isSI1 = true;
-      aGsb.stat = PBFalse; aGsb.label = "I1"; GSBSs << aGsb;
-      aGsb.stat = PBTrue;  aGsb.label = "mu"; GSBSs << aGsb;
+      aGsb.stat = PBFalse; aGsb.label = tr( "I1" ); GSBSs << aGsb;
+      aGsb.stat = PBTrue;  aGsb.label = tr( "mu" ); GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
-      if ( inMCAMeas ) {   // 19ch 使うときは MCA の測定中はダメ
-	QString msg = tr( "Meas cannot Start : in MCA measurement" );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
@@ -634,24 +992,47 @@ void MainWindow::StartMeasurement( void )
       for ( int i = 0; i < MaxSSDs; i++ ) {
 	aGsb.stat = PBFalse; aGsb.label = QString::number( i ); GSBSs << aGsb;
       }
+      SFluo->setSSDPresetType( "REAL" );   // SSD を使った XAFS 測定は強制的に Real Time
+      SelRealTime->setChecked( true );
+      SelLiveTime->setChecked( false );
     }
     if ( UseAux1->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
-      mUnits.addUnit( ASensors.value( SelectAux1->currentIndex() ) );
+      mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
       LC++;
       aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
     }
     if ( UseAux2->isChecked() ) {
       MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
       MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
-      mUnits.addUnit( ASensors.value( SelectAux2->currentIndex() ) );
+      mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
       LC++;
       aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
+    }
+    if ( QXafsMode->isChecked() ) {
+      if ( Enc2 != NULL ) {
+	mUnits.addUnit( Enc2 );
+	qDebug() << "Munits :: add enc2";
+      }
+      mUnits.setOneByOne( false );
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
+      if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs モードで使えるかどうか
+	QString msg;
+	if ( QXafsMode->isChecked() ) {
+	  msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
+	} else {
+	  msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
+	    .arg( as->getName() );
+	}
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
 	QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
@@ -683,6 +1064,8 @@ void MainWindow::StartMeasurement( void )
 	}
       }
     }
+
+#if 0
     if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
                                         // 設定済みかどうか確認する (測定開始をブロック)
       MakeSureOfRangeSelect
@@ -694,6 +1077,7 @@ void MainWindow::StartMeasurement( void )
     } else {
       MakingSureOfRangeSelect = false;
     }
+#endif
 
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
       if ( ! MeasureDark() )                // 正常に測れなければだめ
@@ -704,18 +1088,27 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
-    ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
+    if ( QXafsMode->isChecked() )
+      ViewTab->setTabText( ViewTab->currentIndex(), "QXAFS" );
+    else 
+      ViewTab->setTabText( ViewTab->currentIndex(), "XAFS" );
+
     MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
+    if ( QXafsMode->isChecked() ) {
+      MeasView->SetQXafsMode( true );
+    } else {
+      MeasView->SetQXafsMode( false );
+    }
     for ( int i = 0; i < GSBs.count(); i++ ) {
       MeasView->ChooseAG( i, GSBs[i]->isChecked() == PBTrue );
     }
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
-    QFileInfo CheckFile( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
-    if ( ! OverWriteChecked && CheckFile.exists() ) {
+    BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
+    if ( ! OverWriteChecked && BaseFile.exists() ) {
       AskOverWrite
 	->setText( tr( "File [%1] Over Write ?" )
 			     .arg( DFName0 + ".dat" ) );
@@ -741,17 +1134,15 @@ void MainWindow::StartMeasurement( void )
     if ( Use19chSSD->isChecked() ) {
       MeasChNo += ( MaxSSDs -1 );
     }
-    MeasView->SetRLine( 0 );
-    MeasView->SetLLine( 1 );
-    MeasView->SetLR( 0, RIGHT_AX );
-    MeasView->SetScaleType( 0, I0TYPE );
-    MeasView->SetLineName( 0, mUnits.at(0)->getName() );
-    for ( int i = 1; i < mUnits.count(); i++ ) {
-      MeasView->SetLR( i, LEFT_AX );
-      MeasView->SetScaleType( i, FULLSCALE );
-      MeasView->SetLineName( i, mUnits.at(i)->getName() );
-    }
+    SetDispMeasModes();
     CpBlock2SBlock();
+
+    if ( isSFluo && RecordMCASpectra->isChecked() ) {
+      mcaDir = QDir( BaseFile.canonicalPath() );
+      mcaDir.mkdir( BaseFile.baseName() );
+      mcaDir.cd( BaseFile.baseName() );
+      qDebug() << "the place " << mcaDir.path();
+    }
     
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -776,6 +1167,31 @@ void MainWindow::StartMeasurement( void )
     MeasPause->setEnabled( false );
     MeasStart->setEnabled( false );
   }
+}
+
+// Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !
+bool MainWindow::CheckOkList( AUnit *as, QStringList OkList )
+{
+  int j;
+  for ( j = 0; j < OkList.count(); j++ ) {
+    if ( as->getType() == OkList[j] )
+      break;
+  }
+  if ( j >= OkList.count() ) { // 指定されたセンサー type はリストにない
+    return false;
+  }
+  return true;
+}
+
+// 現在のモード ( QXafs or NXafs ) で使えるか
+bool MainWindow::theSensorIsAvailable( AUnit *as )
+{
+  if ( QXafsMode->isChecked() ) {
+    return CheckOkList( as, QXafsOk );
+  } else {
+    return CheckOkList( as, NXafsOk );
+  }
+  return true;  // ここに来ることは無い
 }
 
 void MainWindow::SurelyStop( void )
@@ -838,6 +1254,17 @@ void MainWindow::CpBlock2SBlock( void )
     SBlockPoints[i] = BlockPoints[i];
     SBlockDwell[i] = BlockDwell[i];
   }
+}
+
+bool MainWindow::CheckBlockRange( void )
+{
+  for ( int i = 0; i <= Blocks; i++ ) {
+    if (( u->keV2any( EV, BlockStart[i] ) < MinEnergyInEV )
+	||( u->keV2any( EV, BlockStart[i] ) > MaxEnergyInEV )) {
+      return false;
+    }
+  }
+  return true;
 }
 
 void MainWindow::PauseMeasurement( void )

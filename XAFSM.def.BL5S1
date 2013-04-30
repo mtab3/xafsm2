@@ -1,4 +1,12 @@
-# XAFS-M setting file : Edited 2012/10/03
+# XAFS-M setting file : Edited 2013/04/02
+
+# What is New
+# 2013/04/03 add 'ENERGYRANGE' line
+# 2013/04/03 add 'DEFAULTUNIT' line
+# 2013/04/19 add 'QXAFSOK'     line
+#                'NORMALOK'    line
+# 2013/04/25 add 'MCAGAIN'     line
+#
 
 #
 # In this definition file,
@@ -10,9 +18,38 @@
 # For example, "Keithley 6485" can not be writtern Keithley 6485.
 #
 
-XAFSName  "XafsM2"
+XAFSName  "XafsM2-bsd"
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
+
+#
+# Preset gains of MCA channels
+#
+# MCAGAIN ch gain
+#
+MCAGAIN 5 0.768
+
+#
+# Define if Quick-Xafs Mode is available or not
+#
+#  QXAFSMODE 1 6000 15000
+#  QXAFSMODE 0 6000 15000
+#
+# 0 : not available  :: default
+# 1 : available
+#  6000 : standard pps
+# 15000 : highest pps
+#   100 : low speed pps (the value set as Low Speed)
+#   0.1 : run up rate [ms/pps]
+#
+QXAFSMODE 1 6000 15000 100 0.1
+
+#
+# Detectors which can be used for Q-Xafs : QXAFSOK
+# Detectors which can be used for Normal Xafs : NORMALOK
+#
+QXAFSOK DV ENC2
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC
 
 # now the keyword STARSDRIVER is obsolete
 
@@ -25,18 +62,16 @@ CRYSTAL  "Ge(333)"   1.0887941
 # GAS            : the identifier of the line
 # "He:N2 30:70"  : the name of the gas only for display
 # followings are definitions of componets of the gas
-#   "N"          : the name of the element which compose the gas
-#   2            : the number 2 means N is as N2 in the gas
-#   70           : the ratio of the N2 in the gas
-#   0.001251     : the density of the gas at 1 atm
+#   "N2"         : the chemical form of the gas.
+#   0.70         : the partial pressure of the N2. (The total does not have to be 1.)
 #   "He"         ....
 #
-GAS      "He:N2 30:70"  "N" 2  70 0.001251 "He" 1 30 0.0001786 ""
-GAS      "N2"           "N" 2 100 0.001251                     ""
-GAS      "N2:Ar 85:15"  "N" 2  85 0.001251 "Ar" 1  15 0.001784 ""
-GAS      "N2:Ar 75:25"  "N" 2  75 0.001251 "Ar" 1  25 0.001784 ""
-GAS      "N2:Ar 50:50"  "N" 2  50 0.001251 "Ar" 1  50 0.001784 ""
-GAS      "Ar"                              "Ar" 1 100 0.001784 ""
+GAS      "No.1 He:N2 70:30"  "N2" 0.700 "He" 0.300 ""
+GAS      "No.2 N2         "  "N2" 1.000            ""
+GAS      "No.3 N2:Ar 85:15"  "N2" 0.845 "Ar" 0.155 ""
+GAS      "No.4 N2:Ar 75:25"  "N2" 0.745 "Ar" 0.255 ""
+GAS      "No.5 N2:Ar 50:50"  "N2" 0.492 "Ar" 0.508 ""
+GAS      "No.6 Ar         "             "Ar" 1.000 ""
 
 # 'ICLENGTH' lines provide information for ion-chambers
 # ICLENGTH        : the identifier of the line
@@ -45,14 +80,27 @@ GAS      "Ar"                              "Ar" 1 100 0.001784 ""
 # 14              : the length of the chamber in units of "cm"
 # "cm"            : the unit name of the length only for display
 #
-ICLENGTH "I0 ch(14cm)" "I0" 14 "cm"
-ICLENGTH "I1 ch(28cm)" "I1" 28 "cm"
-ICLENGTH "I2 ch(28cm)" ""   28 "cm"
+ICLENGTH "I0 ch (14cm)" "I0" 14 "cm"
+ICLENGTH "I1 ch (28cm)" "I1" 28 "cm"
+ICLENGTH "I2 ch (28cm)" ""   28 "cm"
+
+#
+# Define energy range. 
+# To check the range where the monochromator can go.
+# It should be written in the unit 'eV'.
+#
+ENERGYRANGE 3500 25000
+
+#
+# Define default unit to control monochromator
+# 0: eV, 1: keV, 2: angstrome, 3: deg
+#
+DEFAULTUNIT 0
 
 # define the groups of atoms which can be measured.
 AGROUP 0 "H"  "U"  ""                    # To use user defined color, 
                                          # clear default color setting for all the atoms
-AGROUP 1 "V" "Mo" "#ffff7f"              # "#ffff7f"      is bright-yellow
+AGROUP 1 "V"  "Mo" "#ffff7f"             # "#ffff7f"      is bright-yellow
 AGROUP 2 "Cs" "U"  "rgb(255,170,255)"    # "255,170,255"  is bright-pink
 
 # define Moveable units
@@ -300,3 +348,29 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #   NO               : If the sensor has a parente (group leader) or not. YES or NO
 #   ""               : The identifier of the parent (group reader)
 
+#
+# the DV is Agilent34410 for QXAFS
+#
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
+
+#
+# the DV2 is Agilent34410 for normal measurement
+#
+SENSOR DV2 "S038" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
+SENSOR DV2 "S039" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+
+SENSOR ENC2 "S040" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC2      : Unit type   ENC2 is an encorder with memory
+#     "S040"       : Uniq identifire of the sensor. The identifier must be identical.
+#                  : The identifier can be any string, while it is identical.
+#     "ENCTH2"     : Identifier that this is the main axis of the monochromator
+#     "EIB741"     : The name of the unit (only for display)
+#     "EIB741"     : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+#     YES          : If the sensor has a parente (group leader) or not. YES or NO
+#     "S006"       : The identifier of the parent (group reader)
+#     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg

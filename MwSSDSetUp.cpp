@@ -56,11 +56,21 @@ void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
   MCAFSel->setDirectory( QDir::currentPath() );
   MCAFSel->setFilter( "*.dat" );
 
+  connect( GainInput, SIGNAL( textEdited( const QString & ) ), 
+	   this, SLOT( newGain( const QString & ) ) );
+
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
+  //  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData0() ) );
   connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
+#if 0                 // new mcas
   connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ) );
+#else
+  connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
+	   this, SLOT( ShowNewMCAStat( char * ) ) );
+#endif
+
   connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
 	   this, SLOT( ShowNewMCARealTime( int ) ) );
   connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
@@ -101,6 +111,16 @@ void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
   connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+}
+
+void MainWindow::newGain( const QString &gain )
+{
+  if ( inMCAMeas )
+    return;
+  if ( SFluo == NULL )
+    return;
+
+  
 }
 
 void MainWindow::doPeakFit( void )
@@ -176,7 +196,21 @@ void MainWindow::saveMCAData( void )
     return;
   }
 
-  QFile f( MCARecFile->text() );
+  MCADataStat = OLD;
+  MCANameStat = OLD;
+  MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
+  MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
+
+//  for ( int i = 0; i < 1000; i++ ) {   // 1000ÌÌ¥»¡¼¥Ö»þ´ÖÂ¬ÄêÍÑ
+//    qDebug() << i;                     // i7 ¤Ç 40 ÉÃ(0.04s/ÌÌ)¤À¤Ã¤¿
+//    // ROI ¤ÎÀÑÊ¬¤ò XafsM2 Â¦¤Ç¤ä¤ë¤è¤¦¤Ë¤·¡¢¥Õ¥ë¥ì¥ó¥¸(0-2047)¤ò ROI ¤ÎÈÏ°Ï¤Ë¤·¤¿¾ì¹ç
+//    // Ìó 43 ÉÃ¡£ROI ¤ÎÀÑÊ¬»þ´Ö¤Ï ºÇÂç 3ms ÄøÅÙ¤È¤¤¤¦»ö¤Ë¤Ê¤ë¡£
+  saveMCAData0( MCARecFile->text() );
+}
+
+void MainWindow::saveMCAData0( QString fname )
+{
+  QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
     statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
 			    2000 );
@@ -186,22 +220,41 @@ void MainWindow::saveMCAData( void )
 
   out << "# XafsM2 MCA Data\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
-  out << "# " << "MCALength " << "MCA Ch. " << "RealTime " << "LiveTime "
-              << "ROIs " << "ROIe" << "\n";
-  out << "# " << MCALength << " " << cMCACh << " "
-              << cMCAView->getRealTime() << " " << cMCAView->getLiveTime() << " "
-              << ROIStartInput->text().toInt() << " " << ROIEndInput->text().toInt()
-              << "\n";
-  for ( int i = 0; i < MCALength; i++ ) {
-    out << i << "\t" << MCAData[i] << "\n";
-  }
+
+  WriteMCAHead( out );
+  WriteMCAData( out );
 
   f.close();
+}
+
+void MainWindow::WriteMCAHead( QTextStream &out )
+{
+  out << "# Channel Status Length RealTime LiveTime ICR\n";
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    MCAHead head = SFluo->getAMCAHead( i );
+    out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
+                << head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\n";
+  }
+}
+
+void MainWindow::WriteMCAData( QTextStream &out )
+{
+  for ( int i = 0; i < MCALength; i++ ) {
+    out << i;
+    for ( int j = 0; j < MaxSSDs; j++ ) {
+      out << "\t" << kev2pix->p2E( j, i );
+      out << "\t" << SFluo->getAMCAdata( j, i );
+    }
+    out << "\n";
+  }
 }
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
 {
   MCARecFile->setText( fname );
+  MCANameStat = NEW;
+  MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
+  MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
 }
 
 void MainWindow::RealTimeIsSelected( void )
@@ -271,7 +324,11 @@ void MainWindow::getMCASettings( int ch )
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
+#if 0                            // new mcas
   SFluo->GetMCA( ch );
+#else
+  SFluo->GetMCAs();
+#endif
 }
 
 void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤ë
@@ -290,19 +347,30 @@ void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤
 
 void MainWindow::newROIStart( const QString &newv )
 {
-  ROIStart[ MCACh->text().toInt() ] = newv;
-  if ( cMCAView != NULL ) {
-    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-    cMCAView->update();
+  if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+    ROIStart[ MCACh->text().toInt() ] = newv;
+    if ( cMCAView != NULL ) {
+      cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+      cMCAView->update();
+    }
+  } else {
+    statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+    ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
   }
 }
 
+
 void MainWindow::newROIEnd( const QString &newv )
 {
-  ROIEnd[ MCACh->text().toInt() ] = newv;
-  if ( cMCAView != NULL ) {
-    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-    cMCAView->update();
+  if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+    ROIEnd[ MCACh->text().toInt() ] = newv;
+    if ( cMCAView != NULL ) {
+      cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+      cMCAView->update();
+    }
+  } else {
+    statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+    ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
   }
 }
 
@@ -371,6 +439,8 @@ void MainWindow::StartMCA( void )
       return;
     }
 
+    GainInput->setReadOnly( true );
+    GainInput->setStyleSheet( NONEDITABLELINE );
     MCAStart->setText( tr( "Stop" ) );
     MCAStart->setStyleSheet( InActive );
 
@@ -383,7 +453,6 @@ void MainWindow::StartMCA( void )
     if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
 	 || ( StartResume == MCA_START ) ) {
       if ( cMCAView != NULL ) {
-	MCAViewDisconnects();
 	cMCAViewC->setIsDeletable( true );
       }
       
@@ -400,12 +469,15 @@ void MainWindow::StartMCA( void )
       cMCAView->setLog( SetDisplayLog->isChecked() );
       cMCAView->SetMCACh( cMCACh );
       cMCAView->makeValid( true );
-      MCAViewConnects();
 
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       if ( StartResume == MCA_START )
 	for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
     }
+    MCADataStat = NEW;
+    MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
+    MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
+    
     MCAClearRequest = false;
     SFluo->RunStop();
     cMCAViewC->setIsDeletable( false );
@@ -413,6 +485,8 @@ void MainWindow::StartMCA( void )
     MCATimer->start( 100 );
   } else {
     inMCAMeas = false;
+    GainInput->setReadOnly( false );
+    GainInput->setStyleSheet( EDITABLELINE );
     SFluo->RunStop();
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();
@@ -420,44 +494,6 @@ void MainWindow::StartMCA( void )
     MCAStart->setStyleSheet( NormalB );
     cMCAViewC->setIsDeletable( false );
   }
-}
-
-void MainWindow::MCAViewDisconnects( void )
-{
-#if 0
-  // MCAView -> MainWindow ¤Ø¤Î connect ¤Ï MCAView Æâ¤Ç·Ò¤°
-  // data-disp ¤ÇÉ½¼¨¤·¤¿»þ¡¢¤Ë¥Þ¥º¥¤¤«¤â
-  disconnect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
-	      this, SLOT( showCurrentValues( int, int ) ) );
-  disconnect( cMCAView, SIGNAL( newROI( int, int ) ),
-	      this, SLOT( setNewROI( int, int ) ) );
-  // MainWindow -> MCAView ¤Ø¤Î connect ¤Ï¤Ê¤¯¤¹ (Ä¾ÀÜ¤Î´Ø¿ô¸Æ¤Ó½Ð¤·¤Ë¤¹¤ë)
-  // ¤³¤Ã¤Á¤Ï OK
-  disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	      cMCAView, SLOT( setLog( bool ) ) );
-  disconnect( DispElmNames, SIGNAL( toggled( bool ) ),
-	      cMCAView, SLOT( setShowElements( bool ) ) );
-#endif
-  //  disconnect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-  //	      this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ) );
-}
-
-void MainWindow::MCAViewConnects( void )
-{
-#if 0
-  // MCAView -> MainWindow ¤Ø¤Î connect ¤Ï MCAView Æâ¤Ç·Ò¤°
-  // data-disp ¤ÇÉ½¼¨¤·¤¿»þ¡¢¤Ë¥Þ¥º¥¤¤«¤â
-  connect( cMCAView, SIGNAL( CurrentValues( int, int ) ),
-	   this, SLOT( showCurrentValues( int, int ) ) );
-  connect( cMCAView, SIGNAL( newROI( int, int ) ),
-	   this, SLOT( setNewROI( int, int ) ) );
-  // MainWindow -> MCAView ¤Ø¤Î connect ¤Ï¤Ê¤¯¤¹ (Ä¾ÀÜ¤Î´Ø¿ô¸Æ¤Ó½Ð¤·¤Ë¤¹¤ë)
-  // ¤³¤Ã¤Á¤Ï OK
-  connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	   cMCAView, SLOT( setLog( bool ) ) );
-  connect( DispElmNames, SIGNAL( toggled( bool ) ),
-	   cMCAView, SLOT( setShowElements( bool ) ) );
-#endif
 }
 
 void MainWindow::showCurrentValues( int atCur, int inROI )
@@ -471,8 +507,13 @@ void MainWindow::showCurrentValues( int atCur, int inROI )
 void MainWindow::setNewROI( int s, int e )
 {
   if ( sender() == cMCAView ) {
-    ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
-    ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+    if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+      ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
+      ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+    } else {
+      statusbar
+	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+    }
   }
 }
 
@@ -526,16 +567,22 @@ void MainWindow::MCASequence( void )
     }
     break;
   case 4:
+#if 0                    // new mcas
     if ( SFluo->GetMCA( cMCACh ) == false ) {
       SFluo->GetRealTime( cMCACh );
       SFluo->GetLiveTime( cMCACh );
       SFluo->InitLocalStage();
       MCAStage = 4;
     }
+#else
+    SFluo->GetMCAs();
+    MCAStage = 4;
+#endif
     break;
   }
 }
 
+#if 0                   // new mcas
 void MainWindow::ShowNewMCAStat( void )
 {
   QStringList MCA;
@@ -550,6 +597,21 @@ void MainWindow::ShowNewMCAStat( void )
     cMCAView->update();
   }
 }
+#else
+void MainWindow::ShowNewMCAStat( char * )
+{
+  if ( cMCAView != NULL ) {
+    unsigned *aMca = SFluo->getAMCA( cMCACh );
+    for ( int i = 0; i < MCALength; i++ ) {
+      MCAData[i] = aMca[i];
+    }
+    MCAHead head = SFluo->getAMCAHead( cMCACh );
+    cMCAView->SetRealTime( head.realTime );
+    cMCAView->SetLiveTime( head.liveTime );
+    cMCAView->update();
+  }
+}
+#endif
 
 void MainWindow::ShowNewMCARealTime( int ch )
 {
@@ -583,3 +645,4 @@ void MainWindow::clearMCA( void )
     }
   }
 }
+

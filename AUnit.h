@@ -5,6 +5,13 @@
 
 #include "XafsM.h"
 #include "Stars.h"
+#include "MCAHead.h"
+
+#define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
+// qint64  ch, stat, mcaLength
+// qreal64 realTime, liveTime, icr
+#define AMCABUF    ( MCAHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
+#define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
 
 enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
 	       STAT_EVENTS, STAT_ICR, STAT_OCR };
@@ -23,7 +30,7 @@ class AUnit : public QObject
   QString Uid;          // Uniq ID
   QString Uid2;         // 2nd Uid
   QString ID;           // MainTh, StageX, General, ...
-  QString Name;         // Disiplayed name
+  QString Name;         // Displayed name
   QString Driver;
   QString Driver2;      // 2nd Driver
   QString Ch;
@@ -31,6 +38,8 @@ class AUnit : public QObject
   QString DevCh;        // Driver + "." + Ch
   QString DevCh2;       // 2nd DevCh
   QString Unit;         // metric unit "mm", "mA", ...
+  QString LastFunc;     // last function which enabled isBusy
+  QString LastFunc2;    // last function which enabled isBusy2
   double UPP;           // Unit per Puls : only for PM
   bool IsInt;           // if the controlling unit is integer or not.
   bool HasParent;       // if the unit have parent (group leader).
@@ -43,17 +52,27 @@ class AUnit : public QObject
   int SelectedRange;
   double setTime;       // Actually set time;
   double setDarkTime;   // Actually set time;
+  int points;           // Measured Data Points : 34410
 
   double Center;        // Center position in puls : only for PM
 
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
+  bool hasConnected;
+  QTcpSocket *dLink;
+  QDataStream *dLinkStream;
+  int dLinkCount;
+  char *MCAs0, *MCAs;
+  bool MCAsReady;    // MCAs に有効なデータがある true, 無い false
+
+  QString DataLinkHostName;
+  qint16 DataLinkHostPort;
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;
-  QVector<int> CountsInROI;
-  QVector<int> CountsAll;
-  QVector<int> TotalEvents;
+  QVector<quint64> CountsInROI;
+  QVector<quint64> CountsAll;
+  QVector<quint64> TotalEvents;
   QVector<double> ICRs;
   QVector<double> DarkCountsInROI;    // per second
   QVector<double> DarkCountsAll;      // per second
@@ -62,9 +81,11 @@ class AUnit : public QObject
 
   bool IsBusy;
   bool IsBusy2;
+  int Busy2Count;
   QString Value;
   double Dark;                 // back ground value normalized for 1 sec
   QString lastVal;
+  quint64 MCALength;
   QStringList Values;
   QStringList MCAValues;
   QStringList MCAStats;
@@ -73,11 +94,16 @@ class AUnit : public QObject
   bool SSDUsingCh[ MaxSSDs + 1 ];       // Only 19 is necessary, 20 is only for safety.
 
   int LocalStage;
-  int lastSetV;
+  int ilastSetV;
+  double dlastSetV;
 
  private:
-  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc,
-		int ssd, int ssdp, int cnt2, int sc, int otc, int otc2, int lsr );
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
+		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2, int enc2 );
+  void ConnectToDataLinkServer( QString host, qint16 port );
+
+ private slots:
+  void receiveMCAs( void );
 
 public:
   AUnit( QObject *parent = 0 );
@@ -145,6 +171,7 @@ public:
   bool isAutoRangeAvailable( void );
   bool isAutoRange( void ) { return autoRange; };
   void setAutoRange( bool ar ) { autoRange = ar; };
+  void setGain( int ch, double gain );
 
   bool checkNewVal( void )
   {
@@ -204,17 +231,24 @@ public:
   int getRangeL( void ) { return RangeL; };
   int getRange( void ) { return SelectedRange; };
   double getDark( void ) { return Dark; };
+  QString lastFunc( void ) { return LastFunc; };
+  QString lastFunc2( void ) { return LastFunc2; };
+  int Points( void ) { return points; };
 
-  QVector<int> getCountsInROI( void ) { return CountsInROI; };
-  QVector<int> getCountsAll( void ) { return CountsAll; };
-  QVector<int> getTotalEvents( void ) { return TotalEvents; };
+  QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
+  QVector<quint64> getCountsAll( void ) { return CountsAll; };
+  QVector<quint64> getTotalEvents( void ) { return TotalEvents; };
   QVector<double> getICRs( void ) { return ICRs; };
   QVector<double> getDarkCountsInROI( void ) { return DarkCountsInROI; };
   QVector<double> getDarkCountsAll( void ) { return DarkCountsAll; };
   QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
   QVector<double> getDarkICRs( void ) { return DarkICRs; };
+  quint32 *getAMCA( int ch );
+  quint32 getAMCAdata( int ch, int pixel );
+  MCAHead getAMCAHead( int ch );
 
-  int getLastSetV( void ) { return lastSetV; };
+  int getILastSetV( void ) { return ilastSetV; };
+  double getDLastSetV( void ) { return dlastSetV; };
 
   // only for PM
   double getCenter( void ) { return Center; };
@@ -234,10 +268,37 @@ public:
   void RunStop( void );
   void RunResume( void );
   void AskIsBusy( void );
+  bool QStart( void );                 // QXAFS
+  bool QRead( void );                 // QXAFS
+  bool QEnd( void );                  // QXAFS
   void SetSpeed( MSPEED speed );
+  void SetHighSpeed( int speed );
+  void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
+  void SetTimingOutMode( int mode );
+  // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
+  // 34410 triggers rising edge and requires 1us or longer
+  // for EB741 2us is long enough
+  void SetTimingOutStart( int startP );   // start position of timing out
+  void SetTimingOutEnd( int endP );       // end position of timing out
+  void SetTimingOutInterval( int interval );  // timing out interval
+  void SetTimingOutReady( int ready );  // timing out ready
   double SetTime( double dtime );   // in sec
   void Stop( void );
+
+  // 3440
+  void SetTriggerDelay( double time );
+  void SetSamplingSource( QString source );
+  void SetTriggerSource( QString source );
+  void SetTriggerCounts( int count );
+  void SetTriggerSlope( QString type );
+  void GetDataPoints( void );
+  void ReadDataPoints( int points );
+  void Abort( void );
+
+#if 0                   // new mcas
   bool GetMCA( int ch );
+#endif
+  bool GetMCAs( void );
   bool GetStat( void );
   bool SetRealTime( double val );
   bool SetLiveTime( double val );
@@ -248,18 +309,33 @@ public:
   bool GetRange( void );
   double GetSetTime( void ) { return setTime; };   // actual set time
 
+  void IsBusy2On( QString drv, QString name );
+  void IsBusy2Off( QString drv );
+  void setBusy2Count( int i ) { Busy2Count = i; };
+  void clrBusy2Count( void ) { Busy2Count = 0; };
+  int busy2Count( void ) { return Busy2Count; };
+
 public slots:
   void ClrBusy( SMsg msg );
   void SetIsBusyByMsg( SMsg msg );
   void SetCurPos( SMsg msg );
   void ReceiveValues( SMsg msg );
+  void getMCALength( SMsg msg );
 
+#if 0           // new mcas
   void ReactGetMCA( SMsg msg );
+#endif
   void ReactGetStat( SMsg msg );
   void ReactGetRealTime( SMsg msg );
   void ReactGetLiveTime( SMsg msg );
   void ReactGetRange( SMsg msg );
   void OnReportCurrent( SMsg msg );
+  void ReactGetDataLinkCh( SMsg msg );
+
+  //  void RcvDataPoints( SMsg msg );
+  //  void RcvReadData( SMsg msg );
+  void RcvStat( SMsg msg );
+  void RcvQGetData( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
@@ -267,20 +343,30 @@ public slots:
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
+  //  void newValues( void );
   void newDark( double dark );
   void newCountsInROI( QVector<int> );
   void newCountsAll( QVector<int> );
   void newTotalEvents( QVector<int> );
   void newICRs( QVector<double> );
+  //  void newDataPoints( int points );
+  void newQData( void );
 
   void Enabled( QString Drv, bool flag );
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
+  void ChangedBusy2Count( QString Drv );
   void AskedNowRange( int r );
+#if 0           // new mcas
   void ReceivedNewMCAValue( void );
+#endif
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );
+  void DataLinkServerIsReady( QString host, qint16 port );
+  void NewMCAsAvailable( char *MCAs );
+
+  void LogMsg( QString msg );
 };
 
 #endif

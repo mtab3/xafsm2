@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>687</width>
+    <width>692</width>
     <height>120</height>
    </rect>
   </property>
@@ -26,37 +26,6 @@
    <property name="spacing">
     <number>1</number>
    </property>
-   <item row="0" column="1">
-    <widget class="QFrame" name="frame_3">
-     <property name="styleSheet">
-      <string notr="true">background-color: #eeffee</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <property name="margin">
-       <number>3</number>
-      </property>
-      <property name="spacing">
-       <number>1</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="RecordAllSSDChs">
-        <property name="text">
-         <string>Record All SSD Chs in ssd.dat while Monitoring</string>
-        </property>
-        <property name="autoExclusive">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" rowspan="2">
     <widget class="QFrame" name="frame">
      <property name="styleSheet">
@@ -143,7 +112,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QFrame" name="frame_2">
      <property name="styleSheet">
       <string notr="true">background-color: #eeffee</string>
@@ -168,14 +137,45 @@
 with usual 9809 format datas.</string>
         </property>
         <property name="text">
-         <string>Record Addicional Informations for XAFS measurement</string>
+         <string>Record Addicional Informations in &quot;.dat&quot; XAFS file</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="0" column="1">
+    <widget class="QFrame" name="frame_3">
+     <property name="styleSheet">
+      <string notr="true">background-color: #eeffee</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <property name="margin">
+       <number>3</number>
+      </property>
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="RecordAllSSDChs">
+        <property name="text">
+         <string>Record All SSD Chs in ssd.dat while Monitoring</string>
+        </property>
+        <property name="autoExclusive">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QFrame" name="frame_5">
      <property name="styleSheet">
       <string notr="true">background-color: #eeffee</string>
@@ -184,9 +184,9 @@ with usual 9809 format datas.</string>
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Plain</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_5">
+     <layout class="QGridLayout" name="gridLayout_6">
       <property name="margin">
        <number>3</number>
       </property>
@@ -194,9 +194,19 @@ with usual 9809 format datas.</string>
        <number>1</number>
       </property>
       <item row="0" column="0">
-       <widget class="QRadioButton" name="Use1303Format">
+       <widget class="QRadioButton" name="MakeInfoFile">
+        <property name="toolTip">
+         <string>Some additional information is recorded 
+with usual 9809 format datas.</string>
+        </property>
         <property name="text">
-         <string>Use 1303 format to record XAFS measurement</string>
+         <string>Make &quot;.info&quot; file to record further information on XAFS</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

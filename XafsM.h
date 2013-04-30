@@ -23,8 +23,32 @@ const QString InActive = "background-color: rgb(250,250,180)";
 const QString AlartRed = "background-color: rgb(250,200,200)";
 const QString SSDActive = "background-color: #f0f0d0";
 const QString SSDnotActive = "";
+const QString EDITABLELINE = "background-color: rgb(255,255,255)";
+const QString NONEDITABLELINE = "background-color: rgb(230,230,230)";
 //const QString SSDActive = RadioBOn;
 //const QString SSDnotActive = RadioBOff;
+
+// ファイル名とデータの新旧に応じたステータスを色で表現
+// data, file-name 
+//  old     old    : 実質このステータスは使っていない
+//                   全く何も問題がない
+//                   --> 白系(色を付けるとしてもできるだけ淡色)
+//  old     new    : 測定前でファイル名だけ入れた。
+//                   あまり危険ではない(最悪古いデータが保存された別ファイルが出来るだけ)
+//                   ---> 黄色系の色
+//  new     old    : 測定後なのにファイル名が古い。
+//                   かなり危険、前回の測定データを上書きで消す可能性あり
+//                   ---> 赤系の色
+//  new     new    : 危険性は低いがセーブし忘れるとデータを失うので注意を促す必要はある
+//                   ---> 青/緑系の色 (できれば青系か)
+
+const QString FILE_OLDOLD  = "background-color: rgb(250,255,240)"; // old-data, old-name
+const QString FILE_NEWNAME = "background-color: rgb(250,250,190)"; // old-data, new-name
+const QString FILE_NEWDATA = "background-color: rgb(255,200,200)"; // new-data, old-name
+const QString FILE_NEWNEW  = "background-color: rgb(220,240,255)"; // new-data, new-name
+
+const QString FSTATCOLORS[2][2] =
+  { { FILE_OLDOLD, FILE_NEWNAME }, { FILE_NEWDATA, FILE_NEWNEW } };
 
 #define PBTrue    ( false )   // PushButton を Checkable にすると、押した時、暗いのに
 #define PBFalse   ( true  )   // true になるので、定数名で反転させて使う
@@ -78,7 +102,7 @@ enum ONFIN { RETURN, STAY, ONFINS };
 enum RELABS { REL, ABS };
 
 struct GasComp {
-  QString AName;
+  QString GasForm;
   double comp;
 };
 
@@ -92,6 +116,11 @@ struct IonChLength {
   QString ID;
   double length;
   QString UName;
+};
+
+struct MCAGain {
+  int ch;
+  double gain;
 };
 
 #endif

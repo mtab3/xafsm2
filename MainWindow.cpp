@@ -21,6 +21,17 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   T = new QTime;
   T->start();
 
+  FSTATMsgs[0][0] = tr( "" );
+  FSTATMsgs[0][1] = tr( "The name is new, but the data is old." );
+  FSTATMsgs[1][0] = tr( "The data is new, but the name is old." );
+  FSTATMsgs[1][1] = tr( "The data and the name is new, but not saved." );
+  MeasDataStat = MeasNameStat = OLD;
+  ScanDataStat = ScanNameStat = OLD;
+  MonDataStat = MonNameStat = OLD;
+  MCADataStat = MCANameStat = OLD;
+
+  isQXafsModeAvailable = false;
+
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
   u = new Units;
@@ -34,11 +45,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   }
 #endif
 
-  MMainTh = EncMainTh = NULL;
+  MMainTh = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
+  MCAGains.clear();
 
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
@@ -50,10 +62,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   starsSV = new StarsSV2;
 
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
-
   ReadDef( DefFileName );
   selmc = new SelMC2( mccd );
-
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
@@ -64,11 +74,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupView();
   setupCommonArea();
   setupSetupArea();     // AUnit 関係の Initialize 後でないとだめ
-  if ( SFluo != NULL )
+  if ( SFluo != NULL ) {
     setupSetupSSDArea();
-  else {
+  } else {
     MainTab->removeTab( MainTab->indexOf( SSDTab ) );
   }
+  setupQXafsMode();
   setupMeasArea();
   setupReadDataArea();
 
@@ -114,6 +125,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   this, SLOT( SomeDrvIsConnected( SMsg ) ) );
   connect( s, SIGNAL( EvDisconnected( SMsg ) ),
 	   this, SLOT( SomeDrvIsDisconnected( SMsg ) ) );
+
+  if ( ! isQXafsModeAvailable ) {
+    QXafsMode->setChecked( false );
+    QXafsMode->setEnabled( false );
+  }
 
   GoTimer = new QTimer;
   MCATimer = new QTimer;
@@ -195,6 +211,7 @@ void MainWindow::InitAndIdentifySensors( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
     as->Initialize( s );
+    connect( as, SIGNAL( LogMsg( QString ) ), this, SLOT( NewLogMsg( QString ) ) );
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
@@ -217,6 +234,9 @@ void MainWindow::InitAndIdentifySensors( void )
       connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
       connect( EncMainTh, SIGNAL( newValue( QString ) ),
 	       StatDisp, SLOT( newEncTh( QString ) ) );
+    }
+    if ( as->getID() == "ENCTH2" ) {
+      Enc2 = as;
     }
   }
   

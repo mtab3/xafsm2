@@ -4,6 +4,7 @@
 
 MUnits::MUnits( QObject *p ) : QObject( p )
 {
+  OneByOne = false;
 }
 
 void MUnits::clearUnits( void )
@@ -71,6 +72,58 @@ void MUnits::clearStage( void )
     Units.at(i)->au->InitLocalStage();
   }
 }
+
+void MUnits::clearDoneF( void )
+{
+  for ( int i = 0; i < Units.count(); i++ ) {
+    Units.at(i)->done = false;
+  }
+}
+
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
+bool MUnits::QStart( void )   // QXAFS
+{
+  bool ff = false;
+
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->QStart();
+  }
+
+  return ff;
+}
+
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
+bool MUnits::QRead( void )   // QXAFS
+{
+  bool ff = false;
+
+  for ( int i = 0; i < Units.count(); i++ ) {
+    if ( OneByOne ) {
+      if ( ! Units.at(i)->done ) {
+	ff = Units.at(i)->au->QRead();
+	Units.at(i)->done = true;
+	break;
+      }
+    } else {
+      ff |= Units.at(i)->au->QRead();
+    }
+  }
+
+  return ff;
+}
+
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
+bool MUnits::QEnd( void )   // QXAFS
+{
+  bool ff = false;
+
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->QEnd();
+  }
+
+  return ff;
+}
+
 
 bool MUnits::init( void )
 {
@@ -157,21 +210,14 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
   for ( int i = 0; i < Units.count(); i++ ) {
-#if 0                          // values().at(0) is total of all 19 CHs
-    if ( Units.at(i)->au->getType() == "SSD" ) {
-      rvs[i] = Units.at(i)->au->values().at(0).toDouble();
-    } else {
-      rvs[i] = Units.at(i)->au->value().toDouble();
-    }
-#else
     rvs[i] = Units.at(i)->au->value().toDouble();
     if ( correctBack )
       rvs[i] -= Units.at(i)->au->getDark() * Units.at(i)->au->GetSetTime();
     cps[i] = rvs[i] / Units.at(i)->au->GetSetTime();
-#endif
   }
 }
 
+#if 0            // new mcas
 bool MUnits::getMCA( int ch )
 {
   bool ff = false;
@@ -182,3 +228,4 @@ bool MUnits::getMCA( int ch )
   
   return ff;
 }
+#endif

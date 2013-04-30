@@ -40,9 +40,6 @@ int main( int argc, char *argv[] )
   }
 
   QApplication app( argc, argv );
-
-  ReadVicF();
-
   QTranslator appTr;
   switch( (int)Lang ) {
   case English:
@@ -59,6 +56,8 @@ int main( int argc, char *argv[] )
   // const char * "" を暗黙に QString に変換する時のコーディング指定
 
   app.setStyle( "Cleanlooks" );
+
+  ReadVicF();
 
   MainWindow *mw = new MainWindow( myname );
   mw->show();

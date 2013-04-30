@@ -34,8 +34,10 @@
 #include "FluoDBase.h"
 #include "DarkTable.h"
 
+enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
+enum OLDNEW { OLD, NEW };
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -68,6 +70,8 @@ private:
   QVector<IonChLength*> ICLengths;
   void CheckDuplicateUID( void );
   void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
+  double MinEnergyInEV, MaxEnergyInEV;
+  int DefaultUnit;
 
   /* cfg. */
   SelMC2 *selmc;
@@ -97,6 +101,9 @@ private:
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;
+  QDir mcaDir;
+  QFileInfo BaseFile;
+  QVector<MCAGain*> MCAGains;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -105,7 +112,7 @@ private:
   /* Special Units */
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
-  AUnit *EncMainTh;
+  AUnit *EncMainTh, *Enc2;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -115,7 +122,6 @@ private:
   Stars *s;
 
   MEASMODE MeasFileType;
-
 
   AtomNo SelectedA;
   PeriodicTable *PT;
@@ -136,6 +142,7 @@ private:
   QStringList DriverList;
 
   MUnits mUnits;
+  MUnits dUnits;
 
   /***********************************************/
 
@@ -146,6 +153,16 @@ private:
   void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
 
   /***********************************************/
+
+  QString FSTATMsgs[2][2];
+  OLDNEW MeasDataStat;
+  OLDNEW MeasNameStat;
+  OLDNEW ScanDataStat;
+  OLDNEW ScanNameStat;
+  OLDNEW MonDataStat;
+  OLDNEW MonNameStat;
+  OLDNEW MCADataStat;
+  OLDNEW MCANameStat;
 
   void GoMAtPuls( double Pos );
   void GoMStop0( void );
@@ -201,6 +218,7 @@ private:
   QVector<QLineEdit *> BLKstep;
   QVector<QLineEdit *> BLKdwell;
   QVector<QLineEdit *> BLKpoints;
+  QVector<QLabel *> BLKlabels;
 
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> SSDbs2;
@@ -238,6 +256,7 @@ private:
 
   QVector<int> ChModes;
 
+  QVector<AUnit *> I0Sensors, I1Sensors, A1Sensors, A2Sensors;
   QString fixS( QString s, int l );
   QString DFName0, DFName;
   int TP;
@@ -259,7 +278,7 @@ private:
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
   int GetDFName0( void );
-  void SetDFName( int i );
+  void SetDFName( int rpt );
   double MeasVals[ MCHANNELS ];
   double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
@@ -272,8 +291,14 @@ private:
 
   void ShowTotal( void );
   void CpBlock2SBlock( void );
+  bool CheckBlockRange( void );
+  void WriteInfoFile( void );
+  void WriteInfoFile2( void );
   void WriteHeader( int Rpt );
   void WriteHeader2( int Rpt );
+  void WriteHeaderCore( void );
+  void WriteHeaderCore2( void );
+  void SetDispMeasModes( void );
   void DispMeasDatas( void );
   void RecordData( void );
 
@@ -292,6 +317,37 @@ private:
 
   void SetEnableOfUnits( QString drv, bool enable );
 
+  // Sound
+  void PlayGoOnSound( void );
+  void PlayEndingSound( void );
+  void PlaySound( QString name, int times );
+
+  // QXAFS
+  QStringList QXafsOk, NXafsOk;
+  bool isQXafsModeAvailable;
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
+  bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
+  double RunUpRate, RunUpTime, QXafsDwellTime;
+  QString EncValue0, Enc2Value0;
+
+  void setupQXafsMode( void );
+  void HideBLKs( bool f );
+  void GetPM16CParamsForQXAFS( void );
+  void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
+  void SetDFName2( int rpt, DIRECTION dir );
+  void MakeDelegateFile( void );
+  void WriteQHeader( int rpt, DIRECTION dir );
+  void WriteQHeader2( int rpt, DIRECTION dir );
+  void WriteQBody( void );
+  int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
+  void DispQSpectrum( int g );
+  void QXafsFinish( void );
+  bool CheckOkList( AUnit *as, QStringList OkList );
+  bool theSensorIsAvailable( AUnit *as );
+  void ShowQTime( double dtime, double WidthInPuls );
+
 private slots:
   void Initialize( void );
   void InitializeUnitsAgain( void );
@@ -309,7 +365,7 @@ private slots:
   void ChangeBLKstart( void );
   void ChangeBLKstep( void );
   void ChangeBLKpoints( void );
-  void ChangeBLKdwell( const QString &dtime );
+  void ChangeBLKdwell( void );
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );
@@ -357,9 +413,14 @@ private slots:
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
+  void newGain( const QString &gain );
+#if 0      // new mcas
   void ShowNewMCAStat( void );
+#endif
+  void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
+  void saveMonData( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -390,6 +451,9 @@ private slots:
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
   void saveMCAData( void );
+  void saveMCAData0( QString fname );
+  void WriteMCAHead( QTextStream &out );
+  void WriteMCAData( QTextStream &out );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
@@ -406,10 +470,15 @@ private slots:
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   void setAllROIs( void );
-  void MCAViewDisconnects( void );
-  void MCAViewConnects( void );
 
-  void calcMuT( int ch, int gas, double keV );
+  void newSensSelectedForI0( int index );
+  void newSensSelectedForI1( int index );
+  void newSensSelectedForA1( int index );
+  void newSensSelectedForA2( int index );
+  void newI0Range( int newR );
+  void newI1Range( int newR );
+  void newA1Range( int newR );
+  void newA2Range( int newR );
 
   void StartMeasurement( void );
   void PauseMeasurement( void );
@@ -428,6 +497,10 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   void doPeakFit( void );
+
+  double calcMuT( int ch, int gas, double keV );
+  double calcAMuT( int an, double keV );
+  QVector<Element> ParseCompString( const QString& cmp );
 
   void NewLogMsg( QString msg );
   void SelLFN( void );
@@ -448,6 +521,14 @@ private slots:
   void ShowButtonsForATab( int i );
 
   void setEncNewTh( QString orig, QString newv );
+  void SetNewGases( void );
+  //  void showMCAs( void );
+
+  // QXafs
+  void ToggleQXafsMode( bool f );
+  void QXafsMeasSequence( void );
+  void CheckQXafsParams( void );
+  void SetNewRPTLimit( void );
 
  signals:
   void SelectedSSD( int i, bool f );

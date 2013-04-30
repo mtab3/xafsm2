@@ -41,18 +41,6 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
 
   connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( Hide( bool ) ) );
 
-  int i0 = 0, i1 = 0;
-  for ( int i = 0; i < ICLengths.count(); i++ ) {
-    I0ChSelect->addItem( ICLengths[i]->Name );
-    I1ChSelect->addItem( ICLengths[i]->Name );
-    if ( ICLengths[i]->ID == "I0" )
-      i0 = i;
-    if ( ICLengths[i]->ID == "I1" )
-      i1 = i;
-  }
-  I0ChSelect->setCurrentIndex( i0 );
-  I1ChSelect->setCurrentIndex( i1 );
-
   GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
        << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
@@ -61,28 +49,6 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
 
   for ( int i = 0; i < GSBs.count(); i++ ) {
     connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
-  }
-}
-
-void MainWindow::calcMuT( int ch, int gas, double keV )
-{
-  int an;
-  double total = 0;
-  double lambda = u->keV2a( keV );
-
-  for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
-    an = -1;
-    for ( int j = 0; j < ATOMS; j++ ) {
-      if ( A[j].AName == Gases[gas]->GasComps[i]->AName ) {
-	an = j;
-	break;
-      }
-    }
-    if ( an > 0 ) {
-      for ( int j = 0; j < 5; j++ ) {
-	//	if ( Vics[an].
-      }
-    }
   }
 }
 
@@ -231,6 +197,12 @@ void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置
 {
   MMainTh->setIsBusy( true );
 
+  if (( u->keV2any( EV, keV ) < MinEnergyInEV )
+      ||( u->keV2any( EV, keV ) > MaxEnergyInEV )) {
+    statusbar->showMessage( "The position to go is out of range.", 2000 );
+    return;
+  }
+    
   if ( SelThEncorder->isChecked() ) {
     MMainTh->SetValue( ( u->keV2deg( keV ) - EncMainTh->value().toDouble() )
 		       / MMainTh->getUPP() + MMainTh->value().toInt() );
