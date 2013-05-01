@@ -24,6 +24,7 @@ class AUnit : public QObject
   bool Enable;          // if the unit is enable on Stars server or not
   int aLine;            // the line number where the definition appears in .def file
   bool autoRange;
+  bool ConnectedToSSDServer;
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...

@@ -28,6 +28,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   RangeSelectable = false;
   SelectedRange = 0;
   setTime = 1;
+  ConnectedToSSDServer = false;
 
   Center = 0;        // only for PM
 
@@ -79,6 +80,7 @@ void AUnit::setEnable( bool enable )
   Enable = enable;
   IsBusy = false;
   LastFunc = "";
+  ConnectedToSSDServer = false;
   emit Enabled( Driver, enable );
   emit ChangedIsBusy1( Driver );
   IsBusy2Off( "" );
@@ -1185,10 +1187,20 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
 {
   if ( Type == "SSD" ) {
     if ( msg.From() == Driver ) {
-      IsBusy2Off( Driver );
-      DataLinkHostName = msg.Vals().at(0);
-      DataLinkHostPort = msg.Vals().at(1).toInt();
-      ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
+      if ( msg.Vals().count() == 2 ) {
+	IsBusy2Off( Driver );
+	QString NewDataLinkHostName = msg.Vals().at(0);
+	int NewDataLinkHostPort = msg.Vals().at(1).toInt();
+	if ( ( ! ConnectedToSSDServer ) || 
+	     ( ( NewDataLinkHostName != DataLinkHostName )
+	       &&( NewDataLinkHostPort != DataLinkHostPort ) ) ) {
+	  DataLinkHostName = NewDataLinkHostName;
+	  DataLinkHostPort = NewDataLinkHostPort;
+	  ConnectedToSSDServer = true;
+	  ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
+	  qDebug() << "Connect to SSD server" << DataLinkHostName << DataLinkHostPort;
+	}
+      }
     }
   }
 }
