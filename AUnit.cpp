@@ -1352,7 +1352,6 @@ void AUnit::receiveMCAs( void )
       TotalEvents << 0;
       ICRs        << getAMCAHead( i ).icr;
     }
-    qDebug() << "emitted New MCAs";
     emit LogMsg( "emitted New MCAs" );
     emit NewMCAsAvailable( MCAs );
   }
