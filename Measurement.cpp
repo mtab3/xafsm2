@@ -20,10 +20,10 @@ void MainWindow::MeasSequence( void )
     /* 
        0: Â¬Äê³«»Ï Repeat = 0
        1: Block = 0
-       2: Step = 0, setDwellTIme
+       2: Step = 0, setDwellTime
        3: Goto a Position with a Block and a Step
-       4: prepare to triger Sensors (only for cnt08)
-       5: Triger Sensors (for all)
+       4: Prepare to trigger Sensors (only for cnt08)
+       5: Trigger Sensors (for all)
        6: Read out Sensors
        10: Draw (Resume point from 99:)
           Step++; if ( Step < MaxStep ) goto 3
@@ -101,35 +101,34 @@ void MainWindow::MeasSequence( void )
     MeasS++;
     if ( inPause == 0 ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {
-	MeasStage = 4;
+        MeasStage = 4;
       } else if ( MeasB < SBlocks-1 ) {
-	MeasB++;
-	MeasStage = 3;
+        MeasB++;
+        MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
-	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
-	ClearXViewScreenForMeas( MeasView );
-	WriteHeader2( MeasR );
-	WriteInfoFile2();
-	PlayGoOnSound();
-	MeasR++;
-	CurrentRpt->setText( QString::number( MeasR + 1 ) );
-	MeasStage = 2;
+        NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
+        ClearXViewScreenForMeas( MeasView );
+        WriteHeader2( MeasR );
+        PlayGoOnSound();
+        WriteInfoFile2();
+        MeasR++;
+        CurrentRpt->setText( QString::number( MeasR + 1 ) );
+        MeasStage = 2;
       } else {               // ½ªÎ»
-	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
-	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
-	WriteHeader2( MeasR );
-	PlayEndingSound();
-	WriteInfoFile2();
-	MeasTimer->stop();
-	inMeas = 0;
-	MeasStart->setText( tr( "Start" ) );
-	MeasStart
-	  ->setStyleSheet( "background-color: "
-			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-			   "rgba(225, 235, 225, 255), stop:1 "
-			   "rgba(255, 255, 255, 255));" );
-	MeasPause->setEnabled( false );
-	onMeasFinishWorks();
+        statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
+        NewLogMsg( QString( tr( "Meas: Finished" ) ) );
+        WriteHeader2( MeasR );
+        PlayEndingSound();
+        WriteInfoFile2();
+        MeasTimer->stop();
+        inMeas = 0;
+        MeasStart->setText( tr( "Start" ) );
+        MeasStart->setStyleSheet( "background-color: "
+                                  "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
+                                  "rgba(225, 235, 225, 255), stop:1 "
+                                  "rgba(255, 255, 255, 255));" );
+        MeasPause->setEnabled( false );
+        onMeasFinishWorks();
       }
     }
     break;
@@ -147,6 +146,10 @@ void MainWindow::onMeasFinishWorks( void )
     MoveCurThPosKeV( InitialKeV );
   }
   MeasViewC->setIsDeletable( true );
+  if ( AutoModeButton->isChecked() ) {
+    connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+             this, SLOT( AutoSequence() ) );
+  }
 }
 
 bool MainWindow::isBusyMotorInMeas( void )

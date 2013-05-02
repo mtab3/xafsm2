@@ -196,10 +196,15 @@ void MainWindow::InitAndIdentifyMotors( void )
     am->Initialize( s );
     if ( am->getID() == "THETA" ) {
       if ( MMainTh != NULL ) {
-	disconnect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+        disconnect( MMainTh, SIGNAL( newValue( QString ) ),
+                    this, SLOT( ShowCurThPos() ) );
       }
       MMainTh = am;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+    } else if ( am->getID() == "ChangerX" ) {
+      ChangerX = am;
+    } else if ( am->getID() == "ChangerZ" ) {
+      ChangerZ = am;
     }
   }
 }

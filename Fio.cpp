@@ -35,10 +35,10 @@ void MainWindow::SetDFName( int i )
   QString buf;
 
   if ( i == 0 ) {
-    DFName = DFName0 + ".dat";
+    DFName = DFName0 + DFName00 + ".dat";
   } else {
     buf.sprintf( ".%03d", i );
-    DFName = DFName0 + buf;
+    DFName = DFName0 + DFName00 + buf;
   }
 }
 
@@ -329,9 +329,9 @@ void MainWindow::WriteInfoFile2( void )
     for ( int i = 0; i < 19; i++ ) {
       out << " " << i;
       if ( SSDbs2[i]->isChecked() == PBTrue ) {
-	out << " 1";
+        out << " 1";
       } else {
-	out << " 0";
+        out << " 0";
       }
     }
     out << endl;

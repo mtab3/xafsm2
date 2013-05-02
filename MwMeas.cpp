@@ -171,7 +171,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedNDFN( const QString & ) ) );
 
-  connect( MeasStart, SIGNAL( clicked() ), this, SLOT( StartMeasurement() ) );
+  //connect( MeasStart, SIGNAL( clicked() ), this, SLOT( StartMeasurement() ) );
+  connect( MeasStart, SIGNAL( clicked() ), this, SLOT( AutoMeasurement() ) );
   connect( MeasPause, SIGNAL( clicked() ), this, SLOT( PauseMeasurement() ) );
   connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ) );
   connect( StopP, SIGNAL( rejected() ), this, SLOT( GoingOn() ) );
@@ -215,6 +216,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   this, SLOT( SetNewGases() ) );
 
   connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
+
+  // Auto mode
+  connect( AutoMode, SIGNAL( editingFinished() ),
+           this, SLOT( ParseAutoMode() ) );
 }
 
 void MainWindow::newSensSelectedForI0( int index )
@@ -819,8 +824,8 @@ bool MainWindow::CheckDetectorSelection( void )
     if ( UseI1->isChecked() ) {
       AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
       if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
-	  ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
-	MeasFileType = TRANS;
+          ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
+        MeasFileType = TRANS;
       }  // その他は EXTRA
     }
     if ( Use19chSSD->isChecked() ) {
@@ -828,16 +833,16 @@ bool MainWindow::CheckDetectorSelection( void )
     }
     if ( UseAux1->isChecked() ) {
       if ( MeasDispMode[ MC_AUX1 ] == TRANS ) {
-	MeasFileType = TRANS;
+        MeasFileType = TRANS;
       } else {
-	MeasFileType = EXTRA;
+        MeasFileType = EXTRA;
       }
     }
     if ( UseAux2->isChecked() ) {
       if ( MeasDispMode[ MC_AUX2 ] == TRANS ) {
-	MeasFileType = TRANS;
+        MeasFileType = TRANS;
       } else {
-	MeasFileType = EXTRA;
+        MeasFileType = EXTRA;
       }
     }
   }
@@ -845,12 +850,62 @@ bool MainWindow::CheckDetectorSelection( void )
   return true;
 }
 
+void MainWindow::AutoMeasurement( void )
+{
+  DFName00 = "";
+  if ( AutoModeButton->isChecked() ) {
+    AutoMode->setDisabled( true );
+    if ( AutoModeParams.count() == 0 ) {
+      statusbar->showMessage( tr( "Auto mode parameters are not set."),
+                              2000 );
+      return;
+    }
+    MeasA = AutoModeParams.takeFirst().toInt();
+    moveToTarget( MeasA );
+    // Must wait till the target is set.
+    StartMeasurement();
+  } else {
+    AutoModeParams.clear();
+    StartMeasurement();
+  }
+}
+
+void MainWindow::AutoSequence( void ) {
+  if ( AutoModeParams.count() == 0 ) {
+    AutoMode->setEnabled( true );
+    ChangerX->SetValue( 0 );
+    ChangerZ->SetValue( 0 );
+    disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+                this, SLOT( AutoSequence() ) );
+  } else if ( !(MMainTh->isBusy()) ) {
+    disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+                this, SLOT( AutoSequence() ) );
+    MeasA = AutoModeParams.takeFirst().toInt();
+    moveToTarget( MeasA );
+    StartMeasurement();
+  }
+}
+
+void MainWindow::moveToTarget( int target )
+{
+  // HARDCODED!!!
+  int widthpulse = -12500;
+  int heightpulse = -10000;
+  int centerx = 0;
+  int centerz = 0;
+  int targetx = centerx + widthpulse * (  ( target - 1 ) % 3 - 1 );
+  int targetz = centerz + heightpulse * ( ( target - 1 ) / 3 - 1 );
+  DFName00 = QString("_%1_%2").arg( ( target - 1 ) % 3 ).arg( ( target - 1 ) / 3 );
+  ChangerX->SetValue( targetx );
+  ChangerZ->SetValue( targetz );
+}
+
 void MainWindow::StartMeasurement( void )
 {
   // ・測定対象の検出器
   // ・表示されるもの
   // ・ファイルに記録するもの
-  // という 3 つの似てるけど違うものがある
+  // という 3 つの似てるけど違うものがあるF
   // 例えば、I0 と 19ch-SSD で測定する場合
   // ・測定対象の検出器       : I0, SFluo (19ch を束ねた検出器)  : mUnits で管理
   // ・表示するもの           : I0, Total (19ch の合計), 各チャンネル(19個)
@@ -866,6 +921,9 @@ void MainWindow::StartMeasurement( void )
   EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
   SFluoLine = -1;
   isSFluo = isSI1 = false;
+
+  qDebug() << inMeas << MMainTh->isBusy()
+           << GetDFName0();
 
   // 将来の変更
   // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
@@ -898,57 +956,63 @@ void MainWindow::StartMeasurement( void )
     }
     if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
       if ( inMCAMeas ) {
-	QString msg = tr( "Meas cannot Start : in MCA measurement" );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
+        QString msg = tr( "Meas cannot Start : in MCA measurement" );
+        statusbar->showMessage( msg, 2000 );
+        NewLogMsg( msg );
+        return;
       }
     }
 
     if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
       if ( BlockPoints[0] > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
-	statusbar->showMessage( tr( "Measured points are too many.  "
-			    "It should be less than 9990 in QXAFS mode." ), 2000 );
-	return;
+        statusbar->showMessage( tr( "Measured points are too many.  "
+                                    "It should be less than 9990 in QXAFS mode." ),
+                                2000 );
+        return;
       }
       if ( ! UseI1->isChecked() ) {     // 今 QXafs は透過専用なので、I1 は必須
-	statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
-	return;
+        statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
+        return;
       }
       if ( Use19chSSD->isChecked() ) {     // 今 QXafs は透過専用なので、SSDは使えない
-	statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
-	return;
+        statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
+        return;
       }
 #if 0
       if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
-	// 今 QXafs で AUX は使えない
-	statusbar
-	  ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
+        // 今 QXafs で AUX は使えない
+        statusbar
+            ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
       }
       // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
       if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
-	statusbar
-	  ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
-	return;
+        statusbar
+            ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
+        return;
       }
       // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
       if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
-	statusbar
-	  ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
-	return;
+        statusbar
+            ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
+        return;
       }
 #endif
-    } else {   // Normal モード時専用のチェック
+    } else if ( AutoModeButton->isChecked() ) { // Auto mode
+      if ( QXafsMode->isChecked() ) {
+        statusbar->showMessage( tr( "Auto mode cannot be used with QXAFS mode" ),
+                                2000 );
+        return;
+      }
+    } else{   // Normal モード時専用のチェック
       int TotalPoints = 0;
       for ( int i = 0; i < Blocks; i++ ) {
-	TotalPoints += BlockPoints[i];
-      } 
+        TotalPoints += BlockPoints[i];
+      }
       if ( TotalPoints > 1999 ) {
-	statusbar
-	  ->showMessage( tr( "Measured points are too many.    "
-			     "It should be less than 2000 in normal XAFS mode." ) );
-	return;
-      }	
+        statusbar->showMessage( tr( "Measured points are too many.    "
+                                    "It should be less than 2000 in normal XAFS mode." ) );
+        return;
+      }
     }
 
     // この下の諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々諸々の設定が
@@ -990,7 +1054,9 @@ void MainWindow::StartMeasurement( void )
       SFluoLine = GSBSs.count();
       aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
       for ( int i = 0; i < MaxSSDs; i++ ) {
-	aGsb.stat = PBFalse; aGsb.label = QString::number( i ); GSBSs << aGsb;
+        aGsb.stat = PBFalse;
+        aGsb.label = QString::number( i );
+        GSBSs << aGsb;
       }
       SFluo->setSSDPresetType( "REAL" );   // SSD を使った XAFS 測定は強制的に Real Time
       SelRealTime->setChecked( true );
@@ -1012,8 +1078,8 @@ void MainWindow::StartMeasurement( void )
     }
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL ) {
-	mUnits.addUnit( Enc2 );
-	qDebug() << "Munits :: add enc2";
+        mUnits.addUnit( Enc2 );
+        qDebug() << "Munits :: add enc2";
       }
       mUnits.setOneByOne( false );
     }
@@ -1021,29 +1087,29 @@ void MainWindow::StartMeasurement( void )
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
       if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs モードで使えるかどうか
-	QString msg;
-	if ( QXafsMode->isChecked() ) {
-	  msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
-	} else {
-	  msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
-	    .arg( as->getName() );
-	}
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
+        QString msg;
+        if ( QXafsMode->isChecked() ) {
+          msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
+        } else {
+          msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
+              .arg( as->getName() );
+        }
+        statusbar->showMessage( msg, 2000 );
+        NewLogMsg( msg );
+        return;
       }
 
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-	QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
+        QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
+        statusbar->showMessage( msg, 2000 );
+        NewLogMsg( msg );
+        return;
       }
       if ( as->isRangeSelectable() ) {
-	if ( ! as->isAutoRange() ) {
-	  OneOfSensIsRangeSelectable = true;
-	  theNames += " [" + as->getName() + "]";
-	}
+        if ( ! as->isAutoRange() ) {
+          OneOfSensIsRangeSelectable = true;
+          theNames += " [" + as->getName() + "]";
+        }
       }
     }
 
@@ -1052,18 +1118,20 @@ void MainWindow::StartMeasurement( void )
     // 両方を同時には測定に使えない
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if (( mUnits.at(i)->getType() == "CNT2" )||( mUnits.at(i)->getType() == "OTC2" )) {
-	for ( int j = 0; j < mUnits.count(); j++ ) {
-	  if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
-	    QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
-	      .arg( mUnits.at(i)->getName() )
-	      .arg( mUnits.at(j)->getName() );
-	    statusbar->showMessage( msg, 2000 );
-	    NewLogMsg( msg );
-	    return;
-	  }
-	}
+        for ( int j = 0; j < mUnits.count(); j++ ) {
+          if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
+            QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
+                .arg( mUnits.at(i)->getName() )
+                .arg( mUnits.at(j)->getName() );
+            statusbar->showMessage( msg, 2000 );
+            NewLogMsg( msg );
+            return;
+          }
+        }
       }
     }
+
+    MakingSureOfRangeSelect = false;
 
 #if 0
     if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
@@ -1079,9 +1147,10 @@ void MainWindow::StartMeasurement( void )
     }
 #endif
 
+
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
       if ( ! MeasureDark() )                // 正常に測れなければだめ
-	return;
+        return;
     }
 
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
@@ -1109,9 +1178,8 @@ void MainWindow::StartMeasurement( void )
 
     BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
     if ( ! OverWriteChecked && BaseFile.exists() ) {
-      AskOverWrite
-	->setText( tr( "File [%1] Over Write ?" )
-			     .arg( DFName0 + ".dat" ) );
+      AskOverWrite->setText( tr( "File [%1] Over Write ?" )
+                             .arg( DFName0 + ".dat" ) );
       AskOverWrite->show();
       AskingOverwrite = true;
     } else {
@@ -1119,10 +1187,10 @@ void MainWindow::StartMeasurement( void )
     }
 
     NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
-	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
-	       .arg( SelectedCurPosDeg( XPM ) ) );
+               .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
+               .arg( SelectedCurPosDeg( XENC ) )
+               .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
+               .arg( SelectedCurPosDeg( XPM ) ) );
     InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
@@ -1147,8 +1215,8 @@ void MainWindow::StartMeasurement( void )
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()
-			  .addSecs( EstimatedMeasurementTimeInSec )
-			  .toString("yy.MM.dd hh:mm:ss") );
+                          .addSecs( EstimatedMeasurementTimeInSec )
+                          .toString("yy.MM.dd hh:mm:ss") );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
@@ -1157,10 +1225,10 @@ void MainWindow::StartMeasurement( void )
     StopP->show();
     SinPause = inPause;
     NewLogMsg( tr( "Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
-	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
-	       .arg( SelectedCurPosDeg( XPM ) ) );
+               .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
+               .arg( SelectedCurPosDeg( XENC ) )
+               .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
+               .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( InActive );
@@ -1300,3 +1368,24 @@ void MainWindow::RangeSelOK( void )
   MakingSureOfRangeSelect = false;
 }
 
+void MainWindow::ParseAutoMode( void )
+{
+  AutoModeParams.clear();
+  QString parameter = AutoMode->text();
+  QStringList prms = parameter.replace( QRegExp( "[\\s,]" ), " " ).simplified().split( QRegExp( "[\\s]" ) );
+  for ( int i = 0; i < prms.count(); i++ ) {
+    if ( prms[i].indexOf("-") >= 0 ) {
+      QStringList series = prms[i].split("-");
+      qDebug() << series;
+      QString start = series.at(0);
+      QString end = series.at(1);
+      int diff = end.toInt() - start.toInt() + 1;
+      qDebug() << diff;
+      for ( int j = 0; j < diff; j++ ) {
+        AutoModeParams << QString::number(start.toInt() + j);
+      }
+    } else {
+      AutoModeParams << prms[i];
+    }
+  }
+}
