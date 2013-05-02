@@ -112,6 +112,7 @@ private:
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
+  AUnit *ChangerX, *ChangerZ;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -256,7 +257,7 @@ private:
 
   QVector<AUnit *> I0Sensors, I1Sensors, A1Sensors, A2Sensors;
   QString fixS( QString s, int l );
-  QString DFName0, DFName;
+  QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
   int inMeas, inPause, SinPause;
@@ -323,6 +324,10 @@ private:
   double RunUpRate, RunUpTime, QXafsDwellTime;
   QString EncValue0, Enc2Value0;
 
+  // Auto mode
+  int MeasA;
+  QStringList AutoModeParams;
+
   void setupQXafsMode( void );
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
@@ -338,6 +343,10 @@ private:
   void ShowQTime( double dtime, double WidthInPuls );
 
 private slots:
+
+  // Auto mode
+  void ParseAutoMode( void );
+
   void Initialize( void );
   void InitializeUnitsAgain( void );
   void SendListNodes( void );
@@ -467,6 +476,10 @@ private slots:
   void newI1Range( int newR );
   void newA1Range( int newR );
   void newA2Range( int newR );
+
+  void AutoMeasurement( void );
+  void moveToTarget( int target );
+  void AutoSequence( void );
 
   void StartMeasurement( void );
   void PauseMeasurement( void );
