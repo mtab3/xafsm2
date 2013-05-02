@@ -35,10 +35,12 @@ void MainWindow::SetDFName( int i )
   QString buf;
 
   if ( i == 0 ) {
-    DFName = DFName0 + DFName00 + ".dat";
+    if ( !( MeasA == 0 ) )
+      DFName = DFName0 + "_" + QString::number(MeasA) + ".dat";
   } else {
     buf.sprintf( ".%03d", i );
-    DFName = DFName0 + DFName00 + buf;
+    if ( !( MeasA == 0 ) )
+      DFName = DFName0 + "_" + QString::number(MeasA) + ".dat";
   }
 }
 

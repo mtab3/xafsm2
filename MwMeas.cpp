@@ -852,6 +852,7 @@ bool MainWindow::CheckDetectorSelection( void )
 
 void MainWindow::AutoMeasurement( void )
 {
+  MeasA = 0;
   DFName00 = "";
   if ( AutoModeButton->isChecked() ) {
     AutoMode->setDisabled( true );
@@ -895,7 +896,7 @@ void MainWindow::moveToTarget( int target )
   int centerz = 0;
   int targetx = centerx + widthpulse * (  ( target - 1 ) % 3 - 1 );
   int targetz = centerz + heightpulse * ( ( target - 1 ) / 3 - 1 );
-  DFName00 = QString("_%1_%2").arg( ( target - 1 ) % 3 ).arg( ( target - 1 ) / 3 );
+  // DFName00 = QString("_%1_%2").arg( ( target - 1 ) % 3 ).arg( ( target - 1 ) / 3 );
   ChangerX->SetValue( targetx );
   ChangerZ->SetValue( targetz );
 }

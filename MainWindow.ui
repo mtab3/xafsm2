@@ -520,7 +520,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -6854,7 +6854,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
      <x>0</x>
      <y>0</y>
      <width>834</width>
-     <height>23</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
