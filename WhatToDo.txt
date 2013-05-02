@@ -1,3 +1,10 @@
+○ master-branch と develop-branch を分けてみた。
+   master を stable な branch にして、master に対しては bug-fix のみ、
+   開発は全て develop で。
+   master で bug-fix したら、develop に merge し、
+   develop がある程度あ安心できると思ったら、master に merge する。
+   というような方針でいけるか ?
+
 ○ QXafs のリピート回数の上限確認。かつその回数に耐えられるかどうか確認すべし
    150点 x 2,000 回
 ○ QXafs で 10,000(x3: I0, I1, mu)本の線が来た時の対処ができるよう XYView を改造。
