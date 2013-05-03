@@ -334,8 +334,11 @@ private:
   QString EncValue0, Enc2Value0;
 
   // Auto mode
+  bool AutoModeFirst;
+  bool MovingToNewSamplePosition;
   int MeasA;
   QStringList AutoModeParams;
+  void TouchDelegateFile( void );
 
   void setupQXafsMode( void );
   void HideBLKs( bool f );

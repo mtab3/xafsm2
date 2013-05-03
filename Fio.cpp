@@ -16,16 +16,8 @@ int MainWindow::GetDFName0()
   QFileInfo f = QFileInfo( DFName0 ); // path と basename 抽出に使う
   QFileInfo f2 = QFileInfo( f.absoluteDir().absolutePath(), f.baseName() );
   // f2 : path と basename の結合を Qt に任せる
-  //      (顕に path + "/" + basename と書きたくない. unix "/", win "\" 問題 )
+  //      (顕に path + "/" + basename と書きたくない. unix "/", win "\" 問題回避 )
   DFName0 = f2.filePath();
-  qDebug() << f.absoluteDir().absolutePath() << f.baseName();
-  qDebug() << "obtained base file name with path" << DFName0;
-
-#if 0	    
-  if ( DFName0.toUpper().lastIndexOf( ".DAT" ) == DFName0.length() - 4 ) {
-    DFName0 = DFName0.left( DFName0.length() - 4 );
-  }
-#endif
 
   return 1;
 }
@@ -35,12 +27,12 @@ void MainWindow::SetDFName( int i )
   QString buf;
 
   if ( i == 0 ) {
-    if ( !( MeasA == 0 ) )
-      DFName = DFName0 + "_" + QString::number(MeasA) + ".dat";
+    //      DFName = DFName0 + "_" + QString::number(MeasA) + ".dat";
+    DFName = DFName0 + DFName00 + ".dat";
   } else {
     buf.sprintf( ".%03d", i );
-    if ( !( MeasA == 0 ) )
-      DFName = DFName0 + "_" + QString::number(MeasA) + ".dat";
+    //      DFName = DFName0 + "_" + QString::number(MeasA) + ".dat";
+    DFName = DFName0 + DFName00 + ".dat";
   }
 }
 
@@ -427,7 +419,6 @@ void MainWindow::RecordData( void )
     QString buf;
     // 行の先頭は 目標角度、エンコーダ読み角度、測定時間、I0
     // Should be changed depending on the detector (ammeter or counter)
-
     encTh = SelectedCurPosDeg( XENC );  // エンコーダと
     PMTh = SelectedCurPosDeg( XPM );    // PM のそれぞれで見た角度
     // エンコーダの角度で記録するか、選択した角度で記録するか決定
@@ -509,4 +500,11 @@ void MainWindow::RecordData( void )
     out << endl;
     file.close();
   }
+}
+
+void MainWindow::TouchDelegateFile( void )
+{
+  QFile file( DFName0 + ".dat" );
+  if ( file.open( QIODevice::Append ) )
+    file.close();
 }

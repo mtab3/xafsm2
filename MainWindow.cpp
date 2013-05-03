@@ -47,10 +47,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   MMainTh = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
+  ChangerX = ChangerZ = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
   MCAGains.clear();
+  MeasA = 0;
 
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
@@ -206,6 +208,10 @@ void MainWindow::InitAndIdentifyMotors( void )
     } else if ( am->getID() == "ChangerZ" ) {
       ChangerZ = am;
     }
+  }
+  if (( ChangerX == NULL )||( ChangerZ == NULL)) {
+    AutoModeButton->setChecked( false );
+    AutoModeButton->setEnabled( false );
   }
 }
 
