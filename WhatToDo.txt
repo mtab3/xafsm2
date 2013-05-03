@@ -1,3 +1,19 @@
+○ AutoModeMeasurement の最初で、auto mode に入って良いかどうかの確認をする前に
+   AutoMode->setDisable( true );
+   してしまってるので、auto-mode に入らない場合、以後 AutoMode への入力ができなくなる。
+   訂正。
+○ AutoModeMeasurement の最初で、AutoModeButton が押されていないと
+   AutoModeParams をクリアしてしまっているが、これがセットされるのは
+   AutoMode の編集終了時だけなので、ここでクリアしてしまうと、
+   この後 AutoMode の入力欄を触らずに auto-mode に入ろうとした時、
+   AutoModeParams が無くなってしまってることになる。
+   訂正。
+○ AutoMode で測定中、「中止」を押した場合、
+   正しく(AutoMode->setDisabled( false ) とかをやって)抜けてるか確認する(未確認)
+○ AutoMode で測定中、「中止」を押された場合、
+   現在進行中の1つのスキャンのみの中止か全体の中止かを尋ねるようなことが必要。未対応
+
+
 ○ QXafs のリピート回数の上限確認。かつその回数に耐えられるかどうか確認すべし
    150点 x 2,000 回
 ○ QXafs で 10,000(x3: I0, I1, mu)本の線が来た時の対処ができるよう XYView を改造。

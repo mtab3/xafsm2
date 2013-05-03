@@ -855,18 +855,18 @@ void MainWindow::AutoMeasurement( void )
   MeasA = 0;
   DFName00 = "";
   if ( AutoModeButton->isChecked() ) {
-    AutoMode->setDisabled( true );
     if ( AutoModeParams.count() == 0 ) {
       statusbar->showMessage( tr( "Auto mode parameters are not set."),
                               2000 );
       return;
     }
+    AutoMode->setDisabled( true );  // it must be disabled after some checks if going on.
     MeasA = AutoModeParams.takeFirst().toInt();
     moveToTarget( MeasA );
     // Must wait till the target is set.
     StartMeasurement();
   } else {
-    AutoModeParams.clear();
+    // AutoModeParams.clear(); // it should not be cleared here.
     StartMeasurement();
   }
 }
