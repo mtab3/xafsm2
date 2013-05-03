@@ -2,44 +2,17 @@
    master を stable な branch にして、master に対しては bug-fix のみ、
    開発は全て develop で。
    master で bug-fix したら、develop に merge し、
-   develop がある程度あ安心できると思ったら、master に merge する。
+   develop がある程度安心できると思ったら、master に merge する。
    というような方針でいけるか ?
 
 
 ○ MMainTh->isBusy で引っかかって測定不能になることが頻繁に起こる。
    テスト環境高からか???? 要確認 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-○ AutoMode でチェンジャが試料位置に移動するのを待つようにした。
-○ AutoModeMeasurement の最初で、auto mode に入って良いかどうかの確認をする前に
-   AutoMode->setDisable( true );
-   してしまってるので、auto-mode に入らない場合、以後 AutoMode への入力ができなくなる。
-   訂正。
-○ AutoModeMeasurement の最初で、AutoModeButton が押されていないと
-   AutoModeParams をクリアしてしまっているが、これがセットされるのは
-   AutoMode の編集終了時だけなので、ここでクリアしてしまうと、
-   この後 AutoMode の入力欄を触らずに auto-mode に入ろうとした時、
-   AutoModeParams が無くなってしまってることになる。
-   訂正。
-   ---> AutoMode で測定開始時点でパースして内部変数 AutoModePars がセットされるので
-   （この変数が、測定開始時点での AutoMode の状態を憶えている変数として働くので)
-   AutoMode->setDisabled( true/false ) は不要になった。
-   // ○ AutoMode で測定中、「中止」を押した場合、
-   // 正しく(AutoMode->setDisabled( false ) とかをやって)抜けてるか確認する(未確認)
-○ Fio.cpp の SetDFName で、auto-mode でない場合でも MeasA を使って
-   ファイル名を変更しようとしている。---> やめた ( DFName00 復活 )
-   // これをやめたので関係ないが、MeasA の初期値を 0 クリアしてなかったので
-   // auto-mode に入らないで、通常測定を行うと ファイル名がまともでなくなっていた
 ○ QFio.cpp の SetDFName2 でも DFName00 を使うようにした。
    これで、QXAFS で auto-mode を使っていけない理由がない気がする... ので
    Auto-mode の時 QXafs が出来なくしているチェックを外す。-----> 要確認 !!!!!!!
    コードを見る限り大丈夫そう。---> 現場チェック !!!
-○ AutoMode で必要になる AUnit *ChangerX, *ChangerZ が初期値として
-   NULL クリアされてなかった --> 訂正
-○ 定義ファイルで ChangerX, ChangerZ が定義されていない場合、AutoMode に入れなくした。
-○ AutoMode スタート時、代表名のファイルを作成するようにする。
-   (上書き確認の対象にする)
-○ ParseAutoMode が AutoMode = "" の時でも、要素1個の list を返してしまうので
-   ( 試料 0 を選択した )測定が始まってしまっていた ---> 訂正
 
 ○ AutoMode で測定中、「中止」を押された場合、
    現在進行中の1つのスキャンのみの中止か全体の中止かを尋ねるようなことが必要。未対応
@@ -160,6 +133,34 @@
 ○ umi と統合とかありえるか? 
 
 #########################################################################
+対処済み 2013.5～
+○ AutoMode で必要になる AUnit *ChangerX, *ChangerZ が初期値として
+   NULL クリアされてなかった --> 訂正
+○ 定義ファイルで ChangerX, ChangerZ が定義されていない場合、AutoMode に入れなくした。
+○ AutoMode スタート時、代表名のファイルを作成するようにする。
+   (上書き確認の対象にする)
+○ ParseAutoMode が AutoMode = "" の時でも、要素1個の list を返してしまうので
+   ( 試料 0 を選択した )測定が始まってしまっていた ---> 訂正
+○ AutoMode でチェンジャが試料位置に移動するのを待つようにした。
+○ AutoModeMeasurement の最初で、auto mode に入って良いかどうかの確認をする前に
+   AutoMode->setDisable( true );
+   してしまってるので、auto-mode に入らない場合、以後 AutoMode への入力ができなくなる。
+   訂正。
+○ AutoModeMeasurement の最初で、AutoModeButton が押されていないと
+   AutoModeParams をクリアしてしまっているが、これがセットされるのは
+   AutoMode の編集終了時だけなので、ここでクリアしてしまうと、
+   この後 AutoMode の入力欄を触らずに auto-mode に入ろうとした時、
+   AutoModeParams が無くなってしまってることになる。
+   訂正。
+   ---> AutoMode で測定開始時点でパースして内部変数 AutoModePars がセットされるので
+   （この変数が、測定開始時点での AutoMode の状態を憶えている変数として働くので)
+   AutoMode->setDisabled( true/false ) は不要になった。
+   // ○ AutoMode で測定中、「中止」を押した場合、
+   // 正しく(AutoMode->setDisabled( false ) とかをやって)抜けてるか確認する(未確認)
+○ Fio.cpp の SetDFName で、auto-mode でない場合でも MeasA を使って
+   ファイル名を変更しようとしている。---> やめた ( DFName00 復活 )
+   // これをやめたので関係ないが、MeasA の初期値を 0 クリアしてなかったので
+   // auto-mode に入らないで、通常測定を行うと ファイル名がまともでなくなっていた
 
 対処済み 2013.4～
 ○ QXafs ヘッダの形式を 9809 にした
