@@ -41,6 +41,9 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelRBFND->setFilter( "*.prm" );
   OverWriteChecked = false;
   SelectedOrgName.clear();
+  DFName00.clear();
+  AutoModeFirst = true;
+  MovingToNewSamplePosition = false;
 
   EditDFName->setText( "test.dat" );
   connect( EditDFName, SIGNAL( textEdited( const QString & ) ),
@@ -217,9 +220,9 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
 
-  // Auto mode
-  connect( AutoMode, SIGNAL( editingFinished() ),
-           this, SLOT( ParseAutoMode() ) );
+  // Auto mode   :  The parse can be done, on starting measurement
+  //  connect( AutoMode, SIGNAL( editingFinished() ),
+  //           this, SLOT( ParseAutoMode() ) );
 }
 
 void MainWindow::newSensSelectedForI0( int index )
@@ -853,27 +856,36 @@ bool MainWindow::CheckDetectorSelection( void )
 void MainWindow::AutoMeasurement( void )
 {
   MeasA = 0;
-  DFName00 = "";
+  AutoModeFirst = true;   // 通常/AutoMode にかかわらず 1 回目の測定フラグは立てておく
+                          // ファイルの上書きチェックを制御するため
+  qDebug() << "in AutoMeas";
   if ( AutoModeButton->isChecked() ) {
-    AutoMode->setDisabled( true );
+    ParseAutoMode();
+    qDebug() << "Auto Mode Params " << AutoModeParams;
     if ( AutoModeParams.count() == 0 ) {
       statusbar->showMessage( tr( "Auto mode parameters are not set."),
                               2000 );
       return;
     }
+    // AutoMode->setDisabled( true );  // Now, there is no need to set it to be disabled
     MeasA = AutoModeParams.takeFirst().toInt();
     moveToTarget( MeasA );
     // Must wait till the target is set.
-    StartMeasurement();
-  } else {
-    AutoModeParams.clear();
-    StartMeasurement();
   }
+#if 0         // ここですることが何もない
+  else {
+    // AutoModeParams.clear(); // it should not be cleared here.
+    // StartMeasurement();
+  }
+#endif 
+  StartMeasurement();
 }
 
-void MainWindow::AutoSequence( void ) {
+void MainWindow::AutoSequence( void )
+{
+  AutoModeFirst = false;
   if ( AutoModeParams.count() == 0 ) {
-    AutoMode->setEnabled( true );
+    // AutoMode->setEnabled( true );   // As is is not set to be disable
     ChangerX->SetValue( 0 );
     ChangerZ->SetValue( 0 );
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
@@ -889,6 +901,7 @@ void MainWindow::AutoSequence( void ) {
 
 void MainWindow::moveToTarget( int target )
 {
+  MovingToNewSamplePosition = true;   // このフラグで移動中の測定をブロックする
   // HARDCODED!!!
   int widthpulse = -12500;
   int heightpulse = -10000;
@@ -896,7 +909,7 @@ void MainWindow::moveToTarget( int target )
   int centerz = 0;
   int targetx = centerx + widthpulse * (  ( target - 1 ) % 3 - 1 );
   int targetz = centerz + heightpulse * ( ( target - 1 ) / 3 - 1 );
-  // DFName00 = QString("_%1_%2").arg( ( target - 1 ) % 3 ).arg( ( target - 1 ) / 3 );
+  DFName00 = QString("_%1").arg( MeasA );
   ChangerX->SetValue( targetx );
   ChangerZ->SetValue( targetz );
 }
@@ -998,20 +1011,24 @@ void MainWindow::StartMeasurement( void )
         return;
       }
 #endif
+
+#if 0   // 多分不要 (QXAFS と AutoMode は両立するはず)
     } else if ( AutoModeButton->isChecked() ) { // Auto mode
       if ( QXafsMode->isChecked() ) {
         statusbar->showMessage( tr( "Auto mode cannot be used with QXAFS mode" ),
                                 2000 );
         return;
       }
-    } else{   // Normal モード時専用のチェック
+#endif
+
+    } else {   // Normal モード時専用のチェック
       int TotalPoints = 0;
       for ( int i = 0; i < Blocks; i++ ) {
         TotalPoints += BlockPoints[i];
       }
       if ( TotalPoints > 1999 ) {
         statusbar->showMessage( tr( "Measured points are too many.    "
-                                    "It should be less than 2000 in normal XAFS mode." ) );
+                                "It should be less than 2000 in normal XAFS mode." ) );
         return;
       }
     }
@@ -1177,14 +1194,16 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
-    BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
-    if ( ! OverWriteChecked && BaseFile.exists() ) {
-      AskOverWrite->setText( tr( "File [%1] Over Write ?" )
-                             .arg( DFName0 + ".dat" ) );
-      AskOverWrite->show();
-      AskingOverwrite = true;
-    } else {
-      AskingOverwrite = false;
+    if ( AutoModeFirst ) {  // AutoMode: off か AutoMode の 1回目に true
+      BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
+      if ( ! OverWriteChecked && BaseFile.exists() ) {
+	AskOverWrite->setText( tr( "File [%1] Over Write ?" )
+			       .arg( DFName0 + ".dat" ) );
+	AskOverWrite->show();
+	AskingOverwrite = true;  // ここで出した確認ダイアログをクローズするときにクリア
+      } else {
+	AskingOverwrite = false;
+      }
     }
 
     NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
@@ -1372,8 +1391,11 @@ void MainWindow::RangeSelOK( void )
 void MainWindow::ParseAutoMode( void )
 {
   AutoModeParams.clear();
-  QString parameter = AutoMode->text();
-  QStringList prms = parameter.replace( QRegExp( "[\\s,]" ), " " ).simplified().split( QRegExp( "[\\s]" ) );
+  QString parameter = AutoMode->text().replace( QRegExp( "[\\s,]" ), " " ).simplified();
+  if ( parameter.isEmpty() )
+    return;
+
+  QStringList prms = parameter.split( QRegExp( "[\\s]" ) );
   for ( int i = 0; i < prms.count(); i++ ) {
     if ( prms[i].indexOf("-") >= 0 ) {
       QStringList series = prms[i].split("-");

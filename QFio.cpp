@@ -11,16 +11,16 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
 
   if ( rpt == 1 ) {
     if ( dir == FORWARD ) {
-      DFName = DFName0 + "-f" + ".dat";
+      DFName = DFName0 + DFName00 + "-f" + ".dat";
     } else {
-      DFName = DFName0 + "-b" + ".dat";
+      DFName = DFName0 + DFName00 + "-b" + ".dat";
     }
   } else {
     buf.sprintf( ".%04d", rpt - 1 );
     if ( dir == FORWARD ) {
-      DFName = DFName0 + "-f" + buf;
+      DFName = DFName0 + DFName00 + "-f" + buf;
     } else {
-      DFName = DFName0 + "-b" + buf;
+      DFName = DFName0 + DFName00 + "-b" + buf;
     }
   }
 }
@@ -51,7 +51,6 @@ void MainWindow::MakeDelegateFile( void )
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
   file.close();
-
 }
 
 void MainWindow::WriteQHeader( int rpt, DIRECTION dir )

@@ -6,7 +6,7 @@
 # 2013/04/19 add 'QXAFSOK'     line
 #                'NORMALOK'    line
 # 2013/04/25 add 'MCAGAIN'     line
-#
+# 2013/05/03 add new IDs 'ChangerX' and 'ChangerZ' for PMs
 
 #
 # In this definition file,
@@ -137,8 +137,8 @@ MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
 #MOTOR PM "M006" "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 INT 0
 #MOTOR PM "M007" "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 INT 0
 #MOTOR PM "M008" "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 INT 0
-#MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 INT 0
-#MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 INT 0
+#MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 INT 0
+#MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 INT 0
 #MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 INT 0
 #MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 INT 0
 #MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 INT 0
@@ -166,8 +166,8 @@ MOTOR PM "M005" "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 INT 0
 MOTOR PM "M006" "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 INT 0
 MOTOR PM "M007" "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 INT 0
 MOTOR PM "M008" "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 INT 0
-MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
-MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
+MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
+MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
 MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 INT 0
 MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 INT 0
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 INT 0

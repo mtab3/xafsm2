@@ -8,6 +8,11 @@ void MainWindow::MeasSequence( void )
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
+  if ( MovingToNewSamplePosition ) {
+    if ( ChangerX->isBusy() || ChangerZ->isBusy() )
+      return;
+    MovingToNewSamplePosition = false;
+  }
 
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
 
@@ -33,6 +38,8 @@ void MainWindow::MeasSequence( void )
        99: pause の時用のステージ
     */
   case 0:
+    if ( AutoModeFirst )
+      TouchDelegateFile();
     CurrentRpt->setText( QString::number( 1 ) );
     CurrentPnt->setText( QString::number( 1 ) );
     WriteInfoFile();
