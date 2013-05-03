@@ -1311,21 +1311,17 @@ void AUnit::receiveMCAs( void )
     bytes = MCABUFSIZE - dLinkCount;   // 大きいなら、読める分だけ読む
 
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
-
   dLinkCount += bytes;
-  QString debug = QString( "%1 %2 %3 %4" )
-    .arg( bytes0 ).arg( bytes ).arg( dLinkCount ).arg( MCABUFSIZE );
-  qDebug() << debug;
-  emit LogMsg( debug );
 
   if ( dLinkCount >= MCABUFSIZE ) {
     IsBusy2Off( Driver );
     dLinkCount = 0;
     if ( MCAs != NULL ) delete [] MCAs;
-    MCAs = MCAs0;
+    MCAs = MCAs0;              // 読み込みが完成したバッファ(MCAs0)を
+                               // 最新のデータが置かれたバッファ(MCAs)に移し
     MCAs0 = new char [ MCABUFSIZE ];
+                               // MCAs0 は次のデータを受けるために新しくする
     MCAsReady = true;          // MCAs のバッファに有効なデータがある
-
 
     CountsInROI.clear();
     CountsAll.clear();
