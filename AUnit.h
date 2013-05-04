@@ -191,6 +191,7 @@ public:
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
   void setCenter( QString center ) { Center = center.toDouble(); };
+  void setCenter( double center ) { Center = center; };
 
   // only for PZ
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };

@@ -44,6 +44,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   DFName00.clear();
   AutoModeFirst = true;
   MovingToNewSamplePosition = false;
+  AutoModeComment.clear();
 
   EditDFName->setText( "test.dat" );
   connect( EditDFName, SIGNAL( textEdited( const QString & ) ),
@@ -223,6 +224,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   // Auto mode   :  The parse can be done, on starting measurement
   //  connect( AutoMode, SIGNAL( editingFinished() ),
   //           this, SLOT( ParseAutoMode() ) );
+  connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
 }
 
 void MainWindow::newSensSelectedForI0( int index )
@@ -860,16 +862,22 @@ void MainWindow::AutoMeasurement( void )
                           // ファイルの上書きチェックを制御するため
   qDebug() << "in AutoMeas";
   if ( AutoModeButton->isChecked() ) {
-    ParseAutoMode();
-    qDebug() << "Auto Mode Params " << AutoModeParams;
+    if ( ! ParseAutoMode() ) {
+      statusbar->showMessage( tr( "Auto mode parameters are illigal."),
+                              2000 );
+      return;
+    }
+    //    qDebug() << "Auto Mode Params " << AutoModeParams;
     if ( AutoModeParams.count() == 0 ) {
       statusbar->showMessage( tr( "Auto mode parameters are not set."),
                               2000 );
       return;
     }
     // AutoMode->setDisabled( true );  // Now, there is no need to set it to be disabled
-    MeasA = AutoModeParams.takeFirst().toInt();
-    moveToTarget( MeasA );
+    MeasA = 0;
+    AutoModeParams.remove( 0 );
+    moveToTarget( AutoModeParams[ MeasA ].num,
+		  AutoModeParams[ MeasA ].dx, AutoModeParams[ MeasA ].dz );
     // Must wait till the target is set.
   }
 #if 0         // ここですることが何もない
@@ -891,25 +899,44 @@ void MainWindow::AutoSequence( void )
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
                 this, SLOT( AutoSequence() ) );
   } else if ( !(MMainTh->isBusy()) ) {
+    MeasA++;
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
                 this, SLOT( AutoSequence() ) );
-    MeasA = AutoModeParams.takeFirst().toInt();
-    moveToTarget( MeasA );
+    moveToTarget( AutoModeParams[ MeasA ].num,
+		  AutoModeParams[ MeasA].dx, AutoModeParams[ MeasA ].dz );
     StartMeasurement();
   }
 }
 
-void MainWindow::moveToTarget( int target )
+#define ChangerXSpacing  ( 12.5 )        // mm
+#define ChangerZSpacing  ( 10.5 )        // mm
+
+void MainWindow::SetNewChangerCenter( void )
+{
+  int target = SelectChangerBase->value();
+  int ix = ( target - 1 ) % 3 - 1;    // -1, 0, 1
+  int iz = ( target - 1 ) / 3 - 1;    // -1, 0, 1
+  int nowx = ChangerX->value().toInt();
+  int nowz = ChangerZ->value().toInt();
+  ChangerX->setCenter( nowx - ix * ChangerXSpacing / ChangerX->getUPP() );
+  ChangerZ->setCenter( nowz - iz * ChangerZSpacing / ChangerZ->getUPP() );
+}
+
+void MainWindow::moveToTarget( int target, double dx, double dz )
 {
   MovingToNewSamplePosition = true;   // このフラグで移動中の測定をブロックする
   // HARDCODED!!!
-  int widthpulse = -12500;
-  int heightpulse = -10000;
-  int centerx = 0;
-  int centerz = 0;
-  int targetx = centerx + widthpulse * (  ( target - 1 ) % 3 - 1 );
-  int targetz = centerz + heightpulse * ( ( target - 1 ) / 3 - 1 );
+  // int widthpulse = -12500;      // 12.5mm
+  // int heightpulse = -10000;     // 10.0mm
+  // int centerx = 0;
+  // int centerz = 0;
+  int ix = ( target - 1 ) % 3 - 1;    // -1, 0, 1
+  int iz = ( target - 1 ) / 3 - 1;    // -1, 0, 1
+  int targetx = ChangerX->u2p( ChangerXSpacing * ix ) + dx / ChangerX->getUPP();
+  int targetz = ChangerZ->u2p( ChangerZSpacing * iz ) + dz / ChangerZ->getUPP();
   DFName00 = QString("_%1").arg( MeasA );
+  AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" )
+    .arg( target ).arg( dx ).arg( dz );
   ChangerX->SetValue( targetx );
   ChangerZ->SetValue( targetz );
 }
@@ -1388,27 +1415,86 @@ void MainWindow::RangeSelOK( void )
   MakingSureOfRangeSelect = false;
 }
 
-void MainWindow::ParseAutoMode( void )
+
+bool MainWindow::ParseAutoMode( void )
 {
   AutoModeParams.clear();
-  QString parameter = AutoMode->text().replace( QRegExp( "[\\s,]" ), " " ).simplified();
+
+  QStringList options;
+  QString pLine = AutoMode->text();
+
+  // "*" は特別な意味を持たせるので元の記号列に含まれていたらエラー
+  if ( pLine.indexOf( "*" ) >= 0 )
+    return false;
+  // パラメータ列に含まれる "(", ")" ペアは別に切り出しておく。(代わりに "*" を置く)
+  int s, e;
+  while ( ( s = pLine.indexOf( "(" ) ) >= 0 ) {
+    if ( ( e = pLine.indexOf( ")" ) ) < 0 )
+      return false;
+    options << pLine.mid( s+1, e-s-1 );
+    pLine = pLine.left( s ) + "*" + pLine.mid( e+1 );
+    qDebug() << pLine;
+    qDebug() << options;
+  }
+
+  // 「,」(カンマ)と「 」(スペース、空白文字)の両方を区切りとして認める。
+  // 全て、「 」空白1個に置き換える。
+  QString parameter = pLine.replace( QRegExp( "[\\s,]" ), " " ).simplified();
   if ( parameter.isEmpty() )
-    return;
+    return false;
 
   QStringList prms = parameter.split( QRegExp( "[\\s]" ) );
+
+  int start, end;
+  double dx, dz;
+  int p;
+  AutoModeParam amp;
   for ( int i = 0; i < prms.count(); i++ ) {
-    if ( prms[i].indexOf("-") >= 0 ) {
+    dx = dz = 0;
+    if ( ( p = prms[i].indexOf( "*" ) ) >= 0 ) {
+      // "*" がパラメータの末端以外にあったらエラー
+      prms[i][p] = ' ';
+      if ( p != ( prms[i].length() - 1 ) )
+	return false;
+      // オプション文字列が "," を含んでいなければエラー
+      // "," が先頭でもエラー
+      if ( ( p = options[0].indexOf( "," ) ) <= 0 )
+	return false;
+      // "," が末尾でもエラー
+      if ( p == ( options[0].length() - 1 ) )
+	return false;
+      // "," が２つあってもエラーだけどそのチェックはまだしてない
+      dx = options[0].left( p ).toDouble();
+      dz = options[0].mid( p+1 ).toDouble();
+      options.removeAt( 0 );
+    }
+    if ( prms[i].indexOf( "-" ) >= 0 ) {
       QStringList series = prms[i].split("-");
-      qDebug() << series;
-      QString start = series.at(0);
-      QString end = series.at(1);
-      int diff = end.toInt() - start.toInt() + 1;
-      qDebug() << diff;
-      for ( int j = 0; j < diff; j++ ) {
-        AutoModeParams << QString::number(start.toInt() + j);
+      if ( series.count() > 1 ) {                 // "-" だけ、はとりあえず無視
+	start = ( series.at(0).isEmpty() ) ? 1 : series.at(0).toInt();
+	end = ( series.at(1).isEmpty() ) ? 9 : series.at(1).toInt();
+	int diff = abs( end - start );
+	int sign = 1;
+	if ( start > end ) sign = -1;
+	for ( int j = 0; j < diff + 1; j++ ) {
+	  amp.num = start + j * sign;
+	  amp.dx = dx;
+	  amp.dz = dz;
+	  AutoModeParams << amp;
+	}
       }
     } else {
-      AutoModeParams << prms[i];
+      amp.num = prms[i].toInt();
+      amp.dx = dx;
+      amp.dz = dz;
+      AutoModeParams << amp;
     }
   }
+
+  for ( int i = 0; i < AutoModeParams.count(); i++ ) {
+    qDebug() << AutoModeParams[i].num
+	     << AutoModeParams[i].dx << AutoModeParams[i].dz;
+  }
+
+  return true;
 }
