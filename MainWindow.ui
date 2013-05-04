@@ -2589,7 +2589,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 </sizepolicy>
                </property>
                <property name="toolTip">
-                <string>Please put the numder to be scanned (eg. 1,2,3 or 3-6)</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please put the numder to be scanned (eg. 1,2,3 or 3-6) &lt;img src=&quot;:/Changer.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -6854,7 +6854,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
      <x>0</x>
      <y>0</y>
      <width>834</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -6911,6 +6911,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
   <tabstop>LogMsgs</tabstop>
   <tabstop>LogComment</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="XafsM.qrc"/>
+ </resources>
  <connections/>
 </ui>

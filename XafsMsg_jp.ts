@@ -1780,7 +1780,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Please put the numder to be scanned (eg. 1,2,3 or 3-6)</source>
-        <translation>自動交換して測定する試料番号を入力して下さい。
+        <translation type="obsolete">自動交換して測定する試料番号を入力して下さい。
 (例 1,3,5 : この3つをこの順に測定します。例 5, 1-4 : 5を測定した後、1〜4を順に測定します)</translation>
     </message>
     <message>
@@ -1794,6 +1794,10 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Auto mode cannot be used with QXAFS mode</source>
         <translation>QXAFSモードでは試料の自動交換は行えません。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please put the numder to be scanned (eg. 1,2,3 or 3-6) &lt;img src=&quot;:/Changer.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;自動交換して測定する試料番号を入力して下さい。&lt;p&gt;(例 1,3,5 : この3つをこの順に測定します。例 5, 1-4 : 5を測定した後、1〜4を順に測定します)&lt;p&gt; &lt;img src=&quot;:/Changer.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
