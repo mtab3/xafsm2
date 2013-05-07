@@ -1,7 +1,7 @@
 
 #include "MainWindow.h"
 
-// QXafs 関連のイニシャライズ setupMeMeas より前に呼ばれてる
+// QXafs 関連のイニシャライズ setupMwMeas より前に呼ばれてる
 void MainWindow::setupQXafsMode( void )
 {
   connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
@@ -25,7 +25,7 @@ void MainWindow::SetNewRPTLimit( void )
 {
   if ( QXafsMode->isChecked() ) {
     if ( QLimitedDisplay->isChecked() ) {
-      SelRPT->setMaximum( 999999 ); // unlimit にしたい。事実上の unlimit のつもり。
+      SelRPT->setMaximum( 999999 ); // 別に unlimit でもいい。事実上の unlimit のつもり。
     } else {
       if ( QMeasOnBackward->isChecked() ) {
 	SelRPT->setMaximum( 4999 );
@@ -347,7 +347,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 6:
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
-    mUnits.clearDoneF();      // QRead を一台ずつ行うため
+    mUnits.clearDoneF();      // QRead を一台ずつ行うため // 現状不要のはず。
     MeasStage++;
     break;
   case 7:
@@ -357,10 +357,12 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     break;
   case 8:
+#if 0
     qDebug() << "aa" << mUnits.count();
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
+#endif
     WriteQHeader2( MeasR, FORWARD );
     WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
@@ -395,7 +397,7 @@ void MainWindow::QXafsMeasSequence( void )
     } else {
       MeasStage = 4; // Repeat Point
     }
-    mUnits.clearDoneF();      // QRead を一台ずつ行うため
+    mUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
     break;
   case 12:
     if ( mUnits.QRead() )
@@ -404,9 +406,11 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 13:
+#if 0
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
+#endif
     WriteQHeader2( MeasR, BACKWARD );
     WriteQBody();
     g = ( MeasR - 1 ) * 2 + 1;
@@ -460,6 +464,9 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     vals2.clear();
   int num = findMini( vals0, vals1, vals2 );
 
+  double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
+  double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
+
   int p = QXafsSP0;
   int d = QXafsInterval;
   int c = MMainTh->getCenter();
@@ -500,10 +507,12 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     } else {
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    E = u->deg2keV( deg2 );
 
-    MeasView->NewPoint( g*3 + 0, E, I0 = vals0[i+1].toDouble() );
-    MeasView->NewPoint( g*3 + 1, E, I1 = vals1[i+1].toDouble() );
+    E = u->deg2keV( deg2 );
+    I0 = vals0[i+1].toDouble() - dark0;
+    I1 = vals1[i+1].toDouble() - dark1;
+    MeasView->NewPoint( g*3 + 0, E, I0 );
+    MeasView->NewPoint( g*3 + 1, E, I1 );
     if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
       MeasView->NewPoint( g*3 + 2, E, log( I0/I1 ) );
     } else {
