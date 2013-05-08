@@ -29,11 +29,11 @@ private:
   int lines;
   double Rwmaxy[ MaxMon ];
   double Rwminy[ MaxMon ];
-  double mony[ MaxMon ][ RingMax ]; // Monitor —p‚Ì”z—ñ
+  double mony[ MaxMon ][ RingMax ]; // Monitor ç”¨ã®é…åˆ—
   int mont[ RingMax ];
-  int ep;     // Ring Buffer ‚Ì end point 
-  int datas;  // Ring Buffer “à‚Ì—LŒø‚Èƒf[ƒ^“_”
-  int timeShift, timeShift0, tts;   // •\¦‚ÌŠÔ‚ğŒ»İ‚ÌŠÔ‚©‚ç‚Ç‚ê‚¾‚¯‚¸‚ç‚·‚©
+  int ep;     // Ring Buffer ã® end point 
+  int datas;  // Ring Buffer å†…ã®æœ‰åŠ¹ãªãƒ‡ãƒ¼ã‚¿ç‚¹æ•°
+  int timeShift, timeShift0, tts;   // è¡¨ç¤ºã®æ™‚é–“ã‚’ç¾åœ¨ã®æ™‚é–“ã‹ã‚‰ã©ã‚Œã ã‘ãšã‚‰ã™ã‹
   double YShift[ MaxMon ], YShift0[ MaxMon ], yshift[ MaxMon ];
 
   MouseC m;

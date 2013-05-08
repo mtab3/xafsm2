@@ -18,11 +18,11 @@ int main( int argc, char *argv[] )
   newFluoMode = false;
 
   QString myname = QString( argv[0] )
-    .section( "/", -1 )  // "/" ����؂�ɐ؂�o�����g�[�N���̉E���琔����1��
-    .section( "\\", -1 ) // "\\" (�G���L��)����؂�ɁA����
-                         // ���� 2�ŁAunix �n�ł� msdos �n�ł��t�@�C�������E����͂��B
+    .section( "/", -1 )  // "/" を区切りに切り出したトークンの右から数えて1つめ
+    .section( "\\", -1 ) // "\\" (エン記号)を区切りに、同上
+                         // この 2つで、unix 系でも msdos 系でもファイル名が拾えるはず。
     .section( ".", 0, 0 );
-    // �c�����t�@�C�����ɑ΂��� "." ����؂�ɐ؂�o�����ŏ��̃g�[�N��
+    // 残ったファイル名に対して "." を区切りに切り出した最初のトークン
 
   for ( int i = 1; i < argc; i++ ) {
     if ( QString( argv[i] ) == "-nF" ) { newFluoMode = true; };
@@ -51,9 +51,9 @@ int main( int argc, char *argv[] )
   }
 
   QTextCodec::setCodecForTr( QTextCodec::codecForName( "Shift-JIS" ) );
-  // tr() �}�N�����̕�����̃R�[�f�B���O�w��
+  // tr() マクロ中の文字列のコーディング指定
   QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "Shift-JIS" ) );
-  // const char * "" ���Öق� QString �ɕϊ����鎞�̃R�[�f�B���O�w��
+  // const char * "" を暗黙に QString に変換する時のコーディング指定
 
   app.setStyle( "Cleanlooks" );
 

@@ -65,7 +65,7 @@ class AUnit : public QObject
   QDataStream *dLinkStream;
   int dLinkCount;
   char *MCAs0, *MCAs;
-  bool MCAsReady;    // MCAs ¤ËÍ­¸ú¤Ê¥Ç¡¼¥¿¤¬¤¢¤ë true, Ìµ¤¤ false
+  bool MCAsReady;    // MCAs ã«æœ‰åŠ¹ãªãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹ true, ç„¡ã„ false
 
   QString DataLinkHostName;
   qint16 DataLinkHostPort;

@@ -23,8 +23,8 @@ class KeV2Pix : public QObject
  private:
   int dim;
   int MCALen;
-  QVector<double> ab[ MaxSSDs ];   // ¸½¾õ ab ¤Ï¡¢Pixel -> keV ¤Ø¤ÎÊÑ´¹¹ÔÎó
-  QVector<double> ba[ MaxSSDs ];   // ba ¤Ï¡¢keV -> Pixel ¤Ø¤ÎÊÑ´¹¹ÔÎó¤Ë¤¹¤ëÍ½Äê¡£
+  QVector<double> ab[ MaxSSDs ];   // ç¾çŠ¶ ab ã¯ã€Pixel -> keV ã¸ã®å¤‰æ›è¡Œåˆ—
+  QVector<double> ba[ MaxSSDs ];   // ba ã¯ã€keV -> Pixel ã¸ã®å¤‰æ›è¡Œåˆ—ã«ã™ã‚‹äºˆå®šã€‚
 
   bool calcAB( QVector<double> &x, QVector<double> &y, double *ab );
 };

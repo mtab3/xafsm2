@@ -37,7 +37,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
   ViewCTRL *view;
 
   switch( dtype ) {
-  case MEASDATA:  // MEASDATA ¤È SCANDATA ¤Ïº£É½¼¨¤µ¤ì¤Æ¤ë¤Î¤¬Æ±¥¿¥¤¥×¤À¤Ã¤¿¤é½Å¤Í½ñ¤­
+  case MEASDATA:  // MEASDATA ã¨ SCANDATA ã¯ä»Šè¡¨ç¤ºã•ã‚Œã¦ã‚‹ã®ãŒåŒã‚¿ã‚¤ãƒ—ã ã£ãŸã‚‰é‡ã­æ›¸ã
     view = ViewCtrls[ ViewTab->currentIndex() ];
     if ( view->getNowDType() != dtype ) {
       view = SetUpNewView( XYVIEW );
@@ -53,7 +53,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
       ClearXViewScreenForScan( (XYView*)(view->getView()) );
     }
     break;
-  case MONDATA:   // MONDATA ¤È MCADATA ¤Ï½Å¤Í½ñ¤­¤ÏÄü¤á¤ë¡£
+  case MONDATA:   // MONDATA ã¨ MCADATA ã¯é‡ã­æ›¸ãã¯è«¦ã‚ã‚‹ã€‚
     view = SetUpNewView( TYVIEW );
     ViewTab->setTabText( ViewTab->currentIndex(), "D-MON." );
     break;

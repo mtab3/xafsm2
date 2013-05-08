@@ -53,13 +53,13 @@ QVector<Fluo> FluoDBase::inRange( double Es, double Ee, double dE )
     }
   }
 
-  rv = removeTooNears( rv, dE );  // rv ¤Ï¥½¡¼¥ÈºÑ¤ß
+  rv = removeTooNears( rv, dE );  // rv ã¯ã‚½ãƒ¼ãƒˆæ¸ˆã¿
 
   return rv;
 }
 
 QVector<Fluo> FluoDBase::removeTooNears( QVector<Fluo> list, double dE )
-// list ¤Ï¥½¡¼¥ÈºÑ¤ß¤È²¾Äê¤¹¤ë
+// list ã¯ã‚½ãƒ¼ãƒˆæ¸ˆã¿ã¨ä»®å®šã™ã‚‹
 {
   double val0;
   int no0;
@@ -77,7 +77,7 @@ QVector<Fluo> FluoDBase::removeTooNears( QVector<Fluo> list, double dE )
 }
 
 QVector<Fluo> FluoDBase::nears( double E, double dE )
-// nears( E, range ) ¤Î´Ê°×ÈÇ¡£10keV ¤Ç¡¢range = +/- 0.25 ¤Ë¤Ê¤ë¡£
+// nears( E, range ) ã®ç°¡æ˜“ç‰ˆã€‚10keV ã§ã€range = +/- 0.25 ã«ãªã‚‹ã€‚
 {
   if ( E < 0 ) {
     QVector<Fluo> rv;
@@ -88,8 +88,8 @@ QVector<Fluo> FluoDBase::nears( double E, double dE )
 
 
 QVector<Fluo> FluoDBase::nears( double E, double range, double dE )
-// »ØÄê¥¨¥Í¥ë¥®¡¼ E ¤ÎÁ°¸å range ¤ÎÈÏ°Ï¤ËÆş¤ë¸µÁÇ¥ê¥¹¥ÈºîÀ®¡£
-// ºÇ½é¤Ï E ¤Ë¶á¤¤¤â¤Î½ç¤Ë¤·¤Æ¤¿¤±¤É¡¢º£¤Ï¥¨¥Í¥ë¥®¡¼¤Î¾®¤µ¤¤¤â¤Î½ç
+// æŒ‡å®šã‚¨ãƒãƒ«ã‚®ãƒ¼ E ã®å‰å¾Œ range ã®ç¯„å›²ã«å…¥ã‚‹å…ƒç´ ãƒªã‚¹ãƒˆä½œæˆã€‚
+// æœ€åˆã¯ E ã«è¿‘ã„ã‚‚ã®é †ã«ã—ã¦ãŸã‘ã©ã€ä»Šã¯ã‚¨ãƒãƒ«ã‚®ãƒ¼ã®å°ã•ã„ã‚‚ã®é †
 {
   if ( E < 0 ) {
     QVector<Fluo> rv;
@@ -111,13 +111,13 @@ QVector<Fluo> FluoDBase::nears( double E, double range, double dE )
   }
   qSort( nFluos.begin(), nFluos.end() );
 
-  nFluos = removeTooNears( nFluos, dE );  // ¥½¡¼¥ÈºÑ¤ß
+  nFluos = removeTooNears( nFluos, dE );  // ã‚½ãƒ¼ãƒˆæ¸ˆã¿
 
   return nFluos;
 }
 
 int FluoDBase::nearest( double E, int s, int e )
-// 2 Ê¬Ãµº÷¤ò¤ä¤Ã¤¿¸å¡¢ºÇ¸å¤ÎµÍ¤á¤¬¼«¿®¤Ê¤¤¤Î¤ÇºÇ½ª¸õÊäÁ´°÷Èæ³Ó
+// 2 åˆ†æ¢ç´¢ã‚’ã‚„ã£ãŸå¾Œã€æœ€å¾Œã®è©°ã‚ãŒè‡ªä¿¡ãªã„ã®ã§æœ€çµ‚å€™è£œå…¨å“¡æ¯”è¼ƒ
 {
   if ( ( e - s ) < 2 ) {
     int ss = s - 1;

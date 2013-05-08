@@ -78,9 +78,9 @@ void StarsSV::ReadHistory( void )
 
   f.close();
 
-  // �L�^�t�@�C���͐V�������͂����邽�тɂǂ�ǂ񏑂����܂�čs���̂�
-  // �L�^�t�@�C����ǂݍ��񂾒����(����A�C�e���𐮗����Ă��܂���) ComboBox ��
-  // ���g�������o�����ƂŐ�������B
+  // 記録ファイルは新しい入力があるたびにどんどん書き込まれて行くので
+  // 記録ファイルを読み込んだ直後の(同一アイテムを整理してしまった) ComboBox の
+  // 中身を書き出すことで整理する。
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
   QTextStream out( &f );
@@ -88,11 +88,11 @@ void StarsSV::ReadHistory( void )
     out << "A: " << StarsSVA->itemText( i ) << endl;
   }
   out << "A: " << StarsSVA->itemText( StarsSVA->currentIndex() ) << endl;
-  // �Ō�ɏ��������̂��A����f�t�H���g�ɑI�΂��
+  // 最後に書いたものが、次回デフォルトに選ばれる
   for ( int i = 0; i < StarsSVP->count(); i++ ) {
     out << "P: " << StarsSVP->itemText( i ) << endl;
   }
   out << "P: " << StarsSVP->itemText( StarsSVP->currentIndex() ) << endl;
-  // �Ō�ɏ��������̂��A����f�t�H���g�ɑI�΂��
+  // 最後に書いたものが、次回デフォルトに選ばれる
   f.close();
 }

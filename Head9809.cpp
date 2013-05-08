@@ -14,35 +14,35 @@ bool Head9809::readFromStream( QTextStream &in )
   QString HeaderEnd = "    Offset";
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 1 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 1 è¡Œç›®
   ID = line.left(5).simplified();
   Location = line.mid( 10 ).split( QRegExp( "\\s+" ) );
   if ( ID != "9809" ) return false;
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 2 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 2 è¡Œç›®
   FileName = line.mid( 0, 14 ).simplified();
   DateTime1 = line.mid( 16, 14 ).simplified();
   DateTime2 = line.mid( 33, 14 ).simplified();
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 3 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 3 è¡Œç›®
   Sample = line.mid( 0, 80 ).simplified();
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 4 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 4 è¡Œç›®
   Energy = line.mid( 7, 5 ).simplified();
   Current1 = line.mid( 18, 6 ).simplified();
   Current2 = line.mid( 30, 6 ).simplified();
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 5 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 5 è¡Œç›®
   CrystName = line.mid( 9, 10 ).simplified();
   SpacingD = line.mid( 26, 8 ).simplified();
   InitAngle = line.mid( 54, 9 ).simplified();
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 6 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 6 è¡Œç›®
   BeamLine = line.mid( 0, 5 ).simplified();
   ModeName = line.mid( 9, 13 ).simplified();
   ModeId = line.mid( 23, 2 ).simplified();
@@ -50,7 +50,7 @@ bool Head9809::readFromStream( QTextStream &in )
   Points = line.mid( 55, 5 ).simplified();
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 7 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 7 è¡Œç›®
   ParamFName = line.mid( 13, 14 ).simplified();
   AngleOrEnergy = line.mid( 42, 1 ).simplified();
   if ( AngleOrEnergy == "1" ) {
@@ -61,9 +61,9 @@ bool Head9809::readFromStream( QTextStream &in )
   Blocks = line.mid( 56, 5 ).simplified();
 
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 8 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 8 è¡Œç›®
   if ( in.atEnd() ) return false;
-  line = in.readLine().mid(1);                     // 9 ¹ÔÌÜ
+  line = in.readLine().mid(1);                     // 9 è¡Œç›®
 
   for ( int i = 0; i < Blocks.toInt(); i++ ) {
     if ( in.atEnd() ) return false;
@@ -87,16 +87,16 @@ bool Head9809::readFromStream( QTextStream &in )
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                     // Mode Line
-                             // ¥¹¥Ú¡¼¥¹¶èÀÚ¤ê¤Ç¤Ê¤¯¡¢¸ÇÄêÄ¹ 10·å¤È»×¤Ã¤Æ¥Ñ¡¼¥¹¤·¤Æ¤ë
-  line = line.mid( 30 );     // ºÇ½é¤Î 30·å (Mode 0 0) ¤ÏÆÉ¤ßÈô¤Ğ¤¹
+                             // ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§ãªãã€å›ºå®šé•· 10æ¡ã¨æ€ã£ã¦ãƒ‘ãƒ¼ã‚¹ã—ã¦ã‚‹
+  line = line.mid( 30 );     // æœ€åˆã® 30æ¡ (Mode 0 0) ã¯èª­ã¿é£›ã°ã™
   for ( int i = 0; i < ceil( line.length() / 10. ); i++ ) {
     Modes << line.mid( i*10, 10 ).simplified();
   }
 
   if ( in.atEnd() ) return false;
   line = in.readLine().mid(1);                   // Offset Line
-                             // ¥¹¥Ú¡¼¥¹¶èÀÚ¤ê¤Ç¤Ê¤¯¡¢¸ÇÄêÄ¹ 10·å¤È»×¤Ã¤Æ¥Ñ¡¼¥¹¤·¤Æ¤ë
-  line = line.mid( 30 );     // ºÇ½é¤Î 30·å (Offset 0 0) ¤ÏÆÉ¤ßÈô¤Ğ¤¹
+                             // ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§ãªãã€å›ºå®šé•· 10æ¡ã¨æ€ã£ã¦ãƒ‘ãƒ¼ã‚¹ã—ã¦ã‚‹
+  line = line.mid( 30 );     // æœ€åˆã® 30æ¡ (Offset 0 0) ã¯èª­ã¿é£›ã°ã™
   for ( int i = 0; i < line.length() / 10; i++ ) {
     Offsets << line.mid( i*10, 10 ).simplified();
   }

@@ -25,22 +25,22 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
   val.clear();
 
   fullMsg = Message = Message.simplified();
-  i1 = Message.indexOf( '>' );      // i1 : '>' �̈ʒu
+  i1 = Message.indexOf( '>' );      // i1 : '>' の位置
   if ( i1 < 0 ) {
-    MorE = RES_OTHER;         // '>' ���Ȃ��ƁAStars server ����̃��b�Z�[�W�̍\��
-    val = Message;            // �Ƃ��Ă͂����������A�Ƃ肠�������̓��e������
-    return RES_OTHER;         // val �Ɏc���� return
+    MorE = RES_OTHER;         // '>' がないと、Stars server からのメッセージの構造
+    val = Message;            // としてはおかしいが、とりあえずその内容だけは
+    return RES_OTHER;         // val に残して return
   }
   from = Message.mid( 0, i1 );
   i3 = from.indexOf( '.' );
-  if ( i3 < 0 ) {       // from �� ch �����������
-    fromDev = from;     // fromDev �����Z�b�g fromCh �͋�̂܂�
+  if ( i3 < 0 ) {       // from に ch 名が無ければ
+    fromDev = from;     // fromDev だけセット fromCh は空のまま
   } else {
     fromDev = from.mid( 0, i3 );
     fromCh = from.mid( i3 + 1 );
   }
 
-  i2 = Message.indexOf( ' ', i1 );  // i2 : �ŏ��� ' ' �̈ʒu
+  i2 = Message.indexOf( ' ', i1 );  // i2 : 最初の ' ' の位置
   if ( i2 < 0 ) {
     MorE = RES_OTHER;
     val = Message.mid( i1 + 1 );
@@ -48,8 +48,8 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
   }
   to = Message.mid( i1 + 1, i2 - i1 - 1 );
   i3 = to.indexOf( '.' );
-  if ( i3 < 0 ) {       // to �� ch �����������
-    toDev = from;     // toDev �����Z�b�g toCh �͋�̂܂�
+  if ( i3 < 0 ) {       // to に ch 名が無ければ
+    toDev = from;     // toDev だけセット toCh は空のまま
   } else {
     toDev = to.mid( 0, i3 );
     toCh = to.mid( i3 + 1 );
@@ -69,8 +69,8 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
   msg = Message.mid( i2 + 1, i3 - i2 - 1 );
   setMsgType();
 
-  // val �͒l����������ł��Ƃ��Ă������S���܂񂾃f�[�^
-  // vals �͂�����X�y�[�X��؂Ɖ��߂��Đ؂�o���� list �ɓ��ꂽ����
+  // val は値が複数並んでたとしてもそれを全部含んだデータ
+  // vals はそれをスペース区切と解釈して切り出して list に入れたもの
   val = Message.mid( i3 + 1 );         
   vals = val.split( QRegExp( "\\s+" ) );
 

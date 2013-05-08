@@ -45,16 +45,16 @@ void MainWindow::ReadDef( QString fname )
       next = nextItem( aline.simplified(), item );
       NewUnit = new AUnit;
       if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
-	if ( item == "MOTOR" ) { // Motor ¤«
+	if ( item == "MOTOR" ) { // Motor ã‹
 	  AMotors << NewUnit;
 	  NewUnit->setGType( "MOTOR" );
 	  isMotor = true;
 	} else {
-	  ASensors << NewUnit;  // Sensor ¤«
+	  ASensors << NewUnit;  // Sensor ã‹
 	  NewUnit->setGType( "SENSOR" );
 	  isMotor = false;
 	}
-	// Á´ motor, sensor ¤Ë¶¦ÄÌ¤Î¹àÌÜ
+	// å…¨ motor, sensor ã«å…±é€šã®é …ç›®
 	NewUnit->setALine( line );
 	next = nextItem( next, item ); NewUnit->setType( type = item );
 	next = nextItem( next, item ); NewUnit->setUid( item );
@@ -64,12 +64,12 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); NewUnit->setCh( item );
 	next = nextItem( next, item ); NewUnit->setUnit( item );
 	NewUnit->setDevCh();
-	// °Ê²¼¡¢motor ¤À¤±¤Î¹àÌÜ
+	// ä»¥ä¸‹ã€motor ã ã‘ã®é …ç›®
 	if ( isMotor ) {
-	  // Á´ motor ¶¦ÄÌ
+	  // å…¨ motor å…±é€š
 	  next = nextItem( next, item ); NewUnit->setUPP( item );
 	  next = nextItem( next, item ); NewUnit->setIsInt( item == "INT" );
-	  // ³Æ motor ¸ÄÊÌ
+	  // å„ motor å€‹åˆ¥
 	  if (( type == "PM" )||( type == "SC" )) {
 	    next = nextItem( next, item ); NewUnit->setCenter( item );
 	  } else if ( type == "PZ" ) {
@@ -78,11 +78,11 @@ void MainWindow::ReadDef( QString fname )
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }
-	} else {  // °Ê²¼¡¢sensor ¤À¤±¤Î¹àÌÜ
-	  // Á´ sensor ¶¦ÄÌ
+	} else {  // ä»¥ä¸‹ã€sensor ã ã‘ã®é …ç›®
+	  // å…¨ sensor å…±é€š
 	  next = nextItem( next, item ); NewUnit->setHasParent( item == "YES" );
 	  next = nextItem( next, item ); NewUnit->setParent( item );
-	  // ³Æ sensor ¸ÄÊÌ
+	  // å„ sensor å€‹åˆ¥
 	  if ( type == "ENC" ) {
 	  } else if ( type == "ENC2" ) {
 	    next = nextItem( next, item );
@@ -92,13 +92,13 @@ void MainWindow::ReadDef( QString fname )
 	  } else if ( type == "OTC" ) {
 	  } else if (( type == "CNT2" )||( type == "OTC2" )) {
 	    next = nextItem( next, item );
-	    NewUnit->set2ndUid( item );             // 2nd ¥É¥é¥¤¥Ğ¤ÎÀßÄê
-	    NewUnit->setHas2ndDriver( true );       // 2nd ¥É¥é¥¤¥Ğ¥Õ¥é¥°
-	    NewUnit->setRangeSelectable( true );    // ¥ì¥ó¥¸ÀßÄê²ÄÇ½¤Î¥Õ¥é¥°
+	    NewUnit->set2ndUid( item );             // 2nd ãƒ‰ãƒ©ã‚¤ãƒã®è¨­å®š
+	    NewUnit->setHas2ndDriver( true );       // 2nd ãƒ‰ãƒ©ã‚¤ãƒãƒ•ãƒ©ã‚°
+	    NewUnit->setRangeSelectable( true );    // ãƒ¬ãƒ³ã‚¸è¨­å®šå¯èƒ½ã®ãƒ•ãƒ©ã‚°
 	    next = nextItem( next, item );
-	    NewUnit->setRangeU( item.toInt() );     // ¥ì¥ó¥¸¾å¸ÂÃÍ
+	    NewUnit->setRangeU( item.toInt() );     // ãƒ¬ãƒ³ã‚¸ä¸Šé™å€¤
 	    next = nextItem( next, item );
-	    NewUnit->setRangeL( item.toInt() );     // ¥ì¥ó¥¸²¼¸ÂÃÍ
+	    NewUnit->setRangeL( item.toInt() );     // ãƒ¬ãƒ³ã‚¸ä¸‹é™å€¤
 	  } else if ( type == "SSDP" ) {
 	  } else if ( type == "SSD" ) {
 	  } else if ( type == "LSR" ) {
@@ -180,13 +180,13 @@ void MainWindow::ReadDef( QString fname )
   DriverList.removeDuplicates();
   f.close();
 
-  // Uid ¤Î¥À¥Ö¤ê¥Á¥§¥Ã¥¯
+  // Uid ã®ãƒ€ãƒ–ã‚Šãƒã‚§ãƒƒã‚¯
   CheckDuplicateUID();
 
-  int i, j;   // ¿Æ¥æ¥Ë¥Ã¥ÈÍ­¤ê¡¢¤ÈÀë¸À¤·¤¿¥»¥ó¥µ¡¼¤Ë¿Æ¥æ¥Ë¥Ã¥È¤Î¥İ¥¤¥ó¥¿¤òÅÏ¤¹¡£
-              // ¤Ş¤¿¡¢2nd Driver ¤¬¤¢¤ë¥æ¥Ë¥Ã¥È Uid2 ¤ò¸µ¤Ë Driver2, Ch2, DevCh2 ¤òÀßÄê
-              // Á´Éô¤ÎÄêµÁ¤¬½ª¤ï¤Ã¤Æ¤«¤é¤ä¤Ã¤Æ¤¤¤ë¤Î¤Ï¡¢¿Æ¤ÈÀë¸À¤·¤¿¥æ¥Ë¥Ã¥È¤ÎÄêµÁ¤¬
-              // ¸å¤«¤é½Ğ¤Æ¤­¤Æ¤âÂç¾æÉ×¤Ë¤¹¤ë¤¿¤á¡£
+  int i, j;   // è¦ªãƒ¦ãƒ‹ãƒƒãƒˆæœ‰ã‚Šã€ã¨å®£è¨€ã—ãŸã‚»ãƒ³ã‚µãƒ¼ã«è¦ªãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒã‚¤ãƒ³ã‚¿ã‚’æ¸¡ã™ã€‚
+              // ã¾ãŸã€2nd Driver ãŒã‚ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆ Uid2 ã‚’å…ƒã« Driver2, Ch2, DevCh2 ã‚’è¨­å®š
+              // å…¨éƒ¨ã®å®šç¾©ãŒçµ‚ã‚ã£ã¦ã‹ã‚‰ã‚„ã£ã¦ã„ã‚‹ã®ã¯ã€è¦ªã¨å®£è¨€ã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã®å®šç¾©ãŒ
+              // å¾Œã‹ã‚‰å‡ºã¦ãã¦ã‚‚å¤§ä¸ˆå¤«ã«ã™ã‚‹ãŸã‚ã€‚
   for ( i = 0; i < ASensors.count(); i++ ) {
     if ( ASensors.at(i)->hasParent() ) {
       for ( j = 0; j < ASensors.count(); j++ ) {
@@ -217,14 +217,14 @@ void MainWindow::ReadDef( QString fname )
   }
 }
 
-// Uid ¤Î½ÅÊ£¥Á¥§¥Ã¥¯
+// Uid ã®é‡è¤‡ãƒã‚§ãƒƒã‚¯
 void MainWindow::CheckDuplicateUID( void )
 {
   for ( int i = 0; i < AMotors.count(); i++ ) {
     for ( int j = 0; j < AMotors.count(); j++ ) {
       if ( i != j ) {
 	if ( AMotors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
-	  // Uid ¤¬¥À¥Ö¤Ã¤Æ¤ë¤ÈÃ×Ì¿Åª¤Ê¤Î¤Ç»ß¤Ş¤é¤Ê¤¤¤È¤·¤«¤¿¤Ê¤¤
+	  // Uid ãŒãƒ€ãƒ–ã£ã¦ã‚‹ã¨è‡´å‘½çš„ãªã®ã§æ­¢ã¾ã‚‰ãªã„ã¨ã—ã‹ãŸãªã„
 	  ExitByDuplicateUID( AMotors.at(i), AMotors.at(j) );
 	}
       }

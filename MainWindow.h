@@ -137,7 +137,7 @@ private:
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
-  double oldDeg;             // ShowCurThPos �Ǥν�ʣ�¹Ԥ��򤱤뤿�ᡣ
+  double oldDeg;             // ShowCurThPos での重複実行を避けるため。
   bool AllInited, MotorsInited, SensorsInited;
 
   void setupLogArea( void );
