@@ -210,8 +210,11 @@ void MainWindow::InitAndIdentifyMotors( void )
     }
   }
   if (( ChangerX == NULL )||( ChangerZ == NULL)) {
+#if 0
     AutoModeButton->setChecked( false );
     AutoModeButton->setEnabled( false );
+#endif
+    ChangerBox->setHidden( true );
   }
 }
 
