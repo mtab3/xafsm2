@@ -2298,7 +2298,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <property name="text">
-                <string>Back ground</string>
+                <string>Background</string>
                </property>
               </widget>
              </item>
@@ -6904,7 +6904,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
      <x>0</x>
      <y>0</y>
      <width>834</width>
-     <height>17</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -6961,8 +6961,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
   <tabstop>LogMsgs</tabstop>
   <tabstop>LogComment</tabstop>
  </tabstops>
- <resources>
-  <include location="XafsM.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

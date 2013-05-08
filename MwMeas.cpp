@@ -175,7 +175,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedNDFN( const QString & ) ) );
 
-  //connect( MeasStart, SIGNAL( clicked() ), this, SLOT( StartMeasurement() ) );
   connect( MeasStart, SIGNAL( clicked() ), this, SLOT( AutoMeasurement() ) );
   connect( MeasPause, SIGNAL( clicked() ), this, SLOT( PauseMeasurement() ) );
   connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ) );
@@ -860,7 +859,6 @@ void MainWindow::AutoMeasurement( void )
   MeasA = 0;
   AutoModeFirst = true;   // 通常/AutoMode にかかわらず 1 回目の測定フラグは立てておく
                           // ファイルの上書きチェックを制御するため
-  qDebug() << "in AutoMeas";
   if ( AutoModeButton->isChecked() ) {
     if ( ! ParseAutoMode() ) {
       statusbar->showMessage( tr( "Auto mode parameters are illigal."),
@@ -869,6 +867,12 @@ void MainWindow::AutoMeasurement( void )
     }
     if ( AutoModeParams.count() == 0 ) {
       statusbar->showMessage( tr( "Auto mode parameters are not set."),
+                              2000 );
+      return;
+    }
+    // In automode, a user should choose "Use Measured" to prevent stopping.
+    if ( MeasBackBeforeMeas->isChecked() ) {
+      statusbar->showMessage( tr( "Please choose \"Use Measured\""),
                               2000 );
       return;
     }
@@ -1307,6 +1311,9 @@ bool MainWindow::theSensorIsAvailable( AUnit *as )
 
 void MainWindow::SurelyStop( void )
 {
+  // the MeasA counter for auto mode is set to the last one.
+  // If the measurement is stopped, ALL measurements will be skipped.
+  MeasA = AutoModeParams.count();
   if ( inMeasDark ) {
     MeasDarkTimer->stop();
     inMeasDark = false;
@@ -1318,7 +1325,7 @@ void MainWindow::SurelyStop( void )
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	     .arg( SelectedCurPosDeg( XENC ) )
-	     .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
+       .arg( u->deg2keV( SelectedCurPosDeg( XPM ) ) )
 	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
