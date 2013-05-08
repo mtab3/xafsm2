@@ -1376,6 +1376,13 @@ bool MainWindow::CheckBlockRange( void )
   for ( int i = 0; i <= Blocks; i++ ) {
     if (( u->keV2any( EV, BlockStart[i] ) < MinEnergyInEV )
 	||( u->keV2any( EV, BlockStart[i] ) > MaxEnergyInEV )) {
+
+    statusbar
+      ->showMessage( tr( "The block definitin [%1]eV is out of range. [%2]-[%3]eV" )
+		     .arg( u->keV2any( EV, BlockStart[i]) )
+		     .arg( MinEnergyInEV )
+		     .arg( MaxEnergyInEV ), 2000 );
+
       return false;
     }
   }

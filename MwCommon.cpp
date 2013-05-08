@@ -199,7 +199,11 @@ void MainWindow::MoveCurThPosKeV( double keV ) // •ªŒõŠí‚ÌˆÚ“®Žw—ß(keV’PˆÊ‚ÅˆÊ’u
 
   if (( u->keV2any( EV, keV ) < MinEnergyInEV )
       ||( u->keV2any( EV, keV ) > MaxEnergyInEV )) {
-    statusbar->showMessage( "The position to go is out of range.", 2000 );
+    statusbar
+      ->showMessage( tr( "The position to go [%1]eV is out of range. [%2]-[%3]eV" )
+		     .arg( u->keV2any( EV, keV ) )
+		     .arg( MinEnergyInEV )
+		     .arg( MaxEnergyInEV ), 2000 );
     return;
   }
     
