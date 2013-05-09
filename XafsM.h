@@ -28,19 +28,19 @@ const QString NONEDITABLELINE = "background-color: rgb(230,230,230)";
 //const QString SSDActive = RadioBOn;
 //const QString SSDnotActive = RadioBOff;
 
-// ƒtƒ@ƒCƒ‹–¼‚Æƒf[ƒ^‚ÌV‹Œ‚É‰‚¶‚½ƒXƒe[ƒ^ƒX‚ğF‚Å•\Œ»
+// ãƒ•ã‚¡ã‚¤ãƒ«åã¨ãƒ‡ãƒ¼ã‚¿ã®æ–°æ—§ã«å¿œã˜ãŸã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è‰²ã§è¡¨ç¾
 // data, file-name 
-//  old     old    : À¿‚±‚ÌƒXƒe[ƒ^ƒX‚Íg‚Á‚Ä‚¢‚È‚¢
-//                   ‘S‚­‰½‚à–â‘è‚ª‚È‚¢
-//                   --> ”’Œn(F‚ğ•t‚¯‚é‚Æ‚µ‚Ä‚à‚Å‚«‚é‚¾‚¯’WF)
-//  old     new    : ‘ª’è‘O‚Åƒtƒ@ƒCƒ‹–¼‚¾‚¯“ü‚ê‚½B
-//                   ‚ ‚Ü‚èŠëŒ¯‚Å‚Í‚È‚¢(Åˆ«ŒÃ‚¢ƒf[ƒ^‚ª•Û‘¶‚³‚ê‚½•Êƒtƒ@ƒCƒ‹‚ªo—ˆ‚é‚¾‚¯)
-//                   ---> ‰©FŒn‚ÌF
-//  new     old    : ‘ª’èŒã‚È‚Ì‚Éƒtƒ@ƒCƒ‹–¼‚ªŒÃ‚¢B
-//                   ‚©‚È‚èŠëŒ¯A‘O‰ñ‚Ì‘ª’èƒf[ƒ^‚ğã‘‚«‚ÅÁ‚·‰Â”\«‚ ‚è
-//                   ---> ÔŒn‚ÌF
-//  new     new    : ŠëŒ¯«‚Í’á‚¢‚ªƒZ[ƒu‚µ–Y‚ê‚é‚Æƒf[ƒ^‚ğ¸‚¤‚Ì‚Å’ˆÓ‚ğ‘£‚·•K—v‚Í‚ ‚é
-//                   ---> Â/—ÎŒn‚ÌF (‚Å‚«‚ê‚ÎÂŒn‚©)
+//  old     old    : å®Ÿè³ªã“ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã¯ä½¿ã£ã¦ã„ãªã„
+//                   å…¨ãä½•ã‚‚å•é¡ŒãŒãªã„
+//                   --> ç™½ç³»(è‰²ã‚’ä»˜ã‘ã‚‹ã¨ã—ã¦ã‚‚ã§ãã‚‹ã ã‘æ·¡è‰²)
+//  old     new    : æ¸¬å®šå‰ã§ãƒ•ã‚¡ã‚¤ãƒ«åã ã‘å…¥ã‚ŒãŸã€‚
+//                   ã‚ã¾ã‚Šå±é™ºã§ã¯ãªã„(æœ€æ‚ªå¤ã„ãƒ‡ãƒ¼ã‚¿ãŒä¿å­˜ã•ã‚ŒãŸåˆ¥ãƒ•ã‚¡ã‚¤ãƒ«ãŒå‡ºæ¥ã‚‹ã ã‘)
+//                   ---> é»„è‰²ç³»ã®è‰²
+//  new     old    : æ¸¬å®šå¾Œãªã®ã«ãƒ•ã‚¡ã‚¤ãƒ«åãŒå¤ã„ã€‚
+//                   ã‹ãªã‚Šå±é™ºã€å‰å›ã®æ¸¬å®šãƒ‡ãƒ¼ã‚¿ã‚’ä¸Šæ›¸ãã§æ¶ˆã™å¯èƒ½æ€§ã‚ã‚Š
+//                   ---> èµ¤ç³»ã®è‰²
+//  new     new    : å±é™ºæ€§ã¯ä½ã„ãŒã‚»ãƒ¼ãƒ–ã—å¿˜ã‚Œã‚‹ã¨ãƒ‡ãƒ¼ã‚¿ã‚’å¤±ã†ã®ã§æ³¨æ„ã‚’ä¿ƒã™å¿…è¦ã¯ã‚ã‚‹
+//                   ---> é’/ç·‘ç³»ã®è‰² (ã§ãã‚Œã°é’ç³»ã‹)
 
 const QString FILE_OLDOLD  = "background-color: rgb(250,255,240)"; // old-data, old-name
 const QString FILE_NEWNAME = "background-color: rgb(250,250,190)"; // old-data, new-name
@@ -50,14 +50,14 @@ const QString FILE_NEWNEW  = "background-color: rgb(220,240,255)"; // new-data, 
 const QString FSTATCOLORS[2][2] =
   { { FILE_OLDOLD, FILE_NEWNAME }, { FILE_NEWDATA, FILE_NEWNEW } };
 
-#define PBTrue    ( false )   // PushButton ‚ğ Checkable ‚É‚·‚é‚ÆA‰Ÿ‚µ‚½AˆÃ‚¢‚Ì‚É
-#define PBFalse   ( true  )   // true ‚É‚È‚é‚Ì‚ÅA’è”–¼‚Å”½“]‚³‚¹‚Äg‚¤
+#define PBTrue    ( false )   // PushButton ã‚’ Checkable ã«ã™ã‚‹ã¨ã€æŠ¼ã—ãŸæ™‚ã€æš—ã„ã®ã«
+#define PBFalse   ( true  )   // true ã«ãªã‚‹ã®ã§ã€å®šæ•°åã§åè»¢ã•ã›ã¦ä½¿ã†
 
 extern QString DefFileName;
 extern bool newFluoMode;
 
-//const int TicPDiv = 50;   // ƒ‚ƒjƒ^[‚Ì 1ŒrüŠÔ‚É‘ª’è‚·‚é‰ñ”
-const int DivPScr = 6;    // ‚±‚Ì•Ó‚ğ‚©‚¦‚é‚Æ‚«‚Í XView.h ‚Ì RingMax ‚É‚à’ˆÓ
+//const int TicPDiv = 50;   // ãƒ¢ãƒ‹ã‚¿ãƒ¼æ™‚ã® 1ç½«ç·šé–“ã«æ¸¬å®šã™ã‚‹å›æ•°
+const int DivPScr = 6;    // ã“ã®è¾ºã‚’ã‹ãˆã‚‹ã¨ãã¯ XView.h ã® RingMax ã«ã‚‚æ³¨æ„
 struct MSCALED {
   int MSid;
   const QString MSName;

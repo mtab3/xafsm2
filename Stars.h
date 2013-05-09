@@ -7,16 +7,16 @@
 
 #include "SMsg.h"
 
-#define ERROR   "Error!!"        // string ��Ԃ��֐��̃G���[�ʒm�p
+#define ERROR   "Error!!"        // string を返す関数のエラー通知用
 
-// �f�o�C�X���̒�`
-//#define MYNAME      "BLC"       // ����������閼�O config �ŕς�����l�ɂ���ׂ�
+// デバイス名の定義
+//#define MYNAME      "BLC"       // 自分が名乗る名前 config で変えられる様にするべき
 
 
 enum CONNECTIONSTAGE { CSTAGE0, CSTAGE1, CSTAGEEND };
 
-#define STARSSERVER "localhost"      // config �ŕς�����悤�ɂ���ׂ�
-#define STARSPORT   ( 6057 )         // config �ŕς�����悤�ɂ���ׂ�
+#define STARSSERVER "localhost"      // config で変えられるようにするべき
+#define STARSPORT   ( 6057 )         // config で変えられるようにするべき
 
 class Stars : public QObject 
 {

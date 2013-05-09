@@ -104,6 +104,9 @@ void MainWindow::WriteQBody( void )
 
   int num = findMini( vals0, vals1, vals2 );
 
+  double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
+  double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
+
   qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
   if ( !file.open( QIODevice::Append | QIODevice::Text ) )
@@ -129,11 +132,11 @@ void MainWindow::WriteQBody( void )
     } else {
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 ¤Î¥Ñ¥ë¥¹ÃÍ¤«¤é·×»»
-	<< QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 ¤¬»È¤¨¤ë»þ¤Ï¥¨¥ó¥³¡¼¥ÀÃÍ
+    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 ã®ãƒ‘ãƒ«ã‚¹å€¤ã‹ã‚‰è¨ˆç®—
+	<< QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 ãŒä½¿ãˆã‚‹æ™‚ã¯ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€å€¤
 	<< QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
-	<< QString::number( vals0[i+1].toDouble(), 'f', 10 ) << "\t"
-	<< QString::number( vals1[i+1].toDouble(), 'f', 10 ) << endl;
+	<< QString::number( vals0[i+1].toDouble() - dark0, 'f', 10 ) << "\t"
+	<< QString::number( vals1[i+1].toDouble() - dark1, 'f', 10 ) << endl;
   }
 
   file.close();

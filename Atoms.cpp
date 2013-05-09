@@ -37,8 +37,8 @@ void ReadVicF( void )
     QStringList cols = in.readLine().simplified().split( ' ' );
     if ( cols[0].left( 1 ) != "#" ) {
       Vic[ Vics ].AN = cols[1].toInt();
-      Vic[ Vics ].AE[ 0 ] = cols[2].toDouble();  // ‹zû’[‚ÌƒGƒlƒ‹ƒM[ (keV)
-      Vic[ Vics ].C[ 0 ] = ltz( cols[4].toDouble() );  // ”g’·‚ÌƒJƒ‰ƒ€[3]‚Í“Ç‚İ”ò‚Î‚·
+      Vic[ Vics ].AE[ 0 ] = cols[2].toDouble();  // å¸åç«¯ã®ã‚¨ãƒãƒ«ã‚®ãƒ¼ (keV)
+      Vic[ Vics ].C[ 0 ] = ltz( cols[4].toDouble() );  // æ³¢é•·ã®ã‚«ãƒ©ãƒ [3]ã¯èª­ã¿é£›ã°ã™
       Vic[ Vics ].D[ 0 ] = ltz( cols[5].toDouble() );
       Vic[ Vics ].AE[ 1 ] = ltz( cols[6].toDouble() );
       Vic[ Vics ].C[ 1 ] = ltz( cols[8].toDouble() );

@@ -7,9 +7,9 @@
 #include "AUnit.h"
 
 struct MUElement
-{ // Multi Unit дЄ╣╜└од╣дыеиеьесеєе╚бг
-  //    еце╦е├е╚(╝┬║▌д╦д╧е╗еєе╡б╝д└д▒)д╬е▌едеєе┐д╚бв
-  //    dwell time дЄ╛Ё╩єд╚д╖д╞╗¤д─
+{ // Multi Unit уВТцзЛцИРуБЩуВЛуВиуГмуГбуГ│уГИуАВ
+  //    уГжуГЛуГГуГИ(хоЯщЪЫуБлуБпуВ╗уГ│уВ╡уГ╝уБауБС)уБоуГЭуВдуГ│уВ┐уБиуАБ
+  //    dwell time уВТцГЕха▒уБиуБЧуБжцМБуБд
   AUnit *au;
   double dt;
   bool done;
@@ -19,8 +19,8 @@ class MUnits : public QObject
 {
   Q_OBJECT
 
-  QVector<MUElement*> Units;     // е▐еые┴еце╦е├е╚дЄ╣╜└од╣дыеиеьесеєе╚д╬░ь═ў
-  QVector<MUElement*> PUnits;    // еиеьесеєе╚д╬┐╞д╬╜┼╩гд╩д╖д╬░ь═ў
+  QVector<MUElement*> Units;     // уГЮуГлуГБуГжуГЛуГГуГИуВТцзЛцИРуБЩуВЛуВиуГмуГбуГ│уГИуБоф╕Ашжз
+  QVector<MUElement*> PUnits;    // уВиуГмуГбуГ│уГИуБошжкуБощЗНшдЗуБкуБЧуБоф╕Ашжз
   bool OneByOne;
 
  public:

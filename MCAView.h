@@ -35,11 +35,11 @@ private:
 
   MMODE mMode;
   ChCoord cc;
-  double rROIsx, rROIex;   // ROI ¤ÎÈÏ°Ï
-  double MinE, MaxE;       // É½¼¨¤ÎºÇ¾®¡¢ºÇÂç¥¨¥Í¥ë¥®¡¼
-  QVector<double> cPoints; // ¥«¡¼¥½¥ëÉ½¼¨¤ò»Ä¤¹ÅÀ
+  double rROIsx, rROIex;   // ROI ã®ç¯„å›²
+  double MinE, MaxE;       // è¡¨ç¤ºã®æœ€å°ã€æœ€å¤§ã‚¨ãƒãƒ«ã‚®ãƒ¼
+  QVector<double> cPoints; // ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºã‚’æ®‹ã™ç‚¹
   QStringList selectedAtoms;
-  double yRatio;           // ½Ä¼´¤Î³ÈÂçÇÜÎ¨
+  double yRatio;           // ç¸¦è»¸ã®æ‹¡å¤§å€ç‡
 
   int nearX;
   bool nearf;

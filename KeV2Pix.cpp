@@ -8,7 +8,7 @@
 
 KeV2Pix::KeV2Pix( void ) : QObject()
 {
-  MakeUpAB( 2 );    // 2���κǾ�����ˤ���
+  MakeUpAB( 2 );    // 2次の最小自乗にした
 }
 
 void KeV2Pix::MakeUpAB( int Dim )
@@ -46,7 +46,7 @@ void KeV2Pix::MakeUpAB( int Dim )
     items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
     if ( items.count() > 0 ) {
       if ( items.at( 0 ).mid( 0, 1 ) == "#" ) continue;
-      if ( items.count() > MaxSSDs ) {       // == MaxSSDs + 1 (�ΤϤ�)
+      if ( items.count() > MaxSSDs ) {       // == MaxSSDs + 1 (のはず)
 	KeVs << items.at( 0 ).toDouble();
 	for ( int i = 0; i < MaxSSDs; i++ ) {
 	  Chs[ i ] << items.at( i + 1 ).toDouble();
@@ -57,7 +57,7 @@ void KeV2Pix::MakeUpAB( int Dim )
 
   for ( int i = 0; i < MaxSSDs; i++ ) {
     double ab0[ dim + 2 ];
-    if ( !calcAB( Chs[ i ], KeVs, ab0 ) ) {       // MCApix -> keV ��ľ�����������
+    if ( !calcAB( Chs[ i ], KeVs, ab0 ) ) {       // MCApix -> keV に直す係数を求める
       qDebug() << "ab can not be calculated for " << i;
     } else {
       for ( int j = 0; j < dim + 1; j++ ) {
@@ -66,7 +66,7 @@ void KeV2Pix::MakeUpAB( int Dim )
     }
 
     double ba0[ dim + 2 ];
-    if ( !calcAB( KeVs, Chs[ i ], ba0 ) ) {       // keV -> MCApix ��ľ�����������
+    if ( !calcAB( KeVs, Chs[ i ], ba0 ) ) {       // keV -> MCApix に直す係数を求める
       qDebug() << "ba can not be calculated for " << i;
     } else {
       for ( int j = 0; j < dim + 1; j++ ) {
@@ -122,16 +122,16 @@ const QVector<double>& KeV2Pix::getAB( int i )
 
 bool KeV2Pix::calcAB( QVector<double>&x, QVector<double>&y, double *ab )
 {
-  double xn[ dim + 2 ];   // <x^2> <x> <1> �� x^n  �� n=2��0 �ޤ� 3�� (dim+2)���롡
-  double xny[ dim + 2 ];  // <xy>  <y>     �� x^ny �� n=1��0 �ޤ� 2�� (dim+1)����
-//  double ab[ dim + 2 ]; // ¿�༰�η����ο��ϼ��� + 1 �� 2�� (dim+1)���롣
-                          // �����������ñ�ˤ��뤿��ˡ����� dim+2 �ˤ��Ƥ��ޤ���
+  double xn[ dim + 2 ];   // <x^2> <x> <1> と x^n  は n=2～0 まで 3つ (dim+2)いる　
+  double xny[ dim + 2 ];  // <xy>  <y>     と x^ny は n=1～0 まで 2つ (dim+1)いる
+//  double ab[ dim + 2 ]; // 多項式の係数の数は次数 + 1 で 2つ (dim+1)いる。
+                          // が、処理を簡単にするために、全部 dim+2 にしてしまう。
 
   for ( int i = 0; i < dim + 2; i++ ) {
     ab[i] = xny[i] = xn[i] = 0;
   }
 
-  for ( int i = 0; i < x.count(); i++ ) {   // <X^2>, <X>, <1>, <XY>, <Y>, �������
+  for ( int i = 0; i < x.count(); i++ ) {   // <X^2>, <X>, <1>, <XY>, <Y>, 等を準備
     double xx = 1;
     double yy = y[i];
     for ( int j = 0; j < dim + 2; j++ ) {
@@ -141,9 +141,9 @@ bool KeV2Pix::calcAB( QVector<double>&x, QVector<double>&y, double *ab )
     }
   }
 
-  double m[ dim + 1 ][ dim + 1 ];   // <X^n> ���¤٤������ñ�̹�������
-  double s[ dim + 1 ][ dim + 1 ];   // m �� 2�ܤι���ˤ��� s ��ʤ���������
-                                    // �ץ������ϥ���ץ�ˤʤ뤬ʬ����䤹����Ȥ롣
+  double m[ dim + 1 ][ dim + 1 ];   // <X^n> を並べた行列と単位行列を準備
+  double s[ dim + 1 ][ dim + 1 ];   // m を横 2倍の行列にして s をなくした方が
+                                    // プログラムはシンプルになるが分かりやすさをとる。
   for ( int i = 0; i < dim + 1; i++ ) {
     for ( int j = 0; j < dim + 1; j++ ) {
       m[i][j] = xn[i+j];
@@ -151,15 +151,15 @@ bool KeV2Pix::calcAB( QVector<double>&x, QVector<double>&y, double *ab )
     }
   }
 
-  for ( int i = 0; i < dim + 1; i++ ) {   // �ݤ��Ф�(?) �ǵչ������
+  for ( int i = 0; i < dim + 1; i++ ) {   // 掃き出し(?) で逆行列作成
     double a = m[i][i];
-    if ( a == 0 ) return false;           // ����� 0 ���Ф������ʥǡ���
-    for ( int j = 0; j < dim + 1; j++ ) { // i ���ܤιԤ� [i][i] �� 1 �ˤʤ�褦�˵��ʲ�
+    if ( a == 0 ) return false;           // 途中で 0 が出たらダメなデータ
+    for ( int j = 0; j < dim + 1; j++ ) { // i 番目の行を [i][i] が 1 になるように規格化
       m[i][j] /= a;
       s[i][j] /= a;
     }
-    for ( int i2 = 0; i2 < dim + 1; i2++ ) { // i2 ���ܤιԤ��� i ���ܤιԤ������
-                                             // [i2][i] �� 0 �ˤʤ�褦�ˤ��롣
+    for ( int i2 = 0; i2 < dim + 1; i2++ ) { // i2 番目の行から i 番目の行を引いて
+                                             // [i2][i] が 0 になるようにする。
       if ( i2 == i ) continue;
       double b = m[i2][i];
       for ( int j = 0; j < dim + 1; j++ ) {
@@ -169,7 +169,7 @@ bool KeV2Pix::calcAB( QVector<double>&x, QVector<double>&y, double *ab )
     }
   }
 
-  // �Ǥ����չ��� ( s ) �� xny �٥��ȥ�ˤ������ ab ����ޤ롣
+  // できた逆行列 ( s ) を xny ベクトルにかけると ab が求まる。
   for ( int i = 0; i < dim + 1; i++ ) {
     for ( int j = 0; j < dim + 1; j++ ) {
       ab[i] += s[i][j] * xny[j];

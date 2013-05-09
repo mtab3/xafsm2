@@ -39,6 +39,12 @@ enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
 
+
+struct AutoModeParam {
+  int num;
+  double dx, dz;
+};
+
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
   Q_OBJECT
@@ -131,7 +137,7 @@ private:
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
-  double oldDeg;             // ShowCurThPos �Ǥν�ʣ�¹Ԥ��򤱤뤿�ᡣ
+  double oldDeg;             // ShowCurThPos での重複実行を避けるため。
   bool AllInited, MotorsInited, SensorsInited;
 
   void setupLogArea( void );
@@ -337,8 +343,9 @@ private:
   bool AutoModeFirst;
   bool MovingToNewSamplePosition;
   int MeasA;
-  QStringList AutoModeParams;
+  QVector<AutoModeParam> AutoModeParams;
   void TouchDelegateFile( void );
+  QString AutoModeComment;
 
   void setupQXafsMode( void );
   void HideBLKs( bool f );
@@ -359,7 +366,8 @@ private:
 private slots:
 
   // Auto mode
-  void ParseAutoMode( void );
+  bool ParseAutoMode( void );
+  void SetNewChangerCenter( void );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );
@@ -493,7 +501,7 @@ private slots:
   void newA2Range( int newR );
 
   void AutoMeasurement( void );
-  void moveToTarget( int target );
+  void moveToTarget( int target, double dx, double dy );
   void AutoSequence( void );
 
   void StartMeasurement( void );

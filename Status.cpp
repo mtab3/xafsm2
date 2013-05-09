@@ -16,7 +16,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
     drivers << Ass->at(i);
   }
 
-  for ( int i = 0; i < drivers.count(); i++ ) {   // XAFSM.def ¤Ë¤¢¤ëÁ´¥É¥é¥¤¥ĞÌ¾¤ò½¸¤á¤ë
+  for ( int i = 0; i < drivers.count(); i++ ) {   // XAFSM.def ã«ã‚ã‚‹å…¨ãƒ‰ãƒ©ã‚¤ãƒåã‚’é›†ã‚ã‚‹
     Drivers << drivers.at(i)->getDriver();
     connect( drivers.at(i), SIGNAL( Enabled( QString, bool ) ),
 	     this, SLOT( OnEnabled( QString, bool ) ) );
@@ -85,10 +85,10 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   QPushButton *CEB, *CBB;
   QComboBox *CB1, *IBBx1, *IBBx2;
   int col;
-  for ( int i = 0; i < Drivers.count(); i++ ) {   // ½¸¤á¤¿Á´¥É¥é¥¤¥ĞÌ¾¤Î°ì¤Ä°ì¤Ä¤ËÂĞ¤·¤Æ
+  for ( int i = 0; i < Drivers.count(); i++ ) {   // é›†ã‚ãŸå…¨ãƒ‰ãƒ©ã‚¤ãƒåã®ä¸€ã¤ä¸€ã¤ã«å¯¾ã—ã¦
     col = 0;
     QVector<AUnit*> *Units = new QVector<AUnit*>;
-    // ¤½¤ì¤¾¤ì¤ÎÌ¾Á°¤Î¥É¥é¥¤¥Ğ¤ò»È¤Ã¤Æ¤¤¤ë¥æ¥Ë¥Ã¥È¤Î¥İ¥¤¥ó¥¿¤ò½¸¤á¤ë
+    // ãã‚Œãã‚Œã®åå‰ã®ãƒ‰ãƒ©ã‚¤ãƒã‚’ä½¿ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒã‚¤ãƒ³ã‚¿ã‚’é›†ã‚ã‚‹
     for ( int j = 0; j < drivers.count(); j++ ) {
       if ( Drivers.at(i) == drivers.at(j)->getDriver() )
 	*Units << drivers.at(j);

@@ -52,16 +52,16 @@ bool MainWindow::MeasureDark( void )
 
   for ( int i = 0; i < dUnits.count(); i++ ) {
     as = dUnits.at(i);
-    if ( ! as->isEnable() ) { // »ØÄê¤µ¤ì¤¿¥»¥ó¥µ¡¼¤¬ Stars ·ĞÍ³¤ÇÀ¸¤­¤Æ¤¤¤Ê¤¤¤È¥À¥á
+    if ( ! as->isEnable() ) { // æŒ‡å®šã•ã‚ŒãŸã‚»ãƒ³ã‚µãƒ¼ãŒ Stars çµŒç”±ã§ç”Ÿãã¦ã„ãªã„ã¨ãƒ€ãƒ¡
       QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return false;
     }
   }
-  // CNT2, OTC2 ¤Ï¥«¥¦¥ó¥¿¤Î¸ş¤³¤¦¤Ë Keithley ¤¬·Ò¤¬¤Ã¤Æ¤ë¡£
-  // CNT2, OTC2 ¤Ç¤Ï Keithley ¤ò¥ì¥ó¥¸¸ÇÄê¤Ç¡¢Ä¾ÀÜ¤Ç¤Ï¥ª¡¼¥È¥ì¥ó¥¸¤Ç»È¤¦¤Î¤Ç
-  // Î¾Êı¤òÆ±»ş¤Ë¤ÏÂ¬Äê¤Ë»È¤¨¤Ê¤¤
+  // CNT2, OTC2 ã¯ã‚«ã‚¦ãƒ³ã‚¿ã®å‘ã“ã†ã« Keithley ãŒç¹‹ãŒã£ã¦ã‚‹ã€‚
+  // CNT2, OTC2 ã§ã¯ Keithley ã‚’ãƒ¬ãƒ³ã‚¸å›ºå®šã§ã€ç›´æ¥ã§ã¯ã‚ªãƒ¼ãƒˆãƒ¬ãƒ³ã‚¸ã§ä½¿ã†ã®ã§
+  // ä¸¡æ–¹ã‚’åŒæ™‚ã«ã¯æ¸¬å®šã«ä½¿ãˆãªã„
   for ( int i = 0; i < dUnits.count(); i++ ) {
     if (( dUnits.at(i)->getType() == "CNT2" )||( dUnits.at(i)->getType() == "OTC2" )) {
       for ( int j = 0; j < dUnits.count(); j++ ) {
@@ -130,8 +130,8 @@ void MainWindow::MeasDarkSequence( void )
   case 5:
     double setTime;
     dUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
-    // Á°¤Ï MeasCPSs ¤ÏÌµ¤«¤Ã¤¿¤Î¤Ç MeasVals (count) ¤ò cps ¤ËÄ¾¤¹·×»»¤ò¤³¤³¤Ç¤ä¤Ã¤Æ¤ë¡£
-    // Ä¾¤·¤Æ¤âÎÉ¤¤¤±¤É¤½¤Î¤Ş¤Ş¤Ë¤·¤Æ¤ª¤¯
+    // å‰ã¯ MeasCPSs ã¯ç„¡ã‹ã£ãŸã®ã§ MeasVals (count) ã‚’ cps ã«ç›´ã™è¨ˆç®—ã‚’ã“ã“ã§ã‚„ã£ã¦ã‚‹ã€‚
+    // ç›´ã—ã¦ã‚‚è‰¯ã„ã‘ã©ãã®ã¾ã¾ã«ã—ã¦ãŠã
     for ( int i = 0; i < dUnits.count(); i++ ) {
       setTime = dUnits.at(i)->GetSetTime();
       if ( setTime > 0 ) {
@@ -145,7 +145,7 @@ void MainWindow::MeasDarkSequence( void )
 	dUnits.at(i)->setDark( MeasVals[i] );
       }
       if ( dUnits.at(i) == SFluo ) {
-	SFluo->setDark();      // 19ch Ê¬¤Î¥À¡¼¥¯¤òÆâÉô¶õ´Ö¤ËÊİÂ¸
+	SFluo->setDark();      // 19ch åˆ†ã®ãƒ€ãƒ¼ã‚¯ã‚’å†…éƒ¨ç©ºé–“ã«ä¿å­˜
       }
     }
     AskingShutterOpen = true;

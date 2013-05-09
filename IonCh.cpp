@@ -9,8 +9,8 @@ double MainWindow::calcMuT( int ch, int gas, double keV )
   double mut0, mut;
   double compAll = 1.0;
 
-#if 0        // ¥¬¥¹ÁÈÀ®¤ò¹ç·×¤Çµ¬³Ê²½¤·¤Ê¤¤
-             //  --> ¹ç·×¤¬ 1 ¤Ë¤Ê¤é¤Ê¤¤¾ì¹ç¤Ï²Ã°µ or ¸º°µ¤òÉ½¤¹
+#if 0        // ã‚¬ã‚¹çµ„æˆã‚’åˆè¨ˆã§è¦æ ¼åŒ–ã—ãªã„
+             //  --> åˆè¨ˆãŒ 1 ã«ãªã‚‰ãªã„å ´åˆã¯åŠ åœ§ or æ¸›åœ§ã‚’è¡¨ã™
   for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
     compAll += Gases[gas]->GasComps[i]->comp;
   }
@@ -25,9 +25,9 @@ double MainWindow::calcMuT( int ch, int gas, double keV )
     }
     mut += mut0 * Gases[gas]->GasComps[i]->comp / compAll;
   }
-  // ¤³¤³¤Ş¤Ç¤Ç mut ¤Ï»ØÄê¤Îº®¹ç¥¬¥¹¤¬É¸½à¾õÂÖ 1mol/cm2 ¤¢¤ë¤È¤­¤Î mut ¤Ë¤Ê¤Ã¤Æ¤ë
-  // ¤¹¤Ê¤ï¤Á¡¢t = 22.4 * 1000 [cm] ¤Î»ş¤Î mut
-  // ---> 1mol/cm2 ¤Ç¤Ï¤Ê¤¯ [comp ¤Î¹ç·× mol]/cm2 ¤ËÊÑ¤ï¤Ã¤¿¡£
+  // ã“ã“ã¾ã§ã§ mut ã¯æŒ‡å®šã®æ··åˆã‚¬ã‚¹ãŒæ¨™æº–çŠ¶æ…‹ 1mol/cm2 ã‚ã‚‹ã¨ãã® mut ã«ãªã£ã¦ã‚‹
+  // ã™ãªã‚ã¡ã€t = 22.4 * 1000 [cm] ã®æ™‚ã® mut
+  // ---> 1mol/cm2 ã§ã¯ãªã [comp ã®åˆè¨ˆ mol]/cm2 ã«å¤‰ã‚ã£ãŸã€‚
 
   return mut * ICLengths[ ch ]->length / ( 22.4 * 1000 );
 }
@@ -59,15 +59,15 @@ QVector<Element> MainWindow::ParseCompString( const QString& cmp )
   QVector<Element> list2;
   int bc = 0;      // bress count for '(' and ')', these brackets define sub-chemical-form
 
-  // 1 ²óÌÜ¤Î¥Ñ¡¼¥¹
-  // '(', ')', ¸µÁÇÌ¾, ¿ô»ú ¤Î4¤Ä¤ÎÍ×ÁÇ¤Î¤É¤ì¤«¤Ç¤Ç¤­¤¿¥ê¥¹¥È¤ËÀÚ¤êÊ¬¤±¤ë
+  // 1 å›ç›®ã®ãƒ‘ãƒ¼ã‚¹
+  // '(', ')', å…ƒç´ å, æ•°å­— ã®4ã¤ã®è¦ç´ ã®ã©ã‚Œã‹ã§ã§ããŸãƒªã‚¹ãƒˆã«åˆ‡ã‚Šåˆ†ã‘ã‚‹
   for ( int i = 0; i < cmp.length(); i++ ) {
     Element a;
     a.Num = 0;
     if ( cmp[i].isSpace() ) continue;
     if ( cmp[i] == '(' ) { a.special = BOPEN; list0 << a; bc++; }
     if ( cmp[i] == ')' ) { a.special = BCLOSE; list0 << a; bc--; }
-    if ( cmp[i].isUpper() ) {  // ¡ÖÂçÊ¸»ú¡×1Ê¸»ú¤Ş¤¿¤Ï +¡Ö¾®Ê¸»ú¡×1Ê¸»ú¤Ï¸µÁÇÌ¾
+    if ( cmp[i].isUpper() ) {  // ã€Œå¤§æ–‡å­—ã€1æ–‡å­—ã¾ãŸã¯ +ã€Œå°æ–‡å­—ã€1æ–‡å­—ã¯å…ƒç´ å
       a.special = ENAME;
       a.Name = cmp.mid( i, 1 );
       if ( i + 1 < cmp.length() ) {
@@ -95,11 +95,11 @@ QVector<Element> MainWindow::ParseCompString( const QString& cmp )
     }
   }
   if ( bc != 0 )
-    return list1;   // ¥«¥Ã¥³¤Î¿ô¤¬¹ç¤ï¤Ê¤¤   list1 is null list
+    return list1;   // ã‚«ãƒƒã‚³ã®æ•°ãŒåˆã‚ãªã„   list1 is null list
   if ( list0.count() < 1 )
     return list1;   // no elements are there
 
-  // 2²óÌÜ¤Î¥Ñ¡¼¥¹ ¸µÁÇÌ¾¤ÈÊÄ¤¸³ç¸Ì¤ÏÉ¬¤º¿ô»ú¤È¥Ú¥¢¤Ë¤¹¤ë¡¢Æ±»ş¤Ë¿ô»úÃ±ÆÈ¤ÎÍ×ÁÇ¤Ï¾Ê¤¯
+  // 2å›ç›®ã®ãƒ‘ãƒ¼ã‚¹ å…ƒç´ åã¨é–‰ã˜æ‹¬å¼§ã¯å¿…ãšæ•°å­—ã¨ãƒšã‚¢ã«ã™ã‚‹ã€åŒæ™‚ã«æ•°å­—å˜ç‹¬ã®è¦ç´ ã¯çœã
   for ( int i = 0; i < list0.count(); i++ ) {
     if ( list0[i].special == BOPEN ) { list1 << list0[i]; }
     if (( list0[i].special == BCLOSE )||( list0[i].special == ENAME )) {
@@ -113,7 +113,7 @@ QVector<Element> MainWindow::ParseCompString( const QString& cmp )
     }
   }
 
-  // 3²óÌÜ¤Î¥Ñ¡¼¥¹ '(' ')' ¤ò¤Û¤É¤¯¤¿¤á¤Ë ')' ¤ËÂ³¤¯¿ô»ú¤¬ 1¤Ë¤Ê¤ë¤è¤¦¤Ëµ¬³Ê²½
+  // 3å›ç›®ã®ãƒ‘ãƒ¼ã‚¹ '(' ')' ã‚’ã»ã©ããŸã‚ã« ')' ã«ç¶šãæ•°å­—ãŒ 1ã«ãªã‚‹ã‚ˆã†ã«è¦æ ¼åŒ–
   for ( int i = list1.count(); i >= 0; i-- ) {
     if ( list1[i].special == BCLOSE ) {
       qDebug() << "in 3rd pass " << i;
@@ -130,9 +130,9 @@ QVector<Element> MainWindow::ParseCompString( const QString& cmp )
     }
   }
 
-  // 4²óÌÜ¤Î¥Ñ¡¼¥¹
-  // ¤³¤Î»şÅÀ¤Ç '(' ')' ¤ÏÃ±½ã¤ËÌµ»ë¤·¤ÆÎÉ¤¯¤Ê¤Ã¤Æ¤¤¤ë¤Î¤Ç¡¢¥ê¥¹¥È¤«¤é¼Î¤Æ¤ë¡£
-  // Æ±»ş¤Ë¶¦ÄÌ¸µÁÇ¤Ï¤Ò¤È¤Ä¤Ë¤Ş¤È¤á¤ë
+  // 4å›ç›®ã®ãƒ‘ãƒ¼ã‚¹
+  // ã“ã®æ™‚ç‚¹ã§ '(' ')' ã¯å˜ç´”ã«ç„¡è¦–ã—ã¦è‰¯ããªã£ã¦ã„ã‚‹ã®ã§ã€ãƒªã‚¹ãƒˆã‹ã‚‰æ¨ã¦ã‚‹ã€‚
+  // åŒæ™‚ã«å…±é€šå…ƒç´ ã¯ã²ã¨ã¤ã«ã¾ã¨ã‚ã‚‹
   for ( int i = 0; i < list1.count(); i++ ) {
     if ( list1[i].special == ENAME ) {
       if ( list1[i].Num > 0 ) {

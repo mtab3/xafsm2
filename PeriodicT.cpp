@@ -100,7 +100,7 @@ void PeriodicTable::PTClose( void )
 void PeriodicTable::SetPTMask( int i, int mask )
 {
   if ( ( i >= 1 )&&( i <= PBs ) ) {
-    PTMask[i] = mask;     // mask ÈÖ¹æ¤Ï 1 »Ï¤Þ¤ê
+    PTMask[i] = mask;     // mask ç•ªå·ã¯ 1 å§‹ã¾ã‚Š
     if ( mask == 0 ) {
       PB[i-1]->setEnabled( FALSE );
       //      printf( "disable %d", i );
@@ -115,7 +115,7 @@ void PeriodicTable::SetPTMasks( int s, int e, int mask )
 {
   for ( int i = s; i <= e; i++ ) {
     if ( ( i >= 1 )&&( i <= PBs ) ) {
-      PTMask[i] = mask;     // mask ÈÖ¹æ¤Ï 1 »Ï¤Þ¤ê
+      PTMask[i] = mask;     // mask ç•ªå·ã¯ 1 å§‹ã¾ã‚Š
       if ( mask == 0 ) {
 	PB[i-1]->setEnabled( FALSE );
 	//	printf( "disable %d", i );

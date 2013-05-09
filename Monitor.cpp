@@ -10,10 +10,10 @@ void MainWindow::MonSequence( void )
 
   switch( MonStage ) {
     /* 
-       0: �ͤ��ɤ߽Ф���ɽ��
-       1: nct08 ��Ȥ���: ��¬���Ϥ�������
-          ����ʳ�: ��¬����
-       2: nct08 ��Ȥ���: ��¬����
+       0: 値の読み出しと表示
+       1: nct08 を使う時: 計測開始の前準備
+          それ以外: 計測開始
+       2: nct08 を使う時: 計測開始
     */
   case 0:
     mUnits.clearStage();
