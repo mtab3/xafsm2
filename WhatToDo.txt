@@ -1,30 +1,9 @@
-
 ○ 今のところ問題は出ていないが、
    MCAs, MCAs0 の更新が速すぎると、外部コピーが追いつかなくなる可能性あり。
    コピーは内部で面倒を見るか、何かロック機構がいる気がする。
 
-○ master-branch と develop-branch を分けてみた。
-   master を stable な branch にして、master に対しては bug-fix のみ、
-   開発は全て develop で。
-   master で bug-fix したら、develop に merge し、
-   develop がある程度安心できると思ったら、master に merge する。
-   というような方針でいけるか ?
-
 ○ BL6N で、エネルギーレンジのチェックがうまく動いてないらしい。
    とりあえず status-bar に状況表示するようにした。
-
-○ MMainTh->isBusy で引っかかって測定不能になることが頻繁に起こる。
-
-○ QXafs でダーク引くようにした。
-
-○ QFio.cpp の SetDFName2 でも DFName00 を使うようにした。
-   これで、QXAFS で auto-mode を使っていけない理由がない気がする... ので
-   Auto-mode の時 QXafs が出来なくしているチェックを外す。-----> 要確認 !!!!!!!
-   コードを見る限り大丈夫そう。---> 現場チェック !!!
-
-○ AutoMode で測定中、「中止」を押された場合、
-   現在進行中の1つのスキャンのみの中止か全体の中止かを尋ねるようなことが必要。未対応
-○ AutoMode の初期位置(原点位置)を決められるようにする。未対応
 
 ○ QXafs のリピート回数の上限確認。かつその回数に耐えられるかどうか確認すべし
    150点 x 2,000 回
@@ -138,8 +117,22 @@
 
 #########################################################################
 対処済み 2013.5～
-<<<<<<< HEAD
-=======
+○ MMainTh->isBusy で引っかかって測定不能になることが頻繁に起こる。
+○ QXafs でダーク引くようにした。
+○ QFio.cpp の SetDFName2 でも DFName00 を使うようにした。
+   これで、QXAFS で auto-mode を使っていけない理由がない気がする... ので
+   Auto-mode の時 QXafs が出来なくしているチェックを外す。-----> 要確認 !!!!!!!
+   コードを見る限り大丈夫そう。---> 現場チェック !!!
+○ AutoMode で測定中、「中止」を押された場合、
+   現在進行中の1つのスキャンのみの中止か全体の中止かを尋ねるようなことが必要。未対応
+○ AutoMode の初期位置(原点位置)を決められるようにする。未対応
+○ QXafs 測定中に「中断」した場合の後処理を正しくしたつもり
+○ master-branch と develop-branch を分けてみた。
+   master を stable な branch にして、master に対しては bug-fix のみ、
+   開発は全て develop で。
+   master で bug-fix したら、develop に merge し、
+   develop がある程度安心できると思ったら、master に merge する。
+   というような方針でいけるか ?
 ○ "-5" --> "1,2,3,4,5" とか
    "7-" --> "7,8,9" の様な展開はできるようになってるか ?
    それとも認めない ?
@@ -159,8 +152,6 @@
    (Fio の WriteHeader と QFio の WriteQHeader に入れる)
 ○ AutoMode 入力の注釈に changer の絵を入れた
 ○ AutoMode でセンターを指定する機構を入れた。機能するかどうかは現場でチェック
-
->>>>>>> master
 ○ AutoMode で必要になる AUnit *ChangerX, *ChangerZ が初期値として
    NULL クリアされてなかった --> 訂正
 ○ 定義ファイルで ChangerX, ChangerZ が定義されていない場合、AutoMode に入れなくした。

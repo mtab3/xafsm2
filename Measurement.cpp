@@ -130,10 +130,7 @@ void MainWindow::MeasSequence( void )
         MeasTimer->stop();
         inMeas = 0;
         MeasStart->setText( tr( "Start" ) );
-        MeasStart->setStyleSheet( "background-color: "
-                                  "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-                                  "rgba(225, 235, 225, 255), stop:1 "
-                                  "rgba(255, 255, 255, 255));" );
+        MeasStart->setStyleSheet( NormalB );
         MeasPause->setEnabled( false );
         onMeasFinishWorks();
       }

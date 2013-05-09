@@ -358,6 +358,7 @@ private:
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
   void DispQSpectrum( int g );
+  void QXafsFinish0( void );
   void QXafsFinish( void );
   bool CheckOkList( AUnit *as, QStringList OkList );
   bool theSensorIsAvailable( AUnit *as );

@@ -882,7 +882,6 @@ void MainWindow::AutoMeasurement( void )
     moveToTarget( AutoModeParams[ MeasA ].num,
                   AutoModeParams[ MeasA ].dx,
                   AutoModeParams[ MeasA ].dz );
-    // Must wait till the target is set.
   }
   StartMeasurement();
 }
@@ -896,7 +895,6 @@ void MainWindow::AutoSequence( void )
            << "AutoModeParams.count()" << AutoModeParams.count();
 
   if ( ( MeasA + 1 ) >=  AutoModeParams.count() ) {
-    // AutoMode->setEnabled( true );   // As is is not set to be disable
     ChangerX->SetValue( 0 );
     ChangerZ->SetValue( 0 );
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
@@ -959,18 +957,15 @@ void MainWindow::StartMeasurement( void )
   // 
   AUnit *as;
 
-  EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
-  SFluoLine = -1;
-  isSFluo = isSI1 = false;
-
-  qDebug() << inMeas << MMainTh->isBusy()
-           << GetDFName0();
-
   // 将来の変更
   // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
   // だけが選べるようにする。
 
   if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
+    EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
+    SFluoLine = -1;
+    isSFluo = isSI1 = false;
+
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
@@ -1336,6 +1331,8 @@ void MainWindow::SurelyStop( void )
   inPause = 0;
   MeasPause->setText( tr( "Pause" ) );
   MeasPause->setStyleSheet( NormalB );
+  if ( QXafsMode->isChecked() )
+    QXafsFinish0();
   onMeasFinishWorks();
 }
 
