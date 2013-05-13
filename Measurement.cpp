@@ -148,6 +148,8 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::onMeasFinishWorks( void )
 {
+  SelRealTime->setChecked( SvSelRealTime );
+  SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
