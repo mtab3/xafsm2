@@ -120,7 +120,7 @@ void MainWindow::newGain( const QString &gain )
   if ( SFluo == NULL )
     return;
 
-  
+  SFluo->setGain( MCACh->value(), gain.toDouble() );
 }
 
 void MainWindow::doPeakFit( void )
