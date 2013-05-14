@@ -3,6 +3,9 @@
 
 void MainWindow::setupReadDataArea( void )
 {
+  // 仮の処置、データ読込タブを消してしまう
+  MainTab->removeTab( MainTab->indexOf( ReadDataTab ) );
+
   Datas << Data001 << Data002 << Data003 << Data004 << Data005
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
