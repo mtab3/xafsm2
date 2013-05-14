@@ -30,7 +30,7 @@ void MainWindow::SetDFName( int i )
     DFName = DFName0 + DFName00 + ".dat";
   } else {
     buf.sprintf( ".%03d", i );
-    DFName = DFName0 + DFName00 + ".dat";
+    DFName = DFName0 + DFName00 + buf;
   }
 }
 
