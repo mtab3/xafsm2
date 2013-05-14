@@ -47,10 +47,10 @@ void KeV2Pix::MakeUpAB( int Dim )
     if ( items.count() > 0 ) {
       if ( items.at( 0 ).mid( 0, 1 ) == "#" ) continue;
       if ( items.count() > MaxSSDs ) {       // == MaxSSDs + 1 (のはず)
-	KeVs << items.at( 0 ).toDouble();
-	for ( int i = 0; i < MaxSSDs; i++ ) {
-	  Chs[ i ] << items.at( i + 1 ).toDouble();
-	}
+        KeVs << items.at( 0 ).toDouble();
+        for ( int i = 0; i < MaxSSDs; i++ ) {
+          Chs[ i ] << items.at( i + 1 ).toDouble();
+        }
       }
     }
   }
@@ -61,7 +61,7 @@ void KeV2Pix::MakeUpAB( int Dim )
       qDebug() << "ab can not be calculated for " << i;
     } else {
       for ( int j = 0; j < dim + 1; j++ ) {
-	ab[i][j] = ab0[j];
+        ab[i][j] = ab0[j];
       }
     }
 
@@ -70,7 +70,7 @@ void KeV2Pix::MakeUpAB( int Dim )
       qDebug() << "ba can not be calculated for " << i;
     } else {
       for ( int j = 0; j < dim + 1; j++ ) {
-	ba[i][j] = ba0[j];
+        ba[i][j] = ba0[j];
       }
     }
   }

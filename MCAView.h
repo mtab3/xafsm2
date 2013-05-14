@@ -21,6 +21,7 @@ private:
   int valid;
   //  QVecotot<int *> MCAs;
   int *MCA;
+  double *SMCA, *DMCA, *dMCA;   // スムージング結果、1次微分、統計変動
   int MCALen;
   int MCACh;
   double realTime;
@@ -47,6 +48,7 @@ private:
   QColor Black, White;
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
+  QColor SMCAC, DMCAC;
 
   void Draw( QPainter *p );
 
