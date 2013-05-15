@@ -110,7 +110,20 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
-  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+  //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+
+  connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
+	   this, SLOT( newPSSens() ) );
+}
+
+void MainWindow::newPSSens( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setNewPSSens( PeakSearchSensitivity->text() );
+    }
+  }
 }
 
 void MainWindow::newGain( const QString &gain )
@@ -123,6 +136,7 @@ void MainWindow::newGain( const QString &gain )
   SFluo->setGain( MCACh->value(), gain.toDouble() );
 }
 
+#if 0
 void MainWindow::doPeakFit( void )
 {
   MCAView *view;
@@ -132,6 +146,7 @@ void MainWindow::doPeakFit( void )
     }
   }
 }
+#endif
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {
@@ -646,3 +661,16 @@ void MainWindow::clearMCA( void )
   }
 }
 
+void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
+{
+  for ( int i = 0; i < peaks->count(); i++ ) {
+    QString aPeak = QString( "%1 [keV] (%2 pix)" )
+      .arg( (*peaks)[i].centerE )
+      .arg( (*peaks)[i].center  );
+    if ( i >= MCAPeakList->count() ) {
+      MCAPeakList->addItem( aPeak );
+    } else {
+      MCAPeakList->setItemText( i, aPeak );
+    }
+  }
+}

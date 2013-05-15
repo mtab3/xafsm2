@@ -99,15 +99,6 @@ void MainWindow::ToggleQXafsMode( bool )
     HideBLKs( false );
 
     QConditionBox->setHidden( true );
-#if 0
-    QMeasOnBackward->setHidden( true );
-    QMinMaxBox->setHidden( true );
-    QMaxSpeed->setHidden( true );
-    QMinTime->setHidden( true );
-    QSepLine->setHidden( true );
-    QLimitedDisplay->setHidden( true );
-#endif
-
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
     Use19chSSD->setChecked( SaveUse19ChSSD );
@@ -432,26 +423,26 @@ void MainWindow::QXafsMeasSequence( void )
   qDebug() << "out " << MeasStage;
 }
 
-void MainWindow::QXafsFinish( void )
+void MainWindow::QXafsFinish0( void )
 {
   mUnits.setOneByOne( false );           // 「ユニット一つずつ順番に」モードやめる
   MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
   MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す
+}
+
+void MainWindow::QXafsFinish( void )
+{
   statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
   NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
-  //    WriteHeader2( MeasR );
-  //    WriteInfoFile2();
   MeasTimer->stop();
   inMeas = 0;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart
-    ->setStyleSheet( "background-color: "
-		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		     "rgba(225, 235, 225, 255), stop:1 "
-		     "rgba(255, 255, 255, 255));" );
+  MeasStart->setStyleSheet( NormalB );
   MeasPause->setEnabled( false );
+  QXafsFinish0();
   onMeasFinishWorks();
 }
+
 
 void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 {

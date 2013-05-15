@@ -11,6 +11,14 @@
 
 enum MMODE { M_ROI, M_POINT, M_NO };
 
+struct MCAPeak {
+  int start;
+  int end;
+  double center;
+  double centerE;
+  int peakH;
+};
+
 class MCAView : public QFrame, private Ui::MCAView
 {
   Q_OBJECT
@@ -41,6 +49,10 @@ private:
   QVector<double> cPoints; // カーソル表示を残す点
   QStringList selectedAtoms;
   double yRatio;           // 縦軸の拡大倍率
+
+  bool ShowDiff;
+  double PSSens;           // ピークサーチの感度
+  QVector<MCAPeak> MCAPeaks;
 
   int nearX;
   bool nearf;
@@ -74,6 +86,8 @@ public:
   double getRealTime( void ) { return realTime; };
   double getLiveTime( void ) { return liveTime; };
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
+  void setNewPSSens( QString newSens );
+  void setShowDiff( bool f ) { ShowDiff = f; };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
@@ -81,11 +95,12 @@ public slots:
   void setShowElements( bool show ) { showElements = show; update(); };
   void setShowElementsAlways( bool show ) { showElementsAlways = show; update(); };
   void setShowElementsEnergy( bool show ) { showElementsEnergy = show; update(); };
-  void doPeakFit( void );
+  //  void doPeakFit( void );
 
 signals:
   void CurrentValues( int atCur, int inROI );
   void newROI( int ROIstart, int ROIend );
+  void newPeakList( QVector<MCAPeak>* );
 };
 
 #endif

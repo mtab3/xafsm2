@@ -359,6 +359,7 @@ private:
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
   void DispQSpectrum( int g );
+  void QXafsFinish0( void );
   void QXafsFinish( void );
   bool CheckOkList( AUnit *as, QStringList OkList );
   bool theSensorIsAvailable( AUnit *as );
@@ -442,6 +443,8 @@ private slots:
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
   void saveMonData( void );
+  void gotNewPeakList( QVector<MCAPeak>* );
+  void newPSSens( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -521,7 +524,7 @@ private slots:
   void NoticeMCAViewShowElmEnergy( bool f );
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
-  void doPeakFit( void );
+  //  void doPeakFit( void );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );
