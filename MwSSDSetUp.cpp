@@ -110,7 +110,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
-  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+  //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
 }
 
 void MainWindow::newGain( const QString &gain )
@@ -123,6 +123,7 @@ void MainWindow::newGain( const QString &gain )
   SFluo->setGain( MCACh->value(), gain.toDouble() );
 }
 
+#if 0
 void MainWindow::doPeakFit( void )
 {
   MCAView *view;
@@ -132,6 +133,7 @@ void MainWindow::doPeakFit( void )
     }
   }
 }
+#endif
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {

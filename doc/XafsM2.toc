@@ -35,30 +35,30 @@
 \contentsline {paragraph}{\bf データタイプ:}{22}
 \contentsline {paragraph}{\bf データの中身:}{22}
 \contentsline {subsubsection}{\numberline {4.5.3}Viewを閉じる}{22}
-\contentsline {subsection}{\numberline {4.6}ログ/記録}{23}
+\contentsline {subsection}{\numberline {4.6}ログ/記録}{22}
 \contentsline {subsection}{\numberline {4.7}状態/設定}{23}
 \contentsline {subsubsection}{\numberline {4.7.1}Starsサーバとの接続}{23}
 \contentsline {subsubsection}{\numberline {4.7.2}Stars経由でのデバイスとの接続}{24}
 \contentsline {paragraph}{ドライバ状態監視ボタン}{24}
-\contentsline {paragraph}{ドライバ状態表示}{25}
+\contentsline {paragraph}{ドライバ状態表示}{24}
 \contentsline {subsubsection}{\numberline {4.7.3}分光結晶設定}{25}
-\contentsline {section}{\numberline {5}グラフ表示部}{26}
+\contentsline {section}{\numberline {5}グラフ表示部}{25}
 \contentsline {subsection}{\numberline {5.1}XAFS測定、スキャン、モニタデータ表示}{26}
 \contentsline {subsubsection}{\numberline {5.1.1}表示色}{26}
-\contentsline {subsubsection}{\numberline {5.1.2}スケール変更(移動・拡大・縮小)}{27}
+\contentsline {subsubsection}{\numberline {5.1.2}スケール変更(移動・拡大・縮小)}{26}
 \contentsline {subsection}{\numberline {5.2}MCA測定データ表示}{27}
-\contentsline {subsubsection}{\numberline {5.2.1}画面中の情報}{28}
+\contentsline {subsubsection}{\numberline {5.2.1}画面中の情報}{27}
 \contentsline {subsubsection}{\numberline {5.2.2}ROIの設定}{28}
 \contentsline {section}{\numberline {6}標準的な測定操作}{28}
-\contentsline {section}{\numberline {7}起動方法・設定}{29}
+\contentsline {section}{\numberline {7}起動方法・設定}{28}
 \contentsline {subsection}{\numberline {7.1}起動方法}{29}
 \contentsline {subsubsection}{\numberline {7.1.1}起動に関連したファイルとその置き場所}{29}
 \contentsline {paragraph}{Windows だけの設定}{29}
 \contentsline {subsubsection}{\numberline {7.1.2}起動オプション(設定ファイル、動作言語の指定)}{29}
-\contentsline {subsection}{\numberline {7.2}定義ファイル}{30}
+\contentsline {subsection}{\numberline {7.2}定義ファイル}{29}
 \contentsline {subsubsection}{\numberline {7.2.1}XafsM2 の動作を指定するパラメータ}{30}
-\contentsline {subsubsection}{\numberline {7.2.2}駆動軸(モータ類)の定義}{31}
-\contentsline {subsubsection}{\numberline {7.2.3}検出器(カウンタ、電流計...)の定義}{32}
+\contentsline {subsubsection}{\numberline {7.2.2}駆動軸(モータ類)の定義}{30}
+\contentsline {subsubsection}{\numberline {7.2.3}検出器(カウンタ、電流計...)の定義}{31}
 \contentsline {subsection}{\numberline {7.3}BL5S1 の構成}{33}
 \contentsline {subsection}{\numberline {7.4}BL5S1でのイオンチャンバの接続}{33}
 \contentsline {section}{\numberline {8}変更履歴}{34}

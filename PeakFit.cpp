@@ -1,4 +1,6 @@
 
+#if 0
+
 #include <math.h>
 #include <stdio.h>
 
@@ -226,3 +228,5 @@ void PeakFit::calcNewP( double gamma )
 
   qDebug() << "cc 10";
 }
+
+#endif

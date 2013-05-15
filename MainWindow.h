@@ -522,7 +522,7 @@ private slots:
   void NoticeMCAViewShowElmEnergy( bool f );
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
-  void doPeakFit( void );
+  //  void doPeakFit( void );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );

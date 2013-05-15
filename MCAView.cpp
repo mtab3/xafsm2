@@ -62,6 +62,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   connect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ) );
+  connect( this, SIGNAL( newPeakList( QVector<AMCAPeak>* ) ),
+	   Parent, SLOT( gotNewPeakList( QVector<AMCAPeak>* ) ) );
 }
 
 MCAView::~MCAView( void )
@@ -78,6 +80,8 @@ MCAView::~MCAView( void )
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ) );
+  disconnect( this, SIGNAL( newPeakList( QVector<AMCAPeak>* ) ),
+	   Parent, SLOT( gotNewPeakList( QVector<AMCAPeak>* ) ) );
 }
 
 int *MCAView::setMCAdataPointer( int len )
@@ -108,13 +112,46 @@ double LOGS[ 9 ] = {
   0.95424,     // log10( 9 )
 };
 
+#if 1       // ものすごく平滑化する例
 #define SMOOTHINGOFFSET ( -5 )   // スムージングを行う係数
 #define SMOOTHINGRANGE  ( 11 )
 double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-#define DIFFOFFSET  ( -3 )  // 微分を計算する係数
+#define DIFFOFFSET  ( -5 )  // 微分を計算する係数
 #define DIFFRANGE  ( 11 )
 double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
 double DiffNorm = 300;
+#endif
+
+#if 0       // 中間ぐらい (微分の方で平滑化を行う)
+#define SMOOTHINGOFFSET ( -2 )   // スムージングを行う係数
+#define SMOOTHINGRANGE  ( 5 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 4, 6, 4, 1 };
+#define DIFFOFFSET  ( -5 )  // 微分を計算する係数
+#define DIFFRANGE  ( 11 )
+double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
+double DiffNorm = 300;
+#endif
+
+#if 0       // 中間ぐらい (微分ではあまり平滑化しない)
+#define SMOOTHINGOFFSET ( -5 )   // スムージングを行う係数
+#define SMOOTHINGRANGE  ( 11 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+#define DIFFOFFSET  ( -2 )  // 微分を計算する係数
+#define DIFFRANGE  ( 5 )
+double DWeight[ DIFFRANGE ] = { -2, -1, 0, 1, 2 };
+double DiffNorm = 10;
+#endif
+
+#if 0       // ほとんど平滑化しない例
+#define SMOOTHINGOFFSET ( -2 )   // スムージングを行う係数
+#define SMOOTHINGRANGE  ( 5 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 4, 6, 4, 1 };
+#define DIFFOFFSET  ( -2 )  // 微分を計算する係数
+#define DIFFRANGE  ( 5 )
+double DWeight[ DIFFRANGE ] = { -2, -1, 0, 1, 2 };
+double DiffNorm = 10;
+#endif
+
 #define DELOFFSET ( -1 )  // 統計誤差を見積もる係数
 #define DELRANGE  ( 3 )
 double DelWeight[ DELRANGE ] = { 1, 0, 1 };
@@ -217,7 +254,7 @@ void MCAView::Draw( QPainter *p )
     }
   }
   double ff = 0;
-  double maxD = 0, minD = 0, maxd = 0, maxDd = 0;
+  double maxD = 0, minD = 0, maxd = 0;
   // 微係数と局所的な統計変動を求めておく
   for ( int i = 0; i < MCALen; i++ ) {
     double D = 0;
@@ -237,38 +274,51 @@ void MCAView::Draw( QPainter *p )
     }
     dMCA[i] = d = sqrt( d ) / 2;
     if ( d > maxd ) { maxd = d; }
-    if ( D / d > maxDd ) { maxDd = D / d; }
   }
-  ff = maxDd;    // 感度 (微係数と統計誤差の比の最大値)/..
 
-  QVector<int> PSChs;   // ピーク開始チャンネル
-  QVector<int> PCChs;   // ピーク中心チャンネル
-  QVector<int> PEChs;   // ピーク終了チャンネル
+  MCAPeaks.clear();
+  MCAPeak aPeak;
   int SearchMode = 0;                   // 0: before peak, 1:
-  int s, c, e;
   for ( int i = 0; i < MCALen; i++ ) {
+    ff = 0.5;
     switch( SearchMode ) {
     case 0:
       if ( DMCA[i] > ( dMCA[i] * ff ) ) {
-	PSChs << ( s = i );
+	aPeak.start = i;
+	//	PSChs << ( s = i );
 	SearchMode = 1;
       }
       break;
     case 1:
       if ( DMCA[i] < ( - dMCA[i] * ff ) ) {
-	PCChs << ( c = ( i - 1 ) );
-	i = c + ( c - s ) / 2;
+	int j;
+	for ( j = i; j > aPeak.start; j-- ) {
+	  if ( DMCA[j] > ( dMCA[j] * ff ) ) 
+	    break;
+	}
+	aPeak.center = ( i + j ) / 2.0;
+	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
+	aPeak.peakH = SMCA[ (int)aPeak.center ];
+	//	PCChs << ( c = ( i + j ) / 2.0 );
 	SearchMode = 2;
       }
       break;
     case 2:
       if ( fabs( DMCA[i] ) < dMCA[i] * ff ) {
-	PEChs << i;
+	aPeak.end = i;
+	MCAPeaks << aPeak;
+	//	PEChs << i;
 	SearchMode = 0;
       }
     }
   }
-  qDebug() << PCChs;
+
+  // debug
+  QVector<double> PC;
+  for ( int i = 0; i < MCAPeaks.count(); i++ ) {
+    PC << MCAPeaks[i].center;
+  }
+  qDebug() << PC;
 #endif
 
   double lastE = 0;
@@ -710,6 +760,7 @@ void MCAView::wheelEvent( QWheelEvent *e )
   update();
 }
 
+#if 0
 void MCAView::doPeakFit( void )
 {
   QVector<double> xxx, yyy;    // peak fit 用
@@ -746,3 +797,4 @@ void MCAView::doPeakFit( void )
   delete peakF;
   qDebug() << "bb10";
 }
+#endif
