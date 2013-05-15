@@ -50,6 +50,8 @@ private:
   QStringList selectedAtoms;
   double yRatio;           // 縦軸の拡大倍率
 
+  bool ShowDiff;
+  double PSSens;           // ピークサーチの感度
   QVector<MCAPeak> MCAPeaks;
 
   int nearX;
@@ -84,6 +86,8 @@ public:
   double getRealTime( void ) { return realTime; };
   double getLiveTime( void ) { return liveTime; };
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
+  void setNewPSSens( QString newSens );
+  void setShowDiff( bool f ) { ShowDiff = f; };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
@@ -96,6 +100,7 @@ public slots:
 signals:
   void CurrentValues( int atCur, int inROI );
   void newROI( int ROIstart, int ROIend );
+  void newPeakList( QVector<MCAPeak>* );
 };
 
 #endif

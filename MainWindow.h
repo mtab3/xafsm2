@@ -443,6 +443,8 @@ private slots:
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
   void saveMonData( void );
+  void gotNewPeakList( QVector<MCAPeak>* );
+  void newPSSens( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );

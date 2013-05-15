@@ -520,7 +520,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -4997,7 +4997,17 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="12" column="0" colspan="8">
+           <item row="14" column="8">
+            <widget class="QLabel" name="label_47">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>   Sensitivity </string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="0" colspan="12">
             <layout class="QHBoxLayout" name="horizontalLayout_12">
              <item>
               <widget class="QRadioButton" name="DispElmNames">
@@ -5044,7 +5054,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </item>
             </layout>
            </item>
-           <item row="2" column="4">
+           <item row="2" column="6">
             <widget class="QRadioButton" name="SetDisplayLog">
              <property name="minimumSize">
               <size>
@@ -5060,7 +5070,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="5" column="4">
+           <item row="5" column="6">
             <widget class="QLabel" name="label_65">
              <property name="minimumSize">
               <size>
@@ -5073,7 +5083,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="5" column="5" colspan="2">
+           <item row="5" column="7" colspan="2">
             <widget class="QLineEdit" name="GainInput">
              <property name="minimumSize">
               <size>
@@ -5089,7 +5099,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="9" column="0" colspan="8">
+           <item row="9" column="0" colspan="12">
             <widget class="QRadioButton" name="ROIChangeableWhileXAFS">
              <property name="text">
               <string>ROI changeable even while the XAFS measurements</string>
@@ -5099,7 +5109,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="6" column="1" colspan="3">
+           <item row="6" column="3" colspan="3">
             <widget class="QLineEdit" name="ROIStartInput">
              <property name="minimumSize">
               <size>
@@ -5118,7 +5128,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="5" column="1" colspan="3">
+           <item row="5" column="3" colspan="3">
             <widget class="QLineEdit" name="DynamicRangeInput">
              <property name="minimumSize">
               <size>
@@ -5134,7 +5144,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="4" column="1" colspan="3">
+           <item row="4" column="3" colspan="3">
             <widget class="QLineEdit" name="ThresholdInput">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -5144,7 +5154,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="3" column="1" colspan="3">
+           <item row="3" column="3" colspan="3">
             <widget class="QLineEdit" name="PeakingTimeInput">
              <property name="minimumSize">
               <size>
@@ -5160,7 +5170,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="8" column="3">
+           <item row="8" column="5">
             <widget class="QRadioButton" name="SelRealTime">
              <property name="text">
               <string>Real</string>
@@ -5170,7 +5180,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="8" column="1">
+           <item row="8" column="3">
             <widget class="QLabel" name="label_70">
              <property name="text">
               <string>Preset:</string>
@@ -5184,7 +5194,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="7" column="5" colspan="2">
+           <item row="7" column="7" colspan="2">
             <widget class="QLabel" name="ValInROIDisp">
              <property name="maximumSize">
               <size>
@@ -5206,7 +5216,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="6" column="4">
+           <item row="6" column="6">
             <widget class="QLabel" name="label_19">
              <property name="minimumSize">
               <size>
@@ -5219,7 +5229,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="7" column="4">
+           <item row="7" column="6">
             <widget class="QLabel" name="label_20">
              <property name="minimumSize">
               <size>
@@ -5232,7 +5242,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="3" column="4">
+           <item row="3" column="6">
             <widget class="QLabel" name="label_59">
              <property name="minimumSize">
               <size>
@@ -5245,14 +5255,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="4" column="7">
+           <item row="4" column="11">
             <widget class="QLabel" name="label_60">
              <property name="text">
               <string>eV</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="7">
+           <item row="5" column="11">
             <widget class="QLabel" name="label_61">
              <property name="minimumSize">
               <size>
@@ -5291,14 +5301,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="4" column="4">
+           <item row="4" column="6">
             <widget class="QLabel" name="label_55">
              <property name="text">
               <string>eV       Carib.</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="6" colspan="2">
+           <item row="2" column="8" colspan="4">
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <property name="spacing">
               <number>1</number>
@@ -5370,7 +5380,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </item>
             </layout>
            </item>
-           <item row="6" column="5" colspan="2">
+           <item row="6" column="7" colspan="2">
             <widget class="QLineEdit" name="ROIEndInput">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -5395,7 +5405,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="8" column="4">
+           <item row="8" column="6">
             <widget class="QRadioButton" name="SelLiveTime">
              <property name="text">
               <string>Live</string>
@@ -5405,7 +5415,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="7" column="1" colspan="3">
+           <item row="7" column="3" colspan="3">
             <widget class="QLabel" name="ValAtCurDisp">
              <property name="maximumSize">
               <size>
@@ -5427,7 +5437,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="18" column="0" colspan="8">
+           <item row="18" column="0" colspan="12">
             <widget class="QSplitter" name="splitter_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -5493,14 +5503,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </widget>
             </widget>
            </item>
-           <item row="8" column="5" colspan="2">
+           <item row="8" column="7" colspan="2">
             <widget class="QLineEdit" name="PresetTime">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="7">
+           <item row="8" column="11">
             <widget class="QLabel" name="label_66">
              <property name="text">
               <string>sec</string>
@@ -5514,7 +5524,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="2" column="2">
+           <item row="2" column="4">
             <widget class="QLabel" name="label_64">
              <property name="text">
               <string/>
@@ -5547,7 +5557,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="4" column="5" colspan="2">
+           <item row="4" column="7" colspan="2">
             <widget class="QLineEdit" name="CalibrationInput">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(230, 230, 230);</string>
@@ -5557,7 +5567,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="2" column="3">
             <widget class="QSpinBox" name="MCACh">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -5570,14 +5580,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="17" column="0" colspan="8">
+           <item row="17" column="0" colspan="12">
             <widget class="Line" name="line_6">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="0" colspan="3">
+           <item row="1" column="0" colspan="5">
             <widget class="QLabel" name="label_14">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 230,190);</string>
@@ -5593,7 +5603,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="6" column="7">
+           <item row="6" column="11">
             <widget class="QPushButton" name="ROIsetAll">
              <property name="styleSheet">
               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
@@ -5603,28 +5613,28 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="11" column="0" colspan="8">
+           <item row="11" column="0" colspan="12">
             <widget class="Line" name="line_7">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="14" column="0">
-            <widget class="QLabel" name="label_33">
-             <property name="text">
-              <string>Peak List</string>
-             </property>
-            </widget>
-           </item>
-           <item row="13" column="0" colspan="8">
+           <item row="13" column="0" colspan="12">
             <widget class="Line" name="line_8">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="14" column="7">
+           <item row="14" column="3" colspan="5">
+            <widget class="QComboBox" name="MCAPeakList">
+             <property name="styleSheet">
+              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             </property>
+            </widget>
+           </item>
+           <item row="14" column="9">
             <widget class="QLineEdit" name="PeakSearchSensitivity">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5634,20 +5644,23 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="14" column="6">
-            <widget class="QLabel" name="label_47">
+           <item row="14" column="10" colspan="2">
+            <widget class="QRadioButton" name="ShowDiff">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
-              <string>   Sensitivity </string>
+              <string>Show Diff.</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="14" column="1" colspan="5">
-            <widget class="QComboBox" name="MCAPeakList">
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+           <item row="14" column="0" colspan="3">
+            <widget class="QLabel" name="label_33">
+             <property name="text">
+              <string>  Peak List: </string>
              </property>
             </widget>
            </item>

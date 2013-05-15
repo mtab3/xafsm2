@@ -37,6 +37,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   mMode = M_NO;
   yRatio = 1.0;
 
+  ShowDiff = true;
+  PSSens = 0.5; // ピークサーチの感度
+
   valid = false;
   dispLog = false;
 
@@ -62,8 +65,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   connect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ) );
-  connect( this, SIGNAL( newPeakList( QVector<AMCAPeak>* ) ),
-	   Parent, SLOT( gotNewPeakList( QVector<AMCAPeak>* ) ) );
+  connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
+	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
 }
 
 MCAView::~MCAView( void )
@@ -80,8 +83,8 @@ MCAView::~MCAView( void )
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ) );
-  disconnect( this, SIGNAL( newPeakList( QVector<AMCAPeak>* ) ),
-	   Parent, SLOT( gotNewPeakList( QVector<AMCAPeak>* ) ) );
+  disconnect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
+	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
 }
 
 int *MCAView::setMCAdataPointer( int len )
@@ -312,13 +315,14 @@ void MCAView::Draw( QPainter *p )
       }
     }
   }
-
-  // debug
+  emit newPeakList( &MCAPeaks );
+#if 0      // debug
   QVector<double> PC;
   for ( int i = 0; i < MCAPeaks.count(); i++ ) {
     PC << MCAPeaks[i].center;
   }
   qDebug() << PC;
+#endif    // debug
 #endif
 
   double lastE = 0;
@@ -798,3 +802,12 @@ void MCAView::doPeakFit( void )
   qDebug() << "bb10";
 }
 #endif
+
+void MCAView::setNewPSSens( QString newSens )
+{
+  double s = newSens.toDouble();
+
+  if ( s > 0 ) {
+    PSSens = s;
+  }
+}
