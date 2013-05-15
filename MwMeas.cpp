@@ -1068,6 +1068,9 @@ void MainWindow::StartMeasurement( void )
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
+    SvSelRealTime = SelRealTime->isChecked();
+    SvSelLiveTime = SelLiveTime->isChecked();
+
     MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );

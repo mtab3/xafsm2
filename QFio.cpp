@@ -120,6 +120,8 @@ void MainWindow::WriteQBody( void )
   double upp = MMainTh->getUPP();
   double deg, deg2;
   double upp2 = 0;
+  double i0, i1;
+  QString buf;
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
@@ -132,11 +134,16 @@ void MainWindow::WriteQBody( void )
     } else {
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
-	<< QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値
-	<< QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
-	<< QString::number( vals0[i+1].toDouble() - dark0, 'f', 10 ) << "\t"
-	<< QString::number( vals1[i+1].toDouble() - dark1, 'f', 10 ) << endl;
+    i0 = vals0[i+1].toDouble() - dark0;
+    i1 = vals1[i+1].toDouble() - dark1;
+    buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
+                 deg, deg2, QXafsDwellTime, i0, i1 );
+    out << buf << endl;
+//    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
+//        << QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値
+//        << QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
+//        << QString::number( vals0[i+1].toDouble() - dark0, 'f', 10 ) << "\t"
+//        << QString::number( vals1[i+1].toDouble() - dark1, 'f', 10 ) << endl;
   }
 
   file.close();

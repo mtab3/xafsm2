@@ -169,6 +169,9 @@ void MainWindow::Initialize( void )
   if ( SFluo != NULL ) {
     getMCASettings( MCACh->text().toInt() );
     s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+    for ( int i = 0; i < MCAGains.count(); i++ ) {
+      SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
+    }
   }
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );

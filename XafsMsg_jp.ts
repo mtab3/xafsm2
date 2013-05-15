@@ -966,7 +966,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Back ground</source>
-        <translation>バックグラウンド</translation>
+        <translation type="obsolete">バックグラウンド</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the &apos;Normalize&apos; is checked, the value of the detector selected as &apos;Monitor&apos; is normalized by the value of the detecter selected in the following selection-box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -1798,6 +1798,42 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please put the numder to be scanned (eg. 1,2,3 or 3-6) &lt;img src=&quot;:/Changer.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;自動交換して測定する試料番号を入力して下さい。&lt;p&gt;(例 1,3,5 : この3つをこの順に測定します。例 5, 1-4 : 5を測定した後、1〜4を順に測定します)&lt;p&gt; &lt;img src=&quot;:/Changer.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>バックグランド</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a sample holder of which center is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;現在ビームがその中心を通っている試料ホルダ番号を選んで下さい&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Let the center of the selected No. of the sample holder is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ビームが選択した番号の試料ホルダ中心を通っていると認識し、原点を再定義します。( 5番の中心が(0,0)になるようにします。)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Set C.C.</source>
+        <translation>現位置セット</translation>
+    </message>
+    <message>
+        <source>The position to go [%1]eV is out of range. [%2]-[%3]eV</source>
+        <translation>移動しようとしているエネルギー[%1]eVは可動範囲外です。可動範囲は [%2]-[%3]eV です。</translation>
+    </message>
+    <message>
+        <source>Auto mode parameters are illigal.</source>
+        <translation>試料自動交換の指定(測定順序等の書き方)が間違っています。</translation>
+    </message>
+    <message>
+        <source>Please choose &quot;Use Measured&quot;</source>
+        <translation>連続測定が中断されないよう、バックグラウンドの計測に関して「計測済みの値を使用」を選択して下さい。</translation>
+    </message>
+    <message>
+        <source>The block definitin [%1]eV is out of range. [%2]-[%3]eV</source>
+        <translation>ブロックの定義にある [%1]eV は可動範囲外です。 可動範囲は [%2]-[%3]eV です。</translation>
+    </message>
+    <message>
+        <source>A.M. Enable</source>
+        <translation>使用</translation>
     </message>
 </context>
 <context>

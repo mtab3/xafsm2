@@ -2,6 +2,8 @@
 #include "MCAView.h"
 #include "PeakFit.h"
 
+#define PEAKSEARCH
+
 // 横軸には 3つの単位がある。
 // MCA pixel, eV (実Energy), 描画 pixel
 // MCAView 内の横軸は基本的に keV
@@ -23,6 +25,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   k2p = NULL;
   MCA = NULL;
+  SMCA = NULL;  // スムージング
+  DMCA = NULL;  // 1次微分
+  dMCA = NULL;  // 統計変動
   MCALen = 0;
   MCACh = -1;
   realTime = 0;
@@ -46,6 +51,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   ROIEdgeC    = QColor( 250, 180,   0 );  // ROI の端点表示
   GridC       = QColor( 100, 100, 190 );  // グリッドの色
   AListC      = QColor( 200,   0, 100 );  // 元素名リスト 
+  SMCAC       = QColor( 255,   0,   0 );  // スムージングしたスペクトル
+  DMCAC       = QColor( 0,   0,   255 );  // 微分
 
   rROIsx = 0;
   rROIex = 20;
@@ -61,6 +68,12 @@ MCAView::~MCAView( void )
 {
   if ( MCA != NULL )
     delete MCA;
+  if ( SMCA != NULL )
+    delete SMCA;
+  if ( DMCA != NULL )
+    delete DMCA;
+  if ( dMCA != NULL )
+    delete dMCA;
   disconnect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
@@ -70,6 +83,9 @@ MCAView::~MCAView( void )
 int *MCAView::setMCAdataPointer( int len )
 {
   MCA = new int[ MCALen = len ];
+  SMCA = new double[ MCALen ];
+  DMCA = new double[ MCALen ];
+  dMCA = new double[ MCALen ];
   return MCA;
 }
 
@@ -92,6 +108,17 @@ double LOGS[ 9 ] = {
   0.95424,     // log10( 9 )
 };
 
+#define SMOOTHINGOFFSET ( -5 )   // スムージングを行う係数
+#define SMOOTHINGRANGE  ( 11 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+#define DIFFOFFSET  ( -3 )  // 微分を計算する係数
+#define DIFFRANGE  ( 11 )
+double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
+double DiffNorm = 300;
+#define DELOFFSET ( -1 )  // 統計誤差を見積もる係数
+#define DELRANGE  ( 3 )
+double DelWeight[ DELRANGE ] = { 1, 0, 1 };
+
 void MCAView::Draw( QPainter *p )
 {
   if ( valid != true ) 
@@ -105,7 +132,7 @@ void MCAView::Draw( QPainter *p )
   int w = width();
   int h = height();
 
-  int LM = w * 0.25;
+  int LM = w * 0.25;        // 画面を描くときの基準になる定数を幾つか決めておく
   if ( LM > 180 ) LM = 180;
   int RM = w * 0.05;
   if ( RM > 40 ) RM = 40;
@@ -171,6 +198,80 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
+#ifdef PEAKSEARCH  // MCA スペクトルのスムージングとピークサーチ
+
+  for ( int i = 0; i < MCALen; i++ ) {               // Smoothing した MCA スペクトル
+    double ss, ww;
+    ss = ww = 0;
+    for ( int j = 0; j < SMOOTHINGRANGE; j++ ) {
+      int jj = i + j + SMOOTHINGOFFSET;
+      if ( ( jj >= 0 ) && ( jj < MCALen ) ) {
+	ss += MCA[ jj ] * SWeight[ j ];
+	ww += SWeight[ j ];
+      }
+      if ( ww > 0 ) {
+	SMCA[i] = ss / ww;
+      } else {
+	SMCA[i] = 0;
+      }
+    }
+  }
+  double ff = 0;
+  double maxD = 0, minD = 0, maxd = 0, maxDd = 0;
+  // 微係数と局所的な統計変動を求めておく
+  for ( int i = 0; i < MCALen; i++ ) {
+    double D = 0;
+    double d = 1;
+    if ( ( ( i + DIFFOFFSET ) >= 0 ) && ( ( i - DIFFOFFSET ) < MCALen ) ) {
+      for ( int j = 0; j < DIFFRANGE; j++ ) {
+	D += DWeight[j] * SMCA[ i + j + DIFFOFFSET ];
+      }
+    }
+    DMCA[i] = D = D / DiffNorm;
+    if ( DMCA[i] > maxD ) { maxD = DMCA[i]; }
+    if ( DMCA[i] < minD ) { minD = DMCA[i]; }
+    if ( ( ( i + DELOFFSET ) >= 0 ) && ( ( i - DELOFFSET ) < MCALen ) ) {
+      for ( int j = 0; j < DIFFRANGE; j++ ) {
+	d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
+      }
+    }
+    dMCA[i] = d = sqrt( d ) / 2;
+    if ( d > maxd ) { maxd = d; }
+    if ( D / d > maxDd ) { maxDd = D / d; }
+  }
+  ff = maxDd;    // 感度 (微係数と統計誤差の比の最大値)/..
+
+  QVector<int> PSChs;   // ピーク開始チャンネル
+  QVector<int> PCChs;   // ピーク中心チャンネル
+  QVector<int> PEChs;   // ピーク終了チャンネル
+  int SearchMode = 0;                   // 0: before peak, 1:
+  int s, c, e;
+  for ( int i = 0; i < MCALen; i++ ) {
+    switch( SearchMode ) {
+    case 0:
+      if ( DMCA[i] > ( dMCA[i] * ff ) ) {
+	PSChs << ( s = i );
+	SearchMode = 1;
+      }
+      break;
+    case 1:
+      if ( DMCA[i] < ( - dMCA[i] * ff ) ) {
+	PCChs << ( c = ( i - 1 ) );
+	i = c + ( c - s ) / 2;
+	SearchMode = 2;
+      }
+      break;
+    case 2:
+      if ( fabs( DMCA[i] ) < dMCA[i] * ff ) {
+	PEChs << i;
+	SearchMode = 0;
+      }
+    }
+  }
+  qDebug() << PCChs;
+#endif
+
+  double lastE = 0;
   int sum = 0;
   for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
     double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
@@ -181,12 +282,46 @@ void MCAView::Draw( QPainter *p )
       p->setPen( ExROIRangeC );
     }
     if ( dispLog ) {
-      if ( MCA[i] > 0 )
+      if ( MCA[i] > 0 ) {
 	p->drawLine( cc.r2sx( E ), cc.r2sy( log10( MCA[i] ) ),
 		     cc.r2sx( E ), cc.r2sy( 0 ) );
+      }
+#ifdef PEAKSEARCH                   // ピークサーチ
+      if ( ( i > 0 ) && ( SMCA[i] > 0 ) && ( SMCA[i-1] > 0 ) ) {
+	p->setPen( SMCAC );
+	p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
+		     cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
+      }
+      if ( ( i > 0 ) && ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
+	p->setPen( DMCAC );
+	p->drawLine( cc.r2sx( lastE ),
+		     cc.r2sy( log10( ( DMCA[i-1] - minD )
+				     * max * yRatio / ( maxD - minD ) ) ),
+		     cc.r2sx( E ),
+		     cc.r2sy( log10( ( DMCA[i] - minD )
+				     * max * yRatio / ( maxD - minD ) ) ) );
+      }
+#endif
     } else {
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
+#ifdef PEAKSEARCH                    // ピークサーチ
+      if ( i > 0 ) {
+	p->setPen( SMCAC );
+	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
+		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
+      }
+      if ( i > 0 ) {
+	p->setPen( DMCAC );
+	p->drawLine( cc.r2sx( lastE ),
+		     cc.r2sy( ( DMCA[i-1] - minD )
+			      * max * yRatio / ( maxD - minD ) ),
+		     cc.r2sx( E ),
+		     cc.r2sy( ( DMCA[i] - minD )
+			      * max * yRatio / ( maxD - minD ) ) );
+      }
+#endif
     }
+    lastE = E;
   }
 
   p->setPen( Black );                      // グラフ外枠の四角描画
