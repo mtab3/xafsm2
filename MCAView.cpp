@@ -338,40 +338,40 @@ void MCAView::Draw( QPainter *p )
 	p->drawLine( cc.r2sx( E ), cc.r2sy( log10( MCA[i] ) ),
 		     cc.r2sx( E ), cc.r2sy( 0 ) );
       }
-#ifdef PEAKSEARCH                   // ピークサーチ
       if ( ( i > 0 ) && ( SMCA[i] > 0 ) && ( SMCA[i-1] > 0 ) ) {
 	p->setPen( SMCAC );
 	p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
 		     cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
       }
-      if ( ( i > 0 ) && ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
-	p->setPen( DMCAC );
-	p->drawLine( cc.r2sx( lastE ),
-		     cc.r2sy( log10( ( DMCA[i-1] - minD )
-				     * max * yRatio / ( maxD - minD ) ) ),
-		     cc.r2sx( E ),
-		     cc.r2sy( log10( ( DMCA[i] - minD )
-				     * max * yRatio / ( maxD - minD ) ) ) );
+      if ( ShowDiff ) {
+	if ( ( i > 0 ) && ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
+	  p->setPen( DMCAC );
+	  p->drawLine( cc.r2sx( lastE ),
+		       cc.r2sy( log10( ( DMCA[i-1] - minD )
+				       * max * yRatio / ( maxD - minD ) ) ),
+		       cc.r2sx( E ),
+		       cc.r2sy( log10( ( DMCA[i] - minD )
+				       * max * yRatio / ( maxD - minD ) ) ) );
+	}
       }
-#endif
     } else {
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
-#ifdef PEAKSEARCH                    // ピークサーチ
       if ( i > 0 ) {
 	p->setPen( SMCAC );
 	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
 		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
       }
-      if ( i > 0 ) {
-	p->setPen( DMCAC );
-	p->drawLine( cc.r2sx( lastE ),
-		     cc.r2sy( ( DMCA[i-1] - minD )
-			      * max * yRatio / ( maxD - minD ) ),
-		     cc.r2sx( E ),
-		     cc.r2sy( ( DMCA[i] - minD )
-			      * max * yRatio / ( maxD - minD ) ) );
+      if ( ShowDiff ) {
+	if ( i > 0 ) {
+	  p->setPen( DMCAC );
+	  p->drawLine( cc.r2sx( lastE ),
+		       cc.r2sy( ( DMCA[i-1] - minD )
+				* max * yRatio / ( maxD - minD ) ),
+		       cc.r2sx( E ),
+		       cc.r2sy( ( DMCA[i] - minD )
+				* max * yRatio / ( maxD - minD ) ) );
+	}
       }
-#endif
     }
     lastE = E;
   }

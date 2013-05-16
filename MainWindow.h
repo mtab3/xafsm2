@@ -445,6 +445,7 @@ private slots:
   void saveMonData( void );
   void gotNewPeakList( QVector<MCAPeak>* );
   void newPSSens( void );
+  void SelectedShowDiff( bool f );
 
   void newSensSelected( int );
   void newRangeSelected( int );

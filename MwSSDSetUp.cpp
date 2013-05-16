@@ -114,6 +114,17 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
 	   this, SLOT( newPSSens() ) );
+  connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ) );
+}
+
+void MainWindow::SelectedShowDiff( bool f )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowDiff( f );
+    }
+  }
 }
 
 void MainWindow::newPSSens( void )
