@@ -32,7 +32,7 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
     return RES_OTHER;         // val に残して return
   }
   from = Message.mid( 0, i1 );
-  i3 = from.indexOf( '.' );
+  i3 = from.lastIndexOf( '.' );
   if ( i3 < 0 ) {       // from に ch 名が無ければ
     fromDev = from;     // fromDev だけセット fromCh は空のまま
   } else {
@@ -47,7 +47,7 @@ MSGOREVENT SMsg::ParseMsg( QString Message )
     return RES_OTHER;
   }
   to = Message.mid( i1 + 1, i2 - i1 - 1 );
-  i3 = to.indexOf( '.' );
+  i3 = to.lastIndexOf( '.' );
   if ( i3 < 0 ) {       // to に ch 名が無ければ
     toDev = from;     // toDev だけセット toCh は空のまま
   } else {
