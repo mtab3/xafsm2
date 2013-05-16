@@ -56,8 +56,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   MCAFSel->setDirectory( QDir::currentPath() );
   MCAFSel->setFilter( "*.dat" );
 
-  connect( GainInput, SIGNAL( textEdited( const QString & ) ), 
-	   this, SLOT( newGain( const QString & ) ) );
+  connect( GainInput, SIGNAL( editingFinished() ), 
+	   this, SLOT( newGain() ) );
 
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
@@ -121,16 +121,24 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 
 void MainWindow::newCalibration( void )
 {
-  qDebug() << "aa";
+  if ( inMCAMeas )
+    return;
+  if ( SFluo == NULL )
+    return;
+
   MCAView *view;   // ここでは view は直接使わないが、MCAPeaks は view 内部へのポインタ
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      double ratio                                // 新旧の エネルギー比
-	= PeakCalibrate->text().toDouble()
-	/ (*MCAPeaks)[ MCAPeakList->currentIndex() ].centerE;
+      double oldE = (*MCAPeaks)[ MCAPeakList->currentIndex() ].centerE;
+      if ( oldE <= 0 ) return;
+      // 新旧の エネルギー比
+      double ratio = PeakCalibrate->text().toDouble() / oldE;
+      if ( ratio <= 0 ) return;
       // gain の設定は何故か逆
-      qDebug() << "bb" << MCACh->value() << GainInput->text().toDouble() / ratio;
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
+      // 設定したゲインの読み出し
+      s->SendCMD2( "SetUpMCA", SFluo->getDriver(),
+		   "GetPreAMPGain", QString::number( MCACh->value() ) );
     }
   }
 }
@@ -155,14 +163,14 @@ void MainWindow::newPSSens( void )
   }
 }
 
-void MainWindow::newGain( const QString &gain )
+void MainWindow::newGain( void )
 {
   if ( inMCAMeas )
     return;
   if ( SFluo == NULL )
     return;
 
-  SFluo->setGain( MCACh->value(), gain.toDouble() );
+  SFluo->setGain( MCACh->value(), GainInput->text().toDouble() );
 }
 
 #if 0
@@ -485,6 +493,8 @@ void MainWindow::StartMCA( void )
 
     GainInput->setReadOnly( true );
     GainInput->setStyleSheet( NONEDITABLELINE );
+    PeakCalibrate->setReadOnly( true );
+    PeakCalibrate->setStyleSheet( NONEDITABLELINE );
     MCAStart->setText( tr( "Stop" ) );
     MCAStart->setStyleSheet( InActive );
 
@@ -531,6 +541,8 @@ void MainWindow::StartMCA( void )
     inMCAMeas = false;
     GainInput->setReadOnly( false );
     GainInput->setStyleSheet( EDITABLELINE );
+    PeakCalibrate->setReadOnly( false );
+    PeakCalibrate->setStyleSheet( EDITABLELINE );
     SFluo->RunStop();
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();

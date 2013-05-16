@@ -520,7 +520,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -1512,6 +1512,9 @@
                 </item>
                 <item row="2" column="0">
                  <widget class="QFrame" name="QLimitedDisplayFrame">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Last X [Lines] will be displayed, and for the lines older than the 'X', lines measured at every Y [periods] will be displayed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::NoFrame</enum>
                   </property>
@@ -1525,6 +1528,19 @@
                    <property name="spacing">
                     <number>1</number>
                    </property>
+                   <item row="0" column="4">
+                    <widget class="QLineEdit" name="QDispLinePeriod">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: rgb(255, 255, 255);</string>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="0" column="0">
                     <widget class="QRadioButton" name="QLimitedDisplay">
                      <property name="text">
@@ -1547,6 +1563,9 @@
                    </item>
                    <item row="0" column="1">
                     <widget class="QLabel" name="label_82">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Last X [Lines] will be displayed, and for the lines older than the 'X', lines measured at every Y [periods] will be displayed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
                      <property name="text">
                       <string>Last </string>
                      </property>
@@ -1562,7 +1581,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="4">
+                   <item row="0" column="6">
                     <spacer name="horizontalSpacer_21">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
@@ -1574,6 +1593,13 @@
                       </size>
                      </property>
                     </spacer>
+                   </item>
+                   <item row="0" column="5">
+                    <widget class="QLabel" name="label_85">
+                     <property name="text">
+                      <string>Period</string>
+                     </property>
+                    </widget>
                    </item>
                   </layout>
                  </widget>
@@ -2119,14 +2145,21 @@
                <property name="spacing">
                 <number>1</number>
                </property>
-               <item row="2" column="4" rowspan="3">
+               <item row="4" column="4" rowspan="3">
                 <widget class="Line" name="line_3">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
+               <item row="4" column="6" rowspan="3">
+                <widget class="Line" name="line_6">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
                 <widget class="QLabel" name="label_10">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 230,190);</string>
@@ -2142,7 +2175,69 @@
                  </property>
                 </widget>
                </item>
-               <item row="4" column="3">
+               <item row="6" column="0">
+                <widget class="QRadioButton" name="SelExtPattern">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,...   When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>.dat/.num</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="3">
+                <widget class="QComboBox" name="OnFinishP">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="7">
+                <widget class="QPushButton" name="MeasPause">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Pause</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="5">
+                <widget class="QRadioButton" name="RecordMCASpectra">
+                 <property name="toolTip">
+                  <string>When 19ch SSD is used for the measurement, the MCA spectra for each channel is recorded at every measured points.</string>
+                 </property>
+                 <property name="text">
+                  <string>Record MCA Spectra</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="2" rowspan="3">
+                <widget class="Line" name="line">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
                 <widget class="QSpinBox" name="SelRPT">
                  <property name="toolTip">
                   <string>The change of the repitation No. is available, even after starting measurement.
@@ -2162,7 +2257,14 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="3">
+               <item row="5" column="0">
+                <widget class="Line" name="line_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1" rowspan="2">
                 <widget class="QLabel" name="label_93">
                  <property name="text">
                   <string>Repeat</string>
@@ -2172,14 +2274,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QComboBox" name="OnFinishP">
-                 <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
+               <item row="4" column="3" rowspan="2">
                 <widget class="QLabel" name="label_94">
                  <property name="text">
                   <string>On Finish</string>
@@ -2189,52 +2284,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="6">
-                <widget class="QPushButton" name="MeasStart">
-                 <property name="maximumSize">
-                  <size>
-                   <width>10000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-                 </property>
-                 <property name="text">
-                  <string>Start</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="6">
-                <widget class="QPushButton" name="MeasPause">
-                 <property name="maximumSize">
-                  <size>
-                   <width>100000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-                 </property>
-                 <property name="text">
-                  <string>Pause</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="5">
-                <widget class="QRadioButton" name="RecordMCASpectra">
-                 <property name="toolTip">
-                  <string>When 19ch SSD is used for the measurement, the MCA spectra for each channel is recorded at every measured points.</string>
-                 </property>
-                 <property name="text">
-                  <string>Record MCA Spectra</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="5">
+               <item row="4" column="5" rowspan="2">
                 <widget class="QRadioButton" name="QXafsMode">
                  <property name="toolTip">
                   <string>Use novel 1303 data format to record the measured data instead of the usual 9809 format.</string>
@@ -2250,10 +2300,25 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="2" rowspan="3">
-                <widget class="Line" name="line">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
+               <item row="4" column="7" rowspan="2">
+                <widget class="QPushButton" name="MeasStart">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Start</string>
                  </property>
                 </widget>
                </item>
@@ -2606,7 +2671,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="0" column="3">
+             <item row="0" column="6">
               <widget class="QSpinBox" name="SelectChangerBase">
                <property name="maximumSize">
                 <size>
@@ -2628,7 +2693,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="0" column="4">
+             <item row="0" column="7">
               <widget class="QPushButton" name="SetChangerCenter">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -2650,6 +2715,48 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="text">
                 <string>Set C.C.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLabel" name="ItemsForAutoMode">
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of items which will be measured.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 221);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_86">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of items which will be measured.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Items</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="5">
+              <widget class="QLabel" name="label_87">
+               <property name="text">
+                <string>   </string>
                </property>
               </widget>
              </item>
@@ -5633,7 +5740,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <number>1</number>
               </property>
               <property name="spacing">
-               <number>3</number>
+               <number>1</number>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="label_38">

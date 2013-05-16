@@ -3,12 +3,12 @@
 
 void MainWindow::PlayEndingSound( void )
 {
-  PlaySound( ":/finished.wav", 3 );
+  PlaySound( "finished.wav", 3 );
 }
 
 void MainWindow::PlayGoOnSound( void )
 {
-  PlaySound( ":/finished.wav", 3 );
+  PlaySound( "finished.wav", 3 );
 }
 
 void MainWindow::PlaySound( QString name, int times )

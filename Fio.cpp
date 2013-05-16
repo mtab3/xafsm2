@@ -26,11 +26,16 @@ void MainWindow::SetDFName( int i )
 {
   QString buf;
 
-  if ( i == 0 ) {
-    DFName = DFName0 + DFName00 + ".dat";
+  if ( SvSelExtPattern || ( SelRPT->text().toInt() == 1 ) ) {
+    if ( i == 0 ) {
+      DFName = DFName0 + DFName00 + ".dat";
+    } else {
+      buf.sprintf( ".%03d", i );
+      DFName = DFName0 + DFName00 + buf;
+    }
   } else {
-    buf.sprintf( ".%03d", i );
-    DFName = DFName0 + DFName00 + buf;
+      buf.sprintf( "-%03d.dat", i );
+      DFName = DFName0 + DFName00 + buf;
   }
 }
 

@@ -735,10 +735,6 @@ Though, other parameters are fixed at the value on starting.</source>
         <translation>エネルギー表示</translation>
     </message>
     <message>
-        <source>Fit</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>ROI changeable even while the XAFS measurements</source>
         <translation>XAFS測定中もROIの変更を可能にする</translation>
     </message>
@@ -1834,6 +1830,59 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>A.M. Enable</source>
         <translation>使用</translation>
+    </message>
+    <message>
+        <source>  Peak List: </source>
+        <translation>ピークリスト</translation>
+    </message>
+    <message>
+        <source>Calibrate as: </source>
+        <translation>較正:</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通常、0.5。大きくするとピークを見つけにくくなり、小さくするとノイズなども誤ってピークと判断しやすくなる。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>[keV]   Sensitivity </source>
+        <translation>[keV]   感度 </translation>
+    </message>
+    <message>
+        <source>0.5</source>
+        <translation>0.5</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Show Diff.</source>
+        <translation>微分表示</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Last X [Lines] will be displayed, and for the lines older than the &apos;X&apos;, lines measured at every Y [periods] will be displayed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;直近に測定された X[本] のスペクトルが表示されます。それより前に測定されたスペクトルは Y[間隔]本毎に表示されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Period</source>
+        <translation>間隔</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,...   When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;このボタンがチェックされていると、繰り返し測定の2回目以降のファイル名は拡張子が .001, .002, .003,... の様になります。&lt;/p&gt;
+&lt;p&gt;チェックが外れていると、拡張子は常に .dat になり、基幹ファイル名の末尾に -001, -002, 等が追加され、例えば test-001.dat, test-002.dat,... の様になります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>.dat/.num</source>
+        <translation>.dat/.num</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of items which will be measured.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;自動測定を行う点数&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Items</source>
+        <translation>点数</translation>
     </message>
 </context>
 <context>
