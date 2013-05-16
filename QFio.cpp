@@ -9,14 +9,23 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
 {
   QString buf;
 
-  if ( rpt == 1 ) {
-    if ( dir == FORWARD ) {
-      DFName = DFName0 + DFName00 + "-f" + ".dat";
+  if ( SvSelExtPattern || ( SelRPT->text().toInt() == 1 ) ) {
+    if ( rpt == 1 ) {
+      if ( dir == FORWARD ) {
+	DFName = DFName0 + DFName00 + "-f" + ".dat";
+      } else {
+	DFName = DFName0 + DFName00 + "-b" + ".dat";
+      }
     } else {
-      DFName = DFName0 + DFName00 + "-b" + ".dat";
+      buf.sprintf( ".%04d", rpt - 1 );
+      if ( dir == FORWARD ) {
+	DFName = DFName0 + DFName00 + "-f" + buf;
+      } else {
+	DFName = DFName0 + DFName00 + "-b" + buf;
+      }
     }
   } else {
-    buf.sprintf( ".%04d", rpt - 1 );
+    buf.sprintf( "-%04d.dat", rpt - 1 );
     if ( dir == FORWARD ) {
       DFName = DFName0 + DFName00 + "-f" + buf;
     } else {

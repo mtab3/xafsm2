@@ -221,8 +221,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
 
   // Auto mode   :  The parse can be done, on starting measurement
-  //  connect( AutoMode, SIGNAL( editingFinished() ),
-  //           this, SLOT( ParseAutoMode() ) );
+  connect( AutoMode, SIGNAL( editingFinished() ),
+	   this, SLOT( ShowItemsForAutoMode() ) );
   connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
 }
 
@@ -1070,6 +1070,7 @@ void MainWindow::StartMeasurement( void )
 
     SvSelRealTime = SelRealTime->isChecked();
     SvSelLiveTime = SelLiveTime->isChecked();
+    SvSelExtPattern = SelExtPattern->isChecked();
 
     MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
@@ -1426,6 +1427,12 @@ void MainWindow::RangeSelOK( void )
 }
 
 
+void MainWindow::ShowItemsForAutoMode( void )
+{
+  ParseAutoMode();
+  ItemsForAutoMode->setText( QString::number( AutoModeParams.count() ) );
+}
+
 bool MainWindow::ParseAutoMode( void )
 {
   AutoModeParams.clear();
@@ -1443,8 +1450,8 @@ bool MainWindow::ParseAutoMode( void )
       return false;
     options << pLine.mid( s+1, e-s-1 );
     pLine = pLine.left( s ) + "*" + pLine.mid( e+1 );
-    qDebug() << pLine;
-    qDebug() << options;
+    //    qDebug() << pLine;
+    //    qDebug() << options;
   }
 
   // 「,」(カンマ)と「 」(スペース、空白文字)の両方を区切りとして認める。
@@ -1501,10 +1508,12 @@ bool MainWindow::ParseAutoMode( void )
     }
   }
 
+#if 0
   for ( int i = 0; i < AutoModeParams.count(); i++ ) {
     qDebug() << AutoModeParams[i].num
 	     << AutoModeParams[i].dx << AutoModeParams[i].dz;
   }
+#endif
 
   return true;
 }

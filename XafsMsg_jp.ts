@@ -1859,6 +1859,23 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Show Diff.</source>
         <translation>微分表示</translation>
     </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Last X [Lines] will be displayed, and for the lines older than the &apos;X&apos;, lines measured at every Y [periods] will be displayed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;直近に測定された X[本] のスペクトルが表示されます。それより前に測定されたスペクトルは Y[間隔]本毎に表示されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Period</source>
+        <translation>間隔</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,...   When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;このボタンがチェックされていると、繰り返し測定の2回目以降のファイル名は拡張子が .001, .002, .003,... の様になります。&lt;/p&gt;
+&lt;p&gt;チェックが外れていると、拡張子は常に .dat になり、基幹ファイル名の末尾に -001, -002, 等が追加され、例えば test-001.dat, test-002.dat,... の様になります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>.dat/.num</source>
+        <translation>.dat/.num</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

@@ -254,6 +254,7 @@ private:
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
   int EstimatedMeasurementTimeInSec;
   bool SvSelRealTime, SvSelLiveTime;
+  bool SvSelExtPattern;
 
   void ClearBLKs( void );
   void ShowBLKs( void );
@@ -370,6 +371,7 @@ private slots:
 
   // Auto mode
   bool ParseAutoMode( void );
+  void ShowItemsForAutoMode( void );
   void SetNewChangerCenter( void );
 
   void Initialize( void );
