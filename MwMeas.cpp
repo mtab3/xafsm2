@@ -889,10 +889,10 @@ void MainWindow::AutoMeasurement( void )
 void MainWindow::AutoSequence( void )
 {
   AutoModeFirst = false;
-  qDebug() << "AutoSequence";
 
-  qDebug() << "MeasA" << MeasA
-           << "AutoModeParams.count()" << AutoModeParams.count();
+  //  qDebug() << "AutoSequence";
+  //  qDebug() << "MeasA" << MeasA
+  //           << "AutoModeParams.count()" << AutoModeParams.count();
 
   if ( ( MeasA + 1 ) >=  AutoModeParams.count() ) {
     ChangerX->SetValue( 0 );

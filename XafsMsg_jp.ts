@@ -1876,6 +1876,14 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>.dat/.num</source>
         <translation>.dat/.num</translation>
     </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of items which will be measured.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;自動測定を行う点数&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Items</source>
+        <translation>点数</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

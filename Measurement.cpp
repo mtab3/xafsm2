@@ -40,7 +40,11 @@ void MainWindow::MeasSequence( void )
   case 0:
     if ( AutoModeFirst )
       TouchDelegateFile();
-    CurrentRpt->setText( QString::number( 1 ) );
+    if ( AutoModeButton->isChecked() ) {
+      CurrentRpt->setText( QString( "%1 - %2" ).arg( 1 ).arg( MeasA+1 ) );
+    } else {
+      CurrentRpt->setText( QString::number( 1 ) );
+    }
     CurrentPnt->setText( QString::number( 1 ) );
     WriteInfoFile();
     mUnits.clearStage();
@@ -119,7 +123,11 @@ void MainWindow::MeasSequence( void )
         PlayGoOnSound();
         WriteInfoFile2();
         MeasR++;
-        CurrentRpt->setText( QString::number( MeasR + 1 ) );
+	if ( AutoModeButton->isChecked() ) {
+	  CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasR + 1 ).arg( MeasA+1 ) );
+	} else {
+	  CurrentRpt->setText( QString::number( MeasR + 1 ) );
+	}
         MeasStage = 2;
       } else {               // 終了
         statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );

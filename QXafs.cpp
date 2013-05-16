@@ -288,7 +288,11 @@ void MainWindow::QXafsMeasSequence( void )
     MakeDelegateFile();
     MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
     MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
-    CurrentRpt->setText( QString::number( 1 ) );
+    if ( AutoModeButton->isChecked() ) {
+      CurrentRpt->setText( QString( "%1 - %2" ).arg( 1 ).arg( MeasA+1 ) );
+    } else {
+      CurrentRpt->setText( QString::number( 1 ) );
+    }
     //    WriteInfoFile();
     mUnits.clearStage();
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
@@ -327,7 +331,11 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     }
     WriteQHeader( MeasR, FORWARD );
-    CurrentRpt->setText( QString::number( MeasR ) );
+    if ( AutoModeButton->isChecked() ) {
+      CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasR + 1 ).arg( MeasA+1 ) );
+    } else {
+      CurrentRpt->setText( QString::number( MeasR ) );
+    }
     CurrentPnt->setText( tr( "Fwd" ) );
     MMainTh->SetHighSpeed( HSpeed );
     MeasStage++;
