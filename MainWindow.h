@@ -436,7 +436,7 @@ private slots:
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
-  void newGain( const QString &gain );
+  void newGain( void );
 #if 0      // new mcas
   void ShowNewMCAStat( void );
 #endif

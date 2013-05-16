@@ -735,10 +735,6 @@ Though, other parameters are fixed at the value on starting.</source>
         <translation>エネルギー表示</translation>
     </message>
     <message>
-        <source>Fit</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>ROI changeable even while the XAFS measurements</source>
         <translation>XAFS測定中もROIの変更を可能にする</translation>
     </message>
@@ -1834,6 +1830,34 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>A.M. Enable</source>
         <translation>使用</translation>
+    </message>
+    <message>
+        <source>  Peak List: </source>
+        <translation>ピークリスト</translation>
+    </message>
+    <message>
+        <source>Calibrate as: </source>
+        <translation>較正:</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通常、0.5。大きくするとピークを見つけにくくなり、小さくするとノイズなども誤ってピークと判断しやすくなる。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>[keV]   Sensitivity </source>
+        <translation>[keV]   感度 </translation>
+    </message>
+    <message>
+        <source>0.5</source>
+        <translation>0.5</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Show Diff.</source>
+        <translation>微分表示</translation>
     </message>
 </context>
 <context>
