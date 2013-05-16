@@ -256,7 +256,6 @@ void MCAView::Draw( QPainter *p )
       }
     }
   }
-  double ff = 0;
   double maxD = 0, minD = 0, maxd = 0;
   // 微係数と局所的な統計変動を求めておく
   for ( int i = 0; i < MCALen; i++ ) {
@@ -283,20 +282,19 @@ void MCAView::Draw( QPainter *p )
   MCAPeak aPeak;
   int SearchMode = 0;                   // 0: before peak, 1:
   for ( int i = 0; i < MCALen; i++ ) {
-    ff = 0.5;
     switch( SearchMode ) {
     case 0:
-      if ( DMCA[i] > ( dMCA[i] * ff ) ) {
+      if ( DMCA[i] > ( dMCA[i] * PSSens ) ) {
 	aPeak.start = i;
 	//	PSChs << ( s = i );
 	SearchMode = 1;
       }
       break;
     case 1:
-      if ( DMCA[i] < ( - dMCA[i] * ff ) ) {
+      if ( DMCA[i] < ( - dMCA[i] * PSSens ) ) {
 	int j;
 	for ( j = i; j > aPeak.start; j-- ) {
-	  if ( DMCA[j] > ( dMCA[j] * ff ) ) 
+	  if ( DMCA[j] > ( dMCA[j] * PSSens ) ) 
 	    break;
 	}
 	aPeak.center = ( i + j ) / 2.0;
@@ -307,7 +305,7 @@ void MCAView::Draw( QPainter *p )
       }
       break;
     case 2:
-      if ( fabs( DMCA[i] ) < dMCA[i] * ff ) {
+      if ( fabs( DMCA[i] ) < dMCA[i] * PSSens ) {
 	aPeak.end = i;
 	MCAPeaks << aPeak;
 	//	PEChs << i;
@@ -809,5 +807,6 @@ void MCAView::setNewPSSens( QString newSens )
 
   if ( s > 0 ) {
     PSSens = s;
+    qDebug() << "newSens " << s;
   }
 }
