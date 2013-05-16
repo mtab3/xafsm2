@@ -110,6 +110,7 @@ private:
   QDir mcaDir;
   QFileInfo BaseFile;
   QVector<MCAGain*> MCAGains;
+  QVector<MCAPeak> *MCAPeaks;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -445,6 +446,8 @@ private slots:
   void saveMonData( void );
   void gotNewPeakList( QVector<MCAPeak>* );
   void newPSSens( void );
+  void SelectedShowDiff( bool f );
+  void newCalibration( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
