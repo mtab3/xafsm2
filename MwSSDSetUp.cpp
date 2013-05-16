@@ -133,6 +133,9 @@ void MainWindow::newCalibration( void )
       if ( oldE <= 0 ) return;
       // 新旧の エネルギー比
       double ratio = PeakCalibrate->text().toDouble() / oldE;
+      qDebug() << "oldE and ratio "
+	       << oldE << PeakCalibrate->text().toDouble() << ratio
+	       << "new gain " << GainInput->text().toDouble() / ratio;
       if ( ratio <= 0 ) return;
       // gain の設定は何故か逆
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
