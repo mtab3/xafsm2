@@ -6195,7 +6195,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </widget>
               </item>
               <item row="0" column="3">
-               <widget class="QLineEdit" name="lineEdit">
+               <widget class="QLineEdit" name="PeakCalibrate">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -6219,7 +6219,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
-                 <string>   Sensitivity </string>
+                 <string>[keV]   Sensitivity </string>
                 </property>
                </widget>
               </item>

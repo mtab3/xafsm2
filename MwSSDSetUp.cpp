@@ -115,6 +115,24 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
 	   this, SLOT( newPSSens() ) );
   connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ) );
+  connect( PeakCalibrate, SIGNAL( editingFinished() ),
+	   this, SLOT( newCalibration() ) );
+}
+
+void MainWindow::newCalibration( void )
+{
+  qDebug() << "aa";
+  MCAView *view;   // ここでは view は直接使わないが、MCAPeaks は view 内部へのポインタ
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      double ratio                                // 新旧の エネルギー比
+	= PeakCalibrate->text().toDouble()
+	/ (*MCAPeaks)[ MCAPeakList->currentIndex() ].centerE;
+      // gain の設定は何故か逆
+      qDebug() << "bb" << MCACh->value() << GainInput->text().toDouble() / ratio;
+      SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
+    }
+  }
 }
 
 void MainWindow::SelectedShowDiff( bool f )
@@ -674,6 +692,7 @@ void MainWindow::clearMCA( void )
 
 void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
 {
+  MCAPeaks = peaks;
   for ( int i = 0; i < peaks->count(); i++ ) {
     QString aPeak = QString( "%1 [keV] (%2 pix)" )
       .arg( (*peaks)[i].centerE )

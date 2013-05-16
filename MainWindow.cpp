@@ -303,13 +303,10 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
 {
   AUnit *am, *as;
 
-  qDebug() << "enabled/disabled driver" << drv;
-
   for ( int j = 0; j < AMotors.count(); j++ ) {
     am = AMotors.value( j );
     if ( am->getDriver() == drv ) {
       am->setEnable( enable );
-      qDebug() << "Find the driver";
       if ( enable ) 
 	am->Initialize( s );
     }
@@ -318,7 +315,6 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
     as = ASensors.value( j );
     if ( as->getDriver() == drv ) {
       as->setEnable( enable );
-      qDebug() << "Find the driver";
       if ( enable ) 
 	as->Initialize( s );
     }
