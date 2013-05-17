@@ -3,6 +3,7 @@
 #include <QString>
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QTextStream>
 #include <QStringList>
 
@@ -29,7 +30,8 @@ void KeV2Pix::MakeUpAB( int Dim )
     ba[i][1] = 100;
   }
 
-  QString fname = ":KeV2MCApix.txt";
+  QFileInfo finfo( "KeV2MCApix.txt" );
+  QString fname = finfo.exists() ? "KeV2MCApix.txt" : ":KeV2MCApix.txt";
   QFile f( fname );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
