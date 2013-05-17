@@ -449,6 +449,7 @@ private slots:
   void gotNewPeakList( QVector<MCAPeak>* );
   void newPSSens( void );
   void SelectedShowDiff( bool f );
+  void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
 
   void newSensSelected( int );

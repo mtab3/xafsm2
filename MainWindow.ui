@@ -5999,6 +5999,22 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 <property name="checked">
                  <bool>true</bool>
                 </property>
+                <property name="autoExclusive">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QRadioButton" name="LimitPSEnergy">
+                <property name="text">
+                 <string>Limi at I0 Eng.</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <property name="autoExclusive">
+                 <bool>false</bool>
+                </property>
                </widget>
               </item>
              </layout>

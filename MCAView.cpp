@@ -38,7 +38,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   yRatio = 1.0;
 
   ShowDiff = true;
+  LimitPSEnergy = true;
   PSSens = 0.5; // ピークサーチの感度
+  I0Energy = 10.0;   // keV
 
   valid = false;
   dispLog = false;
@@ -116,6 +118,9 @@ double LOGS[ 9 ] = {
   0.95424,     // log10( 9 )
 };
 
+//
+// ピークサーチのためのスペクトルの平滑化と微分のクオリティ決定
+//
 #if 1       // ものすごく平滑化する例
 #define SMOOTHINGOFFSET ( -5 )   // スムージングを行う係数
 #define SMOOTHINGRANGE  ( 11 )
@@ -281,6 +286,9 @@ void MCAView::Draw( QPainter *p )
   MCAPeak aPeak;
   int SearchMode = 0;                   // 0: before peak, 1:
   for ( int i = 0; i < MCALen; i++ ) {
+    // ピークサーチのエネルギーを I0 のエネルギーで制限する (or しない)
+    if ( ( LimitPSEnergy ) && ( k2p->p2E( MCACh, i ) > I0Energy + 0.1 ) )
+      break;
     switch( SearchMode ) {
     case 0:
       if ( DMCA[i] > ( dMCA[i] * PSSens ) ) {

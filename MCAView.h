@@ -51,6 +51,8 @@ private:
   double yRatio;           // 縦軸の拡大倍率
 
   bool ShowDiff;
+  bool LimitPSEnergy;      // ピークサーチを I0 のエネルギーまででやめる。
+  double I0Energy;         // その I0 のエネルギー保持
   double PSSens;           // ピークサーチの感度
   QVector<MCAPeak> MCAPeaks;
 
@@ -89,6 +91,7 @@ public:
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
+  void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel

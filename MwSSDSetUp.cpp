@@ -115,6 +115,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
 	   this, SLOT( newPSSens() ) );
   connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ) );
+  connect( LimitPSEnergy, SIGNAL( toggled( bool ) ),
+	   this, SLOT( SelectedLimitPSEnergy( bool ) ) );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ) );
 }
@@ -145,6 +147,16 @@ void MainWindow::newCalibration( void )
       // 設定したゲインの読み出し
       s->SendCMD2( "SetUpMCA", SFluo->getDriver(),
 		   "GetPreAMPGain", QString::number( MCACh->value() ) );
+    }
+  }
+}
+
+void MainWindow::SelectedLimitPSEnergy( bool f )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setLimitPSEnergy( f );
     }
   }
 }
