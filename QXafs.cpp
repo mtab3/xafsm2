@@ -1,7 +1,7 @@
 
 #include "MainWindow.h"
 
-// QXafs ´ØÏ¢¤Î¥¤¥Ë¥·¥ã¥é¥¤¥º setupMeMeas ¤è¤êÁ°¤Ë¸Æ¤Ğ¤ì¤Æ¤ë
+// QXafs é–¢é€£ã®ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚º setupMwMeas ã‚ˆã‚Šå‰ã«å‘¼ã°ã‚Œã¦ã‚‹
 void MainWindow::setupQXafsMode( void )
 {
   connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
@@ -25,7 +25,7 @@ void MainWindow::SetNewRPTLimit( void )
 {
   if ( QXafsMode->isChecked() ) {
     if ( QLimitedDisplay->isChecked() ) {
-      SelRPT->setMaximum( 999999 ); // unlimit ¤Ë¤·¤¿¤¤¡£»ö¼Â¾å¤Î unlimit ¤Î¤Ä¤â¤ê¡£
+      SelRPT->setMaximum( 999999 ); // åˆ¥ã« unlimit ã§ã‚‚ã„ã„ã€‚äº‹å®Ÿä¸Šã® unlimit ã®ã¤ã‚‚ã‚Šã€‚
     } else {
       if ( QMeasOnBackward->isChecked() ) {
 	SelRPT->setMaximum( 4999 );
@@ -45,7 +45,7 @@ void MainWindow::ToggleQXafsMode( bool )
 {
   if ( QXafsMode->isChecked() ) {
 
-    // QXAFS ¥â¡¼¥É
+    // QXAFS ãƒ¢ãƒ¼ãƒ‰
 
     SaveSelectedI0 = SelectI0->currentIndex();
     SaveSelectedI1 = SelectI1->currentIndex();
@@ -92,22 +92,13 @@ void MainWindow::ToggleQXafsMode( bool )
 
   } else {
 
-    // NORML XAFS ¥â¡¼¥É
+    // NORML XAFS ãƒ¢ãƒ¼ãƒ‰
 
     SelBLKs->setEnabled( true );
     ChangeBLKs( SaveNowBlocks );
     HideBLKs( false );
 
     QConditionBox->setHidden( true );
-#if 0
-    QMeasOnBackward->setHidden( true );
-    QMinMaxBox->setHidden( true );
-    QMaxSpeed->setHidden( true );
-    QMinTime->setHidden( true );
-    QSepLine->setHidden( true );
-    QLimitedDisplay->setHidden( true );
-#endif
-
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
     Use19chSSD->setChecked( SaveUse19ChSSD );
@@ -137,7 +128,7 @@ void MainWindow::HideBLKs( bool f )
   }
 }
 
-void MainWindow::CheckQXafsParams( void )  // BlockPoints ¤Ï Widget ¤«¤éÄ¾ÆÉ¤ß¤·¤Ê¤¤
+void MainWindow::CheckQXafsParams( void )  // BlockPoints ã¯ Widget ã‹ã‚‰ç›´èª­ã¿ã—ãªã„
 {
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
@@ -158,9 +149,9 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints ¤Ï Widget ¤«¤éÄ¾ÆÉ¤ß¤·
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
 
   if ( WidthInPuls / BlockPoints[0] / HSpeed < 2e-5 ) {
-    // PM16C ¤¬½Ğ¤¹ Trigger ¤Ï 10us Éı¤Ë¤¹¤ë¤Î¤Ç
-    // Interval ¤Î»ş´Ö¤ÏÇ°¤Î°Ù 20us ¤È¤ë¡£
-    // ¤½¤ì¤è¤ê¤âÃ»¤¯¤Ê¤ë¤Ê¤é¡¢¥¤¥ó¥¿¡¼¥Ğ¥ë¤òÊÑ¹¹
+    // PM16C ãŒå‡ºã™ Trigger ã¯ 10us å¹…ã«ã™ã‚‹ã®ã§
+    // Interval ã®æ™‚é–“ã¯å¿µã®ç‚º 20us ã¨ã‚‹ã€‚
+    // ãã‚Œã‚ˆã‚Šã‚‚çŸ­ããªã‚‹ãªã‚‰ã€ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚’å¤‰æ›´
     int Interval = 2e-5 * HSpeed;      
     BlockPoints[0] = (int)( WidthInPuls / Interval );
     BLKpoints[0]->setText( QString::number( BlockPoints[0] ) );
@@ -179,16 +170,16 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints ¤Ï Widget ¤«¤éÄ¾ÆÉ¤ß¤·
 
 void MainWindow::ShowQTime( double dtime, double WidthInPuls )
 {
-  // HSpeed ¤Ş¤Ç¤Î²ÃÂ®¤Ë¤«¤«¤ë»ş´Ö
+  // HSpeed ã¾ã§ã®åŠ é€Ÿã«ã‹ã‹ã‚‹æ™‚é–“
   double RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;
-  // ¤½¤Î»ş´Ö¤ÇÁö¤ë¥Ñ¥ë¥¹¿ô
+  // ãã®æ™‚é–“ã§èµ°ã‚‹ãƒ‘ãƒ«ã‚¹æ•°
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
 
   int Th, Tm, Ts;
   double TT, TTT;
   if ( dtime > 0 ) {
     if ( QMeasOnBackward->isChecked() ) {
-      TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 ¤Ï¼ÂÂ¬¤ÎÊäÀµÃÍ
+      TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 ã¯å®Ÿæ¸¬ã®è£œæ­£å€¤
     } else {
       TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
     }
@@ -220,8 +211,8 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
 }
 
 void MainWindow::GetPM16CParamsForQXAFS( void )
-// ËÜÅö¤ÏÆşÎÏ»ş¤Ë¤â·×»»¤Ç¤­¤ëÆâÍÆ¤À¤¬¡¢
-// ³Î¼Â¤ò´ü¤¹¤¿¤áÂ¬ÄêÄ¾Á°¤Ë "Saved" ¥Ñ¥é¥á¡¼¥¿¤ò»È¤Ã¤Æ·×»»¤¹¤ë
+// æœ¬å½“ã¯å…¥åŠ›æ™‚ã«ã‚‚è¨ˆç®—ã§ãã‚‹å†…å®¹ã ãŒã€
+// ç¢ºå®Ÿã‚’æœŸã™ãŸã‚æ¸¬å®šç›´å‰ã« "Saved" ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ä½¿ã£ã¦è¨ˆç®—ã™ã‚‹
 {
   double sdeg = u->keV2deg( SBlockStart[0] );
   double edeg = u->keV2deg( SBlockStart[1] );
@@ -231,43 +222,43 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
   HSpeed = WidthInPuls / dtime;
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
-    HSpeed = MaxHSpeed;                           // PM16C ¤ËÀßÄê¤¹¤ë H ¤Î¥¹¥Ô¡¼¥É
+    HSpeed = MaxHSpeed;                           // PM16C ã«è¨­å®šã™ã‚‹ H ã®ã‚¹ãƒ”ãƒ¼ãƒ‰
   }
   DispQHSpeed->setText( QString::number( HSpeed ) );
 
-  QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // Â¬ÄêÈÏ°Ï¤Î»ÏÅÀ
-  QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // Â¬ÄêÈÏ°Ï¤Î½ªÅÀ
+  QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // æ¸¬å®šç¯„å›²ã®å§‹ç‚¹
+  QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // æ¸¬å®šç¯„å›²ã®çµ‚ç‚¹
   if ( abs( QXafsSP0 - QXafsEP0 ) > points )
     QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / points);
-  // Trigger ¥Ñ¥ë¥¹¤ò½Ğ¤¹´Ö³Ö
+  // Trigger ãƒ‘ãƒ«ã‚¹ã‚’å‡ºã™é–“éš”
   else 
     QXafsInterval = 1;
 
   if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
-    // PM16C ¤¬½Ğ¤¹ Trigger ¤Ï 10us Éı¤Ë¤¹¤ë¤Î¤Ç
-    // Interval ¤Î»ş´Ö¤ÏÇ°¤Î°Ù 20us ¤È¤ë¡£
-    QXafsInterval = 2e-5 * HSpeed;         // ¤³¤ì¤è¤êÃ»¤¯¤Ê¤ë¤Ê¤é¡¢¥¤¥ó¥¿¡¼¥Ğ¥ë¤òÊÑ¹¹
+    // PM16C ãŒå‡ºã™ Trigger ã¯ 10us å¹…ã«ã™ã‚‹ã®ã§
+    // Interval ã®æ™‚é–“ã¯å¿µã®ç‚º 20us ã¨ã‚‹ã€‚
+    QXafsInterval = 2e-5 * HSpeed;         // ã“ã‚Œã‚ˆã‚ŠçŸ­ããªã‚‹ãªã‚‰ã€ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚’å¤‰æ›´
     SBlockPoints[0] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
     statusbar
       ->showMessage( tr( "Selected Points were too many!  It was changed to be %1" )
 		     .arg( SBlockPoints[0] ), 3000 );
   }
 
-  QXafsPoints = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // Â¬Äê¥¹¥Æ¥Ã¥×¿ô¤òºÆ·×»»
+  QXafsPoints = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // æ¸¬å®šã‚¹ãƒ†ãƒƒãƒ—æ•°ã‚’å†è¨ˆç®—
   QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
-  // 1ÅÀ¤ÎÀÑÊ¬»ş´Ö¤ò Trigger ¥Ñ¥ë¥¹´Ö³Ö¤Î 90% ¤Ë¤¹¤ë
+  // 1ç‚¹ã®ç©åˆ†æ™‚é–“ã‚’ Trigger ãƒ‘ãƒ«ã‚¹é–“éš”ã® 90% ã«ã™ã‚‹
 
-  RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed ¤Ş¤Ç¤Î²ÃÂ®¤Ë¤«¤«¤ë»ş´Ö
+  RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed ã¾ã§ã®åŠ é€Ÿã«ã‹ã‹ã‚‹æ™‚é–“
 
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
-  // HSpeed ¤Ş¤Ç¤Î²ÃÂ®¤ËÉ¬Í×¤Ê¥Ñ¥ë¥¹¿ô
+  // HSpeed ã¾ã§ã®åŠ é€Ÿã«å¿…è¦ãªãƒ‘ãƒ«ã‚¹æ•°
   if ( QXafsSP0 > QXafsEP0 )
     RunUpPulses *= -1;
   qDebug() << "RunUpPulses "
 	   << HSpeed << LowSpeed << RunUpRate << RunUpPulses << RunUpTime;
 
-  QXafsSP = QXafsSP0 - RunUpPulses;   // Â¬ÄêÈÏ°Ï¤ò²ÃÂ®¥Ñ¥ë¥¹Ê¬¹­¤²¤¿ÈÏ°Ï¤Î
-  QXafsEP = QXafsEP0 + RunUpPulses;   // »ÏÅÀ¤È½ªÅÀ
+  QXafsSP = QXafsSP0 - RunUpPulses;   // æ¸¬å®šç¯„å›²ã‚’åŠ é€Ÿãƒ‘ãƒ«ã‚¹åˆ†åºƒã’ãŸç¯„å›²ã®
+  QXafsEP = QXafsEP0 + RunUpPulses;   // å§‹ç‚¹ã¨çµ‚ç‚¹
 
   qDebug() << QString( "Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
     .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate )
@@ -295,9 +286,13 @@ void MainWindow::QXafsMeasSequence( void )
   case 0:
     GetPM16CParamsForQXAFS();
     MakeDelegateFile();
-    MeasView->SetRLine( 0 );            // ¤Ş¤º¡¢0 ÈÖÌÜ¤Î¥é¥¤¥ó¤ò±¦¼´¤ËÉ½¼¨
-    MeasView->SetLLine( 2 );            //       2 ÈÖÌÜ¤Î¥é¥¤¥ó¤òº¸¼´¤ËÉ½¼¨
-    CurrentRpt->setText( QString::number( 1 ) );
+    MeasView->SetRLine( 0 );            // ã¾ãšã€0 ç•ªç›®ã®ãƒ©ã‚¤ãƒ³ã‚’å³è»¸ã«è¡¨ç¤º
+    MeasView->SetLLine( 2 );            //       2 ç•ªç›®ã®ãƒ©ã‚¤ãƒ³ã‚’å·¦è»¸ã«è¡¨ç¤º
+    if ( AutoModeButton->isChecked() ) {
+      CurrentRpt->setText( QString( "%1 - %2" ).arg( 1 ).arg( MeasA+1 ) );
+    } else {
+      CurrentRpt->setText( QString::number( 1 ) );
+    }
     //    WriteInfoFile();
     mUnits.clearStage();
     MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
@@ -308,7 +303,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 1:
     EncMainTh->GetValue();
-    if ( mUnits.init() ) // DV ¤Ï Reset ¤À¤±, ENC2 ¤Ï GetValue ¤À¤±
+    if ( mUnits.init() ) // DV ã¯ Reset ã ã‘, ENC2 ã¯ GetValue ã ã‘
       break;
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
@@ -323,7 +318,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 3:
-    MMainTh->SetValue( QXafsSP );   // ½õÁöµ÷Î¥¤ò´Ş¤á¤¿¥¹¥¿¡¼¥ÈÃÏÅÀ¤Ø
+    MMainTh->SetValue( QXafsSP );   // åŠ©èµ°è·é›¢ã‚’å«ã‚ãŸã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¸
     MeasStage++;
     break;
   case 4:      // Repeat Point
@@ -331,12 +326,16 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     mUnits.clearStage();
     MeasR++;
-    if ( MeasR > SelRPT->value() ) { // µ¬Äê²ó¿ô²ó¤ê½ª¤ï¤Ã¤Æ¤ì¤Ğ½ªÎ»½èÍı¤ËÆş¤ë!!
+    if ( MeasR > SelRPT->value() ) { // è¦å®šå›æ•°å›ã‚Šçµ‚ã‚ã£ã¦ã‚Œã°çµ‚äº†å‡¦ç†ã«å…¥ã‚‹!!
       MeasStage = 99;
       break;
     }
     WriteQHeader( MeasR, FORWARD );
-    CurrentRpt->setText( QString::number( MeasR ) );
+    if ( AutoModeButton->isChecked() ) {
+      CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasR + 1 ).arg( MeasA+1 ) );
+    } else {
+      CurrentRpt->setText( QString::number( MeasR ) );
+    }
     CurrentPnt->setText( tr( "Fwd" ) );
     MMainTh->SetHighSpeed( HSpeed );
     MeasStage++;
@@ -346,8 +345,8 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 6:
-    MMainTh->SetValue( QXafsEP );   // ¸ºÂ®µ÷Î¥¤ò´Ş¤á¤¿½ªÎ»ÃÏÅÀ¤Ø
-    mUnits.clearDoneF();      // QRead ¤ò°ìÂæ¤º¤Ä¹Ô¤¦¤¿¤á
+    MMainTh->SetValue( QXafsEP );   // æ¸›é€Ÿè·é›¢ã‚’å«ã‚ãŸçµ‚äº†åœ°ç‚¹ã¸
+    mUnits.clearDoneF();      // QRead ã‚’ä¸€å°ãšã¤è¡Œã†ãŸã‚ // ç¾çŠ¶ä¸è¦ã®ã¯ãšã€‚
     MeasStage++;
     break;
   case 7:
@@ -357,10 +356,12 @@ void MainWindow::QXafsMeasSequence( void )
     mUnits.clearStage();
     break;
   case 8:
+#if 0
     qDebug() << "aa" << mUnits.count();
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
+#endif
     WriteQHeader2( MeasR, FORWARD );
     WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
@@ -371,7 +372,7 @@ void MainWindow::QXafsMeasSequence( void )
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
-    if ( QMeasOnBackward->isChecked() ) {   // Ìá¤ê¤âÂ¬Äê¤¹¤ë
+    if ( QMeasOnBackward->isChecked() ) {   // æˆ»ã‚Šã‚‚æ¸¬å®šã™ã‚‹
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
       CurrentPnt->setText( tr( "Bwd" ) );
       MeasStage++;
@@ -388,14 +389,14 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 11:
-    MMainTh->SetValue( QXafsSP );   // ½õÁöµ÷Î¥¤ò´Ş¤á¤¿¥¹¥¿¡¼¥ÈÃÏÅÀ¤Ø
-    if ( QMeasOnBackward->isChecked() ) {   // Ìá¤ê¤âÂ¬Äê¤¹¤ë
+    MMainTh->SetValue( QXafsSP );   // åŠ©èµ°è·é›¢ã‚’å«ã‚ãŸã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¸
+    if ( QMeasOnBackward->isChecked() ) {   // æˆ»ã‚Šã‚‚æ¸¬å®šã™ã‚‹
       WriteQHeader( MeasR, BACKWARD );
       MeasStage++;
     } else {
       MeasStage = 4; // Repeat Point
     }
-    mUnits.clearDoneF();      // QRead ¤ò°ìÂæ¤º¤Ä¹Ô¤¦¤¿¤á
+    mUnits.clearDoneF();      // QRead ã‚’ä¸€å°ãšã¤è¡Œã†ãŸã‚  // ç¾çŠ¶ä¸è¦ã®ã¯ãš
     break;
   case 12:
     if ( mUnits.QRead() )
@@ -404,9 +405,11 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 13:
+#if 0
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
+#endif
     WriteQHeader2( MeasR, BACKWARD );
     WriteQBody();
     g = ( MeasR - 1 ) * 2 + 1;
@@ -428,28 +431,28 @@ void MainWindow::QXafsMeasSequence( void )
   qDebug() << "out " << MeasStage;
 }
 
+void MainWindow::QXafsFinish0( void )
+{
+  mUnits.setOneByOne( false );           // ã€Œãƒ¦ãƒ‹ãƒƒãƒˆä¸€ã¤ãšã¤é †ç•ªã«ã€ãƒ¢ãƒ¼ãƒ‰ã‚„ã‚ã‚‹
+  MMainTh->SetHighSpeed( OrigHSpeed );   // H ã®ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚’æ¨™æº–ã«æˆ»ã™
+  MMainTh->SetSpeed( GoMSpeed );         // é¸æŠã•ã‚Œã¦ã„ãŸã‚¹ãƒ”ãƒ¼ãƒ‰ã«æˆ»ã™
+}
+
 void MainWindow::QXafsFinish( void )
 {
-  mUnits.setOneByOne( false );           // ¡Ö¥æ¥Ë¥Ã¥È°ì¤Ä¤º¤Ä½çÈÖ¤Ë¡×¥â¡¼¥É¤ä¤á¤ë
-  MMainTh->SetHighSpeed( OrigHSpeed );   // H ¤Î¥¹¥Ô¡¼¥É¤òÉ¸½à¤ËÌá¤¹
-  MMainTh->SetSpeed( GoMSpeed );         // ÁªÂò¤µ¤ì¤Æ¤¤¤¿¥¹¥Ô¡¼¥É¤ËÌá¤¹
   statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
   NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
-  //    WriteHeader2( MeasR );
-  //    WriteInfoFile2();
   MeasTimer->stop();
   inMeas = 0;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart
-    ->setStyleSheet( "background-color: "
-		     "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		     "rgba(225, 235, 225, 255), stop:1 "
-		     "rgba(255, 255, 255, 255));" );
+  MeasStart->setStyleSheet( NormalB );
   MeasPause->setEnabled( false );
+  QXafsFinish0();
   onMeasFinishWorks();
 }
 
-void MainWindow::DispQSpectrum( int g )  // ¥À¡¼¥¯ÊäÀµ¤É¤¦¤¹¤ë¡©
+
+void MainWindow::DispQSpectrum( int g )  // ãƒ€ãƒ¼ã‚¯è£œæ­£ã©ã†ã™ã‚‹ï¼Ÿ
 {
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
@@ -459,6 +462,9 @@ void MainWindow::DispQSpectrum( int g )  // ¥À¡¼¥¯ÊäÀµ¤É¤¦¤¹¤ë¡©
   else 
     vals2.clear();
   int num = findMini( vals0, vals1, vals2 );
+
+  double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
+  double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
 
   int p = QXafsSP0;
   int d = QXafsInterval;
@@ -500,10 +506,12 @@ void MainWindow::DispQSpectrum( int g )  // ¥À¡¼¥¯ÊäÀµ¤É¤¦¤¹¤ë¡©
     } else {
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    E = u->deg2keV( deg2 );
 
-    MeasView->NewPoint( g*3 + 0, E, I0 = vals0[i+1].toDouble() );
-    MeasView->NewPoint( g*3 + 1, E, I1 = vals1[i+1].toDouble() );
+    E = u->deg2keV( deg2 );
+    I0 = vals0[i+1].toDouble() - dark0;
+    I1 = vals1[i+1].toDouble() - dark1;
+    MeasView->NewPoint( g*3 + 0, E, I0 );
+    MeasView->NewPoint( g*3 + 1, E, I1 );
     if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
       MeasView->NewPoint( g*3 + 2, E, log( I0/I1 ) );
     } else {

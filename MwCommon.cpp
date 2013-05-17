@@ -2,7 +2,7 @@
 
 #include "MainWindow.h"
 
-void MainWindow::setupCommonArea( void )   /* ‹¤’ÊƒGƒŠƒA */
+void MainWindow::setupCommonArea( void )   /* å…±é€šã‚¨ãƒªã‚¢ */
 {
   QString buf;
 
@@ -121,8 +121,8 @@ void MainWindow::NewSelA( int i )
     ShowTAE();
     SetNewGos();
   } else {
-    // ƒGƒlƒ‹ƒM[‚ª”ÍˆÍŠO‚¾‚Á‚½ê‡A
-    if ( SelectedE != Kedge ) {   // ‚à‚µ L ƒGƒbƒW‚ð‘I‘ð‚µ‚Ä‚¢‚½‚çAK ƒGƒbƒW‚ðŽŽ‚µ‚Ä‚Ý‚éB
+    // ã‚¨ãƒãƒ«ã‚®ãƒ¼ãŒç¯„å›²å¤–ã ã£ãŸå ´åˆã€
+    if ( SelectedE != Kedge ) {   // ã‚‚ã— L ã‚¨ãƒƒã‚¸ã‚’é¸æŠžã—ã¦ã„ãŸã‚‰ã€K ã‚¨ãƒƒã‚¸ã‚’è©¦ã—ã¦ã¿ã‚‹ã€‚
       if ( u->keV2deg( Vic[ i ].AE[ Kedge ] ) > 0 ) {
 	SelectedA = (AtomNo)i;
 	SelectedE = Kedge;
@@ -132,7 +132,7 @@ void MainWindow::NewSelA( int i )
 	SetNewGos();
 	return;
       }
-    } else {  // ‚à‚µ K ƒGƒbƒW‚ð‘I‘ð‚µ‚Ä‚¢‚½‚ç LIII ‚ðŽŽ‚µ‚Ä‚Ý‚é
+    } else {  // ã‚‚ã— K ã‚¨ãƒƒã‚¸ã‚’é¸æŠžã—ã¦ã„ãŸã‚‰ LIII ã‚’è©¦ã—ã¦ã¿ã‚‹
       if ( u->keV2deg( Vic[ i ].AE[ LIIIedge ] ) > 0 ) {
 	SelectedA = (AtomNo)i;
 	SelectedE = LIIIedge;
@@ -142,7 +142,7 @@ void MainWindow::NewSelA( int i )
 	SetNewGos();
 	return;
       }
-    } // ‚»‚ê‚Å‚àƒ_ƒ‚È‚çƒGƒ‰[•\Ž¦‚µ‚Ä‰½‚à‚µ‚È‚¢
+    } // ãã‚Œã§ã‚‚ãƒ€ãƒ¡ãªã‚‰ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºã—ã¦ä½•ã‚‚ã—ãªã„
     statusbar->showMessage( tr( "Absorption edge of the atom is out of range." ), 5000 );
     SelectTA->setCurrentIndex( SelectedA );
   }
@@ -193,13 +193,17 @@ void MainWindow::OpenPT( void )
   PT->show();
 }
 
-void MainWindow::MoveCurThPosKeV( double keV ) // •ªŒõŠí‚ÌˆÚ“®Žw—ß(keV’PˆÊ‚ÅˆÊ’uŽw’è)
+void MainWindow::MoveCurThPosKeV( double keV ) // åˆ†å…‰å™¨ã®ç§»å‹•æŒ‡ä»¤(keVå˜ä½ã§ä½ç½®æŒ‡å®š)
 {
   MMainTh->setIsBusy( true );
 
   if (( u->keV2any( EV, keV ) < MinEnergyInEV )
       ||( u->keV2any( EV, keV ) > MaxEnergyInEV )) {
-    statusbar->showMessage( "The position to go is out of range.", 2000 );
+    statusbar
+      ->showMessage( tr( "The position to go [%1]eV is out of range. [%2]-[%3]eV" )
+		     .arg( u->keV2any( EV, keV ) )
+		     .arg( MinEnergyInEV )
+		     .arg( MaxEnergyInEV ), 2000 );
     return;
   }
     

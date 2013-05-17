@@ -57,7 +57,7 @@ void TYView::ClearDataR( void )
   datas = 0;
 }
 
-// ƒŠƒ“ƒOƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^’Ç‰Á
+// ãƒªãƒ³ã‚°ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è¿½åŠ 
 void TYView::NewPointR( int tt, double yy0, double yy1, double yy2 )
 {
   mont[ ep ] = tt;
@@ -87,30 +87,30 @@ void TYView::Draw( QPainter *p )
   QPen pen0, pen1;
   QFont F1;
   QRectF rec;
-  int ms = MScales[ MonScale ].div * 1000;   // ‚PƒOƒŠƒbƒh‚ÌŠÔ •b x 1000 = ƒ~ƒŠ•b
+  int ms = MScales[ MonScale ].div * 1000;   // ï¼‘ã‚°ãƒªãƒƒãƒ‰ã®æ™‚é–“ ç§’ x 1000 = ãƒŸãƒªç§’
 
-  double HDNum = 6;    // …•½•ûŒü‚ÌƒOƒŠƒbƒh”
-  double VDNum = 10;   // ‚’¼•ûŒü‚ÌƒOƒŠƒbƒh”
+  double HDNum = 6;    // æ°´å¹³æ–¹å‘ã®ã‚°ãƒªãƒƒãƒ‰æ•°
+  double VDNum = 10;   // å‚ç›´æ–¹å‘ã®ã‚°ãƒªãƒƒãƒ‰æ•°
 
   if ( autoScale )
-    cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );   // ÀÀ•W‚Ìw’è
-                                               // c•ûŒü‚ÍA‚±‚Ì“_‚Å‚Í [0,1]
+    cc.SetRealCoord( -ms * HDNum, 0, 0, 1 );   // å®Ÿåº§æ¨™ã®æŒ‡å®š
+                                               // ç¸¦æ–¹å‘ã¯ã€ã“ã®æ™‚ç‚¹ã§ã¯ [0,1]
 
-  p->fillRect( 0, 0, width(), height(), bgColor ); // ”wŒi‘S‘Ì‚Ì“h‚è‚Â‚Ô‚µ
+  p->fillRect( 0, 0, width(), height(), bgColor ); // èƒŒæ™¯å…¨ä½“ã®å¡—ã‚Šã¤ã¶ã—
 
-  RM = width() * 0.03;    // •`‰æ—Ìˆæ‚Ì’†‚Å‚ÌƒOƒ‰ƒt‚Ì‰Eƒ}[ƒWƒ“
-  LM = width() * 0.12;    // •`‰æ—Ìˆæ‚Ì’†‚Å‚ÌƒOƒ‰ƒt‚Ì¶ƒ}[ƒWƒ“
-  TM = height() * 0.05;   // •`‰æ—Ìˆæ‚Ì’†‚Å‚ÌƒOƒ‰ƒt‚Ìã(top)ƒ}[ƒWƒ“
-  BM = height() * 0.10;   // •`‰æ—Ìˆæ‚Ì’†‚Å‚ÌƒOƒ‰ƒt‚Ì‰º(bottom)ƒ}[ƒWƒ“
-  HDiv = ( width() - RM - LM ) / HDNum;     // ƒOƒŠƒbƒh•
-  VDiv = ( height() - TM - BM ) / VDNum;    // ƒOƒŠƒbƒh‚‚³
+  RM = width() * 0.03;    // æç”»é ˜åŸŸã®ä¸­ã§ã®ã‚°ãƒ©ãƒ•ã®å³ãƒãƒ¼ã‚¸ãƒ³
+  LM = width() * 0.12;    // æç”»é ˜åŸŸã®ä¸­ã§ã®ã‚°ãƒ©ãƒ•ã®å·¦ãƒãƒ¼ã‚¸ãƒ³
+  TM = height() * 0.05;   // æç”»é ˜åŸŸã®ä¸­ã§ã®ã‚°ãƒ©ãƒ•ã®ä¸Š(top)ãƒãƒ¼ã‚¸ãƒ³
+  BM = height() * 0.10;   // æç”»é ˜åŸŸã®ä¸­ã§ã®ã‚°ãƒ©ãƒ•ã®ä¸‹(bottom)ãƒãƒ¼ã‚¸ãƒ³
+  HDiv = ( width() - RM - LM ) / HDNum;     // ã‚°ãƒªãƒƒãƒ‰å¹…
+  VDiv = ( height() - TM - BM ) / VDNum;    // ã‚°ãƒªãƒƒãƒ‰é«˜ã•
 
   cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
-  // screen À•W‚Ìw’èB¶ãA‰E‰º‚ÌÀ•Ww’è
-  // (‚±‚±‚Åã‰º— ‚ª‚¦‚Á‚½À•W‚ğw’è‚·‚é‚±‚Æ‚Å real À•W‚Å•’Ê‚É¶‰º‚ª 0,0 ‚ÌÀ•W‚É‚È‚é)
+  // screen åº§æ¨™ã®æŒ‡å®šã€‚å·¦ä¸Šã€å³ä¸‹ã®åº§æ¨™æŒ‡å®š
+  // (ã“ã“ã§ä¸Šä¸‹è£ãŒãˆã£ãŸåº§æ¨™ã‚’æŒ‡å®šã™ã‚‹ã“ã¨ã§ real åº§æ¨™ã§æ™®é€šã«å·¦ä¸‹ãŒ 0,0 ã®åº§æ¨™ã«ãªã‚‹)
 
   if ( autoScale )
-    // Å‘å’lÅ¬’l(5%ƒ}[ƒWƒ“)‚ğ’T‚· (Rminy, Rmaxy ‚É•Ô‚·)
+    // æœ€å¤§å€¤æœ€å°å€¤(5%ãƒãƒ¼ã‚¸ãƒ³)ã‚’æ¢ã™ (Rminy, Rmaxy ã«è¿”ã™)
     UpDateYWindowRing();
 
   for ( int j = 0; j < lines; j++ ) {
@@ -119,13 +119,13 @@ void TYView::Draw( QPainter *p )
     else
       cc.SetRealY( Rwminy[j] - YShift[j], Rwmaxy[j] - YShift[j] );
 
-    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // ÅV
+    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // æœ€æ–°æ™‚åˆ»
     int pp1, pp2;
     pen1.setWidth( 2 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
 
-    for ( int i = 0; i < datas - 1; i++ ) { // ƒf[ƒ^ƒvƒƒbƒg
+    for ( int i = 0; i < datas - 1; i++ ) { // ãƒ‡ãƒ¼ã‚¿ãƒ—ãƒ­ãƒƒãƒˆ
       pp1 = ep - 1 - i;
       pp2 = ep - 1 - ( i + 1 );
       if ( pp1 < 0 ) pp1 += RingMax;
@@ -147,18 +147,18 @@ void TYView::Draw( QPainter *p )
     p->drawLine( m.x(),  m.sy(), m.sx(), m.sy() );
   }
 
-  // ‚¨Î‚¢ƒNƒŠƒbƒsƒ“ƒO ^^;;;
+  // ãŠç¬‘ã„ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚° ^^;;;
   p->fillRect( 0, 0, LM, height(), bgColor );
   p->fillRect( width()-RM, 0, RM, height(), bgColor );
   p->fillRect( 0, 0, width(), TM, bgColor );
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
-  // ‚¨Î‚¢ƒNƒŠƒbƒsƒ“ƒO ^^;;;
+  // ãŠç¬‘ã„ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚° ^^;;;
 
   pen0.setWidth( 1 );
   pen0.setColor( QColor( 0, 0, 0 ) );
   p->setPen( pen0 );
   p->setFont( F1 );
-  p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );  // ƒOƒ‰ƒt‚Ì˜gü
+  p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );  // ã‚°ãƒ©ãƒ•ã®æ ç·š
 
   double sx, dx;
   if ( !autoScale ) {
@@ -167,16 +167,16 @@ void TYView::Draw( QPainter *p )
     sx = cc.Rminx();
     dx = ms;
   }
-  for ( double xx = sx; xx <= cc.Rmaxx(); xx += dx ) {   // ‰¡•ûŒü•ûŒü
-    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // cŒrü
-                                                                   // ‰¡²‚Ìƒƒ‚ƒŠ”š
+  for ( double xx = sx; xx <= cc.Rmaxx(); xx += dx ) {   // æ¨ªæ–¹å‘æ–¹å‘
+    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // ç¸¦ç½«ç·š
+                                                                   // æ¨ªè»¸ã®ãƒ¡ãƒ¢ãƒªæ•°å­—
     rec = QRect( cc.r2sx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 );
     cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE, 
 		 QString( tr( "%1" ) )
 		 .arg( ((double)timeShift/ms * MScales[MonScale].dispDiv)
 		       + (int)( (cc.Rmaxx()-xx)/ms * MScales[ MonScale ].dispDiv ) ) );
   }
-  rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );  // ‰¡²‚Ìƒ‰ƒxƒ‹
+  rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );  // æ¨ªè»¸ã®ãƒ©ãƒ™ãƒ«
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       MScales[ MonScale ].unit );
 
@@ -185,12 +185,12 @@ void TYView::Draw( QPainter *p )
   p->setPen( pen1 );
   cc.SetRealY( 0, 1 );
   for ( double yy = 0; yy < 1; yy += 0.1 ) {
-    p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // ‰¡‚ÌŒrü
+    p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // æ¨ªã®ç½«ç·š
   }
 
   double sy, ey, dy, ty;
   if ( autoScale )
-    // Å‘å’lÅ¬’l(5%ƒ}[ƒWƒ“)‚ğ’T‚· (Rminy, Rmaxy ‚É•Ô‚·)
+    // æœ€å¤§å€¤æœ€å°å€¤(5%ãƒãƒ¼ã‚¸ãƒ³)ã‚’æ¢ã™ (Rminy, Rmaxy ã«è¿”ã™)
     UpDateYWindowRing();
 
   for ( int j = 0; j < lines; j++ ) {
@@ -205,15 +205,15 @@ void TYView::Draw( QPainter *p )
 
     for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
       rec = QRectF( LM * 0.1, ty = ( cc.r2sy( yy ) - VDiv * 0.5 + VDiv * 0.45 * j ),
-		    LM * 0.75, VDiv * 0.42 ); // ƒƒ‚ƒŠ”š
+		    LM * 0.75, VDiv * 0.42 ); // ãƒ¡ãƒ¢ãƒªæ•°å­—
       buf.sprintf( "%6.4g", yy );
       cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
       p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
     }
     rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
-		  HDiv * 2, TM * 0.9 );  // ²‚Ìƒ‰ƒxƒ‹
+		  HDiv * 2, TM * 0.9 );  // è»¸ã®ãƒ©ãƒ™ãƒ«
     
-    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // ÅV
+    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // æœ€æ–°æ™‚åˆ»
     int nowt = cc.s2rx( m.x() ) + t0 - timeShift;
     int nowtp = 0;
 
@@ -222,7 +222,7 @@ void TYView::Draw( QPainter *p )
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
 
-    for ( int i = 0; i < datas - 1; i++ ) { // ƒf[ƒ^ƒvƒƒbƒg
+    for ( int i = 0; i < datas - 1; i++ ) { // ãƒ‡ãƒ¼ã‚¿ãƒ—ãƒ­ãƒƒãƒˆ
       pp1 = ep - 1 - i;
       pp2 = ep - 1 - ( i + 1 );
       if ( pp1 < 0 ) pp1 += RingMax;
@@ -230,7 +230,7 @@ void TYView::Draw( QPainter *p )
       if ( ( t0 - mont[ pp2 ] ) > ( ms * 6 + timeShift ) ) {
 	break;
       }
-      // ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚Ìw‚·‚Éo—ˆ‚é‚¾‚¯‹ß‚¢À‘ª“_
+      // ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®æŒ‡ã™æ™‚åˆ»ã«å‡ºæ¥ã‚‹ã ã‘è¿‘ã„å®Ÿæ¸¬ç‚¹
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
     }
@@ -240,7 +240,7 @@ void TYView::Draw( QPainter *p )
 
   cc.ShowAScaleButton( p, autoScale, height() );
 
-  // ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ÌˆÊ’u‚Écü‚ğˆø‚­
+  // ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ã®ä½ç½®ã«ç¸¦ç·šã‚’å¼•ã
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( m.x(), TM, m.x(), height()-BM );
@@ -298,7 +298,7 @@ void TYView::mouseMoveEvent( QMouseEvent *e )
   m.Moved( e );
 
   switch( m.modifier() ) {
-  case Qt::NoModifier:    // •½sˆÚ“®
+  case Qt::NoModifier:    // å¹³è¡Œç§»å‹•
     if ( m.inPress() ) {
       tts = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
       timeShift = timeShift0 + tts;
@@ -312,7 +312,7 @@ void TYView::mouseMoveEvent( QMouseEvent *e )
       }
     }
     break;
-  case Qt::ShiftModifier:  // —ÌˆæŠg‘å
+  case Qt::ShiftModifier:  // é ˜åŸŸæ‹¡å¤§
     break;
   }
   update();
@@ -323,9 +323,9 @@ void TYView::mousePressEvent( QMouseEvent *e )
   m.Pressed( e );
 
   switch( m.modifier() ) {
-  case Qt::NoModifier:                          // •½sˆÚ“®
+  case Qt::NoModifier:                          // å¹³è¡Œç§»å‹•
     break;
-  case Qt::ShiftModifier:                       // —Ìˆæ‘I‘ğŠg‘å
+  case Qt::ShiftModifier:                       // é ˜åŸŸé¸æŠæ‹¡å¤§
     if ( !autoScale )
       AreaSelecting = true;
     break;
@@ -343,7 +343,7 @@ void TYView::mouseReleaseEvent( QMouseEvent *e )
   m.Released( e );
 
   switch( m.modifier() ) {
-  case Qt::NoModifier:                          // •½sˆÚ“®
+  case Qt::NoModifier:                          // å¹³è¡Œç§»å‹•
     if ( !autoScale ) {
       for ( int i = 0; i < lines; i++ ) {
 	YShift0[i] += yshift[i];
@@ -359,7 +359,7 @@ void TYView::mouseReleaseEvent( QMouseEvent *e )
       }
     }
     break;
-  case Qt::ShiftModifier:                       // —Ìˆæ‘I‘ğŠg‘å
+  case Qt::ShiftModifier:                       // é ˜åŸŸé¸æŠæ‹¡å¤§
     if ( !autoScale ) {
       AreaSelecting = false;
       nminx = cc.s2rx( m.sx() );

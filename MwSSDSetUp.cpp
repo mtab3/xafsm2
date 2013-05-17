@@ -4,7 +4,7 @@
 #include "MainWindow.h"
 #include "MCAView.h"
 
-void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
+void MainWindow::setupSetupSSDArea( void )   /* æ¸¬å®šã‚¨ãƒªã‚¢ */
 {
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
@@ -56,8 +56,8 @@ void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
   MCAFSel->setDirectory( QDir::currentPath() );
   MCAFSel->setFilter( "*.dat" );
 
-  connect( GainInput, SIGNAL( textEdited( const QString & ) ), 
-	   this, SLOT( newGain( const QString & ) ) );
+  connect( GainInput, SIGNAL( editingFinished() ), 
+	   this, SLOT( newGain() ) );
 
   connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
@@ -110,19 +110,73 @@ void MainWindow::setupSetupSSDArea( void )   /* Â¬Äê¥¨¥ê¥¢ */
 	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
-  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+  //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+
+  connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
+	   this, SLOT( newPSSens() ) );
+  connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ) );
+  connect( PeakCalibrate, SIGNAL( editingFinished() ),
+	   this, SLOT( newCalibration() ) );
 }
 
-void MainWindow::newGain( const QString &gain )
+void MainWindow::newCalibration( void )
 {
   if ( inMCAMeas )
     return;
   if ( SFluo == NULL )
     return;
 
-  
+  MCAView *view;   // ã“ã“ã§ã¯ view ã¯ç›´æŽ¥ä½¿ã‚ãªã„ãŒã€MCAPeaks ã¯ view å†…éƒ¨ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      double oldE = (*MCAPeaks)[ MCAPeakList->currentIndex() ].centerE;
+      if ( oldE <= 0 ) return;
+      // æ–°æ—§ã® ã‚¨ãƒãƒ«ã‚®ãƒ¼æ¯”
+      double ratio = PeakCalibrate->text().toDouble() / oldE;
+      qDebug() << "oldE and ratio "
+	       << oldE << PeakCalibrate->text().toDouble() << ratio
+	       << "new gain " << GainInput->text().toDouble() / ratio;
+      if ( ratio <= 0 ) return;
+      // gain ã®è¨­å®šã¯ä½•æ•…ã‹é€†
+      SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
+      // è¨­å®šã—ãŸã‚²ã‚¤ãƒ³ã®èª­ã¿å‡ºã—
+      s->SendCMD2( "SetUpMCA", SFluo->getDriver(),
+		   "GetPreAMPGain", QString::number( MCACh->value() ) );
+    }
+  }
 }
 
+void MainWindow::SelectedShowDiff( bool f )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowDiff( f );
+    }
+  }
+}
+
+void MainWindow::newPSSens( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setNewPSSens( PeakSearchSensitivity->text() );
+    }
+  }
+}
+
+void MainWindow::newGain( void )
+{
+  if ( inMCAMeas )
+    return;
+  if ( SFluo == NULL )
+    return;
+
+  SFluo->setGain( MCACh->value(), GainInput->text().toDouble() );
+}
+
+#if 0
 void MainWindow::doPeakFit( void )
 {
   MCAView *view;
@@ -132,6 +186,7 @@ void MainWindow::doPeakFit( void )
     }
   }
 }
+#endif
 
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {
@@ -201,10 +256,10 @@ void MainWindow::saveMCAData( void )
   MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
   MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
 
-//  for ( int i = 0; i < 1000; i++ ) {   // 1000ÌÌ¥»¡¼¥Ö»þ´ÖÂ¬ÄêÍÑ
-//    qDebug() << i;                     // i7 ¤Ç 40 ÉÃ(0.04s/ÌÌ)¤À¤Ã¤¿
-//    // ROI ¤ÎÀÑÊ¬¤ò XafsM2 Â¦¤Ç¤ä¤ë¤è¤¦¤Ë¤·¡¢¥Õ¥ë¥ì¥ó¥¸(0-2047)¤ò ROI ¤ÎÈÏ°Ï¤Ë¤·¤¿¾ì¹ç
-//    // Ìó 43 ÉÃ¡£ROI ¤ÎÀÑÊ¬»þ´Ö¤Ï ºÇÂç 3ms ÄøÅÙ¤È¤¤¤¦»ö¤Ë¤Ê¤ë¡£
+//  for ( int i = 0; i < 1000; i++ ) {   // 1000é¢ã‚»ãƒ¼ãƒ–æ™‚é–“æ¸¬å®šç”¨
+//    qDebug() << i;                     // i7 ã§ 40 ç§’(0.04s/é¢)ã ã£ãŸ
+//    // ROI ã®ç©åˆ†ã‚’ XafsM2 å´ã§ã‚„ã‚‹ã‚ˆã†ã«ã—ã€ãƒ•ãƒ«ãƒ¬ãƒ³ã‚¸(0-2047)ã‚’ ROI ã®ç¯„å›²ã«ã—ãŸå ´åˆ
+//    // ç´„ 43 ç§’ã€‚ROI ã®ç©åˆ†æ™‚é–“ã¯ æœ€å¤§ 3ms ç¨‹åº¦ã¨ã„ã†äº‹ã«ãªã‚‹ã€‚
   saveMCAData0( MCARecFile->text() );
 }
 
@@ -331,7 +386,7 @@ void MainWindow::getMCASettings( int ch )
 #endif
 }
 
-void MainWindow::getMCALen( SMsg msg )  // ½é´ü²½¤Î»þ¤Ë°ì²ó¤·¤«¸Æ¤Ð¤ì¤Ê¤¤¤È¿®¤¸¤ë
+void MainWindow::getMCALen( SMsg msg )  // åˆæœŸåŒ–ã®æ™‚ã«ä¸€å›žã—ã‹å‘¼ã°ã‚Œãªã„ã¨ä¿¡ã˜ã‚‹
 {
   if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
@@ -441,6 +496,8 @@ void MainWindow::StartMCA( void )
 
     GainInput->setReadOnly( true );
     GainInput->setStyleSheet( NONEDITABLELINE );
+    PeakCalibrate->setReadOnly( true );
+    PeakCalibrate->setStyleSheet( NONEDITABLELINE );
     MCAStart->setText( tr( "Stop" ) );
     MCAStart->setStyleSheet( InActive );
 
@@ -487,6 +544,8 @@ void MainWindow::StartMCA( void )
     inMCAMeas = false;
     GainInput->setReadOnly( false );
     GainInput->setStyleSheet( EDITABLELINE );
+    PeakCalibrate->setReadOnly( false );
+    PeakCalibrate->setStyleSheet( EDITABLELINE );
     SFluo->RunStop();
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();
@@ -519,7 +578,7 @@ void MainWindow::setNewROI( int s, int e )
 
 void MainWindow::MCASequence( void )
 {
-  if ( MCAStage < 2 )         // MCA ¤Ë RunStart ¤ò¤«¤±¤Æ¤·¤Þ¤¦¤È¡¢¤º¤Ã¤È isBusy
+  if ( MCAStage < 2 )         // MCA ã« RunStart ã‚’ã‹ã‘ã¦ã—ã¾ã†ã¨ã€ãšã£ã¨ isBusy
     if ( SFluo->isBusy() || SFluo->isBusy2() )
       return;
   if ( SFluo->isBusy2() )
@@ -646,3 +705,17 @@ void MainWindow::clearMCA( void )
   }
 }
 
+void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
+{
+  MCAPeaks = peaks;
+  for ( int i = 0; i < peaks->count(); i++ ) {
+    QString aPeak = QString( "%1 [keV] (%2 pix)" )
+      .arg( (*peaks)[i].centerE )
+      .arg( (*peaks)[i].center  );
+    if ( i >= MCAPeakList->count() ) {
+      MCAPeakList->addItem( aPeak );
+    } else {
+      MCAPeakList->setItemText( i, aPeak );
+    }
+  }
+}

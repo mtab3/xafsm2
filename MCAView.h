@@ -11,6 +11,14 @@
 
 enum MMODE { M_ROI, M_POINT, M_NO };
 
+struct MCAPeak {
+  int start;
+  int end;
+  double center;
+  double centerE;
+  int peakH;
+};
+
 class MCAView : public QFrame, private Ui::MCAView
 {
   Q_OBJECT
@@ -21,6 +29,7 @@ private:
   int valid;
   //  QVecotot<int *> MCAs;
   int *MCA;
+  double *SMCA, *DMCA, *dMCA;   // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°çµæœã€1æ¬¡å¾®åˆ†ã€çµ±è¨ˆå¤‰å‹•
   int MCALen;
   int MCACh;
   double realTime;
@@ -35,11 +44,15 @@ private:
 
   MMODE mMode;
   ChCoord cc;
-  double rROIsx, rROIex;   // ROI ¤ÎÈÏ°Ï
-  double MinE, MaxE;       // É½¼¨¤ÎºÇ¾®¡¢ºÇÂç¥¨¥Í¥ë¥®¡¼
-  QVector<double> cPoints; // ¥«¡¼¥½¥ëÉ½¼¨¤ò»Ä¤¹ÅÀ
+  double rROIsx, rROIex;   // ROI ã®ç¯„å›²
+  double MinE, MaxE;       // è¡¨ç¤ºã®æœ€å°ã€æœ€å¤§ã‚¨ãƒãƒ«ã‚®ãƒ¼
+  QVector<double> cPoints; // ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤ºã‚’æ®‹ã™ç‚¹
   QStringList selectedAtoms;
-  double yRatio;           // ½Ä¼´¤Î³ÈÂçÇÜÎ¨
+  double yRatio;           // ç¸¦è»¸ã®æ‹¡å¤§å€ç‡
+
+  bool ShowDiff;
+  double PSSens;           // ãƒ”ãƒ¼ã‚¯ã‚µãƒ¼ãƒã®æ„Ÿåº¦
+  QVector<MCAPeak> MCAPeaks;
 
   int nearX;
   bool nearf;
@@ -47,6 +60,7 @@ private:
   QColor Black, White;
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
+  QColor SMCAC, DMCAC;
 
   void Draw( QPainter *p );
 
@@ -72,6 +86,8 @@ public:
   double getRealTime( void ) { return realTime; };
   double getLiveTime( void ) { return liveTime; };
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
+  void setNewPSSens( QString newSens );
+  void setShowDiff( bool f ) { ShowDiff = f; };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
@@ -79,11 +95,12 @@ public slots:
   void setShowElements( bool show ) { showElements = show; update(); };
   void setShowElementsAlways( bool show ) { showElementsAlways = show; update(); };
   void setShowElementsEnergy( bool show ) { showElementsEnergy = show; update(); };
-  void doPeakFit( void );
+  //  void doPeakFit( void );
 
 signals:
   void CurrentValues( int atCur, int inROI );
   void newROI( int ROIstart, int ROIend );
+  void newPeakList( QVector<MCAPeak>* );
 };
 
 #endif

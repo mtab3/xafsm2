@@ -1,4 +1,6 @@
 
+#if 0
+
 #include <math.h>
 #include <stdio.h>
 
@@ -97,7 +99,7 @@ void PeakFit::calcNewP( double gamma )
 {
   qDebug() << "cc 1";
   
-  for ( int i = 0; i < L; i++ ) {  // »Äº¹¥Ù¥¯¥È¥ë s ¤òºî¤ë
+  for ( int i = 0; i < L; i++ ) {  // æ®‹å·®ãƒ™ã‚¯ãƒˆãƒ« s ã‚’ä½œã‚‹
     Y[i] = 0;
     for ( int j = 0; j < N0; j++ ) {
       Y[i] += p[3*j] * exp( -( x[i] - p[3*j+1] )*( x[i] - p[3*j+1] ) / p[3*j+2] );
@@ -120,7 +122,7 @@ void PeakFit::calcNewP( double gamma )
 
   qDebug() << "cc 2";
 
-  for ( int i = 0; i < L; i++ ) {   // a ¤È at ¤òºî¤ë ¥¬¥¦¥¹·¿
+  for ( int i = 0; i < L; i++ ) {   // a ã¨ at ã‚’ä½œã‚‹ ã‚¬ã‚¦ã‚¹åž‹
     for ( int j = 0; j < N0; j++ ) {
       at[i][j*3+0] = a[j*3+0][i]
 	= exp( -( x[i] - p[3*j+1] )*( x[i] - p[3*j+1] ) / p[3*j+2] );
@@ -135,7 +137,7 @@ void PeakFit::calcNewP( double gamma )
 
   qDebug() << "cc 3 " << N << L;
 
-  for ( int i = 0; i < N; i++ ) {    // aa = a * at ¤È I (Ã±°Ì¹ÔÎó)¤òºî¤ë
+  for ( int i = 0; i < N; i++ ) {    // aa = a * at ã¨ I (å˜ä½è¡Œåˆ—)ã‚’ä½œã‚‹
     for ( int j = 0; j < N; j++ ) {
       a[i][j] = 0;
       for ( int k = 0; k < L; k++ ) {
@@ -157,13 +159,13 @@ void PeakFit::calcNewP( double gamma )
 
   qDebug() << "cc 4";
 
-  for ( int i = 0; i < N; i++ ) {   // aa ¤Ë¸ºÂ®·¸¿ô¤òÆþ¤ì¤ë
+  for ( int i = 0; i < N; i++ ) {   // aa ã«æ¸›é€Ÿä¿‚æ•°ã‚’å…¥ã‚Œã‚‹
     aa[i][i] *= ( 1.0 - gamma );
   }
 
   qDebug() << "cc 5";
 
-  for ( int i = 0; i < N; i++ ) {   // ÁÝ¤­½Ð¤·¤Ç aa ¤ÎµÕ¹ÔÎó¤òºî¤ë
+  for ( int i = 0; i < N; i++ ) {   // æŽƒãå‡ºã—ã§ aa ã®é€†è¡Œåˆ—ã‚’ä½œã‚‹
     double c = aa[i][i];
     for ( int j = 0; j < N; j++ ) {
       aa[i][j] /= c;
@@ -178,7 +180,7 @@ void PeakFit::calcNewP( double gamma )
 	}
       }
     }
-  }                                 // I ¤Ï(¤¹¤Ç¤Ë²õ¤ì¤¿)aa ¤ÎµÕ¹ÔÎó
+  }                                 // I ã¯(ã™ã§ã«å£Šã‚ŒãŸ)aa ã®é€†è¡Œåˆ—
 
   for ( int i = 0; i < N; i++ ) {
     for ( int j = 0; j < N; j++ ) {
@@ -189,7 +191,7 @@ void PeakFit::calcNewP( double gamma )
 
   qDebug() << "cc 6";
 
-  // ½àÈ÷¤¬½ª¤ï¤Ã¤¿¤Î¤Ç Pn+1 = Pn - Inv(aa) x A x S ¤Î·×»»
+  // æº–å‚™ãŒçµ‚ã‚ã£ãŸã®ã§ Pn+1 = Pn - Inv(aa) x A x S ã®è¨ˆç®—
   QVector<double> as, ias;
   for ( int i = 0; i < N; i++ ) {
     as << 0;
@@ -226,3 +228,5 @@ void PeakFit::calcNewP( double gamma )
 
   qDebug() << "cc 10";
 }
+
+#endif

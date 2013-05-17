@@ -28,6 +28,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   RangeSelectable = false;
   SelectedRange = 0;
   setTime = 1;
+  ConnectedToSSDServer = false;
 
   Center = 0;        // only for PM
 
@@ -64,8 +65,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
 
   LastFunc = "";
   LastFunc2 = "";
-  IsBusy = false;         // Áê¼ê¤Ë¿Ò¤Í¤ë isBusy
-  IsBusy2Off( "" );   // ¤½¤ÎÂ¾¤Î¥³¥Ş¥ó¥É¤òÅê¤²¤ÆÊÖÅú¤¬ÊÖ¤Ã¤Æ¤¯¤ë¤Ş¤Ç isBusy2
+  IsBusy = false;         // ç›¸æ‰‹ã«å°‹ã­ã‚‹ isBusy
+  IsBusy2Off( "" );   // ãã®ä»–ã®ã‚³ãƒãƒ³ãƒ‰ã‚’æŠ•ã’ã¦è¿”ç­”ãŒè¿”ã£ã¦ãã‚‹ã¾ã§ isBusy2
   Value = "";
 
   ilastSetV = 0;
@@ -79,6 +80,7 @@ void AUnit::setEnable( bool enable )
   Enable = enable;
   IsBusy = false;
   LastFunc = "";
+  ConnectedToSSDServer = false;
   emit Enabled( Driver, enable );
   emit ChangedIsBusy1( Driver );
   IsBusy2Off( "" );
@@ -110,45 +112,45 @@ TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
 }
 
 void AUnit::Initialize( Stars *S )
-// ¤³¤³¤Ï½Å¤¯¤Æ¤â¤¤¤¤¤Î¤ÇÊ¬¤«¤ê¤ä¤¹¤¯½ñ¤¯¤Ù¤­
-// (Á´Éô¤Î¥æ¥Ë¥Ã¥È¤ËÉ¬Í×¤Ê½èÍı¤ò¤·¤Æ¤¤¤Æ¡¢É¬Í×¤Ç¤Ê¤¤¤³¤È¤Ï¤·¤Æ¤¤¤Ê¤¤¤³¤È¤ò
-//  ¤Ê¤ó¤È¤«´èÄ¥¤Ã¤ÆÌÀ³Î¤Ë¤¹¤ë)
+// ã“ã“ã¯é‡ãã¦ã‚‚ã„ã„ã®ã§åˆ†ã‹ã‚Šã‚„ã™ãæ›¸ãã¹ã
+// (å…¨éƒ¨ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«å¿…è¦ãªå‡¦ç†ã‚’ã—ã¦ã„ã¦ã€å¿…è¦ã§ãªã„ã“ã¨ã¯ã—ã¦ã„ãªã„ã“ã¨ã‚’
+//  ãªã‚“ã¨ã‹é ‘å¼µã£ã¦æ˜ç¢ºã«ã™ã‚‹)
 {
   s = S;
 
   connect( s, SIGNAL( ReceiveError( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-  // ²¿¤é¤«¤Î¥³¥Ş¥ó¥É¤ËÂĞ¤¹¤ë±şÅú¤¬¥¨¥é¡¼¤À¤Ã¤¿¾ì¹ç¤ÎÂĞ½è¡£
-  // Ã±¤Ë¡¢isBusy2 ¤ò¥¯¥ê¥¢¤·¤Æ¤¤¤ë¤À¤±¡£
-  // ¤³¤ó¤Ê¤ËÃ±½ã¤Ç¤¤¤¤¤«¤É¤¦¤«¤ÏÆñ¤·¤¤¤È¤³¤í¤À¤±¤ì¤É¡¢
-  // enable ¤ò¤Á¤ã¤ó¤È´ÉÍı¤¹¤ë¤è¤¦¤Ë¤·¤¿¤Î¤Ç¡¢ÊÑ¤Ê½èÍı¤ËÆÍÆş¤¹¤ë¤³¤È¤Ï¤½¤Á¤é¤ÇÈò¤±¤Æ
-  // ÊÑ¤Ê½èÍı¤ËÆÍÆş¤·¤Æ¤·¤Ş¤Ã¤¿¾ì¹ç¤Ï¡¢¶ÛµŞÈòÆñÅª¤Ë¤³¤ÎÊıË¡¤ÇÆ¨¤²¤ë¤³¤È¤Ë¤¹¤ë¡£
+  // ä½•ã‚‰ã‹ã®ã‚³ãƒãƒ³ãƒ‰ã«å¯¾ã™ã‚‹å¿œç­”ãŒã‚¨ãƒ©ãƒ¼ã ã£ãŸå ´åˆã®å¯¾å‡¦ã€‚
+  // å˜ã«ã€isBusy2 ã‚’ã‚¯ãƒªã‚¢ã—ã¦ã„ã‚‹ã ã‘ã€‚
+  // ã“ã‚“ãªã«å˜ç´”ã§ã„ã„ã‹ã©ã†ã‹ã¯é›£ã—ã„ã¨ã“ã‚ã ã‘ã‚Œã©ã€
+  // enable ã‚’ã¡ã‚ƒã‚“ã¨ç®¡ç†ã™ã‚‹ã‚ˆã†ã«ã—ãŸã®ã§ã€å¤‰ãªå‡¦ç†ã«çªå…¥ã™ã‚‹ã“ã¨ã¯ãã¡ã‚‰ã§é¿ã‘ã¦
+  // å¤‰ãªå‡¦ç†ã«çªå…¥ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯ã€ç·Šæ€¥é¿é›£çš„ã«ã“ã®æ–¹æ³•ã§é€ƒã’ã‚‹ã“ã¨ã«ã™ã‚‹ã€‚
 
-  // ¸½¾õ¤¢¤ë unit ¤Ï
+  // ç¾çŠ¶ã‚ã‚‹ unit ã¯
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  // SSDP ¤ò½ü¤¯Á´¤Æ
+  // SSDP ã‚’é™¤ãå…¨ã¦
   if ( TypeCHK(  1,  1,  1,  1,  1,  0,  0,   1,  1,  1,  1,  0,  1, 1,   1 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", DevCh );
     s->SendCMD2( "Init", "System", "flgon", Driver );
-    // flgon ¤ò DevCh ¤È Driver  Î¾Êı¤Ë¤«¤±¤ë¤ÈÆó½Å¤Ë¤Ê¤ë¤«¤â¤·¤ì¤Ê¤¤¤¬
-    // °­¤¤¤³¤È¤Ïµ¯¤³¤é¤Ê¤¤¤Ï¤º¤Ê¤Î¤Ç°ÂÁ´Â¦¤Ë¿¶¤Ã¤Æ¤ª¤¯
+    // flgon ã‚’ DevCh ã¨ Driver  ä¸¡æ–¹ã«ã‹ã‘ã‚‹ã¨äºŒé‡ã«ãªã‚‹ã‹ã‚‚ã—ã‚Œãªã„ãŒ
+    // æ‚ªã„ã“ã¨ã¯èµ·ã“ã‚‰ãªã„ã¯ãšãªã®ã§å®‰å…¨å´ã«æŒ¯ã£ã¦ãŠã
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV, DV2 ENC2
-  // ¶îÆ°·Ï¤À¤±
+  // é§†å‹•ç³»ã ã‘
   if ( TypeCHK(  1,  1,  0,  0,  1,  0,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
 //  connect( s, SIGNAL( AnsSetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    // SetValue ¤Ï Ok: ¤Ç¤â Er: ¤Ç¤âÌµ»ë¤¹¤ë¡£
+    // SetValue ã¯ Ok: ã§ã‚‚ Er: ã§ã‚‚ç„¡è¦–ã™ã‚‹ã€‚
     s->SendCMD2( "Init", DevCh, "GetValue" );
-  }                                                               // ¶îÆ°·Ï°Ê³°
+  }                                                               // é§†å‹•ç³»ä»¥å¤–
   if ( TypeCHK(  0,  0,  1,  1,  1,  1,  1,   0,  0,  1,  1,  0,  0,  0,  0 ) ) {
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                         CNT, OTC ¤Ï Ch ¤Ë IsBusy ¤ò¿Ö¤¯¤È¥¨¥é¡¼
+  //                                         CNT, OTC ã¯ Ch ã« IsBusy ã‚’è¨Šãã¨ã‚¨ãƒ©ãƒ¼
   if ( TypeCHK(  1,  1,  0,  1,  1,  1,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
     s->SendCMD2( "Init", DevCh, "IsBusy" );
   }
@@ -156,9 +158,9 @@ void AUnit::Initialize( Stars *S )
     s->SendCMD2( "Init", Driver, "IsBusy" );
   }
 
-  // °Ê²¼¸ÄÊÌ½èÍı
+  // ä»¥ä¸‹å€‹åˆ¥å‡¦ç†
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                     ¥«¥¦¥ó¥¿(nct08)¤À¤±
+  //                                                     ã‚«ã‚¦ãƒ³ã‚¿(nct08)ã ã‘
   if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  0,  0,  0,  0, 0,  0 ) ) {
     connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -167,7 +169,7 @@ void AUnit::Initialize( Stars *S )
     s->SendCMD2( "Init", Driver, "SetStopMode", "T" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                     ¥«¥¦¥ó¥¿(ortec974)¤À¤±
+  //                                                     ã‚«ã‚¦ãƒ³ã‚¿(ortec974)ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  1,  1,  0,  0, 0,  0 ) ) {
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -180,7 +182,7 @@ void AUnit::Initialize( Stars *S )
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                      PAM(Keithley)¤À¤±
+  //                                                      PAM(Keithley)ã ã‘
   if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
     connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -190,7 +192,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                         CNT2, OCT2 ¤À¤±¡£KeithleyÂĞ±ş
+  //                                         CNT2, OCT2 ã ã‘ã€‚Keithleyå¯¾å¿œ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   1,  0,  0,  1,  0,  0, 0,  0 ) ) {
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -199,25 +201,25 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsGetRange( SMsg ) ), this, SLOT( ReactGetRange( SMsg ) ) );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                                  DV2(34410)¤À¤±
+  //                                                                  DV2(34410)ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 1,  0 ) ) {
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetAperture( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsSetAutoZero( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    //    s->SendCMD2( "Init", Driver, "Reset" );  // Reset ¤ËÂĞ¤¹¤ëÊÖÅú¤ÏÌµ»ë
+    //    s->SendCMD2( "Init", Driver, "Reset" );  // Reset ã«å¯¾ã™ã‚‹è¿”ç­”ã¯ç„¡è¦–
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                             DV (34410)¤À¤±
+  //                                                             DV (34410)ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0,  0 ) ) {
     connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsQInitialize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsQGetData( SMsg ) ), this, SLOT( RcvQGetData( SMsg ) ) );
     connect( s, SIGNAL( AnsQFinalize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    //    s->SendCMD2( "Init", Driver, "Reset" );  // Reset ¤ËÂĞ¤¹¤ëÊÖÅú¤ÏÌµ»ë
+    //    s->SendCMD2( "Init", Driver, "Reset" );  // Reset ã«å¯¾ã™ã‚‹è¿”ç­”ã¯ç„¡è¦–
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                           SSD(Xmap)¤À¤±
+  //                                                           SSD(Xmap)ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
@@ -238,7 +240,7 @@ void AUnit::Initialize( Stars *S )
     s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                                                          SSDP(Xmap)¤À¤±
+  //                                                          SSDP(Xmap)ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  1,   0,  0,  0,  0,  0,  0, 0,  0  ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
     connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
@@ -247,13 +249,13 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", "System", "flgon", DevCh );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 // LSR ¤À¤±
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 // LSR ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  1,  0, 0,  0  ) ) {
     connect( s, SIGNAL(EvReportCurrent( SMsg )), this, SLOT(OnReportCurrent( SMsg )));
     s->SendCMD2( "Init", Driver, "flgon", Ch );
     s->SendCMD2( "Init", "System", "flgon", Driver );
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // PM ¤À¤±
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // PM ã ã‘
   if ( TypeCHK(  1,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0  ) ) {
     connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )));
     connect( s, SIGNAL(AnsSetTimingOutMode( SMsg )), this, SLOT(ClrBusy( SMsg )));
@@ -263,7 +265,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL(AnsSetTimingOutReady( SMsg )), this, SLOT(ClrBusy( SMsg )));
     connect( s, SIGNAL(AnsSelect( SMsg )), this, SLOT(ClrBusy( SMsg )));
   }
-  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // ENC2 ¤À¤±
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // ENC2 ã ã‘
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  1  ) ) {
     connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ) );
     connect( s, SIGNAL(AnsTrigger( SMsg )), this, SLOT( ClrBusy( SMsg ) ) );
@@ -271,7 +273,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ) );
   }
 
-  // °Ê²¼ Unit ¥¿¥¤¥×¤Ç¤Ï¤Ê¤¯¤Æ¡¢ÆÃÄê¤Î¥æ¥Ë¥Ã¥È¤Ë¸ÇÍ­¤Î½èÍı
+  // ä»¥ä¸‹ Unit ã‚¿ã‚¤ãƒ—ã§ã¯ãªãã¦ã€ç‰¹å®šã®ãƒ¦ãƒ‹ãƒƒãƒˆã«å›ºæœ‰ã®å‡¦ç†
   // MMainTh   : "THETA"
   // SI0       : "I0"
   // SI1       : "I1"
@@ -289,7 +291,7 @@ void AUnit::Initialize( Stars *S )
     GetValue();
   }
 
-  emit ChangedIsBusy1( Driver );    // ¤³¤³¤Î3¤Ä¤Î¥¨¥ß¥Ã¥È¤ÏÇ°¤Î°Ù
+  emit ChangedIsBusy1( Driver );    // ã“ã“ã®3ã¤ã®ã‚¨ãƒŸãƒƒãƒˆã¯å¿µã®ç‚º
   emit ChangedIsBusy2( Driver );
   emit ChangedBusy2Count( Driver );
 }
@@ -360,7 +362,7 @@ bool AUnit::GetValue( void )
 {
   bool rv = false;
 
-  //                PZ                    // ¤³¤Î GetValue ¤Ş¤ÀÂĞ±ş¤·¤Æ¤Ê¤¤
+  //                PZ                    // ã“ã® GetValue ã¾ã å¯¾å¿œã—ã¦ãªã„
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  0, 1,  1 ) ) {
     IsBusy2On( Driver, "GetValue" );
@@ -388,7 +390,7 @@ bool AUnit::GetValue( void )
   return rv;
 }
 
-bool AUnit::GetValue0( void )  // ÃÍÆÉ¤ß½Ğ¤·¥³¥Ş¥ó¥É¤ÎÁ°¤Ë²¿¤«É¬Í×¤Ê¥¿¥¤¥×¤Î¾ì¹ç
+bool AUnit::GetValue0( void )  // å€¤èª­ã¿å‡ºã—ã‚³ãƒãƒ³ãƒ‰ã®å‰ã«ä½•ã‹å¿…è¦ãªã‚¿ã‚¤ãƒ—ã®å ´åˆ
 {
   bool rv = false;
 
@@ -435,7 +437,7 @@ bool AUnit::GetValue0( void )  // ÃÍÆÉ¤ß½Ğ¤·¥³¥Ş¥ó¥É¤ÎÁ°¤Ë²¿¤«É¬Í×¤Ê¥¿¥¤¥×¤Î¾ì¹ç
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  //                       SSDP ¤Ç¤Ï¤Ê¤Ë¤â¤·¤Ê¤¤ (SSDP ¤Î»ş¤âÂåÉ½¤·¤Æ SSD ¤ò¸Æ¤Ö)
+  //                       SSDP ã§ã¯ãªã«ã‚‚ã—ãªã„ (SSDP ã®æ™‚ã‚‚ä»£è¡¨ã—ã¦ SSD ã‚’å‘¼ã¶)
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
     switch( LocalStage ) {
     case 0:
@@ -482,7 +484,7 @@ void AUnit::RunResume( void )
 
 void AUnit::SetValue( double v )
 {
-  //  IsBusy2 = true;    // setvalue ¤ËÂĞ¤¹¤ë±şÅú¤ÏÌµ»ë¤¹¤ë¤Î¤Ç isBusy2 ¤â¥»¥Ã¥È¤·¤Ê¤¤
+  //  IsBusy2 = true;    // setvalue ã«å¯¾ã™ã‚‹å¿œç­”ã¯ç„¡è¦–ã™ã‚‹ã®ã§ isBusy2 ã‚‚ã‚»ãƒƒãƒˆã—ãªã„
   if ( Type == "PM" ) {
     IsBusy = true;
     emit ChangedIsBusy1( DevCh );
@@ -501,7 +503,7 @@ void AUnit::SetSpeed( MSPEED i )
 {
   QString cmd = "SpeedLow";
 
-  //  IsBusy2 = true;    // setspeed ¤ËÂĞ¤¹¤ë±şÅú¤ÏÌµ»ë¤¹¤ë¤Î¤Ç isBusy2 ¤â¥»¥Ã¥È¤·¤Ê¤¤
+  //  IsBusy2 = true;    // setspeed ã«å¯¾ã™ã‚‹å¿œç­”ã¯ç„¡è¦–ã™ã‚‹ã®ã§ isBusy2 ã‚‚ã‚»ãƒƒãƒˆã—ãªã„
 
   if ( Type == "PM" ) {
     switch( i ) {
@@ -587,7 +589,7 @@ void AUnit::AskIsBusy( void )
     s->SendCMD2( Uid, DevCh, "IsBusy" );
   }
 
-  // SSDP¤Ë¤Ï¿Ö¤«¤Ê¤¤
+  // SSDPã«ã¯è¨Šã‹ãªã„
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  1,  0,  0,  1,  0,   0,  0,  1,  0,  0,  1, 1,  1 ) ) {
     s->SendCMD2( Uid, Driver, "IsBusy" );
@@ -604,7 +606,7 @@ void AUnit::ReceiveValues( SMsg msg )
   ICRs.clear();
 
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
-    if ( Type == "SSD" ) {   // SSD ¤À¤±ÆÃ¼ì½èÍı¡£Á´¥Á¥ã¥ó¥Í¥ë¤Î¹ç·×ÃÍ¤ò¼è¤ë
+    if ( Type == "SSD" ) {   // SSD ã ã‘ç‰¹æ®Šå‡¦ç†ã€‚å…¨ãƒãƒ£ãƒ³ãƒãƒ«ã®åˆè¨ˆå€¤ã‚’å–ã‚‹
       int sum = 0;
       for ( int i = 0; i < MaxSSDs; i++ ) {
 	if ( SSDUsingCh[i] ) {
@@ -711,7 +713,7 @@ void AUnit::Stop( void )
   }
 }
 
-double AUnit::SetTime( double dtime )   // in sec  // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½¤Ç¤­¤Ê¤¤
+double AUnit::SetTime( double dtime )   // in sec  // ã“ã®é–¢æ•°ã¯ã€è¤‡æ•°ã‚¹ãƒ†ãƒƒãƒ—åŒ–ã§ããªã„
 {
   double time;
   long int ltime;
@@ -719,7 +721,7 @@ double AUnit::SetTime( double dtime )   // in sec  // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½
 
   if (( Type == "SSD" )||( Type == "SSDP" )) {
     IsBusy2On( Driver, "SetTime" );
-    s->SendCMD2( Uid, Driver, "RunStop" );   // ¥³¥Ş¥ó¥ÉÏ¢Â³È¯¹Ô²ÄÇ½¤«? ¤¤¤Á¤ª¤¦¤¤¤±¤Æ¤ë
+    s->SendCMD2( Uid, Driver, "RunStop" );   // ã‚³ãƒãƒ³ãƒ‰é€£ç¶šç™ºè¡Œå¯èƒ½ã‹? ã„ã¡ãŠã†ã„ã‘ã¦ã‚‹
     s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
     setTime = dtime;
   }
@@ -730,7 +732,7 @@ double AUnit::SetTime( double dtime )   // in sec  // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½
     if ( time < 1 ) time = 1;
     if ( time > 40 ) time = 40;
     s->SendCMD2( Uid, DevCh, "SetNPLCycles", QString::number( time ) );
-    setTime = time / 60;    // ¤³¤ì¤Ç¡ÖÉÃ¡×Ã±°Ì¤ÎÉáÄÌ¤Î»ş´Ö¤ËÌá¤Ã¤Æ¤ë
+    setTime = time / 60;    // ã“ã‚Œã§ã€Œç§’ã€å˜ä½ã®æ™®é€šã®æ™‚é–“ã«æˆ»ã£ã¦ã‚‹
   }
   if (( Type == "CNT" )||( Type == "CNT2" )) {
     IsBusy2On( Driver, "SetTime" );
@@ -743,19 +745,19 @@ double AUnit::SetTime( double dtime )   // in sec  // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½
     N = log10( dtime * 10 );
     M = ceil( dtime / pow( 10., N - 1 ) );
     s->SendCMD2( Uid, Driver, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
-    setTime = M * pow( 10, N ) * 0.1;  // ¤³¤ì¤ÇÉÃÃ±°Ì¤ÎÉáÄÌ¤Î»ş´Ö¤ËÌá¤Ã¤Æ¤ë
+    setTime = M * pow( 10, N ) * 0.1;  // ã“ã‚Œã§ç§’å˜ä½ã®æ™®é€šã®æ™‚é–“ã«æˆ»ã£ã¦ã‚‹
   }
   if (( Type == "DV" )||( Type == "DV2" )) {
     if ( dtime < 0.0001 ) dtime = 0.0001;
     if ( dtime > 1.0 ) dtime = 1.0;
-    if ( Type == "DV2" ) {   // DV ¤Î¾ì¹ç¡¢¤³¤³¤Ç¤ÏÆâÉôÊÑ¿ô setTime ¤ËÃÍ¤òÀßÄê¤¹¤ë¤À¤±¡£
+    if ( Type == "DV2" ) {   // DV ã®å ´åˆã€ã“ã“ã§ã¯å†…éƒ¨å¤‰æ•° setTime ã«å€¤ã‚’è¨­å®šã™ã‚‹ã ã‘ã€‚
       IsBusy2On( Driver, "SetAperture" );
       s->SendCMD2( Uid, Driver, "SetAperture", QString( "%1" ).arg( dtime ) );
     }
     setTime = dtime;
   }
   if ( Type == "ENC2" ) {
-    setTime = dtime;          // setTime ¤Ç¤­¤¿¤È¸«¤»¤«¤±¤ë¤À¤±¡£
+    setTime = dtime;          // setTime ã§ããŸã¨è¦‹ã›ã‹ã‘ã‚‹ã ã‘ã€‚
   }
 
   return setTime;
@@ -936,8 +938,8 @@ bool AUnit::InitSensor( void )
   }
 
   if (( Type == "CNT2" )||( Type == "OTC2" )) {
-    // CNT2, OTC2 ¤Î¤È¤­ ¥«¥¦¥ó¥¿¤Î¸ş¤³¤¦¤Ë¤Ä¤Ê¤¬¤ë¤Î¤Ï
-    // keithley ¤Ê¤Î¤Ç¤½¤ìÍÑ¤Î½èÍı¤ò¤·¤Æ¤ª¤¯
+    // CNT2, OTC2 ã®ã¨ã ã‚«ã‚¦ãƒ³ã‚¿ã®å‘ã“ã†ã«ã¤ãªãŒã‚‹ã®ã¯
+    // keithley ãªã®ã§ãã‚Œç”¨ã®å‡¦ç†ã‚’ã—ã¦ãŠã
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver2, "InitSensor-c0" );
@@ -1185,10 +1187,20 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
 {
   if ( Type == "SSD" ) {
     if ( msg.From() == Driver ) {
-      IsBusy2Off( Driver );
-      DataLinkHostName = msg.Vals().at(0);
-      DataLinkHostPort = msg.Vals().at(1).toInt();
-      ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
+      if ( msg.Vals().count() == 2 ) {
+	IsBusy2Off( Driver );
+	QString NewDataLinkHostName = msg.Vals().at(0);
+	int NewDataLinkHostPort = msg.Vals().at(1).toInt();
+	if ( ( ! ConnectedToSSDServer ) || 
+	     ( ( NewDataLinkHostName != DataLinkHostName )
+	       &&( NewDataLinkHostPort != DataLinkHostPort ) ) ) {
+	  DataLinkHostName = NewDataLinkHostName;
+	  DataLinkHostPort = NewDataLinkHostPort;
+	  ConnectedToSSDServer = true;
+	  ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
+	  qDebug() << "Connect to SSD server" << DataLinkHostName << DataLinkHostPort;
+	}
+      }
     }
   }
 }
@@ -1210,8 +1222,8 @@ bool AUnit::GetMCAs( void )
 {
   if ( Type == "SSD" ) {
     IsBusy2On( Driver2, "GetMCAs" );
-    // ÊÑÂ§ : ¤³¤Î IsBusy2 ¤Ï @GetMCAs Ok: ¤ò¼õ¤±¤Æ¤â¾Ã¤µ¤Ê¤¤
-    //        data-link ·ĞÍ³¤Ç´°Á´¤Ê¥Ç¡¼¥¿¤ò¤â¤é¤Ã¤¿»ş¤Ë¾Ã¤¹
+    // å¤‰å‰‡ : ã“ã® IsBusy2 ã¯ @GetMCAs Ok: ã‚’å—ã‘ã¦ã‚‚æ¶ˆã•ãªã„
+    //        data-link çµŒç”±ã§å®Œå…¨ãªãƒ‡ãƒ¼ã‚¿ã‚’ã‚‚ã‚‰ã£ãŸæ™‚ã«æ¶ˆã™
     s->SendCMD2( Uid, DevCh, QString( "GetMCAs" ) );
   }
 
@@ -1231,7 +1243,7 @@ void AUnit::ReactGetRange( SMsg msg )
   }
 }
 
-bool AUnit::isAutoRangeAvailable( void )  // PAM ¤È CNT2, OCT2 ¤Ï AutoRange ¤òÁªÂò²Ä
+bool AUnit::isAutoRangeAvailable( void )  // PAM ã¨ CNT2, OCT2 ã¯ AutoRange ã‚’é¸æŠå¯
 {
   if (( Type == "PAM" )||( Type == "CNT2" )||( Type == "OTC2" )) {
     return true;
@@ -1281,7 +1293,7 @@ void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
       delete [] MCAs0;
     MCAs0 = new char [ MCABUFSIZE ];
     dLinkCount = 0;
-    MCAsReady = false;  // MCAs ¤Î¥Ğ¥Ã¥Õ¥¡¤ËÍ­¸ú¤Ê¥Ç¡¼¥¿¤¬Ìµ¤¤
+    MCAsReady = false;  // MCAs ã®ãƒãƒƒãƒ•ã‚¡ã«æœ‰åŠ¹ãªãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„
     connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ) );
     dLink->connectToHost( host, port );
   }
@@ -1292,28 +1304,24 @@ void AUnit::receiveMCAs( void )
   uint bytes0, bytes;
 
   bytes0 = dLink->bytesAvailable();
-  // º£ÆÏ¤¤¤¿Ê¬¤òÁ´ÉôÆÉ¤ó¤Ç¤â¥Ğ¥Ã¥Õ¥¡¥µ¥¤¥º¤è¤ê¾®¤µ¤¤¤Ê¤é
+  // ä»Šå±Šã„ãŸåˆ†ã‚’å…¨éƒ¨èª­ã‚“ã§ã‚‚ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚ˆã‚Šå°ã•ã„ãªã‚‰
   if ( dLinkCount + bytes0 <= MCABUFSIZE )
-    bytes = bytes0;                    // Á´ÉôÆÉ¤à
+    bytes = bytes0;                    // å…¨éƒ¨èª­ã‚€
   else
-    bytes = MCABUFSIZE - dLinkCount;   // Âç¤­¤¤¤Ê¤é¡¢ÆÉ¤á¤ëÊ¬¤À¤±ÆÉ¤à
+    bytes = MCABUFSIZE - dLinkCount;   // å¤§ãã„ãªã‚‰ã€èª­ã‚ã‚‹åˆ†ã ã‘èª­ã‚€
 
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
-
   dLinkCount += bytes;
-  QString debug = QString( "%1 %2 %3 %4" )
-    .arg( bytes0 ).arg( bytes ).arg( dLinkCount ).arg( MCABUFSIZE );
-  qDebug() << debug;
-  emit LogMsg( debug );
 
   if ( dLinkCount >= MCABUFSIZE ) {
     IsBusy2Off( Driver );
     dLinkCount = 0;
     if ( MCAs != NULL ) delete [] MCAs;
-    MCAs = MCAs0;
+    MCAs = MCAs0;              // èª­ã¿è¾¼ã¿ãŒå®Œæˆã—ãŸãƒãƒƒãƒ•ã‚¡(MCAs0)ã‚’
+                               // æœ€æ–°ã®ãƒ‡ãƒ¼ã‚¿ãŒç½®ã‹ã‚ŒãŸãƒãƒƒãƒ•ã‚¡(MCAs)ã«ç§»ã—
     MCAs0 = new char [ MCABUFSIZE ];
-    MCAsReady = true;          // MCAs ¤Î¥Ğ¥Ã¥Õ¥¡¤ËÍ­¸ú¤Ê¥Ç¡¼¥¿¤¬¤¢¤ë
-
+                               // MCAs0 ã¯æ¬¡ã®ãƒ‡ãƒ¼ã‚¿ã‚’å—ã‘ã‚‹ãŸã‚ã«æ–°ã—ãã™ã‚‹
+    MCAsReady = true;          // MCAs ã®ãƒãƒƒãƒ•ã‚¡ã«æœ‰åŠ¹ãªãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹
 
     CountsInROI.clear();
     CountsAll.clear();
@@ -1340,7 +1348,6 @@ void AUnit::receiveMCAs( void )
       TotalEvents << 0;
       ICRs        << getAMCAHead( i ).icr;
     }
-    qDebug() << "emitted New MCAs";
     emit LogMsg( "emitted New MCAs" );
     emit NewMCAsAvailable( MCAs );
   }

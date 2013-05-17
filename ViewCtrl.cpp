@@ -13,13 +13,13 @@ ViewCTRL::ViewCTRL( void )
 
 bool ViewCTRL::setView( void *view, VTYPE vtype )
 {
-  if ( nowView != NULL ) {           // ╕╜║▀д╬ View д╧╗╚═╤├ц ?
-    if ( vtype == nowVType ) {       // ╔╜╝ид╖дшджд╚д╖д╞дддыд╬д╚╞▒д╕╝я╬рд╬е░еще╒д╩дщ
-      if ( ! deleteView() ) {        // ╛шд├╝шдъдЄ┤ыд╞дыбг
-	return false;                // е└есд╩дщ─№дсдыбг
+  if ( nowView != NULL ) {           // чП╛хЬиуБо View уБпф╜┐чФиф╕н ?
+    if ( vtype == nowVType ) {       // шбичд║уБЧуВИуБЖуБиуБЧуБжуБДуВЛуБоуБихРМуБШчиощбЮуБоуВ░уГйуГХуБкуВЙ
+      if ( ! deleteView() ) {        // ф╣ЧуБгхПЦуВКуВТф╝БуБжуВЛуАВ
+	return false;                // уГАуГбуБкуВЙшлжуВБуВЛуАВ
       }
     } else {
-      return false;                  // ╝я╬рд╬░удже░еще╒д╩дщ─№дсды
+      return false;                  // чиощбЮуБощБХуБЖуВ░уГйуГХуБкуВЙшлжуВБуВЛ
     }
   }
   nowView = view;

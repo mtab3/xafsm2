@@ -1,4 +1,4 @@
-This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.10.27)  19 FEB 2013 23:42
+This is pTeX, Version 3.141592-p3.1.10 (euc) (Web2C 7.5.4) (format=platex-euc 2012.9.12)  15 MAY 2013 20:15
 **XafsM2
 (./XafsM2.tex
 pLaTeX2e <2006/11/10>+0 (based on LaTeX2e <2003/12/01> patch level 0)
@@ -25,20 +25,19 @@ LaTeX Font Info:    Overwriting symbol font `mincho' in version `bold'
 \@lnumwidth=\dimen119
 \bibindent=\dimen120
 \heisei=\count90
-)
-(/home/tabuchi/inputs/my.sty
+) (./my.sty
 \SIDEX=\dimen121
 \TEXTWIDTH=\dimen122
 \TOPX=\dimen123
 \TEXTLENGTH=\dimen124
 \c@rnumber=\count91
-) (/home/tabuchi/inputs/hangcaption.sty
+)
+(/usr/local/share/texmf-dist/tex/latex/hangcaption/hangcaption.sty
 \captionwidth=\skip43
 )
-(/home/tabuchi/inputs/wrapfloat.sty
+(./wrapfloat.sty
 \WF@wrappedlines=\count92
-)
-(/usr/local/share/texmf-dist/tex/latex/graphics/graphics.sty
+) (/usr/local/share/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
 
 (/usr/local/share/texmf-dist/tex/latex/graphics/trig.sty
@@ -130,6 +129,9 @@ LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `bold'
 LaTeX Info: Redefining \not on input line 1042.
 ) (./XafsM2.aux
 
+LaTeX Warning: Label `QXAFSブロック設定' multiply defined.
+
+
 LaTeX Warning: Label `Starsとの接続' multiply defined.
 
 )
@@ -220,104 +222,116 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 File: OutLookAll.eps Graphic file (type eps)
  <OutLookAll.eps> [1]
 File: OutLook1.eps Graphic file (type eps)
- <OutLook1.eps>
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 119.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 119.
- [2]
-LaTeX Font Info:    Try loading font information for OMS+txr on input line 139.
-
-
-(/usr/local/share/texmf-dist/tex/latex/txfonts/omstxr.fd
-File: omstxr.fd 2000/12/15 v3.1
-)
-LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <12> not available
-(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 139.
+ <OutLook1.eps> [2]
 File: ElementSelect.eps Graphic file (type eps)
  <ElementSelect.eps>
 File: ElementSelectBox.eps Graphic file (type eps)
 
 <ElementSelectBox.eps>
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 142.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 142.
+LaTeX Font Info:    Try loading font information for OMS+txr on input line 164.
+
+ (/usr/local/share/texmf-dist/tex/latex/txfonts/omstxr.fd
+File: omstxr.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Font shape `OMS/txr/m/n' in size <12> not available
+(Font)              Font shape `OMS/txsy/m/n' tried instead on input line 164.
 File: PeriodicTable.eps Graphic file (type eps)
  <PeriodicTable.eps> [3]
 File: Monochro.eps Graphic file (type eps)
- <Monochro.eps>
+ <Monochro.eps> [4]
 File: MessageArea.eps Graphic file (type eps)
-
-<MessageArea.eps> [4
-
-]
+ <MessageArea.eps>
 File: MeasTab.eps Graphic file (type eps)
  <MeasTab.eps>
-File: MeasTab-BlockSetUp.eps Graphic file (type eps)
- <MeasTab-BlockSetUp.eps> [5]
-File: MeasTab-Right.eps Graphic file (type eps)
 
-<MeasTab-Right.eps> [6] [7]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+File: MeasTab-BlockSetUp.eps Graphic file (type eps)
+<MeasTab-BlockSetUp.eps> [5] [6]
+File: MeasTab-Right.eps Graphic file (type eps)
+ <MeasTab-Right.eps> [7] [8]
 File: BGMeasB.eps Graphic file (type eps)
- <BGMeasB.eps> [8]
+ <BGMeasB.eps>
+[9]
+File: GraphSelectButtons.eps Graphic file (type eps)
+ <GraphSelectButtons.eps> [10]
+File: QXafsBlockSetup.eps Graphic file (type eps)
+ <QXafsBlockSetup.eps>
+File: QXafsSpeedAndTime.eps Graphic file (type eps)
+
+<QXafsSpeedAndTime.eps> [11]
+
+LaTeX Warning: Reference `最大スピードと加減速にかかる時間' on page 12 undefine
+d on input line 623.
+
+[12]
 File: MeasCond.eps Graphic file (type eps)
  <MeasCond.eps>
 File: MeasCond-MonoCTRL.eps Graphic file (type eps)
-
-<MeasCond-MonoCTRL.eps> [9]
+ <MeasCond-MonoCTRL.eps> [13]
 File: MeasCond-Range.eps Graphic file (type eps)
- <MeasCond-Range.eps> [10]
+ <MeasCond-Range.eps> [14]
 File: MeasCond-Offset.eps Graphic file (type eps)
- <MeasCond-Offset.eps>
-[11]
+
+<MeasCond-Offset.eps> [15]
 File: MeasCond-MoveScan.eps Graphic file (type eps)
- <MeasCond-MoveScan.eps> [12]
+ <MeasCond-MoveScan.eps> [16]
 File: MeasCond-Monitor.eps Graphic file (type eps)
  <MeasCond-Monitor.eps>
 File: SSDTab.eps Graphic file (type eps)
- <SSDTab.eps> [13]
-File: SSDTab-Select1.eps Graphic file (type eps)
 
-<SSDTab-Select1.eps>
+<SSDTab.eps> [17]
+File: SSDTab-Select1.eps Graphic file (type eps)
+ <SSDTab-Select1.eps>
 File: SSDTab-Select2.eps Graphic file (type eps)
  <SSDTab-Select2.eps>
 File: SSDTab-Setup.eps Graphic file (type eps)
- <SSDTab-Setup.eps> [14] [15]
+ <SSDTab-Setup.eps>
+[18] [19]
 File: FileReadTab.eps Graphic file (type eps)
-
-<FileReadTab.eps> [16]
+ <FileReadTab.eps> [20]
 File: FileReadTab-ALine.eps Graphic file (type eps)
- <FileReadTab-ALine.eps> [17]
+ <FileReadTab-ALine.eps> [21]
 File: LogTab.eps Graphic file (type eps)
  <LogTab.eps>
+[22]
 File: StatTab.eps Graphic file (type eps)
  <StatTab.eps>
-[18]
 File: SelStars.eps Graphic file (type eps)
- <SelStars.eps> [19]
+ <SelStars.eps> [23]
 File: SelMC.eps Graphic file (type eps)
- <SelMC.eps> [20] [21]
+ <SelMC.eps> [24] [25]
 File: TXYView.eps Graphic file (type eps)
- <TXYView.eps> [22]
+ <TXYView.eps>
+[26]
 File: MCAView.eps Graphic file (type eps)
-
-<MCAView.eps> [23] [24] [25] (I search kanjifont definition file: . . )
+ <MCAView.eps> [27] [28] [29] (I search kanjifont definition file: . . )
 (I search font definition file: . . . . . . . )
-LaTeX Font Info:    Try loading font information for OT1+txtt on input line 125
-3.
+LaTeX Font Info:    Try loading font information for OT1+txtt on input line 145
+6.
 
 (/usr/local/share/texmf-dist/tex/latex/txfonts/ot1txtt.fd
 File: ot1txtt.fd 2000/12/15 v3.1
-) [26] [27] [28]
-[29] [30] (./XafsM2.aux)
+) [30] [31] [32]
+[33] [34] (./XafsM2.aux)
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 1615 strings out of 95545
- 18136 string characters out of 1190967
- 63249 words of memory out of 1000000
- 4718 multiletter control sequences out of 10000+100000
- 40114 words of font info for 130 fonts, out of 500000 for 2000
+ 1636 strings out of 95545
+ 18565 string characters out of 1190572
+ 64295 words of memory out of 1000000
+ 4735 multiletter control sequences out of 10000+100000
+ 42855 words of font info for 139 fonts, out of 500000 for 2000
  19 hyphenation exceptions out of 1000
- 23i,8n,25p,710b,559s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 23i,8n,25p,922b,559s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on XafsM2.dvi (33 pages, 140516 bytes).
+Output written on XafsM2.dvi (37 pages, 160680 bytes).

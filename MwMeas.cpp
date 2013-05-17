@@ -2,8 +2,8 @@
 
 #include "MainWindow.h"
 
-void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
-/* setupSetupArea ‚ªæ‚ÉÀs‚³‚ê‚Ä‚¢‚é‚Æ‚¢‚¤‚Ì‚ª‘O’ñ */
+void MainWindow::setupMeasArea( void )   /* æ¸¬å®šã‚¨ãƒªã‚¢ */
+/* setupSetupArea ãŒå…ˆã«å®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹ã¨ã„ã†ã®ãŒå‰æ */
 {
   BLKstart << BLKs01 << BLKs02 << BLKs03 << BLKs04 << BLKs05
 	   << BLKs06 << BLKs07 << BLKs08 << BLKs09;
@@ -41,6 +41,10 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
   SelRBFND->setFilter( "*.prm" );
   OverWriteChecked = false;
   SelectedOrgName.clear();
+  DFName00.clear();
+  AutoModeFirst = true;
+  MovingToNewSamplePosition = false;
+  AutoModeComment.clear();
 
   EditDFName->setText( "test.dat" );
   connect( EditDFName, SIGNAL( textEdited( const QString & ) ),
@@ -171,7 +175,7 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedNDFN( const QString & ) ) );
 
-  connect( MeasStart, SIGNAL( clicked() ), this, SLOT( StartMeasurement() ) );
+  connect( MeasStart, SIGNAL( clicked() ), this, SLOT( AutoMeasurement() ) );
   connect( MeasPause, SIGNAL( clicked() ), this, SLOT( PauseMeasurement() ) );
   connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ) );
   connect( StopP, SIGNAL( rejected() ), this, SLOT( GoingOn() ) );
@@ -215,6 +219,11 @@ void MainWindow::setupMeasArea( void )   /* ‘ª’èƒGƒŠƒA */
 	   this, SLOT( SetNewGases() ) );
 
   connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
+
+  // Auto mode   :  The parse can be done, on starting measurement
+  connect( AutoMode, SIGNAL( editingFinished() ),
+	   this, SLOT( ShowItemsForAutoMode() ) );
+  connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
 }
 
 void MainWindow::newSensSelectedForI0( int index )
@@ -447,7 +456,7 @@ void MainWindow::SetStdEXAFSBLKs( void )
     for ( int i = 1; i < MaxBLKs; i++ )
       BlockPoints[i] = 0;
 
-    // dwell ‚Ìİ’è‚ÍŒã
+    // dwell ã®è¨­å®šã¯å¾Œ
     for ( int i = 1; i < MaxBLKs; i++ )
       BlockDwell[i] = 0;
 
@@ -479,7 +488,7 @@ void MainWindow::SetStdEXAFSBLKs( void )
   ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
-    CheckQXafsParams();     // dwell ‚ÍÅ¬ŠÔ‚ÉƒZƒbƒg‚³‚ê‚é
+    CheckQXafsParams();     // dwell ã¯æœ€å°æ™‚é–“ã«ã‚»ãƒƒãƒˆã•ã‚Œã‚‹
     ShowBLKs();
   }
 }
@@ -499,7 +508,7 @@ void MainWindow::SetStdXAFSBLKs( void )
     for ( int i = 1; i < MaxBLKs; i++ )
       BlockPoints[i] = 0;
 
-    // dwell ‚Ìİ’è‚ÍŒã
+    // dwell ã®è¨­å®šã¯å¾Œ
     for ( int i = 1; i < MaxBLKs; i++ )
       BlockDwell[i] = 0;
 
@@ -531,7 +540,7 @@ void MainWindow::SetStdXAFSBLKs( void )
   ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
-    CheckQXafsParams();       // dwell ‚ª‰Â”\‚ÈÅ’Z‚ÉƒZƒbƒg‚³‚ê‚é
+    CheckQXafsParams();       // dwell ãŒå¯èƒ½ãªæœ€çŸ­ã«ã‚»ãƒƒãƒˆã•ã‚Œã‚‹
     ShowBLKs();
   }
 }
@@ -559,7 +568,7 @@ void MainWindow::SetStdXANESBLKs( void )
   ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
-    CheckQXafsParams();   // dwell ‚ªÅ’ZŠÔ‚ÉƒZƒbƒg‚³‚ê‚é
+    CheckQXafsParams();   // dwell ãŒæœ€çŸ­æ™‚é–“ã«ã‚»ãƒƒãƒˆã•ã‚Œã‚‹
     ShowBLKs();
   }
 }
@@ -615,19 +624,19 @@ void MainWindow::NewRpt( void )
   ShowTotal();
 }
 
-void MainWindow::ShowTotal( void )  // ShowBlock ‚Ì’†‚©‚ç‚ÆA”½•œ‰ñ”•ÏX‚ÉŒÄ‚Î‚ê‚é
+void MainWindow::ShowTotal( void )  // ShowBlock ã®ä¸­ã‹ã‚‰ã¨ã€åå¾©å›æ•°å¤‰æ›´æ™‚ã«å‘¼ã°ã‚Œã‚‹
 {
   QString buf;
 
-  if ( ! QXafsMode->isChecked() ) {  // ’Êíƒ‚[ƒh
-    TP = 0;                     // ‘ª’è‚Ì‡Œv“_”‚ÆA’PƒÏZŠÔ‚ğ”‚¦‚é
+  if ( ! QXafsMode->isChecked() ) {  // é€šå¸¸ãƒ¢ãƒ¼ãƒ‰
+    TP = 0;                     // æ¸¬å®šã®åˆè¨ˆç‚¹æ•°ã¨ã€å˜ç´”ç©ç®—æ™‚é–“ã‚’æ•°ãˆã‚‹
     TT0 = 0;
     for ( int i = 0; i < Blocks; i++ ) {
       TP += BlockPoints[i];
       TT0 += BlockPoints[i] * BlockDwell[i];
     } 
 
-    double TT = TT0 + TP * 360. / 480.;    // Cu-Ka ‚Å 480“_‘ª’è‚É6•ª—]•ª‚É‚©‚©‚é?
+    double TT = TT0 + TP * 360. / 480.;    // Cu-Ka ã§ 480ç‚¹æ¸¬å®šã«6åˆ†ä½™åˆ†ã«ã‹ã‹ã‚‹?
     buf.sprintf( "%4d", TP * SelRPT->value() );
     TPoints->setText( tr( "Points: " ) + buf );
     TT *= SelRPT->value();
@@ -639,14 +648,14 @@ void MainWindow::ShowTotal( void )  // ShowBlock ‚Ì’†‚©‚ç‚ÆA”½•œ‰ñ”•ÏX‚ÉŒÄ‚
     int Ts = (int)TT;
     TT -= Ts;
     //  buf.sprintf( "%02d:%02d:%02d.%02d", Th, Tm, Ts, (int)(TT*100) );
-    buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // •bˆÈ‰º‚Ì¸“x‚Í•s—v
+    buf.sprintf( "%02d:%02d:%02d", Th, Tm, Ts );  // ç§’ä»¥ä¸‹ã®ç²¾åº¦ã¯ä¸è¦
     TTime->setText( tr( "Time: " ) + buf );
-  } else {    // QXAFS ƒ‚[ƒh
+  } else {    // QXAFS ãƒ¢ãƒ¼ãƒ‰
     //    SelRPT->value() * ( ( 
-    TP = BlockPoints[0];     // ‘ª’è‚Ì‡Œv“_”‚ÆA’PƒÏZŠÔ‚ğ”‚¦‚é
+    TP = BlockPoints[0];     // æ¸¬å®šã®åˆè¨ˆç‚¹æ•°ã¨ã€å˜ç´”ç©ç®—æ™‚é–“ã‚’æ•°ãˆã‚‹
     TT0 = BlockDwell[0];     //  
 
-    //    RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed ‚Ü‚Å‚Ì‰Á‘¬‚É‚©‚©‚éŠÔ
+    //    RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed ã¾ã§ã®åŠ é€Ÿã«ã‹ã‹ã‚‹æ™‚é–“
   }
 }
 
@@ -728,8 +737,8 @@ void MainWindow::SetDwells( void )
 
 void MainWindow::SelectedNDFN( const QString &fname )
 {
-  EditDFName->setText( fname );   // ‚±‚±‚Å‚Íƒtƒ@ƒCƒ‹–¼‚ğƒZƒbƒg‚·‚é‚¾‚¯B
-                                  // Start ‚É‘‚«o‚·B
+  EditDFName->setText( fname );   // ã“ã“ã§ã¯ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã ã‘ã€‚
+                                  // Start æ™‚ã«æ›¸ãå‡ºã™ã€‚
   OverWriteChecked = true;
   SelectedOrgName = fname;
 }
@@ -805,39 +814,39 @@ bool MainWindow::CheckDetectorSelection( void )
 {
   int NoOfSelectedSens = 0;
 
-  MeasFileType = EXTRA;    // À¿ AUX ƒ^ƒCƒv‚Í–³‚¢
+  MeasFileType = EXTRA;    // å®Ÿè³ª AUX ã‚¿ã‚¤ãƒ—ã¯ç„¡ã„
 
   if ( UseI1->isChecked() ) NoOfSelectedSens++;
   if ( Use19chSSD->isChecked() ) NoOfSelectedSens++;
   if ( UseAux1->isChecked() ) NoOfSelectedSens++;
   if ( UseAux2->isChecked() ) NoOfSelectedSens++;
 
-  if ( NoOfSelectedSens == 0 )  // I0 ˆÈŠO‚Éˆê‚Â‚ÍƒZƒ“ƒT‚ª‘I‚Î‚ê‚Ä‚¢‚È‚¯‚ê‚Îƒ_ƒ
+  if ( NoOfSelectedSens == 0 )  // I0 ä»¥å¤–ã«ä¸€ã¤ã¯ã‚»ãƒ³ã‚µãŒé¸ã°ã‚Œã¦ã„ãªã‘ã‚Œã°ãƒ€ãƒ¡
     return false;
 
-  if ( NoOfSelectedSens == 1 ) {  // ‘I‚Î‚ê‚½‚Ì‚ªˆêŒÂ‚¾‚¯‚Ìê‡Aƒ‚[ƒh‚ªŒˆ‚Ü‚é
+  if ( NoOfSelectedSens == 1 ) {  // é¸ã°ã‚ŒãŸã®ãŒä¸€å€‹ã ã‘ã®å ´åˆã€ãƒ¢ãƒ¼ãƒ‰ãŒæ±ºã¾ã‚‹
     if ( UseI1->isChecked() ) {
       AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
       if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
-	  ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
-	MeasFileType = TRANS;
-      }  // ‚»‚Ì‘¼‚Í EXTRA
+          ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
+        MeasFileType = TRANS;
+      }  // ãã®ä»–ã¯ EXTRA
     }
     if ( Use19chSSD->isChecked() ) {
       MeasFileType = FLUO;
     }
     if ( UseAux1->isChecked() ) {
       if ( MeasDispMode[ MC_AUX1 ] == TRANS ) {
-	MeasFileType = TRANS;
+        MeasFileType = TRANS;
       } else {
-	MeasFileType = EXTRA;
+        MeasFileType = EXTRA;
       }
     }
     if ( UseAux2->isChecked() ) {
       if ( MeasDispMode[ MC_AUX2 ] == TRANS ) {
-	MeasFileType = TRANS;
+        MeasFileType = TRANS;
       } else {
-	MeasFileType = EXTRA;
+        MeasFileType = EXTRA;
       }
     }
   }
@@ -845,126 +854,225 @@ bool MainWindow::CheckDetectorSelection( void )
   return true;
 }
 
+void MainWindow::AutoMeasurement( void )
+{
+  MeasA = 0;
+  AutoModeFirst = true;   // é€šå¸¸/AutoMode ã«ã‹ã‹ã‚ã‚‰ãš 1 å›ç›®ã®æ¸¬å®šãƒ•ãƒ©ã‚°ã¯ç«‹ã¦ã¦ãŠã
+                          // ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸Šæ›¸ããƒã‚§ãƒƒã‚¯ã‚’åˆ¶å¾¡ã™ã‚‹ãŸã‚
+  if ( AutoModeButton->isChecked() ) {
+    if ( ! ParseAutoMode() ) {
+      statusbar->showMessage( tr( "Auto mode parameters are illigal."),
+                              2000 );
+      return;
+    }
+    if ( AutoModeParams.count() == 0 ) {
+      statusbar->showMessage( tr( "Auto mode parameters are not set."),
+                              2000 );
+      return;
+    }
+    // In automode, a user should choose "Use Measured" to prevent stopping.
+    if ( MeasBackBeforeMeas->isChecked() ) {
+      statusbar->showMessage( tr( "Please choose \"Use Measured\""),
+                              2000 );
+      return;
+    }
+    // AutoMode->setDisabled( true );  // Now, there is no need to set it to be disabled
+    MeasA = 0;
+    // AutoModeParams.remove( 0 );
+    moveToTarget( AutoModeParams[ MeasA ].num,
+                  AutoModeParams[ MeasA ].dx,
+                  AutoModeParams[ MeasA ].dz );
+  }
+  StartMeasurement();
+}
+
+void MainWindow::AutoSequence( void )
+{
+  AutoModeFirst = false;
+
+  //  qDebug() << "AutoSequence";
+  //  qDebug() << "MeasA" << MeasA
+  //           << "AutoModeParams.count()" << AutoModeParams.count();
+
+  if ( ( MeasA + 1 ) >=  AutoModeParams.count() ) {
+    ChangerX->SetValue( 0 );
+    ChangerZ->SetValue( 0 );
+    disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+                this, SLOT( AutoSequence() ) );
+  } else if ( !(MMainTh->isBusy()) ) {
+    MeasA++;
+    disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+                this, SLOT( AutoSequence() ) );
+    moveToTarget( AutoModeParams[ MeasA ].num,
+                  AutoModeParams[ MeasA].dx,
+                  AutoModeParams[ MeasA ].dz );
+    StartMeasurement();
+  }
+}
+
+#define ChangerXSpacing  ( 50.0 )        // mm
+#define ChangerZSpacing  ( 45.0 )        // mm
+
+void MainWindow::SetNewChangerCenter( void )
+{
+  int target = SelectChangerBase->value();
+  int ix = ( target - 1 ) % 3 - 1;    // -1, 0, 1
+  int iz = ( target - 1 ) / 3 - 1;    // -1, 0, 1
+  int nowx = ChangerX->value().toInt();
+  int nowz = ChangerZ->value().toInt();
+  ChangerX->setCenter( nowx - ix * ChangerXSpacing / ChangerX->getUPP() );
+  ChangerZ->setCenter( nowz - iz * ChangerZSpacing / ChangerZ->getUPP() );
+}
+
+void MainWindow::moveToTarget( int target, double dx, double dz )
+{
+  qDebug() << "target" << "dx" << "dz";
+  qDebug() << target << dx << dz;
+  MovingToNewSamplePosition = true;   // ã“ã®ãƒ•ãƒ©ã‚°ã§ç§»å‹•ä¸­ã®æ¸¬å®šã‚’ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹
+  int ix = ( target - 1 ) % 3 - 1;    // -1, 0, 1
+  int iz = ( target - 1 ) / 3 - 1;    // -1, 0, 1
+  int targetx = ChangerX->u2p( ChangerXSpacing * ix * -1 ) + dx / ChangerX->getUPP();
+  int targetz = ChangerZ->u2p( ChangerZSpacing * iz * -1 ) + dz / ChangerZ->getUPP();
+  DFName00 = QString("_%1").arg( MeasA );
+  AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" ).arg( target ).arg( dx ).arg( dz );
+  ChangerX->SetValue( targetx );
+  ChangerZ->SetValue( targetz );
+}
+
 void MainWindow::StartMeasurement( void )
 {
-  // E‘ª’è‘ÎÛ‚ÌŒŸoŠí
-  // E•\¦‚³‚ê‚é‚à‚Ì
-  // Eƒtƒ@ƒCƒ‹‚É‹L˜^‚·‚é‚à‚Ì
-  // ‚Æ‚¢‚¤ 3 ‚Â‚Ì—‚Ä‚é‚¯‚Çˆá‚¤‚à‚Ì‚ª‚ ‚é
-  // —á‚¦‚ÎAI0 ‚Æ 19ch-SSD ‚Å‘ª’è‚·‚éê‡
-  // E‘ª’è‘ÎÛ‚ÌŒŸoŠí       : I0, SFluo (19ch ‚ğ‘©‚Ë‚½ŒŸoŠí)  : mUnits ‚ÅŠÇ—
-  // E•\¦‚·‚é‚à‚Ì           : I0, Total (19ch ‚Ì‡Œv), Šeƒ`ƒƒƒ“ƒlƒ‹(19ŒÂ)
-  //                 Œ³ƒlƒ^‚É‚È‚éƒf[ƒ^‚»‚Ì‚à‚Ì‚Í mUnits ‚ÅŠÇ—‚³‚ê‚Ä‚é
-  //                 SFluo ‚ª‰½”Ô–Ú‚É—ˆ‚é‚©‚¾‚¯‹L˜^‚µ‚Ä‚¨‚¯‚ÎŒã‚ÍA
-  //                 ‚¿‚å‚Á‚Æ‚µ‚½—áŠOˆ—‚Å‚È‚ñ‚Æ‚©‚È‚è‚»‚¤‚È‹C‚ª‚·‚é
-  // Eƒtƒ@ƒCƒ‹‚É‹L˜^‚·‚é‚à‚Ì : I0, Šeƒ`ƒƒƒ“ƒlƒ‹(19ŒÂ)
-  //                 Œ³ƒlƒ^‚É‚È‚éƒf[ƒ^‚»‚Ì‚à‚Ì‚Í mUnits ‚ÅŠÇ—‚³‚ê‚Ä‚é
-  //                 mUnits ‚ğ—¬—p‚µ SFluo ‚ğ 19 ƒ`ƒƒƒ“ƒlƒ‹‚É“WŠJ‚·‚é‚±‚Æ‚Å‘Î‰‚Å‚«‚Ä‚é
+  // ãƒ»æ¸¬å®šå¯¾è±¡ã®æ¤œå‡ºå™¨
+  // ãƒ»è¡¨ç¤ºã•ã‚Œã‚‹ã‚‚ã®
+  // ãƒ»ãƒ•ã‚¡ã‚¤ãƒ«ã«è¨˜éŒ²ã™ã‚‹ã‚‚ã®
+  // ã¨ã„ã† 3 ã¤ã®ä¼¼ã¦ã‚‹ã‘ã©é•ã†ã‚‚ã®ãŒã‚ã‚‹F
+  // ä¾‹ãˆã°ã€I0 ã¨ 19ch-SSD ã§æ¸¬å®šã™ã‚‹å ´åˆ
+  // ãƒ»æ¸¬å®šå¯¾è±¡ã®æ¤œå‡ºå™¨       : I0, SFluo (19ch ã‚’æŸã­ãŸæ¤œå‡ºå™¨)  : mUnits ã§ç®¡ç†
+  // ãƒ»è¡¨ç¤ºã™ã‚‹ã‚‚ã®           : I0, Total (19ch ã®åˆè¨ˆ), å„ãƒãƒ£ãƒ³ãƒãƒ«(19å€‹)
+  //                 å…ƒãƒã‚¿ã«ãªã‚‹ãƒ‡ãƒ¼ã‚¿ãã®ã‚‚ã®ã¯ mUnits ã§ç®¡ç†ã•ã‚Œã¦ã‚‹
+  //                 SFluo ãŒä½•ç•ªç›®ã«æ¥ã‚‹ã‹ã ã‘è¨˜éŒ²ã—ã¦ãŠã‘ã°å¾Œã¯ã€
+  //                 ã¡ã‚‡ã£ã¨ã—ãŸä¾‹å¤–å‡¦ç†ã§ãªã‚“ã¨ã‹ãªã‚Šãã†ãªæ°—ãŒã™ã‚‹
+  // ãƒ»ãƒ•ã‚¡ã‚¤ãƒ«ã«è¨˜éŒ²ã™ã‚‹ã‚‚ã® : I0, å„ãƒãƒ£ãƒ³ãƒãƒ«(19å€‹)
+  //                 å…ƒãƒã‚¿ã«ãªã‚‹ãƒ‡ãƒ¼ã‚¿ãã®ã‚‚ã®ã¯ mUnits ã§ç®¡ç†ã•ã‚Œã¦ã‚‹
+  //                 mUnits ã‚’æµç”¨ã— SFluo ã‚’ 19 ãƒãƒ£ãƒ³ãƒãƒ«ã«å±•é–‹ã™ã‚‹ã“ã¨ã§å¯¾å¿œã§ãã¦ã‚‹
   // 
   AUnit *as;
 
-  EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
-  SFluoLine = -1;
-  isSFluo = isSI1 = false;
+  // å°†æ¥ã®å¤‰æ›´
+  // ãƒãƒ¼ãƒãƒ« XAFS ã®æ™‚ã€ä½¿ç”¨ã™ã‚‹æ¤œå‡ºå™¨ã«ã¯ ãƒãƒ¼ãƒãƒ« XAFS OK ã®ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã‚‹ã‚‚ã®
+  // ã ã‘ãŒé¸ã¹ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
 
-  // «—ˆ‚Ì•ÏX
-  // ƒm[ƒ}ƒ‹ XAFS ‚ÌAg—p‚·‚éŒŸoŠí‚É‚Í ƒm[ƒ}ƒ‹ XAFS OK ‚Ìƒtƒ‰ƒO‚ª—§‚Á‚Ä‚é‚à‚Ì
-  // ‚¾‚¯‚ª‘I‚×‚é‚æ‚¤‚É‚·‚éB
+  if ( inMeas == 0 ) {           // æ—¢ã«æ¸¬å®šãŒé€²è¡Œä¸­ã§ãªã‘ã‚Œã°
+    EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
+    SFluoLine = -1;
+    isSFluo = isSI1 = false;
 
-  if ( inMeas == 0 ) {           // Šù‚É‘ª’è‚ªis’†‚Å‚È‚¯‚ê‚Î
-    if ( MMainTh->isBusy() ) {   // •ªŒõŠí‚ª‰ñ‚Á‚Ä‚½‚çƒ_ƒ
+    if ( MMainTh->isBusy() ) {   // åˆ†å…‰å™¨ãŒå›ã£ã¦ãŸã‚‰ãƒ€ãƒ¡
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
     }
-    if ( ! MMainTh->isEnable() ) {   // •ªŒõŠí‚Ì§ŒäŒn‚ªŒq‚ª‚Á‚Ä‚È‚©‚Á‚½‚çƒ_ƒ
+    if ( ! MMainTh->isEnable() ) {   // åˆ†å…‰å™¨ã®åˆ¶å¾¡ç³»ãŒç¹‹ãŒã£ã¦ãªã‹ã£ãŸã‚‰ãƒ€ãƒ¡
       statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
 			      .arg( MMainTh->getName() ), 2000 );
     }
-    if ( ! CheckBlockRange() ) {  // ƒuƒƒbƒNw’è‚ÌƒGƒlƒ‹ƒM[ƒŒƒ“ƒW‚ª”ÍˆÍŠO‚¾‚Á‚½‚çƒ_ƒ
+    if ( ! CheckBlockRange() ) {  // ãƒ–ãƒ­ãƒƒã‚¯æŒ‡å®šã®ã‚¨ãƒãƒ«ã‚®ãƒ¼ãƒ¬ãƒ³ã‚¸ãŒç¯„å›²å¤–ã ã£ãŸã‚‰ãƒ€ãƒ¡
       statusbar->showMessage( "The block parameter is out of range.", 2000 );
       return;
     }
-    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // ‘ª’è“_”“™ƒuƒƒbƒNw’è‚ª‚¨‚©‚µ‚©‚Á‚½‚çƒ_ƒ
+    if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // æ¸¬å®šç‚¹æ•°ç­‰ãƒ–ãƒ­ãƒƒã‚¯æŒ‡å®šãŒãŠã‹ã—ã‹ã£ãŸã‚‰ãƒ€ãƒ¡
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
-    if ( GetDFName0() == 0 ) {  // ƒf[ƒ^ƒtƒ@ƒCƒ‹‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚çƒ_ƒ
+    if ( GetDFName0() == 0 ) {  // ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ãŒé¸æŠã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ãƒ€ãƒ¡
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
     }
-    if ( CheckDetectorSelection() == false ) { // I0 ˆÈŠO‚Éˆê‚Â‚Í‘I‚Î‚ê‚Ä‚È‚¢‚Æƒ_ƒ
+    if ( CheckDetectorSelection() == false ) { // I0 ä»¥å¤–ã«ä¸€ã¤ã¯é¸ã°ã‚Œã¦ãªã„ã¨ãƒ€ãƒ¡
       statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
-    if ( Use19chSSD->isChecked() ) {   // 19ch g‚¤‚Æ‚«‚Í MCA ‚Ì‘ª’è’†‚Íƒ_ƒ
+    if ( Use19chSSD->isChecked() ) {   // 19ch ä½¿ã†ã¨ãã¯ MCA ã®æ¸¬å®šä¸­ã¯ãƒ€ãƒ¡
       if ( inMCAMeas ) {
-	QString msg = tr( "Meas cannot Start : in MCA measurement" );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
+        QString msg = tr( "Meas cannot Start : in MCA measurement" );
+        statusbar->showMessage( msg, 2000 );
+        NewLogMsg( msg );
+        return;
       }
     }
 
-    if ( QXafsMode->isChecked() ) {     // QXafs ƒ‚[ƒh‚Ì‚Ì’Ç‰Áƒ`ƒFƒbƒN
-      if ( BlockPoints[0] > 9990 ) {    // ‘ª’è“_”‚ª 9990 ‚ğ’´‚¦‚Ä‚½‚çƒ_ƒ
-	statusbar->showMessage( tr( "Measured points are too many.  "
-			    "It should be less than 9990 in QXAFS mode." ), 2000 );
-	return;
+    if ( QXafsMode->isChecked() ) {     // QXafs ãƒ¢ãƒ¼ãƒ‰ã®æ™‚ã®è¿½åŠ ãƒã‚§ãƒƒã‚¯
+      if ( BlockPoints[0] > 9990 ) {    // æ¸¬å®šç‚¹æ•°ãŒ 9990 ã‚’è¶…ãˆã¦ãŸã‚‰ãƒ€ãƒ¡
+        statusbar->showMessage( tr( "Measured points are too many.  "
+                                    "It should be less than 9990 in QXAFS mode." ),
+                                2000 );
+        return;
       }
-      if ( ! UseI1->isChecked() ) {     // ¡ QXafs ‚Í“§‰ßê—p‚È‚Ì‚ÅAI1 ‚Í•K{
-	statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
-	return;
+      if ( ! UseI1->isChecked() ) {     // ä»Š QXafs ã¯é€éå°‚ç”¨ãªã®ã§ã€I1 ã¯å¿…é ˆ
+        statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
+        return;
       }
-      if ( Use19chSSD->isChecked() ) {     // ¡ QXafs ‚Í“§‰ßê—p‚È‚Ì‚ÅASSD‚Íg‚¦‚È‚¢
-	statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
-	return;
+      if ( Use19chSSD->isChecked() ) {     // ä»Š QXafs ã¯é€éå°‚ç”¨ãªã®ã§ã€SSDã¯ä½¿ãˆãªã„
+        statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
+        return;
       }
 #if 0
       if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
-	// ¡ QXafs ‚Å AUX ‚Íg‚¦‚È‚¢
-	statusbar
-	  ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
+        // ä»Š QXafs ã§ AUX ã¯ä½¿ãˆãªã„
+        statusbar
+            ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
       }
-      // ‚±‚ê‚Í«—ˆ•Ï‚¦‚é uQ mode ‰Â”\v‚Æ‚¢‚¤ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚ê‚Î OK‚É‚·‚é
+      // ã“ã‚Œã¯å°†æ¥å¤‰ãˆã‚‹ ã€ŒQ mode å¯èƒ½ã€ã¨ã„ã†ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã‚Œã° OKã«ã™ã‚‹
       if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
-	statusbar
-	  ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
-	return;
+        statusbar
+            ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
+        return;
       }
-      // ‚±‚ê‚Í«—ˆ•Ï‚¦‚é uQ mode ‰Â”\v‚Æ‚¢‚¤ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚ê‚Î OK‚É‚·‚é
+      // ã“ã‚Œã¯å°†æ¥å¤‰ãˆã‚‹ ã€ŒQ mode å¯èƒ½ã€ã¨ã„ã†ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã‚Œã° OKã«ã™ã‚‹
       if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
-	statusbar
-	  ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
-	return;
+        statusbar
+            ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
+        return;
       }
 #endif
-    } else {   // Normal ƒ‚[ƒhê—p‚Ìƒ`ƒFƒbƒN
+
+#if 0   // å¤šåˆ†ä¸è¦ (QXAFS ã¨ AutoMode ã¯ä¸¡ç«‹ã™ã‚‹ã¯ãš)
+    } else if ( AutoModeButton->isChecked() ) { // Auto mode
+      if ( QXafsMode->isChecked() ) {
+        statusbar->showMessage( tr( "Auto mode cannot be used with QXAFS mode" ),
+                                2000 );
+        return;
+      }
+#endif
+
+    } else {   // Normal ãƒ¢ãƒ¼ãƒ‰æ™‚å°‚ç”¨ã®ãƒã‚§ãƒƒã‚¯
       int TotalPoints = 0;
       for ( int i = 0; i < Blocks; i++ ) {
-	TotalPoints += BlockPoints[i];
-      } 
+        TotalPoints += BlockPoints[i];
+      }
       if ( TotalPoints > 1999 ) {
-	statusbar
-	  ->showMessage( tr( "Measured points are too many.    "
-			     "It should be less than 2000 in normal XAFS mode." ) );
-	return;
-      }	
+        statusbar->showMessage( tr( "Measured points are too many.    "
+                                "It should be less than 2000 in normal XAFS mode." ) );
+        return;
+      }
     }
 
-    // ‚±‚Ì‰º‚Ì”X”X”X”X”X”X”X”X”X”X”X”X‚Ìİ’è‚ª
-    // QXAFS ‚Ì‚à•K—v‚©‚Ç‚¤‚©A‹t‚É QXAFS ‚É•K—v‚Èİ’è‚ª‘S•”‚Å‚«‚Ä‚é‚©‚Í
-    // —vŠm”F
+    // ã“ã®ä¸‹ã®è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…è«¸ã€…ã®è¨­å®šãŒ
+    // QXAFS ã®æ™‚ã‚‚å¿…è¦ã‹ã©ã†ã‹ã€é€†ã« QXAFS ã«å¿…è¦ãªè¨­å®šãŒå…¨éƒ¨ã§ãã¦ã‚‹ã‹ã¯
+    // è¦ç¢ºèª
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
-    int LC = 0;    // mUnits ‚É“o˜^‚·‚éƒ†ƒjƒbƒg‚É‘Î‰‚µ‚½ƒJƒEƒ“ƒg
-    //    int DLC = 0;   // •\¦‚·‚éƒ‰ƒCƒ“‚É‘Î‰‚µ‚½ƒJƒEƒ“ƒg
+    int LC = 0;    // mUnits ã«ç™»éŒ²ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾å¿œã—ãŸã‚«ã‚¦ãƒ³ãƒˆ
+    //    int DLC = 0;   // è¡¨ç¤ºã™ã‚‹ãƒ©ã‚¤ãƒ³ã«å¯¾å¿œã—ãŸã‚«ã‚¦ãƒ³ãƒˆ
     mUnits.clearUnits();
-    clearGSBs();              // ƒ{ƒ^ƒ“‚Ì•\¦‚ğƒNƒŠƒA
+    clearGSBs();              // ãƒœã‚¿ãƒ³ã®è¡¨ç¤ºã‚’ã‚¯ãƒªã‚¢
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
-    MeasDispMode[ LC ] = I0;        // I0 ‚Éƒ‚[ƒh‚Í‚È‚¢‚Ì‚Åƒ_ƒ~[
+    SvSelRealTime = SelRealTime->isChecked();
+    SvSelLiveTime = SelLiveTime->isChecked();
+    SvSelExtPattern = SelExtPattern->isChecked();
+
+    MeasDispMode[ LC ] = I0;        // I0 ã«ãƒ¢ãƒ¼ãƒ‰ã¯ãªã„ã®ã§ãƒ€ãƒŸãƒ¼
     MeasDispPol[ LC ] = 1;          // polarity +
     mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
@@ -972,7 +1080,7 @@ void MainWindow::StartMeasurement( void )
     qDebug() << "Munits :: add I0";
 
     if ( UseI1->isChecked() ) {
-      MeasDispMode[ LC ] = TRANS;     // I1 ‚Í TRANS ‚ÉŒÅ’è
+      MeasDispMode[ LC ] = TRANS;     // I1 ã¯ TRANS ã«å›ºå®š
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
       qDebug() << "Munits :: add I1";
@@ -982,7 +1090,7 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBTrue;  aGsb.label = tr( "mu" ); GSBSs << aGsb;
     }
     if ( Use19chSSD->isChecked() ) {
-      MeasDispMode[ LC ] = FLUO;      // SSD ‚Í FLUO ‚ÉŒÅ’è
+      MeasDispMode[ LC ] = FLUO;      // SSD ã¯ FLUO ã«å›ºå®š
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( SFluo );
       LC++;
@@ -990,9 +1098,11 @@ void MainWindow::StartMeasurement( void )
       SFluoLine = GSBSs.count();
       aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
       for ( int i = 0; i < MaxSSDs; i++ ) {
-	aGsb.stat = PBFalse; aGsb.label = QString::number( i ); GSBSs << aGsb;
+        aGsb.stat = PBFalse;
+        aGsb.label = QString::number( i );
+        GSBSs << aGsb;
       }
-      SFluo->setSSDPresetType( "REAL" );   // SSD ‚ğg‚Á‚½ XAFS ‘ª’è‚Í‹­§“I‚É Real Time
+      SFluo->setSSDPresetType( "REAL" );   // SSD ã‚’ä½¿ã£ãŸ XAFS æ¸¬å®šã¯å¼·åˆ¶çš„ã« Real Time
       SelRealTime->setChecked( true );
       SelLiveTime->setChecked( false );
     }
@@ -1012,62 +1122,64 @@ void MainWindow::StartMeasurement( void )
     }
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL ) {
-	mUnits.addUnit( Enc2 );
-	qDebug() << "Munits :: add enc2";
+        mUnits.addUnit( Enc2 );
+        qDebug() << "Munits :: add enc2";
       }
       mUnits.setOneByOne( false );
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
       as = mUnits.at(i);
-      if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs ƒ‚[ƒh‚Åg‚¦‚é‚©‚Ç‚¤‚©
-	QString msg;
-	if ( QXafsMode->isChecked() ) {
-	  msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
-	} else {
-	  msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
-	    .arg( as->getName() );
-	}
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
+      if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs ãƒ¢ãƒ¼ãƒ‰ã§ä½¿ãˆã‚‹ã‹ã©ã†ã‹
+        QString msg;
+        if ( QXafsMode->isChecked() ) {
+          msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
+        } else {
+          msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
+              .arg( as->getName() );
+        }
+        statusbar->showMessage( msg, 2000 );
+        NewLogMsg( msg );
+        return;
       }
 
-      if ( ! as->isEnable() ) { // w’è‚³‚ê‚½ƒZƒ“ƒT[‚ª Stars Œo—R‚Å¶‚«‚Ä‚¢‚È‚¢‚Æƒ_ƒ
-	QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
+      if ( ! as->isEnable() ) { // æŒ‡å®šã•ã‚ŒãŸã‚»ãƒ³ã‚µãƒ¼ãŒ Stars çµŒç”±ã§ç”Ÿãã¦ã„ãªã„ã¨ãƒ€ãƒ¡
+        QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
+        statusbar->showMessage( msg, 2000 );
+        NewLogMsg( msg );
+        return;
       }
       if ( as->isRangeSelectable() ) {
-	if ( ! as->isAutoRange() ) {
-	  OneOfSensIsRangeSelectable = true;
-	  theNames += " [" + as->getName() + "]";
-	}
+        if ( ! as->isAutoRange() ) {
+          OneOfSensIsRangeSelectable = true;
+          theNames += " [" + as->getName() + "]";
+        }
       }
     }
 
-    // CNT2, OTC2 ‚ÍƒJƒEƒ“ƒ^‚ÌŒü‚±‚¤‚É Keithley ‚ªŒq‚ª‚Á‚Ä‚éB
-    // CNT2, OTC2 ‚Å‚Í Keithley ‚ğƒŒƒ“ƒWŒÅ’è‚ÅA’¼Ú‚Å‚ÍƒI[ƒgƒŒƒ“ƒW‚Åg‚¤‚Ì‚Å
-    // —¼•û‚ğ“¯‚É‚Í‘ª’è‚Ég‚¦‚È‚¢
+    // CNT2, OTC2 ã¯ã‚«ã‚¦ãƒ³ã‚¿ã®å‘ã“ã†ã« Keithley ãŒç¹‹ãŒã£ã¦ã‚‹ã€‚
+    // CNT2, OTC2 ã§ã¯ Keithley ã‚’ãƒ¬ãƒ³ã‚¸å›ºå®šã§ã€ç›´æ¥ã§ã¯ã‚ªãƒ¼ãƒˆãƒ¬ãƒ³ã‚¸ã§ä½¿ã†ã®ã§
+    // ä¸¡æ–¹ã‚’åŒæ™‚ã«ã¯æ¸¬å®šã«ä½¿ãˆãªã„
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if (( mUnits.at(i)->getType() == "CNT2" )||( mUnits.at(i)->getType() == "OTC2" )) {
-	for ( int j = 0; j < mUnits.count(); j++ ) {
-	  if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
-	    QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
-	      .arg( mUnits.at(i)->getName() )
-	      .arg( mUnits.at(j)->getName() );
-	    statusbar->showMessage( msg, 2000 );
-	    NewLogMsg( msg );
-	    return;
-	  }
-	}
+        for ( int j = 0; j < mUnits.count(); j++ ) {
+          if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
+            QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
+                .arg( mUnits.at(i)->getName() )
+                .arg( mUnits.at(j)->getName() );
+            statusbar->showMessage( msg, 2000 );
+            NewLogMsg( msg );
+            return;
+          }
+        }
       }
     }
 
+    MakingSureOfRangeSelect = false;
+
 #if 0
-    if ( OneOfSensIsRangeSelectable ) { // ƒŒƒ“ƒWİ’è‚ª•K—v‚ÈƒZƒ“ƒT‚ª‘I‚Î‚ê‚Ä‚¢‚½‚ç
-                                        // İ’èÏ‚İ‚©‚Ç‚¤‚©Šm”F‚·‚é (‘ª’èŠJn‚ğƒuƒƒbƒN)
+    if ( OneOfSensIsRangeSelectable ) { // ãƒ¬ãƒ³ã‚¸è¨­å®šãŒå¿…è¦ãªã‚»ãƒ³ã‚µãŒé¸ã°ã‚Œã¦ã„ãŸã‚‰
+                                        // è¨­å®šæ¸ˆã¿ã‹ã©ã†ã‹ç¢ºèªã™ã‚‹ (æ¸¬å®šé–‹å§‹ã‚’ãƒ–ãƒ­ãƒƒã‚¯)
       MakeSureOfRangeSelect
 	->setText( tr( "The Sensor(s)%1 should be range selected.\n"
 		       "Have you selected the range in 'Setup Condition'" )
@@ -1079,13 +1191,14 @@ void MainWindow::StartMeasurement( void )
     }
 #endif
 
-    if ( MeasBackBeforeMeas->isChecked() ) {// ‘ª’è‘O‚ÉƒoƒbƒNƒOƒ‰ƒEƒ“ƒh‘ª’èw’è‚ª‚ ‚Á‚½
-      if ( ! MeasureDark() )                // ³í‚É‘ª‚ê‚È‚¯‚ê‚Î‚¾‚ß
-	return;
+
+    if ( MeasBackBeforeMeas->isChecked() ) {// æ¸¬å®šå‰ã«ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰æ¸¬å®šæŒ‡å®šãŒã‚ã£ãŸ
+      if ( ! MeasureDark() )                // æ­£å¸¸ã«æ¸¬ã‚Œãªã‘ã‚Œã°ã ã‚
+        return;
     }
 
     if ( ( MeasViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
-      // ƒOƒ‰ƒt•\¦—Ìˆæ‚ªŠm•Û‚Å‚«‚È‚¢‚Æƒ_ƒ
+      // ã‚°ãƒ©ãƒ•è¡¨ç¤ºé ˜åŸŸãŒç¢ºä¿ã§ããªã„ã¨ãƒ€ãƒ¡
       return;
     }
     if ( QXafsMode->isChecked() )
@@ -1107,30 +1220,31 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
-    BaseFile = QFileInfo( DFName0 + ".dat" );  // •K—v‚È‚ç‘ª’èƒtƒ@ƒCƒ‹‚Ìã‘‚«Šm”F
-    if ( ! OverWriteChecked && BaseFile.exists() ) {
-      AskOverWrite
-	->setText( tr( "File [%1] Over Write ?" )
-			     .arg( DFName0 + ".dat" ) );
-      AskOverWrite->show();
-      AskingOverwrite = true;
-    } else {
-      AskingOverwrite = false;
+    if ( AutoModeFirst ) {  // AutoMode: off ã‹ AutoMode ã® 1å›ç›®ã« true
+      BaseFile = QFileInfo( DFName0 + ".dat" );  // å¿…è¦ãªã‚‰æ¸¬å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸Šæ›¸ãç¢ºèª
+      if ( ! OverWriteChecked && BaseFile.exists() ) {
+        AskOverWrite->setText( tr( "File [%1] Over Write ?" )
+                               .arg( DFName0 + ".dat" ) );
+        AskOverWrite->show();
+        AskingOverwrite = true;  // ã“ã“ã§å‡ºã—ãŸç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ã‚¯ãƒ­ãƒ¼ã‚ºã™ã‚‹ã¨ãã«ã‚¯ãƒªã‚¢
+      } else {
+        AskingOverwrite = false;
+      }
     }
 
     NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
-	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
-	       .arg( SelectedCurPosDeg( XPM ) ) );
-    InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // –ß‚éêŠ‚ÍƒpƒXƒ‚[ƒ^‚ÌŒ»İˆÊ’u
+               .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
+               .arg( SelectedCurPosDeg( XENC ) )
+               .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
+               .arg( SelectedCurPosDeg( XPM ) ) );
+    InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // æˆ»ã‚‹å ´æ‰€ã¯ãƒ‘ã‚¹ãƒ¢ãƒ¼ã‚¿ã®ç¾åœ¨ä½ç½®
     inMeas = 1;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
     
-    MeasChNo = mUnits.count();         // ‘ª’è‚Ìƒ`ƒƒƒ“ƒlƒ‹”
-    // 19ch SSD ‚ğg‚¤ê‡Aã‚Å‚Í 1‚Â‚Æ”‚¦‚Ä‚¢‚é‚Ì‚Å 18 ’Ç‰Á
+    MeasChNo = mUnits.count();         // æ¸¬å®šã®ãƒãƒ£ãƒ³ãƒãƒ«æ•°
+    // 19ch SSD ã‚’ä½¿ã†å ´åˆã€ä¸Šã§ã¯ 1ã¤ã¨æ•°ãˆã¦ã„ã‚‹ã®ã§ 18 è¿½åŠ 
     if ( Use19chSSD->isChecked() ) {
       MeasChNo += ( MaxSSDs -1 );
     }
@@ -1147,8 +1261,8 @@ void MainWindow::StartMeasurement( void )
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()
-			  .addSecs( EstimatedMeasurementTimeInSec )
-			  .toString("yy.MM.dd hh:mm:ss") );
+                          .addSecs( EstimatedMeasurementTimeInSec )
+                          .toString("yy.MM.dd hh:mm:ss") );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
@@ -1157,10 +1271,10 @@ void MainWindow::StartMeasurement( void )
     StopP->show();
     SinPause = inPause;
     NewLogMsg( tr( "Meas: Break %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
-	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
-	       .arg( SelectedCurPosDeg( XENC ) )
-	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
-	       .arg( SelectedCurPosDeg( XPM ) ) );
+               .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
+               .arg( SelectedCurPosDeg( XENC ) )
+               .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
+               .arg( SelectedCurPosDeg( XPM ) ) );
     inPause = 1;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( InActive );
@@ -1169,7 +1283,7 @@ void MainWindow::StartMeasurement( void )
   }
 }
 
-// Ok ƒŠƒXƒg‚É–¼‘O‚ª‚ ‚é‚©  // “¯‚¶ŠÖ”‚ª MultiUnit ‚É‚à‚ ‚é !
+// Ok ãƒªã‚¹ãƒˆã«åå‰ãŒã‚ã‚‹ã‹  // åŒã˜é–¢æ•°ãŒ MultiUnit ã«ã‚‚ã‚ã‚‹ !
 bool MainWindow::CheckOkList( AUnit *as, QStringList OkList )
 {
   int j;
@@ -1177,13 +1291,13 @@ bool MainWindow::CheckOkList( AUnit *as, QStringList OkList )
     if ( as->getType() == OkList[j] )
       break;
   }
-  if ( j >= OkList.count() ) { // w’è‚³‚ê‚½ƒZƒ“ƒT[ type ‚ÍƒŠƒXƒg‚É‚È‚¢
+  if ( j >= OkList.count() ) { // æŒ‡å®šã•ã‚ŒãŸã‚»ãƒ³ã‚µãƒ¼ type ã¯ãƒªã‚¹ãƒˆã«ãªã„
     return false;
   }
   return true;
 }
 
-// Œ»İ‚Ìƒ‚[ƒh ( QXafs or NXafs ) ‚Åg‚¦‚é‚©
+// ç¾åœ¨ã®ãƒ¢ãƒ¼ãƒ‰ ( QXafs or NXafs ) ã§ä½¿ãˆã‚‹ã‹
 bool MainWindow::theSensorIsAvailable( AUnit *as )
 {
   if ( QXafsMode->isChecked() ) {
@@ -1191,11 +1305,14 @@ bool MainWindow::theSensorIsAvailable( AUnit *as )
   } else {
     return CheckOkList( as, NXafsOk );
   }
-  return true;  // ‚±‚±‚É—ˆ‚é‚±‚Æ‚Í–³‚¢
+  return true;  // ã“ã“ã«æ¥ã‚‹ã“ã¨ã¯ç„¡ã„
 }
 
 void MainWindow::SurelyStop( void )
 {
+  // the MeasA counter for auto mode is set to the last one.
+  // If the measurement is stopped, ALL measurements will be skipped.
+  MeasA = AutoModeParams.count();
   if ( inMeasDark ) {
     MeasDarkTimer->stop();
     inMeasDark = false;
@@ -1207,7 +1324,7 @@ void MainWindow::SurelyStop( void )
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	     .arg( SelectedCurPosDeg( XENC ) )
-	     .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
+       .arg( u->deg2keV( SelectedCurPosDeg( XPM ) ) )
 	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
@@ -1218,6 +1335,8 @@ void MainWindow::SurelyStop( void )
   inPause = 0;
   MeasPause->setText( tr( "Pause" ) );
   MeasPause->setStyleSheet( NormalB );
+  if ( QXafsMode->isChecked() )
+    QXafsFinish0();
   onMeasFinishWorks();
 }
 
@@ -1261,6 +1380,13 @@ bool MainWindow::CheckBlockRange( void )
   for ( int i = 0; i <= Blocks; i++ ) {
     if (( u->keV2any( EV, BlockStart[i] ) < MinEnergyInEV )
 	||( u->keV2any( EV, BlockStart[i] ) > MaxEnergyInEV )) {
+
+    statusbar
+      ->showMessage( tr( "The block definitin [%1]eV is out of range. [%2]-[%3]eV" )
+		     .arg( u->keV2any( EV, BlockStart[i]) )
+		     .arg( MinEnergyInEV )
+		     .arg( MaxEnergyInEV ), 2000 );
+
       return false;
     }
   }
@@ -1300,3 +1426,94 @@ void MainWindow::RangeSelOK( void )
   MakingSureOfRangeSelect = false;
 }
 
+
+void MainWindow::ShowItemsForAutoMode( void )
+{
+  ParseAutoMode();
+  ItemsForAutoMode->setText( QString::number( AutoModeParams.count() ) );
+}
+
+bool MainWindow::ParseAutoMode( void )
+{
+  AutoModeParams.clear();
+
+  QStringList options;
+  QString pLine = AutoMode->text();
+
+  // "*" ã¯ç‰¹åˆ¥ãªæ„å‘³ã‚’æŒãŸã›ã‚‹ã®ã§å…ƒã®è¨˜å·åˆ—ã«å«ã¾ã‚Œã¦ã„ãŸã‚‰ã‚¨ãƒ©ãƒ¼
+  if ( pLine.indexOf( "*" ) >= 0 )
+    return false;
+  // ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åˆ—ã«å«ã¾ã‚Œã‚‹ "(", ")" ãƒšã‚¢ã¯åˆ¥ã«åˆ‡ã‚Šå‡ºã—ã¦ãŠãã€‚(ä»£ã‚ã‚Šã« "*" ã‚’ç½®ã)
+  int s, e;
+  while ( ( s = pLine.indexOf( "(" ) ) >= 0 ) {
+    if ( ( e = pLine.indexOf( ")" ) ) < 0 )
+      return false;
+    options << pLine.mid( s+1, e-s-1 );
+    pLine = pLine.left( s ) + "*" + pLine.mid( e+1 );
+    //    qDebug() << pLine;
+    //    qDebug() << options;
+  }
+
+  // ã€Œ,ã€(ã‚«ãƒ³ãƒ)ã¨ã€Œ ã€(ã‚¹ãƒšãƒ¼ã‚¹ã€ç©ºç™½æ–‡å­—)ã®ä¸¡æ–¹ã‚’åŒºåˆ‡ã‚Šã¨ã—ã¦èªã‚ã‚‹ã€‚
+  // å…¨ã¦ã€ã€Œ ã€ç©ºç™½1å€‹ã«ç½®ãæ›ãˆã‚‹ã€‚
+  QString parameter = pLine.replace( QRegExp( "[\\s,]" ), " " ).simplified();
+  if ( parameter.isEmpty() )
+    return false;
+
+  QStringList prms = parameter.split( QRegExp( "[\\s]" ) );
+
+  int start, end;
+  double dx, dz;
+  int p;
+  AutoModeParam amp;
+  for ( int i = 0; i < prms.count(); i++ ) {
+    dx = dz = 0;
+    if ( ( p = prms[i].indexOf( "*" ) ) >= 0 ) {
+      // "*" ãŒãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æœ«ç«¯ä»¥å¤–ã«ã‚ã£ãŸã‚‰ã‚¨ãƒ©ãƒ¼
+      prms[i][p] = ' ';
+      if ( p != ( prms[i].length() - 1 ) )
+	return false;
+      // ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ–‡å­—åˆ—ãŒ "," ã‚’å«ã‚“ã§ã„ãªã‘ã‚Œã°ã‚¨ãƒ©ãƒ¼
+      // "," ãŒå…ˆé ­ã§ã‚‚ã‚¨ãƒ©ãƒ¼
+      if ( ( p = options[0].indexOf( "," ) ) <= 0 )
+	return false;
+      // "," ãŒæœ«å°¾ã§ã‚‚ã‚¨ãƒ©ãƒ¼
+      if ( p == ( options[0].length() - 1 ) )
+	return false;
+      // "," ãŒï¼’ã¤ã‚ã£ã¦ã‚‚ã‚¨ãƒ©ãƒ¼ã ã‘ã©ãã®ãƒã‚§ãƒƒã‚¯ã¯ã¾ã ã—ã¦ãªã„
+      dx = options[0].left( p ).toDouble();
+      dz = options[0].mid( p+1 ).toDouble();
+      options.removeAt( 0 );
+    }
+    if ( prms[i].indexOf( "-" ) >= 0 ) {
+      QStringList series = prms[i].split("-");
+      if ( series.count() > 1 ) {                 // "-" ã ã‘ã€ã¯ã¨ã‚Šã‚ãˆãšç„¡è¦–
+	start = ( series.at(0).isEmpty() ) ? 1 : series.at(0).toInt();
+	end = ( series.at(1).isEmpty() ) ? 9 : series.at(1).toInt();
+	int diff = abs( end - start );
+	int sign = 1;
+	if ( start > end ) sign = -1;
+	for ( int j = 0; j < diff + 1; j++ ) {
+	  amp.num = start + j * sign;
+	  amp.dx = dx;
+	  amp.dz = dz;
+	  AutoModeParams << amp;
+	}
+      }
+    } else {
+      amp.num = prms[i].toInt();
+      amp.dx = dx;
+      amp.dz = dz;
+      AutoModeParams << amp;
+    }
+  }
+
+#if 0
+  for ( int i = 0; i < AutoModeParams.count(); i++ ) {
+    qDebug() << AutoModeParams[i].num
+	     << AutoModeParams[i].dx << AutoModeParams[i].dz;
+  }
+#endif
+
+  return true;
+}

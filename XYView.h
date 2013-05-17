@@ -8,45 +8,45 @@
 #include "ChCoord.h"
 
 #define MAXPOINTS  ( 10000 )
-#define MAXLINENO  ( 30000 )  // 0 �` 19999      // I0 �� I, mu ������̂Ŏ��� 10,000
-#define GROUPLINES ( 3 )      // ���{�̐�����̃O���[�v�ɂȂ邩 (I0, I, mu)
-#define MAXLINES   ( 600 )    // �����ŏ���������̐� (�ق�Ƃ� 594 �ł����͂�)
-// �󂯓������ line No. �̍ő�l
-// (���Օ\���̐��̐�) * (���ՊԊu) + �A�ԕ\���̐��̐�
-// �̂͂������ǁA������ƕ|���̂ŁA(���Օ\���̐��̐�) * (���ՊԊu)�Ƃ������ɂ��Ă���
+#define MAXLINENO  ( 30000 )  // 0 ～ 19999      // I0 と I, mu があるので実質 10,000
+#define GROUPLINES ( 3 )      // 何本の線が一つのグループになるか (I0, I, mu)
+#define MAXLINES   ( 600 )    // 内部で準備する線の数 (ほんとは 594 でいいはず)
+// 受け入れられる line No. の最大値
+// (足跡表示の線の数) * (足跡間隔) + 連番表示の線の数
+// のはずだけど、ちょっと怖いので、(足跡表示の線の数) * (足跡間隔)という事にしておく
 
-// l �Ԗڂ̃��C���̓����ł̃��C���ԍ� L ��
+// l 番目のラインの内部でのライン番号 L を
 //   G1 = ( l / GROUPLINES )
 //   G2 = ( l mod GROUPLINES )
 //   L = ( ( G1 mod CGROUPS ) + B ) * GROUPLINES + G2
 //   B = (int)( G1 / FINTERVAL ) 
-// �Ƃ����
+// とすると
 //
-// FINTERVAL = 10, CGROUPS = 10, GROUPLINES = 3 �̏ꍇ
+// FINTERVAL = 10, CGROUPS = 10, GROUPLINES = 3 の場合
 // ( 0  1  2)( 3  4  5)( 6  7  8)( 9 10 11)(12 13 14)...(27 28 29)
 //           (30 31 32)(33 34 35)(36 37 38)...                    (57 58 59)
 //                     (60 61 62)(63 64 65)(66 67 68)...                    (97 98 99)
 //                             (100 101 102)...
-// �Ƃ������ƂŁA
-// 1) �� group �� 100 �܂� (line �� 300�܂�)
-//    CGROUPS = 100, FINTERVAL = 100 �ɂ��Ă���
-//    �v�́A�S���� line �����̂܂ܕ`�� (�ő� L=300)
-// 2) �� group ���� 100 �𒴂������_��
-//    �擪���� 10 group�� (g=0,1,2,...9)��
-//    g = 0, 10, 20, 30, ... 90 �ɂ���
-//    g = 0, 10, 20, 30, ... 90 �ƒu��������
-//    CGROUPS = 10, FINTERVAL = 10 �ɕύX����
-//    �ȍ~�A�Ⴆ�� 100 �Ԗڂ̃O���[�v�ɂ��Ă�
+// ということで、
+// 1) 総 group 数 100 まで (line 数 300まで)
+//    CGROUPS = 100, FINTERVAL = 100 にしておく
+//    要は、全部の line をそのまま描く (最大 L=300)
+// 2) 総 group 数が 100 を超えた時点で
+//    先頭から 10 group分 (g=0,1,2,...9)を
+//    g = 0, 10, 20, 30, ... 90 にある
+//    g = 0, 10, 20, 30, ... 90 と置き換えて
+//    CGROUPS = 10, FINTERVAL = 10 に変更する
+//    以降、例えば 100 番目のグループについては
 //          G = ( 100 mod 10 ) + (int)( 100 / 10 ) = 10
-//    �ɂȂ��āA�ŏ����� CGROUPS = 10, FINTERVAL = 10 �������ꍇ�Ɠ����ʒu�ɒu�����
-// 3) �� group ���� 1000 �𒴂������_��
+//    になって、最初から CGROUPS = 10, FINTERVAL = 10 だった場合と同じ位置に置かれる
+// 3) 総 group 数が 1000 を超えた時点で
 //    0 10 20 ... 990(G=99) 991 992 993 ... 999(G=108,L=324)
-//    �擪���� 10 �O���[�v��(G=0,1,...9)��
-//    G = 0, 10, 20, 30, ... 90 �ɂ���
-//    g = 0, 200, 400, 600, ... 1800 �ƒu��������
-//    CGROUPS = 100, FINTERVAL = 100 �ɕύX����
-//    �ȍ~�A�Ⴆ�� 1000 �Ԗڂ� G = ( 1000 mod 100 ) + (int)( 1000 / 100 ) = 0 + 10 = 10
-//    0 100 ... 9900(G=99) 9901 9902 ... 9999 (G=198,L=594) ���ő�
+//    先頭から 10 グループ分(G=0,1,...9)を
+//    G = 0, 10, 20, 30, ... 90 にある
+//    g = 0, 200, 400, 600, ... 1800 と置き換えて
+//    CGROUPS = 100, FINTERVAL = 100 に変更する
+//    以降、例えば 1000 番目は G = ( 1000 mod 100 ) + (int)( 1000 / 100 ) = 0 + 10 = 10
+//    0 100 ... 9900(G=99) 9901 9902 ... 9999 (G=198,L=594) が最大
 
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
@@ -83,9 +83,9 @@ private:
   double YShift[ MAXLINES ], YShift0[ MAXLINES ], yshift[ MAXLINES ];
 
   int CGroups, FInterval;      // Continuous drawn groups, Interval of foot print groups
-  int maxGroups;               // �O�����猩������ ���C���� �ł���܂Ŏw�肳�ꂽ�ő�l
+  int maxGroups;               // 外部から見た時の ライン数 でこれまで指定された最大値
   int maxLines;
-  int inLines;                 // �����Ŏg���Ă��郉�C���ԍ��̍ő�l
+  int inLines;                 // 内部で使われているライン番号の最大値
   bool dispf[ MAXLINES ];
   int points[ MAXLINES ];
   double x[ MAXLINES ][ MAXPOINTS ];
@@ -108,20 +108,20 @@ public:
 
   void NewPoint( int l, double xx, double yy );
   void Clear( void );
-  // XYView �ł́A�����̐��𓯎��ɕ`����B
-  // �e���������A�E���ǂ���Ɋ֌W���Ă��邩���w�肷��̂� SetLR(), LintLR[]
-  // ��R������̒��ŁA���E�̎��Ɏ��ۂɃX�P�[����\���������I������̂�
+  // XYView では、複数の線を同時に描ける。
+  // 各線が左軸、右軸どちらに関係しているかを指定するのが SetLR(), LintLR[]
+  // 沢山ある線の中で、左右の軸に実際にスケールを表示する線を選択するのが
   // SetLLine(), SetRLine(), SelLR[]
   void SetLLine( int l ) { SelLR[ LEFT_AX ] = getL( l ); };
   void SetRLine( int l ) { SelLR[ RIGHT_AX ] = getL( l ); };
   void SetLR( int L, LRAX lr ) { LineLR[ getL( L ) ] = lr; };
-  // �X�P�[���̃^�C�v : �t���X�P�[���ɂ��邩�AI0 �̗l�ɏ�����ɂ��炷��
-  // ���[�v�P�ʂŎw��B
+  // スケールのタイプ : フルスケールにするか、I0 の様に少し上にずらすか
+  // ループ単位で指定。
   void SetScaleType( int l, SCALET t ) { scaleType[ getL( l ) ] = t; };
   void SetColor( int l, QColor c ) { LC[ getL( l ) ] = c; };
   QColor GetColor( int l ) { return LC.at( getL( l ) % LC.count() ); };
 
-  // �c���͍��E��{�����v 2�{�����Ȃ��̂ŁA�c�������Ă�O���[�v�͍ő� 2 �����B
+  // 縦軸は左右一本ずつ合計 2本しかないので、縦軸を持てるグループは最大 2 つだけ。
   void SetLineName( int l, QString Name ) { LNames[ getL( l ) ] = Name; };
   void SetLeftName( QString Name ) { LeftName = Name; };
   void SetRightName( QString Name ) { RightName = Name; };

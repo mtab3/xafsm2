@@ -136,8 +136,8 @@ MOTOR PM "M005" "4WSZa"   "4WS-Z open"   "pm16c04-3" "ch0" "mm" 0.002 INT 0
 MOTOR PM "M006" "4WSXa"   "4WS-X open"   "pm16c04-3" "ch1" "mm" 0.002 INT 0
 MOTOR PM "M007" "4WSZb"   "4WS-Z move"   "pm16c04-3" "ch2" "mm" 0.002 INT 0
 MOTOR PM "M008" "4WSXb"   "4WS-X move"   "pm16c04-3" "ch3" "mm" 0.002 INT 0
-MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch4"  "mm" 0.004 INT 0
-MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch5"  "mm" 0.004 INT 0
+MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "pm16c04-3" "ch4"  "mm" 0.004 INT 0
+MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "pm16c04-3" "ch5"  "mm" 0.004 INT 0
 MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch6" "mm" 0.0005 INT 0
 MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch7"  "mm" 0.0005 INT 0
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch8" "deg" 0.004 INT 0

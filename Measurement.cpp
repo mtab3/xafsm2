@@ -8,6 +8,11 @@ void MainWindow::MeasSequence( void )
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
+  if ( MovingToNewSamplePosition ) {
+    if ( ChangerX->isBusy() || ChangerZ->isBusy() )
+      return;
+    MovingToNewSamplePosition = false;
+  }
 
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
 
@@ -18,22 +23,28 @@ void MainWindow::MeasSequence( void )
 
   switch( MeasStage ) {
     /* 
-       0: ¬¨ƒÍ≥´ªœ Repeat = 0
+       0: Ê∏¨ÂÆöÈñãÂßã Repeat = 0
        1: Block = 0
-       2: Step = 0, setDwellTIme
+       2: Step = 0, setDwellTime
        3: Goto a Position with a Block and a Step
-       4: prepare to triger Sensors (only for cnt08)
-       5: Triger Sensors (for all)
+       4: Prepare to trigger Sensors (only for cnt08)
+       5: Trigger Sensors (for all)
        6: Read out Sensors
        10: Draw (Resume point from 99:)
           Step++; if ( Step < MaxStep ) goto 3
           Block++; if ( Block < MaxBlock ) goto 2
           Repeat++; if ( Repeat < MaxRepeat ) toto 1
           when reach here, finish.
-       99: pause §Œª˛Õ—§Œ•π•∆°º•∏
+       99: pause „ÅÆÊôÇÁî®„ÅÆ„Çπ„ÉÜ„Éº„Ç∏
     */
   case 0:
-    CurrentRpt->setText( QString::number( 1 ) );
+    if ( AutoModeFirst )
+      TouchDelegateFile();
+    if ( AutoModeButton->isChecked() ) {
+      CurrentRpt->setText( QString( "%1 - %2" ).arg( 1 ).arg( MeasA+1 ) );
+    } else {
+      CurrentRpt->setText( QString::number( 1 ) );
+    }
     CurrentPnt->setText( QString::number( 1 ) );
     WriteInfoFile();
     mUnits.clearStage();
@@ -53,20 +64,20 @@ void MainWindow::MeasSequence( void )
     statusbar->showMessage( tr( "Writing Header." ), 2000 );
     WriteHeader( MeasR );
     MeasStage = 3;
-    // break;       MeasStage == 2 §Œ∆∞∫Ó§œ•Ï•π•›•Û•π§Ú¬‘§ƒ…¨Õ◊§ §∑
+    // break;       MeasStage == 2 „ÅÆÂãï‰Ωú„ÅØ„É¨„Çπ„Éù„É≥„Çπ„ÇíÂæÖ„Å§ÂøÖË¶Å„Å™„Åó
   case 3: 
     MeasS = 0;    // Measurement Step count in each block
     mUnits.setDwellTimes( NowDwell = SBlockDwell[ MeasB ] );
     mUnits.setDwellTime();
     MeasStage = 4;
-    // break;       MeasStage == 3 §‚•Ï•π•›•Û•π§Ú¬‘§ƒ…¨Õ◊§ §∑
-    //              (§≥§≥§«¡‡∫Ó§∑§ø§Œ§œ•ª•Û•µ°º§«, Stage == 4 §«•ª•Û•µ°º§Ú¡‡∫Ó§∑§ §§§´§È)
+    // break;       MeasStage == 3 „ÇÇ„É¨„Çπ„Éù„É≥„Çπ„ÇíÂæÖ„Å§ÂøÖË¶Å„Å™„Åó
+    //              („Åì„Åì„ÅßÊìç‰Ωú„Åó„Åü„ÅÆ„ÅØ„Çª„É≥„Çµ„Éº„Åß, Stage == 4 „Åß„Çª„É≥„Çµ„Éº„ÇíÊìç‰Ωú„Åó„Å™„ÅÑ„Åã„Çâ)
   case 4:
     Delta = u->keV2any( SBLKUnit, SBlockStart[MeasB+1] )
       - u->keV2any( SBLKUnit, SBlockStart[MeasB] );
     GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
 		       + u->keV2any( SBLKUnit, SBlockStart[MeasB] ) );
-    MoveCurThPosKeV( GoToKeV );     // º¥§Œ∞‹∆∞
+    MoveCurThPosKeV( GoToKeV );     // Ëª∏„ÅÆÁßªÂãï
     mUnits.clearStage();
     if ( mUnits.isParent() )
       MeasStage = 5;
@@ -101,35 +112,35 @@ void MainWindow::MeasSequence( void )
     MeasS++;
     if ( inPause == 0 ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {
-	MeasStage = 4;
+        MeasStage = 4;
       } else if ( MeasB < SBlocks-1 ) {
-	MeasB++;
-	MeasStage = 3;
+        MeasB++;
+        MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
-	NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
-	ClearXViewScreenForMeas( MeasView );
-	WriteHeader2( MeasR );
-	WriteInfoFile2();
-	PlayGoOnSound();
-	MeasR++;
-	CurrentRpt->setText( QString::number( MeasR + 1 ) );
-	MeasStage = 2;
-      } else {               // Ω™Œª
-	statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
-	NewLogMsg( QString( tr( "Meas: Finished" ) ) );
-	WriteHeader2( MeasR );
-	PlayEndingSound();
-	WriteInfoFile2();
-	MeasTimer->stop();
-	inMeas = 0;
-	MeasStart->setText( tr( "Start" ) );
-	MeasStart
-	  ->setStyleSheet( "background-color: "
-			   "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-			   "rgba(225, 235, 225, 255), stop:1 "
-			   "rgba(255, 255, 255, 255));" );
-	MeasPause->setEnabled( false );
-	onMeasFinishWorks();
+        NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
+        ClearXViewScreenForMeas( MeasView );
+        WriteHeader2( MeasR );
+        PlayGoOnSound();
+        WriteInfoFile2();
+        MeasR++;
+	if ( AutoModeButton->isChecked() ) {
+	  CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasR + 1 ).arg( MeasA+1 ) );
+	} else {
+	  CurrentRpt->setText( QString::number( MeasR + 1 ) );
+	}
+        MeasStage = 2;
+      } else {               // ÁµÇ‰∫Ü
+        statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
+        NewLogMsg( QString( tr( "Meas: Finished" ) ) );
+        WriteHeader2( MeasR );
+        PlayEndingSound();
+        WriteInfoFile2();
+        MeasTimer->stop();
+        inMeas = 0;
+        MeasStart->setText( tr( "Start" ) );
+        MeasStart->setStyleSheet( NormalB );
+        MeasPause->setEnabled( false );
+        onMeasFinishWorks();
       }
     }
     break;
@@ -142,11 +153,17 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::onMeasFinishWorks( void )
 {
+  SelRealTime->setChecked( SvSelRealTime );
+  SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
   }
   MeasViewC->setIsDeletable( true );
+  if ( AutoModeButton->isChecked() ) {
+    connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+             this, SLOT( AutoSequence() ) );
+  }
 }
 
 bool MainWindow::isBusyMotorInMeas( void )
@@ -159,8 +176,8 @@ void MainWindow::SetDispMeasModes( void )
   int i;
   int DLC = 0;   // display line count
 
-  MeasView->SetRLine( 0 );            // §ﬁ§∫°¢0 »÷Ã‹§Œ•È•§•Û§Ú±¶º¥§À…Ωº®
-  MeasView->SetLLine( 1 );            //       1 »÷Ã‹§Œ•È•§•Û§Ú∫∏º¥§À…Ωº®
+  MeasView->SetRLine( 0 );            // „Åæ„Åö„ÄÅ0 Áï™ÁõÆ„ÅÆ„É©„Ç§„É≥„ÇíÂè≥Ëª∏„Å´Ë°®Á§∫
+  MeasView->SetLLine( 1 );            //       1 Áï™ÁõÆ„ÅÆ„É©„Ç§„É≥„ÇíÂ∑¶Ëª∏„Å´Ë°®Á§∫
 
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );
@@ -196,7 +213,7 @@ void MainWindow::SetDispMeasModes( void )
   }
 }
 
-void MainWindow::DispMeasDatas( void )  // mUnits->readValue §Œ√ ≥¨§«•¿°º•Ø ‰¿µ∫—§ﬂ
+void MainWindow::DispMeasDatas( void )  // mUnits->readValue „ÅÆÊÆµÈöé„Åß„ÉÄ„Éº„ÇØË£úÊ≠£Ê∏à„Åø
 {
   double I0;
   double Val;
@@ -212,7 +229,7 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue §Œ√ ≥¨§«•¿°º•Ø ‰¿µ∫
     Val = MeasCPSs[i];
     if ( MeasDispMode[i] == TRANS ) {
       if (( i == 1 )&&( isSI1 )) {
-        MeasView->NewPoint( DLC, GoToKeV, MeasCPSs[1] );   // I §Œ√Õ§‚…Ωº®§π§Î
+        MeasView->NewPoint( DLC, GoToKeV, MeasCPSs[1] );   // I „ÅÆÂÄ§„ÇÇË°®Á§∫„Åô„Çã
         DLC++;
       }
       if ( Val < 1e-10 )
@@ -235,16 +252,16 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue §Œ√ ≥¨§«•¿°º•Ø ‰¿µ∫
 	sum = 0;
 	for ( int j = 0; j < MaxSSDs; j++ ) {
 	  double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
-	  if ( SSDbs2[j]->isChecked() == PBTrue ) // œ¬§ÚºË§Î§Œ§œ¡™¬Ú§µ§Ï§ø SSD §¿§±
+	  if ( SSDbs2[j]->isChecked() == PBTrue ) // Âíå„ÇíÂèñ„Çã„ÅÆ„ÅØÈÅ∏Êäû„Åï„Çå„Åü SSD „Å†„Åë
 	    sum += v;
 	  MeasView->NewPoint( DLC, GoToKeV, v );
 	  DLC++;
 	}
 	MeasView->NewPoint( DLC0, GoToKeV, sum );
-	// §≥§≥§« Val §œ cps §À§∑§∆§¢§Î§Œ§« OK
+	// „Åì„Åì„Åß Val „ÅØ cps „Å´„Åó„Å¶„ÅÇ„Çã„ÅÆ„Åß OK
       } else {
 	MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
-	// §≥§≥§« Val §œ cps §À§∑§∆§¢§Î§Œ§« OK
+	// „Åì„Åì„Åß Val „ÅØ cps „Å´„Åó„Å¶„ÅÇ„Çã„ÅÆ„Åß OK
 	DLC++;
       }
     }
@@ -256,9 +273,9 @@ void MainWindow::ReCalcSSDTotal( int, bool )
   double sum[ MAXPOINTS ];
   double *y;
 
-  if ( SFluoLine < 0 )                  // 19ch SSD §Úª»§√§ø∑÷∏˜¬¨ƒÍ§ŒæÏπÁ§¿§±
+  if ( SFluoLine < 0 )                  // 19ch SSD „Çí‰Ωø„Å£„ÅüËõçÂÖâÊ∏¨ÂÆö„ÅÆÂ†¥Âêà„Å†„Åë
     return;
-  if ( MeasView == NULL )                // View §¨≥‰§Íø∂§È§Ï§∆§ §±§Ï§–≤ø§‚§∑§ §§
+  if ( MeasView == NULL )                // View „ÅåÂâ≤„ÇäÊåØ„Çâ„Çå„Å¶„Å™„Åë„Çå„Å∞‰Ωï„ÇÇ„Åó„Å™„ÅÑ
     return;
 
   int points = MeasView->GetPoints( 0 );
@@ -267,10 +284,10 @@ void MainWindow::ReCalcSSDTotal( int, bool )
     sum[i] = 0;
   }
 
-  for ( int l = 0; l < MaxSSDs; l++ ) {  // ¡™¬Ú§∑ƒæ§µ§Ï§ø SSD §Œ ch §À¥ÿ§∑§∆
+  for ( int l = 0; l < MaxSSDs; l++ ) {  // ÈÅ∏Êäû„ÅóÁõ¥„Åï„Çå„Åü SSD „ÅÆ ch „Å´Èñ¢„Åó„Å¶
     if ( SSDbs2[l]->isChecked() == PBTrue ) {
       y = MeasView->GetYp( SFluoLine + 1 + l );
-      for ( int i = 0; i < points; i++ ) {  // πÁ∑◊§Ú§»§Í§ §™§π
+      for ( int i = 0; i < points; i++ ) {  // ÂêàË®à„Çí„Å®„Çä„Å™„Åä„Åô
 	sum[i] += y[i];
       }
     }

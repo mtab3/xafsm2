@@ -3,6 +3,9 @@
 
 void MainWindow::setupReadDataArea( void )
 {
+  // 仮の処置、データ読込タブを消してしまう
+  MainTab->removeTab( MainTab->indexOf( ReadDataTab ) );
+
   Datas << Data001 << Data002 << Data003 << Data004 << Data005
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
@@ -37,7 +40,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
   ViewCTRL *view;
 
   switch( dtype ) {
-  case MEASDATA:  // MEASDATA �� SCANDATA �Ϻ�ɽ������Ƥ�Τ�Ʊ�����פ��ä���Ťͽ�
+  case MEASDATA:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
     view = ViewCtrls[ ViewTab->currentIndex() ];
     if ( view->getNowDType() != dtype ) {
       view = SetUpNewView( XYVIEW );
@@ -53,7 +56,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
       ClearXViewScreenForScan( (XYView*)(view->getView()) );
     }
     break;
-  case MONDATA:   // MONDATA �� MCADATA �ϽŤͽ񤭤�����롣
+  case MONDATA:   // MONDATA と MCADATA は重ね書きは諦める。
     view = SetUpNewView( TYVIEW );
     ViewTab->setTabText( ViewTab->currentIndex(), "D-MON." );
     break;

@@ -59,7 +59,7 @@ class ChCoord : public QObject
   void getSEDy( double *sy, double *ey, double *dy, double div );
   void calcScale( double div, double min, double max, double *s, double *d );
 
-  /* ChCoord ¤È¤ÏÄ¾ÀÜ´Ø·¸¤Ê¤¤¤±¤É¡¢¥°¥é¥Õ´Ø·¸¤Î°ìÈÌÅª¤Ê´Ø¿ô¤Ê¤Î¤Ç¤³¤³¤ËÃÖ¤¤¤È¤¯ */
+  /* ChCoord ã¨ã¯ç›´æ¥é–¢ä¿‚ãªã„ã‘ã©ã€ã‚°ãƒ©ãƒ•é–¢ä¿‚ã®ä¸€èˆ¬çš„ãªé–¢æ•°ãªã®ã§ã“ã“ã«ç½®ã„ã¨ã */
 
   void DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );

@@ -17,7 +17,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
-  // Monitor ‚Ì’†‚Å SSD ‚Ì‹­“x‚ð•Êƒtƒ@ƒCƒ‹‚É‘‚«o‚·‚Æ‚«‚ÌŽžŠÔ‚ð‘ª‚é‚½‚ß
+  // Monitor ã®ä¸­ã§ SSD ã®å¼·åº¦ã‚’åˆ¥ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãå‡ºã™ã¨ãã®æ™‚é–“ã‚’æ¸¬ã‚‹ãŸã‚
   T = new QTime;
   T->start();
 
@@ -47,10 +47,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   MMainTh = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
+  ChangerX = ChangerZ = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
   MCAGains.clear();
+  MeasA = 0;
 
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
@@ -61,19 +63,19 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   starsSV = new StarsSV2;
 
-  setupLogArea();     // ƒƒO‚É‘Î‚·‚é‘‚«o‚µ‚ª‚ ‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅÅ‰‚ÉƒCƒjƒVƒƒƒ‰ƒCƒY
+  setupLogArea();     // ãƒ­ã‚°ã«å¯¾ã™ã‚‹æ›¸ãå‡ºã—ãŒã‚ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§æœ€åˆã«ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚º
   ReadDef( DefFileName );
   selmc = new SelMC2( mccd );
   setWindowTitle( XAFSTitle );
-  s = new Stars;      // ƒ‚[ƒ^—Þ‚ÌƒCƒjƒVƒƒƒ‰ƒCƒY‚Ì‘O‚É Stars ‚Ì€”õ‚Í‚µ‚Ä‚¨‚­
-  s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars ‚Æ‚ÌƒRƒlƒNƒVƒ‡ƒ“Šm—§‚Ì€”õ
+  s = new Stars;      // ãƒ¢ãƒ¼ã‚¿é¡žã®ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚ºã®å‰ã« Stars ã®æº–å‚™ã¯ã—ã¦ãŠã
+  s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars ã¨ã®ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ç¢ºç«‹ã®æº–å‚™
   s->SetNewSVAddress( starsSV->SSVAddress() );
   s->SetNewSVPort( starsSV->SSVPort() );
 
   Initialize();
   setupView();
   setupCommonArea();
-  setupSetupArea();     // AUnit ŠÖŒW‚Ì Initialize Œã‚Å‚È‚¢‚Æ‚¾‚ß
+  setupSetupArea();     // AUnit é–¢ä¿‚ã® Initialize å¾Œã§ãªã„ã¨ã ã‚
   if ( SFluo != NULL ) {
     setupSetupSSDArea();
   } else {
@@ -167,6 +169,9 @@ void MainWindow::Initialize( void )
   if ( SFluo != NULL ) {
     getMCASettings( MCACh->text().toInt() );
     s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+    for ( int i = 0; i < MCAGains.count(); i++ ) {
+      SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
+    }
   }
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
@@ -196,11 +201,23 @@ void MainWindow::InitAndIdentifyMotors( void )
     am->Initialize( s );
     if ( am->getID() == "THETA" ) {
       if ( MMainTh != NULL ) {
-	disconnect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+        disconnect( MMainTh, SIGNAL( newValue( QString ) ),
+                    this, SLOT( ShowCurThPos() ) );
       }
       MMainTh = am;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+    } else if ( am->getID() == "ChangerX" ) {
+      ChangerX = am;
+    } else if ( am->getID() == "ChangerZ" ) {
+      ChangerZ = am;
     }
+  }
+  if (( ChangerX == NULL )||( ChangerZ == NULL)) {
+#if 0
+    AutoModeButton->setChecked( false );
+    AutoModeButton->setEnabled( false );
+#endif
+    ChangerBox->setHidden( true );
   }
 }
 
@@ -242,7 +259,7 @@ void MainWindow::InitAndIdentifySensors( void )
   
   if ( SFluo != NULL ) {
     SFluo->setROIs( ROIStart, ROIEnd );
-    for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo ‚ªŠm’è‚µ‚Ä‚©‚ç
+    for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo ãŒç¢ºå®šã—ã¦ã‹ã‚‰
       as = ASensors.value(i);
       if (( as->getTheParent() == SFluo )&&( as != SFluo )) {
 	connect( SFluo, SIGNAL( newValue( QString ) ), as, SLOT( getNewValue( QString ) ) );

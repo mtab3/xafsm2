@@ -96,7 +96,7 @@ void XYView::ReFillFirst10Groups( void )
   }
 }
 
-// l ”Ô–Ú‚Ìƒ‰ƒCƒ“‚ÉV‚µ‚¢ƒf[ƒ^1‚Â’Ç‰Á
+// l ç•ªç›®ã®ãƒ©ã‚¤ãƒ³ã«æ–°ã—ã„ãƒ‡ãƒ¼ã‚¿1ã¤è¿½åŠ 
 void XYView::NewPoint( int l, double xx, double yy )
 {
   if ( l >= MAXLINES )
@@ -105,7 +105,7 @@ void XYView::NewPoint( int l, double xx, double yy )
     maxLines = l;
 
   int g = l / GROUPLINES;
-  if ( g > maxGroups ) {  // V‚µ‚¢ƒOƒ‹[ƒv
+  if ( g > maxGroups ) {  // æ–°ã—ã„ã‚°ãƒ«ãƒ¼ãƒ—
     if (( maxGroups < 100 )&&( g >= 100 )) {
       ReFillFirst10Groups();
       CGroups = FInterval = 10;
@@ -229,7 +229,7 @@ void XYView::Draw( QPainter *p )
   double a1, a2;
   double d, b;
 
-  int linedir[ MAXLINES ];           // x²‚Ì”š‚Ì•À‚Ñ
+  int linedir[ MAXLINES ];           // xè»¸ã®æ•°å­—ã®ä¸¦ã³
   for ( int i = 0; i <= inLines; i++ ) {
     if ( x[i][0] > x[i][1] )   // 
       linedir[i] = -1;
@@ -237,7 +237,7 @@ void XYView::Draw( QPainter *p )
       linedir[i] = 1;
   }
     
-  for ( int l = 0; l <= inLines; l++ ) { // æ‚Éü‚¾‚¯•`‰æ
+  for ( int l = 0; l <= inLines; l++ ) { // å…ˆã«ç·šã ã‘æç”»
     bool f = ( QXafsMode ) ? dispf[ l % GROUPLINES ] : dispf[ l ];
     if ( f ) {
       if ( autoScale ) {
@@ -256,21 +256,21 @@ void XYView::Draw( QPainter *p )
 	} else {
 	  p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
 		       x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
-	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))  // ƒJ[ƒ\ƒ‹‚ª‚ ‚éêŠ‚ÉÅ‚à‹ß‚¢
-	    nowxp = i;                                    // “_‚ğ’T‚µ‚Ä‹L˜^
-	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))  // “¯ã(‰¡²‚ª~‡‚Ìê‡)
+	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))  // ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹å ´æ‰€ã«æœ€ã‚‚è¿‘ã„
+	    nowxp = i;                                    // ç‚¹ã‚’æ¢ã—ã¦è¨˜éŒ²
+	  if (( x[l][i+1] <= nowx )&&( x[l][i] > nowx ))  // åŒä¸Š(æ¨ªè»¸ãŒé™é †ã®å ´åˆ)
 	    nowxp = i;
 	}
 	
-	// ƒ}ƒEƒX‚ª‚ ‚é“_‚©‚çü•ª(‚ğ‰„’·‚µ‚½‚à‚Ì‚É‰º‚ë‚µ‚½‚ü‚Ì‘«‚ğ’T‚·)
+	// ãƒã‚¦ã‚¹ãŒã‚ã‚‹ç‚¹ã‹ã‚‰ç·šåˆ†(ã‚’å»¶é•·ã—ãŸã‚‚ã®ã«ä¸‹ã‚ã—ãŸå‚ç·šã®è¶³ã‚’æ¢ã™)
 	a1 = x1 - x0;
 	a2 = y1 - y0;
 	b = ( a1 * ( y0 - m.y() ) + a2 * ( m.x() - x0 ) ) / ( a1 * a1 + a2 * a2 );
 	hx = m.x() - b * a2;
 	hy = m.y() + b * a1;
-	if ( hx < x0 ) { hx = x0; hy = y0; }  // ‘«‚ªü•ª‚ÌŠO‚É—L‚Á‚½‚ç
-	if ( hx > x1 ) { hx = x1; hy = y1; }  // ü•ª‚Ì’[“_‚Å’u‚«Š·‚¦‚é
-	// ‚»‚Ì‘«‚Ü‚Å‚Ì‹——£‚ªÅ¬‚É‚È‚éü‚ğ’T‚·
+	if ( hx < x0 ) { hx = x0; hy = y0; }  // è¶³ãŒç·šåˆ†ã®å¤–ã«æœ‰ã£ãŸã‚‰
+	if ( hx > x1 ) { hx = x1; hy = y1; }  // ç·šåˆ†ã®ç«¯ç‚¹ã§ç½®ãæ›ãˆã‚‹
+	// ãã®è¶³ã¾ã§ã®è·é›¢ãŒæœ€å°ã«ãªã‚‹ç·šã‚’æ¢ã™
 	if ( ( d = ( hx - m.x() )*( hx - m.x() ) + ( hy - m.y() )*( hy - m.y() ) )
 	     < ND[ LineLR[l] ] ) {
 	  ND[ LineLR[l] ] = d;
@@ -285,7 +285,7 @@ void XYView::Draw( QPainter *p )
       }
     }
   }
-  // Œ©‚Â‚¯‚½“_‚Éü‚ğˆø‚­
+  // è¦‹ã¤ã‘ãŸç‚¹ã«ç·šã‚’å¼•ã
   //  p->drawLine( m.x(), m.y(), hx, hy );
   
   if ( AreaSelecting ) {
@@ -296,12 +296,12 @@ void XYView::Draw( QPainter *p )
     p->drawLine( m.x(),  m.sy(), m.sx(), m.sy() );
   }
   
-  // ‚¨Î‚¢ƒNƒŠƒbƒsƒ“ƒO ^^;;;
+  // ãŠç¬‘ã„ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚° ^^;;;
   p->fillRect( 0, 0, LM, height(), bgColor );
   p->fillRect( width()-RM, 0, RM, height(), bgColor );
   p->fillRect( 0, 0, width(), TM, bgColor );
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
-  // ‚¨Î‚¢ƒNƒŠƒbƒsƒ“ƒO ^^;;;
+  // ãŠç¬‘ã„ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚° ^^;;;
   
   cc.ShowAScaleButton( p, autoScale, height() );
   
@@ -309,17 +309,17 @@ void XYView::Draw( QPainter *p )
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
   for ( double xx = sx; xx < cc.Rmaxx(); xx += dx ) {
-    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // c‚ÌŒrü
-    rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // ƒƒ‚ƒŠ”š
+    p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // ç¸¦ã®ç½«ç·š
+    rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // ãƒ¡ãƒ¢ãƒªæ•°å­—
     if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
 		   QString::number( ( xx - center ) * upp ) );
     }
     memc++;
   }
-  rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X²‚Ìƒ‰ƒxƒ‹
+  rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // Xè»¸ã®ãƒ©ãƒ™ãƒ«
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
-  rec = QRectF( cc.r2sx( cc.Rmaxx() )+80, height()-BM+5, 80, BM*0.3 );   // X²‚Ì’PˆÊ
+  rec = QRectF( cc.r2sx( cc.Rmaxx() )+80, height()-BM+5, 80, BM*0.3 );   // Xè»¸ã®å˜ä½
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XUnitName );
   
   for ( int i = 0; i < 2; i++ ) {
@@ -339,7 +339,7 @@ void XYView::Draw( QPainter *p )
     for ( double yy = sy; yy < cc.Rmaxy(); yy += dy ) {
       buf.sprintf( "%7.5g", yy );
       if ( LineLR[l] == LEFT_AX ) {
-	p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // ‰¡‚ÌŒrü
+	p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // æ¨ªã®ç½«ç·š
 	rec = QRectF( LM * 0.05, cc.r2sy( yy )-BM*0.3/2, LM * 0.9, BM * 0.3 );
 	cc.DrawText( p, rec, F1, AlRC, SCALESIZE, buf );
       } else {
@@ -354,7 +354,7 @@ void XYView::Draw( QPainter *p )
       cc.DrawText( p, rec, F1, AlRC, SCALESIZE, LeftName );
     } else {
       rec = QRectF( width()-RM*0.95, cc.r2sy( cc.Rmaxy() )-BM*0.35,
-		    RM*0.9, BM * 0.3 );    // ²‚Ìƒ‰ƒxƒ‹
+		    RM*0.9, BM * 0.3 );    // è»¸ã®ãƒ©ãƒ™ãƒ«
       cc.DrawText( p, rec, F1, AlLC, SCALESIZE, RightName );
     }    
     pen1.setColor( LC[ l % LC.count() ] );
@@ -440,7 +440,7 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
 
   if ( m.inPress() ) {
     switch( m.modifier() ) {
-    case Qt::NoModifier:                          // •½sˆÚ“®
+    case Qt::NoModifier:                          // å¹³è¡Œç§»å‹•
       if ( !autoScale ) {
 	xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
 	for ( int l = 0; l <= inLines; l++ ) {
@@ -454,7 +454,7 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
 	  YShift[l] = YShift0[l] + yshift[l];
       }
       break;
-    case Qt::ShiftModifier:                       // —Ìˆæ‘I‘ğŠg‘å
+    case Qt::ShiftModifier:                       // é ˜åŸŸé¸æŠæ‹¡å¤§
       break;
     }
   }
@@ -467,9 +467,9 @@ void XYView::mousePressEvent( QMouseEvent *e )
   m.Pressed( e );
 
   switch( m.modifier() ) {
-  case Qt::NoModifier:                          // •½sˆÚ“®
+  case Qt::NoModifier:                          // å¹³è¡Œç§»å‹•
     break;
-  case Qt::ShiftModifier:                       // —Ìˆæ‘I‘ğŠg‘å
+  case Qt::ShiftModifier:                       // é ˜åŸŸé¸æŠæ‹¡å¤§
     if ( !autoScale )
       AreaSelecting = true;
     break;
@@ -487,7 +487,7 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
   m.Released( e );
 
   switch( m.modifier() ) {
-  case Qt::NoModifier:                          // •½sˆÚ“®
+  case Qt::NoModifier:                          // å¹³è¡Œç§»å‹•
     if ( !autoScale ) {
       cc.SetRealX0();
       XShift0 = 0;
@@ -498,7 +498,7 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
       }
     }
     break;
-  case Qt::ShiftModifier:                       // —Ìˆæ‘I‘ğŠg‘å
+  case Qt::ShiftModifier:                       // é ˜åŸŸé¸æŠæ‹¡å¤§
     if ( !autoScale ) {
       AreaSelecting = false;
       nminx = cc.s2rx( m.sx() );

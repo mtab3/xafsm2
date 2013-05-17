@@ -2,7 +2,7 @@
 
 #include "MainWindow.h"
 
-void MainWindow::setupLogArea( void )   /* ƒƒOƒGƒŠƒA */
+void MainWindow::setupLogArea( void )   /* ãƒ­ã‚°ã‚¨ãƒªã‚¢ */
 {
   LogFileName->setText( NewLFName() );
   LogMsgs->setReadOnly( true );
@@ -41,10 +41,10 @@ void MainWindow::NewLogMsg( QString msg )
 
 QString MainWindow::NewLFName( void )
 {
-  //  ‚±‚ê‚ÍA“úˆÈ‰ºA•ª•b‚Ü‚ÅƒƒOƒtƒ@ƒCƒ‹–¼‚É‚·‚é‚Ì‚ÅA­‚µŸT“©‚µ‚¢B
+  //  ã“ã‚Œã¯ã€æ—¥æ™‚ä»¥ä¸‹ã€æ™‚åˆ†ç§’ã¾ã§ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«åã«ã™ã‚‹ã®ã§ã€å°‘ã—é¬±é™¶ã—ã„ã€‚
   //  return QDateTime::currentDateTime().toString( "Log-yyMMdd-hhmmss" ) + ".dat";
 
-  //  ‚±‚Á‚¿‚¾‚ÆAƒfƒtƒHƒ‹ƒg‚ÌƒƒOƒtƒ@ƒCƒ‹‚Í1“ú1ŒÂ
+  //  ã“ã£ã¡ã ã¨ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã¯1æ—¥1å€‹
   return QDateTime::currentDateTime().toString( "Log-yyMMdd" ) + ".dat";
 }
 

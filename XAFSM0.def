@@ -6,7 +6,7 @@
 # 2013/04/19 add 'QXAFSOK'     line
 #                'NORMALOK'    line
 # 2013/04/25 add 'MCAGAIN'     line
-#
+# 2013/05/03 add new IDs 'ChangerX' and 'ChangerZ' for PMs
 
 #
 # In this definition file,
@@ -137,8 +137,8 @@ MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
 #MOTOR PM "M006" "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 INT 0
 #MOTOR PM "M007" "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 INT 0
 #MOTOR PM "M008" "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 INT 0
-#MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 INT 0
-#MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 INT 0
+#MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 INT 0
+#MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "pm16c04-3" "ch8"  "mm" 0.001 INT 0
 #MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch9"  "mm" 0.001 INT 0
 #MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch10" "mm" 0.001 INT 0
 #MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch11" "mm" 0.001 INT 0
@@ -166,8 +166,8 @@ MOTOR PM "M005" "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 INT 0
 MOTOR PM "M006" "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 INT 0
 MOTOR PM "M007" "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 INT 0
 MOTOR PM "M008" "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 INT 0
-MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
-MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
+MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
+MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
 MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 INT 0
 MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 INT 0
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 INT 0
@@ -264,8 +264,8 @@ SENSOR SSDP "S023" "SingleF" "SSD-ch16"  "QtXmapSSD"      "16" "count" YES "S006
 SENSOR SSDP "S024" "SingleF" "SSD-ch17"  "QtXmapSSD"      "17" "count" YES "S006"
 SENSOR SSDP "S025" "SingleF" "SSD-ch18"  "QtXmapSSD"      "18" "count" YES "S006"
 
-SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
-#SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
+#SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
+SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC      : Unit type   ENC an encorder observed/controlled via nd287
@@ -330,7 +330,8 @@ SENSOR OTC "S034" "GENERAL" "Otc994 ch2" "ortec994" "ch1" "count" YES "S033"
 
 # The driver ortec994 (by M. Tabuchi) can be used as "OTC" and "OTC2".
 
-SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
+SENSOR LSR "S035" "LS" "Ring Current Monitor" "simmotor" "Ring" "mA" NO ""
+#SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 
 #The sensor 'LSR' add newly on Feb. 25, 2013.
 #   LSR              : Unit type LSR : Brigde to the ring-network

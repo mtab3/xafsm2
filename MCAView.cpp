@@ -2,17 +2,19 @@
 #include "MCAView.h"
 #include "PeakFit.h"
 
-// ²£¼´¤Ë¤Ï 3¤Ä¤ÎÃ±°Ì¤¬¤¢¤ë¡£
-// MCA pixel, eV (¼ÂEnergy), ÉÁ²è pixel
-// MCAView Æâ¤Î²£¼´¤Ï´ğËÜÅª¤Ë keV
+#define PEAKSEARCH
+
+// æ¨ªè»¸ã«ã¯ 3ã¤ã®å˜ä½ãŒã‚ã‚‹ã€‚
+// MCA pixel, eV (å®ŸEnergy), æç”» pixel
+// MCAView å†…ã®æ¨ªè»¸ã¯åŸºæœ¬çš„ã« keV
 // MCA pixel -> keV : k2p->p2E( MCA pixel ) = keV
 // keV -> MCA pixel : k2p->p2E( keV ) = MCA pixel
-//    k2p ¤Ï keV-to-Pixel ¤Î¤Ä¤â¤ê¡£¥Í¡¼¥ß¥ó¥°¤¬¤Ş¤º¤¤¤«...
-// ÉÁ²è pixel ¤È¤Î´¹»»¤Ï°ìÅÙ keV ¤òÄÌ¤Ã¤Æ cc.r2sx, cc.s2rx,...
+//    k2p ã¯ keV-to-Pixel ã®ã¤ã‚‚ã‚Šã€‚ãƒãƒ¼ãƒŸãƒ³ã‚°ãŒã¾ãšã„ã‹...
+// æç”» pixel ã¨ã®æ›ç®—ã¯ä¸€åº¦ keV ã‚’é€šã£ã¦ cc.r2sx, cc.s2rx,...
 
-#define NEAR ( 10 )     // ROI ¤Î¥¨¥Ã¥¸¤Ë¶á¤¤¤ÈÈ½ÃÇ¤¹¤ëµ÷Î¥(²èÌÌ pixel)
-#define NEAR2 ( 10 )    // ¿ø¤¨ÃÖ¤­¥«¡¼¥½¥ë¤Ë¶á¤¤¤ÈÈ½ÃÇ¤¹¤ëµ÷Î¥
-#define NEAR3 ( 3 )     // ·Ö¸÷¥Ô¡¼¥¯°ÌÃÖ¤¬¶á¤¤¤ÈÈ½ÃÇ¤¹¤ëµ÷Î¥
+#define NEAR ( 10 )     // ROI ã®ã‚¨ãƒƒã‚¸ã«è¿‘ã„ã¨åˆ¤æ–­ã™ã‚‹è·é›¢(ç”»é¢ pixel)
+#define NEAR2 ( 10 )    // æ®ãˆç½®ãã‚«ãƒ¼ã‚½ãƒ«ã«è¿‘ã„ã¨åˆ¤æ–­ã™ã‚‹è·é›¢
+#define NEAR3 ( 3 )     // è›å…‰ãƒ”ãƒ¼ã‚¯ä½ç½®ãŒè¿‘ã„ã¨åˆ¤æ–­ã™ã‚‹è·é›¢
 
 MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 {
@@ -23,6 +25,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   k2p = NULL;
   MCA = NULL;
+  SMCA = NULL;  // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°
+  DMCA = NULL;  // 1æ¬¡å¾®åˆ†
+  dMCA = NULL;  // çµ±è¨ˆå¤‰å‹•
   MCALen = 0;
   MCACh = -1;
   realTime = 0;
@@ -32,44 +37,62 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   mMode = M_NO;
   yRatio = 1.0;
 
+  ShowDiff = true;
+  PSSens = 0.5; // ãƒ”ãƒ¼ã‚¯ã‚µãƒ¼ãƒã®æ„Ÿåº¦
+
   valid = false;
   dispLog = false;
 
   Black = QColor( 0, 0, 0 );
   White = QColor( 255, 255, 255 );
 
-  MCursorC    = QColor( 255,   0,   0 );  // ¥Ş¥¦¥¹¥«¡¼¥½¥ë¿§
-  MCursorC2   = QColor(   0, 200, 245 );  // ¿ø¤¨ÃÖ¤­¥«¡¼¥½¥ë¿§
-  MCursorC3   = QColor( 250, 180,   0 );  // ¥Ş¥¦¥¹¤¬¶á¤¤»ş¤Î¿ø¤¨ÃÖ¤­¥«¡¼¥½¥ë¿§
-  ROIRangeC   = QColor( 170, 210,   0 );  // ROI Æâ¤Î¥¹¥Ú¥¯¥È¥ë¿§
-  ExROIRangeC = QColor(   0, 100, 230 );  // ROI ³°¤Î¥¹¥Ú¥¯¥È¥ë¿§
-  ROIEdgeC    = QColor( 250, 180,   0 );  // ROI ¤ÎÃ¼ÅÀÉ½¼¨
-  GridC       = QColor( 100, 100, 190 );  // ¥°¥ê¥Ã¥É¤Î¿§
-  AListC      = QColor( 200,   0, 100 );  // ¸µÁÇÌ¾¥ê¥¹¥È 
+  MCursorC    = QColor( 255,   0,   0 );  // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«è‰²
+  MCursorC2   = QColor(   0, 200, 245 );  // æ®ãˆç½®ãã‚«ãƒ¼ã‚½ãƒ«è‰²
+  MCursorC3   = QColor( 250, 180,   0 );  // ãƒã‚¦ã‚¹ãŒè¿‘ã„æ™‚ã®æ®ãˆç½®ãã‚«ãƒ¼ã‚½ãƒ«è‰²
+  ROIRangeC   = QColor( 170, 210,   0 );  // ROI å†…ã®ã‚¹ãƒšã‚¯ãƒˆãƒ«è‰²
+  ExROIRangeC = QColor(   0, 100, 230 );  // ROI å¤–ã®ã‚¹ãƒšã‚¯ãƒˆãƒ«è‰²
+  ROIEdgeC    = QColor( 250, 180,   0 );  // ROI ã®ç«¯ç‚¹è¡¨ç¤º
+  GridC       = QColor( 100, 100, 190 );  // ã‚°ãƒªãƒƒãƒ‰ã®è‰²
+  AListC      = QColor( 200,   0, 100 );  // å…ƒç´ åãƒªã‚¹ãƒˆ 
+  SMCAC       = QColor( 255,   0,   0 );  // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã—ãŸã‚¹ãƒšã‚¯ãƒˆãƒ«
+  DMCAC       = QColor( 0,   0,   255 );  // å¾®åˆ†
 
   rROIsx = 0;
   rROIex = 20;
 
-  // data-disp ¤ÇÉ½¼¨¤·¤¿»ş¡¢¤Ë¥Ş¥º¥¤¤«¤â
+  // data-disp ã§è¡¨ç¤ºã—ãŸæ™‚ã€ã«ãƒã‚ºã‚¤ã‹ã‚‚
   connect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   connect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ) );
+  connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
+	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
 }
 
 MCAView::~MCAView( void )
 {
   if ( MCA != NULL )
     delete MCA;
+  if ( SMCA != NULL )
+    delete SMCA;
+  if ( DMCA != NULL )
+    delete DMCA;
+  if ( dMCA != NULL )
+    delete dMCA;
   disconnect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ) );
+  disconnect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
+	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
 }
 
 int *MCAView::setMCAdataPointer( int len )
 {
   MCA = new int[ MCALen = len ];
+  SMCA = new double[ MCALen ];
+  DMCA = new double[ MCALen ];
+  dMCA = new double[ MCALen ];
   return MCA;
 }
 
@@ -92,6 +115,50 @@ double LOGS[ 9 ] = {
   0.95424,     // log10( 9 )
 };
 
+#if 1       // ã‚‚ã®ã™ã”ãå¹³æ»‘åŒ–ã™ã‚‹ä¾‹
+#define SMOOTHINGOFFSET ( -5 )   // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã‚’è¡Œã†ä¿‚æ•°
+#define SMOOTHINGRANGE  ( 11 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+#define DIFFOFFSET  ( -5 )  // å¾®åˆ†ã‚’è¨ˆç®—ã™ã‚‹ä¿‚æ•°
+#define DIFFRANGE  ( 11 )
+double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
+double DiffNorm = 300;
+#endif
+
+#if 0       // ä¸­é–“ãã‚‰ã„ (å¾®åˆ†ã®æ–¹ã§å¹³æ»‘åŒ–ã‚’è¡Œã†)
+#define SMOOTHINGOFFSET ( -2 )   // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã‚’è¡Œã†ä¿‚æ•°
+#define SMOOTHINGRANGE  ( 5 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 4, 6, 4, 1 };
+#define DIFFOFFSET  ( -5 )  // å¾®åˆ†ã‚’è¨ˆç®—ã™ã‚‹ä¿‚æ•°
+#define DIFFRANGE  ( 11 )
+double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
+double DiffNorm = 300;
+#endif
+
+#if 0       // ä¸­é–“ãã‚‰ã„ (å¾®åˆ†ã§ã¯ã‚ã¾ã‚Šå¹³æ»‘åŒ–ã—ãªã„)
+#define SMOOTHINGOFFSET ( -5 )   // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã‚’è¡Œã†ä¿‚æ•°
+#define SMOOTHINGRANGE  ( 11 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+#define DIFFOFFSET  ( -2 )  // å¾®åˆ†ã‚’è¨ˆç®—ã™ã‚‹ä¿‚æ•°
+#define DIFFRANGE  ( 5 )
+double DWeight[ DIFFRANGE ] = { -2, -1, 0, 1, 2 };
+double DiffNorm = 10;
+#endif
+
+#if 0       // ã»ã¨ã‚“ã©å¹³æ»‘åŒ–ã—ãªã„ä¾‹
+#define SMOOTHINGOFFSET ( -2 )   // ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã‚’è¡Œã†ä¿‚æ•°
+#define SMOOTHINGRANGE  ( 5 )
+double SWeight[ SMOOTHINGRANGE ] = { 1, 4, 6, 4, 1 };
+#define DIFFOFFSET  ( -2 )  // å¾®åˆ†ã‚’è¨ˆç®—ã™ã‚‹ä¿‚æ•°
+#define DIFFRANGE  ( 5 )
+double DWeight[ DIFFRANGE ] = { -2, -1, 0, 1, 2 };
+double DiffNorm = 10;
+#endif
+
+#define DELOFFSET ( -1 )  // çµ±è¨ˆèª¤å·®ã‚’è¦‹ç©ã‚‚ã‚‹ä¿‚æ•°
+#define DELRANGE  ( 3 )
+double DelWeight[ DELRANGE ] = { 1, 0, 1 };
+
 void MCAView::Draw( QPainter *p )
 {
   if ( valid != true ) 
@@ -105,7 +172,7 @@ void MCAView::Draw( QPainter *p )
   int w = width();
   int h = height();
 
-  int LM = w * 0.25;
+  int LM = w * 0.25;        // ç”»é¢ã‚’æãã¨ãã®åŸºæº–ã«ãªã‚‹å®šæ•°ã‚’å¹¾ã¤ã‹æ±ºã‚ã¦ãŠã
   if ( LM > 180 ) LM = 180;
   int RM = w * 0.05;
   if ( RM > 40 ) RM = 40;
@@ -116,15 +183,15 @@ void MCAView::Draw( QPainter *p )
   if ( BM > 80 ) BM = 80;
   int VW = h - TM - BM;
   double dLM = LM / 10;
-  double dVW = VW / 20;     // 1¹Ô¤Î¹â¤µ(Ê¸»ú¤Î¹â¤µ)
-  double dVW2 = dVW * 1.2;  // ¹Ô´Ö
+  double dVW = VW / 20;     // 1è¡Œã®é«˜ã•(æ–‡å­—ã®é«˜ã•)
+  double dVW2 = dVW * 1.2;  // è¡Œé–“
 
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
 
   double min, max;
   double min0 = 1e300, max0 = 0;
-  // y ¼´Êı¸ş¤ÎÉ½¼¨¥¹¥±¡¼¥ë·èÄê¤Î¤¿¤áÉ½¼¨ÈÏ°Ï¤Ç¤ÎºÇÂçÃÍ¤òÃµ¤¹
+  // y è»¸æ–¹å‘ã®è¡¨ç¤ºã‚¹ã‚±ãƒ¼ãƒ«æ±ºå®šã®ãŸã‚è¡¨ç¤ºç¯„å›²ã§ã®æœ€å¤§å€¤ã‚’æ¢ã™
   for ( int i = 0; i < MCALen; i++ ) {
     double E = k2p->p2E( MCACh, i );
     if (( E > MinE )&&( E < MaxE )) {
@@ -136,7 +203,7 @@ void MCAView::Draw( QPainter *p )
       }
     }
   }
-  if ( dispLog ) {   // log ¥¹¥±¡¼¥ë¤À¤Ã¤¿¤éºÇÂçÃÍ¤â log ¤ò¤È¤Ã¤Æ½Ä¼´¤Î¥¹¥±¡¼¥ë¤Ë¤¹¤ë
+  if ( dispLog ) {   // log ã‚¹ã‚±ãƒ¼ãƒ«ã ã£ãŸã‚‰æœ€å¤§å€¤ã‚‚ log ã‚’ã¨ã£ã¦ç¸¦è»¸ã®ã‚¹ã‚±ãƒ¼ãƒ«ã«ã™ã‚‹
     if ( max0 > 0 )
       max = log10( max0 );
     else 
@@ -149,20 +216,20 @@ void MCAView::Draw( QPainter *p )
     max = max0;
     min = min0;
   }
-  // º£¤ä²£¼´¤Ï MCA pixel ¤Ç¤Ï¤Ê¤¯¡¢¥¨¥Í¥ë¥®-[keV]
+  // ä»Šã‚„æ¨ªè»¸ã¯ MCA pixel ã§ã¯ãªãã€ã‚¨ãƒãƒ«ã‚®-[keV]
   //  cc.SetRealCoord( MinE, min, MaxE, ( max - min ) * yRatio + min );
   cc.SetRealCoord( MinE, 0, MaxE, max * yRatio );
 
   double rmx = cc.s2rx( m.x() );
   double wrROIsx = rROIsx;  // wrROI.. working-real-ROI.., rROI.. real-ROI..
   double wrROIex;
-  if ( m.inPress() ) {      // ¥Ş¥¦¥¹¥Ü¥¿¥ó¤ò²¡¤·¤Æ¤ë»ş¤Ï¡¢¡Ö½ªÅÀ¡×¤Ï¥Ş¥¦¥¹¤Î¸½ºß°ÌÃÖ
+  if ( m.inPress() ) {      // ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã‚‹æ™‚ã¯ã€ã€Œçµ‚ç‚¹ã€ã¯ãƒã‚¦ã‚¹ã®ç¾åœ¨ä½ç½®
     wrROIex = rmx;
   } else {
-    wrROIex = rROIex;       // ¤½¤¦¤Ç¤Ê¤±¤ì¤ĞºÇ¸å¤Ë¥Ü¥¿¥ó¤òÎ¥¤·¤¿°ÌÃÖ
+    wrROIex = rROIex;       // ãã†ã§ãªã‘ã‚Œã°æœ€å¾Œã«ãƒœã‚¿ãƒ³ã‚’é›¢ã—ãŸä½ç½®
   }
   double tmp;
-  if ( wrROIsx > wrROIex ) { // µ¯ÅÀ¡¢½ªÅÀ¤ÎÂç¾®´Ø·¸¤¬µÕ¤Ë¤Ê¤Ã¤Æ¤¿¤éÆş¤ìÂØ¤¨¤Æ¤ª¤¯
+  if ( wrROIsx > wrROIex ) { // èµ·ç‚¹ã€çµ‚ç‚¹ã®å¤§å°é–¢ä¿‚ãŒé€†ã«ãªã£ã¦ãŸã‚‰å…¥ã‚Œæ›¿ãˆã¦ãŠã
     tmp = wrROIsx;
     wrROIsx = wrROIex;
     wrROIex = tmp;
@@ -171,9 +238,95 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
+#ifdef PEAKSEARCH  // MCA ã‚¹ãƒšã‚¯ãƒˆãƒ«ã®ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã¨ãƒ”ãƒ¼ã‚¯ã‚µãƒ¼ãƒ
+
+  for ( int i = 0; i < MCALen; i++ ) {               // Smoothing ã—ãŸ MCA ã‚¹ãƒšã‚¯ãƒˆãƒ«
+    double ss, ww;
+    ss = ww = 0;
+    for ( int j = 0; j < SMOOTHINGRANGE; j++ ) {
+      int jj = i + j + SMOOTHINGOFFSET;
+      if ( ( jj >= 0 ) && ( jj < MCALen ) ) {
+	ss += MCA[ jj ] * SWeight[ j ];
+	ww += SWeight[ j ];
+      }
+      if ( ww > 0 ) {
+	SMCA[i] = ss / ww;
+      } else {
+	SMCA[i] = 0;
+      }
+    }
+  }
+  double maxD = 0, minD = 0, maxd = 0;
+  // å¾®ä¿‚æ•°ã¨å±€æ‰€çš„ãªçµ±è¨ˆå¤‰å‹•ã‚’æ±‚ã‚ã¦ãŠã
+  for ( int i = 0; i < MCALen; i++ ) {
+    double D = 0;
+    double d = 1;
+    if ( ( ( i + DIFFOFFSET ) >= 0 ) && ( ( i - DIFFOFFSET ) < MCALen ) ) {
+      for ( int j = 0; j < DIFFRANGE; j++ ) {
+	D += DWeight[j] * SMCA[ i + j + DIFFOFFSET ];
+      }
+    }
+    DMCA[i] = D = D / DiffNorm;
+    if ( DMCA[i] > maxD ) { maxD = DMCA[i]; }
+    if ( DMCA[i] < minD ) { minD = DMCA[i]; }
+    if ( ( ( i + DELOFFSET ) >= 0 ) && ( ( i - DELOFFSET ) < MCALen ) ) {
+      for ( int j = 0; j < DIFFRANGE; j++ ) {
+	d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
+      }
+    }
+    dMCA[i] = d = sqrt( d ) / 2;
+    if ( d > maxd ) { maxd = d; }
+  }
+
+  MCAPeaks.clear();
+  MCAPeak aPeak;
+  int SearchMode = 0;                   // 0: before peak, 1:
+  for ( int i = 0; i < MCALen; i++ ) {
+    switch( SearchMode ) {
+    case 0:
+      if ( DMCA[i] > ( dMCA[i] * PSSens ) ) {
+	aPeak.start = i;
+	//	PSChs << ( s = i );
+	SearchMode = 1;
+      }
+      break;
+    case 1:
+      if ( DMCA[i] < ( - dMCA[i] * PSSens ) ) {
+	int j;
+	for ( j = i; j > aPeak.start; j-- ) {
+	  if ( DMCA[j] > ( dMCA[j] * PSSens ) ) 
+	    break;
+	}
+	aPeak.center = ( i + j ) / 2.0;
+	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
+	aPeak.peakH = SMCA[ (int)aPeak.center ];
+	//	PCChs << ( c = ( i + j ) / 2.0 );
+	SearchMode = 2;
+      }
+      break;
+    case 2:
+      if ( fabs( DMCA[i] ) < dMCA[i] * PSSens ) {
+	aPeak.end = i;
+	MCAPeaks << aPeak;
+	//	PEChs << i;
+	SearchMode = 0;
+      }
+    }
+  }
+  emit newPeakList( &MCAPeaks );
+#if 0      // debug
+  QVector<double> PC;
+  for ( int i = 0; i < MCAPeaks.count(); i++ ) {
+    PC << MCAPeaks[i].center;
+  }
+  qDebug() << PC;
+#endif    // debug
+#endif
+
+  double lastE = 0;
   int sum = 0;
-  for ( int i = 0; i < MCALen; i++ ) {       // ROI ¤ÎÈÏ°Ï¤ÎÀÑ»»¤È MCA ¥¹¥Ú¥¯¥È¥ë¤ÎÉÁ²è
-    double E = k2p->p2E( MCACh, i );         // MCA pixel ¤«¤é ¥¨¥Í¥ë¥®¡¼¤Ø¤Î´¹»»
+  for ( int i = 0; i < MCALen; i++ ) {       // ROI ã®ç¯„å›²ã®ç©ç®—ã¨ MCA ã‚¹ãƒšã‚¯ãƒˆãƒ«ã®æç”»
+    double E = k2p->p2E( MCACh, i );         // MCA pixel ã‹ã‚‰ ã‚¨ãƒãƒ«ã‚®ãƒ¼ã¸ã®æ›ç®—
     if (( E >= wrROIsx )&&( E <= wrROIex )) {
       p->setPen( ROIRangeC );
       sum += MCA[i];
@@ -181,18 +334,52 @@ void MCAView::Draw( QPainter *p )
       p->setPen( ExROIRangeC );
     }
     if ( dispLog ) {
-      if ( MCA[i] > 0 )
+      if ( MCA[i] > 0 ) {
 	p->drawLine( cc.r2sx( E ), cc.r2sy( log10( MCA[i] ) ),
 		     cc.r2sx( E ), cc.r2sy( 0 ) );
+      }
+      if ( ( i > 0 ) && ( SMCA[i] > 0 ) && ( SMCA[i-1] > 0 ) ) {
+	p->setPen( SMCAC );
+	p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
+		     cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
+      }
+      if ( ShowDiff ) {
+	if ( ( i > 0 ) && ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
+	  p->setPen( DMCAC );
+	  p->drawLine( cc.r2sx( lastE ),
+		       cc.r2sy( log10( ( DMCA[i-1] - minD )
+				       * max * yRatio / ( maxD - minD ) ) ),
+		       cc.r2sx( E ),
+		       cc.r2sy( log10( ( DMCA[i] - minD )
+				       * max * yRatio / ( maxD - minD ) ) ) );
+	}
+      }
     } else {
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
+      if ( i > 0 ) {
+	p->setPen( SMCAC );
+	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
+		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
+      }
+      if ( ShowDiff ) {
+	if ( i > 0 ) {
+	  p->setPen( DMCAC );
+	  p->drawLine( cc.r2sx( lastE ),
+		       cc.r2sy( ( DMCA[i-1] - minD )
+				* max * yRatio / ( maxD - minD ) ),
+		       cc.r2sx( E ),
+		       cc.r2sy( ( DMCA[i] - minD )
+				* max * yRatio / ( maxD - minD ) ) );
+	}
+      }
     }
+    lastE = E;
   }
 
-  p->setPen( Black );                      // ¥°¥é¥Õ³°ÏÈ¤Î»Í³ÑÉÁ²è
+  p->setPen( Black );                      // ã‚°ãƒ©ãƒ•å¤–æ ã®å››è§’æç”»
   p->drawRect( LM, TM, HW, VW );
-  p->setPen( GridC );                      // ¥°¥é¥Õ¤Î·ÓÀşÉÁ²è
-  for ( double E = 2; E < MaxE; E += 2.0 ) { // 2keV ¹ï¤ß¤Ç¼çÀş¤ÈÌÜÀ¹¤ê¿ô»ú
+  p->setPen( GridC );                      // ã‚°ãƒ©ãƒ•ã®ç½«ç·šæç”»
+  for ( double E = 2; E < MaxE; E += 2.0 ) { // 2keV åˆ»ã¿ã§ä¸»ç·šã¨ç›®ç››ã‚Šæ•°å­—
     p->drawLine( cc.r2sx( E ), TM, cc.r2sx( E ), TM + VW );
     rec.setRect( cc.r2sx( E ) - dLM * 2, TM + VW + dVW * 0.2,
 		 dLM * 4, dVW );
@@ -202,12 +389,12 @@ void MCAView::Draw( QPainter *p )
   rec.setRect( cc.r2sx( MaxE ) - dLM * 2, TM + VW + dVW * 0.2,
 	       dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE, "[keV]" );
-  for ( double E = 1; E < 20; E += 2.0 ) { // ¤½¤Î·ä´Ö¤ËÉûÀş
+  for ( double E = 1; E < 20; E += 2.0 ) { // ãã®éš™é–“ã«å‰¯ç·š
     p->drawLine( cc.r2sx( E ), TM, cc. r2sx( E ), TM + dVW / 2 );
     p->drawLine( cc.r2sx( E ), TM + VW, cc. r2sx( E ), TM + VW - dVW / 2 );
   }
 
-  // ½Ä¼´¥Ô¡¼¥¯ÃÍ
+  // ç¸¦è»¸ãƒ”ãƒ¼ã‚¯å€¤
   rec.setRect( LM - dLM*8, TM - dVW / 2, dLM * 7.5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( max0 ) );
@@ -231,22 +418,22 @@ void MCAView::Draw( QPainter *p )
     }
   }
 
-  if ( ( m.x() > LM )&&( m.x() < LM+HW ) ) {   // ¥Ş¥¦¥¹¥«¡¼¥½¥ë°ÌÃÖ¤Ë½ÄËÀÉÁ²è
+  if ( ( m.x() > LM )&&( m.x() < LM+HW ) ) {   // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã«ç¸¦æ£’æç”»
     p->setPen( MCursorC );
     p->drawLine( m.x(), TM, m.x(), TM+VW );
   }
 
-  // ¥¨¥Í¥ë¥®¡¼´¹»»¤·¤¿¥Ş¥¦¥¹¥«¡¼¥½¥ë°ÌÃÖ¤ËÂĞ±ş¤¹¤ë MCA pixel
+  // ã‚¨ãƒãƒ«ã‚®ãƒ¼æ›ç®—ã—ãŸãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã«å¯¾å¿œã™ã‚‹ MCA pixel
   int curp = k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) );
   emit CurrentValues( MCA[ curp ], sum );
 
-  if ( nearf ) {              // ¥Ş¥¦¥¹¥«¡¼¥½¥ë¤¬ ROI ¤ÎÎ¾Ã¼¤Ë¶á¤¤¤ÈÇ§¼±¤·¤Æ¤¤¤ë¤È¤­¤Ï
-                              // ¶á¤¤¤È»×¤Ã¤Æ¤¤¤ëÊı¤Î¶¶¤ò¶¯Ä´? É½¼¨
+  if ( nearf ) {              // ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ãŒ ROI ã®ä¸¡ç«¯ã«è¿‘ã„ã¨èªè­˜ã—ã¦ã„ã‚‹ã¨ãã¯
+                              // è¿‘ã„ã¨æ€ã£ã¦ã„ã‚‹æ–¹ã®æ©‹ã‚’å¼·èª¿? è¡¨ç¤º
     p->setPen( ROIEdgeC );
     p->drawLine( nearX, TM, nearX, TM+VW );
   }
 
-  for ( int i = 0; i < cPoints.count(); i++ ) {  // ¿ø¤¨ÃÖ¤­¥«¡¼¥½¥ë°ÌÃÖ¤Ë½ÄËÀ
+  for ( int i = 0; i < cPoints.count(); i++ ) {  // æ®ãˆç½®ãã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã«ç¸¦æ£’
     int cpx = cc.r2sx( cPoints[i] );
     if ( abs( cpx - m.x() ) < NEAR2 )
       p->setPen( MCursorC3 );
@@ -255,12 +442,12 @@ void MCAView::Draw( QPainter *p )
     p->drawLine( cpx, TM, cpx, TM+VW );
   }
 
-  if ( showElements ) {   // ¸µÁÇÌ¾É½¼¨
+  if ( showElements ) {   // å…ƒç´ åè¡¨ç¤º
     if ( showElementsAlways ) {
-      // ¸µÁÇÌ¾¾ï»şÉ½¼¨¤Î¾ì¹ç
+      // å…ƒç´ åå¸¸æ™‚è¡¨ç¤ºã®å ´åˆ
       int dispx1, dispw;
-      int lines = 16;            // ¸µÁÇÌ¾¤ÏºÇÂç16ÃÊÉ½¼¨
-      QVector<int> lend;         // ³ÊÃÊ¤ÎºÇ½ªÉ½¼¨°ÌÃÖ
+      int lines = 16;            // å…ƒç´ åã¯æœ€å¤§16æ®µè¡¨ç¤º
+      QVector<int> lend;         // æ ¼æ®µã®æœ€çµ‚è¡¨ç¤ºä½ç½®
       for ( int i = 0; i < lines; i++ ) { lend << 0; }
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
 	QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE,
@@ -301,7 +488,7 @@ void MCAView::Draw( QPainter *p )
       }
     } else {
       if ( ! ( m.getMod() & Qt::ShiftModifier ) ) {
-	// ¥Ş¥¦¥¹¥«¡¼¥½¥ëÉÕ¶á¤Î¤ß¸µÁÇÌ¾É½¼¨¤Î¾ì¹ç
+	// ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ä»˜è¿‘ã®ã¿å…ƒç´ åè¡¨ç¤ºã®å ´åˆ
 	QVector<Fluo> nears = fdbase->nears( rmx, cc.s2rx( NEAR3 ) - cc.s2rx( 0 ) );
 	p->setPen( AListC );
 	bool isUpper = ( rmx > ( MaxE + MinE ) / 2 );
@@ -337,7 +524,7 @@ void MCAView::Draw( QPainter *p )
   p->setPen( Black );
 
   int LINE = 1;
-  if ( MCACh >= 0 ) {   // MCA ch ÈÖ¹æ
+  if ( MCACh >= 0 ) {   // MCA ch ç•ªå·
     rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
     cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 tr( "MCA Ch. : " ) );
@@ -347,13 +534,13 @@ void MCAView::Draw( QPainter *p )
     LINE++;
   }
 
-  // ¥«¡¼¥½¥ë(¥¿¥¤¥È¥ë)
+  // ã‚«ãƒ¼ã‚½ãƒ«(ã‚¿ã‚¤ãƒˆãƒ«)
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( "Cursor" ) );
   LINE++;
 
-  // ¥«¡¼¥½¥ë°ÌÃÖ( ¼Â¥¨¥Í¥ë¥®¡¼´¹»» )
+  // ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®( å®Ÿã‚¨ãƒãƒ«ã‚®ãƒ¼æ›ç®— )
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( " Pos. [keV] : " ) );
@@ -362,7 +549,7 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( cc.s2rxLimit( m.x() ), 'f', 3 ) );
   LINE++;
 
-  // ¥«¡¼¥½¥ë°ÌÃÖ( MCA pixel )
+  // ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®( MCA pixel )
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( " Pos. [ch] : " ) );
@@ -371,7 +558,7 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) ) ) );
   LINE++;
 
-  // ¥«¡¼¥½¥ë°ÌÃÖ¤Î MCA ÃÍ
+  // ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã® MCA å€¤
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( " Val. : " ) );
@@ -380,13 +567,13 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( MCA[ curp ] ) );
   LINE++;
 
-  // ROI ¥¿¥¤¥È¥ë
+  // ROI ã‚¿ã‚¤ãƒˆãƒ«
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( "ROI " ) );
   LINE++;
 
-  // ROI ¤Î¥¹¥¿¡¼¥È°ÌÃÖ ( MCA pixel )
+  // ROI ã®ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½® ( MCA pixel )
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( " Start [keV] : " ) );
@@ -395,7 +582,7 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( wrROIsx, 'g', 3 ) );
   LINE++;
 
-  // ROI ¤Î½ªÎ»°ÌÃÖ ( MCA pixel )
+  // ROI ã®çµ‚äº†ä½ç½® ( MCA pixel )
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( " End [keV] : " ) );
@@ -404,7 +591,7 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( wrROIex , 'g', 3 ) );
   LINE++;
 
-  // ROI Æâ¤ÎÀÑÊ¬ÃÍ
+  // ROI å†…ã®ç©åˆ†å€¤
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( " Count : " ) );
@@ -413,7 +600,7 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( sum ) );
   LINE++;
 
-  // ROI Æâ¤ÎÀÑÊ¬ÃÍ¤ò LiveTime ¤Ç³ä¤Ã¤¿ cps
+  // ROI å†…ã®ç©åˆ†å€¤ã‚’ LiveTime ã§å‰²ã£ãŸ cps
   rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
   cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 	       tr( "   CPS : " ) );
@@ -440,9 +627,9 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( liveTime, 'f', 2 ) );
   LINE++;
 
-  // ¥Ç¥Ã¥É¥¿¥¤¥à
+  // ãƒ‡ãƒƒãƒ‰ã‚¿ã‚¤ãƒ 
   double dt = ( realTime != 0 ) ? ( realTime - liveTime )/realTime * 100: 0;
-  //¡¡¡¡ ÀÄ   ->  ÎĞ   ->  ²«   -> ¥ª¥ì¥ó¥¸ -> ÀÖ¡¡¡¡¤Ë¤¹¤ë¤È¤·¤¿¤é¡©
+  //ã€€ã€€ é’   ->  ç·‘   ->  é»„   -> ã‚ªãƒ¬ãƒ³ã‚¸ -> èµ¤ã€€ã€€ã«ã™ã‚‹ã¨ã—ãŸã‚‰ï¼Ÿ
   //    0 0 1 -> 0 1 0 -> 1 1 0 ->    ->      1 0 0
   //     0 %      10%      20%        ->       100%
   int r, g, b;
@@ -486,18 +673,18 @@ void MCAView::mouseMoveEvent( QMouseEvent *e )
 
 void MCAView::mousePressEvent( QMouseEvent *e )
 {
-  if ( e->button() == Qt::LeftButton ) {   // º¸¥Ü¥¿¥ó¤Ç ROI ÀßÄê¥â¡¼¥É
+  if ( e->button() == Qt::LeftButton ) {   // å·¦ãƒœã‚¿ãƒ³ã§ ROI è¨­å®šãƒ¢ãƒ¼ãƒ‰
     mMode = M_ROI;
     int dsx = fabs( e->x() - m.sx() );
     int dex = fabs( e->x() - m.ex() );
     int setX;
-    if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {   // ¶á¤¯¤Ë´ûÀß¤Î ROI ¤ÎÃ¼ÅÀ¤¬¤¢¤ë¤«
-      if ( dsx < dex ) {                        // ¤¢¤ì¤Ğ ROI ÊÑ¹¹
+    if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {   // è¿‘ãã«æ—¢è¨­ã® ROI ã®ç«¯ç‚¹ãŒã‚ã‚‹ã‹
+      if ( dsx < dex ) {                        // ã‚ã‚Œã° ROI å¤‰æ›´
 	setX = m.ex();
       } else {
 	setX = m.sx();
       }
-    } else {                                    // ¤Ê¤±¤ì¤Ğ ROI ¿·µ¬
+    } else {                                    // ãªã‘ã‚Œã° ROI æ–°è¦
       setX = e->x();
     }
     m.Pressed( e );
@@ -505,25 +692,25 @@ void MCAView::mousePressEvent( QMouseEvent *e )
     rROIsx = cc.s2rx( m.sx() );
     update();
   }
-  if ( e->button() == Qt::RightButton ) {  // ±¦¥Ü¥¿¥ó¤Ç ¥«¡¼¥½¥ëÀßÃÖ/ºï½ü
+  if ( e->button() == Qt::RightButton ) {  // å³ãƒœã‚¿ãƒ³ã§ ã‚«ãƒ¼ã‚½ãƒ«è¨­ç½®/å‰Šé™¤
     double checkp = cc.s2rx( e->x() );
     bool del = false;
     int nearp = -1;
     double nearv = 1e300;
-    for ( int i = 0; i < cPoints.count(); i++ ) { // ´ûÀß¤Î¥«¡¼¥½¥ë¤¬¶á¤¯¤Ë¤¢¤ë¤«
-      if ( fabs( cPoints[i] - checkp ) < nearv ) {  // °ìÈÖ¶á¤¤´ûÀß¥«¡¼¥½¥ë¤òÃµ¤¹
+    for ( int i = 0; i < cPoints.count(); i++ ) { // æ—¢è¨­ã®ã‚«ãƒ¼ã‚½ãƒ«ãŒè¿‘ãã«ã‚ã‚‹ã‹
+      if ( fabs( cPoints[i] - checkp ) < nearv ) {  // ä¸€ç•ªè¿‘ã„æ—¢è¨­ã‚«ãƒ¼ã‚½ãƒ«ã‚’æ¢ã™
 	nearp = i;
 	nearv = fabs( cPoints[i] - checkp );
       }
     }
     if ( nearp >= 0 ) {
       if ( fabs( cc.r2sx( cPoints[ nearp ] ) - e->x() ) < NEAR2 ) {
-	                                          // ºÇ¶áÀÜ¤¬NEAR°Ê²¼¤Î¾ì½ê¤À¤Ã¤¿¤é
-	cPoints.remove( nearp );                  // ¤½¤ÎÅÀ¤òºï½ü
+	                                          // æœ€è¿‘æ¥ãŒNEARä»¥ä¸‹ã®å ´æ‰€ã ã£ãŸã‚‰
+	cPoints.remove( nearp );                  // ãã®ç‚¹ã‚’å‰Šé™¤
 	del = true;
       }
     }
-    if ( ! del ) {    // ºï½ü¤·¤¿¥«¡¼¥½¥ë¤¬¤Ê¤±¤ì¤Ğ¥«¡¼¥½¥ëÀßÃÖ
+    if ( ! del ) {    // å‰Šé™¤ã—ãŸã‚«ãƒ¼ã‚½ãƒ«ãŒãªã‘ã‚Œã°ã‚«ãƒ¼ã‚½ãƒ«è¨­ç½®
       cPoints << checkp;
     }
   }
@@ -550,7 +737,7 @@ void MCAView::setROI( int s, int e )   // MCA pixel
 void MCAView::wheelEvent( QWheelEvent *e )
 {
   double step = ( e->delta() / 8. ) / 15.;    // deg := e->delta / 8.
-  if ( e->modifiers() & Qt::ShiftModifier ) { // ¥·¥Õ¥È¥­¡¼¤ò²¡¤·¤Ê¤¬¤é¤Ç¤Ï½Ä¼´¤Î³ÈÂç½Ì¾®
+  if ( e->modifiers() & Qt::ShiftModifier ) { // ã‚·ãƒ•ãƒˆã‚­ãƒ¼ã‚’æŠ¼ã—ãªãŒã‚‰ã§ã¯ç¸¦è»¸ã®æ‹¡å¤§ç¸®å°
     if ( step > 0 ) {
       yRatio *= 0.9;
     } else {
@@ -558,7 +745,7 @@ void MCAView::wheelEvent( QWheelEvent *e )
     }
     if ( yRatio > 1.0 )
       yRatio = 1.0;
-  } else {                                    // ¤½¤¦¤Ç¤Ê¤±¤ì¤Ğ²£¼´¤Î³ÈÂç½Ì¾®
+  } else {                                    // ãã†ã§ãªã‘ã‚Œã°æ¨ªè»¸ã®æ‹¡å¤§ç¸®å°
     double rx = cc.s2rx( e->x() );
     double drx = MaxE - MinE;
     if ( step > 0 ) {
@@ -575,17 +762,18 @@ void MCAView::wheelEvent( QWheelEvent *e )
   update();
 }
 
+#if 0
 void MCAView::doPeakFit( void )
 {
-  QVector<double> xxx, yyy;    // peak fit ÍÑ
-  double maxInROI = 0;     // peak fit ÍÑ
+  QVector<double> xxx, yyy;    // peak fit ç”¨
+  double maxInROI = 0;     // peak fit ç”¨
   qDebug() << "aa1";
-  for ( int i = 0; i < MCALen; i++ ) {       // ROI ¤ÎÈÏ°Ï¤ÎÀÑ»»¤È MCA ¥¹¥Ú¥¯¥È¥ë¤ÎÉÁ²è
-    double E = k2p->p2E( MCACh, i );         // MCA pixel ¤«¤é ¥¨¥Í¥ë¥®¡¼¤Ø¤Î´¹»»
+  for ( int i = 0; i < MCALen; i++ ) {       // ROI ã®ç¯„å›²ã®ç©ç®—ã¨ MCA ã‚¹ãƒšã‚¯ãƒˆãƒ«ã®æç”»
+    double E = k2p->p2E( MCACh, i );         // MCA pixel ã‹ã‚‰ ã‚¨ãƒãƒ«ã‚®ãƒ¼ã¸ã®æ›ç®—
     if (( E >= rROIsx )&&( E <= rROIex )) {
       xxx << E;
       yyy << MCA[i];
-      if ( MCA[i] > maxInROI )  // peak fit ÍÑ
+      if ( MCA[i] > maxInROI )  // peak fit ç”¨
 	maxInROI = MCA[i];
     }
   }
@@ -610,4 +798,15 @@ void MCAView::doPeakFit( void )
   qDebug() << "bb9";
   delete peakF;
   qDebug() << "bb10";
+}
+#endif
+
+void MCAView::setNewPSSens( QString newSens )
+{
+  double s = newSens.toDouble();
+
+  if ( s > 0 ) {
+    PSSens = s;
+    qDebug() << "newSens " << s;
+  }
 }

@@ -9,18 +9,27 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
 {
   QString buf;
 
-  if ( rpt == 1 ) {
-    if ( dir == FORWARD ) {
-      DFName = DFName0 + "-f" + ".dat";
+  if ( SvSelExtPattern || ( SelRPT->text().toInt() == 1 ) ) {
+    if ( rpt == 1 ) {
+      if ( dir == FORWARD ) {
+	DFName = DFName0 + DFName00 + "-f" + ".dat";
+      } else {
+	DFName = DFName0 + DFName00 + "-b" + ".dat";
+      }
     } else {
-      DFName = DFName0 + "-b" + ".dat";
+      buf.sprintf( ".%04d", rpt - 1 );
+      if ( dir == FORWARD ) {
+	DFName = DFName0 + DFName00 + "-f" + buf;
+      } else {
+	DFName = DFName0 + DFName00 + "-b" + buf;
+      }
     }
   } else {
-    buf.sprintf( ".%04d", rpt - 1 );
+    buf.sprintf( "-%04d.dat", rpt - 1 );
     if ( dir == FORWARD ) {
-      DFName = DFName0 + "-f" + buf;
+      DFName = DFName0 + DFName00 + "-f" + buf;
     } else {
-      DFName = DFName0 + "-b" + buf;
+      DFName = DFName0 + DFName00 + "-b" + buf;
     }
   }
 }
@@ -51,7 +60,6 @@ void MainWindow::MakeDelegateFile( void )
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
   file.close();
-
 }
 
 void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
@@ -105,6 +113,9 @@ void MainWindow::WriteQBody( void )
 
   int num = findMini( vals0, vals1, vals2 );
 
+  double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
+  double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
+
   qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
   if ( !file.open( QIODevice::Append | QIODevice::Text ) )
@@ -118,6 +129,8 @@ void MainWindow::WriteQBody( void )
   double upp = MMainTh->getUPP();
   double deg, deg2;
   double upp2 = 0;
+  double i0, i1;
+  QString buf;
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
@@ -130,11 +143,16 @@ void MainWindow::WriteQBody( void )
     } else {
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 ¤Î¥Ñ¥ë¥¹ÃÍ¤«¤é·×»»
-	<< QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 ¤¬»È¤¨¤ë»þ¤Ï¥¨¥ó¥³¡¼¥ÀÃÍ
-	<< QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
-	<< QString::number( vals0[i+1].toDouble(), 'f', 10 ) << "\t"
-	<< QString::number( vals1[i+1].toDouble(), 'f', 10 ) << endl;
+    i0 = vals0[i+1].toDouble() - dark0;
+    i1 = vals1[i+1].toDouble() - dark1;
+    buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
+                 deg, deg2, QXafsDwellTime, i0, i1 );
+    out << buf << endl;
+//    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 ã®ãƒ‘ãƒ«ã‚¹å€¤ã‹ã‚‰è¨ˆç®—
+//        << QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 ãŒä½¿ãˆã‚‹æ™‚ã¯ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€å€¤
+//        << QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
+//        << QString::number( vals0[i+1].toDouble() - dark0, 'f', 10 ) << "\t"
+//        << QString::number( vals1[i+1].toDouble() - dark1, 'f', 10 ) << endl;
   }
 
   file.close();

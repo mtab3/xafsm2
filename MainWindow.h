@@ -39,6 +39,12 @@ enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
 
+
+struct AutoModeParam {
+  int num;
+  double dx, dz;
+};
+
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
   Q_OBJECT
@@ -104,6 +110,7 @@ private:
   QDir mcaDir;
   QFileInfo BaseFile;
   QVector<MCAGain*> MCAGains;
+  QVector<MCAPeak> *MCAPeaks;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -113,6 +120,7 @@ private:
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
+  AUnit *ChangerX, *ChangerZ;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -130,7 +138,7 @@ private:
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
   double GoPosKeV[ GOS ];
-  double oldDeg;             // ShowCurThPos �Ǥν�ʣ�¹Ԥ��򤱤뤿�ᡣ
+  double oldDeg;             // ShowCurThPos での重複実行を避けるため。
   bool AllInited, MotorsInited, SensorsInited;
 
   void setupLogArea( void );
@@ -245,6 +253,8 @@ private:
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
   int EstimatedMeasurementTimeInSec;
+  bool SvSelRealTime, SvSelLiveTime;
+  bool SvSelExtPattern;
 
   void ClearBLKs( void );
   void ShowBLKs( void );
@@ -258,7 +268,7 @@ private:
 
   QVector<AUnit *> I0Sensors, I1Sensors, A1Sensors, A2Sensors;
   QString fixS( QString s, int l );
-  QString DFName0, DFName;
+  QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
   int inMeas, inPause, SinPause;
@@ -332,6 +342,14 @@ private:
   double RunUpRate, RunUpTime, QXafsDwellTime;
   QString EncValue0, Enc2Value0;
 
+  // Auto mode
+  bool AutoModeFirst;
+  bool MovingToNewSamplePosition;
+  int MeasA;
+  QVector<AutoModeParam> AutoModeParams;
+  void TouchDelegateFile( void );
+  QString AutoModeComment;
+
   void setupQXafsMode( void );
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
@@ -343,12 +361,19 @@ private:
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
   void DispQSpectrum( int g );
+  void QXafsFinish0( void );
   void QXafsFinish( void );
   bool CheckOkList( AUnit *as, QStringList OkList );
   bool theSensorIsAvailable( AUnit *as );
   void ShowQTime( double dtime, double WidthInPuls );
 
 private slots:
+
+  // Auto mode
+  bool ParseAutoMode( void );
+  void ShowItemsForAutoMode( void );
+  void SetNewChangerCenter( void );
+
   void Initialize( void );
   void InitializeUnitsAgain( void );
   void SendListNodes( void );
@@ -413,7 +438,7 @@ private slots:
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
-  void newGain( const QString &gain );
+  void newGain( void );
 #if 0      // new mcas
   void ShowNewMCAStat( void );
 #endif
@@ -421,6 +446,10 @@ private slots:
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
   void saveMonData( void );
+  void gotNewPeakList( QVector<MCAPeak>* );
+  void newPSSens( void );
+  void SelectedShowDiff( bool f );
+  void newCalibration( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -480,6 +509,10 @@ private slots:
   void newA1Range( int newR );
   void newA2Range( int newR );
 
+  void AutoMeasurement( void );
+  void moveToTarget( int target, double dx, double dy );
+  void AutoSequence( void );
+
   void StartMeasurement( void );
   void PauseMeasurement( void );
   void SurelyStop( void );
@@ -496,7 +529,7 @@ private slots:
   void NoticeMCAViewShowElmEnergy( bool f );
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
-  void doPeakFit( void );
+  //  void doPeakFit( void );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );

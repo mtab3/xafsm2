@@ -14,7 +14,7 @@ struct Element {
 };
 
 
-enum AtomNo {           /* Œ´Žq–¼‚Ì•Ï”‚ÉŒ´Žq”Ô†‚ð‘ã“ü */
+enum AtomNo {           /* åŽŸå­åã®å¤‰æ•°ã«åŽŸå­ç•ªå·ã‚’ä»£å…¥ */
     START,
      H,                                                                 He,
     Li, Be,                                          B,  C,  N,  O,  F, Ne,
@@ -37,14 +37,14 @@ enum AbEN {
 
 extern const QString AbENames[ Edges ];
 
-struct AtomInf {    /* ŠeŒ³‘f‚Ìî•ñ */
-  const AtomNo AN;     /* Œ´Žq”Ô†         */
-  const QString AName;   /* Œ´Žq–¼ (•¶Žš—ñ)  */
-  const double M;      /* Œ´Žq—Ê           */
+struct AtomInf {    /* å„å…ƒç´ ã®æƒ…å ± */
+  const AtomNo AN;     /* åŽŸå­ç•ªå·         */
+  const QString AName;   /* åŽŸå­å (æ–‡å­—åˆ—)  */
+  const double M;      /* åŽŸå­é‡           */
 };
 
-const AtomInf A[ ATOMS ] = {  /* ŠeŒ³‘f‚Ìî•ñ */
-  /*  Œ´Žq”Ô†, Œ´Žq–¼, Œ´Žq—Ê */
+const AtomInf A[ ATOMS ] = {  /* å„å…ƒç´ ã®æƒ…å ± */
+  /*  åŽŸå­ç•ªå·, åŽŸå­å, åŽŸå­é‡ */
   { START,  " ",   0           },
   {     H,  "H",   1.007900000 },
   {    He, "He",   4.002600000 },

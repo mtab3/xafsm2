@@ -2,7 +2,7 @@
 
 #include "MainWindow.h"
 
-void MainWindow::setupSetupArea( void )   /* İ’èƒGƒŠƒA */
+void MainWindow::setupSetupArea( void )   /* è¨­å®šã‚¨ãƒªã‚¢ */
 {
   GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
@@ -380,7 +380,7 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
     val = QString::number
       ( ( val0.toDouble() - am->getCenter() ) * am->getUPP() );
     MCurPosUnit->setText( val );
-    if ( setupMDispFirstTime == true ) {  // Å‰‚Ìˆê‰ñ‚¾‚¯
+    if ( setupMDispFirstTime == true ) {  // æœ€åˆã®ä¸€å›ã ã‘
       if ( GoMRelAbs == ABS ) {
 	GoMotorPosPuls->setText( val0 );
 	GoMotorPosUnit->setText( val );
@@ -626,10 +626,10 @@ void MainWindow::ScanStart( void )
     GoMotor->setEnabled( false );
 
     ScanView->Clear();
-    ScanView->SetLR( 0, LEFT_AX );   // 0 ”Ô–Ú‚Ìü‚ÍƒOƒ‹[ƒv 0, 1 ”Ô–Ú‚Ìü‚ÍƒOƒ‹[ƒv 1
-    ScanView->SetLR( 1, RIGHT_AX );   // 0 ”Ô–Ú‚Ìü‚ÍƒOƒ‹[ƒv 0, 1 ”Ô–Ú‚Ìü‚ÍƒOƒ‹[ƒv 1
-    ScanView->SetScaleType( 0, FULLSCALE ); // ƒOƒ‹[ƒv 0 ‚à 1 ‚à FULLSCALE
-    ScanView->SetScaleType( 1, FULLSCALE ); // ƒOƒ‹[ƒv 0 ‚à 1 ‚à FULLSCALE
+    ScanView->SetLR( 0, LEFT_AX );   // 0 ç•ªç›®ã®ç·šã¯ã‚°ãƒ«ãƒ¼ãƒ— 0, 1 ç•ªç›®ã®ç·šã¯ã‚°ãƒ«ãƒ¼ãƒ— 1
+    ScanView->SetLR( 1, RIGHT_AX );   // 0 ç•ªç›®ã®ç·šã¯ã‚°ãƒ«ãƒ¼ãƒ— 0, 1 ç•ªç›®ã®ç·šã¯ã‚°ãƒ«ãƒ¼ãƒ— 1
+    ScanView->SetScaleType( 0, FULLSCALE ); // ã‚°ãƒ«ãƒ¼ãƒ— 0 ã‚‚ 1 ã‚‚ FULLSCALE
+    ScanView->SetScaleType( 1, FULLSCALE ); // ã‚°ãƒ«ãƒ¼ãƒ— 0 ã‚‚ 1 ã‚‚ FULLSCALE
     ScanView->SetLeftName( " " );
     ScanView->SetRightName( " " );
     for ( int i = 0; i < mUnits.count(); i++ )
@@ -715,7 +715,7 @@ void MainWindow::Monitor( void )
     MonitorView = (TYView*)(MonitorViewC->getView());
     
     inMonitor = 1;
-    MonStage = 0;   // Œv‘ª‚ÌƒTƒCƒNƒ‹
+    MonStage = 0;   // è¨ˆæ¸¬ã®ã‚µã‚¤ã‚¯ãƒ«
 
     mUnits.clearUnits();
     mUnits.addUnit( as0 );

@@ -39,7 +39,7 @@ void MUnits::addUnit( AUnit *au )
   }
 }
 
-void MUnits::setDwellTimes( double dt )   // �ƻ�������Ʊ�����֤��ۤ�
+void MUnits::setDwellTimes( double dt )   // 親子全員に同じ時間を配る
 {
   for ( int i = 0; i < Units.count(); i++ ) {
     Units.at(i)->dt = dt;
@@ -80,7 +80,7 @@ void MUnits::clearDoneF( void )
   }
 }
 
-// �ƥ�˥åȤ���ä� QXAFS ��ǽ�ʥ�˥åȤ��ФƤ���ޤǿƥ�˥åȤΤ��Ȥϵ��ˤ��ʤ�
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
 bool MUnits::QStart( void )   // QXAFS
 {
   bool ff = false;
@@ -92,7 +92,7 @@ bool MUnits::QStart( void )   // QXAFS
   return ff;
 }
 
-// �ƥ�˥åȤ���ä� QXAFS ��ǽ�ʥ�˥åȤ��ФƤ���ޤǿƥ�˥åȤΤ��Ȥϵ��ˤ��ʤ�
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
 bool MUnits::QRead( void )   // QXAFS
 {
   bool ff = false;
@@ -112,7 +112,7 @@ bool MUnits::QRead( void )   // QXAFS
   return ff;
 }
 
-// �ƥ�˥åȤ���ä� QXAFS ��ǽ�ʥ�˥åȤ��ФƤ���ޤǿƥ�˥åȤΤ��Ȥϵ��ˤ��ʤ�
+// 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
 bool MUnits::QEnd( void )   // QXAFS
 {
   bool ff = false;
@@ -139,13 +139,13 @@ bool MUnits::init( void )
   return ff;
 }
 
-void MUnits::setDwellTime( void )  // �����ۥ�Ȥ��������Ԥķ��ˤ���٤�
+void MUnits::setDwellTime( void )  // これもホントは返答を待つ形にするべき
 {
   double rv;
 
   for ( int i = 0; i < PUnits.count(); i++ ) {
     if ( ( rv = PUnits.at(i)->au->SetTime( PUnits.at(i)->dt ) ) != PUnits.at(i)->dt ) {
-      // ���ꤷ�褦�Ȥ����ͤȼºݤ����ꤵ�줿�ͤ���äƤ���
+      // 設定しようとした値と実際に設定された値が違ってたら
       QMessageBox *msg1 = new QMessageBox;
       msg1->setModal( false );
       msg1->setText( tr( "Dwell time was set [%1] for [%2],"
@@ -161,7 +161,7 @@ void MUnits::setDwellTime( void )  // �����ۥ�Ȥ��������Ԥķ��ˤ���٤�
   for ( int i = 0; i < Units.count(); i++ ) {
     //    if ( ! Units.at(i)->au->hasParent() ) {
     if ( ( rv = Units.at(i)->au->SetTime( Units.at(i)->dt ) ) != Units.at(i)->dt ) {
-      // ���ꤷ�褦�Ȥ����ͤȼºݤ����ꤵ�줿�ͤ���äƤ���
+      // 設定しようとした値と実際に設定された値が違ってたら
       QMessageBox *msg1 = new QMessageBox;
       msg1->setModal( false );
       msg1->setText( tr( "Dwell time was set [%1] for [%2],"
@@ -207,7 +207,7 @@ bool MUnits::getValue( void )
 }
 
 void MUnits::readValue( double *rvs, double *cps, bool correctBack )
-// ��Ͽ����Ƥ����˥åȤθ����ͤ����ͤ��������֤�
+// 登録されているユニットの現在値を前詰めの配列で返す
 {
   for ( int i = 0; i < Units.count(); i++ ) {
     rvs[i] = Units.at(i)->au->value().toDouble();

@@ -24,6 +24,7 @@ class AUnit : public QObject
   bool Enable;          // if the unit is enable on Stars server or not
   int aLine;            // the line number where the definition appears in .def file
   bool autoRange;
+  bool ConnectedToSSDServer;
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
@@ -64,7 +65,7 @@ class AUnit : public QObject
   QDataStream *dLinkStream;
   int dLinkCount;
   char *MCAs0, *MCAs;
-  bool MCAsReady;    // MCAs §ÀÕ≠∏˙§ •«°º•ø§¨§¢§Î true, Ãµ§§ false
+  bool MCAsReady;    // MCAs „Å´ÊúâÂäπ„Å™„Éá„Éº„Çø„Åå„ÅÇ„Çã true, ÁÑ°„ÅÑ false
 
   QString DataLinkHostName;
   qint16 DataLinkHostPort;
@@ -190,6 +191,7 @@ public:
   // only for PM
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
   void setCenter( QString center ) { Center = center.toDouble(); };
+  void setCenter( double center ) { Center = center; };
 
   // only for PZ
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
