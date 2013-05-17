@@ -55,7 +55,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   GridC       = QColor( 100, 100, 190 );  // グリッドの色
   AListC      = QColor( 200,   0, 100 );  // 元素名リスト 
   SMCAC       = QColor( 255,   0,   0 );  // スムージングしたスペクトル
-  DMCAC       = QColor( 0,   0,   255 );  // 微分
+  DMCAC       = QColor(   0,   0, 255 );  // 微分
+  PEAKPOINTC  = QColor( 100, 100, 100 );  // 微分
 
   rROIsx = 0;
   rROIex = 20;
@@ -238,8 +239,6 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
-#ifdef PEAKSEARCH  // MCA スペクトルのスムージングとピークサーチ
-
   for ( int i = 0; i < MCALen; i++ ) {               // Smoothing した MCA スペクトル
     double ss, ww;
     ss = ww = 0;
@@ -314,14 +313,6 @@ void MCAView::Draw( QPainter *p )
     }
   }
   emit newPeakList( &MCAPeaks );
-#if 0      // debug
-  QVector<double> PC;
-  for ( int i = 0; i < MCAPeaks.count(); i++ ) {
-    PC << MCAPeaks[i].center;
-  }
-  qDebug() << PC;
-#endif    // debug
-#endif
 
   double lastE = 0;
   int sum = 0;
@@ -374,6 +365,28 @@ void MCAView::Draw( QPainter *p )
       }
     }
     lastE = E;
+  }
+
+  p->setPen( PEAKPOINTC );
+  for ( int i = 0; i < MCAPeaks.count(); i++ ) {
+    // 発見したピーク位置に○印
+    p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3,
+		    cc.r2sy( MCAPeaks[i].peakH ) - 3,
+		    7, 7 );
+    // 丸の横にひげ線
+    p->drawLine( cc.r2sx( MCAPeaks[i].centerE ) + 2,
+		 cc.r2sy( MCAPeaks[i].peakH )
+		 + ( ( MCAPeaks[i].peakH > cc.Rmaxy() / 2 ) ? 2 : -2 ),
+		 cc.r2sx( MCAPeaks[i].centerE ) + 10,
+		 cc.r2sy( MCAPeaks[i].peakH )
+		 + ( ( MCAPeaks[i].peakH > cc.Rmaxy() / 2 ) ? 8 : -8 ) );
+    // ひげ線の先にピーク番号
+    rec.setRect( cc.r2sx( MCAPeaks[i].centerE ) + 10,
+		 cc.r2sy( MCAPeaks[i].peakH )
+		 + ( ( MCAPeaks[i].peakH > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
+		 dLM * 2, dVW );
+    cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		 QString::number( i ) );
   }
 
   p->setPen( Black );                      // グラフ外枠の四角描画
@@ -807,6 +820,6 @@ void MCAView::setNewPSSens( QString newSens )
 
   if ( s > 0 ) {
     PSSens = s;
-    qDebug() << "newSens " << s;
+    update();
   }
 }

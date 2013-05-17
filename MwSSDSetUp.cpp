@@ -137,6 +137,9 @@ void MainWindow::newCalibration( void )
 	       << oldE << PeakCalibrate->text().toDouble() << ratio
 	       << "new gain " << GainInput->text().toDouble() / ratio;
       if ( ratio <= 0 ) return;
+      // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
+      // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
+      PeakCalibrate->setText( "" );
       // gain の設定は何故か逆
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
       // 設定したゲインの読み出し
@@ -709,9 +712,13 @@ void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
 {
   MCAPeaks = peaks;
   for ( int i = 0; i < peaks->count(); i++ ) {
-    QString aPeak = QString( "%1 [keV] (%2 pix)" )
+    QString aPeak = QString( "%1: %2 [keV] (%3 pix) [%4, %5]" )
+      .arg( i )
       .arg( (*peaks)[i].centerE )
-      .arg( (*peaks)[i].center  );
+      .arg( (*peaks)[i].center  )
+      .arg( (*peaks)[i].start )
+      .arg( (*peaks)[i].end );
+    
     if ( i >= MCAPeakList->count() ) {
       MCAPeakList->addItem( aPeak );
     } else {

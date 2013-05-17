@@ -17,6 +17,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+  MainTab->setCurrentIndex( 0 );
+
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
   T->start();

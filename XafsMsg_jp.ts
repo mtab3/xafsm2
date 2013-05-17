@@ -1030,7 +1030,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Preset:</source>
-        <translation>プリセット</translation>
+        <translation type="obsolete">プリセット</translation>
     </message>
     <message>
         <source>  ROI end</source>
@@ -1845,7 +1845,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>[keV]   Sensitivity </source>
-        <translation>[keV]   感度 </translation>
+        <translation type="obsolete">[keV]   感度 </translation>
     </message>
     <message>
         <source>0.5</source>
@@ -1883,6 +1883,34 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Items</source>
         <translation>点数</translation>
+    </message>
+    <message>
+        <source>  Preset:</source>
+        <translation>  プリセット: </translation>
+    </message>
+    <message>
+        <source>Integration</source>
+        <translation>積算</translation>
+    </message>
+    <message>
+        <source>Disp. Elm.</source>
+        <translation>元素表示</translation>
+    </message>
+    <message>
+        <source>[keV] </source>
+        <translation>[keV]</translation>
+    </message>
+    <message>
+        <source>Peak Search</source>
+        <translation>ピークサーチ</translation>
+    </message>
+    <message>
+        <source>Sensitivity: </source>
+        <translation>感度: </translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation>パラメータ</translation>
     </message>
 </context>
 <context>

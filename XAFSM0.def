@@ -27,7 +27,7 @@ XAFSTitle "XafsM2-BL5S1"
 #
 # MCAGAIN ch gain
 #
-MCAGAIN 5 0.768
+#MCAGAIN 5 0.768
 
 #
 # Define if Quick-Xafs Mode is available or not
