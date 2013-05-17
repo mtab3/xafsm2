@@ -61,6 +61,7 @@ private:
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
   QColor SMCAC, DMCAC;
+  QColor PEAKPOINTC;
 
   void Draw( QPainter *p );
 
@@ -87,7 +88,7 @@ public:
   double getLiveTime( void ) { return liveTime; };
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
   void setNewPSSens( QString newSens );
-  void setShowDiff( bool f ) { ShowDiff = f; };
+  void setShowDiff( bool f ) { ShowDiff = f; update(); };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel

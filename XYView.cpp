@@ -228,6 +228,7 @@ void XYView::Draw( QPainter *p )
   double x0, x1, y0, y1, hx, hy;
   double a1, a2;
   double d, b;
+  x0 = x1 = y0 = y1 = 0;
 
   int linedir[ MAXLINES ];           // x軸の数字の並び
   for ( int i = 0; i <= inLines; i++ ) {
