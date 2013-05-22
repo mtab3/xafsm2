@@ -340,7 +340,7 @@ void MainWindow::ShowCurThPos( void )
     ShowCurrentAngle->setText( buf1 );
     buf2.sprintf( UnitName[DEG].form, u->deg2keV( deg ) );
     ShowCurrentEnergy->setText( buf2 );
-    
+    emit NewEnergy( u->deg2keV( deg ) );
     NewLogMsg( tr( "Current Position [%1] deg [%2] keV" ).arg( buf1 ).arg( buf2 ) );
   }
 }

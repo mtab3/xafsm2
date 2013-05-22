@@ -568,6 +568,7 @@ private slots:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
   //  void GiveNewView( QObject *to, ViewCTRL *view );
+  void NewEnergy( double e );
 };
 
 #endif

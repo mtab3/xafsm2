@@ -70,6 +70,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 	   Parent, SLOT( setNewROI( int, int ) ) );
   connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
+  connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ) );
 }
 
 MCAView::~MCAView( void )
