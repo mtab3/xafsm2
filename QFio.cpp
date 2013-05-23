@@ -131,13 +131,15 @@ void MainWindow::WriteQBody( void )
   double upp2 = 0;
   double i0, i1;
   QString buf;
+
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
   
   for ( int i = 0; i < num; i++ ) {
     deg = ( p - c ) * upp;
-    p += d;
+    // p += d;
+    p -= d;
     if ( Enc2 == NULL ) {
       deg2 = deg;
     } else {
