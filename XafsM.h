@@ -92,7 +92,7 @@ struct MSPEEDD {
 };
 const MSPEEDD MSpeeds[ MSPEEDS ] = {
   { LOW,    "Low" },
-  { MIDDLE, "Midium" },
+  { MIDDLE, "Medium" },
   { HIGH,   "High" },
 };
 
