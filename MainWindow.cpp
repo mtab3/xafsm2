@@ -49,7 +49,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   MMainTh = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
-  ChangerX = ChangerZ = NULL;
+  //  ChangerX = ChangerZ = NULL;
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
@@ -208,12 +208,15 @@ void MainWindow::InitAndIdentifyMotors( void )
       }
       MMainTh = am;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+#if 0
     } else if ( am->getID() == "ChangerX" ) {
       ChangerX = am;
     } else if ( am->getID() == "ChangerZ" ) {
       ChangerZ = am;
+#endif
     }
   }
+#if 0    // no more ChangerX, Z
   if (( ChangerX == NULL )||( ChangerZ == NULL)) {
 #if 0
     AutoModeButton->setChecked( false );
@@ -221,6 +224,7 @@ void MainWindow::InitAndIdentifyMotors( void )
 #endif
     ChangerBox->setHidden( true );
   }
+#endif  // no more ChangerX, Z
 }
 
 void MainWindow::InitAndIdentifySensors( void )

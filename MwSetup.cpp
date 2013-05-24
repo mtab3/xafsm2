@@ -157,6 +157,27 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( setSelectedScanFName( const QString & ) ) );
   connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
   connect( SaveMonData, SIGNAL( clicked() ), this, SLOT( saveMonData() ) );
+
+  // Changer
+  for ( int i = 0; i < Changers.count(); i++ ) {
+    for ( int j = 0; j < AMotors.count(); j++ ) {
+      if ( Changers[i]->unitID1() == AMotors[j]->getUid() ) {
+	Changers[i]->setUnit1( AMotors[j] );
+	//	qDebug() << "Changer " << i << "unit1 " << AMotors[j]->getName();
+      }
+      if ( Changers[i]->unitID2() == AMotors[j]->getUid() ) {
+	Changers[i]->setUnit2( AMotors[j] );
+	//	qDebug() << "Changer " << i << "unit2 " << AMotors[j]->getName();
+      }
+    }
+    ChangerSelect->addItem( Changers[i]->name() );
+  }
+  ChangerToGoHolderSelect->setMinimum( 1 );
+  ChangerToGoHolderSelect->setMaximum( 1 );
+  ChangerCurrentHolder->setMinimum( 1 );
+  ChangerCurrentHolder->setMinimum( 1 );
+  connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
+  connect( ChangerGo, SIGNAL( clicked() ), this, SLOT( ChangerGoToNewPosition() ) );
 }
 
 void MainWindow::newSensSelected( int i )

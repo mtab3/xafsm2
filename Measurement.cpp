@@ -9,7 +9,8 @@ void MainWindow::MeasSequence( void )
   if ( AskingOverwrite ) return;
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
   if ( MovingToNewSamplePosition ) {
-    if ( ChangerX->isBusy() || ChangerZ->isBusy() )
+    if ( Changers[ ChangerSelect->currentIndex() ]->unit1()->isBusy()
+	 || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
       return;
     MovingToNewSamplePosition = false;
   }

@@ -41,8 +41,8 @@ void MainWindow::AutoSequence( void )
   //           << "AutoModeParams.count()" << AutoModeParams.count();
 
   if ( ( MeasA + 1 ) >=  AutoModeParams.count() ) {
-    ChangerX->SetValue( 0 );
-    ChangerZ->SetValue( 0 );
+    Changers[ ChangerSelect->currentIndex() ]->unit1()->SetValue( 0 );
+    Changers[ ChangerSelect->currentIndex() ]->unit2()->SetValue( 0 );
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
                 this, SLOT( AutoSequence() ) );
   } else if ( !(MMainTh->isBusy()) ) {
@@ -56,32 +56,44 @@ void MainWindow::AutoSequence( void )
   }
 }
 
-#define ChangerXSpacing  ( 50.0 )        // mm
-#define ChangerZSpacing  ( 45.0 )        // mm
-
 void MainWindow::SetNewChangerCenter( void )
 {
-  int target = ChangerCurrentHolder->value();
-  int ix = ( target - 1 ) % 3 - 1;    // -1, 0, 1
-  int iz = ( target - 1 ) / 3 - 1;    // -1, 0, 1
-  int nowx = ChangerX->value().toInt();
-  int nowz = ChangerZ->value().toInt();
-  ChangerX->setCenter( nowx - ix * ChangerXSpacing / ChangerX->getUPP() );
-  ChangerZ->setCenter( nowz - iz * ChangerZSpacing / ChangerZ->getUPP() );
+  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  AUnit *c1 = changer->unit1();
+  AUnit *c2 = changer->unit2();
+
+  int target = ChangerCurrentHolder->value();       // Target は 1 始まりの整数
+  int ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
+  int iz = ( target - 1 ) / changer->holders2() - changer->center2();    // -1, 0, 1
+  int nowx = c1->value().toInt();
+  int nowz = c2->value().toInt();
+  c1->setCenter( nowx + ix * changer->spacing1() / c1->getUPP() * changer->dir1() );
+  c2->setCenter( nowz + iz * changer->spacing2() / c2->getUPP() * changer->dir2() );
 }
 
 void MainWindow::moveToTarget( int target, double dx, double dz )
 {
-  qDebug() << "target" << "dx" << "dz";
-  qDebug() << target << dx << dz;
+  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  AUnit *c1 = changer->unit1();
+  AUnit *c2 = changer->unit2();
+
   MovingToNewSamplePosition = true;   // このフラグで移動中の測定をブロックする
-  int ix = ( target - 1 ) % 3 - 1;    // -1, 0, 1
-  int iz = ( target - 1 ) / 3 - 1;    // -1, 0, 1
-  int targetx = ChangerX->u2p( ChangerXSpacing * ix * -1 ) + dx / ChangerX->getUPP();
-  int targetz = ChangerZ->u2p( ChangerZSpacing * iz * -1 ) + dz / ChangerZ->getUPP();
+  int ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
+  int iz = ( target - 1 ) / changer->holders2() - changer->center2();    // -1, 0, 1
+  int targetx = c1->u2p( changer->spacing1() * ix * changer->dir1() )
+                   + dx / c1->getUPP() * changer->dir1();
+  int targetz = c2->u2p( changer->spacing2() * iz * changer->dir2() )
+                   + dz / c2->getUPP() * changer->dir2();
   DFName00 = QString("_%1").arg( MeasA );
-  AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" ).arg( target ).arg( dx ).arg( dz );
-  ChangerX->SetValue( targetx );
-  ChangerZ->SetValue( targetz );
+  AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" )
+    .arg( target ).arg( dx ).arg( dz );
+  c1->SetValue( targetx );
+  c2->SetValue( targetz );
 }
 
+void MainWindow::ChangerGoToNewPosition( void )
+{
+  moveToTarget( ChangerToGoHolderSelect->value(),
+		ChangerToGoFinePosition1->text().toDouble(),
+		ChangerToGoFinePosition2->text().toDouble() );
+}

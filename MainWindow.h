@@ -121,7 +121,7 @@ private:
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
-  AUnit *ChangerX, *ChangerZ;
+  //  AUnit *ChangerX, *ChangerZ;
 
   QVector<Changer*> Changers;
 
@@ -376,6 +376,7 @@ private slots:
   bool ParseAutoMode( void );
   void ShowItemsForAutoMode( void );
   void SetNewChangerCenter( void );
+  void ChangerGoToNewPosition( void );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );

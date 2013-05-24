@@ -223,7 +223,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   // Auto mode   :  The parse can be done, on starting measurement
   connect( AutoMode, SIGNAL( editingFinished() ),
 	   this, SLOT( ShowItemsForAutoMode() ) );
-  connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
 }
 
 void MainWindow::newSensSelectedForI0( int index )

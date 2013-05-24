@@ -179,9 +179,12 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); newChanger->setUnitId2( item );
 	next = nextItem( next, item ); newChanger->setHolders1( item.toInt() );
 	next = nextItem( next, item ); newChanger->setHolders2( item.toInt() );
-	next = nextItem( next, item ); newChanger->setCenterHolder( item.toInt() );
+	next = nextItem( next, item ); newChanger->setCenter1( item.toInt() );
+	next = nextItem( next, item ); newChanger->setCenter2( item.toInt() );
 	next = nextItem( next, item ); newChanger->setSpacing1( item.toDouble() );
 	next = nextItem( next, item ); newChanger->setSpacing2( item.toDouble() );
+	next = nextItem( next, item ); newChanger->setDir1( item.toInt() );
+	next = nextItem( next, item ); newChanger->setDir2( item.toInt() );
 	Changers << newChanger;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
