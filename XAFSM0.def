@@ -177,6 +177,11 @@ MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -1
 MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
 MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
 
+CHANGER "C000" "M009" "M010" 50 45
+# CHANGER   :   The key word is used to define a sample changer
+#  "C000"   :   Uniq identifire of the changer. The ID must be identical
+
+
 # define Sensor units
 
 #SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
