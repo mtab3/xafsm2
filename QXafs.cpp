@@ -88,7 +88,6 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux2->setEnabled( false );
 
     SetNewRPTLimit();
-    qDebug() << "rpt max " << SelRPT->maximum();
 
   } else {
 
@@ -280,8 +279,8 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 void MainWindow::QXafsMeasSequence( void )
 {
   int g;
-  qDebug() << "in " << MeasStage;
   QDateTime DebugTime1, DebugTime2;
+  QString DebugBuf;
 
   switch( MeasStage ) {
   case 0:
@@ -312,7 +311,6 @@ void MainWindow::QXafsMeasSequence( void )
   case 2:
     EncValue0 = EncMainTh->value();
     if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
-    //    qDebug() << "Enc and Enc2 " << EncValue0 << Enc2Value0;
     mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
     mUnits.clearStage();
@@ -350,9 +348,10 @@ void MainWindow::QXafsMeasSequence( void )
     DebugTime2 = QDateTime::currentDateTime();    // debug
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
 
-    qDebug() << "Interval to return at start point: "                      // debug
-	     << DebugTime1.toString("yy.MM.dd hh:mm.zzz")
-	     << DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+    DebugBuf = "Interval to return at start point: "
+      + DebugTime1.toString("yy.MM.dd hh:mm.zzz") + " "
+      + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+    NewLogMsg( DebugBuf );
 
     mUnits.clearDoneF();      // QRead を一台ずつ行うためのしかけ // 現状不要のはず。
     MeasStage++;
@@ -401,9 +400,10 @@ void MainWindow::QXafsMeasSequence( void )
     DebugTime2 = QDateTime::currentDateTime();    // debug
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
 
-    qDebug() << "Interval to return at end point: "                      // debug
-	     << DebugTime1.toString("yy.MM.dd hh:mm.zzz")
-	     << DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+    DebugBuf =  "Interval to return at end point: "
+      + DebugTime1.toString("yy.MM.dd hh:mm.zzz") + " "
+      + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+    NewLogMsg( DebugBuf );
 
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       WriteQHeader( MeasR, BACKWARD );
