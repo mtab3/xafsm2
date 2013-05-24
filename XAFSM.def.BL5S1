@@ -6,9 +6,10 @@
 # 2013/04/19 add 'QXAFSOK'     line
 #                'NORMALOK'    line
 # 2013/04/25 add 'MCAGAIN'     line
-#
+# 2013/05/03 add new IDs 'ChangerX' and 'ChangerZ' for PMs
+# 2013/05/23 add 'CHANGER'     line.
+#                The IDs 'ChangerX' and 'ChangerY' will be obsolete soon.
 
-#
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
 # though, it cause no difference use or not use the "" basically.
@@ -178,6 +179,26 @@ MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0
 #MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
 #MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
 #MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
+
+CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 5 50 45
+
+# CHANGER      :   The key word is used to define a sample changer
+#  "C000"      :   Uniq identifire of the changer. The ID must be identical
+#  "3x3 Stage" :   Name of the Changer, which will be used only for display.
+#  "M009"      :   The first axis of the changer
+#  "M010"      :   The second axis of the changer
+#     3        :   Number of samples along the first axis.
+#     3        :   Number of samples along the second axis.
+#     5        :   Sample holder number which should be center.
+#    50        :   spacing along the first axis.
+#              :   The unit should be the metric unit defined for the first axis.
+#              :   In this case it is "mm".
+#    45        :   spacing along the second axis. 
+#              :   The unit should be the metric unit defined for the second axis.
+#              :   In this case it is "mm".
+
+CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 25 15 15
+
 
 # define Sensor units
 

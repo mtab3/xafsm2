@@ -171,6 +171,18 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); mcaGain->ch = item.toInt();
 	next = nextItem( next, item ); mcaGain->gain = item.toDouble();
 	MCAGains << mcaGain;
+      } else if ( item == "CHANGER" ) {
+	Changer *newChanger = new Changer;
+	next = nextItem( next, item ); newChanger->setID( item );
+	next = nextItem( next, item ); newChanger->setName( item );
+	next = nextItem( next, item ); newChanger->setUnitId1( item );
+	next = nextItem( next, item ); newChanger->setUnitId2( item );
+	next = nextItem( next, item ); newChanger->setHolders1( item.toInt() );
+	next = nextItem( next, item ); newChanger->setHolders2( item.toInt() );
+	next = nextItem( next, item ); newChanger->setCenterHolder( item.toInt() );
+	next = nextItem( next, item ); newChanger->setSpacing1( item.toDouble() );
+	next = nextItem( next, item ); newChanger->setSpacing2( item.toDouble() );
+	Changers << newChanger;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
