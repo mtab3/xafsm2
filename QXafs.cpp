@@ -281,6 +281,7 @@ void MainWindow::QXafsMeasSequence( void )
 {
   int g;
   qDebug() << "in " << MeasStage;
+  QDateTime DebugTime1, DebugTime2;
 
   switch( MeasStage ) {
   case 0:
@@ -303,7 +304,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 1:
     EncMainTh->GetValue();
-    if ( mUnits.init() ) // DV は Reset だけ, ENC2 は GetValue だけ
+    if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
@@ -322,6 +323,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 4:      // Repeat Point
+    DebugTime1 = QDateTime::currentDateTime();    // debug
     if ( mUnits.QStart() )
       break;
     mUnits.clearStage();
@@ -345,11 +347,18 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 6:
+    DebugTime2 = QDateTime::currentDateTime();    // debug
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
-    mUnits.clearDoneF();      // QRead を一台ずつ行うため // 現状不要のはず。
+
+    qDebug() << "Interval to return at start point: "                      // debug
+	     << DebugTime1.toString("yy.MM.dd hh:mm.zzz")
+	     << DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+
+    mUnits.clearDoneF();      // QRead を一台ずつ行うためのしかけ // 現状不要のはず。
     MeasStage++;
     break;
   case 7:
+    DebugTime1 = QDateTime::currentDateTime();    // debug
     if ( mUnits.QRead() )
       break;
     MeasStage++;
@@ -389,7 +398,13 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 11:
+    DebugTime2 = QDateTime::currentDateTime();    // debug
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+
+    qDebug() << "Interval to return at end point: "                      // debug
+	     << DebugTime1.toString("yy.MM.dd hh:mm.zzz")
+	     << DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       WriteQHeader( MeasR, BACKWARD );
       MeasStage++;
