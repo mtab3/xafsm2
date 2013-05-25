@@ -8,9 +8,16 @@ void MainWindow::setupQXafsMode( void )
   connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
   connect( QLimitedDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
+  connect( QIntervalAtStart, SIGNAL( editingFinished() ),
+	   this, SLOT( CheckQXafsParams() ) );
+  connect( QIntervalAtEnd, SIGNAL( editingFinished() ),
+	   this, SLOT( CheckQXafsParams() ) );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QConditionBox->setHidden( true );
+  QIntervalTimer = new QTimer;
+  QIntervalTimer->setSingleShot( true );
+  connect( QIntervalTimer, SLOT( timeout() ), this, SLOT( QIntervalTimeout() ) );
 #if 0
   QMeasOnBackward->setHidden( true );
   QMinMaxBox->setHidden( true );
@@ -19,6 +26,12 @@ void MainWindow::setupQXafsMode( void )
   QSepLine->setHidden( true );
   QLimitedDisplay->setHidden( true );
 #endif
+}
+
+void MainWindow::QIntervalTimeout( void )
+{
+  QIntervalTimer->stop();
+  QIntervalBlock = false;
 }
 
 void MainWindow::SetNewRPTLimit( void )
@@ -88,7 +101,6 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux2->setEnabled( false );
 
     SetNewRPTLimit();
-    qDebug() << "rpt max " << SelRPT->maximum();
 
   } else {
 
@@ -177,13 +189,17 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
 
   int Th, Tm, Ts;
   double TT, TTT;
+  // TT は一回のスキャンだけの時間。
+  // TTT はインターバルを入れて、繰り返し回数をかけた時間
   if ( dtime > 0 ) {
     if ( QMeasOnBackward->isChecked() ) {
       TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 は実測の補正値
     } else {
       TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
     }
-    TTT = TT * SelRPT->value();
+    TTT = TT * SelRPT->value()
+      + QIntervalAtStart->text().toDouble() * ( SelRPT->value() - 1 )
+      + QIntervalAtEnd->text().toDouble() * SelRPT->value();
   } else {
     TTT = TT = 0;
   }
@@ -280,7 +296,11 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 void MainWindow::QXafsMeasSequence( void )
 {
   int g;
-  qDebug() << "in " << MeasStage;
+  QDateTime DebugTime1, DebugTime2;
+  QString DebugBuf;
+
+  if ( QIntervalBlock )
+    return;
 
   switch( MeasStage ) {
   case 0:
@@ -303,7 +323,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 1:
     EncMainTh->GetValue();
-    if ( mUnits.init() ) // DV は Reset だけ, ENC2 は GetValue だけ
+    if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
@@ -311,7 +331,6 @@ void MainWindow::QXafsMeasSequence( void )
   case 2:
     EncValue0 = EncMainTh->value();
     if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
-    //    qDebug() << "Enc and Enc2 " << EncValue0 << Enc2Value0;
     mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
     mUnits.clearStage();
@@ -319,9 +338,14 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 3:
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
-    MeasStage++;
+    MeasStage = 5;    // 最初は始点でのインターバル指定があってもインターバルを取らない
     break;
-  case 4:      // Repeat Point
+  case 4:      // Repeat Point 1
+    QIntervalBlock = true;
+    QIntervalTimer->start( QIntervalAtStart->text().toDouble() * 1000 );
+    break;
+  case 5:      // Repeat Point 2
+    DebugTime1 = QDateTime::currentDateTime();    // debug
     if ( mUnits.QStart() )
       break;
     mUnits.clearStage();
@@ -340,22 +364,30 @@ void MainWindow::QXafsMeasSequence( void )
     MMainTh->SetHighSpeed( HSpeed );
     MeasStage++;
     //break;
-  case 5:
+  case 6:
     SetUpMainThToGenerageTriggerSignal( QXafsSP0, QXafsEP0 );
     MeasStage++;
     break;
-  case 6:
+  case 7:
+    DebugTime2 = QDateTime::currentDateTime();    // debug
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
-    mUnits.clearDoneF();      // QRead を一台ずつ行うため // 現状不要のはず。
+
+    DebugBuf = "Interval to return at start point: "
+      + DebugTime1.toString("yy.MM.dd hh:mm.zzz") + " "
+      + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+    NewLogMsg( DebugBuf );
+
+    mUnits.clearDoneF();      // QRead を一台ずつ行うためのしかけ // 現状不要のはず。
     MeasStage++;
     break;
-  case 7:
+  case 8:
+    DebugTime1 = QDateTime::currentDateTime();    // debug
     if ( mUnits.QRead() )
       break;
     MeasStage++;
     mUnits.clearStage();
     break;
-  case 8:
+  case 9:
 #if 0
     qDebug() << "aa" << mUnits.count();
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
@@ -368,43 +400,60 @@ void MainWindow::QXafsMeasSequence( void )
     DispQSpectrum( g );
     MeasStage++;
     break;
-  case 9:
+  case 10:
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
       CurrentPnt->setText( tr( "Bwd" ) );
-      MeasStage++;
+      if ( QIntervalAtEnd->text().toDouble() > 0 )
+	MeasStage = 11;      // 終了点での Interval時間指定があった場合
+      else
+	MeasStage = 12;      // 終了点での Interval時間指定が無かった場合
     } else {
       MMainTh->SetHighSpeed( MaxHSpeed );
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
-      MeasStage = 11;
+      MeasStage = 13;
     }
     break;
-  case 10:
+  case 11:
+    QIntervalBlock = true;
+    QIntervalTimer->start( QIntervalAtEnd->text().toDouble() * 1000 );
+    break;
+  case 12:
     if ( mUnits.QStart() )
       break;
     MeasStage++;
     break;
-  case 11:
+  case 13:
+    DebugTime2 = QDateTime::currentDateTime();    // debug
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+
+    DebugBuf =  "Interval to return at end point: "
+      + DebugTime1.toString("yy.MM.dd hh:mm.zzz") + " "
+      + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
+    NewLogMsg( DebugBuf );
+
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       WriteQHeader( MeasR, BACKWARD );
       MeasStage++;
     } else {
-      MeasStage = 4; // Repeat Point
+      if ( QIntervalAtStart->text().toDouble() > 0 )
+	MeasStage = 4; // 始点でのインターバル指定がある場合 : Repeat Point 1
+      else
+	MeasStage = 5; // 始点でのインターバル指定がない場合 : Repeat Point 2
     }
     mUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
     break;
-  case 12:
+  case 14:
     if ( mUnits.QRead() )
       break;
     mUnits.clearStage();
     MeasStage++;
     break;
-  case 13:
+  case 15:
 #if 0
     qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
 	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
@@ -416,11 +465,14 @@ void MainWindow::QXafsMeasSequence( void )
     DispQSpectrum( g );
     MeasStage++;
     break;
-  case 14:
+  case 16:
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
-    MeasStage = 4;   // Repeat Point
+    if ( QIntervalAtStart->text().toDouble() > 0 )
+      MeasStage = 4; // 始点でのインターバル指定がある場合 : Repeat Point 1
+    else
+      MeasStage = 5; // 始点でのインターバル指定がない場合 : Repeat Point 2
     break;
 
   case 99:
