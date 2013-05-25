@@ -1177,6 +1177,7 @@ void MainWindow::StartMeasurement( void )
     EndTimeDisp->setText( QDateTime::currentDateTime()
                           .addSecs( EstimatedMeasurementTimeInSec )
                           .toString("yy.MM.dd hh:mm:ss") );
+    QIntervalBlock = false;
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );

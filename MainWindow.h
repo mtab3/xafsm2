@@ -345,6 +345,8 @@ private:
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
   double RunUpRate, RunUpTime, QXafsDwellTime;
   QString EncValue0, Enc2Value0;
+  bool QIntervalBlock;
+  QTimer *QIntervalTimer;
 
   // Auto mode
   bool AutoModeFirst;
@@ -569,6 +571,7 @@ private slots:
   void QXafsMeasSequence( void );
   void CheckQXafsParams( void );
   void SetNewRPTLimit( void );
+  void QIntervalTimeout( void );
 
  signals:
   void SelectedSSD( int i, bool f );
