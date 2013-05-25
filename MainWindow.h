@@ -33,6 +33,7 @@
 #include "KeV2Pix.h"
 #include "FluoDBase.h"
 #include "DarkTable.h"
+#include "Changer.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
@@ -120,7 +121,9 @@ private:
   AUnit *MMainTh;                 // main Th ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
-  AUnit *ChangerX, *ChangerZ;
+  //  AUnit *ChangerX, *ChangerZ;
+
+  QVector<Changer*> Changers;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -144,6 +147,7 @@ private:
   void setupLogArea( void );
   void setupCommonArea( void );
   void setupSetupArea( void );
+  void setupChangerArea( void );
   void setupSetupSSDArea( void );
   void setupMeasArea( void );
 
@@ -373,6 +377,8 @@ private slots:
   bool ParseAutoMode( void );
   void ShowItemsForAutoMode( void );
   void SetNewChangerCenter( void );
+  void ChangerGoToNewPosition( void );
+  void NewChangerSelected( int i );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );

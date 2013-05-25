@@ -8,6 +8,10 @@ void MainWindow::setupQXafsMode( void )
   connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
   connect( QLimitedDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
+  connect( QIntervalAtStart, SIGNAL( editingFinished() ),
+	   this, SLOT( CheckQXafsParams() ) );
+  connect( QIntervalAtEnd, SIGNAL( editingFinished() ),
+	   this, SLOT( CheckQXafsParams() ) );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QConditionBox->setHidden( true );
@@ -176,13 +180,17 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
 
   int Th, Tm, Ts;
   double TT, TTT;
+  // TT は一回のスキャンだけの時間。
+  // TTT はインターバルを入れて、繰り返し回数をかけた時間
   if ( dtime > 0 ) {
     if ( QMeasOnBackward->isChecked() ) {
       TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 は実測の補正値
     } else {
       TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
     }
-    TTT = TT * SelRPT->value();
+    TTT = TT * SelRPT->value()
+      + QIntervalAtStart->text().toDouble() * ( SelRPT->value() - 1 )
+      + QIntervalAtEnd->text().toDouble() * SelRPT->value();
   } else {
     TTT = TT = 0;
   }
