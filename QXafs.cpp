@@ -17,7 +17,7 @@ void MainWindow::setupQXafsMode( void )
   QConditionBox->setHidden( true );
   QIntervalTimer = new QTimer;
   QIntervalTimer->setSingleShot( true );
-  connect( QIntervalTimer, SLOT( timeout() ), this, SLOT( QIntervalTimeout() ) );
+  connect( QIntervalTimer, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout() ) );
 #if 0
   QMeasOnBackward->setHidden( true );
   QMinMaxBox->setHidden( true );
