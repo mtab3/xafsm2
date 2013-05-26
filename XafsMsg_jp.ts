@@ -1912,6 +1912,42 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Parameters</source>
         <translation>パラメータ</translation>
     </message>
+    <message>
+        <source>Intervals:   at Start</source>
+        <translation>休止:  始点 </translation>
+    </message>
+    <message>
+        <source>sec   at End</source>
+        <translation>秒   終点</translation>
+    </message>
+    <message>
+        <source>ReDef. Center:  Current Holder </source>
+        <translation>原点再定義:   現在のホルダ </translation>
+    </message>
+    <message>
+        <source>MoveTo</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>  Holder No.</source>
+        <translation>  ホルダ No. </translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation>mm</translation>
+    </message>
+    <message>
+        <source>Sample Changer</source>
+        <translation>試料交換 </translation>
+    </message>
+    <message>
+        <source>  Fine Pos.</source>
+        <translation>  微調整 </translation>
+    </message>
+    <message>
+        <source>Limi at I0 Eng.</source>
+        <translation>I0エネルギーで制限</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -2530,19 +2566,19 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <name>StarsSV</name>
     <message>
         <source>Set Stars Server</source>
-        <translation>Stars サーバ情報設定</translation>
+        <translation type="obsolete">Stars サーバ情報設定</translation>
     </message>
     <message>
         <source>Stars Server Address: </source>
-        <translation>Starsサーバアドレス: </translation>
+        <translation type="obsolete">Starsサーバアドレス: </translation>
     </message>
     <message>
         <source>Port No.:</source>
-        <translation>ポート番号: </translation>
+        <translation type="obsolete">ポート番号: </translation>
     </message>
     <message>
         <source>ReConnect</source>
-        <translation>再接続</translation>
+        <translation type="obsolete">再接続</translation>
     </message>
 </context>
 <context>
