@@ -9,6 +9,7 @@
 # 2013/05/03 add new IDs 'ChangerX' and 'ChangerZ' for PMs
 # 2013/05/23 add 'CHANGER'     line.
 #                The IDs 'ChangerX' and 'ChangerY' will be obsolete soon.
+# 2013/05/27 add 3rd 34410a for QXafs
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -381,14 +382,16 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #
 SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
 SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO ""
 
 #
 # the DV2 is Agilent34410 for normal measurement
 #
-SENSOR DV2 "S038" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
-SENSOR DV2 "S039" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
+SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+SENSOR DV2 "S041" "GENERAL" "Agilent34410-3" "a34410a-3" "" "V" NO ""
 
-SENSOR ENC2 "S040" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC2      : Unit type   ENC2 is an encorder with memory

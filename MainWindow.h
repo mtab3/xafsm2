@@ -150,6 +150,7 @@ private:
   void setupChangerArea( void );
   void setupSetupSSDArea( void );
   void setupMeasArea( void );
+  void SetUpSensorComboBoxes( void );
 
   QStringList DriverList;
 

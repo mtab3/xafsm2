@@ -81,38 +81,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
   MakeSureOfRangeSelect->setDefaultButton( tmpB );
 
-  bool findQXafsI0, findQXafsI1;
-  findQXafsI0 = findQXafsI1 = false;
-  for ( int i = 0; i < ASensors.count(); i++ ) {
-    QString name = ASensors.value(i)->getName(); 
-    SelectI0->addItem( name );  I0Sensors << ASensors[i];
-    SelectI1->addItem( name );  I1Sensors << ASensors[i];
-    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
-    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
-    if ( ASensors.at(i) != SFluo ) {
-      SelectAux1->addItem( name );   A1Sensors << ASensors[i];
-    }
-    if ( ASensors.at(i) != SFluo ) {
-      SelectAux2->addItem( name );   A2Sensors << ASensors[i];
-    }
-
-    if ( ASensors.value(i)->getID() == "I0" )
-      SelectI0->setCurrentIndex( i );
-    if ( ASensors.value(i)->getID() == "I1" )
-      SelectI1->setCurrentIndex( i );
-    if ( ASensors.value(i)->getID() == "Aux1" )
-      SelectAux1->setCurrentIndex( i );
-    if ( ASensors.value(i)->getID() == "Aux2" )
-      SelectAux2->setCurrentIndex( i );
-  }
-  UseI1->setChecked( true );
-  if ( (!findQXafsI0)||(!findQXafsI1) ) {
-    isQXafsModeAvailable = false;
-    if ( ! isQXafsModeAvailable ) {
-      QXafsMode->setChecked( false );
-      QXafsMode->setEnabled( false );
-    }
-  }
+  SetUpSensorComboBoxes();
 
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
@@ -224,6 +193,66 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( AutoMode, SIGNAL( editingFinished() ),
 	   this, SLOT( ShowItemsForAutoMode() ) );
 }
+
+void MainWindow::SetUpSensorComboBoxes( void )
+{
+  bool findQXafsI0, findQXafsI1;
+  findQXafsI0 = findQXafsI1 = false;
+
+  while ( I0Sensors.count() > 0 ) I0Sensors.remove( 0 );
+  while ( I1Sensors.count() > 0 ) I1Sensors.remove( 0 );
+  while ( A1Sensors.count() > 0 ) A1Sensors.remove( 0 );
+  while ( A2Sensors.count() > 0 ) A2Sensors.remove( 0 );
+  while ( SelectI0->count() > 0 ) SelectI0->removeItem( 0 );
+  while ( SelectI1->count() > 0 ) SelectI1->removeItem( 0 );
+  while ( SelectAux1->count() > 0 ) SelectAux1->removeItem( 0 );
+  while ( SelectAux2->count() > 0 ) SelectAux2->removeItem( 0 );
+
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
+    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
+
+    bool addOk = false;
+    QStringList CheckList = ( QXafsMode->isChecked() ) ? QXafsOk : NXafsOk;
+    QString type = ASensors[i]->getType();
+    for ( int j = 0; j < CheckList.count(); j++ ) {
+      if ( CheckList[j] == type ) {
+	addOk = true;
+	break;
+      }
+    }
+    if ( addOk ) {
+      QString name = ASensors.value(i)->getName();
+      
+      SelectI0->addItem( name );  I0Sensors << ASensors[i];
+      SelectI1->addItem( name );  I1Sensors << ASensors[i];
+      if ( ASensors.at(i) != SFluo ) {
+	SelectAux1->addItem( name );   A1Sensors << ASensors[i];
+      }
+      if ( ASensors.at(i) != SFluo ) {
+	SelectAux2->addItem( name );   A2Sensors << ASensors[i];
+      }
+      
+      if ( ASensors.value(i)->getID() == "I0" )
+	SelectI0->setCurrentIndex( i );
+      if ( ASensors.value(i)->getID() == "I1" )
+	SelectI1->setCurrentIndex( i );
+      if ( ASensors.value(i)->getID() == "Aux1" )
+	SelectAux1->setCurrentIndex( i );
+      if ( ASensors.value(i)->getID() == "Aux2" )
+	SelectAux2->setCurrentIndex( i );
+    }
+  }
+  UseI1->setChecked( true );
+  if ( (!findQXafsI0)||(!findQXafsI1) ) {
+    isQXafsModeAvailable = false;
+    if ( ! isQXafsModeAvailable ) {
+      QXafsMode->setChecked( false );
+      QXafsMode->setEnabled( false );
+    }
+  }
+}
+
 
 void MainWindow::newSensSelectedForI0( int index )
 {
