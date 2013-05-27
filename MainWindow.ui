@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>834</width>
-    <height>1164</height>
+    <width>824</width>
+    <height>980</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -520,7 +520,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -2966,22 +2966,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
-            <widget class="QComboBox" name="GoUnit0">
-             <property name="maximumSize">
-              <size>
-               <width>70</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Select an unit for all.</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="2">
             <widget class="QComboBox" name="GoUnit3">
              <property name="maximumSize">
@@ -3035,26 +3019,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <number>0</number>
               </property>
               <item row="0" column="2">
-               <widget class="QLabel" name="label_53">
-                <property name="text">
-                 <string> Speed </string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <spacer name="horizontalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="0" column="3">
                <widget class="QWidget" name="widget_2" native="true">
                 <layout class="QGridLayout" name="gridLayout_33">
                  <property name="leftMargin">
@@ -3106,6 +3070,29 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                    </property>
                    <property name="autoExclusive">
                     <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QComboBox" name="GoUnit0">
+                   <property name="maximumSize">
+                    <size>
+                     <width>70</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Select an unit for all.</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="5">
+                  <widget class="QLabel" name="label_97">
+                   <property name="text">
+                    <string>                </string>
                    </property>
                   </widget>
                  </item>
@@ -3180,7 +3167,24 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                    </property>
                   </widget>
                  </item>
+                 <item row="0" column="3">
+                  <widget class="QLabel" name="label_104">
+                   <property name="text">
+                    <string>  </string>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_53">
+                <property name="text">
+                 <string> Speed </string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
                </widget>
               </item>
               <item row="0" column="0">
@@ -7564,7 +7568,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>834</width>
+     <width>824</width>
      <height>21</height>
     </rect>
    </property>

@@ -180,7 +180,7 @@ MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0
 #MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
 #MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
 
-CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45
+CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1
 
 # CHANGER      :   The key word is used to define a sample changer
 #  "C000"      :   Uniq identifire of the changer. The ID must be identical
@@ -199,8 +199,12 @@ CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45
 #    45        :   spacing along the second axis. 
 #              :   The unit should be the metric unit defined for the second axis.
 #              :   In this case it is "mm".
+#    -1        :   If the sample No. count up direction is parallel or anti-parallel.
+#              :       1 : parallel, -1 : anti-parallel
+#    -1        :   If the sample No. count up direction is parallel or anti-parallel.
+#              :       1 : parallel, -1 : anti-parallel
 
-CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15
+CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15 -1 -1
 
 
 # define Sensor units
