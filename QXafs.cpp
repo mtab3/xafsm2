@@ -342,9 +342,12 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 4:      // Repeat Point 1
     QIntervalBlock = true;
+    qDebug() << "Interval at Start Point";
     QIntervalTimer->start( QIntervalAtStart->text().toDouble() * 1000 );
+    MeasStage++;
     break;
   case 5:      // Repeat Point 2
+    qDebug() << "after Interval";
     DebugTime1 = QDateTime::currentDateTime();    // debug
     if ( mUnits.QStart() )
       break;
@@ -419,10 +422,13 @@ void MainWindow::QXafsMeasSequence( void )
     }
     break;
   case 11:
+    qDebug() << "Interval at End Point";
     QIntervalBlock = true;
     QIntervalTimer->start( QIntervalAtEnd->text().toDouble() * 1000 );
+    MeasStage++;
     break;
   case 12:
+    qDebug() << "after Interval at End point";
     if ( mUnits.QStart() )
       break;
     MeasStage++;
