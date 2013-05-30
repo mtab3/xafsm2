@@ -18,6 +18,7 @@ class Changer : public QObject
   int Center1, Center2;
   double Spacing1, Spacing2;
   int Dir1, Dir2;
+  int Width1, Width2;
 
  public:
   Changer();
@@ -26,6 +27,8 @@ class Changer : public QObject
   void setName( QString name ) { Name = name; };
   void setUnitId1( QString uid1 ) { UnitID1 = uid1; };
   void setUnitId2( QString uid2 ) { UnitID2 = uid2; };
+  void setUnit1( AUnit *u1 ) { Unit1 = u1; };
+  void setUnit2( AUnit *u2 ) { Unit2 = u2; };
   void setHolders1( int h1 ) { Holders1 = h1; };
   void setHolders2( int h2 ) { Holders2 = h2; };
   void setCenter1( int c1 ) { Center1 = c1; };
@@ -34,9 +37,8 @@ class Changer : public QObject
   void setSpacing2( double s2 ) { Spacing2 = s2; };
   void setDir1( int d1 ) { Dir1 = d1; };
   void setDir2( int d2 ) { Dir2 = d2; };
-
-  void setUnit1( AUnit *u1 ) { Unit1 = u1; };
-  void setUnit2( AUnit *u2 ) { Unit2 = u2; };
+  void setWidth1( int w1 ) { Width1 = w1; };
+  void setWidth2( int w2 ) { Width2 = w2; };
 
   QString id( void ) { return ID; };
   QString name( void ) { return Name; };
@@ -53,6 +55,8 @@ class Changer : public QObject
   AUnit *unit2( void ) { return Unit2; };
   int dir1( void ) { return Dir1; };
   int dir2( void ) { return Dir2; };
+  int width1( void ) { return Width1; };
+  int width2( void ) { return Width2; };
 };
 
 #endif

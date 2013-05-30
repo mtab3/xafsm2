@@ -20,6 +20,12 @@ void MainWindow::setupChangerArea( void )
 	   this, SLOT( NewChangerSelected( int ) ) );
   connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
   connect( ChangerGo, SIGNAL( clicked() ), this, SLOT( ChangerGoToNewPosition() ) );
+  connect( DatumChanger, SIGNAL( clicked() ), this, SLOT( StartDatumChanger() ) );
+  connect( this, SIGNAL( ChangerNext() ), this, SLOT( AutoSequence() ) );
+}
+
+void MainWindow::StartDatumChanger( void )
+{
 }
 
 void MainWindow::AutoMeasurement( void )
@@ -106,7 +112,8 @@ void MainWindow::moveToTarget( int target, double dx, double dz )
                    + dx / c1->getUPP() * changer->dir1();
   int targetz = c2->u2p( changer->spacing2() * iz * changer->dir2() )
                    + dz / c2->getUPP() * changer->dir2();
-  DFName00 = QString("_%1").arg( MeasA );
+  DFName00 = QString("_%1").arg( (int)MeasA, 4, 10, QChar( '0' ) );
+
   AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" )
     .arg( target ).arg( dx ).arg( dz );
   c1->SetValue( targetx );

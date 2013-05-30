@@ -405,16 +405,27 @@ void MainWindow::RecordData( void )
 //  dark 補正のオプションを付けているから)
 {
   if ( isSFluo && RecordMCASpectra->isChecked() ) {
-    QFileInfo mcaFile( mcaDir,
-		       QString( "%1-%2-%3.dat" )
-		       .arg( BaseFile.baseName() )
-		       .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-		       .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+    QFileInfo mcaFile;
+    if ( AutoModeButton->isChecked() ) {
+      mcaFile = QFileInfo( mcaDir,
+			   QString( "%1-%2-%3-%4.dat" )
+			   .arg( BaseFile.baseName() )
+			   .arg( (int)MeasA, 4, 10, QChar( '0' ) )
+			   .arg( (int)MeasR, 3, 10, QChar( '0' ) )
+			   .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+    } else {
+      mcaFile = QFileInfo( mcaDir,
+			   QString( "%1-%2-%3.dat" )
+			   .arg( BaseFile.baseName() )
+			   .arg( (int)MeasR, 3, 10, QChar( '0' ) )
+			   .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+    }
     saveMCAData0( mcaFile.canonicalFilePath() );
   }
 
   SetDFName( MeasR );
   QFile file( DFName );
+  qDebug() << "Fname " << DFName;
   double recTh;
   double encTh, PMTh;
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {

@@ -86,14 +86,14 @@ void MainWindow::MonSequence( void )
     }
     MonStage = 10;
 #if 0
-    if ( inPause == 1 ) {
+    if ( inPause ) {
       MonStage = 99;          // PauseStage
     }
 #endif
     // don't break
   case 10:                     // This label is resume point from pausing
     MonitorView->update();
-    if ( inPause == 0 ) {
+    if ( !inPause ) {
       MonStage = 3;
     }
     break;

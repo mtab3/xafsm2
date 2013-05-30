@@ -7,7 +7,9 @@ void MainWindow::MeasSequence( void )
 
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
-  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
+    return;
+  }
   if ( MovingToNewSamplePosition ) {
     if ( Changers[ ChangerSelect->currentIndex() ]->unit1()->isBusy()
 	 || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
@@ -74,11 +76,13 @@ void MainWindow::MeasSequence( void )
     // break;       MeasStage == 3 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 4 でセンサーを操作しないから)
   case 4:
-    Delta = u->keV2any( SBLKUnit, SBlockStart[MeasB+1] )
-      - u->keV2any( SBLKUnit, SBlockStart[MeasB] );
-    GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
-		       + u->keV2any( SBLKUnit, SBlockStart[MeasB] ) );
-    MoveCurThPosKeV( GoToKeV );     // 軸の移動
+    if ( !FixedPositionMode ) {
+      Delta = u->keV2any( SBLKUnit, SBlockStart[MeasB+1] )
+	- u->keV2any( SBLKUnit, SBlockStart[MeasB] );
+      GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
+			    + u->keV2any( SBLKUnit, SBlockStart[MeasB] ) );
+      MoveCurThPosKeV( GoToKeV );     // 軸の移動
+    }
     mUnits.clearStage();
     if ( mUnits.isParent() )
       MeasStage = 5;
@@ -104,14 +108,14 @@ void MainWindow::MeasSequence( void )
     MeasP++;
     CurrentPnt->setText( QString::number( MeasP + 1 ) );
     MeasStage = 10;
-    if ( inPause == 1 ) {
+    if ( inPause ) {
       MeasStage = 99;          // PauseStage
     }
     // don't break
   case 10:                     // This label is resume point from pausing
     MeasView->update();
     MeasS++;
-    if ( inPause == 0 ) {
+    if ( !inPause ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {
         MeasStage = 4;
       } else if ( MeasB < SBlocks-1 ) {
@@ -137,7 +141,7 @@ void MainWindow::MeasSequence( void )
         PlayEndingSound();
         WriteInfoFile2();
         MeasTimer->stop();
-        inMeas = 0;
+        inMeas = false;
         MeasStart->setText( tr( "Start" ) );
         MeasStart->setStyleSheet( NormalB );
         MeasPause->setEnabled( false );
@@ -146,7 +150,7 @@ void MainWindow::MeasSequence( void )
     }
     break;
   case 99:
-    if ( inPause == 0 )
+    if ( !inPause )
       MeasStage = 10;
     break;
   }
@@ -157,13 +161,15 @@ void MainWindow::onMeasFinishWorks( void )
   SelRealTime->setChecked( SvSelRealTime );
   SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );
+  MeasViewC->setIsDeletable( true );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
-  }
-  MeasViewC->setIsDeletable( true );
-  if ( AutoModeButton->isChecked() ) {
-    connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
-             this, SLOT( AutoSequence() ) );
+    if ( AutoModeButton->isChecked() ) {
+      connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+	       this, SLOT( AutoSequence() ) );
+    }
+  } else {
+    emit ChangerNext();
   }
 }
 

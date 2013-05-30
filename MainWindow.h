@@ -276,7 +276,8 @@ private:
   QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
-  int inMeas, inPause, SinPause;
+  bool inMeas, inPause, SinPause;
+  bool FixedPositionMode;
   int cMeasTab;       // Tab No. on which the current measurement result is displayed
   int inMoveTh;
   ENCORPM EncOrPM;    // Selected x-axis on the start of XAFS measurement
@@ -382,6 +383,7 @@ private slots:
   void SetNewChangerCenter( void );
   void ChangerGoToNewPosition( void );
   void NewChangerSelected( int i );
+  void StartDatumChanger( void );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );
@@ -579,6 +581,7 @@ private slots:
   void SelectedAGB( int i, bool f );
   //  void GiveNewView( QObject *to, ViewCTRL *view );
   void NewEnergy( double e );
+  void ChangerNext( void );
 };
 
 #endif

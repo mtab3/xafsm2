@@ -19,7 +19,7 @@ bool MainWindow::MeasureDark( void )
       return false;
     }
   }
-  if ( inMeas != 0 ) {
+  if ( inMeas ) {
     statusbar->showMessage( tr( "Measurement is going on!" ), 2000 );
     return false;
   }
