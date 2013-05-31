@@ -86,13 +86,13 @@ void MainWindow::WriteHeaderCore( void )
 
   out << " " << fixS( BLNAME, 5 ) << "    "
       << fixS( CMode[ MeasFileType ], 13 ) << QString( "(%1)" ).arg( MeasFileType, 2 )
-      << QString( "   Repitition=%1" ).arg( MeasR + 1, 3 )
+      << QString( "   Repetition=%1" ).arg( MeasR , 3 )
       << QString( "     Points=%1" ).arg( TP, 5 ) << endl;
   
   if ( SBLKUnit == DEG ) {
     out << " "
-        << QString( "Param file : %1  angle axis (1)     Block =%2" )
-           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
+        << QString( "Param file : %1  angle axis (1)    Block = %2" )
+           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 5 ) << endl;
     out << endl;
 
     out << " "
@@ -104,15 +104,15 @@ void MainWindow::WriteHeaderCore( void )
              .arg( i+1, 5 )
              .arg( SBlockStart[i], 10, 'f', 5 )
              .arg( SBlockStart[i+1], 10, 'f', 5 )
-             .arg( SBlockStep[i], 13, 'f', 6 )
+             .arg( SBlockStep[i], 12, 'f', 6 )
              .arg( SBlockDwell[i], 11, 'f', 2 )
              .arg( SBlockPoints[i], 10 )
           << endl;
     }
   } else {
     out << " "
-        << QString( "Param file : %1  energy axis (2)     Block =%2" )
-           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 2 ) << endl;
+        << QString( "Param file : %1  energy axis (2)    Block = %2" )
+           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 5 ) << endl;
     out << endl;
 
     out << " "
@@ -123,7 +123,7 @@ void MainWindow::WriteHeaderCore( void )
              .arg( i+1, 5 )
              .arg( u->any2keV( SBLKUnit, SBlockStart[i] ) * 1000, 10, 'f', 2 )
              .arg( u->any2keV( SBLKUnit, SBlockStart[i+1] ) * 1000, 10, 'f', 2 )
-             .arg( u->any2keV( SBLKUnit, SBlockStep[i] ) * 1000, 13, 'f', 2 )
+             .arg( u->any2keV( SBLKUnit, SBlockStep[i] ) * 1000, 12, 'f', 2 )
              .arg( SBlockDwell[i], 11, 'f', 2 )
              .arg( SBlockPoints[i], 10 )
           << endl;

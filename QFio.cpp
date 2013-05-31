@@ -12,16 +12,16 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
   if ( SvSelExtPattern || ( SelRPT->text().toInt() == 1 ) ) {
     if ( rpt == 1 ) {
       if ( dir == FORWARD ) {
-	DFName = DFName0 + DFName00 + "-f" + ".dat";
+        DFName = DFName0 + DFName00 + "-f" + ".dat";
       } else {
-	DFName = DFName0 + DFName00 + "-b" + ".dat";
+        DFName = DFName0 + DFName00 + "-b" + ".dat";
       }
     } else {
       buf.sprintf( ".%04d", rpt - 1 );
       if ( dir == FORWARD ) {
-	DFName = DFName0 + DFName00 + "-f" + buf;
+        DFName = DFName0 + DFName00 + "-f" + buf;
       } else {
-	DFName = DFName0 + DFName00 + "-b" + buf;
+        DFName = DFName0 + DFName00 + "-b" + buf;
       }
     }
   } else {
@@ -137,24 +137,20 @@ void MainWindow::WriteQBody( void )
   }
   
   for ( int i = 0; i < num; i++ ) {
-    deg = ( p - c ) * upp;
+    deg = ( p - c ) * upp; // pm16c14 のパルス値から計算
     // p += d;
     p -= d;
     if ( Enc2 == NULL ) {
       deg2 = deg;
     } else {
+      // EIB741 が使える時はエンコーダ値
       deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
     i0 = vals0[i+1].toDouble() - dark0;
     i1 = vals1[i+1].toDouble() - dark1;
-    buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
+    buf.sprintf( "%10.5f" "%10.5f" "%10.4f" "  %7.6f" "  %7.6f",
                  deg, deg2, QXafsDwellTime, i0, i1 );
     out << buf << endl;
-//    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
-//        << QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値
-//        << QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
-//        << QString::number( vals0[i+1].toDouble() - dark0, 'f', 10 ) << "\t"
-//        << QString::number( vals1[i+1].toDouble() - dark1, 'f', 10 ) << endl;
   }
 
   file.close();
