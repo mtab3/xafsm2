@@ -405,7 +405,7 @@ SSDの一部のチャンネルに、
     </message>
     <message>
         <source>Hide</source>
-        <translation>隠</translation>
+        <translation type="obsolete">隠</translation>
     </message>
     <message>
         <source>Measurement</source>
@@ -884,7 +884,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Abs</source>
-        <translation>絶対</translation>
+        <translation type="obsolete">絶対</translation>
     </message>
     <message>
         <source>EndP:</source>
@@ -896,7 +896,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Rel</source>
-        <translation>相対</translation>
+        <translation type="obsolete">相対</translation>
     </message>
     <message>
         <source>Save:</source>
@@ -1270,7 +1270,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>&amp;File</source>
-        <translation>ファイル(&amp;F)</translation>
+        <translation type="obsolete">ファイル(&amp;F)</translation>
     </message>
     <message>
         <source>&amp;Config</source>
@@ -1912,6 +1912,106 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Parameters</source>
         <translation>パラメータ</translation>
     </message>
+    <message>
+        <source>Intervals:   at Start</source>
+        <translation>休止:  始点 </translation>
+    </message>
+    <message>
+        <source>sec   at End</source>
+        <translation>秒   終点</translation>
+    </message>
+    <message>
+        <source>ReDef. Center:  Current Holder </source>
+        <translation>原点再定義:   現在のホルダ </translation>
+    </message>
+    <message>
+        <source>MoveTo</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>  Holder No.</source>
+        <translation>  ホルダ No. </translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation>mm</translation>
+    </message>
+    <message>
+        <source>Sample Changer</source>
+        <translation>試料交換 </translation>
+    </message>
+    <message>
+        <source>  Fine Pos.</source>
+        <translation>  微調整 </translation>
+    </message>
+    <message>
+        <source>Limi at I0 Eng.</source>
+        <translation>I0エネルギーで制限</translation>
+    </message>
+    <message>
+        <source>Hide T.</source>
+        <translation>隠(上部)</translation>
+    </message>
+    <message>
+        <source>Hide B.</source>
+        <translation>隠(下部)</translation>
+    </message>
+    <message>
+        <source>Datum</source>
+        <translation>データム</translation>
+    </message>
+    <message utf8="true">
+        <source>２D scan</source>
+        <translation>2次元スキャン</translation>
+    </message>
+    <message>
+        <source>Contimuous</source>
+        <translation type="obsolete">連続</translation>
+    </message>
+    <message>
+        <source>Select Detector</source>
+        <translation>検出器選択</translation>
+    </message>
+    <message>
+        <source>Setup Axis</source>
+        <translation>軸設定</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation>終点</translation>
+    </message>
+    <message>
+        <source>Current</source>
+        <translation>現在値</translation>
+    </message>
+    <message>
+        <source>Pnts.</source>
+        <translation>点数</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation>時間</translation>
+    </message>
+    <message>
+        <source>Rel/Abs</source>
+        <translation>相/絶対</translation>
+    </message>
+    <message>
+        <source>Ring Stat.</source>
+        <translation>光源状況</translation>
+    </message>
+    <message>
+        <source>about:blank</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>StepScn.</source>
+        <translation>ステップ</translation>
+    </message>
+    <message>
+        <source>Cnt.Scn.</source>
+        <translation>連続</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -2389,6 +2489,21 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
 </context>
 <context>
+    <name>RelAbs</name>
+    <message>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Rel</source>
+        <translation>相対</translation>
+    </message>
+    <message>
+        <source>Abs</source>
+        <translation>絶対</translation>
+    </message>
+</context>
+<context>
     <name>ScrollWGrid</name>
     <message>
         <source>ScrollArea</source>
@@ -2530,19 +2645,19 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <name>StarsSV</name>
     <message>
         <source>Set Stars Server</source>
-        <translation>Stars サーバ情報設定</translation>
+        <translation type="obsolete">Stars サーバ情報設定</translation>
     </message>
     <message>
         <source>Stars Server Address: </source>
-        <translation>Starsサーバアドレス: </translation>
+        <translation type="obsolete">Starsサーバアドレス: </translation>
     </message>
     <message>
         <source>Port No.:</source>
-        <translation>ポート番号: </translation>
+        <translation type="obsolete">ポート番号: </translation>
     </message>
     <message>
         <source>ReConnect</source>
-        <translation>再接続</translation>
+        <translation type="obsolete">再接続</translation>
     </message>
 </context>
 <context>

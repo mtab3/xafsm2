@@ -185,6 +185,8 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); newChanger->setSpacing2( item.toDouble() );
 	next = nextItem( next, item ); newChanger->setDir1( item.toInt() );
 	next = nextItem( next, item ); newChanger->setDir2( item.toInt() );
+	next = nextItem( next, item ); newChanger->setWidth1( item.toInt() );
+	next = nextItem( next, item ); newChanger->setWidth2( item.toInt() );
 	Changers << newChanger;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );

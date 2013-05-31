@@ -142,8 +142,8 @@ void AUnit::Initialize( Stars *S )
   // 駆動系だけ
   if ( TypeCHK(  1,  1,  0,  0,  1,  0,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
-//  connect( s, SIGNAL( AnsSetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     // SetValue は Ok: でも Er: でも無視する。
+    // connect( s, SIGNAL( AnsSetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", DevCh, "GetValue" );
   }                                                               // 駆動系以外
   if ( TypeCHK(  0,  0,  1,  1,  1,  1,  1,   0,  0,  1,  1,  0,  0,  0,  0 ) ) {

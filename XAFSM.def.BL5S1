@@ -9,6 +9,7 @@
 # 2013/05/03 add new IDs 'ChangerX' and 'ChangerZ' for PMs
 # 2013/05/23 add 'CHANGER'     line.
 #                The IDs 'ChangerX' and 'ChangerY' will be obsolete soon.
+# 2013/05/27 add 3rd 34410a for QXafs
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -180,7 +181,7 @@ MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0
 #MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
 #MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
 
-CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45
+CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
 
 # CHANGER      :   The key word is used to define a sample changer
 #  "C000"      :   Uniq identifire of the changer. The ID must be identical
@@ -199,9 +200,15 @@ CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45
 #    45        :   spacing along the second axis. 
 #              :   The unit should be the metric unit defined for the second axis.
 #              :   In this case it is "mm".
+#    -1        :   If the sample No. count up direction is parallel or anti-parallel.
+#              :       1 : parallel, -1 : anti-parallel
+#    -1        :   If the sample No. count up direction is parallel or anti-parallel.
+#              :       1 : parallel, -1 : anti-parallel
+#  30000       :   Maximum width in puls in the 1st direction
+#  30000       :   Maximum width in puls in the 2nd direction
 
-CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15
-
+CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15 -1 -1 30000 30000
+CHANGER "C002" "4ax Grater Stage XZ" "M011" "M012" 1 1  0 0  0 0  1 1 0 0
 
 # define Sensor units
 
@@ -377,14 +384,16 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #
 SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
 SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO ""
 
 #
 # the DV2 is Agilent34410 for normal measurement
 #
-SENSOR DV2 "S038" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
-SENSOR DV2 "S039" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
+SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+SENSOR DV2 "S041" "GENERAL" "Agilent34410-3" "a34410a-3" "" "V" NO ""
 
-SENSOR ENC2 "S040" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC2      : Unit type   ENC2 is an encorder with memory

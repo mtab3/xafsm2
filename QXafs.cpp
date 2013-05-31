@@ -17,7 +17,7 @@ void MainWindow::setupQXafsMode( void )
   QConditionBox->setHidden( true );
   QIntervalTimer = new QTimer;
   QIntervalTimer->setSingleShot( true );
-  connect( QIntervalTimer, SLOT( timeout() ), this, SLOT( QIntervalTimeout() ) );
+  connect( QIntervalTimer, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout() ) );
 #if 0
   QMeasOnBackward->setHidden( true );
   QMinMaxBox->setHidden( true );
@@ -62,6 +62,9 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SaveSelectedI0 = SelectI0->currentIndex();
     SaveSelectedI1 = SelectI1->currentIndex();
+    
+    SetUpSensorComboBoxes();
+
     for ( int i = 0; i < I0Sensors.count(); i++ ) {
       if ( I0Sensors[i]->getID() == "QXAFS-I0" ) {
 	SelectI0->setCurrentIndex( i );
@@ -81,14 +84,6 @@ void MainWindow::ToggleQXafsMode( bool )
     SelBLKs->setEnabled( false );
     HideBLKs( true );
     QConditionBox->setHidden( false );
-#if 0
-    QMeasOnBackward->setHidden( false );
-    QMinMaxBox->setHidden( false );
-    QMaxSpeed->setHidden( false );
-    QMinTime->setHidden( false );
-    QSepLine->setHidden( false );
-    QLimitedDisplay->setHidden( false );
-#endif
 
     SaveUse19ChSSD = Use19chSSD->isChecked();
     SaveUseAux1 = UseAux1->isChecked();
@@ -97,8 +92,8 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux1->setChecked( false );
     UseAux2->setChecked( false );
     Use19chSSD->setEnabled( false );
-    UseAux1->setEnabled( false );
-    UseAux2->setEnabled( false );
+    UseAux1->setEnabled( true );       // QXafs で使えることにする
+    UseAux2->setEnabled( true );       // QXafs で使えることにする
 
     SetNewRPTLimit();
 
@@ -111,6 +106,9 @@ void MainWindow::ToggleQXafsMode( bool )
     HideBLKs( false );
 
     QConditionBox->setHidden( true );
+
+    SetUpSensorComboBoxes();
+
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
     Use19chSSD->setChecked( SaveUse19ChSSD );
@@ -342,9 +340,12 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 4:      // Repeat Point 1
     QIntervalBlock = true;
+    qDebug() << "Interval at Start Point";
     QIntervalTimer->start( QIntervalAtStart->text().toDouble() * 1000 );
+    MeasStage++;
     break;
   case 5:      // Repeat Point 2
+    qDebug() << "after Interval";
     DebugTime1 = QDateTime::currentDateTime();    // debug
     if ( mUnits.QStart() )
       break;
@@ -419,10 +420,13 @@ void MainWindow::QXafsMeasSequence( void )
     }
     break;
   case 11:
+    qDebug() << "Interval at End Point";
     QIntervalBlock = true;
     QIntervalTimer->start( QIntervalAtEnd->text().toDouble() * 1000 );
+    MeasStage++;
     break;
   case 12:
+    qDebug() << "after Interval at End point";
     if ( mUnits.QStart() )
       break;
     MeasStage++;
@@ -495,7 +499,7 @@ void MainWindow::QXafsFinish( void )
   statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
   NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
   MeasTimer->stop();
-  inMeas = 0;
+  inMeas = false;
   MeasStart->setText( tr( "Start" ) );
   MeasStart->setStyleSheet( NormalB );
   MeasPause->setEnabled( false );

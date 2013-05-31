@@ -1,4 +1,5 @@
-#include <QtGui>
+
+#include <stdio.h>
 
 #include "XafsM.h"
 #include "MainWindow.h"
@@ -31,6 +32,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   ScanDataStat = ScanNameStat = OLD;
   MonDataStat = MonNameStat = OLD;
   MCADataStat = MCANameStat = OLD;
+  S2DDataStat = S2DNameStat = OLD;
 
   isQXafsModeAvailable = false;
 
@@ -87,6 +89,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupQXafsMode();
   setupMeasArea();
   setupReadDataArea();
+  setupScan2DArea();
+  setupWebView();
 
   conds = new Conditions;
 #if 0
@@ -149,9 +153,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ) );
   connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
   connect( MeasDarkTimer, SIGNAL( timeout() ), this, SLOT( MeasDarkSequence() ) );
-
-  //  connect( s, SIGNAL( ConnectingServer( QString )), StatDisp, SLOT( SetSSVA( QString )));
-  //  connect( s, SIGNAL( ConnectingPort( qint16 ) ), StatDisp, SLOT( SetSSVP( qint16 ) ) );
   connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ) );
 
   s->AskStatus();

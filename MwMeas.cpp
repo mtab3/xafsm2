@@ -58,9 +58,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   TP = 0;
   TT0 = 0;
   EstimatedMeasurementTimeInSec = 0;
-  inMeas = 0;
-  inPause = 0;
-  MeasStage = 0;
+  inMeas = false;
+  inPause = false;
+  MeasStage = false;
+  FixedPositionMode = false;
   MeasPause->setEnabled( false );
   StopP = new QMessageBox;
   tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
@@ -81,38 +82,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
   MakeSureOfRangeSelect->setDefaultButton( tmpB );
 
-  bool findQXafsI0, findQXafsI1;
-  findQXafsI0 = findQXafsI1 = false;
-  for ( int i = 0; i < ASensors.count(); i++ ) {
-    QString name = ASensors.value(i)->getName(); 
-    SelectI0->addItem( name );  I0Sensors << ASensors[i];
-    SelectI1->addItem( name );  I1Sensors << ASensors[i];
-    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
-    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
-    if ( ASensors.at(i) != SFluo ) {
-      SelectAux1->addItem( name );   A1Sensors << ASensors[i];
-    }
-    if ( ASensors.at(i) != SFluo ) {
-      SelectAux2->addItem( name );   A2Sensors << ASensors[i];
-    }
-
-    if ( ASensors.value(i)->getID() == "I0" )
-      SelectI0->setCurrentIndex( i );
-    if ( ASensors.value(i)->getID() == "I1" )
-      SelectI1->setCurrentIndex( i );
-    if ( ASensors.value(i)->getID() == "Aux1" )
-      SelectAux1->setCurrentIndex( i );
-    if ( ASensors.value(i)->getID() == "Aux2" )
-      SelectAux2->setCurrentIndex( i );
-  }
-  UseI1->setChecked( true );
-  if ( (!findQXafsI0)||(!findQXafsI1) ) {
-    isQXafsModeAvailable = false;
-    if ( ! isQXafsModeAvailable ) {
-      QXafsMode->setChecked( false );
-      QXafsMode->setEnabled( false );
-    }
-  }
+  SetUpSensorComboBoxes();
 
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
@@ -224,6 +194,66 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( AutoMode, SIGNAL( editingFinished() ),
 	   this, SLOT( ShowItemsForAutoMode() ) );
 }
+
+void MainWindow::SetUpSensorComboBoxes( void )
+{
+  bool findQXafsI0, findQXafsI1;
+  findQXafsI0 = findQXafsI1 = false;
+
+  while ( I0Sensors.count() > 0 ) I0Sensors.remove( 0 );
+  while ( I1Sensors.count() > 0 ) I1Sensors.remove( 0 );
+  while ( A1Sensors.count() > 0 ) A1Sensors.remove( 0 );
+  while ( A2Sensors.count() > 0 ) A2Sensors.remove( 0 );
+  while ( SelectI0->count() > 0 ) SelectI0->removeItem( 0 );
+  while ( SelectI1->count() > 0 ) SelectI1->removeItem( 0 );
+  while ( SelectAux1->count() > 0 ) SelectAux1->removeItem( 0 );
+  while ( SelectAux2->count() > 0 ) SelectAux2->removeItem( 0 );
+
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
+    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
+
+    bool addOk = false;
+    QStringList CheckList = ( QXafsMode->isChecked() ) ? QXafsOk : NXafsOk;
+    QString type = ASensors[i]->getType();
+    for ( int j = 0; j < CheckList.count(); j++ ) {
+      if ( CheckList[j] == type ) {
+	addOk = true;
+	break;
+      }
+    }
+    if ( addOk ) {
+      QString name = ASensors.value(i)->getName();
+      
+      SelectI0->addItem( name );  I0Sensors << ASensors[i];
+      SelectI1->addItem( name );  I1Sensors << ASensors[i];
+      if ( ASensors.at(i) != SFluo ) {
+	SelectAux1->addItem( name );   A1Sensors << ASensors[i];
+      }
+      if ( ASensors.at(i) != SFluo ) {
+	SelectAux2->addItem( name );   A2Sensors << ASensors[i];
+      }
+      
+      if ( ASensors.value(i)->getID() == "I0" )
+	SelectI0->setCurrentIndex( i );
+      if ( ASensors.value(i)->getID() == "I1" )
+	SelectI1->setCurrentIndex( i );
+      if ( ASensors.value(i)->getID() == "Aux1" )
+	SelectAux1->setCurrentIndex( i );
+      if ( ASensors.value(i)->getID() == "Aux2" )
+	SelectAux2->setCurrentIndex( i );
+    }
+  }
+  UseI1->setChecked( true );
+  if ( (!findQXafsI0)||(!findQXafsI1) ) {
+    isQXafsModeAvailable = false;
+    if ( ! isQXafsModeAvailable ) {
+      QXafsMode->setChecked( false );
+      QXafsMode->setEnabled( false );
+    }
+  }
+}
+
 
 void MainWindow::newSensSelectedForI0( int index )
 {
@@ -875,7 +905,7 @@ void MainWindow::StartMeasurement( void )
   // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
   // だけが選べるようにする。
 
-  if ( inMeas == 0 ) {           // 既に測定が進行中でなければ
+  if ( !inMeas ) {           // 既に測定が進行中でなければ
     EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
     SFluoLine = -1;
     isSFluo = isSI1 = false;
@@ -1152,7 +1182,7 @@ void MainWindow::StartMeasurement( void )
                .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
                .arg( SelectedCurPosDeg( XPM ) ) );
     InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
-    inMeas = 1;
+    inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
@@ -1164,6 +1194,10 @@ void MainWindow::StartMeasurement( void )
     }
     SetDispMeasModes();
     CpBlock2SBlock();
+    if ( ( SBlocks == 1 ) && ( BlockPoints[0] == 1 ) )
+      FixedPositionMode = true;
+    else
+      FixedPositionMode = false;
 
     if ( isSFluo && RecordMCASpectra->isChecked() ) {
       mcaDir = QDir( BaseFile.canonicalPath() );
@@ -1190,7 +1224,7 @@ void MainWindow::StartMeasurement( void )
                .arg( SelectedCurPosDeg( XENC ) )
                .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
                .arg( SelectedCurPosDeg( XPM ) ) );
-    inPause = 1;
+    inPause = true;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( InActive );
     MeasPause->setEnabled( false );
@@ -1243,11 +1277,11 @@ void MainWindow::SurelyStop( void )
 	     .arg( SelectedCurPosDeg( XPM ) ) );
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
-  inMeas = 0;
+  inMeas = false;
   MeasStart->setText( tr( "Start" ) );
   MeasStart->setStyleSheet( NormalB );
   MeasStart->setEnabled( true );
-  inPause = 0;
+  inPause = false;
   MeasPause->setText( tr( "Pause" ) );
   MeasPause->setStyleSheet( NormalB );
   if ( QXafsMode->isChecked() )
@@ -1259,20 +1293,20 @@ void MainWindow::GoingOn( void )
 {
   MeasStart->setEnabled( true );
   MeasPause->setEnabled( true );
-  if ( SinPause == 1 ) {
+  if ( SinPause ) {
     NewLogMsg( tr( "Meas: Pausing %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
 	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
-    inPause = 1;
+    inPause = true;
   } else {
     NewLogMsg( tr( "Meas: Resume %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
 	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
-    inPause = 0;
+    inPause = false;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause->setStyleSheet( NormalB );
   }
@@ -1310,13 +1344,13 @@ bool MainWindow::CheckBlockRange( void )
 
 void MainWindow::PauseMeasurement( void )
 {
-  if ( inPause == 0 ) {
+  if ( !inPause ) {
     NewLogMsg( tr( "Meas: Pause %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	       .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	       .arg( SelectedCurPosDeg( XENC ) )
 	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
-    inPause = 1;
+    inPause = true;
     MeasPause->setText( tr( "Resume" ) );
     MeasPause->setStyleSheet( InActive );
   } else {
@@ -1325,7 +1359,7 @@ void MainWindow::PauseMeasurement( void )
 	       .arg( SelectedCurPosDeg( XENC ) )
 	       .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
 	       .arg( SelectedCurPosDeg( XPM ) ) );
-    inPause = 0;
+    inPause = false;
     MeasPause->setText( tr( "Pause" ) );
     MeasPause->setStyleSheet( NormalB );
   }

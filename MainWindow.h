@@ -52,6 +52,7 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
 
 public:
   MainWindow( QString myname );
+  void InitSize( void );
 
 private:
 
@@ -150,6 +151,9 @@ private:
   void setupChangerArea( void );
   void setupSetupSSDArea( void );
   void setupMeasArea( void );
+  void setupScan2DArea( void );
+  void setupWebView( void );
+  void SetUpSensorComboBoxes( void );
 
   QStringList DriverList;
 
@@ -175,6 +179,8 @@ private:
   OLDNEW MonNameStat;
   OLDNEW MCADataStat;
   OLDNEW MCANameStat;
+  OLDNEW S2DDataStat;
+  OLDNEW S2DNameStat;
 
   void GoMAtPuls( double Pos );
   void GoMStop0( void );
@@ -184,8 +190,6 @@ private:
   void SetNewGos( void );
   void ScanStop0( void );
   void ReadOutScanData( void ); // ( int NowP );
-  void ShowGoMRelAbs( void );
-  void ShowSPSRelAbs( void );
 
   void ShowGoMSpeed( void );
   MSPEED GoMSpeed;
@@ -193,7 +197,7 @@ private:
   int inMMove;
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
-  RELABS GoMRelAbs, SPSRelAbs;
+  //  RELABS GoMRelAbs, SPSRelAbs;
   int SPSSelU;           // Selected SPS Unit
   double SPSUPP;         // Unit per puls
   int inSPSing;
@@ -223,6 +227,17 @@ private:
   TYView *MonitorView;
   QFileDialog *monFSel;
   bool MonSensF[ 3 ];
+
+  // Scan 2D
+  QFileDialog *S2DFileSel;
+  QVector<QLabel *> S2DCurPos;
+  QVector<QLabel *> S2DUnits;
+  QVector<QLineEdit *> S2DStarts;
+  QVector<QLineEdit *> S2DEnds;
+  QVector<QLineEdit *> S2DSteps;
+  QVector<QLineEdit *> S2DPoints;
+  QVector<QLineEdit *> S2DTimes;
+  QVector<RelAbs *> S2DRelAbs;
 
   QVector<AUnit*> SensWithRange;
 
@@ -275,7 +290,8 @@ private:
   QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
-  int inMeas, inPause, SinPause;
+  bool inMeas, inPause, SinPause;
+  bool FixedPositionMode;
   int cMeasTab;       // Tab No. on which the current measurement result is displayed
   int inMoveTh;
   ENCORPM EncOrPM;    // Selected x-axis on the start of XAFS measurement
@@ -381,6 +397,7 @@ private slots:
   void SetNewChangerCenter( void );
   void ChangerGoToNewPosition( void );
   void NewChangerSelected( int i );
+  void StartDatumChanger( void );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );
@@ -388,7 +405,8 @@ private slots:
   void RcvListNodes( SMsg msg );
   void SomeDrvIsConnected( SMsg msg );
   void SomeDrvIsDisconnected( SMsg msg );
-  void Hide( bool f );
+  void HideT( bool f );
+  void HideB( bool f );
 
   void ShowMessageOnSBar( QString msg, int time );
   //  void SetNewLatticeConstant( double LC ) { u->setD( LC ); };
@@ -405,10 +423,6 @@ private slots:
   void ShowCurMotorPos( SMsg msg );
   void ShowNewRingCurrent( QString Val, QStringList Vals );
 
-  void MMRel( void );
-  void MMAbs( void );
-  void SPSRel( void );
-  void SPSAbs( void );
   void SetGoMSpeedH( void );
   void SetGoMSpeedM( void );
   void SetGoMSpeedL( void );
@@ -573,11 +587,16 @@ private slots:
   void SetNewRPTLimit( void );
   void QIntervalTimeout( void );
 
+  // S2D Scan2D
+  void newS2DFileSelected( const QString &fname );
+  void ShowS2DCurMotorPos( SMsg msg );
+
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
   //  void GiveNewView( QObject *to, ViewCTRL *view );
   void NewEnergy( double e );
+  void ChangerNext( void );
 };
 
 #endif

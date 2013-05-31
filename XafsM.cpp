@@ -61,6 +61,7 @@ int main( int argc, char *argv[] )
 
   MainWindow *mw = new MainWindow( myname );
   mw->show();
+  mw->InitSize();
 
   return app.exec();
 }
