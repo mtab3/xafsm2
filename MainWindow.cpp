@@ -1,6 +1,4 @@
 
-#include <QUrl>
-
 #include "XafsM.h"
 #include "MainWindow.h"
 #include "SelMC2.h"
@@ -18,9 +16,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
-  QUrl url( "http://www.astf-kha.jp/synchrotron/status/kougen/status.html" );
-  webView->setZoomFactor( 0.43 );
-  webView->load( url );
 
   MainTab->setCurrentIndex( 0 );
 
@@ -92,6 +87,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupQXafsMode();
   setupMeasArea();
   setupReadDataArea();
+  setupWebView();
 
   conds = new Conditions;
 #if 0

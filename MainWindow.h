@@ -150,6 +150,7 @@ private:
   void setupChangerArea( void );
   void setupSetupSSDArea( void );
   void setupMeasArea( void );
+  void setupWebView( void );
   void SetUpSensorComboBoxes( void );
 
   QStringList DriverList;
@@ -391,7 +392,8 @@ private slots:
   void RcvListNodes( SMsg msg );
   void SomeDrvIsConnected( SMsg msg );
   void SomeDrvIsDisconnected( SMsg msg );
-  void Hide( bool f );
+  void HideT( bool f );
+  void HideB( bool f );
 
   void ShowMessageOnSBar( QString msg, int time );
   //  void SetNewLatticeConstant( double LC ) { u->setD( LC ); };

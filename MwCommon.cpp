@@ -39,7 +39,8 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( ShowPT, SIGNAL( clicked() ), PT, SLOT( show() ) );
   connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ) );
 
-  connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( Hide( bool ) ) );
+  connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( HideT( bool ) ) );
+  connect( HideGraphView, SIGNAL( clicked( bool ) ), this, SLOT( HideB( bool ) ) );
 
   GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
@@ -104,7 +105,7 @@ void MainWindow::SelectAGB( bool f )
   }
 }
 
-void MainWindow::Hide( bool f ) 
+void MainWindow::HideT( bool f ) 
 {
   if ( f ) {
     MainTab->hide();
@@ -112,6 +113,18 @@ void MainWindow::Hide( bool f )
     MainTab->show();
   }
 }
+
+void MainWindow::HideB( bool f ) 
+{
+  if ( f ) {
+    ViewTab->hide();
+    GraphSwitchBox->hide();
+  } else {
+    ViewTab->show();
+    GraphSwitchBox->show();
+  }
+}
+
 
 void MainWindow::NewSelA( int i )
 {
