@@ -1,3 +1,5 @@
+○ SetUp の 「Rel/Abs」切り替えボタンをクラス化した。働いているかは要チェック
+
 ○ master に develop をマージ
    複数チェンジャ、QXafsでのスキャン前後の Interval 導入に対応した機能を取り込み
 

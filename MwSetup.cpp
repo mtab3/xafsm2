@@ -17,11 +17,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   ScanView = NULL;
   MonitorView = NULL;
 
-  GoMRelAbs = REL;
-  SPSRelAbs = REL;
-  ShowGoMRelAbs();
-  ShowSPSRelAbs();
-
   GoMSpeed = MIDDLE;
 
   setupMDispFirstTime = true;
@@ -143,10 +138,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   connect( SPSScan, SIGNAL( clicked() ), this, SLOT( ScanStart() ) );
   connect( MStart, SIGNAL( clicked() ), this, SLOT( Monitor() ) );
-  connect( SetUpMMRel, SIGNAL( clicked() ), this, SLOT( MMRel() ) );
-  connect( SetUpMMAbs, SIGNAL( clicked() ), this, SLOT( MMAbs() ) );
-  connect( SetUpSPSRel, SIGNAL( clicked() ), this, SLOT( SPSRel() ) );
-  connect( SetUpSPSAbs, SIGNAL( clicked() ), this, SLOT( SPSAbs() ) );
 
   connect( SelMonRecFile, SIGNAL( clicked() ), monFSel, SLOT( show() ) );
   connect( monFSel, SIGNAL( fileSelected( const QString & ) ),
@@ -297,42 +288,6 @@ void MainWindow::setSelectedScanFName( const QString &fname )
   ScanRecFile->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 }
 
-void MainWindow::MMRel( void )
-{
-  GoMRelAbs = REL;
-  ShowGoMRelAbs();
-}
-
-void MainWindow::MMAbs( void )
-{
-  GoMRelAbs = ABS;
-  ShowGoMRelAbs();
-}
-
-void MainWindow::ShowGoMRelAbs( void )
-{
-  SetUpMMRel->setStyleSheet( ( GoMRelAbs == REL )? RadioBOn : RadioBOff );
-  SetUpMMAbs->setStyleSheet( ( GoMRelAbs == ABS )? RadioBOn : RadioBOff );
-}
-
-void MainWindow::SPSRel( void )
-{
-  SPSRelAbs = REL;
-  ShowSPSRelAbs();
-}
-
-void MainWindow::SPSAbs( void )
-{
-  SPSRelAbs = ABS;
-  ShowSPSRelAbs();
-}
-
-void MainWindow::ShowSPSRelAbs( void )
-{
-  SetUpSPSRel->setStyleSheet( ( SPSRelAbs == REL )? RadioBOn : RadioBOff );
-  SetUpSPSAbs->setStyleSheet( ( SPSRelAbs == ABS )? RadioBOn : RadioBOff );
-}
-
 void MainWindow::SetGoMSpeedH( void )
 {
   GoMSpeed = HIGH;
@@ -381,7 +336,7 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
       ( ( val0.toDouble() - am->getCenter() ) * am->getUPP() );
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
-      if ( GoMRelAbs == ABS ) {
+      if ( MMRelAbs->stat() == ABS ) {
 	GoMotorPosPuls->setText( val0 );
 	GoMotorPosUnit->setText( val );
 	setupMDispFirstTime = false;
@@ -452,7 +407,7 @@ void MainWindow::NewGoMotorPosPuls( const QString &val )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
-  if ( GoMRelAbs == ABS ) {
+  if ( MMRelAbs->stat() == ABS ) {
     GoMotorPosUnit
       ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() ) );
   } else {
@@ -464,7 +419,7 @@ void MainWindow::NewGoMotorPosUnit( const QString &val )
 {
   AUnit *am = AMotors.value( MotorN->currentIndex() );
 
-  if ( GoMRelAbs == ABS ) {
+  if ( MMRelAbs->stat() == ABS ) {
     GoMotorPosPuls
       ->setText( QString::number( val.toDouble() / am->getUPP() + am->getCenter() ) );
   } else {
@@ -487,7 +442,7 @@ void MainWindow::GoMAtPuls( double Pos )
   AUnit *am = AMotors.value( MotorN->currentIndex() );
   MovingS = GoMotorS->currentIndex();
 
-  if ( GoMRelAbs == REL )
+  if ( MMRelAbs->stat() == REL )
     Pos += am->value().toDouble();
 
   if ( am->getType() == "PM" ) {
@@ -601,8 +556,8 @@ void MainWindow::ScanStart( void )
     SPSSelU = SPSUnit->currentIndex();
     SPSUPP = ( SPSSelU == 0 ) ? 1 : am->getUPP();
     ScanOrigin = am->value().toDouble();
-    ScanSP = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs );
-    ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs );
+    ScanSP = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
+    ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
     ScanSTP = SPSstep->text().toDouble() / SPSUPP;
     if ( ScanEP > ScanSP ) {
       ScanSTP = fabs( ScanSTP );

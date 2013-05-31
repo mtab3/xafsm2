@@ -53,6 +53,18 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   }
 }
 
+void MainWindow::InitSize()
+{
+  MainTab->hide();
+  ViewTab->hide();
+  GraphSwitchBox->hide();
+  this->resize( 1,1 );
+  MainTab->show();
+  ViewTab->show();
+  GraphSwitchBox->show();
+  this->resize( 1,1 );
+}
+
 void MainWindow::saveGSBs( int ch )
 {
   for ( int i = 0; i < GSBs.count(); i++ ) {
@@ -112,6 +124,7 @@ void MainWindow::HideT( bool f )
   } else {
     MainTab->show();
   }
+  this->resize( 1,1 );
 }
 
 void MainWindow::HideB( bool f ) 
@@ -123,6 +136,7 @@ void MainWindow::HideB( bool f )
     ViewTab->show();
     GraphSwitchBox->show();
   }
+  this->resize( 1,1 );
 }
 
 
