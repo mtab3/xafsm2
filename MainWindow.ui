@@ -7715,7 +7715,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Web</string>
+        <string>Ring Stat.</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_61">
         <item row="0" column="0">

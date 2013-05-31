@@ -19,7 +19,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupUi( this );
 
   QUrl url( "http://www.astf-kha.jp/synchrotron/status/kougen/status.html" );
-  webView->setZoomFactor( 0.4 );
+  webView->setZoomFactor( 0.43 );
   webView->load( url );
 
   MainTab->setCurrentIndex( 0 );
