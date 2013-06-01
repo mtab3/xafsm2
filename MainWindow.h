@@ -230,6 +230,7 @@ private:
 
   // Scan 2D
   QFileDialog *S2DFileSel;
+  QVector<QComboBox*> S2DAxis;
   QVector<QLabel *> S2DCurPos;
   QVector<QLabel *> S2DUnits;
   QVector<QLineEdit *> S2DStarts;
@@ -590,6 +591,7 @@ private slots:
   // S2D Scan2D
   void newS2DFileSelected( const QString &fname );
   void ShowS2DCurMotorPos( SMsg msg );
+  void newAx( int i );
 
  signals:
   void SelectedSSD( int i, bool f );

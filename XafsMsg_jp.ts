@@ -1994,7 +1994,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Rel/Abs</source>
-        <translation>相/絶対</translation>
+        <translation type="unfinished">相対/絶対</translation>
     </message>
     <message>
         <source>Ring Stat.</source>
