@@ -274,10 +274,13 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   QXafsSP = QXafsSP0 - RunUpPulses;   // 測定範囲を加速パルス分広げた範囲の
   QXafsEP = QXafsEP0 + RunUpPulses;   // 始点と終点
 
-  qDebug() << QString( "Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
+  QString DebugBuf;
+  DebugBuf = QString( "QXafs Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
     .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate )
-	   << QString( "Interval and Points %1 %2" )
-    .arg( QXafsInterval ).arg( QXafsPoints );
+    + QString( " Interval and Points %1 %2" )
+    .arg( QXafsInterval ).arg( QXafsPoints )
+    + QString( " Dwell Time %1" ).arg( QXafsDwellTime );
+  NewLogMsg( DebugBuf );
 
   ShowQTime( dtime, WidthInPuls );
 }
@@ -345,16 +348,16 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 5:      // Repeat Point 2
-    qDebug() << "after Interval";
-    DebugTime1 = QDateTime::currentDateTime();    // debug
-    if ( mUnits.QStart() )
-      break;
-    mUnits.clearStage();
     MeasR++;
     if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
     }
+    //    qDebug() << "after Interval";
+    DebugTime1 = QDateTime::currentDateTime();    // debug
+    if ( mUnits.QStart() )
+      break;
+    mUnits.clearStage();
     WriteQHeader( MeasR, FORWARD );
     if ( AutoModeButton->isChecked() ) {
       CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasR + 1 ).arg( MeasA+1 ) );
@@ -378,7 +381,9 @@ void MainWindow::QXafsMeasSequence( void )
       + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
     NewLogMsg( DebugBuf );
 
-    mUnits.clearDoneF();      // QRead を一台ずつ行うためのしかけ // 現状不要のはず。
+    // QRead を一台ずつ行うためのしかけ
+    // OneByOne == true だと働くが、今は true にしていないので現状不要のはず。
+    mUnits.clearDoneF();
     MeasStage++;
     break;
   case 8:
@@ -426,7 +431,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 12:
-    qDebug() << "after Interval at End point";
+    //    qDebug() << "after Interval at End point";
     if ( mUnits.QStart() )
       break;
     MeasStage++;
@@ -484,7 +489,7 @@ void MainWindow::QXafsMeasSequence( void )
     QXafsFinish();
     break;
   }
-  qDebug() << "out " << MeasStage;
+  //  qDebug() << "out " << MeasStage;
 }
 
 void MainWindow::QXafsFinish0( void )
@@ -532,7 +537,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
-  qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
+  //  qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
 
   if ( QLimitedDisplay->isChecked() ) {
     g = g % QLastLines->value();

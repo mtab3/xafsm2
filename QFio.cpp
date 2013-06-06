@@ -118,7 +118,7 @@ void MainWindow::WriteQBody( void )
   double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
   double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
 
-  qDebug() << QString( "writing a file [%1]" ).arg( DFName );
+  //  qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
   if ( !file.open( QIODevice::Append | QIODevice::Text ) ) {
     NewLogMsg( tr( "Can't open QXafs data file [%1] to write data body." )

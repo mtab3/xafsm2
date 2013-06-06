@@ -118,7 +118,7 @@ void XYView::NewPoint( int l, double xx, double yy )
   }
 
   int L = getL( l );
-  if ( points[L] == 0 ) {  qDebug() << "L L " << L << getL( l );  }
+  //  if ( points[L] == 0 ) {  qDebug() << "L L " << L << getL( l );  }
 
   if ( L > inLines )
     inLines = L;
