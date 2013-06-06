@@ -214,6 +214,7 @@ public:
   bool isBusy( void ) { return IsBusy; };
   bool isBusy2( void ) { return IsBusy2; };
   QString value( void ) { return Value; };
+  double metricValue( void ) { return ( Value.toDouble() - Center ) * UPP; };
   QStringList values( void ) { return Values; };
   QStringList MCAvalues( void ) { return MCAValues; };
   double getUPP( void ) { return UPP; };

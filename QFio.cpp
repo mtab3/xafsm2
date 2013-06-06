@@ -112,14 +112,19 @@ void MainWindow::WriteQBody( void )
     vals2.clear();
 
   int num = findMini( vals0, vals1, vals2 );
+  NewLogMsg( tr( "QXafs data points [%1]." )
+	     .arg( num ) );
 
   double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
   double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
 
   qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
-  if ( !file.open( QIODevice::Append | QIODevice::Text ) )
+  if ( !file.open( QIODevice::Append | QIODevice::Text ) ) {
+    NewLogMsg( tr( "Can't open QXafs data file [%1] to write data body." )
+	       .arg( DFName ) );
     return;
+  }
 
   QTextStream out( &file );
 
@@ -135,7 +140,7 @@ void MainWindow::WriteQBody( void )
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
-  
+
   for ( int i = 0; i < num; i++ ) {
     deg = ( p - c ) * upp;
     // p += d;
