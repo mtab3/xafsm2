@@ -138,6 +138,11 @@ void MainWindow::HideBLKs( bool f )
   }
 }
 
+#define MIN_INTEGRAL  ( 1e-4 )     // この数字は q34410a の属性として .def ファイルに
+                                   // 書かれているべき。後でそのように変える。
+#define INTEGRAL_INTERVAL_RATIO  ( 0.9 )
+#define MIN_INTERVAL  ( MIN_INTEGRAL / INTEGRAL_INTERVAL_RATIO )
+
 void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みしない
 {
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
@@ -158,11 +163,11 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直�
   DispQHSpeed->setText( QString::number( HSpeed ) );
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
 
-  if ( WidthInPuls / BlockPoints[0] / HSpeed < 2e-5 ) {
+  if ( ( WidthInPuls / BlockPoints[0] / HSpeed ) < MIN_INTERVAL ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
     // それよりも短くなるなら、インターバルを変更
-    int Interval = 2e-5 * HSpeed;      
+    int Interval = MIN_INTERVAL * HSpeed;      
     BlockPoints[0] = (int)( WidthInPuls / Interval );
     BLKpoints[0]->setText( QString::number( BlockPoints[0] ) );
   }
@@ -248,13 +253,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   else 
     QXafsInterval = 1;
 
-#define MIN_INTEGRAL  ( 1e-4 )     // この数字は q34410a の属性として .def ファイルに
-                                   // 書かれているべき。後でそのように変える。
-#define INTEGRAL_INTERVAL_RATIO  ( 0.9 )
-#define MIN_INTERVAL  ( MIN_INTEGRAL / INTEGRAL_INTERVAL_RATIO )
-
 //  if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
-  if ( (double)QXafsInterval / HSpeed < MIN_INTERVAL ) {
+  if ( ( (double)QXafsInterval / HSpeed ) < MIN_INTERVAL ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
     // ----> 20us ではだめ。a34410a の、最短積分時間は 100us
