@@ -504,6 +504,8 @@ void MainWindow::showPreAMPGain( SMsg msg )
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
+    if ( isAnyOtherProcess() )
+      return;
     if ( ! SFluo->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
       statusbar->showMessage( msg, 2000 );

@@ -425,3 +425,14 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
 {
   RingCurrent->setText( Val );
 }
+
+bool MainWindow::isAnyOtherProcess( void )
+{
+  if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas || inS2D ) {
+    statusbar
+      ->showMessage( tr( "Can't start. Othre Process is going on." ), 2000 );
+    return true;
+  }
+  return false;
+}
+

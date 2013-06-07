@@ -10,9 +10,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   double Eg = ManTEkeV->text().toDouble();
 
   //  inMove = 0;
-  inMMove = 0;
-  inMonitor = 0;
-  inSPSing = 0;
+  inMMove = false;
+  inMonitor = false;
+  inSPSing = false;
 
   ScanView = NULL;
   MonitorView = NULL;
@@ -429,7 +429,9 @@ void MainWindow::NewGoMotorPosUnit( const QString &val )
 
 void MainWindow::GoMAtP( void )
 {
-  if ( inMMove == 0 ) {
+  if ( !inMMove ) {
+    if ( isAnyOtherProcess() )
+      return;
     GoMAtPuls( GoMotorPosPuls->text().toDouble() );
   } else {
     GoMStop();
@@ -438,7 +440,7 @@ void MainWindow::GoMAtP( void )
 
 void MainWindow::GoMAtPuls( double Pos )
 {
-  inMMove = 1;
+  inMMove = true;
   AUnit *am = AMotors.value( MotorN->currentIndex() );
   MovingS = GoMotorS->currentIndex();
 
@@ -497,7 +499,7 @@ void MainWindow::GoMStop( void )
 
 void MainWindow::GoMStop0( void )
 {
-  inMMove = 0;
+  inMMove = false;
 
   GoTimer->stop();
   GoMotor->setEnabled( true );
@@ -510,7 +512,9 @@ void MainWindow::ScanStart( void )
 {
   AUnit *am, *as, *as1 = NULL;
 
-  if ( inSPSing == 0 ) {
+  if ( !inSPSing ) {
+    if ( isAnyOtherProcess() )
+      return;
     if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
@@ -568,7 +572,7 @@ void MainWindow::ScanStart( void )
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
     }
-    inSPSing = 1;
+    inSPSing = true;
 
     NewLogMsg( QString( tr( "Scan Start (%1 %2)" ) )
 	       .arg( am->getName() )
@@ -626,7 +630,9 @@ void MainWindow::Monitor( void )
   AUnit *as1 = ASensors.value( SelectD21->currentIndex() );
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
-  if ( inMonitor == 0 ) {
+  if ( !inMonitor ) {
+    if ( isAnyOtherProcess() )
+      return;
     if ( ! as0->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( as0->getName() );
@@ -669,7 +675,7 @@ void MainWindow::Monitor( void )
     MonitorViewC->setNowDType( MONDATA );
     MonitorView = (TYView*)(MonitorViewC->getView());
     
-    inMonitor = 1;
+    inMonitor = true;
     MonStage = 0;   // 計測のサイクル
 
     mUnits.clearUnits();
@@ -752,7 +758,7 @@ void MainWindow::Monitor( void )
       MonFile.close();
     }
     MonTimer->stop();
-    inMonitor = 0;
+    inMonitor = false;
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ) );

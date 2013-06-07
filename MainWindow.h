@@ -87,6 +87,8 @@ private:
   Conditions *conds;
   Units *u;
   /* cfg. */
+
+  bool isAnyOtherProcess( void );
   
   /* MCA */
   KeV2Pix *kev2pix;
@@ -130,6 +132,7 @@ private:
   void InitAndIdentifySensors( void );
 
   QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
+  QTimer *S2DTimer;
 
   Stars *s;
 
@@ -194,13 +197,13 @@ private:
   void ShowGoMSpeed( void );
   MSPEED GoMSpeed;
 
-  int inMMove;
+  bool inMMove;
   int MovingM;           // Moving motor ID
   int MovingS;           // Moving motor Speed
   //  RELABS GoMRelAbs, SPSRelAbs;
   int SPSSelU;           // Selected SPS Unit
   double SPSUPP;         // Unit per puls
-  int inSPSing;
+  bool inSPSing;
   int ScanStage;
   int ScanMotor, ScanSensor;
   double ScanOrigin, ScanSP, ScanEP, ScanSTP;
@@ -220,7 +223,7 @@ private:
   bool monRecF;
   QFile MonFile;
   QTextStream MonOut;
-  int inMonitor;
+  bool inMonitor;
   int MonStage;
   int MonDev;
   ViewCTRL *MonitorViewC;
@@ -237,11 +240,17 @@ private:
   QVector<QLineEdit *> S2DEnds;
   QVector<QLineEdit *> S2DSteps;
   QVector<QLineEdit *> S2DPoints;
-  QVector<QLineEdit *> S2DTimes;
   QVector<RelAbs *> S2DRelAbs;
-  QVector<AUnit *> S2DMotors;        // これだけは固定配列にとる
+  QVector<bool> S2DMotorUse;
+  QVector<AUnit *> S2DOkSensors;
+  QVector<AUnit *> S2DOkMotors;
+  QVector<AUnit *> S2DMotors;
+  bool inS2D;
+  int S2DStage;
 
   void newAx0( int ax, int motor );
+  void S2DStop0( void );
+  void SetupS2DParams( void );
 
   QVector<AUnit*> SensWithRange;
 
@@ -595,6 +604,8 @@ private slots:
   void newS2DFileSelected( const QString &fname );
   void showS2DNewAxValue( QString val );
   void newAx( int motor );
+  void S2DScanStart( void );
+  void S2DScanSequence( void );
 
  signals:
   void SelectedSSD( int i, bool f );

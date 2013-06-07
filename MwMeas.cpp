@@ -906,6 +906,9 @@ void MainWindow::StartMeasurement( void )
   // だけが選べるようにする。
 
   if ( !inMeas ) {           // 既に測定が進行中でなければ
+    if ( isAnyOtherProcess() )
+      return;
+
     EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
     SFluoLine = -1;
     isSFluo = isSI1 = false;

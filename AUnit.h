@@ -211,6 +211,7 @@ public:
   QString get2ndCh( void ) { return Ch2; };
   QString get2ndDevCh( void ) { return DevCh2; };
   QString getUnit( void ) { return Unit; };
+  bool isBusy0( void ) { return IsBusy || IsBusy2; };
   bool isBusy( void ) { return IsBusy; };
   bool isBusy2( void ) { return IsBusy2; };
   QString value( void ) { return Value; };
