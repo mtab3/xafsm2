@@ -30,7 +30,7 @@ void MainWindow::setupScan2DArea( void )
     }
   }
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
-    newAx( S2DAxis[i]->currentIndex() );
+    newAx0( i, S2DAxis[i]->currentIndex() );
     connect( S2DAxis[i], SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( newAx( int ) ) );
   }
@@ -40,19 +40,32 @@ void MainWindow::setupScan2DArea( void )
 	   this, SLOT( newS2DFileSelected( const QString & ) ) );
 }
 
-void MainWindow::newAx( int i )
+void MainWindow::newAx0( int ax, int motor )
 {
-  for ( int j = 0; j < S2DAxis.count(); j++ ) {
-    if ( sender() == S2DAxis[j] ) {
-      S2DUnits[j]->setText( AMotors[ i ]->getUnit() );
-      S2DCurPos[j]->setText( AMotors[ i ]->value() );
-      if ( S2DMotors[j] != NULL ) {
-	disconnect( AMotors[i], SIGNAL( newValue( QString ) ),
-		    this, SLOT( shoS2DNewValue( QString ) ) );
+  S2DUnits[ax]->setText( AMotors[ motor ]->getUnit() );
+  S2DCurPos[ax]->setText( QString::number( AMotors[ motor ]->metricValue() ) );
+  if ( S2DMotors[ax] != NULL ) {
+    bool Uniq = true;
+    for ( int i = 0; i < S2DMotors.count(); i++ ) {
+      if ( ( i != ax )&&( S2DMotors[i] == S2DMotors[ax] ) ) {
+	Uniq = false;
+	break;
       }
-      connect( AMotors[i], SIGNAL( newValue( QString ) ),
-	       this, SLOT( shoS2DNewValue( QString ) ) );
-      S2DMotors[j] = AMotors[i];   // その軸に選ばれたモータを覚えておく
+    }
+    if ( Uniq )
+      disconnect( S2DMotors[ax], SIGNAL( newValue( QString ) ),
+		  this, SLOT( showS2DNewAxValue( QString ) ) );
+  }
+  S2DMotors[ax] = AMotors[motor];   // その軸に選ばれたモータを覚えておく
+  connect( S2DMotors[ax], SIGNAL( newValue( QString ) ),
+	   this, SLOT( showS2DNewAxValue( QString ) ) );
+}
+
+void MainWindow::newAx( int m )
+{
+  for ( int ax = 0; ax < S2DAxis.count(); ax++ ) {
+    if ( sender() == S2DAxis[ax] ) {
+      newAx0( ax, m );
     }
   }
 }
@@ -65,7 +78,7 @@ void MainWindow::newS2DFileSelected( const QString &fname )
   S2DFileName->setToolTip( FSTATMsgs[ S2DDataStat ][ S2DNameStat ] );
 }
 
-void MainWindow::showS2DNewValue( QString )
+void MainWindow::showS2DNewAxValue( QString )
 {
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
     if ( S2DMotors[i] == sender() ) {

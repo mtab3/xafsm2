@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>830</width>
-    <height>1003</height>
+    <height>1052</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -541,7 +541,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -7145,7 +7145,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QComboBox" name="S2DAx1"/>
+            <widget class="QComboBox" name="S2DAx1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
            <item row="1" column="1">
             <widget class="QLabel" name="S2DCurPos1">
@@ -7175,6 +7182,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="1" column="3">
             <widget class="QLineEdit" name="S2DStartP1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7185,6 +7198,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="1" column="4">
             <widget class="QLineEdit" name="S2DEndP1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7195,6 +7214,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="1" column="5">
             <widget class="QLineEdit" name="S2DStep1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7205,6 +7230,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="1" column="6">
             <widget class="QLineEdit" name="S2DPoints1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7215,6 +7246,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="1" column="7">
             <widget class="QLineEdit" name="S2DTime1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7224,7 +7261,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QComboBox" name="S2DAx2"/>
+            <widget class="QComboBox" name="S2DAx2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
            <item row="2" column="1">
             <widget class="QLabel" name="S2DCurPos2">
@@ -7254,6 +7298,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="2" column="3">
             <widget class="QLineEdit" name="S2DStartP2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7264,6 +7314,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="2" column="4">
             <widget class="QLineEdit" name="S2DEndP2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7274,6 +7330,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="2" column="5">
             <widget class="QLineEdit" name="S2DStep2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7284,6 +7346,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="2" column="6">
             <widget class="QLineEdit" name="S2DPoints2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7294,6 +7362,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="2" column="7">
             <widget class="QLineEdit" name="S2DTime2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7303,7 +7377,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QComboBox" name="S2DAx3"/>
+            <widget class="QComboBox" name="S2DAx3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
            <item row="3" column="1">
             <widget class="QLabel" name="S2DCurPos3">
@@ -7326,6 +7407,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="3" column="3">
             <widget class="QLineEdit" name="S2DStartP3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7336,6 +7423,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="3" column="4">
             <widget class="QLineEdit" name="S2DEndP3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7346,6 +7439,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="3" column="5">
             <widget class="QLineEdit" name="S2DStep3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7356,6 +7455,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="3" column="6">
             <widget class="QLineEdit" name="S2DPoints3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7366,6 +7471,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </item>
            <item row="3" column="7">
             <widget class="QLineEdit" name="S2DTime3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>

@@ -241,6 +241,8 @@ private:
   QVector<RelAbs *> S2DRelAbs;
   QVector<AUnit *> S2DMotors;        // これだけは固定配列にとる
 
+  void newAx0( int ax, int motor );
+
   QVector<AUnit*> SensWithRange;
 
   QVector<QLineEdit *> BLKstart;
@@ -591,8 +593,8 @@ private slots:
 
   // S2D Scan2D
   void newS2DFileSelected( const QString &fname );
-  void showS2DNewValue( QString val );
-  void newAx( int i );
+  void showS2DNewAxValue( QString val );
+  void newAx( int motor );
 
  signals:
   void SelectedSSD( int i, bool f );
