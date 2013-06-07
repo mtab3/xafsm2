@@ -248,10 +248,19 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   else 
     QXafsInterval = 1;
 
-  if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
+#define MIN_INTEGRAL  ( 1e-4 )     // この数字は q34410a の属性として .def ファイルに
+                                   // 書かれているべき。後でそのように変える。
+#define INTEGRAL_INTERVAL_RATIO  ( 0.9 )
+#define MIN_INTERVAL  ( MIN_INTEGRAL / INTEGRAL_INTERVAL_RATIO )
+
+//  if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
+  if ( (double)QXafsInterval / HSpeed < MIN_INTERVAL ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
-    QXafsInterval = 2e-5 * HSpeed;         // これより短くなるなら、インターバルを変更
+    // ----> 20us ではだめ。a34410a の、最短積分時間は 100us
+    //       Interval の 90% を積分時間に設定するので
+    //       Interval は最低 100/0.9 = 111.1111.... 必要
+    QXafsInterval = MIN_INTERVAL * HSpeed;   // これより短くなるなら、インターバルを変更
     SBlockPoints[0] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
     statusbar
       ->showMessage( tr( "Selected Points were too many!  It was changed to be %1" )
