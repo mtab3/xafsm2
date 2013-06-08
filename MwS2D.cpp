@@ -126,9 +126,17 @@ void MainWindow::S2DScanStart( void )
     if ( S2DTime1->text().toDouble() <= 0 ) {
       statusbar->showMessage( tr( "Meas Time is 0 or less." ), 2000 );
     }
-    // 軸がダブってないかチェック
     for ( int i = 0; i < S2DMotors.count(); i++ ) {
       if ( S2DMotorUse[i] ) {
+	// スキャン範囲に幅があるかをチェック
+	if ( S2DStarts[i]->text().toDouble() == S2DEnds[i]->text().toDouble() ) {
+	      statusbar->showMessage( tr( "2D Scan Range Error." ), 2000 );
+	}
+	// 測定点数が 1以上あることを確認
+	if ( S2DPoints[i]->text().toInt() > 0 ) {
+	      statusbar->showMessage( tr( "2D Scan Points Error." ), 2000 );
+	}
+	// 軸がダブってないかチェック
 	for ( int j = i+1; j < S2DMotors.count(); j++ ) {
 	  if ( S2DMotorUse[j] ) {
 	    if ( S2DMotors[i] == S2DMotors[j] ) {
@@ -175,6 +183,17 @@ void MainWindow::S2DScanStart( void )
     S2DFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 
     SetupS2DParams();
+    // 1st と 2nd の軸の単位が同じなら、表示の縦横比をスキャン範囲の
+    // 縦横比に合わせるように努力する。
+    // そうでなければ、画面いっぱいを使う。
+    if ( S2DMotors[0]->getUnit() == S2DMotors[1]->getUnit() ) {
+      S2DV->setRatioType( REAL_RATIO );
+    } else {
+      S2DV->setRatioType( AS_SCREEN );
+    }
+    S2DV->setRange( S2DStarts[0]->text().toDouble(), S2DEnds[0]->text().toDouble(),
+		    S2DStarts[1]->text().toDouble(), S2DEnds[1]->text().toDouble() );
+
     S2DStage = 0;
     S2DTimer->start( 100 );
   } else {
@@ -263,9 +282,10 @@ void MainWindow::S2DScanSequence( void )
     // 計測値読み取り
     mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
     // 描画
-    // ステップコントロール変数インクリメント
+    
+    // ステップコントロール変数更新
     S2Dx[0] += S2Ddx[0];
-    if ( (( S2Dsign[0] > 0 ) && ( S2Dx[0] < S2Dex[0] ))       // 1st ax の端点でなければ
+    if ( (( S2Dsign[0] > 0 ) && ( S2Dx[0] < S2Dex[0] ))  // 1st ax の端点でなければ
 	 ||(( S2Dsign[0] < 0 ) && ( S2Dx[0] > S2Dex[0] )) ) {
       S2DMotors[0]->SetValue( S2Dx[0] );   // 1st ax を次の点に移動
       S2DStage = 2;

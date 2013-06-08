@@ -14,9 +14,7 @@
 #include "SelMC2.h"
 #include "StarsSV2.h"
 #include "SelMC2.h"
-
 #include "Units.h"
-
 #include "ViewCtrl.h"
 #include "XafsM.h"
 #include "Atoms.h"
@@ -27,6 +25,7 @@
 #include "XYView.h"
 #include "TYView.h"
 #include "MCAView.h"
+#include "S2DView.h"
 #include "Status.h"
 #include "AtomGroup.h"
 #include "Conditions.h"
