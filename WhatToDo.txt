@@ -1,3 +1,6 @@
+○ SetHighSpeed を後から (SetSpeed( HIGH ) を先)にやっても
+　ちゃんとスピードが変わるかどうか要確認
+
 ○ SetUp の 「Rel/Abs」切り替えボタンをクラス化した。働いているかは要チェック
 
 ○ master に develop をマージ

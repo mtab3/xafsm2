@@ -264,6 +264,8 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL(AnsSetTimingOutInterval( SMsg )), this, SLOT(ClrBusy( SMsg )));
     connect( s, SIGNAL(AnsSetTimingOutReady( SMsg )), this, SLOT(ClrBusy( SMsg )));
     connect( s, SIGNAL(AnsSelect( SMsg )), this, SLOT(ClrBusy( SMsg )));
+    connect( s, SIGNAL(AnsGetHighSpeed( SMsg )), this, SLOT(RcvHighSpeed( SMsg )));
+    s->SendCMD2( "Init", DevCh, "GetHighSpeed" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // ENC2 だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  1  ) ) {
@@ -860,6 +862,17 @@ void AUnit::RcvStat( SMsg msg )
     if ( Type == "ENC2" ) {
       //      Values = msg.Vals();
       //      emit newQData();
+      IsBusy2Off( Driver );
+    }
+  }
+}
+
+void AUnit::RcvHighSpeed( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )
+       && ( ( msg.Msgt() == GETHIGHSPEED ) ) ) {
+    if ( Type == "PM" ) {
+      MaxS = msg.Val().toInt();
       IsBusy2Off( Driver );
     }
   }

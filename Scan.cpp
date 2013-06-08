@@ -74,11 +74,7 @@ void MainWindow::ScanSequence( void )
     break;
   case 10:
     SPSScan->setText( tr( "Scan" ) );
-    SPSScan
-      ->setStyleSheet( "background-color: "
-		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
-		       "rgba(225, 235, 225, 255), stop:1 "
-		       "rgba(255, 255, 255, 255));" );
+    SPSScan->setStyleSheet( NormalB );
     statusbar->showMessage( tr( "The Scan has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Scan Finished" ) ) );
     // sks->SetValue( Motors[ MovingM ].devName, p = ScanView->PeakSearch( 1 ) );

@@ -7199,6 +7199,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
+             <property name="text">
+              <string>-10</string>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -7214,6 +7217,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string>10</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7247,6 +7253,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
+             <property name="text">
+              <string>10</string>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -7262,6 +7271,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string>1</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7315,6 +7327,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
+             <property name="text">
+              <string>-10</string>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -7330,6 +7345,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string>10</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7362,6 +7380,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string>10</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7504,6 +7525,16 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
              <property name="text">
               <string>Setup Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="8">
+            <widget class="QLabel" name="label_96">
+             <property name="text">
+              <string>  [sec]</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>

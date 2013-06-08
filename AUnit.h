@@ -60,6 +60,8 @@ class AUnit : public QObject
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
+  int MaxS; // max speed (pps) 最初に設定されていたオリジナルのスピード
+
   bool hasConnected;
   QTcpSocket *dLink;
   QDataStream *dLinkStream;
@@ -259,6 +261,7 @@ public:
   // only for PZ
   double getMaxV( void ) { return MaxV; };
   double getMinV( void ) { return MinV; };
+  int highSpeed( void ) { return MaxS; };     // オリジナルのハイスピード
 
   void show( void );   // mainly for debugging
 
@@ -340,6 +343,7 @@ public slots:
   //  void RcvReadData( SMsg msg );
   void RcvStat( SMsg msg );
   void RcvQGetData( SMsg msg );
+  void RcvHighSpeed( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen

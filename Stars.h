@@ -73,6 +73,7 @@ signals:
   void AnsSetSpeed( SMsg msg );
   void AnsGetSpeed( SMsg msg );
   void AnsSetHighSpeed( SMsg msg );
+  void AnsGetHighSpeed( SMsg msg );
   void AnsSetTimingOutMode( SMsg msg );
   void AnsSetTimingOutStart( SMsg msg );
   void AnsSetTimingOutEnd( SMsg msg );
