@@ -247,7 +247,7 @@ private:
   bool inS2D;
   int S2DStage;
   QVector<int> S2Dnow;
-  QVector<int> S2Di, S2Dsx, S2Dex, S2Ddx;
+  QVector<int> S2Dx, S2Dsx, S2Dex, S2Ddx;
   QVector<int> S2Dsign;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
 
