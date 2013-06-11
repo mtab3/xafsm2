@@ -425,7 +425,7 @@ void MainWindow::RecordData( void )
 
   SetDFName( MeasR );
   QFile file( DFName );
-  qDebug() << "Fname " << DFName;
+  //  qDebug() << "Fname " << DFName;
   double recTh;
   double encTh, PMTh;
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {

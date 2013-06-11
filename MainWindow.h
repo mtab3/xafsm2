@@ -231,6 +231,7 @@ private:
   bool MonSensF[ 3 ];
 
   // Scan 2D
+  bool S2DStepF;
   QFileDialog *S2DFileSel;
   QVector<QComboBox*> S2DAxis;
   QVector<QLabel *> S2DCurPos;
@@ -247,13 +248,20 @@ private:
   bool inS2D;
   int S2DStage;
   QVector<int> S2Dnow;
-  QVector<int> S2Dx, S2Dsx, S2Dex, S2Ddx;
-  QVector<int> S2Dsign;
+  QVector<int> S2Di, S2Dps;
+  QVector<double> S2Dsx, S2Dex, S2Ddx;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
+  QString S2DFile;
+  bool isS2DSFluo;
 
   void newAx0( int ax, int motor );
   void S2DStop0( void );
   void SetupS2DParams( void );
+  void S2DWriteHead( void );
+  void S2DWriteBody( double v );
+  void S2DWriteBody2( void );
+  void S2DWriteBlankLine( void );
+  void S2DWriteTail( void );
 
   QVector<AUnit*> SensWithRange;
 
@@ -607,6 +615,8 @@ private slots:
   void newS2DFileSelected( const QString &fname );
   void showS2DNewAxValue( QString val );
   void newAx( int motor );
+  void newS2DSteps( void );
+  void newS2DPoints( void );
   void S2DScanStart( void );
   void S2DScanSequence( void );
 

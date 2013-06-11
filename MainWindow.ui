@@ -6884,7 +6884,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QRadioButton" name="S2SRecordMCA">
+            <widget class="QRadioButton" name="S2DRecordMCA">
              <property name="text">
               <string>Record MCA Spectra</string>
              </property>
@@ -7135,7 +7135,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <item row="0" column="7">
             <widget class="QLabel" name="label_120">
              <property name="text">
-              <string>Pnts.</string>
+              <string>Periods</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -7196,6 +7196,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7214,6 +7217,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -7234,8 +7240,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string>2</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7249,6 +7261,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -7324,6 +7339,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;p&gt;However, for the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7342,6 +7360,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;p&gt;However, for the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -7362,8 +7383,14 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;p&gt;However, for the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="text">
+              <string>2</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7377,6 +7404,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;p&gt;However, for the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>

@@ -1986,7 +1986,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Pnts.</source>
-        <translation>点数</translation>
+        <translation type="obsolete">点数</translation>
     </message>
     <message>
         <source>Time</source>
@@ -1994,7 +1994,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Rel/Abs</source>
-        <translation type="unfinished">相対/絶対</translation>
+        <translation>相対/絶対</translation>
     </message>
     <message>
         <source>Ring Stat.</source>
@@ -2011,6 +2011,80 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Cnt.Scn.</source>
         <translation>連続</translation>
+    </message>
+    <message>
+        <source>Periods</source>
+        <translation>刻数</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the &apos;periods&apos;.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be &apos;periods + 1&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;第1軸については、１つの点から次の点に移動している間に測定が行われます。このため、測定値は2つの点の間の値となり、測定点数は「刻数」と一致します。
+一方で、第2, 3軸については、測定は各点で行われるため、測定点数は「刻数+1」となります。
+第1, 2軸ともに -10〜10 の範囲をスクエアに測定したい場合、
+1軸  -11〜11, 刻み数 11 (幅2), 2軸 -10〜10, 刻数 10(幅2) の様に指定します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>-10</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be &apos;periods + 1&apos;.&lt;/p&gt;&lt;p&gt;However, for the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the &apos;periods&apos;.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;第1軸については、１つの点から次の点に移動している間に測定が行われます。このため、測定値は2つの点の間の値となり、測定点数は「刻数」と一致します。
+一方で、第2, 3軸については、測定は各点で行われるため、測定点数は「刻数+1」となります。
+第1, 2軸ともに -10〜10 の範囲をスクエアに測定したい場合、
+1軸  -11〜11, 刻み数 11 (幅2), 2軸 -10〜10, 刻数 10(幅2) の様に指定します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>  [sec]</source>
+        <translation>  [秒]</translation>
+    </message>
+    <message>
+        <source>Can&apos;t start. Othre Process is going on.</source>
+        <translation>他の作業が行われているため開始できません。</translation>
+    </message>
+    <message>
+        <source>Can&apos;t start 2D Scan. Othre Process is going on.</source>
+        <translation>他の作業が行われているため2次元スキャンを開始できません。</translation>
+    </message>
+    <message>
+        <source>2D Scan cannot Start : (%1) is disabled</source>
+        <translation>[%1]が使えないため2次元スキャンを開始できません。</translation>
+    </message>
+    <message>
+        <source>Meas Time is 0 or less.</source>
+        <translation>測定時間が 0またはそれ以下になっています。</translation>
+    </message>
+    <message>
+        <source>2D Scan Range Error.</source>
+        <translation>2次元スキャンの範囲指定が誤っています。</translation>
+    </message>
+    <message>
+        <source>2D Scan Points Error.</source>
+        <translation>2次元スキャンの刻数が誤っています。</translation>
+    </message>
+    <message>
+        <source>The same motor was selected for different axis.</source>
+        <translation>スキャンのための異なる軸として同じモーターが選択されています。</translation>
+    </message>
+    <message>
+        <source>Continuous scan is not available now.</source>
+        <translation>連続測定は現在サポートされていません。</translation>
+    </message>
+    <message>
+        <source>2D Scan Start (%1 %2 %3 (%4))</source>
+        <translation>2次元スキャンを開始します。(%1 %2 %3 (%4))</translation>
+    </message>
+    <message>
+        <source>2D Scan Finished.</source>
+        <translation>2次元スキャン終了。</translation>
+    </message>
+    <message>
+        <source>QXafs data points [%1].</source>
+        <translation>QXafs データ点数 [%1].</translation>
+    </message>
+    <message>
+        <source>Can&apos;t open QXafs data file [%1] to write data body.</source>
+        <translation>QXafs のデータを書き込むためにファイル[%1]が開けません。</translation>
     </message>
 </context>
 <context>
@@ -2501,6 +2575,13 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Abs</source>
         <translation>絶対</translation>
+    </message>
+</context>
+<context>
+    <name>S2DView</name>
+    <message>
+        <source>Frame</source>
+        <translation></translation>
     </message>
 </context>
 <context>

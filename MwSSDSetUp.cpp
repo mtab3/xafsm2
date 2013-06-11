@@ -135,9 +135,11 @@ void MainWindow::newCalibration( void )
       if ( oldE <= 0 ) return;
       // 新旧の エネルギー比
       double ratio = PeakCalibrate->text().toDouble() / oldE;
+#if 0
       qDebug() << "oldE and ratio "
 	       << oldE << PeakCalibrate->text().toDouble() << ratio
 	       << "new gain " << GainInput->text().toDouble() / ratio;
+#endif
       if ( ratio <= 0 ) return;
       // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
       // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
@@ -280,7 +282,7 @@ void MainWindow::saveMCAData( void )
 
 void MainWindow::saveMCAData0( QString fname )
 {
-  qDebug() << "SSD file name " << fname;
+  //  qDebug() << "SSD file name " << fname;
 
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {

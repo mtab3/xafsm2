@@ -125,6 +125,9 @@ void MainWindow::ChangerGoToNewPosition( void )
   moveToTarget( ChangerToGoHolderSelect->value(),
 		ChangerToGoFinePosition1->text().toDouble(),
 		ChangerToGoFinePosition2->text().toDouble() );
+
+  ChangerGo->setText( tr( "Moving" ) );
+  ChangerGo->setStyleSheet( InActive );
 }
 
 void MainWindow::NewChangerSelected( int i )

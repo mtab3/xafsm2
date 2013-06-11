@@ -14,18 +14,16 @@ class S2DView : public QFrame, private Ui::S2DView
   ChCoord cc;
   double rType;
   double minx, maxx, miny, maxy;
-  int xSteps, ySteps;
+  double sx, sy, dx, dy;
+  int maxix, maxiy;
+  double **data;
 
  public:
   S2DView( QWidget *p );
 
   void setRatioType( RATIO_TYPE r ) { rType = r; };
-  void setRange( double x1, double x2, double y1, double y2 ) {
-    if ( x1 > x2 ) { maxx = x1; minx = x2; } else { maxx = x2; minx = x1; }
-    if ( y1 > y2 ) { maxy = y1; miny = y2; } else { maxy = y2; miny = y1; }
-    cc.SetRealCoord( minx, maxx, miny, maxy );
-  };
-  void setSteps( int x, int y ) { xSteps = x; ySteps = y; };
+  void setRange( double sx, double sy, double dx, double dy, int ix, int iy );
+  void setData( int ix, int iy, double v );
 
  private:
   void paintEvent( QPaintEvent *event );
