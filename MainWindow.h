@@ -33,6 +33,7 @@
 #include "FluoDBase.h"
 #include "DarkTable.h"
 #include "Changer.h"
+#include "cBar.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
@@ -253,6 +254,7 @@ private:
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   QString S2DFile;
   bool isS2DSFluo;
+  double S2DLastV;
 
   void newAx0( int ax, int motor );
   void S2DStop0( void );

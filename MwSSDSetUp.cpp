@@ -286,7 +286,8 @@ void MainWindow::saveMCAData0( QString fname )
 
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-    statusbar->showMessage( tr( "The file [%1] can not open to record the data" ),
+    statusbar->showMessage( tr( "The file [%1] can not open to record the data" )
+			    .arg( fname ),
 			    2000 );
     return;
   }
@@ -313,11 +314,19 @@ void MainWindow::WriteMCAHead( QTextStream &out )
 
 void MainWindow::WriteMCAData( QTextStream &out )
 {
+#if 0
+  quint32 *mcaLines[ MaxSSDs ];
+
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    mcaLines[i] = SFluo->getAMCA( i );
+  }
+#endif
   for ( int i = 0; i < MCALength; i++ ) {
     out << i;
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << "\t" << kev2pix->p2E( j, i );
       out << "\t" << SFluo->getAMCAdata( j, i );
+      //      out << "\t" << mcaLines[j][i];
     }
     out << "\n";
   }

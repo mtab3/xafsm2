@@ -420,6 +420,7 @@ void MainWindow::RecordData( void )
 			   .arg( (int)MeasR, 3, 10, QChar( '0' ) )
 			   .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
     }
+    qDebug() << "Canonical File Path for MCA data" << mcaFile.canonicalFilePath();
     saveMCAData0( mcaFile.canonicalFilePath() );
   }
 

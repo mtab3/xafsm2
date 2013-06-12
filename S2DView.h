@@ -12,11 +12,17 @@ class S2DView : public QFrame, private Ui::S2DView
   Q_OBJECT
 
   ChCoord cc;
-  double rType;
+  RATIO_TYPE rType;
   double minx, maxx, miny, maxy;
   double sx, sy, dx, dy;
   int maxix, maxiy;
   double **data;
+
+  bool AutoScale;
+  QColor cbar[ 256 * 4 ];
+  double minz, maxz;   // データの最大最小
+  double vmin, vmax;   // 表示レンジの最大最小
+  int cmin, cmax;      // 色番号の最大最小
 
  public:
   S2DView( QWidget *p );
@@ -28,6 +34,7 @@ class S2DView : public QFrame, private Ui::S2DView
  private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
+  int cNum( double v );
 
 };
 
