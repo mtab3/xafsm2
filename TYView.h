@@ -57,7 +57,7 @@ public:
   QColor getColor( int i ) { return LC[i]; };
   int getDatas( void ) { return datas; };
   int getT( int i ) { return mont[ ep - datas + i ]; };
-  int getY( int l, int i ) { return mony[l][ ep - datas + i ]; };
+  double getY( int l, int i ) { return mony[l][ ep - datas + i ]; };
 
 public slots:
   void SetMonScale( int ms ) { MonScale = ms; };;
