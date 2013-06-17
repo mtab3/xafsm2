@@ -132,7 +132,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( GoTo4, SIGNAL( clicked() ), this, SLOT( GoToPosKeV4() ) );
 #endif
   for ( int i = 0; i < GoTos.count(); i++ ) {
-    connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV() ) );
+    connect( GoTos[i], SIGNAL( clicked() ), this, SLOT( GoToPosKeV() ) );
   }
 
   connect( MotorN, SIGNAL( currentIndexChanged( int ) ), this, SLOT( NewMotor() ) );
@@ -160,7 +160,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
 void MainWindow::ToggleGoToButtons( QString )
 {
-  if ( MMainTh->IsBusy1() ) {
+  if ( MMainTh->isBusy() ) {
     for ( int i = 0; i < GoTos.count(); i++ ) {
       GoTos[i]->setText( "Stop" );
       GoTos[i]->setStyleSheet( InActive );
@@ -175,7 +175,7 @@ void MainWindow::ToggleGoToButtons( QString )
 
 void MainWindow::GoToPosKeV( void )
 {
-  if ( MMainTh->IsBusy1() ) {
+  if ( MMainTh->isBusy() ) {
     MMainTh->Stop();
   } else {
     for ( int i = 0; i < GoTos.count(); i++ ) {
