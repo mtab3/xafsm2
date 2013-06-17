@@ -94,7 +94,7 @@ void MainWindow::SetNewChangerCenter( void )
 
   int target = ChangerCurrentHolder->value();       // Target は 1 始まりの整数
   int ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
-  int iz = ( target - 1 ) / changer->holders2() - changer->center2();    // -1, 0, 1
+  int iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
   int nowx = c1->value().toInt();
   int nowz = c2->value().toInt();
   c1->setCenter( nowx - ix * changer->spacing1() / c1->getUPP() * changer->dir1() );
@@ -109,7 +109,7 @@ void MainWindow::moveToTarget( int target, double dx, double dz )
 
   MovingToNewSamplePosition = true;   // このフラグで移動中の測定をブロックする
   int ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
-  int iz = ( target - 1 ) / changer->holders2() - changer->center2();    // -1, 0, 1
+  int iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
   int targetx = c1->u2p( changer->spacing1() * ix * changer->dir1() )
                    + dx / c1->getUPP() * changer->dir1();
   int targetz = c2->u2p( changer->spacing2() * iz * changer->dir2() )
@@ -164,4 +164,43 @@ void MainWindow::NewChangerSelected( int i )
   ChangerCurrentHolder->setMaximum( Changers[ i ]->holders() );
   ChangerUnit1->setText( Changers[i]->unit1()->getUnit() );
   ChangerUnit2->setText( Changers[i]->unit2()->getUnit() );
+
+  disconnect( SIGNAL( newValue( QString ) ),
+	      this, SLOT( ShowChangerPosition( QString ) ) );
+  connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
+	   this, SLOT( ShowChangerPosition( QString ) ) );
+  connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
+	   this, SLOT( ShowChangerPosition( QString ) ) );
+  Changers[i]->unit1()->GetValue();
+  Changers[i]->unit2()->GetValue();
+}
+
+void MainWindow::ShowChangerPosition( QString )
+{
+  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  AUnit *c1 = changer->unit1();
+  AUnit *c2 = changer->unit2();
+  double p1 = c1->value().toDouble();
+  double p2 = c2->value().toDouble();
+
+  double x = ( p1 - c1->getCenter() )
+                * c1->getUPP() * changer->dir1() / changer->spacing1();
+  double y = ( p2 - c2->getCenter() )
+                * c2->getUPP() * changer->dir2() / changer->spacing2();
+
+  int ix, iy;
+  if ( x > 0 ) { ix = (int)( x + 0.5 ); } else { ix = -(int)( -x + 0.5 ); }
+  if ( y > 0 ) { iy = (int)( y + 0.5 ); } else { iy = -(int)( -y + 0.5 ); }
+  int num = changer->holders1() * ( iy + changer->center1() )
+             + ( ix + changer->center1() ) + 1;
+
+  double dx = ( p1 - c1->getCenter() ) * c1->getUPP() * changer->dir1()
+                  - ix * changer->spacing1();
+  double dy = ( p2 - c2->getCenter() ) * c2->getUPP() * changer->dir2()
+                  - iy * changer->spacing2();
+
+  ChangerToGoHolderSelect->setValue( num );
+  ChangerCurrentHolder->setValue( num );
+  ChangerToGoFinePosition1->setText( QString::number( dx ) );
+  ChangerToGoFinePosition2->setText( QString::number( dy ) );
 }

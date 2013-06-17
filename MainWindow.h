@@ -426,6 +426,7 @@ private slots:
   void NewChangerSelected( int i );
   void StartDatumChanger( void );
   void ChangerReached( QString );
+  void ShowChangerPosition( QString );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );
