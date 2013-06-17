@@ -145,6 +145,7 @@ private:
   //  double CurPosKeV;      // Current Position of MonoChro in Energy (keV)
   QVector<QComboBox *> GoUnit;
   QVector<QLineEdit *> GoPosEdit;
+  QVector<QPushButton *> GoTos;
   double GoPosKeV[ GOS ];
   double oldDeg;             // ShowCurThPos での重複実行を避けるため。
   bool AllInited, MotorsInited, SensorsInited;
@@ -473,10 +474,15 @@ private slots:
   void ShowMB( void );
 
   void GetNewGos( void );
+#if 0
   void GoToPosKeV1( void ) { MoveCurThPosKeV( GoPosKeV[0] ); }
   void GoToPosKeV2( void ) { MoveCurThPosKeV( GoPosKeV[1] ); }
   void GoToPosKeV3( void ) { MoveCurThPosKeV( GoPosKeV[2] ); }
   void GoToPosKeV4( void ) { MoveCurThPosKeV( GoPosKeV[3] ); }
+#endif
+  void GoToPosKeV( void );
+  void ToggleGoToButtons( QString );
+
   void NewMotor( void );
   void NewGoMotorPosPuls( const QString &val );
   void NewGoMotorPosUnit( const QString &val );

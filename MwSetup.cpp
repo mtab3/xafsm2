@@ -6,6 +6,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 {
   GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
+  GoTos << GoTo1 << GoTo2 << GoTo3 << GoTo4;
 
   double Eg = ManTEkeV->text().toDouble();
 
@@ -124,10 +125,15 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ) );
   connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ) );
 
+#if 0
   connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ) );
   connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ) );
   connect( GoTo3, SIGNAL( clicked() ), this, SLOT( GoToPosKeV3() ) );
   connect( GoTo4, SIGNAL( clicked() ), this, SLOT( GoToPosKeV4() ) );
+#endif
+  for ( int i = 0; i < GoTos.count(); i++ ) {
+    connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV() ) );
+  }
 
   connect( MotorN, SIGNAL( currentIndexChanged( int ) ), this, SLOT( NewMotor() ) );
   connect( GoMotor, SIGNAL( clicked() ), this, SLOT( GoMAtP() ) );
@@ -148,6 +154,35 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( setSelectedScanFName( const QString & ) ) );
   connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
   connect( SaveMonData, SIGNAL( clicked() ), this, SLOT( saveMonData() ) );
+  connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ToggleGoToButtons( QString ) ) );
+}
+
+void MainWindow::ToggleGoToButtons( QString )
+{
+  if ( MMainTh->IsBusy1() ) {
+    for ( int i = 0; i < GoTos.count(); i++ ) {
+      GoTos[i]->setText( "Stop" );
+      GoTos[i]->setStyleSheet( InActive );
+    }
+  } else {
+    for ( int i = 0; i < GoTos.count(); i++ ) {
+      GoTos[i]->setText( "Go" );
+      GoTos[i]->setStyleSheet( NormalB );
+    }
+  }
+}
+
+void MainWindow::GoToPosKeV( void )
+{
+  if ( MMainTh->IsBusy1() ) {
+    MMainTh->Stop();
+  } else {
+    for ( int i = 0; i < GoTos.count(); i++ ) {
+      if ( GoTos[i] == sender() )
+	MoveCurThPosKeV( GoPosKeV[i] );
+    }
+  }
 }
 
 void MainWindow::newSensSelected( int i )
