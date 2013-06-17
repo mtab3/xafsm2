@@ -56,8 +56,6 @@ void S2DView::setRange( double Sx, double Sy, double Dx, double Dy, int ix, int 
   dx = Dx;
   dy = Dy;
 
-  qDebug() << "ix iy " << ix << iy;
-
   ex = sx + dx * ix;
   ey = sy + dy * iy;
   if ( sx > ex ) { maxx = sx; minx = ex; } else { maxx = ex; minx = sx; }

@@ -22,6 +22,8 @@ void MainWindow::setupChangerArea( void )
   connect( ChangerGo, SIGNAL( clicked() ), this, SLOT( ChangerGoToNewPosition() ) );
   connect( DatumChanger, SIGNAL( clicked() ), this, SLOT( StartDatumChanger() ) );
   connect( this, SIGNAL( ChangerNext() ), this, SLOT( AutoSequence() ) );
+  
+  movingC1 = movingC2 = NULL;
 }
 
 void MainWindow::StartDatumChanger( void )
@@ -95,8 +97,8 @@ void MainWindow::SetNewChangerCenter( void )
   int iz = ( target - 1 ) / changer->holders2() - changer->center2();    // -1, 0, 1
   int nowx = c1->value().toInt();
   int nowz = c2->value().toInt();
-  c1->setCenter( nowx + ix * changer->spacing1() / c1->getUPP() * changer->dir1() );
-  c2->setCenter( nowz + iz * changer->spacing2() / c2->getUPP() * changer->dir2() );
+  c1->setCenter( nowx - ix * changer->spacing1() / c1->getUPP() * changer->dir1() );
+  c2->setCenter( nowz - iz * changer->spacing2() / c2->getUPP() * changer->dir2() );
 }
 
 void MainWindow::moveToTarget( int target, double dx, double dz )
@@ -128,6 +130,30 @@ void MainWindow::ChangerGoToNewPosition( void )
 
   ChangerGo->setText( tr( "Moving" ) );
   ChangerGo->setStyleSheet( InActive );
+  ChangerGo->setEnabled( false );
+
+  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  movingC1 = changer->unit1();
+  movingC2 = changer->unit2();
+  connect( movingC1, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ChangerReached( QString ) ) );
+  connect( movingC2, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ChangerReached( QString ) ) );
+}
+
+void MainWindow::ChangerReached( QString )
+{
+  if ( movingC1->isBusy() || movingC2->isBusy() ) 
+    return;
+
+  disconnect( movingC1, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ChangerReached( QString ) ) );
+  disconnect( movingC2, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ChangerReached( QString ) ) );
+
+  ChangerGo->setText( tr( "MoveTo" ) );
+  ChangerGo->setStyleSheet( NormalB );
+  ChangerGo->setEnabled( true );
 }
 
 void MainWindow::NewChangerSelected( int i )

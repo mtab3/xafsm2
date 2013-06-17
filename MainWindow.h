@@ -127,6 +127,7 @@ private:
   //  AUnit *ChangerX, *ChangerZ;
 
   QVector<Changer*> Changers;
+  AUnit *movingC1, *movingC2;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -424,6 +425,7 @@ private slots:
   void ChangerGoToNewPosition( void );
   void NewChangerSelected( int i );
   void StartDatumChanger( void );
+  void ChangerReached( QString );
 
   void Initialize( void );
   void InitializeUnitsAgain( void );
