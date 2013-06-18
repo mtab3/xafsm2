@@ -5,6 +5,8 @@
 
 #include "ui_PeriodicT.h"
 #include "AtomGroup.h"
+#include "Atoms.h"
+#include "FluoDBase.h"
 
 enum PTWHENSELECT { PT_CLOSE, PT_HIDE, PT_STAY, PTWHENSELECTS };
 
@@ -13,7 +15,7 @@ class PeriodicTable : public QMainWindow, private Ui::PeriodicT
   Q_OBJECT
 
 public:
-  PeriodicTable();
+  PeriodicTable( VICS *Vic );
 
 private:
   QSignalMapper *PBMap;
@@ -25,6 +27,8 @@ private:
   int SelectedAtom;
   int WhenSelected;
   int WhenClosed;
+
+  void ReadFluoDB( void );
 
 public:
   /******* Control Functions *******/

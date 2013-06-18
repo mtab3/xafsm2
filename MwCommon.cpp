@@ -23,7 +23,7 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   }
   SelectTE->setCurrentIndex( SelectedE );
 
-  PT = new PeriodicTable;
+  PT = new PeriodicTable( Vic );
   PT->SetActionOnSelected( PT_STAY );
   PT->SetActionOnClosed( PT_CLOSE );
   //  PT->SetCheckable( true );

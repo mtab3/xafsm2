@@ -89,7 +89,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 
   NonSelC = "#ccccaa";
   SelectC = "#ffffdd";
-  PT2 = new PeriodicTable;
+  PT2 = new PeriodicTable( Vic );
   PT2->SetActionOnSelected( PT_STAY );
   PT2->SetActionOnClosed( PT_CLOSE );
   PT2->SetCheckable( true );

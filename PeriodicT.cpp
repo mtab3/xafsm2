@@ -2,11 +2,26 @@
 
 #include "PeriodicT.h"
 
-PeriodicTable::PeriodicTable() : QMainWindow()
+const QString ENames[5] = { "K", "LI", "LII", "LIII", "M" };
+
+PeriodicTable::PeriodicTable( VICS *Vic ) : QMainWindow()
 {
   setupUi( this );
 
-  SetPBs();
+  SetPBs();    // QPushButton * を集めた配列作成
+
+  for ( int i = 0; i < PBs; i++ ) {
+    if ( i < Vics ) {
+      QString buf = tr ( "Atom No. : %1" ).arg( Vic[i+1].AN );
+      for ( int j = 0; j < 5; j++ ) {
+	if ( Vic[i+1].AE[j] > 0 ) {
+	  buf += tr( "\n %1-edge : %2 keV" ).arg( ENames[j] ).arg( Vic[i+1].AE[j] );
+	}
+      }
+      PB[i]->setToolTip( buf );
+    }
+  }
+  ReadFluoDB();
 
   isExclusive = true;
   SelectedAtom = -1;
@@ -28,6 +43,42 @@ PeriodicTable::PeriodicTable() : QMainWindow()
 
   AllNoneBs->setVisible( false );
 }
+
+
+void PeriodicTable::ReadFluoDB( void )
+{
+  QFile f( ":xray-KLIII.txt" );
+
+  if ( !f.open( QIODevice::ReadOnly ) ) {
+    qDebug() << "Cannot open [xray-KLIII.txt]";
+    return;
+  }
+
+  QStringList TNames;
+  TNames << "Ka2" << "Ka1" << "Kb" << "La2" << "La1" << "Lb1" << "Lb2";
+
+  QTextStream in(&f);
+
+  double eng;
+  QStringList items;
+  while ( !in.atEnd() ) {
+    items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
+    if ( items[0] != "" ) {
+      int AN = items[1].toInt();
+      if ( ( AN <= PBs )&&( AN > 0 ) ) {
+	QString buf = PB[ AN - 1 ]->toolTip();
+	for ( int i = 2; i < items.count() && i < 9; i++ ) {
+	  if ( ( eng = items[i].toDouble() ) > 0 ) {
+	    buf += tr( "\n   %1 : %2 keV" ).arg( TNames[i-2] ).arg( eng / 1000. );
+	  }
+	}
+	PB[ AN - 1 ]->setToolTip( buf );
+      }
+    }
+  }
+  f.close();
+}
+
 
 QStringList PeriodicTable::getSelectedAtoms( void )
 {
