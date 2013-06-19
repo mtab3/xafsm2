@@ -9,7 +9,7 @@
 #include "FluoDBase.h"
 #include "KeV2Pix.h"
 
-enum MMODE { M_ROI, M_POINT, M_NO };
+enum MMODE { M_ROI, M_POINT, M_H_SHIFT, M_NO };
 
 struct MCAPeak {
   int start;

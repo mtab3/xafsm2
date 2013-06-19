@@ -689,51 +689,68 @@ void MCAView::mouseMoveEvent( QMouseEvent *e )
       }
       nearf = true;
     }
+  } else {
+    int dsx;
+    switch( mMode ) {
+    case M_H_SHIFT:
+      dsx = fabs( e->x() - m.sx() );
+      qDebug() << dsx;
+      break;
+    default:
+      break;
+    }
   }
   update();
 }
 
 void MCAView::mousePressEvent( QMouseEvent *e )
 {
-  if ( e->button() == Qt::LeftButton ) {   // 左ボタンで ROI 設定モード
-    mMode = M_ROI;
-    int dsx = fabs( e->x() - m.sx() );
-    int dex = fabs( e->x() - m.ex() );
-    int setX;
-    if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {   // 近くに既設の ROI の端点があるか
-      if ( dsx < dex ) {                        // あれば ROI 変更
-	setX = m.ex();
-      } else {
-	setX = m.sx();
-      }
-    } else {                                    // なければ ROI 新規
-      setX = e->x();
+  if ( e->modifiers() & Qt::ShiftModifier ) { // シフトキーを押しながら
+    if ( e->button() == Qt::LeftButton ) {   // shift + 左ボタンで 並行移動モード
+      mMode = M_H_SHIFT;
+      m.Pressed( e );
     }
-    m.Pressed( e );
-    m.setSx( setX );
-    rROIsx = cc.s2rx( m.sx() );
-    update();
-  }
-  if ( e->button() == Qt::RightButton ) {  // 右ボタンで カーソル設置/削除
-    double checkp = cc.s2rx( e->x() );
-    bool del = false;
-    int nearp = -1;
-    double nearv = 1e300;
-    for ( int i = 0; i < cPoints.count(); i++ ) { // 既設のカーソルが近くにあるか
-      if ( fabs( cPoints[i] - checkp ) < nearv ) {  // 一番近い既設カーソルを探す
-	nearp = i;
-	nearv = fabs( cPoints[i] - checkp );
+  } else {                                    // シフトキー無し
+    if ( e->button() == Qt::LeftButton ) {   // 左ボタンで ROI 設定モード
+      mMode = M_ROI;
+      int dsx = fabs( e->x() - m.sx() );
+      int dex = fabs( e->x() - m.ex() );
+      int setX;
+      if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {   // 近くに既設の ROI の端点があるか
+	if ( dsx < dex ) {                        // あれば ROI 変更
+	  setX = m.ex();
+	} else {
+	  setX = m.sx();
+	}
+      } else {                                    // なければ ROI 新規
+	setX = e->x();
       }
+      m.Pressed( e );
+      m.setSx( setX );
+      rROIsx = cc.s2rx( m.sx() );
+      update();
     }
-    if ( nearp >= 0 ) {
-      if ( fabs( cc.r2sx( cPoints[ nearp ] ) - e->x() ) < NEAR2 ) {
-	                                          // 最近接がNEAR以下の場所だったら
-	cPoints.remove( nearp );                  // その点を削除
-	del = true;
+    if ( e->button() == Qt::RightButton ) {  // 右ボタンで カーソル設置/削除
+      double checkp = cc.s2rx( e->x() );
+      bool del = false;
+      int nearp = -1;
+      double nearv = 1e300;
+      for ( int i = 0; i < cPoints.count(); i++ ) { // 既設のカーソルが近くにあるか
+	if ( fabs( cPoints[i] - checkp ) < nearv ) {  // 一番近い既設カーソルを探す
+	  nearp = i;
+	  nearv = fabs( cPoints[i] - checkp );
+	}
       }
-    }
-    if ( ! del ) {    // 削除したカーソルがなければカーソル設置
-      cPoints << checkp;
+      if ( nearp >= 0 ) {
+	if ( fabs( cc.r2sx( cPoints[ nearp ] ) - e->x() ) < NEAR2 ) {
+	  // 最近接がNEAR以下の場所だったら
+	  cPoints.remove( nearp );                  // その点を削除
+	  del = true;
+	}
+      }
+      if ( ! del ) {    // 削除したカーソルがなければカーソル設置
+	cPoints << checkp;
+      }
     }
   }
 }
