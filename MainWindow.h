@@ -293,7 +293,6 @@ private:
   QFileDialog *SelRBFND;
   QFileDialog *SelLFND;
   QString SelectedOrgName;
-  bool OverWriteChecked;
 
   UNIT BLKUnit;
   int Blocks;
@@ -586,7 +585,6 @@ private slots:
   void GoingOn( void );
   void OkOverWrite( void );
   void RangeSelOK( void );
-  void isFileNameChanged( const QString & );
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );
   void ReCalcSSDTotal( int i, bool f );

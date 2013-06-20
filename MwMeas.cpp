@@ -39,7 +39,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelDFND->setFilter( "*.dat" );
   SelWBFND->setFilter( "*.prm" );
   SelRBFND->setFilter( "*.prm" );
-  OverWriteChecked = false;
   SelectedOrgName.clear();
   DFName00.clear();
   AutoModeFirst = true;
@@ -47,8 +46,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AutoModeComment.clear();
 
   EditDFName->setText( "test.dat" );
-  connect( EditDFName, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( isFileNameChanged( const QString & ) ) );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
@@ -768,15 +765,7 @@ void MainWindow::SelectedNDFN( const QString &fname )
 {
   EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
                                   // Start 時に書き出す。
-  OverWriteChecked = false;
   SelectedOrgName = fname;
-}
-
-void MainWindow::isFileNameChanged( const QString &fname )
-{
-  if ( fname != SelectedOrgName ) {
-    OverWriteChecked = false;
-  }
 }
 
 void MainWindow::SelectedWBFN( const QString &fname )
@@ -1176,7 +1165,7 @@ void MainWindow::StartMeasurement( void )
 
     if ( AutoModeFirst ) {  // AutoMode: off か AutoMode の 1回目に true
       BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
-      if ( ! OverWriteChecked && BaseFile.exists() ) {
+      if ( BaseFile.exists() ) {
         AskOverWrite->setText( tr( "File [%1] Over Write ?" )
                                .arg( DFName0 + ".dat" ) );
         AskOverWrite->show();
