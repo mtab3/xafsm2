@@ -135,6 +135,7 @@ void MainWindow::MeasSequence( void )
 	}
         MeasStage = 2;
       } else {               // 終了
+	UUnits.clear( MEAS_ID );
         statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
         NewLogMsg( QString( tr( "Meas: Finished" ) ) );
         WriteHeader2( MeasR );

@@ -541,7 +541,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -2806,8 +2806,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           </property>
          </spacer>
         </item>
-        <item row="6" column="3">
-         <spacer name="verticalSpacer_7">
+        <item row="4" column="0">
+         <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -2819,8 +2819,8 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           </property>
          </spacer>
         </item>
-        <item row="4" column="0">
-         <spacer name="verticalSpacer_5">
+        <item row="6" column="0" colspan="4">
+         <spacer name="verticalSpacer_7">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>

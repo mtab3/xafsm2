@@ -2086,6 +2086,30 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Can&apos;t open QXafs data file [%1] to write data body.</source>
         <translation>QXafs のデータを書き込むためにファイル[%1]が開けません。</translation>
     </message>
+    <message>
+        <source>Moving</source>
+        <translation>移動中</translation>
+    </message>
+    <message>
+        <source>Monochro is used by the process %1!</source>
+        <translation>分光器が[%1]に使われています。</translation>
+    </message>
+    <message>
+        <source>The Sensor [%1] is used by the process %2!</source>
+        <translation>検出器[%1]は[%2]に使われています。</translation>
+    </message>
+    <message>
+        <source>The Motor [%1] is used by the process %2!</source>
+        <translation>駆動軸[%1]は[%2]に使われています。</translation>
+    </message>
+    <message>
+        <source>The Monochromator is used by the process %1!</source>
+        <translation>分光器は[%1]に使われています。</translation>
+    </message>
+    <message>
+        <source>The Motor [%1] is used by the process %1!</source>
+        <translation type="obsolete">駆動軸[%1]は[%2]に使われています。</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -2563,6 +2587,25 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
 </context>
 <context>
+    <name>PeriodicTable</name>
+    <message>
+        <source>Atom No. : %1</source>
+        <translation>原子番号: %1</translation>
+    </message>
+    <message>
+        <source>
+ %1-edge : %2 keV</source>
+        <translation>
+ %1-edge : %2 keV</translation>
+    </message>
+    <message>
+        <source>
+   %1 : %2 keV</source>
+        <translation>
+   %1 : %2 keV</translation>
+    </message>
+</context>
+<context>
     <name>RelAbs</name>
     <message>
         <source>Form</source>
@@ -2878,6 +2921,13 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>By clicking the &apos;A. Scale&apos; (Auto Scale) button at left-bottom corner, the auto-scale mode is toggled on and off.</source>
         <translation>左下の「A. Scale」 (Auto Scale)と書かれたボタンを押すことで、オートスケールモードをオン・オフできます。</translation>
+    </message>
+</context>
+<context>
+    <name>cBar</name>
+    <message>
+        <source>Frame</source>
+        <translation>Frame</translation>
     </message>
 </context>
 </TS>

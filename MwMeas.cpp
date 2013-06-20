@@ -768,7 +768,7 @@ void MainWindow::SelectedNDFN( const QString &fname )
 {
   EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
                                   // Start 時に書き出す。
-  OverWriteChecked = true;
+  OverWriteChecked = false;
   SelectedOrgName = fname;
 }
 
@@ -906,13 +906,17 @@ void MainWindow::StartMeasurement( void )
   // だけが選べるようにする。
 
   if ( !inMeas ) {           // 既に測定が進行中でなければ
-    if ( isAnyOtherProcess() )
-      return;
-
     EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
     SFluoLine = -1;
     isSFluo = isSI1 = false;
 
+    QString User;
+    if ( ( User = UUnits.isTheUnitInUse( MMainTh ) ) != "" ) {
+      // 分光器が他のことに使われたらダメ
+      statusbar->showMessage( tr( "Monochro is used by the process %1!" )
+			      .arg( User ), 2000 );
+      return;
+    }
     if ( MMainTh->isBusy() ) {   // 分光器が回ってたらダメ
       statusbar->showMessage( tr( "Monochro is moving!" ), 2000 );
       return;
@@ -1024,13 +1028,11 @@ void MainWindow::StartMeasurement( void )
     mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
-    qDebug() << "Munits :: add I0";
 
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
       mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
-      qDebug() << "Munits :: add I1";
       LC++;
       isSI1 = true;
       aGsb.stat = PBFalse; aGsb.label = tr( "I1" ); GSBSs << aGsb;
@@ -1070,7 +1072,6 @@ void MainWindow::StartMeasurement( void )
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL ) {
         mUnits.addUnit( Enc2 );
-        qDebug() << "Munits :: add enc2";
       }
       mUnits.setOneByOne( false );
     }
@@ -1090,6 +1091,12 @@ void MainWindow::StartMeasurement( void )
         return;
       }
 
+      if ( ( User = UUnits.isTheUnitInUse( as ) ) != "" ) {
+	// 計測器が他のことに使われてたらダメ
+	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
+				.arg( as->getName() ).arg( User ), 2000 );
+	return;
+      }
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
         QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
         statusbar->showMessage( msg, 2000 );
@@ -1185,6 +1192,7 @@ void MainWindow::StartMeasurement( void )
                .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
                .arg( SelectedCurPosDeg( XPM ) ) );
     InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
+
     inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
@@ -1208,7 +1216,14 @@ void MainWindow::StartMeasurement( void )
       mcaDir.cd( BaseFile.baseName() );
       qDebug() << "the place " << mcaDir.path();
     }
-    
+
+    // 測定に使う MaitnTh と検出器の登録、これ以降に XAFS 測定をやめるときは
+    // UUnits.clear() が必要。
+    UUnits.addUnit( MEAS_ID, MMainTh );
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      UUnits.addUnit( MEAS_ID, mUnits.at(i) );
+    }
+
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()
@@ -1273,6 +1288,7 @@ void MainWindow::SurelyStop( void )
     MeasBackGround->setStyleSheet( NormalB );
     MeasDarkStage = 0;
   }
+  UUnits.clear( MEAS_ID );
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	     .arg( SelectedCurPosDeg( XENC ) )

@@ -86,6 +86,7 @@ void MainWindow::ScanSequence( void )
     ScanStage = 12;
     break;
   case 12:
+    UUnits.clear( SCAN_ID );
     inSPSing = 0;
     ScanTimer->stop();
     SPSScan->setEnabled( true );

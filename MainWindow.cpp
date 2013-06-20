@@ -426,6 +426,7 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
   RingCurrent->setText( Val );
 }
 
+#if 0
 bool MainWindow::isAnyOtherProcess( void )
 {
   if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas || inS2D ) {
@@ -435,4 +436,5 @@ bool MainWindow::isAnyOtherProcess( void )
   }
   return false;
 }
+#endif
 

@@ -178,6 +178,13 @@ void MainWindow::GoToPosKeV( void )
   if ( MMainTh->isBusy() ) {
     MMainTh->Stop();
   } else {
+    QString User;
+    if ( ( User = UUnits.isTheUnitInUse( MMainTh ) ) != "" ) {
+      // 検出器が他のことに使われていたらダメ
+      statusbar->showMessage( tr( "The Monochromator is used by the process %1!" )
+			      .arg( User ), 2000 );
+      return;
+    }
     for ( int i = 0; i < GoTos.count(); i++ ) {
       if ( GoTos[i] == sender() )
 	MoveCurThPosKeV( GoPosKeV[i] );
@@ -464,9 +471,9 @@ void MainWindow::NewGoMotorPosUnit( const QString &val )
 
 void MainWindow::GoMAtP( void )
 {
+  QString User;
+
   if ( !inMMove ) {
-    if ( isAnyOtherProcess() )
-      return;
     GoMAtPuls( GoMotorPosPuls->text().toDouble() );
   } else {
     GoMStop();
@@ -478,6 +485,13 @@ void MainWindow::GoMAtPuls( double Pos )
   inMMove = true;
   AUnit *am = AMotors.value( MotorN->currentIndex() );
   MovingS = GoMotorS->currentIndex();
+
+  QString User;
+  if ( ( User = UUnits.isTheUnitInUse( am ) ) != "" ) {
+    statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
+			    .arg( am->getName() ).arg( User ), 2000 );
+    return;
+  }
 
   if ( MMRelAbs->stat() == REL )
     Pos += am->value().toDouble();
@@ -495,6 +509,8 @@ void MainWindow::GoMAtPuls( double Pos )
   am->SetValue( Pos );
   am->setIsBusy( true );
 
+  UUnits.addUnit( GOMOTOR_ID, am );
+  
   GoTimer->start( 100 );
 
   NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
@@ -536,6 +552,7 @@ void MainWindow::GoMStop0( void )
 {
   inMMove = false;
 
+  UUnits.clear( GOMOTOR_ID );
   GoTimer->stop();
   GoMotor->setEnabled( true );
   SPSScan->setEnabled( true );
@@ -548,8 +565,10 @@ void MainWindow::ScanStart( void )
   AUnit *am, *as, *as1 = NULL;
 
   if ( !inSPSing ) {
+#if 0
     if ( isAnyOtherProcess() )
       return;
+#endif
     if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
@@ -566,27 +585,42 @@ void MainWindow::ScanStart( void )
     mUnits.setDwellTimes( SPSdwell->text().toDouble() );
     mUnits.setDwellTime();
 
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      if ( ! CheckOkList( mUnits.at(i), NXafsOk ) ) {
-	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
-	  .arg( mUnits.at(i)->getName() );
-	statusbar->showMessage( msg, 2000 );
-	return;
-      }
-    }
-    if ( ! am->isEnable() ) {
+    QString User;
+    if ( ! am->isEnable() ) {  // 使用するモータに関するチェック
       QString msg = tr( "Scan cannot Start : (%1) is disabled" )
 	.arg( am->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return;
     }
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      if ( ! mUnits.at(i)->isEnable() ) {
+    if ( ( User = UUnits.isTheUnitInUse( am ) ) != "" ) {
+      // モーターがが他のことに使われたらダメ
+      statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
+			      .arg( am->getName() ).arg( User ), 2000 );
+      return;
+    }
+
+    for ( int i = 0; i < mUnits.count(); i++ ) {   // 使用する検出器に関するチェック
+      AUnit *as = mUnits.at(i);
+      if ( ! CheckOkList( as, NXafsOk ) ) {
+	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
+	  .arg( as->getName() );
+	statusbar->showMessage( msg, 2000 );
+	return;
+      }
+
+      if ( ! as->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( mUnits.at(i)->getName() );
+	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
+	return;
+      }
+
+      if ( ( User = UUnits.isTheUnitInUse( as ) ) != "" ) {
+	// 検出器が他のことに使われたらダメ
+	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
+				.arg( as->getName() ).arg( User ), 2000 );
 	return;
       }
     }
@@ -638,7 +672,12 @@ void MainWindow::ScanStart( void )
     ScanDataStat = NEW;
     ScanRecFile->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
     ScanRecFile->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
-    
+
+    UUnits.addUnit( SCAN_ID, am );
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      UUnits.addUnit( SCAN_ID, mUnits.at(i) );
+    }
+
     ScanStage = 0;
     ScanTimer->start( 100 );
     ScanViewC->setIsDeletable( false );
@@ -666,8 +705,10 @@ void MainWindow::Monitor( void )
   AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
 
   if ( !inMonitor ) {
+#if 0
     if ( isAnyOtherProcess() )
       return;
+#endif
     if ( ! as0->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( as0->getName() );
@@ -710,8 +751,6 @@ void MainWindow::Monitor( void )
     MonitorViewC->setNowDType( MONDATA );
     MonitorView = (TYView*)(MonitorViewC->getView());
     
-    inMonitor = true;
-    MonStage = 0;   // 計測のサイクル
 
     mUnits.clearUnits();
     mUnits.addUnit( as0 );
@@ -741,11 +780,20 @@ void MainWindow::Monitor( void )
     mUnits.setDwellTimes( DwellT20->text().toDouble() );
     mUnits.setDwellTime();
 
+    QString User;
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      if ( ! CheckOkList( mUnits.at(i), NXafsOk ) ) {
+      AUnit *as = mUnits.at(i);
+      if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor [%1] can use only in QXafs mode." )
-	  .arg( mUnits.at(i)->getName() );
+	  .arg( as->getName() );
 	statusbar->showMessage( msg, 2000 );
+	return;
+      }
+
+      if ( ( User = UUnits.isTheUnitInUse( as ) ) != "" ) {
+	// 検出器が他のことに使われたらダメ
+	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
+				.arg( as->getName() ).arg( User ), 2000 );
 	return;
       }
     }
@@ -785,6 +833,12 @@ void MainWindow::Monitor( void )
       MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
     }
 
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      UUnits.addUnit( MONITOR_ID, mUnits.at(i) );
+    }
+
+    inMonitor = true;
+    MonStage = 0;   // 計測のサイクル
     MonitorViewC->setIsDeletable( false );
     MonTime.restart();
     MonTimer->start( 100 );
@@ -803,6 +857,7 @@ void MainWindow::Monitor( void )
     if ( MonSensF[2] )
       disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
 
+    UUnits.clear( MONITOR_ID );
     MonitorViewC->setIsDeletable( true );
     MStart->setText( tr( "Mon. Start" ) );
     MStart->setStyleSheet( NormalB );

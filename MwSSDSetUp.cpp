@@ -515,12 +515,21 @@ void MainWindow::showPreAMPGain( SMsg msg )
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
+#if 0
     if ( isAnyOtherProcess() )
       return;
+#endif
     if ( ! SFluo->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
+      return;
+    }
+    QString User;
+    if ( ( User = UUnits.isTheUnitInUse( SFluo ) ) != "" ) {
+      // 検出器が他のことに使われたらダメ
+      statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
+			      .arg( SFluo->getName() ).arg( User ), 2000 );
       return;
     }
 
@@ -564,7 +573,8 @@ void MainWindow::StartMCA( void )
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
-    
+
+    UUnits.addUnit( MCA_ID, SFluo );
     MCAClearRequest = false;
     SFluo->RunStop();
     cMCAViewC->setIsDeletable( false );
@@ -572,6 +582,7 @@ void MainWindow::StartMCA( void )
     MCATimer->start( 100 );
   } else {
     inMCAMeas = false;
+    UUnits.clear( MCA_ID );
     GainInput->setReadOnly( false );
     GainInput->setStyleSheet( EDITABLELINE );
     PeakCalibrate->setReadOnly( false );

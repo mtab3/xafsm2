@@ -180,6 +180,8 @@ void MainWindow::S2DScanStart( void )
     if ( S2DTime1->text().toDouble() <= 0 ) {
       statusbar->showMessage( tr( "Meas Time is 0 or less." ), 2000 );
     }
+
+    QString User;
     for ( int i = 0; i < S2DMotors.count(); i++ ) {
       if ( S2DMotorUse[i] ) {
 	// スキャン範囲に幅があるかをチェック
@@ -203,6 +205,13 @@ void MainWindow::S2DScanStart( void )
 	    }
 	  }
 	}
+
+	if ( ( User = UUnits.isTheUnitInUse( S2DMotors[i] ) ) != "" ) {
+	  // モーターが他のことに使われていたらダメ
+	  statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
+				  .arg( S2DMotors[i]->getName() ).arg( User ), 2000 );
+	  return;
+	}
       }
     }
 
@@ -216,6 +225,13 @@ void MainWindow::S2DScanStart( void )
 	  .arg( mUnits.at(i)->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
+	return;
+      }
+
+      if ( ( User = UUnits.isTheUnitInUse( mUnits.at(i) ) ) != "" ) {
+	// 検出器が他のことに使われたらダメ
+	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
+				.arg( mUnits.at(i)->getName() ).arg( User ), 2000 );
 	return;
       }
     }
@@ -262,6 +278,15 @@ void MainWindow::S2DScanStart( void )
     S2DV->setRange( S2Dsx[0], S2Dsx[1],
 		    S2Ddx[0], S2Ddx[1],
 		    S2Dps[0], S2Dps[1]+1 );
+
+    for ( int i = 0; i < S2DMotors.count(); i++ ) {
+      if ( S2DMotorUse[i] ) {
+	UUnits.addUnit( S2D_ID, S2DMotors[i] );
+      }
+    }
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      UUnits.addUnit( S2D_ID, mUnits.at(i) );
+    }
 
     S2DLastV = 0;
     S2DFile = S2DFileName->text();
@@ -477,6 +502,7 @@ void MainWindow::S2DScanSequence( void )
     break;
   case S2D_END_STAGE+1:
     inS2D = false;
+    UUnits.clear( S2D_ID );
     NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
     statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
     S2DStart->setText( tr( "Start" ) );

@@ -34,12 +34,20 @@
 #include "DarkTable.h"
 #include "Changer.h"
 #include "cBar.h"
+#include "UsingUnits.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
 
+#define MEAS_ID "XAFS Measurement"
+#define GOMOTOR_ID "Motor Motion"
+#define GOKEV_ID "Monochromator Motion"
+#define SCAN_ID "Scan"
+#define MONITOR_ID "Monitor"
+#define MCA_ID  "MCA Monitor"
+#define S2D_ID  "2D Scan"
 
 struct AutoModeParam {
   int num;
@@ -64,6 +72,7 @@ private:
   QString XAFSTitle;
 
   QVector<AtomGroup*> AtomGroups;
+  UsingUnits UUnits;
 
   /* Tab control */
   QVector<ViewCTRL*> ViewCtrls;
@@ -88,7 +97,7 @@ private:
   Units *u;
   /* cfg. */
 
-  bool isAnyOtherProcess( void );
+  //  bool isAnyOtherProcess( void );
   
   /* MCA */
   KeV2Pix *kev2pix;
