@@ -19,10 +19,10 @@ struct UNITNAME {
 };
 enum UNIT { EV, KEV, ANGS, DEG, UNITS };
 const UNITNAME UnitName[ UNITS ] = {
-  { "eV",  (const char*)"% 7.1f", },
-  { "keV", (const char*)"% 7.4f", },
-  { "A",   (const char*)"% 7.4f", },
-  { "deg", (const char*)"% 7.4f", },
+  { "eV",  (const char*)"% 8.2f", },
+  { "keV", (const char*)"% 8.5f", },
+  { "A",   (const char*)"% 8.5f", },
+  { "deg", (const char*)"% 8.5f", },
 };
 
 class Units : public QObject
