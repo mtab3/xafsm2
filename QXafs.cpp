@@ -504,6 +504,7 @@ void MainWindow::QXafsMeasSequence( void )
 void MainWindow::QXafsFinish0( void )
 {
   UUnits.clear( MEAS_ID );
+  CheckNewMeasFileName();
   mUnits.setOneByOne( false );           // 「ユニット一つずつ順番に」モードやめる
   MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
   MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す

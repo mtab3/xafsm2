@@ -46,6 +46,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AutoModeComment.clear();
 
   EditDFName->setText( "test.dat" );
+  ShowMeasFileStatus( "test.dat" );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
@@ -138,6 +139,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( SelRBFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedRBFN( const QString & ) ) );
 
+  connect( EditDFName, SIGNAL( editingFinished() ),
+	   this, SLOT( CheckNewMeasFileName() ) );
   connect( SelDFName, SIGNAL( clicked() ), SelDFND, SLOT( show() ) );
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( SelectedNDFN( const QString & ) ) );
@@ -190,6 +193,21 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   // Auto mode   :  The parse can be done, on starting measurement
   connect( AutoMode, SIGNAL( editingFinished() ),
 	   this, SLOT( ShowItemsForAutoMode() ) );
+}
+
+void MainWindow::CheckNewMeasFileName( void )
+{
+  ShowMeasFileStatus( EditDFName->text() );
+}
+
+void MainWindow::ShowMeasFileStatus( QString fname )
+{
+  QFileInfo InitialF( fname );  // デフォルトの測定ファイルの存在
+  if ( InitialF.exists() || fname.simplified().isEmpty() ) {
+    EditDFName->setStyleSheet( FSTATCOLORS[ NEW ][ OLD ] );  // data-new, name-old
+  } else {
+    EditDFName->setStyleSheet( FSTATCOLORS[ NEW ][ NEW ] );  // data-new, name-new
+  }
 }
 
 void MainWindow::SetUpSensorComboBoxes( void )
@@ -766,6 +784,7 @@ void MainWindow::SelectedNDFN( const QString &fname )
   EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
                                   // Start 時に書き出す。
   SelectedOrgName = fname;
+  ShowMeasFileStatus( fname );
 }
 
 void MainWindow::SelectedWBFN( const QString &fname )
@@ -1278,6 +1297,7 @@ void MainWindow::SurelyStop( void )
     MeasDarkStage = 0;
   }
   UUnits.clear( MEAS_ID );
+  CheckNewMeasFileName();
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
 	     .arg( SelectedCurPosDeg( XENC ) )

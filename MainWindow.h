@@ -355,6 +355,7 @@ private:
   bool AskingShutterOpen;
   int MeasDarkStage;
 
+  void ShowMeasFileStatus( QString fname );
   void ShowTotal( void );
   void CpBlock2SBlock( void );
   bool CheckBlockRange( void );
@@ -480,6 +481,7 @@ private slots:
   void SetGSBFlags( QVector<bool> flgs );
   void SetGSBLabels( QStringList lbls );
   void ShowMB( void );
+  void CheckNewMeasFileName();
 
   void GetNewGos( void );
 #if 0
