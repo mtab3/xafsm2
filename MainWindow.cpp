@@ -97,6 +97,10 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   conds->setEncAsTh( true );
   conds->setAddInfos( true );
 #endif
+  useFixedDelta = false;
+  dDeg = 0;
+  connect( conds, SIGNAL( toggledFixedDelta( bool ) ),
+	   this, SLOT( toggledFixedDelta( bool ) ) );
 
   StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
@@ -157,6 +161,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   s->AskStatus();
   s->MakeConnection();
+}
+
+void MainWindow::toggledFixedDelta( bool f )
+{
+  useFixedDelta = f;
+  dDeg = EncMainTh->value().toDouble()
+    - ( MMainTh->value().toInt() - MMainTh->getCenter() ) * MMainTh->getUPP();
+  qDebug() << "FixedDelta " << useFixedDelta << dDeg;
 }
 
 void MainWindow::Initialize( void )

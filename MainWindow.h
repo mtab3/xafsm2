@@ -224,6 +224,9 @@ private:
   QFileDialog *scanFSel;
   int SFluoLine;
   bool isSI1, isSFluo;
+  bool useFixedDelta;
+  double dDeg;    // パルスモータ換算の角度を真値にするための補正値
+  double SettingMainTh;
 
   //  bool MeasCntIs;
   //  int MeasCntNo;
@@ -467,6 +470,8 @@ private slots:
   void SetGoMSpeedL( void );
   void ScanStart( void );
   void saveScanData( void );
+
+  void toggledFixedDelta( bool );
 
   void NewSelA( int i );
   void OpenPT( void );

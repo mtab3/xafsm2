@@ -220,7 +220,8 @@ void MainWindow::OpenPT( void )
   PT->show();
 }
 
-void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV単位で位置指定)
+void MainWindow::MoveCurThPosKeV( double keV )
+// 分光器の移動指令(keV単位で位置指定)
 {
   MMainTh->setIsBusy( true );
 
@@ -233,11 +234,17 @@ void MainWindow::MoveCurThPosKeV( double keV ) // 分光器の移動指令(keV�
 		     .arg( MaxEnergyInEV ), 2000 );
     return;
   }
-    
+
   if ( SelThEncorder->isChecked() ) {
-    MMainTh->SetValue( ( u->keV2deg( keV ) - EncMainTh->value().toDouble() )
-		       / MMainTh->getUPP() + MMainTh->value().toInt() );
+    if ( useFixedDelta ) {
+      SettingMainTh = ( u->keV2deg( keV ) - dDeg ) / MMainTh->getUPP()
+	+ MMainTh->getCenter();
+    } else {
+      SettingMainTh = (u->keV2deg( keV )-EncMainTh->value().toDouble())/MMainTh->getUPP()
+	+ MMainTh->value().toInt();
+    }
   } else {
-    MMainTh->SetValue( u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter() );
+    SettingMainTh = u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter();
   }
+  MMainTh->SetValue( SettingMainTh );
 }

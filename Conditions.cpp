@@ -4,6 +4,9 @@
 Conditions::Conditions( void ) : QFrame()
 {
   setupUi( this );
+
+  connect( SelFixedDelta, SIGNAL( toggled( bool ) ),
+	   this, SIGNAL( toggledFixedDelta( bool ) ) );
 }
 
 bool Conditions::isEncAsTh( void )

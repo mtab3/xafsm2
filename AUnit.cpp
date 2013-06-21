@@ -647,8 +647,12 @@ void AUnit::SetCurPos( SMsg msg )
       }
     } else {
       Value = msg.Val();
+#if 0
       if ( Type == "ENC2" )
 	qDebug() << "enc2 value " << Value;
+      if ( ID == "THETA" )
+	qDebug() << "main th " << Value;
+#endif
     }
     Values = msg.Vals();
     emit newValue( Value );

@@ -19,6 +19,9 @@ public:
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );
   bool isMakeInfo( void );
+
+ signals:
+  void toggledFixedDelta( bool );
 };
 
 #endif
