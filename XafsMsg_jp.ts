@@ -81,6 +81,22 @@ SSDの一部のチャンネルに、
         <source>Virtual 20th SSD Ch is used</source>
         <translation type="obsolete">20番目の仮想 SSD チャンネルを使用する</translation>
     </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>ステップスキャンの際のデータファイルの２列めの数値が、必ずエンコーダ読みの角度になります。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading values or values calculated from the answer of the puls-motor-controller.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>ステップスキャンの際のデータファイルの２列めの数値を、エンコーダ読みの角度にするか、パルスモータコントーローラから読んだパルス値を角度に換算したものにするか、を選択可能。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When toggle-on the button, the difference between the encorder-reading value and the value calculated from the answer of the pulse-motor-controller is recorded, and the difference will be used to decide the monochromator position to go.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>このボタンをオンにすると、その時点でのエンコーダ読みの角度とパルスモータコントローラのパルスから計算した角度との差が記録され、分光器を移動する際の移動先の計算に使われるようになります。</translation>
+    </message>
+    <message>
+        <source>Use fixed delta-value between PM and true angle.</source>
+        <translation>分光器移動のパルスの計算で、真値との差を固定値にする</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>

@@ -51,6 +51,9 @@
         </property>
         <item row="0" column="0">
          <widget class="QRadioButton" name="SelEncAsTh">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Encorder is always used for Recorded Th</string>
           </property>
@@ -61,6 +64,9 @@
         </item>
         <item row="1" column="0">
          <widget class="QRadioButton" name="SelSelAsTh">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading values or values calculated from the answer of the puls-motor-controller.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Selected Encorder or 'calc from PM' is used</string>
           </property>
@@ -245,6 +251,9 @@ with usual 9809 format datas.</string>
         </property>
         <item row="0" column="0">
          <widget class="QRadioButton" name="SelFixedDelta">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When toggle-on the button, the difference between the encorder-reading value and the value calculated from the answer of the pulse-motor-controller is recorded, and the difference will be used to decide the monochromator position to go.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Use fixed delta-value between PM and true angle.</string>
           </property>

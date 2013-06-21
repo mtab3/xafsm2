@@ -506,7 +506,7 @@ void MainWindow::RecordData( void )
     // 裏で AUnit 内部の value が変わってしまうのを警戒して。(ないはずだけど)
     //
     if ( conds->isAddInfos() ) {
-      buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5",
+      buf.sprintf( " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f" " %9.5f",
                    GoToKeV,
                    encTh, u->deg2keV( encTh ),
                    PMTh, u->deg2keV( PMTh ),
