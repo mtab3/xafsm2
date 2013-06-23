@@ -230,7 +230,7 @@ void MCAView::Draw( QPainter *p )
   double rmx = cc.s2rx( m.x() );
   double wrROIsx = rROIsx;  // wrROI.. working-real-ROI.., rROI.. real-ROI..
   double wrROIex;
-  if ( m.inPress() ) {      // マウスボタンを押してる時は、「終点」はマウスの現在位置
+  if ( mMode == M_ROI ) {      // マウスボタンを押してる時は、「終点」はマウスの現在位置
     wrROIex = rmx;
   } else {
     wrROIex = rROIex;       // そうでなければ最後にボタンを離した位置
@@ -283,6 +283,7 @@ void MCAView::Draw( QPainter *p )
     if ( d > maxd ) { maxd = d; }
   }
 
+  // ピークサーチ
   MCAPeaks.clear();
   MCAPeak aPeak;
   int SearchMode = 0;                   // 0: before peak, 1:
@@ -690,11 +691,13 @@ void MCAView::mouseMoveEvent( QMouseEvent *e )
       nearf = true;
     }
   } else {
-    int dsx;
+    double dE;
     switch( mMode ) {
     case M_H_SHIFT:
-      dsx = fabs( e->x() - m.sx() );
-      qDebug() << dsx;
+      dE = ( e->x() - m.sx() ) / ( cc.Smaxx() - cc.Sminx() ) * ( MaxE - MinE );
+      MinE -= dE;
+      MaxE -= dE;
+      m.setSx( e->x() );
       break;
     default:
       break;
@@ -758,11 +761,11 @@ void MCAView::mousePressEvent( QMouseEvent *e )
 void MCAView::mouseReleaseEvent( QMouseEvent *e )
 {
   if ( mMode == M_ROI ) {
-    mMode = M_NO;
     m.Released( e );
     rROIex = cc.s2rx( m.ex() );
     update();
   }
+  mMode = M_NO;
 }
 
 void MCAView::mouseDoubleClickEvent( QMouseEvent * ) {}
