@@ -236,13 +236,8 @@ void MainWindow::MoveCurThPosKeV( double keV )
   }
 
   if ( SelThEncorder->isChecked() ) {
-    if ( useFixedDelta ) {
-      SettingMainTh = ( u->keV2deg( keV ) - dDeg ) / MMainTh->getUPP()
-	+ MMainTh->getCenter();
-    } else {
-      SettingMainTh = (u->keV2deg( keV )-EncMainTh->value().toDouble())/MMainTh->getUPP()
+    SettingMainTh = (u->keV2deg( keV )-EncMainTh->value().toDouble())/MMainTh->getUPP()
 	+ MMainTh->value().toInt();
-    }
   } else {
     SettingMainTh = u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter();
   }

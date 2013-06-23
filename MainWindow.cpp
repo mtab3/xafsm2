@@ -97,10 +97,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   conds->setEncAsTh( true );
   conds->setAddInfos( true );
 #endif
-  useFixedDelta = false;
-  dDeg = 0;
-  connect( conds, SIGNAL( toggledFixedDelta( bool ) ),
-	   this, SLOT( toggledFixedDelta( bool ) ) );
+  //  useFixedDelta = false;
+  connect( conds, SIGNAL( SetDXMPMC() ), this, SLOT( SetDXMPMC() ) );
 
   StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
@@ -163,12 +161,23 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->MakeConnection();
 }
 
-void MainWindow::toggledFixedDelta( bool f )
+void MainWindow::SetDXMPMC( void )
 {
-  useFixedDelta = f;
-  dDeg = EncMainTh->value().toDouble()
-    - ( MMainTh->value().toInt() - MMainTh->getCenter() ) * MMainTh->getUPP();
-  qDebug() << "FixedDelta " << useFixedDelta << dDeg;
+  int dP = EncMainTh->value().toDouble() / MMainTh->getUPP() - MMainTh->value().toInt();
+  int oldCenter = MMainTh->getCenter();
+  MMainTh->setCenter( dP );
+
+  NewLogMsg( tr( "DXM center was changed from %1 to %2." )
+	     .arg( oldCenter ).arg( dP ) );
+
+  QFile f( DXMCENTERFILE );
+  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
+    return;
+  QTextStream out( &f );
+  out << dP << " \t"
+      << "DXM center was changed from " << oldCenter << " to " << dP << " : "
+      << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  f.close();
 }
 
 void MainWindow::Initialize( void )
@@ -222,23 +231,28 @@ void MainWindow::InitAndIdentifyMotors( void )
       }
       MMainTh = am;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
-#if 0
-    } else if ( am->getID() == "ChangerX" ) {
-      ChangerX = am;
-    } else if ( am->getID() == "ChangerZ" ) {
-      ChangerZ = am;
-#endif
     }
   }
-#if 0    // no more ChangerX, Z
-  if (( ChangerX == NULL )||( ChangerZ == NULL)) {
-#if 0
-    AutoModeButton->setChecked( false );
-    AutoModeButton->setEnabled( false );
-#endif
-    ChangerBox->setHidden( true );
+  if ( MMainTh != NULL ) {
+    SetMainThCenter();
   }
-#endif  // no more ChangerX, Z
+}
+
+void MainWindow::SetMainThCenter( void )
+{
+  QFile f( DXMCENTERFILE );
+
+  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    return;
+
+  QTextStream in( &f );
+  while( !in.atEnd() ) {
+    QString buf = in.readLine().simplified().split( "\\s+" )[0];
+    MMainTh->setCenter( buf.toInt() );
+    qDebug() << "internal DXM center is set to " << buf;
+  }
+
+  f.close();
 }
 
 void MainWindow::InitAndIdentifySensors( void )

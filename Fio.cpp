@@ -398,7 +398,7 @@ void MainWindow::WriteHeaderCore2( void )
 //     conds->isAddInfos()
 // で決まる。
 
-void MainWindow::RecordData( void )
+void MainWindow::RecordData( void )    // Data Body
 // MeasVals は dark 補正済み count
 // dark 補正済み cps が欲しければ MeasCPSs
 // (dark 補正がかかっているのは Measurement で readValue するとき

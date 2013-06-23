@@ -5,8 +5,7 @@ Conditions::Conditions( void ) : QFrame()
 {
   setupUi( this );
 
-  connect( SelFixedDelta, SIGNAL( toggled( bool ) ),
-	   this, SIGNAL( toggledFixedDelta( bool ) ) );
+  connect( CalibDXMPMC, SIGNAL( clicked() ), this, SIGNAL( SetDXMPMC() ) );
 }
 
 bool Conditions::isEncAsTh( void )

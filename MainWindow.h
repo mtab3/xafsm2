@@ -49,6 +49,8 @@ enum OLDNEW { OLD, NEW };
 #define MCA_ID  "MCA Monitor"
 #define S2D_ID  "2D Scan"
 
+#define DXMCENTERFILE "DXMCenter.cfg"
+
 struct AutoModeParam {
   int num;
   double dx, dz;
@@ -224,9 +226,9 @@ private:
   QFileDialog *scanFSel;
   int SFluoLine;
   bool isSI1, isSFluo;
-  bool useFixedDelta;
-  double dDeg;    // パルスモータ換算の角度を真値にするための補正値
+  //  bool useFixedDelta;
   double SettingMainTh;
+  void SetMainThCenter( void );
 
   //  bool MeasCntIs;
   //  int MeasCntNo;
@@ -471,7 +473,7 @@ private slots:
   void ScanStart( void );
   void saveScanData( void );
 
-  void toggledFixedDelta( bool );
+  void SetDXMPMC( void );
 
   void NewSelA( int i );
   void OpenPT( void );

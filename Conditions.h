@@ -21,7 +21,7 @@ public:
   bool isMakeInfo( void );
 
  signals:
-  void toggledFixedDelta( bool );
+  void SetDXMPMC( void );
 };
 
 #endif
