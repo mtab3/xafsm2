@@ -247,7 +247,7 @@ void MainWindow::SetMainThCenter( void )
 
   QTextStream in( &f );
   while( !in.atEnd() ) {
-    QString buf = in.readLine().simplified().split( "\\s+" )[0];
+    QString buf = in.readLine().simplified().split( QRegExp( "\\s+" )  )[0];
     MMainTh->setCenter( buf.toInt() );
     qDebug() << "internal DXM center is set to " << buf;
   }
