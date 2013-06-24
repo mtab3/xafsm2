@@ -19,7 +19,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupUi( this );
 
   MainTab->setCurrentIndex( 0 );
-
+  RWDXMCenterF = false;
+  DXMCenterFile = DXMCENTERFILE0;
+ 
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
   T->start();
@@ -166,18 +168,21 @@ void MainWindow::SetDXMPMC( void )
   int dP = EncMainTh->value().toDouble() / MMainTh->getUPP() - MMainTh->value().toInt();
   int oldCenter = MMainTh->getCenter();
   MMainTh->setCenter( dP );
+  MMainTh->GetValue();
 
   NewLogMsg( tr( "DXM center was changed from %1 to %2." )
 	     .arg( oldCenter ).arg( dP ) );
 
-  QFile f( DXMCENTERFILE );
-  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
-    return;
-  QTextStream out( &f );
-  out << dP << " \t"
-      << "DXM center was changed from " << oldCenter << " to " << dP << " : "
-      << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
-  f.close();
+  if ( RWDXMCenterF ) {    // 変更を DXMCenter.cfg に書くかどうかは XAFSM.def しだい
+    QFile f( DXMCenterFile );
+    if ( !f.open( QIODevice::Append | QIODevice::Text ) )
+      return;
+    QTextStream out( &f );
+    out << dP << " \t"
+	<< "DXM center was changed from " << oldCenter << " to " << dP << " : "
+	<< QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+    f.close();
+  }
 }
 
 void MainWindow::Initialize( void )
@@ -240,19 +245,23 @@ void MainWindow::InitAndIdentifyMotors( void )
 
 void MainWindow::SetMainThCenter( void )
 {
-  QFile f( DXMCENTERFILE );
-
-  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
+  if ( !RWDXMCenterF )
     return;
 
+  QFile f( DXMCenterFile );
+  
+  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    return;
+  
   QTextStream in( &f );
   while( !in.atEnd() ) {
     QString buf = in.readLine().simplified().split( QRegExp( "\\s+" )  )[0];
     MMainTh->setCenter( buf.toInt() );
     qDebug() << "internal DXM center is set to " << buf;
+    
+    MMainTh->GetValue();
+    f.close();
   }
-
-  f.close();
 }
 
 void MainWindow::InitAndIdentifySensors( void )

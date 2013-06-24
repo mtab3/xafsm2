@@ -10,6 +10,7 @@
 # 2013/05/23 add 'CHANGER'     line.
 #                The IDs 'ChangerX' and 'ChangerY' will be obsolete soon.
 # 2013/05/27 add 3rd 34410a for QXafs
+# 2013/06/24 add RW_DXMCENTER_CFG line
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -23,6 +24,10 @@
 XAFSName  "XafsM2-bsd"
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
+
+#
+# RW_DXMCENTER_CFG  0  NOFILE.cfg       # Do not read/write DXMCenter.cfg
+RW_DXMCENTER_CFG  1  DXMCenter.cfg    # read/write DXMCenter.cfg
 
 #
 # Preset gains of MCA channels

@@ -49,7 +49,7 @@ enum OLDNEW { OLD, NEW };
 #define MCA_ID  "MCA Monitor"
 #define S2D_ID  "2D Scan"
 
-#define DXMCENTERFILE "DXMCenter.cfg"
+#define DXMCENTERFILE0 "DXMCenter.cfg"
 
 struct AutoModeParam {
   int num;
@@ -209,6 +209,9 @@ private:
 
   void ShowGoMSpeed( void );
   MSPEED GoMSpeed;
+
+  bool RWDXMCenterF;
+  QString DXMCenterFile;
 
   bool inMMove;
   int MovingM;           // Moving motor ID
