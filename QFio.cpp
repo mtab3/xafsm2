@@ -59,8 +59,25 @@ void MainWindow::MakeDelegateFile( void )
   if ( SLS != NULL ) 
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
+  out << "#" << endl;
+  out << "#" << " ---- QXafs PM setting parameters ---- " << endl;
+  out << "#" << " Motion start point : " << QXafsSP << endl;
+  out << "#" << " Motion end point   : " << QXafsEP << endl;
+  out << "#" << " Pulse start point  : " << QXafsSP0 << endl;
+  out << "#" << " Pulse stop point   : " << QXafsEP0 << endl;
+  out << "#" << " Pulse interval     : " << QXafsInterval << endl;
+  out << "#" << " Pulse number       : " << QXafsPoints << endl;
+  out << "#" << " Pulse dwell time   : " << QXafsDwellTime << endl;
+  out << "#" << " Run Up Time        : " << RunUpTime << endl;
+  out << "#" << endl;
+
   file.close();
 }
+
+
+
+
+
 
 void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
 {
