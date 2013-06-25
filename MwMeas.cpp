@@ -708,12 +708,14 @@ void MainWindow::ChangeBLKstart( void )
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     if ( BLKstart.at(i) == sender() ) {
       BlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
-      double step = BLKstep[i]->text().toDouble();
-      if ( step != 0 ) {
-	BlockPoints[i]
-	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
-		   - u->keV2any(BLKUnit, BlockStart[i]) )
-		 /step )+0.5;
+      if ( i < MaxBLKs ) {
+	double step = BLKstep[i]->text().toDouble();
+	if ( step != 0 ) {
+	  BlockPoints[i]
+	    = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
+		     - u->keV2any(BLKUnit, BlockStart[i]) )
+		   /step )+0.5;
+	}
       }
       if ( i > 0 ) {
 	double step = BLKstep[i-1]->text().toDouble();
