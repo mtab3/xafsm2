@@ -922,7 +922,8 @@ bool MainWindow::CheckDetectorSelection( void )
     if ( UseI1->isChecked() ) {
       AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
       if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
-          ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )) {
+          ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )
+          ||( as->getType() == "DV" )||( as->getType() == "DV2" )) {
         MeasFileType = TRANS;
       }  // その他は EXTRA
     }

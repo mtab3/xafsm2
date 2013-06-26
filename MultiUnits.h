@@ -26,10 +26,10 @@ class MUnits : public QObject
  public:
   MUnits( QObject *p = 0 );
 
-  void setOneByOne( bool f ) { OneByOne = f; };
-  int count( void ) { return Units.count(); };
-  AUnit *at( int i ) { return Units.at(i)->au; };
-  bool isParent( void ) { return ( PUnits.count() > 0 ); };
+  void setOneByOne( bool f ) { OneByOne = f; }
+  int count( void ) { return Units.count(); }
+  AUnit *at( int i ) { return Units.at(i)->au; }
+  bool isParent( void ) { return ( PUnits.count() > 0 ); }
   void clearUnits( void );
   void addUnit( AUnit *au );
   void setDwellTimes( double dt );
@@ -42,8 +42,8 @@ class MUnits : public QObject
   bool getValue( void );
   //  void readValue( double *rvs, bool correctBack );
   void readValue( double *rvs, double *cpss, bool correctBack );
-  QString getName( int i ) { return Units.at(i)->au->getName(); };
-  QString getUnit( int i ) { return Units.at(i)->au->getUnit(); };
+  QString getName( int i ) { return Units.at(i)->au->getName(); }
+  QString getUnit( int i ) { return Units.at(i)->au->getUnit(); }
   bool QStart( void );
   bool QRead( void );
   bool QEnd( void );
