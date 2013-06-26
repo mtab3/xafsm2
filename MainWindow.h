@@ -424,6 +424,8 @@ private:
   void WriteQHeader2( int rpt, DIRECTION dir );
   void WriteQBody( void );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
+  int findMini( QStringList &v1, QStringList &v2,
+                QStringList &v3, QStringList &v4 );
   void DispQSpectrum( int g );
   void QXafsFinish0( void );
   void QXafsFinish( void );
