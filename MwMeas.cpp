@@ -1405,11 +1405,11 @@ void MainWindow::CpBlock2SBlock( void )
   for ( int i = 0; i < MaxBLKs; i++ ) {
     SBlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
 
-####
+    //####
 
     SBlockStep[i] = BLKstep[i]->text().toDouble();
 
-####
+    //####
 
     SBlockPoints[i] = BLKpoints[i]->text().toInt();
     SBlockDwell[i] = BLKdwell[i]->text().toDouble();

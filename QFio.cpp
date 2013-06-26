@@ -147,36 +147,22 @@ void MainWindow::WriteQBody( void )
   int Us = mUnits.count();
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
-  QStringList valse;
   QStringList vals2;
-<<<<<<< HEAD
-  if ( Us > 3 )
-    vals2 =  mUnits.at(2)->values();
   QStringList valsEnc;
+
   if ( Enc2 != NULL )
     valsEnc = Enc2->values();
   else 
     valsEnc.clear();
 
-  int num = findMini( vals0, vals1, valsEnc );
-=======
-  double dark2;
-
-  if ( Enc2 != NULL )
-    valse = Enc2->values();
-  else 
-    valse.clear();
-
   int num;
-  if ( mUnits.count() == 2 ) {
-    num = findMini( vals0, vals1, valse );
-  } else if ( mUnits.count() > 2 ){
-    vals2 = mUnits.at(2)->values();
-    num = findMini( vals0, vals1, vals2, valse );
-    dark2 = mUnits.at(2)->getDark() * QXafsDwellTime;
+  if ( Us > 3 ) {
+    vals2 =  mUnits.at(2)->values();
+    num = findMini( vals0, vals1, vals2, valsEnc );
+  } else {
+    num = findMini( vals0, vals1, valsEnc );
   }
 
->>>>>>> 98af85c863ae75b778ab819da1315883509be4a7
   NewLogMsg( tr( "QXafs data points [%1]." )
              .arg( num ) );
 
@@ -215,32 +201,18 @@ void MainWindow::WriteQBody( void )
     if ( Enc2 == NULL ) {
       deg2 = deg;
     } else {
-<<<<<<< HEAD
+      // EIB741 が使える時はエンコーダ値
       deg2 = EncValue0.toDouble() + ( valsEnc[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
     i0 = vals0[i+1].toDouble() - dark0;
     i1 = vals1[i+1].toDouble() - dark1;
     if ( Us > 3 ) {
       i2 = vals2[i+1].toDouble() - dark2;
-      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f" " %8.7f",
+      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %7.6f" " %7.6f" " %7.6f",
 		   deg, deg2, QXafsDwellTime, i0, i1, i2 );
     } else {
       buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
 		   deg, deg2, QXafsDwellTime, i0, i1 );
-=======
-      // EIB741 が使える時はエンコーダ値
-      deg2 = EncValue0.toDouble() + ( valse[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
-    }
-    i0 = vals0[i+1].toDouble() - dark0;
-    i1 = vals1[i+1].toDouble() - dark1;
-    if ( mUnits.count() == 2 ) {
-      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" "  %7.6f" "  %7.6f",
-                   deg, deg2, QXafsDwellTime, i0, i1 );
-    } else if ( mUnits.count() > 2 ) {
-      i2 = vals2[i+1].toDouble() - dark2;
-      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" "  %7.6f" "  %7.6f" "  %7.6f",
-                   deg, deg2, QXafsDwellTime, i0, i1, i2 );
->>>>>>> 98af85c863ae75b778ab819da1315883509be4a7
     }
     out << buf << endl;
   }
