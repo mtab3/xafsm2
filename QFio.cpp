@@ -120,20 +120,27 @@ int MainWindow::findMini( QStringList &v1, QStringList &v2, QStringList &v3 )
 
 void MainWindow::WriteQBody( void )
 {
+  int Us = mUnits.count();
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
   QStringList vals2;
+  if ( Us > 3 )
+    vals2 =  mUnits.at(2)->values();
+  QStringList valsEnc;
   if ( Enc2 != NULL )
-    vals2 = Enc2->values();
+    valsEnc = Enc2->values();
   else 
-    vals2.clear();
+    valsEnc.clear();
 
-  int num = findMini( vals0, vals1, vals2 );
+  int num = findMini( vals0, vals1, valsEnc );
   NewLogMsg( tr( "QXafs data points [%1]." )
 	     .arg( num ) );
 
   double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
   double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
+  double dark2;
+  if ( Us > 3 )
+    dark2 = mUnits.at(1)->getDark() * QXafsDwellTime;
 
   //  qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
@@ -151,7 +158,7 @@ void MainWindow::WriteQBody( void )
   double upp = MMainTh->getUPP();
   double deg, deg2;
   double upp2 = 0;
-  double i0, i1;
+  double i0, i1, i2;
   QString buf;
 
   if ( Enc2 != NULL ) {
@@ -165,12 +172,18 @@ void MainWindow::WriteQBody( void )
     if ( Enc2 == NULL ) {
       deg2 = deg;
     } else {
-      deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
+      deg2 = EncValue0.toDouble() + ( valsEnc[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
     i0 = vals0[i+1].toDouble() - dark0;
     i1 = vals1[i+1].toDouble() - dark1;
-    buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
-                 deg, deg2, QXafsDwellTime, i0, i1 );
+    if ( Us > 3 ) {
+      i2 = vals2[i+1].toDouble() - dark2;
+      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f" " %8.7f",
+		   deg, deg2, QXafsDwellTime, i0, i1, i2 );
+    } else {
+      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
+		   deg, deg2, QXafsDwellTime, i0, i1 );
+    }
     out << buf << endl;
 //    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
 //        << QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値

@@ -143,8 +143,9 @@ void MainWindow::HideBLKs( bool f )
 #define INTEGRAL_INTERVAL_RATIO  ( 0.9 )
 #define MIN_INTERVAL  ( MIN_INTEGRAL / INTEGRAL_INTERVAL_RATIO )
 
-void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直読みしない
+void MainWindow::CheckQXafsParams( void )
 {
+  QString buf;
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
   double dtime = BLKdwell[0]->text().toDouble();
@@ -163,23 +164,19 @@ void MainWindow::CheckQXafsParams( void )  // BlockPoints は Widget から直�
   DispQHSpeed->setText( QString::number( HSpeed ) );
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
 
-  if ( ( WidthInPuls / BlockPoints[0] / HSpeed ) < MIN_INTERVAL ) {
+  if ( ( WidthInPuls / BLKpoints[0]->text().toInt() / HSpeed ) < MIN_INTERVAL ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
     // それよりも短くなるなら、インターバルを変更
     int Interval = MIN_INTERVAL * HSpeed;      
-    BlockPoints[0] = (int)( WidthInPuls / Interval );
-    BLKpoints[0]->setText( QString::number( BlockPoints[0] ) );
+    BLKpoints[0]->setText( QString::number( (int)( WidthInPuls / Interval ) ) );
   }
-  if ( BlockPoints[0] > WidthInPuls ) {
-    BlockPoints[0] = WidthInPuls;
+  if ( BLKpoints[0]->text().toInt() > WidthInPuls ) {
     BLKpoints[0]->setText( QString::number( WidthInPuls ) );
     BLKstep[0]->setText( QString::number( fabs( edeg - sdeg ) / WidthInPuls ) );
   }
   dtime = WidthInPuls / HSpeed;
-  BlockDwell[0] = dtime;
-
-  BLKdwell[0]->setText( QString::number( BlockDwell[0] ) );
+  BLKdwell[0]->setText( QString::number( dtime ) );
   ShowQTime( dtime, WidthInPuls );
 }
 
@@ -526,17 +523,24 @@ void MainWindow::QXafsFinish( void )
 
 void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 {
+  int Us = mUnits.count();
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
   QStringList vals2;
+  if ( Us > 3 ) 
+    vals2 = mUnits.at(2)->values();
+  QStringList valsEnc;
   if ( Enc2 != NULL )
-    vals2 = Enc2->values();
+    valsEnc = Enc2->values();
   else 
-    vals2.clear();
-  int num = findMini( vals0, vals1, vals2 );
+    valsEnc.clear();
+  int num = findMini( vals0, vals1, valsEnc );
 
   double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
   double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
+  double dark2;
+  if ( Us > 3 )
+    dark2 = mUnits.at(2)->getDark() * QXafsDwellTime;
 
   int p = QXafsSP0;
   int d = QXafsInterval;
@@ -544,7 +548,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   double upp = MMainTh->getUPP();
   double deg2;
   double upp2 = 0;
-  double E, I0, I1;
+  double E, I0, I1, I2;
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
@@ -554,29 +558,44 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     g = g % QLastLines->value();
   }
 
-  MeasView->SetLR( g*3, RIGHT_AX );                    // I0 
-  MeasView->SetScaleType( g*3, I0TYPE );
-  MeasView->SetLineName( g*3, "I0" );
-  MeasView->SetDispF( g*3, true );
-  MeasView->SetPoints( g*3, 0 );
-  
-  MeasView->SetLR( g*3+1, LEFT_AX );                   // I1
-  MeasView->SetScaleType( g*3+1, FULLSCALE );
-  MeasView->SetLineName( g*3+1, "I1" );
-  MeasView->SetDispF( g*3+1, false );
-  MeasView->SetPoints( g*3+1, 0 );
+  int Ls = ( Us - 2 ) * 2 + 1;
+  MeasView->SetLR( g*Ls, RIGHT_AX );                    // I0 
+  MeasView->SetScaleType( g*Ls, I0TYPE );
+  MeasView->SetLineName( g*Ls, "I0" );
+  MeasView->SetDispF( g*Ls, true );
+  MeasView->SetPoints( g*Ls, 0 );
 
-  MeasView->SetLR( g*3+2, LEFT_AX );                   // mu
-  MeasView->SetScaleType( g*3+2, FULLSCALE );
-  MeasView->SetLineName( g*3+2, tr( "mu" ) );
-  MeasView->SetDispF( g*3+2, true );
-  MeasView->SetPoints( g*3+2, 0 );
+  MeasView->SetLR( g*Ls+1, LEFT_AX );                   // I1
+  MeasView->SetScaleType( g*Ls+1, FULLSCALE );
+  MeasView->SetLineName( g*Ls+1, "I1" );
+  MeasView->SetDispF( g*Ls+1, false );
+  MeasView->SetPoints( g*Ls+1, 0 );
+
+  MeasView->SetLR( g*Ls+2, LEFT_AX );                   // mu
+  MeasView->SetScaleType( g*Ls+2, FULLSCALE );
+  MeasView->SetLineName( g*Ls+2, tr( "mu" ) );
+  MeasView->SetDispF( g*Ls+2, true );
+  MeasView->SetPoints( g*Ls+2, 0 );
+
+  if ( Us > 3 ) {
+    MeasView->SetLR( g*Ls+3, LEFT_AX );                   // I1
+    MeasView->SetScaleType( g*Ls+3, FULLSCALE );
+    MeasView->SetLineName( g*Ls+3, "I2" );
+    MeasView->SetDispF( g*Ls+3, false );
+    MeasView->SetPoints( g*Ls+3, 0 );
+    
+    MeasView->SetLR( g*Ls+4, LEFT_AX );                   // mu
+    MeasView->SetScaleType( g*Ls+4, FULLSCALE );
+    MeasView->SetLineName( g*Ls+4, tr( "mu2" ) );
+    MeasView->SetDispF( g*Ls+4, true );
+    MeasView->SetPoints( g*Ls+4, 0 );
+  }
 
   for ( int i = 0; i < num; i++ ) {
     if ( Enc2 == NULL ) {
       deg2 = ( p - c ) * upp + d * i;
     } else {
-      deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
+      deg2 = EncValue0.toDouble() + ( valsEnc[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
 
     E = u->deg2keV( deg2 );
@@ -589,6 +608,17 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     } else {
       MeasView->NewPoint( g*3 + 2, E, 0 );
     }
+
+    if ( Us > 3 ) {
+      I2 = vals2[i+1].toDouble() - dark2;
+      MeasView->NewPoint( g*3 + 3, E, I2 );
+      if ( ( I2 != 0 ) && ( ( I0 / I2 ) > 0 ) ) {
+	MeasView->NewPoint( g*3 + 4, E, log( I0/I2 ) );
+      } else {
+	MeasView->NewPoint( g*3 + 4, E, 0 );
+      }
+    }
+
   }
   MeasView->update();
 }

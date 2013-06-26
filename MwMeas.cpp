@@ -20,7 +20,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     Use19chSSD->setEnabled( false );
 
   BLKUnit = (UNIT)DefaultUnit;
-  ClearBLKs();
+  //  ClearBLKs();
   ChangeBLKs( 4 );
   for ( int i = 0; i < UNITS; i++ ) {
     SelBLKUnit->addItem( UnitName[i].name );
@@ -489,45 +489,61 @@ void MainWindow::ChangeBLKs( int newBLKs )
 
 void MainWindow::SetStdEXAFSBLKs( void )
 {
+  QString buf;
   double Eg = ManTEkeV->text().toDouble();
 
   if ( QXafsMode->isChecked() ) {
 
-    BlockStart[0] = Eg - 0.30;
-    BlockStart[1] = Eg + 1.20;
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
+    BLKstart[0]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.20 ) );
+    BLKstart[1]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 2; i < MaxBLKs+1; i++ )
-      BlockStart[i] = 0;
+      BLKstart[i]->setText( buf );
     
-    BlockPoints[0] = 600;
+    buf.sprintf( "% 4d", 600 );
+    BLKpoints[0]->setText( buf );
+    buf.sprintf( "% 4d", 0 );
     for ( int i = 1; i < MaxBLKs; i++ )
-      BlockPoints[i] = 0;
+      BLKpoints[i]->setText( buf );
 
     // dwell の設定は後
+    buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 1; i < MaxBLKs; i++ )
-      BlockDwell[i] = 0;
+      BLKdwell[i]->setText( buf );
 
   } else {
-    BlockStart[0] = Eg - 0.30;
-    BlockStart[1] = Eg - 0.05;
-    BlockStart[2] = Eg + 0.10;
-    BlockStart[3] = Eg + 0.50;
-    BlockStart[4] = Eg + 1.20;
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
+    BLKstart[0]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.05 ) );
+    BLKstart[1]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.10 ) );
+    BLKstart[2]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.50 ) );
+    BLKstart[3]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.20 ) );
+    BLKstart[4]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 5; i < MaxBLKs+1; i++ )
-      BlockStart[i] = 0;
-    
-    BlockPoints[0] = 70;
-    BlockPoints[1] = 150;
-    BlockPoints[2] = 160;
-    BlockPoints[3] = 100;
+      BLKstart[i]->setText( buf );
+
+    buf.sprintf( "% 4d",  70 ); BLKpoints[0]->setText( buf );
+    buf.sprintf( "% 4d", 150 ); BLKpoints[1]->setText( buf );
+    buf.sprintf( "% 4d", 160 ); BLKpoints[2]->setText( buf );
+    buf.sprintf( "% 4d", 100 ); BLKpoints[3]->setText( buf );
+    buf.sprintf( "% 4d",   0 ); 
     for ( int i = 4; i < MaxBLKs; i++ )
-      BlockPoints[i] = 0;
+      BLKpoints[i]->setText( buf );
     
-    BlockDwell[0] = 1.0;
-    BlockDwell[1] = 1.0;
-    BlockDwell[2] = 1.0;
-    BlockDwell[3] = 1.0;
+    buf.sprintf( "% 5.2f", 1.0 );
+    BLKdwell[0]->setText( buf );
+    BLKdwell[1]->setText( buf );
+    BLKdwell[2]->setText( buf );
+    BLKdwell[3]->setText( buf );
+    buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 4; i < MaxBLKs; i++ )
-      BlockDwell[i] = 0;
+      BLKdwell[i]->setText( buf );
     
     ChangeBLKs( 4 );
   }
@@ -541,45 +557,61 @@ void MainWindow::SetStdEXAFSBLKs( void )
 
 void MainWindow::SetStdXAFSBLKs( void )
 {
+  QString buf;
   double Eg = ManTEkeV->text().toDouble();
     
   if ( QXafsMode->isChecked() ) {   // QXAFS
 
-    BlockStart[0] = Eg - 0.30;
-    BlockStart[1] = Eg + 1.10;
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
+    BLKstart[0]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.10 ) );
+    BLKstart[1]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
     for ( int i = 2; i < MaxBLKs+1; i++ )
-      BlockStart[i] = 0;
-    
-    BlockPoints[0] = 600;
+      BLKstart[i]->setText( buf );
+
+    buf.sprintf( "% 4d", 600 );
+    BLKpoints[0]->setText( buf );
+    buf.sprintf( "% 4d", 0 );
     for ( int i = 1; i < MaxBLKs; i++ )
-      BlockPoints[i] = 0;
+      BLKpoints[i]->setText( buf );
 
     // dwell の設定は後
+    buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 1; i < MaxBLKs; i++ )
-      BlockDwell[i] = 0;
+      BLKdwell[i]->setText( buf );
 
   } else {                          // Normal XAFS
-    BlockStart[0] = Eg - 0.30;
-    BlockStart[1] = Eg - 0.04;
-    BlockStart[2] = Eg + 0.05;
-    BlockStart[3] = Eg + 0.50;
-    BlockStart[4] = Eg + 1.10;
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
+    BLKstart[0]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.04 ) );
+    BLKstart[1]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.05 ) );
+    BLKstart[2]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.50 ) );
+    BLKstart[3]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.10 ) );
+    BLKstart[4]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 5; i < MaxBLKs+1; i++ )
-      BlockStart[i] = 0;
-    
-    BlockPoints[0] = 40;
-    BlockPoints[1] = 300;
-    BlockPoints[2] = 180;
-    BlockPoints[3] = 100;
+      BLKstart[i]->setText( buf );
+
+    buf.sprintf( "% 4d",  40 ); BLKpoints[0]->setText( buf );
+    buf.sprintf( "% 4d", 300 ); BLKpoints[1]->setText( buf );
+    buf.sprintf( "% 4d", 180 ); BLKpoints[2]->setText( buf );
+    buf.sprintf( "% 4d", 100 ); BLKpoints[3]->setText( buf );
+    buf.sprintf( "% 4d", 0 );
     for ( int i = 4; i < MaxBLKs; i++ )
-      BlockPoints[i] = 0;
-    
-    BlockDwell[0] = 1.0;
-    BlockDwell[1] = 1.0;
-    BlockDwell[2] = 1.0;
-    BlockDwell[3] = 1.0;
+      BLKpoints[i]->setText( buf );
+
+    buf.sprintf( "% 5.2f", 1.0 );
+    BLKdwell[0]->setText( buf );
+    BLKdwell[1]->setText( buf );
+    BLKdwell[2]->setText( buf );
+    BLKdwell[3]->setText( buf );
+    buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 4; i < MaxBLKs; i++ )
-      BlockDwell[i] = 0;
+      BLKdwell[i]->setText( buf );
     
     ChangeBLKs( 4 );
   }
@@ -593,21 +625,29 @@ void MainWindow::SetStdXAFSBLKs( void )
 
 void MainWindow::SetStdXANESBLKs( void )
 {
+  QString buf;
   double Eg = ManTEkeV->text().toDouble();
 
-  BlockStart[0] = Eg - 0.03;
-  BlockStart[1] = Eg + 0.07;
+  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.03 ) );
+  BLKstart[0]->setText( buf );
+  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.07 ) );
+  BLKstart[1]->setText( buf );
+  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
   for ( int i = 2; i < MaxBLKs+1; i++ )
-    BlockStart[i] = 0;
+    BLKstart[i]->setText( buf );
 
-  BlockPoints[0] = 300;
+  buf.sprintf( "% 4d", 300 );
+  BLKpoints[0]->setText( buf );
+  buf.sprintf( "% 4d", 0 );
   for ( int i = 1; i < MaxBLKs; i++ )
-    BlockPoints[i] = 0;
+    BLKpoints[i]->setText( buf );
 
   if ( ! QXafsMode->isChecked() ) {
-    BlockDwell[0] = 1.0;
+    buf.sprintf( "% 5.2f", 1.0 );
+    BLKdwell[0]->setText( buf );
+    buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 1; i < MaxBLKs; i++ )
-      BlockDwell[i] = 0;
+      BLKdwell[i]->setText( buf );
   }    
 
   ChangeBLKs( 1 );
@@ -619,39 +659,39 @@ void MainWindow::SetStdXANESBLKs( void )
   }
 }
 
+
 void MainWindow::ShowBLKs( void )
 {
   QString buf;
   int i;
 
   for ( i = 0; i < MaxBLKs; i++ ) {
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, BLKstart[i]->text().toDouble() );
     BLKstart[i]->setText( buf );
-    if ( BlockPoints[i] > 0 ) {
+    if ( BLKpoints[i]->text().toInt() > 0 ) {
       if ( ! QXafsMode->isChecked() ) {
 	buf.sprintf( UnitName[ BLKUnit ].form,
-		     ( u->keV2any(BLKUnit, BlockStart[i+1])
-		       - u->keV2any(BLKUnit, BlockStart[i]) )
-		     / BlockPoints[ i ] );
+		     ( BLKstart[i+1]->text().toDouble() - BLKstart[i]->text().toDouble() )
+		     / BLKpoints[ i ]->text().toInt() );
       } else {
-	buf = QString::number( ( u->keV2any(BLKUnit, BlockStart[i+1])
-				 - u->keV2any(BLKUnit, BlockStart[i]) )
-			       / BlockPoints[ i ] );
+	buf = QString::number(( BLKstart[i+1]->text().toDouble()
+				- BLKstart[i]->text().toDouble() )
+			      / BLKpoints[ i ]->text().toInt() );
       }
       BLKstep[i]->setText( buf );
     } else {
       BLKstep[i]->setText( "0" );
     }
     if ( ! QXafsMode->isChecked() ) {
-      buf.sprintf( "% 5.2f", BlockDwell[i] );
+      buf.sprintf( "% 5.2f", BLKdwell[i]->text().toDouble() );
     } else {
-      buf = QString::number( BlockDwell[i] );
+      buf = QString::number( BLKdwell[i]->text().toDouble() );
     }
     BLKdwell[i]->setText( buf );
-    buf.sprintf( "% 4d", BlockPoints[i] );
+    buf.sprintf( "% 4d", BLKpoints[i]->text().toInt() );
     BLKpoints[i]->setText( buf );
   }
-  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, BlockStart[i] ) );
+  buf.sprintf( UnitName[ BLKUnit ].form, BLKstart[i]->text().toDouble() );
   BLKstart[i]->setText( buf );
 
   ShowTotal();
@@ -664,6 +704,7 @@ void MainWindow::ShowBLKs( void )
   }
 #endif
 }
+
 
 void MainWindow::NewRpt( void )
 {
@@ -678,8 +719,8 @@ void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数�
     TP = 0;                     // 測定の合計点数と、単純積算時間を数える
     TT0 = 0;
     for ( int i = 0; i < Blocks; i++ ) {
-      TP += BlockPoints[i];
-      TT0 += BlockPoints[i] * BlockDwell[i];
+      TP += BLKpoints[i]->text().toInt();
+      TT0 += BLKpoints[i]->text().toInt() * BLKdwell[i]->text().toDouble();
     } 
 
     double TT = TT0 + TP * 360. / 480.;    // Cu-Ka で 480点測定に6分余分にかかる?
@@ -698,8 +739,8 @@ void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数�
     TTime->setText( tr( "Time: " ) + buf );
   } else {    // QXAFS モード
     //    SelRPT->value() * ( ( 
-    TP = BlockPoints[0];     // 測定の合計点数と、単純積算時間を数える
-    TT0 = BlockDwell[0];     //  
+    TP = BLKpoints[0]->text().toInt();        // 測定の合計点数と、単純積算時間を数える
+    TT0 = BLKdwell[0]->text().toDouble();     //  
 
     //    RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
   }
@@ -707,25 +748,27 @@ void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数�
 
 void MainWindow::ChangeBLKstart( void )
 {
+  QString buf;
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     if ( BLKstart.at(i) == sender() ) {
-      BlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
       if ( i < MaxBLKs ) {
 	double step = BLKstep[i]->text().toDouble();
 	if ( step != 0 ) {
-	  BlockPoints[i]
-	    = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
-		     - u->keV2any(BLKUnit, BlockStart[i]) )
-		   /step )+0.5;
+	  buf.sprintf( UnitName[ BLKUnit ].form,
+		       (int)( fabs( ( BLKstart[i+1]->text().toDouble()
+				      - BLKstart[i]->text().toDouble() )
+				    /step ) + 0.5 ) );
+	  BLKpoints[i]->setText( buf );
 	}
       }
       if ( i > 0 ) {
 	double step = BLKstep[i-1]->text().toDouble();
 	if ( step != 0 ) {
-	  BlockPoints[i-1]
-	    = fabs(( u->keV2any(BLKUnit, BlockStart[i])
-		     - u->keV2any(BLKUnit, BlockStart[i-1]) )
-		   /step )+0.5;
+	  buf.sprintf( UnitName[ BLKUnit ].form,
+		       (int)( fabs( ( BLKstart[i]->text().toDouble()
+				      - BLKstart[i-1]->text().toDouble() )
+				    /step ) + 0.5 ) );
+	  BLKpoints[i]->setText( buf );
 	}
       }
       if ( QXafsMode->isChecked() ) CheckQXafsParams();
@@ -744,9 +787,9 @@ void MainWindow::ChangeBLKstep( void )
       if ( step != 0 ) {
 	QString buf;
 	buf.sprintf( UnitName[ BLKUnit ].form,
-		     fabs(( u->keV2any(BLKUnit, BLKstart[i+1]->text().toDouble() )
-			    - u->keV2any(BLKUnit, BLKstart[i]->text().toDouble() ) )
-			  /step )+0.5 );
+		     (int)( fabs( ( BLKstart[i+1]->text().toDouble()
+				    - BLKstart[i]->text().toDouble() )
+				  /step ) + 0.5 ) );
 	BLKpoints[i]->setText( buf );
       }
       if ( QXafsMode->isChecked() ) CheckQXafsParams();
@@ -1359,8 +1402,14 @@ void MainWindow::CpBlock2SBlock( void )
   SBlocks = Blocks;
   SBLKUnit = BLKUnit;
   for ( int i = 0; i < MaxBLKs; i++ ) {
-    SBlockStart[i] = BLKstart[i]->text().toDouble();
+    SBlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
+
+####
+
     SBlockStep[i] = BLKstep[i]->text().toDouble();
+
+####
+
     SBlockPoints[i] = BLKpoints[i]->text().toInt();
     SBlockDwell[i] = BLKdwell[i]->text().toDouble();
   }
