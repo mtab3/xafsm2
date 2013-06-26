@@ -304,9 +304,9 @@ private:
 
   UNIT BLKUnit;
   int Blocks;
-  double BlockStart[ MaxBLKs + 1 ];
-  double BlockDwell[ MaxBLKs + 1 ];
-  int BlockPoints[ MaxBLKs + 1 ];
+  //  double BlockStart[ MaxBLKs + 1 ];
+  //  double BlockDwell[ MaxBLKs + 1 ];
+  //  int BlockPoints[ MaxBLKs + 1 ];
 
   UNIT SBLKUnit;
   int SBlocks;
@@ -319,7 +319,7 @@ private:
   bool SvSelRealTime, SvSelLiveTime;
   bool SvSelExtPattern;
 
-  void ClearBLKs( void );
+  //  void ClearBLKs( void );
   void ShowBLKs( void );
   void WriteBF( void );
   DarkTable *darkTable;

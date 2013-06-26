@@ -448,6 +448,7 @@ void MainWindow::ShowMB( void )
   darkTable->show();
 }
 
+#if 0
 void MainWindow::ClearBLKs( void )
 {
   for ( int i = 0; i < MaxBLKs+1; i++ ) {
@@ -456,6 +457,7 @@ void MainWindow::ClearBLKs( void )
     BlockDwell[i] = 0;
   }
 }
+#endif
 
 void MainWindow::ChangeBLKUnit( int i )
 {
@@ -708,12 +710,14 @@ void MainWindow::ChangeBLKstart( void )
   for ( int i = 0; i < BLKstart.count(); i++ ) {
     if ( BLKstart.at(i) == sender() ) {
       BlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
-      double step = BLKstep[i]->text().toDouble();
-      if ( step != 0 ) {
-	BlockPoints[i]
-	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
-		   - u->keV2any(BLKUnit, BlockStart[i]) )
-		 /step )+0.5;
+      if ( i < MaxBLKs ) {
+	double step = BLKstep[i]->text().toDouble();
+	if ( step != 0 ) {
+	  BlockPoints[i]
+	    = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
+		     - u->keV2any(BLKUnit, BlockStart[i]) )
+		   /step )+0.5;
+	}
       }
       if ( i > 0 ) {
 	double step = BLKstep[i-1]->text().toDouble();
@@ -738,10 +742,12 @@ void MainWindow::ChangeBLKstep( void )
     if ( BLKstep.at(i) == sender() ) {
       step = BLKstep[i]->text().toDouble();
       if ( step != 0 ) {
-	BlockPoints[i]
-	  = fabs(( u->keV2any(BLKUnit, BlockStart[i+1])
-		   - u->keV2any(BLKUnit, BlockStart[i]) )
-		 /step )+0.5;
+	QString buf;
+	buf.sprintf( UnitName[ BLKUnit ].form,
+		     fabs(( u->keV2any(BLKUnit, BLKstart[i+1]->text().toDouble() )
+			    - u->keV2any(BLKUnit, BLKstart[i]->text().toDouble() ) )
+			  /step )+0.5 );
+	BLKpoints[i]->setText( buf );
       }
       if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
@@ -751,6 +757,7 @@ void MainWindow::ChangeBLKstep( void )
 
 void MainWindow::ChangeBLKpoints( void )
 {
+#if 0
   for ( int i = 0; i < BLKpoints.count(); i++ ) {
     if ( BLKpoints.at(i) == sender() ) {
       BlockPoints[i] = BLKpoints[i]->text().toDouble();
@@ -758,23 +765,30 @@ void MainWindow::ChangeBLKpoints( void )
       ShowBLKs();
     }
   }
+#endif
+  if ( QXafsMode->isChecked() ) CheckQXafsParams();
+  ShowBLKs();
 }
 
 void MainWindow::ChangeBLKdwell( void )
 {
+#if 0
   for ( int i = 0; i < BLKdwell.count(); i++ ) {
     if ( BLKdwell.at(i) == sender() ) {
-      BlockDwell[i] = BLKdwell[i]->text().toDouble();
+      BLKdwell[i] = BLKdwell[i]->text().toDouble();
       if ( QXafsMode->isChecked() ) CheckQXafsParams();
       ShowBLKs();
     }
   }
+#endif
+  if ( QXafsMode->isChecked() ) CheckQXafsParams();
+  ShowBLKs();
 }
 
 void MainWindow::SetDwells( void )
 {
   for ( int i = 0; i < Blocks; i++ ) {
-    BlockDwell[i] = DwellAll->text().toDouble();
+    BLKdwell[i]->setText( DwellAll->text() );
   }
   ShowBLKs();
 }
@@ -798,8 +812,8 @@ void MainWindow::SelectedWBFN( const QString &fname )
   out << "N " << Blocks << endl;
   out << "U " << BLKUnit << endl;
   for ( int i = 0; i < MaxBLKs+1; i++ ) {
-    out << "B " << i << " " << BlockStart[i] << " "
-	<< BlockPoints[i] << " " << BlockDwell[i] << endl;
+    out << "B " << i << " " << BLKstart[i]->text() << " "
+	<< BLKpoints[i]->text() << " " << BLKdwell[i]->text() << endl;
   }
 
   f.close();
@@ -827,9 +841,9 @@ void MainWindow::SelectedRBFN( const QString &fname )
     }
     if ( line[0] == QChar( 'B' ) ) {
       i = line.section( sep, 1, 1 ).toInt();
-      BlockStart[i] = line.section( sep, 2, 2 ).toDouble();
-      BlockPoints[i] = line.section( sep, 3, 3 ).toInt();
-      BlockDwell[i] = line.section( sep, 4, 4 ).toDouble();
+      BLKstart[i]->setText( line.section( sep, 2, 2 ) );
+      BLKpoints[i]->setText( line.section( sep, 3, 3 ) );
+      BLKdwell[i]->setText( line.section( sep, 4, 4 ) );
     }
   }
 
@@ -960,7 +974,7 @@ void MainWindow::StartMeasurement( void )
     }
 
     if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
-      if ( BlockPoints[0] > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
+      if ( BLKpoints[0]->text().toInt() > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
         statusbar->showMessage( tr( "Measured points are too many.  "
                                     "It should be less than 9990 in QXAFS mode." ),
                                 2000 );
@@ -1006,7 +1020,7 @@ void MainWindow::StartMeasurement( void )
     } else {   // Normal モード時専用のチェック
       int TotalPoints = 0;
       for ( int i = 0; i < Blocks; i++ ) {
-        TotalPoints += BlockPoints[i];
+        TotalPoints += BLKpoints[i]->text().toInt();
       }
       if ( TotalPoints > 1999 ) {
         statusbar->showMessage( tr( "Measured points are too many.    "
@@ -1214,7 +1228,7 @@ void MainWindow::StartMeasurement( void )
     }
     SetDispMeasModes();
     CpBlock2SBlock();
-    if ( ( SBlocks == 1 ) && ( BlockPoints[0] == 1 ) )
+    if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
     else
       FixedPositionMode = false;
@@ -1346,22 +1360,22 @@ void MainWindow::CpBlock2SBlock( void )
   SBlocks = Blocks;
   SBLKUnit = BLKUnit;
   for ( int i = 0; i < MaxBLKs; i++ ) {
-    SBlockStart[i] = BlockStart[i];
+    SBlockStart[i] = BLKstart[i]->text().toDouble();
     SBlockStep[i] = BLKstep[i]->text().toDouble();
-    SBlockPoints[i] = BlockPoints[i];
-    SBlockDwell[i] = BlockDwell[i];
+    SBlockPoints[i] = BLKpoints[i]->text().toInt();
+    SBlockDwell[i] = BLKdwell[i]->text().toDouble();
   }
 }
 
 bool MainWindow::CheckBlockRange( void )
 {
   for ( int i = 0; i <= Blocks; i++ ) {
-    if (( u->keV2any( EV, BlockStart[i] ) < MinEnergyInEV )
-	||( u->keV2any( EV, BlockStart[i] ) > MaxEnergyInEV )) {
+    if (( u->keV2any( EV, BLKstart[i]->text().toDouble() ) < MinEnergyInEV )
+	||( u->keV2any( EV, BLKstart[i]->text().toDouble() ) > MaxEnergyInEV )) {
 
     statusbar
       ->showMessage( tr( "The block definitin [%1]eV is out of range. [%2]-[%3]eV" )
-		     .arg( u->keV2any( EV, BlockStart[i]) )
+		     .arg( u->keV2any( EV, BLKstart[i]->text().toDouble() ) )
 		     .arg( MinEnergyInEV )
 		     .arg( MaxEnergyInEV ), 2000 );
 
