@@ -12,16 +12,16 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir )
   if ( SvSelExtPattern || ( SelRPT->text().toInt() == 1 ) ) {
     if ( rpt == 1 ) {
       if ( dir == FORWARD ) {
-	DFName = DFName0 + DFName00 + "-f" + ".dat";
+        DFName = DFName0 + DFName00 + "-f" + ".dat";
       } else {
-	DFName = DFName0 + DFName00 + "-b" + ".dat";
+        DFName = DFName0 + DFName00 + "-b" + ".dat";
       }
     } else {
       buf.sprintf( ".%04d", rpt - 1 );
       if ( dir == FORWARD ) {
-	DFName = DFName0 + DFName00 + "-f" + buf;
+        DFName = DFName0 + DFName00 + "-f" + buf;
       } else {
-	DFName = DFName0 + DFName00 + "-b" + buf;
+        DFName = DFName0 + DFName00 + "-b" + buf;
       }
     }
   } else {
@@ -118,28 +118,62 @@ int MainWindow::findMini( QStringList &v1, QStringList &v2, QStringList &v3 )
   return rnum;
 }
 
+int MainWindow::findMini( QStringList &v1, QStringList &v2,
+                          QStringList &v3, QStringList &v4 )
+{
+  int num1 = v1[0].toInt();
+  int num2 = v2[0].toInt();
+  int num3 = v3[0].toInt();
+  int num4 = v4[0].toInt();
+  int num10 = v1.count() - 1;
+  int num20 = v2.count() - 1;
+  int num30 = v3.count() - 1;
+  int num40 = v4.count() - 1;
+
+  QList<int> list;
+
+  list << num1 << num2 << num3 << num4
+       << num10 << num20 << num30 << num40;
+
+  qDebug() << list.at(0);
+  qSort( list.begin(), list.end() );
+  qDebug() << list.at(0);
+
+  return list.at(0);
+}
+
 void MainWindow::WriteQBody( void )
 {
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
+  QStringList valse;
   QStringList vals2;
-  if ( Enc2 != NULL )
-    vals2 = Enc2->values();
-  else 
-    vals2.clear();
+  double dark2;
 
-  int num = findMini( vals0, vals1, vals2 );
+  if ( Enc2 != NULL )
+    valse = Enc2->values();
+  else 
+    valse.clear();
+
+  int num;
+  if ( mUnits.count() == 2 ) {
+    num = findMini( vals0, vals1, valse );
+  } else if ( mUnits.count() > 2 ){
+    vals2 = mUnits.at(2)->values();
+    num = findMini( vals0, vals1, vals2, valse );
+    dark2 = mUnits.at(2)->getDark() * QXafsDwellTime;
+  }
+
   NewLogMsg( tr( "QXafs data points [%1]." )
-	     .arg( num ) );
+             .arg( num ) );
 
   double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
   double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
 
-  //  qDebug() << QString( "writing a file [%1]" ).arg( DFName );
   QFile file( DFName );
   if ( !file.open( QIODevice::Append | QIODevice::Text ) ) {
     NewLogMsg( tr( "Can't open QXafs data file [%1] to write data body." )
-	       .arg( DFName ) );
+               .arg( DFName ) );
     return;
   }
 
@@ -151,7 +185,7 @@ void MainWindow::WriteQBody( void )
   double upp = MMainTh->getUPP();
   double deg, deg2;
   double upp2 = 0;
-  double i0, i1;
+  double i0, i1, i2;
   QString buf;
 
   if ( Enc2 != NULL ) {
@@ -159,24 +193,26 @@ void MainWindow::WriteQBody( void )
   }
 
   for ( int i = 0; i < num; i++ ) {
-    deg = ( p - c ) * upp;
+    deg = ( p - c ) * upp; // pm16c14 のパルス値から計算
     // p += d;
     p -= d;
     if ( Enc2 == NULL ) {
       deg2 = deg;
     } else {
-      deg2 = EncValue0.toDouble() + ( vals2[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
+      // EIB741 が使える時はエンコーダ値
+      deg2 = EncValue0.toDouble() + ( valse[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
     i0 = vals0[i+1].toDouble() - dark0;
     i1 = vals1[i+1].toDouble() - dark1;
-    buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
-                 deg, deg2, QXafsDwellTime, i0, i1 );
+    if ( mUnits.count() == 2 ) {
+      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" "  %7.6f" "  %7.6f",
+                   deg, deg2, QXafsDwellTime, i0, i1 );
+    } else if ( mUnits.count() > 2 ) {
+      i2 = vals2[i+1].toDouble() - dark2;
+      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" "  %7.6f" "  %7.6f" "  %7.6f",
+                   deg, deg2, QXafsDwellTime, i0, i1, i2 );
+    }
     out << buf << endl;
-//    out << QString::number( deg, 'f', 10 ) << "\t"   // pm16c14 のパルス値から計算
-//        << QString::number( deg2, 'f', 10 ) << "\t"  // EIB741 が使える時はエンコーダ値
-//        << QString::number( QXafsDwellTime, 'f', 10 ) << "\t"
-//        << QString::number( vals0[i+1].toDouble() - dark0, 'f', 10 ) << "\t"
-//        << QString::number( vals1[i+1].toDouble() - dark1, 'f', 10 ) << endl;
   }
 
   file.close();

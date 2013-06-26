@@ -541,7 +541,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>6</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -651,7 +651,7 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>End TIme</string>
+              <string>End Time</string>
              </property>
             </widget>
            </item>
@@ -1514,7 +1514,7 @@
                    <item row="0" column="0">
                     <widget class="QRadioButton" name="QMeasOnBackward">
                      <property name="text">
-                      <string>Mesure on Backward</string>
+                      <string>Measure on Backward</string>
                      </property>
                     </widget>
                    </item>
@@ -2466,7 +2466,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Meas. Bacground Time.[s] </string>
+                  <string>Meas. Background Time.[s] </string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3772,7 +3772,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                    <enum>QFrame::Raised</enum>
                   </property>
                   <property name="text">
-                   <string>Move Monochro</string>
+                   <string>Move Monochromator</string>
                   </property>
                  </widget>
                 </item>
@@ -7803,6 +7803,25 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Ring Stat.</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_61">
+        <item row="0" column="0">
+         <widget class="QWebView" name="webView">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="url">
+           <url>
+            <string>about:blank</string>
+           </url>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="LogTab">
        <property name="styleSheet">
         <string notr="true">background-color: rgb(215, 225, 210);</string>
@@ -7898,25 +7917,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </size>
           </property>
          </spacer>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Ring Stat.</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_61">
-        <item row="0" column="0">
-         <widget class="QWebView" name="webView">
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="url">
-           <url>
-            <string>about:blank</string>
-           </url>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>

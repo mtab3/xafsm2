@@ -17,7 +17,7 @@ void MUnits::clearUnits( void )
     delete PUnits.at(i);
   }
   PUnits.clear();
-};
+}
 
 void MUnits::addUnit( AUnit *au )
 {
