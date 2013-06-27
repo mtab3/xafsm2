@@ -49,22 +49,46 @@ class Units : public QObject
   double a2eV( double a ) { return E2A / a; }
   double a2keV( double a ) { return KE2A / a; }
   double keV2any( UNIT i, double keV ) {
-    switch( (int)i ) {
+    switch( i ) {
     case EV: return keV * 1000;
     case KEV: return keV;
     case DEG: return keV2deg( keV );
     case ANGS: return keV2a( keV );
+    default:
+      break;
     }
     return 0;
   }
   double any2keV( UNIT i, double any ) {
-    switch( (int)i ) {
+    switch( i ) {
     case EV: return any / 1000.;
     case KEV: return any;
     case DEG: return deg2keV( any );
     case ANGS: return a2keV( any );
+    default:
+      break;
     }
     return 0;
+  }
+  double any2deg( UNIT i, double any ) {
+    switch( i ) {
+    case EV: return eV2deg( any );
+    case KEV: return keV2deg( any );
+    case DEG: return any;
+    case ANGS: return eV2deg( a2eV( any ) );
+    default:
+      break;
+    }
+  }
+  double deg2any( UNIT i, double any ) {
+    switch( i ) {
+    case EV: return deg2eV( any );
+    case KEV: return deg2keV( any );
+    case DEG: return any;
+    case ANGS: return eV2a( deg2eV( any ) );
+    default:
+      break;
+    }
   }
 
   public slots:

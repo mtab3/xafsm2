@@ -310,8 +310,10 @@ private:
 
   UNIT SBLKUnit;
   int SBlocks;
-  double SBlockStart[ MaxBLKs + 1 ];
-  double SBlockStep[ MaxBLKs + 1 ];
+  double SBlockStartAsDisp[ MaxBLKs + 1 ];
+  double SBlockStepAsDisp[ MaxBLKs + 1 ];
+  double SBlockStartInDeg[ MaxBLKs + 1 ];
+  double SBlockStepInDeg[ MaxBLKs + 1 ];
   double SBlockDwell[ MaxBLKs + 1 ];
   int SBlockPoints[ MaxBLKs + 1 ];
   int SensorUseF[ 4 ];       // 0: I1, 1: SSD Total, 2: Aux1, 3: Aux2
@@ -462,10 +464,8 @@ private slots:
 
   bool MeasureDark( void );
 
-  void ChangeBLKstart( void );
-  void ChangeBLKstep( void );
+  void ChangeBLKparams( void );
   void ChangeBLKpoints( void );
-  void ChangeBLKdwell( void );
 
   //  double CurrentAngle( void );
   void ShowCurThPos( void );

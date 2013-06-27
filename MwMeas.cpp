@@ -112,17 +112,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( A2Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA2Range( int ) ) );
 
   for ( int i = 0; i < BLKstart.count(); i++ ) {
-    connect( BLKstart.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstart()) );
+    connect( BLKstart[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()) );
   }
   for ( int i = 0; i < BLKstep.count(); i++ ) {
-    connect( BLKstep.at(i), SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()) );
-  }
-  for ( int i = 0; i < BLKdwell.count(); i++ ) {
-    connect( BLKdwell.at(i), SIGNAL( editingFinished() ), this, SLOT( ChangeBLKdwell()));
-  }
-  for ( int i = 0; i < BLKpoints.count(); i++ ) {
-    connect( BLKpoints.at(i), SIGNAL( editingFinished() ),
-	     this, SLOT(ChangeBLKpoints()) );
+    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()) );
+    connect( BLKdwell[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()));
+    connect( BLKpoints[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints()) );
   }
 
   connect( SelBLKUnit, SIGNAL( currentIndexChanged( int ) ),
@@ -448,17 +443,6 @@ void MainWindow::ShowMB( void )
   darkTable->show();
 }
 
-#if 0
-void MainWindow::ClearBLKs( void )
-{
-  for ( int i = 0; i < MaxBLKs+1; i++ ) {
-    BlockStart[i] = 0;
-    BlockPoints[i] = 0;
-    BlockDwell[i] = 0;
-  }
-}
-#endif
-
 void MainWindow::ChangeBLKUnit( int i )
 {
   BLKUnit = (UNIT)i;
@@ -659,50 +643,53 @@ void MainWindow::SetStdXANESBLKs( void )
   }
 }
 
-
 void MainWindow::ShowBLKs( void )
 {
+  double step, width;
+  int points;
   QString buf;
   int i;
 
+  // ブロック指定の各行について
   for ( i = 0; i < MaxBLKs; i++ ) {
-    buf.sprintf( UnitName[ BLKUnit ].form, BLKstart[i]->text().toDouble() );
-    BLKstart[i]->setText( buf );
-    if ( BLKpoints[i]->text().toInt() > 0 ) {
-      if ( ! QXafsMode->isChecked() ) {
-	buf.sprintf( UnitName[ BLKUnit ].form,
-		     ( BLKstart[i+1]->text().toDouble() - BLKstart[i]->text().toDouble() )
-		     / BLKpoints[ i ]->text().toInt() );
+    // 区間の幅と刻幅を信じて、点数を計算し直す。
+    width = fabs( BLKstart[i+1]->text().toDouble() - BLKstart[i]->text().toDouble() );
+    step = BLKstep[i]->text().toDouble();
+    points = BLKpoints[i]->text().toInt();
+    if ( step != 0 ) {
+      buf.sprintf( "% 4d", points = (int)( abs( width / step ) + 0.5) );
+      BLKpoints[i]->setText( buf );
+      if ( points > 0 )
+	BLKstep[i]->setText( QString::number( width / points ) );
+    } else {	// もし刻幅が 0 の場合
+      // 点数が正の数なら、逆に区間幅と点数から刻幅を計算する
+      if ( points > 0 ) {
+	step = width / points;
+	BLKstep[i]->setText( QString::number( step ) );
       } else {
-	buf = QString::number(( BLKstart[i+1]->text().toDouble()
-				- BLKstart[i]->text().toDouble() )
-			      / BLKpoints[ i ]->text().toInt() );
+	BLKstep[i]->setText( "0" );
       }
-      BLKstep[i]->setText( buf );
-    } else {
-      BLKstep[i]->setText( "0" );
     }
-    if ( ! QXafsMode->isChecked() ) {
-      buf.sprintf( "% 5.2f", BLKdwell[i]->text().toDouble() );
-    } else {
-      buf = QString::number( BLKdwell[i]->text().toDouble() );
-    }
-    BLKdwell[i]->setText( buf );
+
+    // Noraml XAFS の場合は、表示のフォーマットを直す
     buf.sprintf( "% 4d", BLKpoints[i]->text().toInt() );
     BLKpoints[i]->setText( buf );
+    if ( ! QXafsMode->isChecked() ) {
+      buf.sprintf( UnitName[ BLKUnit ].form, BLKstart[i]->text().toDouble() );
+      BLKstart[i]->setText( buf );
+#if 0 
+      // step は整形しない
+      buf.sprintf( UnitName[ BLKUnit ].form, BLKstep[i]->text().toDouble() );
+      BLKstep[i]->setText( buf );
+#endif 
+      buf.sprintf( "% 5.2f", BLKdwell[i]->text().toDouble() );
+      BLKdwell[i]->setText( buf );
+    }
   }
   buf.sprintf( UnitName[ BLKUnit ].form, BLKstart[i]->text().toDouble() );
   BLKstart[i]->setText( buf );
 
   ShowTotal();
-#if 0
-  for ( ; i < MaxBLKs; i++ ) {
-    BLKstart[i+1]->setText( "" );
-    BLKstep[i]->setText( "" );
-    BLKdwell[i]->setText( "" );
-    BLKpoints[i]->setText( "" );
-  }
-#endif
 }
 
 
@@ -746,86 +733,31 @@ void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数�
   }
 }
 
-void MainWindow::ChangeBLKstart( void )
+void MainWindow::ChangeBLKparams( void )
 {
-  QString buf;
-  for ( int i = 0; i < BLKstart.count(); i++ ) {
-    if ( BLKstart.at(i) == sender() ) {
-      if ( i < MaxBLKs ) {
-	double step = BLKstep[i]->text().toDouble();
-	if ( step != 0 ) {
-	  buf.sprintf( UnitName[ BLKUnit ].form,
-		       (int)( fabs( ( BLKstart[i+1]->text().toDouble()
-				      - BLKstart[i]->text().toDouble() )
-				    /step ) + 0.5 ) );
-	  BLKpoints[i]->setText( buf );
-	}
-      }
-      if ( i > 0 ) {
-	double step = BLKstep[i-1]->text().toDouble();
-	if ( step != 0 ) {
-	  buf.sprintf( UnitName[ BLKUnit ].form,
-		       (int)( fabs( ( BLKstart[i]->text().toDouble()
-				      - BLKstart[i-1]->text().toDouble() )
-				    /step ) + 0.5 ) );
-	  BLKpoints[i]->setText( buf );
-	}
-      }
-      if ( QXafsMode->isChecked() ) CheckQXafsParams();
-      ShowBLKs();
-    }
-  }
-}
-
-void MainWindow::ChangeBLKstep( void )
-{
-  double step;
-
-  for ( int i = 0; i < BLKstep.count(); i++ ) {
-    if ( BLKstep.at(i) == sender() ) {
-      step = BLKstep[i]->text().toDouble();
-      if ( step != 0 ) {
-	QString buf;
-	buf.sprintf( UnitName[ BLKUnit ].form,
-		     (int)( fabs( ( BLKstart[i+1]->text().toDouble()
-				    - BLKstart[i]->text().toDouble() )
-				  /step ) + 0.5 ) );
-	BLKpoints[i]->setText( buf );
-      }
-      if ( QXafsMode->isChecked() ) CheckQXafsParams();
-      ShowBLKs();
-    }
-  }
+  if ( QXafsMode->isChecked() ) CheckQXafsParams();
+  ShowBLKs();
 }
 
 void MainWindow::ChangeBLKpoints( void )
 {
-#if 0
-  for ( int i = 0; i < BLKpoints.count(); i++ ) {
-    if ( BLKpoints.at(i) == sender() ) {
-      BlockPoints[i] = BLKpoints[i]->text().toDouble();
-      if ( QXafsMode->isChecked() ) CheckQXafsParams();
-      ShowBLKs();
-    }
-  }
-#endif
-  if ( QXafsMode->isChecked() ) CheckQXafsParams();
-  ShowBLKs();
-}
+  int points;
+  double step, width;
+  QString buf;
 
-void MainWindow::ChangeBLKdwell( void )
-{
-#if 0
-  for ( int i = 0; i < BLKdwell.count(); i++ ) {
-    if ( BLKdwell.at(i) == sender() ) {
-      BLKdwell[i] = BLKdwell[i]->text().toDouble();
-      if ( QXafsMode->isChecked() ) CheckQXafsParams();
-      ShowBLKs();
+  for ( int i = 0; i < BLKpoints.count(); i++ ) {
+    if ( BLKpoints[i] == sender() ) {
+      width = BLKstart[i+1]->text().toDouble() - BLKstart[i]->text().toDouble();
+      points = abs( BLKpoints[i]->text().toDouble() );
+      buf.sprintf( "% 4d", points );
+      BLKpoints[i]->setText( buf );
+      if ( points > 0 ) {
+	step = width / points;
+	BLKstep[i]->setText( QString::number( step ) );
+      }
     }
   }
-#endif
   if ( QXafsMode->isChecked() ) CheckQXafsParams();
-  ShowBLKs();
 }
 
 void MainWindow::SetDwells( void )
@@ -833,6 +765,7 @@ void MainWindow::SetDwells( void )
   for ( int i = 0; i < Blocks; i++ ) {
     BLKdwell[i]->setText( DwellAll->text() );
   }
+  if ( QXafsMode->isChecked() ) CheckQXafsParams();
   ShowBLKs();
 }
 
@@ -850,14 +783,16 @@ void MainWindow::SelectedWBFN( const QString &fname )
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
 
+  int i;
   QTextStream out( &f );
 
   out << "N " << Blocks << endl;
   out << "U " << BLKUnit << endl;
-  for ( int i = 0; i < MaxBLKs+1; i++ ) {
+  for ( i = 0; i < MaxBLKs; i++ ) {
     out << "B " << i << " " << BLKstart[i]->text() << " "
 	<< BLKpoints[i]->text() << " " << BLKdwell[i]->text() << endl;
   }
+  out << "B " << i << " " << BLKstart[i]->text() << " " << 0 << " " << 0 << endl;
 
   f.close();
 }
@@ -884,9 +819,13 @@ void MainWindow::SelectedRBFN( const QString &fname )
     }
     if ( line[0] == QChar( 'B' ) ) {
       i = line.section( sep, 1, 1 ).toInt();
-      BLKstart[i]->setText( line.section( sep, 2, 2 ) );
-      BLKpoints[i]->setText( line.section( sep, 3, 3 ) );
-      BLKdwell[i]->setText( line.section( sep, 4, 4 ) );
+      if ( i < MaxBLKs + 1 )
+	BLKstart[i]->setText( line.section( sep, 2, 2 ) );
+      if ( i < MaxBLKs ) {
+	BLKstep[i]->setText( "0" );
+	BLKpoints[i]->setText( line.section( sep, 3, 3 ) );
+	BLKdwell[i]->setText( line.section( sep, 4, 4 ) );
+      }
     }
   }
 
@@ -1197,21 +1136,6 @@ void MainWindow::StartMeasurement( void )
 
     MakingSureOfRangeSelect = false;
 
-#if 0
-    if ( OneOfSensIsRangeSelectable ) { // レンジ設定が必要なセンサが選ばれていたら
-                                        // 設定済みかどうか確認する (測定開始をブロック)
-      MakeSureOfRangeSelect
-	->setText( tr( "The Sensor(s)%1 should be range selected.\n"
-		       "Have you selected the range in 'Setup Condition'" )
-		   .arg( theNames ) );
-      MakeSureOfRangeSelect->show();
-      MakingSureOfRangeSelect = true;
-    } else {
-      MakingSureOfRangeSelect = false;
-    }
-#endif
-
-
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
       if ( ! MeasureDark() )                // 正常に測れなければだめ
         return;
@@ -1280,7 +1204,6 @@ void MainWindow::StartMeasurement( void )
       mcaDir = QDir( BaseFile.canonicalPath() );
       mcaDir.mkdir( BaseFile.baseName() );
       mcaDir.cd( BaseFile.baseName() );
-      qDebug() << "the place " << mcaDir.path();
     }
 
     // 測定に使う MaitnTh と検出器の登録、これ以降に XAFS 測定をやめるときは
@@ -1400,17 +1323,11 @@ void MainWindow::GoingOn( void )
 
 void MainWindow::CpBlock2SBlock( void )
 {
-  SBlocks = Blocks;
+  SBlocks = Blocks;       // あるがままの単位でセーブ
   SBLKUnit = BLKUnit;
   for ( int i = 0; i < MaxBLKs; i++ ) {
-    SBlockStart[i] = u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() );
-
-    //####
-
+    SBlockStart[i] = BLKstart[i]->text().toDouble();
     SBlockStep[i] = BLKstep[i]->text().toDouble();
-
-    //####
-
     SBlockPoints[i] = BLKpoints[i]->text().toInt();
     SBlockDwell[i] = BLKdwell[i]->text().toDouble();
   }
@@ -1491,8 +1408,6 @@ bool MainWindow::ParseAutoMode( void )
       return false;
     options << pLine.mid( s+1, e-s-1 );
     pLine = pLine.left( s ) + "*" + pLine.mid( e+1 );
-    //    qDebug() << pLine;
-    //    qDebug() << options;
   }
 
   // 「,」(カンマ)と「 」(スペース、空白文字)の両方を区切りとして認める。
@@ -1548,13 +1463,6 @@ bool MainWindow::ParseAutoMode( void )
       AutoModeParams << amp;
     }
   }
-
-#if 0
-  for ( int i = 0; i < AutoModeParams.count(); i++ ) {
-    qDebug() << AutoModeParams[i].num
-	     << AutoModeParams[i].dx << AutoModeParams[i].dz;
-  }
-#endif
 
   return true;
 }

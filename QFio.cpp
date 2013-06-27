@@ -44,6 +44,7 @@ void MainWindow::MakeDelegateFile( void )
   QTextStream out(&file);
 
   out << "#" << " 1304     AichiSR QXAFS base file" << endl;
+  out << "#" << " Unit      : " << UnitName[ SBLKUnit ].name;
   out << "#" << " Start     : " << SBlockStart[0] << endl;
   out << "#" << " End       : " << SBlockStart[1] << endl;
   out << "#" << " Dir       : " << ( (QMeasOnBackward->isChecked())
@@ -74,11 +75,6 @@ void MainWindow::MakeDelegateFile( void )
   file.close();
 }
 
-
-
-
-
-
 void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
 {
   SetDFName2( rpt, dir );   // Generate a file name with repitation number
@@ -90,7 +86,6 @@ void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
 
   SBlockDwell[0] = sblkdwell;
 }
-
 
 void MainWindow::WriteQHeader2( int rpt, DIRECTION dir )
 {
