@@ -59,6 +59,7 @@ class XYView : public QFrame, private Ui::XView
 private:
   ChCoord cc;
   bool autoScale;
+  bool singleScale;
   bool QXafsMode;
 
   QColor bgColor, BLACK;
@@ -106,6 +107,7 @@ private:
 public:
   XYView( QWidget *parent = NULL );
 
+  void enabledSingleScale( bool f ) { singleScale = f; };
   void NewPoint( int l, double xx, double yy );
   void Clear( void );
   // XYView では、複数の線を同時に描ける。

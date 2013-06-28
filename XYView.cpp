@@ -11,6 +11,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 		  "the auto-scale mode is toggled on and off." ) );
 
   autoScale = true;
+  singleScale = true;
   AreaSelecting = false;
   SelLR[ LEFT_AX ] = 0;
   SelLR[ RIGHT_AX ] = 1;
@@ -237,15 +238,15 @@ void XYView::Draw( QPainter *p )
     else 
       linedir[i] = 1;
   }
-    
+
   for ( int l = 0; l <= inLines; l++ ) { // 先に線だけ描画
     bool f = ( QXafsMode ) ? dispf[ l % GROUPLINES ] : dispf[ l ];
     if ( f ) {
       if ( autoScale ) {
-        UpDateYWindow( l, scaleType[ l ] );
-        cc.SetRealY( miny[l], maxy[l] );
+	//	UpDateYWindow( l, scaleType[ l ] );  // ループの前に実行する
+	cc.SetRealY( miny[l], maxy[l] );
       } else {
-        cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+	cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
       }
       pen1.setColor( LC[ l % LC.count() ] );
       p->setPen( pen1 );
@@ -322,14 +323,16 @@ void XYView::Draw( QPainter *p )
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
   rec = QRectF( cc.r2sx( cc.Rmaxx() )+80, height()-BM+5, 80, BM*0.3 );   // X軸の単位
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XUnitName );
-  
+
   for ( int i = 0; i < 2; i++ ) {
     int l = SelLR[i];
-    if ( autoScale ) {
-      UpDateYWindow( l, scaleType[ l ] );
-      cc.SetRealY( miny[l], maxy[l] );
-    } else {
-      cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+    if ( !singleScale ) {
+      if ( autoScale ) {
+	UpDateYWindow( l, scaleType[ l ] );
+	cc.SetRealY( miny[l], maxy[l] );
+      } else {
+	cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+      }
     }
     sy = dy = 0;
     cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
@@ -445,7 +448,8 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
       if ( !autoScale ) {
 	xshift = cc.s2rx0( m.x() ) - cc.s2rx0( m.sx() );
 	for ( int l = 0; l <= inLines; l++ ) {
-	  cc.SetRealY( miny[l], maxy[l] );
+	  if ( !singleScale )
+	    cc.SetRealY( miny[l], maxy[l] );
 	  yshift[l] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
 	}
 	XShift = XShift0 + xshift;
@@ -536,6 +540,9 @@ void XYView::mouseDoubleClickEvent( QMouseEvent * )
 
 void XYView::wheelEvent( QWheelEvent *e )
 {
+  if ( autoScale )
+    return;
+
   double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
   double rx = cc.s2rx( e->x() );
   double drx = cc.Rmaxx() - cc.Rminx();
