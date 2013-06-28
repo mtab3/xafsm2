@@ -45,8 +45,8 @@ void MainWindow::MakeDelegateFile( void )
 
   out << "#" << " 1304     AichiSR QXAFS base file" << endl;
   out << "#" << " Unit      : " << UnitName[ SBLKUnit ].name;
-  out << "#" << " Start     : " << SBlockStart[0] << endl;
-  out << "#" << " End       : " << SBlockStart[1] << endl;
+  out << "#" << " Start     : " << SBlockStartAsDisp[0] << endl;
+  out << "#" << " End       : " << SBlockStartAsDisp[1] << endl;
   out << "#" << " Dir       : " << ( (QMeasOnBackward->isChecked())
 				     ? "Both(Forward and Backward" : "Single(Forward)" )
                                 << endl;

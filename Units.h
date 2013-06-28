@@ -89,6 +89,7 @@ class Units : public QObject
     default:
       break;
     }
+    return 0;
   }
 
   public slots:

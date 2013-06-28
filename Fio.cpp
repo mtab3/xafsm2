@@ -101,12 +101,12 @@ void MainWindow::WriteHeaderCore( void )
     for ( int i = 0; i < Blocks; i++ ) {
       out << " "
           << QString( "%1     %2%3%4%5%6" )
-             .arg( i+1, 5 )
-             .arg( SBlockStart[i], 10, 'f', 5 )
-             .arg( SBlockStart[i+1], 10, 'f', 5 )
-             .arg( SBlockStep[i], 12, 'f', 6 )
-             .arg( SBlockDwell[i], 11, 'f', 2 )
-             .arg( SBlockPoints[i], 10 )
+	.arg( i+1, 5 )
+	.arg( SBlockStartAsDisp[i], 10, 'f', 5 )
+	.arg( SBlockStartAsDisp[i+1], 10, 'f', 5 )
+	.arg( SBlockStepAsDisp[i], 12, 'f', 6 )
+	.arg( SBlockDwell[i], 11, 'f', 2 )
+	.arg( SBlockPoints[i], 10 )
           << endl;
     }
   } else {
@@ -118,14 +118,16 @@ void MainWindow::WriteHeaderCore( void )
     out << " "
         << "Block      Init-Eng  final-Eng     Step/eV     Time/s       Num" << endl;
     for ( int i = 0; i < Blocks; i++ ) {
+      double s = u->any2keV( SBLKUnit, SBlockStartAsDisp[i] )*1000;
+      double e = u->any2keV( SBLKUnit, SBlockStartAsDisp[i+1] )*1000;
       out << " "
           << QString( "%1     %2%3%4%5%6" )
-             .arg( i+1, 5 )
-             .arg( u->any2keV( SBLKUnit, SBlockStart[i] ) * 1000, 10, 'f', 2 )
-             .arg( u->any2keV( SBLKUnit, SBlockStart[i+1] ) * 1000, 10, 'f', 2 )
-             .arg( u->any2keV( SBLKUnit, SBlockStep[i] ) * 1000, 12, 'f', 2 )
-             .arg( SBlockDwell[i], 11, 'f', 2 )
-             .arg( SBlockPoints[i], 10 )
+	.arg( i+1, 5 )
+	.arg( s, 10, 'f', 2 )
+	.arg( e, 10, 'f', 2 )
+	.arg( ( e - s )/SBlockPoints[i], 12, 'f', 2 )
+	.arg( SBlockDwell[i], 11, 'f', 2 )
+	.arg( SBlockPoints[i], 10 )
           << endl;
     }
   }

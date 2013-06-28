@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>675</width>
-    <height>142</height>
+    <height>181</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,127 +26,6 @@
    <property name="spacing">
     <number>1</number>
    </property>
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>1</number>
-     </property>
-     <item>
-      <widget class="QFrame" name="frame">
-       <property name="styleSheet">
-        <string notr="true">background-color: #eeffee</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <property name="margin">
-         <number>3</number>
-        </property>
-        <property name="spacing">
-         <number>1</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="SelEncAsTh">
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Encorder is always used for Recorded Th</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QRadioButton" name="SelSelAsTh">
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading values or values calculated from the answer of the puls-motor-controller.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Selected Encorder or 'calc from PM' is used</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QFrame" name="frame_5">
-       <property name="styleSheet">
-        <string notr="true">background-color: #eeffee</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_6">
-        <property name="margin">
-         <number>3</number>
-        </property>
-        <property name="spacing">
-         <number>1</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="MakeInfoFile">
-          <property name="toolTip">
-           <string>Some additional information is recorded 
-with usual 9809 format datas.</string>
-          </property>
-          <property name="text">
-           <string>Make &quot;.info&quot; file to record further information on XAFS</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="autoExclusive">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QFrame" name="frame_2">
-       <property name="styleSheet">
-        <string notr="true">background-color: #eeffee</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <property name="margin">
-         <number>3</number>
-        </property>
-        <property name="spacing">
-         <number>1</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="SelAddInfos">
-          <property name="toolTip">
-           <string>Some additional information is recorded 
-with usual 9809 format datas.</string>
-          </property>
-          <property name="text">
-           <string>Record Addicional Informations in &quot;.dat&quot; XAFS file</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
@@ -266,6 +145,191 @@ with usual 9809 format datas.</string>
           </property>
           <property name="text">
            <string>Calibrate DXM controlling PMC</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>1</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="styleSheet">
+        <string notr="true">background-color: #eeffee</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="margin">
+         <number>3</number>
+        </property>
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="SelEncAsTh">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Encorder is always used for Recorded Th</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="SelSelAsTh">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading values or values calculated from the answer of the puls-motor-controller.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Selected Encorder or 'calc from PM' is used</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_7">
+       <property name="styleSheet">
+        <string notr="true">background-color: #eeffee</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <property name="margin">
+         <number>3</number>
+        </property>
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="SelStepInDegree">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading values or values calculated from the answer of the puls-motor-controller.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>in degree</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QRadioButton" name="SelStepInSelectedUnit">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 2nd raw in data-file of normal XAFS measurement will be encorder-reading value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>in selected unit for display</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Measurement will conduct at even interval</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_5">
+       <property name="styleSheet">
+        <string notr="true">background-color: #eeffee</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <property name="margin">
+         <number>3</number>
+        </property>
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="MakeInfoFile">
+          <property name="toolTip">
+           <string>Some additional information is recorded 
+with usual 9809 format datas.</string>
+          </property>
+          <property name="text">
+           <string>Make &quot;.info&quot; file to record further information on XAFS</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_2">
+       <property name="styleSheet">
+        <string notr="true">background-color: #eeffee</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="margin">
+         <number>3</number>
+        </property>
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="SelAddInfos">
+          <property name="toolTip">
+           <string>Some additional information is recorded 
+with usual 9809 format datas.</string>
+          </property>
+          <property name="text">
+           <string>Record Addicional Informations in &quot;.dat&quot; XAFS file</string>
           </property>
          </widget>
         </item>

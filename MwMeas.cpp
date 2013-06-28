@@ -1323,14 +1323,21 @@ void MainWindow::GoingOn( void )
 
 void MainWindow::CpBlock2SBlock( void )
 {
-  SBlocks = Blocks;       // あるがままの単位でセーブ
+  SMeasInDeg = conds->isMeasInDeg();
+  SBlocks = Blocks;
   SBLKUnit = BLKUnit;
   for ( int i = 0; i < MaxBLKs; i++ ) {
-    SBlockStart[i] = BLKstart[i]->text().toDouble();
-    SBlockStep[i] = BLKstep[i]->text().toDouble();
+    SBlockStartAsDisp[i] = BLKstart[i]->text().toDouble();
+    SBlockStartInDeg[i] = u->any2deg( BLKUnit, SBlockStartAsDisp[i] );
+    SBlockStepAsDisp[i] = BLKstep[i]->text().toDouble();
     SBlockPoints[i] = BLKpoints[i]->text().toInt();
     SBlockDwell[i] = BLKdwell[i]->text().toDouble();
   }
+  for ( int i = 0; i < MaxBLKs - 1; i++ ) {
+    SBlockStepInDeg[i]
+      = ( SBlockStartInDeg[i+1] - SBlockStartInDeg[i] ) / SBlockPoints[i];
+  }
+  SBlockStepInDeg[ MaxBLKs - 1 ] = 0;
 }
 
 bool MainWindow::CheckBlockRange( void )

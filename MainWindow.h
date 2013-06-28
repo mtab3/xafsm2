@@ -308,6 +308,7 @@ private:
   //  double BlockDwell[ MaxBLKs + 1 ];
   //  int BlockPoints[ MaxBLKs + 1 ];
 
+  bool SMeasInDeg;
   UNIT SBLKUnit;
   int SBlocks;
   double SBlockStartAsDisp[ MaxBLKs + 1 ];

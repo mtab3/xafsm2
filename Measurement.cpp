@@ -51,7 +51,8 @@ void MainWindow::MeasSequence( void )
     CurrentPnt->setText( QString::number( 1 ) );
     WriteInfoFile();
     mUnits.clearStage();
-    MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
+    MeasView->SetWindow0( u->any2keV( SBLKUnit, SBlockStartAsDisp[0] ), 0,
+			  u->any2keV( SBLKUnit, SBlockStartAsDisp[ SBlocks ] ), 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
   case 1:
@@ -77,10 +78,14 @@ void MainWindow::MeasSequence( void )
     //              (ここで操作したのはセンサーで, Stage == 4 でセンサーを操作しないから)
   case 4:
     if ( !FixedPositionMode ) {
-      Delta = u->keV2any( SBLKUnit, SBlockStart[MeasB+1] )
-	- u->keV2any( SBLKUnit, SBlockStart[MeasB] );
-      GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
-			    + u->keV2any( SBLKUnit, SBlockStart[MeasB] ) );
+      if ( SMeasInDeg ) {
+	Delta = SBlockStartInDeg[MeasB+1] - SBlockStartInDeg[MeasB];
+	GoToKeV = u->deg2keV( Delta/SBlockPoints[MeasB]*MeasS + SBlockStartInDeg[MeasB] );
+      } else {
+	Delta = SBlockStartAsDisp[MeasB+1] - SBlockStartAsDisp[MeasB];
+	GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
+			      + SBlockStartAsDisp[MeasB] );
+      }
       MoveCurThPosKeV( GoToKeV );     // 軸の移動
     }
     mUnits.clearStage();

@@ -230,8 +230,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
 // 本当は入力時にも計算できる内容だが、
 // 確実を期すため測定直前に "Saved" パラメータを使って計算する
 {
-  double sdeg = u->keV2deg( SBlockStart[0] );
-  double edeg = u->keV2deg( SBlockStart[1] );
+  double sdeg = SBlockStartInDeg[0];
+  double edeg = SBlockStartInDeg[1];
   int points = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
@@ -322,7 +322,8 @@ void MainWindow::QXafsMeasSequence( void )
     }
     //    WriteInfoFile();
     mUnits.clearStage();
-    MeasView->SetWindow0( SBlockStart[0], 0, SBlockStart[ SBlocks ], 0 );
+    MeasView->SetWindow0( u->deg2keV( SBlockStartInDeg[0] ), 0,
+			  u->deg2keV( SBlockStartInDeg[ SBlocks ] ), 0 );
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     MMainTh->SetHighSpeed( OrigHSpeed );
     MMainTh->SetSpeed( HIGH );

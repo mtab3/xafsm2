@@ -27,3 +27,8 @@ bool Conditions::isMakeInfo( void )
 {
   return MakeInfoFile->isChecked();
 }
+
+bool Conditions::isMeasInDeg( void )
+{
+  return SelStepInDegree->isChecked();
+}

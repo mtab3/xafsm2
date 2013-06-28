@@ -19,6 +19,7 @@ public:
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );
   bool isMakeInfo( void );
+  bool isMeasInDeg( void );
 
  signals:
   void SetDXMPMC( void );
