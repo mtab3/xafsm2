@@ -443,9 +443,26 @@ void MainWindow::ShowMB( void )
   darkTable->show();
 }
 
-void MainWindow::ChangeBLKUnit( int i )
+void MainWindow::ChangeBLKUnit( int unit )
 {
-  BLKUnit = (UNIT)i;
+  QString buf;
+  double s;
+  int i;
+
+  for ( i = 0; i < MaxBLKs + 1; i++ ) {
+    s = u->keV2any( (UNIT)unit, u->any2keV( BLKUnit, BLKstart[i]->text().toDouble() ) );
+    if ( ! QXafsMode->isChecked() ) {
+      buf.sprintf( UnitName[unit].form, s );
+      BLKstart[i]->setText( buf );
+    } else {
+      BLKstart[i]->setText( QString::number( s ) );
+    }
+  }
+  for ( i = 0; i < MaxBLKs; i++ ) {
+    BLKstep[i]->setText( "0" );
+  }
+
+  BLKUnit = (UNIT)unit;
   ShowBLKs();
 }
 
@@ -660,12 +677,21 @@ void MainWindow::ShowBLKs( void )
       buf.sprintf( "% 4d", points = (int)( abs( width / step ) + 0.5) );
       BLKpoints[i]->setText( buf );
       if ( points > 0 )
-	BLKstep[i]->setText( QString::number( width / points ) );
+	if ( !QXafsMode->isChecked() ) {
+	  buf.sprintf( UnitName[ BLKUnit ].form, width / points );
+	} else {
+	  BLKstep[i]->setText( QString::number( width / points ) );
+	}
     } else {	// もし刻幅が 0 の場合
       // 点数が正の数なら、逆に区間幅と点数から刻幅を計算する
       if ( points > 0 ) {
 	step = width / points;
-	BLKstep[i]->setText( QString::number( step ) );
+	if ( !QXafsMode->isChecked() ) {
+	  buf.sprintf( UnitName[ BLKUnit ].form, step );
+	  BLKstep[i]->setText( buf );
+	} else {
+	  BLKstep[i]->setText( QString::number( step ) );
+	}
       } else {
 	BLKstep[i]->setText( "0" );
       }
@@ -677,11 +703,6 @@ void MainWindow::ShowBLKs( void )
     if ( ! QXafsMode->isChecked() ) {
       buf.sprintf( UnitName[ BLKUnit ].form, BLKstart[i]->text().toDouble() );
       BLKstart[i]->setText( buf );
-#if 0 
-      // step は整形しない
-      buf.sprintf( UnitName[ BLKUnit ].form, BLKstep[i]->text().toDouble() );
-      BLKstep[i]->setText( buf );
-#endif 
       buf.sprintf( "% 5.2f", BLKdwell[i]->text().toDouble() );
       BLKdwell[i]->setText( buf );
     }
@@ -753,7 +774,12 @@ void MainWindow::ChangeBLKpoints( void )
       BLKpoints[i]->setText( buf );
       if ( points > 0 ) {
 	step = width / points;
-	BLKstep[i]->setText( QString::number( step ) );
+	if ( !QXafsMode->isChecked() ) {
+	  buf.sprintf( UnitName[BLKUnit].form, step );
+	  BLKstep[i]->setText( buf );
+	} else {
+	  BLKstep[i]->setText( QString::number( step ) );
+	}
       }
     }
   }
@@ -1343,9 +1369,8 @@ void MainWindow::CpBlock2SBlock( void )
 bool MainWindow::CheckBlockRange( void )
 {
   for ( int i = 0; i <= Blocks; i++ ) {
-    if (( u->keV2any( EV, BLKstart[i]->text().toDouble() ) < MinEnergyInEV )
-	||( u->keV2any( EV, BLKstart[i]->text().toDouble() ) > MaxEnergyInEV )) {
-
+    if (( u->any2keV( BLKUnit, BLKstart[i]->text().toDouble())*1000 < MinEnergyInEV )
+	||( u->any2keV( BLKUnit, BLKstart[i]->text().toDouble())*1000 > MaxEnergyInEV )) {
     statusbar
       ->showMessage( tr( "The block definitin [%1]eV is out of range. [%2]-[%3]eV" )
 		     .arg( u->keV2any( EV, BLKstart[i]->text().toDouble() ) )

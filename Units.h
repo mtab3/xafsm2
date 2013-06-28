@@ -79,6 +79,7 @@ class Units : public QObject
     default:
       break;
     }
+    return 0;
   }
   double deg2any( UNIT i, double any ) {
     switch( i ) {

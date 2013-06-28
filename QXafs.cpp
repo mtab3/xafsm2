@@ -539,7 +539,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 
   double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
   double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
-  double dark2;
+  double dark2 = 0;
   if ( Us > 3 )
     dark2 = mUnits.at(2)->getDark() * QXafsDwellTime;
 
