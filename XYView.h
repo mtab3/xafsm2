@@ -66,8 +66,9 @@ private:
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
   QColor ASelC;
-
-  LRAX LineLR[ MAXLINES ];
+  
+  int DispGroup[ MAXLINES ];     // 同じスケールで表示される線のグループ分け
+  LRAX LineLR[ MAXLINES ];       // 線のスケールを左右どちらに表示するか
   SCALET scaleType[ MAXLINES ];
   QString LeftName, RightName;
   QString LNames[ MAXLINES ];
@@ -93,6 +94,8 @@ private:
   double y[ MAXLINES ][ MAXPOINTS ];
   double miny[ MAXLINES ];
   double maxy[ MAXLINES ];
+  double minGy[ MAXLINES ];
+  double maxGy[ MAXLINES ];
   double SaveYatNowXp[ MAXLINES ];
 
   MouseC m;
@@ -117,11 +120,14 @@ public:
   void SetLLine( int l ) { SelLR[ LEFT_AX ] = getL( l ); };
   void SetRLine( int l ) { SelLR[ RIGHT_AX ] = getL( l ); };
   void SetLR( int L, LRAX lr ) { LineLR[ getL( L ) ] = lr; };
+  // 共通のスケーリングを行う線のグループ登録
+  void SetDG( int L, int grp ) { DispGroup[ getL( L ) ] = grp; };
   // スケールのタイプ : フルスケールにするか、I0 の様に少し上にずらすか
   // ループ単位で指定。
   void SetScaleType( int l, SCALET t ) { scaleType[ getL( l ) ] = t; };
   void SetColor( int l, QColor c ) { LC[ getL( l ) ] = c; };
   QColor GetColor( int l ) { return LC.at( getL( l ) % LC.count() ); };
+  void ScaleChange( int l );
 
   // 縦軸は左右一本ずつ合計 2本しかないので、縦軸を持てるグループは最大 2 つだけ。
   void SetLineName( int l, QString Name ) { LNames[ getL( l ) ] = Name; };
@@ -156,6 +162,7 @@ private:
   void UpDateYWindow( int g, SCALET s );
   void ShowAScaleButton( QPainter *p );
   void CheckASPush( void );
+  void CheckSSPush( void );
 };
 
 #endif

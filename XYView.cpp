@@ -11,7 +11,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
 		  "the auto-scale mode is toggled on and off." ) );
 
   autoScale = true;
-  singleScale = true;
+  singleScale = false;
   AreaSelecting = false;
   SelLR[ LEFT_AX ] = 0;
   SelLR[ RIGHT_AX ] = 1;
@@ -239,15 +239,23 @@ void XYView::Draw( QPainter *p )
       linedir[i] = 1;
   }
 
+  if ( autoScale ) {
+    for ( int i = 0; i <= inLines; i++ ) {
+      minGy[i] = 1e300;
+      maxGy[i] = -1e300;
+    }
+    for ( int i = 0; i <= inLines; i++ ) {
+      UpDateYWindow( i, scaleType[ i ] );  // ループの前に実行する
+      int dg = DispGroup[ i ];
+      if ( miny[i] < minGy[ dg ] ) minGy[ dg ] = miny[i];
+      if ( maxy[i] > maxGy[ dg ] ) maxGy[ dg ] = maxy[i];
+    }
+  }
+
   for ( int l = 0; l <= inLines; l++ ) { // 先に線だけ描画
     bool f = ( QXafsMode ) ? dispf[ l % GROUPLINES ] : dispf[ l ];
     if ( f ) {
-      if ( autoScale ) {
-	//	UpDateYWindow( l, scaleType[ l ] );  // ループの前に実行する
-	cc.SetRealY( miny[l], maxy[l] );
-      } else {
-	cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
-      }
+      ScaleChange( l );
       pen1.setColor( LC[ l % LC.count() ] );
       p->setPen( pen1 );
       nowx = cc.s2rx( m.x() );
@@ -306,6 +314,7 @@ void XYView::Draw( QPainter *p )
   // お笑いクリッピング ^^;;;
   
   cc.ShowAScaleButton( p, autoScale, height() );
+  cc.ShowSScaleButton( p, singleScale, height() );
   
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
@@ -326,6 +335,8 @@ void XYView::Draw( QPainter *p )
 
   for ( int i = 0; i < 2; i++ ) {
     int l = SelLR[i];
+    ScaleChange( l );
+#if 0
     if ( !singleScale ) {
       if ( autoScale ) {
 	UpDateYWindow( l, scaleType[ l ] );
@@ -334,6 +345,7 @@ void XYView::Draw( QPainter *p )
 	cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
       }
     }
+#endif
     sy = dy = 0;
     cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
     pen1.setWidth( 1 );
@@ -383,9 +395,35 @@ void XYView::Draw( QPainter *p )
   }
 }
 
+void XYView::ScaleChange( int l )
+{
+  if ( !singleScale ) {
+    cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+#if 0
+    if ( autoScale ) {
+      cc.SetRealY( miny[l], maxy[l] );
+    } else {
+      cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
+    }
+#endif
+  } else {
+    cc.SetRealY( minGy[ DispGroup[l] ] - YShift[l],
+		 maxGy[ DispGroup[l] ] - YShift[l] );
+#if 0
+    if ( autoScale ) {
+      cc.SetRealY( minGy[ DispGroup[l] ], maxGy[ DispGroup[l] ] );
+    } else {
+      cc.SetRealY( minGy[ DispGroup[l] ] - YShift[l],
+		   maxGy[ DispGroup[l] ] - YShift[l] );
+    }
+#endif
+  }
+}
+
 void XYView::CheckASPush( void )
 {
-  if ( ( m.ex() > 5 )&&( m.ex() < 19 )
+  int x0 = 0;
+  if ( ( m.ex() > 5 + x0 )&&( m.ex() < 19 + x0 )
        &&( m.ey() > ( height() - 19 ) )&&( m.ey() < ( height() - 5 ) ) ) {
     if ( autoScale ) {
       autoScale = false;
@@ -395,6 +433,19 @@ void XYView::CheckASPush( void )
       for ( int l = 0; l <= inLines; l++ ) {
 	YShift[l] = YShift0[l] = yshift[l] = 0;
       }
+    }
+  }
+}
+
+void XYView::CheckSSPush( void )
+{
+  int x0 = 110;
+  if ( ( m.ex() > 5 + x0 )&&( m.ex() < 19 + x0 )
+       &&( m.ey() > ( height() - 19 ) )&&( m.ey() < ( height() - 5 ) ) ) {
+    if ( singleScale ) {
+      singleScale = false;
+    } else {
+      singleScale = true;
     }
   }
 }
@@ -450,6 +501,8 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
 	for ( int l = 0; l <= inLines; l++ ) {
 	  if ( !singleScale )
 	    cc.SetRealY( miny[l], maxy[l] );
+	  else 
+	    cc.SetRealY( minGy[ DispGroup[l] ], maxGy[ DispGroup[l] ] );
 	  yshift[l] = cc.s2ry0( m.y() ) - cc.s2ry0( m.sy() );
 	}
 	XShift = XShift0 + xshift;
@@ -531,6 +584,7 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
     break;
   }
   CheckASPush();
+  CheckSSPush();
   update();
 }
 

@@ -565,18 +565,21 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   MeasView->SetLineName( g*Ls, "I0" );
   MeasView->SetDispF( g*Ls, true );
   MeasView->SetPoints( g*Ls, 0 );
+  MeasView->SetDG( g*Ls, 0 );
 
   MeasView->SetLR( g*Ls+1, LEFT_AX );                   // I1
   MeasView->SetScaleType( g*Ls+1, FULLSCALE );
   MeasView->SetLineName( g*Ls+1, "I1" );
   MeasView->SetDispF( g*Ls+1, false );
   MeasView->SetPoints( g*Ls+1, 0 );
+  MeasView->SetDG( g*Ls+1, 1 );
 
   MeasView->SetLR( g*Ls+2, LEFT_AX );                   // mu
   MeasView->SetScaleType( g*Ls+2, FULLSCALE );
   MeasView->SetLineName( g*Ls+2, tr( "mu" ) );
   MeasView->SetDispF( g*Ls+2, true );
   MeasView->SetPoints( g*Ls+2, 0 );
+  MeasView->SetDG( g*Ls+2, 2 );
 
   if ( Us > 3 ) {
     MeasView->SetLR( g*Ls+3, LEFT_AX );                   // I1
@@ -584,12 +587,14 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     MeasView->SetLineName( g*Ls+3, "I2" );
     MeasView->SetDispF( g*Ls+3, false );
     MeasView->SetPoints( g*Ls+3, 0 );
+    MeasView->SetDG( g*Ls+3, 3 );
     
     MeasView->SetLR( g*Ls+4, LEFT_AX );                   // mu
     MeasView->SetScaleType( g*Ls+4, FULLSCALE );
     MeasView->SetLineName( g*Ls+4, tr( "mu2" ) );
     MeasView->SetDispF( g*Ls+4, true );
     MeasView->SetPoints( g*Ls+4, 0 );
+    MeasView->SetDG( g*Ls+4, 4 );
   }
 
   for ( int i = 0; i < num; i++ ) {

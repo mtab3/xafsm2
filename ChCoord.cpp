@@ -275,16 +275,35 @@ void ChCoord::DrawText( QPainter *p,
 
 void ChCoord::ShowAScaleButton( QPainter *p, bool autoScale, int height )
 {
+  int x0 = 0;
   QFont F1;
 
   if ( autoScale )
-    p->fillRect( 5, height - 19, 14, 14, ASBOnC );
+    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOnC );
   else 
-    p->fillRect( 5, height - 19, 14, 14, ASBOffC );
+    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOffC );
   p->setPen( ASBBorderC );
-  p->drawRect( 5, height - 19, 14, 14 );
+  p->drawRect( x0 + 5, height - 19, 14, 14 );
 
   p->setPen( BLACK );
-  QRectF rec = QRectF( 24, height-17, 90, 11 );
+  QRectF rec = QRectF( x0 + 24, height-17, 100, 11 );
   DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "A. Scale" );
 }
+
+void ChCoord::ShowSScaleButton( QPainter *p, bool singleScale, int height )
+{
+  int x0 = 110;
+  QFont F1;
+
+  if ( singleScale )
+    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOnC );
+  else 
+    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOffC );
+  p->setPen( ASBBorderC );
+  p->drawRect( x0 + 5, height - 19, 14, 14 );
+
+  p->setPen( BLACK );
+  QRectF rec = QRectF( x0 + 24, height-17, 100, 11 );
+  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "S. Scale" );
+}
+
