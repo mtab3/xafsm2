@@ -91,11 +91,31 @@ SSDの一部のチャンネルに、
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When toggle-on the button, the difference between the encorder-reading value and the value calculated from the answer of the pulse-motor-controller is recorded, and the difference will be used to decide the monochromator position to go.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>このボタンをオンにすると、その時点でのエンコーダ読みの角度とパルスモータコントローラのパルスから計算した角度との差が記録され、分光器を移動する際の移動先の計算に使われるようになります。</translation>
+        <translation type="obsolete">このボタンをオンにすると、その時点でのエンコーダ読みの角度とパルスモータコントローラのパルスから計算した角度との差が記録され、分光器を移動する際の移動先の計算に使われるようになります。</translation>
     </message>
     <message>
         <source>Use fixed delta-value between PM and true angle.</source>
-        <translation>分光器移動のパルスの計算で、真値との差を固定値にする</translation>
+        <translation type="obsolete">分光器移動のパルスの計算で、真値との差を固定値にする</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation>設定</translation>
+    </message>
+    <message>
+        <source>Calibrate DXM controlling PMC</source>
+        <translation>分光器コントロールPMCの較正</translation>
+    </message>
+    <message>
+        <source>in degree</source>
+        <translation>角度</translation>
+    </message>
+    <message>
+        <source>in selected unit for display</source>
+        <translation>表示用に選択された単位</translation>
+    </message>
+    <message>
+        <source>Measurement will conduct at even interval</source>
+        <translation>XAFS測定を下記の単位で等間隔に刻む</translation>
     </message>
 </context>
 <context>
@@ -434,7 +454,7 @@ Q-XAFSモードでは１スキャンに必要な時間を表します。</transl
     </message>
     <message>
         <source>Mesure on Backward</source>
-        <translation>戻りでも測定を行う</translation>
+        <translation type="obsolete">戻りでも測定を行う</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allow maximum speed, in the measurement region.&lt;/p&gt;&lt;p&gt;In some case, it takes longer time for the total scan process,&lt;/p&gt;&lt;p&gt;as it spend longer time to reach the top speed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -676,7 +696,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Meas. Bacground Time.[s] </source>
-        <translation>バックグラウンド計測時間 [s] </translation>
+        <translation type="obsolete">バックグラウンド計測時間 [s] </translation>
     </message>
     <message>
         <source>Meas. Background</source>
@@ -708,7 +728,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>End TIme</source>
-        <translation>終了時間</translation>
+        <translation type="obsolete">終了時間</translation>
     </message>
     <message>
         <source>HSpeed</source>
@@ -852,7 +872,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Move Monochro</source>
-        <translation>分光器回転</translation>
+        <translation type="obsolete">分光器回転</translation>
     </message>
     <message>
         <source>Move To (1)</source>
@@ -1571,7 +1591,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     <message>
         <source>The Sensor(s)%1 should be range selected.
 Have you selected the range in &apos;Setup Condition&apos;</source>
-        <translation>選択した計測器 %1 について、「設定」の画面でレンジを設定しましたか？</translation>
+        <translation type="obsolete">選択した計測器 %1 について、「設定」の画面でレンジを設定しましたか？</translation>
     </message>
     <message>
         <source>File [%1] Over Write ?</source>
@@ -2125,6 +2145,30 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>The Motor [%1] is used by the process %1!</source>
         <translation type="obsolete">駆動軸[%1]は[%2]に使われています。</translation>
+    </message>
+    <message>
+        <source>End Time</source>
+        <translation>終了時間</translation>
+    </message>
+    <message>
+        <source>Measure on Backward</source>
+        <translation>戻りでの測定</translation>
+    </message>
+    <message>
+        <source>Meas. Background Time.[s] </source>
+        <translation>バックグラウンド測定時間[秒]</translation>
+    </message>
+    <message>
+        <source>Move Monochromator</source>
+        <translation>分光器回転</translation>
+    </message>
+    <message>
+        <source>DXM center was changed from %1 to %2.</source>
+        <translation>分光器の原点が%1から%2に変更されました。</translation>
+    </message>
+    <message>
+        <source>mu2</source>
+        <translation>μ2</translation>
     </message>
 </context>
 <context>
