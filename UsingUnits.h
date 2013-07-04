@@ -52,13 +52,11 @@ class UsingUnits : public QObject
   };
 
   void clear( QString ID ) {
-    qDebug() << "1:UUcount" << UUnits.count();
     for ( int i = UUnits.count() - 1; i >= 0; i-- ) {
       if ( UUnits[i]->id() == ID ) {
 	UUnits.remove( i );
       }
     }
-    qDebug() << "2:UUcount" << UUnits.count();
     for ( int i = 0; i < UUnits.count(); i++ ) {
       qDebug() << "remain " << UUnits[i]->id();
     }
