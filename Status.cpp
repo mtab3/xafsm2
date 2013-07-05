@@ -9,6 +9,7 @@ Status::Status( QWidget *p ) : QScrollArea( p )
 void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
 			    StarsSV2 *StarsSV, SelMC2 *SelMC, Conditions *Conds )
 {
+  setWidgetResizable( true );
   for ( int i = 0; i < Ams->count(); i++ ) {
     drivers << Ams->at(i);
   }

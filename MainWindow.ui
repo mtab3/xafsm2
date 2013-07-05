@@ -541,7 +541,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -7798,9 +7798,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
         <property name="spacing">
          <number>3</number>
         </property>
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_37"/>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab">

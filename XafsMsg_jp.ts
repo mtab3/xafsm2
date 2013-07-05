@@ -1582,7 +1582,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Detectors are not selected properly!</source>
-        <translation>測定のための検出器の指定が正しくありません。</translation>
+        <translation type="obsolete">測定のための検出器の指定が正しくありません。</translation>
     </message>
     <message>
         <source>Selected sensors [%1] and [%2] are conflicting.</source>
@@ -2169,6 +2169,34 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>mu2</source>
         <translation>μ2</translation>
+    </message>
+    <message>
+        <source>26</source>
+        <translation>26</translation>
+    </message>
+    <message>
+        <source>25</source>
+        <translation>25</translation>
+    </message>
+    <message>
+        <source>27</source>
+        <translation>27</translation>
+    </message>
+    <message>
+        <source>mu3</source>
+        <translation>μ3</translation>
+    </message>
+    <message>
+        <source>At least 1 detector should be selected, except I0.</source>
+        <translation>I0 以外に少なくともひとつ検出器を選択してください。</translation>
+    </message>
+    <message>
+        <source>I1 should be selected for the measurement.</source>
+        <translation>この測定のためには I1 が選択されていなければなりません。</translation>
+    </message>
+    <message>
+        <source>Aux1 should be selected for the measurement.</source>
+        <translation>この測定のためには「その他１」が選択されていなければなりません。</translation>
     </message>
 </context>
 <context>
