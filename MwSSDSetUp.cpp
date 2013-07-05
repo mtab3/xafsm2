@@ -304,6 +304,8 @@ void MainWindow::saveMCAData0( QString fname )
 
 void MainWindow::WriteMCAHead( QTextStream &out )
 {
+  out << "# Ring Current : " << ( ( SLS == NULL ) ? "---" : SLS->value() );
+  out << "# I0           : " << SI0->value();
   out << "# Channel Status Length RealTime LiveTime ICR\n";
   for ( int i = 0; i < MaxSSDs; i++ ) {
     MCAHead head = SFluo->getAMCAHead( i );

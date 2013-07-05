@@ -187,18 +187,99 @@ bool MainWindow::isBusyMotorInMeas( void )
 
 void MainWindow::SetDispMeasModes( void )
 {
-  int i;
-  int DLC = 0;   // display line count
-  int DG = 0;
+  int DLC = 0;     // display line count
+  int DG = 0;      // display group
+  int MUC = 0;     // multi unit count
 
   MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
   MeasView->SetLLine( 1 );            //       1 番目のラインを左軸に表示
 
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );
-  MeasView->SetLineName( DLC, mUnits.at(0)->getName() );
+  MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
   MeasView->SetDG( DLC, DG++ );          // I0 は スケーリングのグループわけでは 0 
   DLC++;
+  MUC++;
+  if ( UseI1->isChecked() ) {  // I1 に対して線は 2 本
+    MeasView->SetLLine( DLC );
+    MeasView->SetLR( DLC, LEFT_AX );
+    MeasView->SetScaleType( DLC, FULLSCALE );
+    MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+    MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
+    DLC++;
+    MeasView->SetLR( DLC, LEFT_AX );                     // mu
+    MeasView->SetScaleType( DLC, FULLSCALE );
+    MeasView->SetLineName( DLC, tr( "mu" ) );
+    MeasView->SetDG( DLC, DG++ );     // mu も独立スケール
+    DLC++;
+    MUC++;
+  }
+  if ( Use19chSSD->isChecked() ) {
+    MeasView->SetLR( DLC, LEFT_AX );
+    MeasView->SetScaleType( DLC, FULLSCALE );
+    MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+    MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
+    DLC++;
+    for ( int j = 0; j < MaxSSDs; j++ ) {
+      MeasView->SetLR( DLC, LEFT_AX );
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, QString( "SSD %1" ).arg( j ) );
+      MeasView->SetDG( DLC, DG );    // SSD の各チャンネルだけ同一スケールグループ
+      DLC++;
+    }
+    MUC++;
+  }
+  if ( UseAux1->isChecked() ) {
+    qDebug() << "meas-disp-mode for Aux1 " << DLC << MeasDispMode[ DLC ];
+    if ( MeasDispMode[ DLC ] == TRANS ) { // 透過の時は一つの Aux の出力で 2本の線
+      MeasView->SetLLine( DLC );
+      MeasView->SetLR( DLC, LEFT_AX );                   // I1
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
+      DLC++;
+      MeasView->SetLR( DLC, LEFT_AX );                     // mu
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, tr( "mu2" ) );
+      MeasView->SetDG( DLC, DG++ );     // mu も独立スケール
+      DLC++;
+      MUC++;
+    } else {
+      MeasView->SetLR( DLC, LEFT_AX );
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
+      DLC++;
+      MUC++;
+    }
+  }
+  if ( UseAux2->isChecked() ) {
+    qDebug() << "meas-disp-mode for Aux1 " << DLC << MeasDispMode[ DLC ];
+    if ( MeasDispMode[ DLC ] == TRANS ) { // 透過の時は一つの Aux の出力で 2本の線
+      MeasView->SetLLine( DLC );
+      MeasView->SetLR( DLC, LEFT_AX );                   // I1
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
+      DLC++;
+      MeasView->SetLR( DLC, LEFT_AX );                     // mu
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, tr( "mu3" ) );
+      MeasView->SetDG( DLC, DG++ );     // mu も独立スケール
+      DLC++;
+      MUC++;
+    } else {
+      MeasView->SetLR( DLC, LEFT_AX );
+      MeasView->SetScaleType( DLC, FULLSCALE );
+      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
+      DLC++;
+      MUC++;
+    }
+  }
+
+#if 0
+  int i;
   for ( i = 1; i < mUnits.count(); i++ ) {
     if ( MeasDispMode[i] == TRANS ) { // 透過の時は一つの I1 の出力で 2本の線
       if (( i == 1 )&&( isSI1 )) {
@@ -231,20 +312,104 @@ void MainWindow::SetDispMeasModes( void )
       }
     }
   }
+#endif
 }
 
 void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダーク補正済み
 {
-  double I0;
-  double Val;
-  int i;
   int DLC0;
   int DLC = 0;   // display line count
+  int MUC = 0;
+
+  double I0, I1, A1, I00, V0, V;
   double sum;
 
-  I0 = MeasCPSs[ MC_I0 ];
+  I1 = A1 = 0;
+  I0 = MeasCPSs[ MUC ];
   MeasView->NewPoint( DLC, GoToKeV, I0 );
   DLC++;
+  MUC++;
+  if ( UseI1->isChecked() ) {
+    I1 = V0 = MeasCPSs[ MUC ];
+    MeasView->NewPoint( DLC, GoToKeV, V0 );   // I の値も表示する
+    DLC++;
+    if ( V0 < 1e-10 ) V0 = 1e-10;
+    if ( ( V = ( I0 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
+        MeasView->NewPoint( DLC, GoToKeV, log( V ) );
+      } else {
+        MeasView->NewPoint( DLC, GoToKeV, 0 );
+      }
+    DLC++;
+    MUC++;
+  }
+  if ( Use19chSSD->isChecked() ) {
+    if ( I0 < 1e-20 )
+      I0 = 1e-20;
+    DLC0 = DLC;     // 合計表示は後回しにして、先に個別チャンネルの表示
+    DLC++;
+    QVector<quint64> vals = SFluo->getCountsInROI();
+    QVector<double> darks = SFluo->getDarkCountsInROI();
+    sum = 0;
+    for ( int j = 0; j < MaxSSDs; j++ ) {
+      double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
+      if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
+	sum += v;
+      MeasView->NewPoint( DLC, GoToKeV, v );
+      DLC++;
+    }
+    MeasView->NewPoint( DLC0, GoToKeV, sum );
+    MUC++;
+  }
+  if ( UseAux1->isChecked() ) {
+    A1 = V0 = MeasCPSs[ MUC ];
+    if ( MeasDispMode[ MUC ] == TRANS ) {
+      I00 = I0;
+      if (( ModeA1->currentIndex() == 3 )||( ModeA1->currentIndex() == 4 ))
+	I00 = I1;
+      MeasView->NewPoint( DLC, GoToKeV, V0 );   // I の値も表示する
+      DLC++;
+      if ( V0 < 1e-10 ) V0 = 1e-10;
+      if ( ( V = ( I00 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
+	MeasView->NewPoint( DLC, GoToKeV, log( V ) );
+      } else {
+	MeasView->NewPoint( DLC, GoToKeV, 0 );
+      }
+      DLC++;
+    } else {  // MeasDispMode == FLUO
+      if ( I0 < 1e-20 )
+        I0 = 1e-20;
+      MeasView->NewPoint( DLC, GoToKeV, V0/I0 );
+      DLC++;
+    }
+    MUC++;
+  }
+  if ( UseAux2->isChecked() ) {
+    V0 = MeasCPSs[ MUC ];
+    if ( MeasDispMode[ MUC ] == TRANS ) {
+      I00 = I0;
+      if (( ModeA2->currentIndex() == 3 )||( ModeA2->currentIndex() == 4 ))
+	I00 = I1;
+      if (( ModeA2->currentIndex() == 5 )||( ModeA2->currentIndex() == 6 ))
+	I00 = A1;
+      MeasView->NewPoint( DLC, GoToKeV, V0 );   // I の値も表示する
+      DLC++;
+      if ( V0 < 1e-10 ) V0 = 1e-10;
+      if ( ( V = ( I00 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
+	MeasView->NewPoint( DLC, GoToKeV, log( V ) );
+      } else {
+	MeasView->NewPoint( DLC, GoToKeV, 0 );
+      }
+      DLC++;
+    } else {  // MeasDispMode == FLUO
+      if ( I0 < 1e-20 )
+        I0 = 1e-20;
+      MeasView->NewPoint( DLC, GoToKeV, V0/I0 );
+      DLC++;
+    }
+    MUC++;
+  }
+
+#if 0
   for ( i = 1; i < mUnits.count(); i++ ) {
     Val = MeasCPSs[i];
     if ( MeasDispMode[i] == TRANS ) {
@@ -286,6 +451,7 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダー�
       }
     }
   }
+#endif
 }
 
 void MainWindow::ReCalcSSDTotal( int, bool )

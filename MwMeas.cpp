@@ -85,9 +85,16 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
   ModeA1->addItem( "log(-I0/A1)" );
+  ModeA1->addItem( "log(I1/A1)" );
+  ModeA1->addItem( "log(-I1/A1)" );
+
   ModeA2->addItem( "A2/I0" );
   ModeA2->addItem( "log(I0/A2)" );
   ModeA2->addItem( "log(-I0/A2)" );
+  ModeA2->addItem( "log(I1/A2)" );
+  ModeA2->addItem( "log(-I1/A2)" );
+  ModeA2->addItem( "log(A1/A2)" );
+  ModeA2->addItem( "log(-A1/A2)" );
 
   I0Range->setEnabled( false );
   I1Range->setEnabled( false );
@@ -896,8 +903,11 @@ bool MainWindow::CheckDetectorSelection( void )
   if ( UseAux1->isChecked() ) NoOfSelectedSens++;
   if ( UseAux2->isChecked() ) NoOfSelectedSens++;
 
-  if ( NoOfSelectedSens == 0 )  // I0 以外に一つはセンサが選ばれていなければダメ
+  if ( NoOfSelectedSens == 0 ) { // I0 以外に一つはセンサが選ばれていなければダメ
+    statusbar->showMessage( tr( "At least 1 detector should be selected, except I0." ),
+			    2000 );
     return false;
+  }
 
   if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
     if ( UseI1->isChecked() ) {
@@ -925,6 +935,29 @@ bool MainWindow::CheckDetectorSelection( void )
         MeasFileType = EXTRA;
       }
     }
+  }
+
+  if ( UseAux1->isChecked() ) {
+    if ( ( ModeA1->currentIndex() == 3 )||( ModeA1->currentIndex() == 4 ) )
+      if ( ! UseI1->isChecked() ) {
+	statusbar->showMessage( tr( "I1 should be selected for the measurement." ),
+				2000 );
+	return false;
+      }
+  }
+  if ( UseAux2->isChecked() ) {
+    if ( ( ModeA2->currentIndex() == 3 )||( ModeA2->currentIndex() == 4 ) )
+      if ( ! UseI1->isChecked() ) {
+	statusbar->showMessage( tr( "I1 should be selected for the measurement." ),
+				2000 );
+	return false;
+      }
+    if ( ( ModeA2->currentIndex() == 5 )||( ModeA2->currentIndex() == 6 ) )
+      if ( ! UseAux1->isChecked() ) {
+	statusbar->showMessage( tr( "Aux1 should be selected for the measurement." ),
+				2000 );
+	return false;
+      }
   }
 
   return true;
@@ -985,7 +1018,6 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( CheckDetectorSelection() == false ) { // I0 以外に一つは選ばれてないとダメ
-      statusbar->showMessage( tr( "Detectors are not selected properly!" ), 2000 );
       return;
     }
     if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
@@ -1103,18 +1135,44 @@ void MainWindow::StartMeasurement( void )
       SelLiveTime->setChecked( false );
     }
     if ( UseAux1->isChecked() ) {
-      MeasDispMode[ LC ] = ( ModeA1->currentIndex() == 0 ) ? FLUO : TRANS;
-      MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
-      mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
-      LC++;
-      aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
+      // 0 以外は全部 TRANS。ちょっと荒っぽい
+      if ( ModeA1->currentIndex() == 0 ) { // 蛍光
+	MeasDispMode[ LC ] =  FLUO;
+	MeasDispPol[ LC ] = 1;
+	mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
+	LC++;
+	aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
+      } else {  // 透過
+	MeasDispMode[ LC ] = TRANS;
+	MeasDispPol[ LC ] = 1;
+	if ( ModeA1->currentIndex() == 2 ) MeasDispPol[ LC ] = -1;
+	if ( ModeA1->currentIndex() == 4 ) MeasDispPol[ LC ] = -1;
+	mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
+	LC++;
+	aGsb.stat = PBFalse; aGsb.label = "A1";     GSBSs << aGsb;
+	aGsb.stat = PBTrue;  aGsb.label = "mu1"; GSBSs << aGsb;
+      }
     }
     if ( UseAux2->isChecked() ) {
-      MeasDispMode[ LC ] = ( ModeA2->currentIndex() == 0 ) ? FLUO : TRANS;
-      MeasDispPol[ LC ] = ( ModeA1->currentIndex() == 2 ) ? -1 : 1;
-      mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
-      LC++;
-      aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
+      // 0 以外は全部 TRANS。ちょっと荒っぽい
+      if ( ModeA2->currentIndex() == 0 ) { // 蛍光
+	MeasDispMode[ LC ] = FLUO;
+	MeasDispPol[ LC ] = 1;
+	mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
+	LC++;
+	aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
+      } else {
+	MeasDispMode[ LC ] = TRANS;
+	MeasDispPol[ LC ] = 1;
+	if ( ( ModeA2->currentIndex() == 2 )
+	     ||( ModeA2->currentIndex() == 4 )
+	     ||( ModeA2->currentIndex() == 6 ) )
+	  MeasDispPol[ LC ] = -1;
+	mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
+	LC++;
+	aGsb.stat = PBFalse; aGsb.label = "A2";     GSBSs << aGsb;
+	aGsb.stat = PBTrue;  aGsb.label = "mu2"; GSBSs << aGsb;
+      }
     }
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL ) {

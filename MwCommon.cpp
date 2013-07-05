@@ -46,7 +46,8 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
        << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
        << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
-       << GSB21 << GSB22 << GSB23 << GSB24;
+       << GSB21 << GSB22 << GSB23 << GSB24 << GSB25
+       << GSB26 << GSB27;
 
   for ( int i = 0; i < GSBs.count(); i++ ) {
     connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
