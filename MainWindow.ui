@@ -541,7 +541,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -7170,7 +7170,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <item row="0" column="8">
             <widget class="QLabel" name="label_121">
              <property name="text">
-              <string>Time</string>
+              <string>D. Time</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
