@@ -224,8 +224,6 @@ void MainWindow::OpenPT( void )
 void MainWindow::MoveCurThPosKeV( double keV )
 // 分光器の移動指令(keV単位で位置指定)
 {
-  MMainTh->setIsBusy( true );
-
   if (( u->keV2any( EV, keV ) < MinEnergyInEV )
       ||( u->keV2any( EV, keV ) > MaxEnergyInEV )) {
     statusbar
@@ -242,5 +240,6 @@ void MainWindow::MoveCurThPosKeV( double keV )
   } else {
     SettingMainTh = u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter();
   }
+  MMainTh->setIsBusy( true );
   MMainTh->SetValue( SettingMainTh );
 }

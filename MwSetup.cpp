@@ -482,7 +482,6 @@ void MainWindow::GoMAtP( void )
 
 void MainWindow::GoMAtPuls( double Pos )
 {
-  inMMove = true;
   AUnit *am = AMotors.value( MotorN->currentIndex() );
   MovingS = GoMotorS->currentIndex();
 
@@ -492,6 +491,8 @@ void MainWindow::GoMAtPuls( double Pos )
 			    .arg( am->getName() ).arg( User ), 2000 );
     return;
   }
+
+  inMMove = true;
 
   if ( MMRelAbs->stat() == REL )
     Pos += am->value().toDouble();
