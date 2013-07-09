@@ -140,6 +140,7 @@ int MainWindow::findMini( QStringList &v1, QStringList &v2,
 void MainWindow::WriteQBody( void )
 {
   int Us = mUnits.count();
+
   QStringList vals0 = mUnits.at(0)->values();
   QStringList vals1 = mUnits.at(1)->values();
   QStringList vals2;

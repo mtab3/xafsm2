@@ -145,6 +145,8 @@ void MainWindow::HideBLKs( bool f )
 
 void MainWindow::CheckQXafsParams( void )
 {
+  if ( ! QXafsMode->isChecked() )
+    return;
   QString buf;
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
@@ -330,7 +332,7 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 1:
-    EncMainTh->GetValue();
+    //    EncMainTh->GetValue();    !!!!!!!!!!!!!!!!!!!!!!!!!  いらないはず。
     if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
     MeasR = 0;    // Measurement Repeat count

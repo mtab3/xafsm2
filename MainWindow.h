@@ -321,6 +321,7 @@ private:
   int EstimatedMeasurementTimeInSec;
   bool SvSelRealTime, SvSelLiveTime;
   bool SvSelExtPattern;
+  QString defaultFileName;
 
   //  void ClearBLKs( void );
   void ShowBLKs( void );

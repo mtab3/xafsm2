@@ -1028,7 +1028,6 @@ bool AUnit::InitSensor( void )
   return rv;
 }
 
-
 /*** XMAP SSD ***/
 
 bool AUnit::GetStat( void )

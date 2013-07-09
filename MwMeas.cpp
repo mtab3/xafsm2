@@ -45,8 +45,9 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MovingToNewSamplePosition = false;
   AutoModeComment.clear();
 
-  EditDFName->setText( "test.dat" );
-  ShowMeasFileStatus( "test.dat" );
+  defaultFileName = QDateTime::currentDateTime().toString( "yyMMdd" ) + "-test.dat";
+  EditDFName->setText( defaultFileName );
+  ShowMeasFileStatus( defaultFileName );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
