@@ -11,6 +11,7 @@
 #                The IDs 'ChangerX' and 'ChangerY' will be obsolete soon.
 # 2013/05/27 add 3rd 34410a for QXafs
 # 2013/06/24 add RW_DXMCENTER_CFG line
+# 2013/07/08 change the origin of 4WS(in hatch) Z
 
 #
 # In this definition file,
@@ -28,7 +29,7 @@ XAFSTitle "XafsM2-BL5S1"
 
 #
 # RW_DXMCENTER_CFG  0  NOFILE.cfg         # Do not read/write DXMCenter.cfg
-RW_DXMCENTER_CFG  1  DXMCenterTest.cfg  # Do not read/write DXMCenter.cfg
+RW_DXMCENTER_CFG  1  DXMCenterTest.cfg    # read/write DXMCenterTest.cfg
 # RW_DXMCENTER_CFG  1  DXMCenter.cfg      # read/write DXMCenter.cfg
 
 # Preset gains of MCA channels
@@ -141,8 +142,8 @@ MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
 #MOTOR PM "M002" "STAGEZ" "Stage Z" "pm16c04-3" "ch0" "mm" 0.001 INT 0
 #MOTOR PM "M003" "STAGEX" "Stage X" "pm16c04-3" "ch1" "mm" 0.001 INT 0
 #MOTOR PM "M004" "STAGEY" "Stage Y" "pm16c04-3" "ch2" "mm" 0.001 INT 0
-#MOTOR PM "M005" "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 INT 0
-#MOTOR PM "M006" "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 INT 0
+#MOTOR PM "M005" "4WSL"   "4WS-L"   "pm16c04-3" "ch3" "mm" 0.001 INT -5000
+#MOTOR PM "M006" "4WSR"   "4WS-R"   "pm16c04-3" "ch4" "mm" 0.001 INT -5000
 #MOTOR PM "M007" "4WSU"   "4WS-U"   "pm16c04-3" "ch5" "mm" 0.001 INT 0
 #MOTOR PM "M008" "4WSD"   "4WS-D"   "pm16c04-3" "ch6" "mm" 0.001 INT 0
 #MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "pm16c04-3" "ch7"  "mm" 0.001 INT 0
