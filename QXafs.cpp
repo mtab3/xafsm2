@@ -147,6 +147,7 @@ void MainWindow::CheckQXafsParams( void )
 {
   if ( ! QXafsMode->isChecked() )
     return;
+
   QString buf;
   double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
