@@ -338,6 +338,16 @@ with usual 9809 format datas.</string>
      </item>
     </layout>
    </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="VersionInfo">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 170, 127);</string>
+     </property>
+     <property name="text">
+      <string>Infos</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

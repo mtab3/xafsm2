@@ -15,6 +15,7 @@ public:
   void setAddInfos( bool addInfos );
 #endif
 
+  void setVersionInfo( QString ver, QString date, QString time );
   bool isEncAsTh( void );
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );

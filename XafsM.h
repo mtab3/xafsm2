@@ -1,6 +1,8 @@
 #ifndef XAFSM_H
 #define XAFSM_H
 
+#define VERSION "2.00"
+
 #include <QString>
 #include <QVector>
 

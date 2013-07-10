@@ -1,11 +1,25 @@
 
+#include "XafsM.h"
 #include "Conditions.h"
 
 Conditions::Conditions( void ) : QFrame()
 {
   setupUi( this );
 
+  VersionInfo->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3" )
+			.arg( VERSION )
+			.arg( __DATE__ )
+			.arg( __TIME__ ) );
+
   connect( CalibDXMPMC, SIGNAL( clicked() ), this, SIGNAL( SetDXMPMC() ) );
+}
+
+void Conditions::setVersionInfo( QString ver, QString date, QString time )
+{
+  VersionInfo->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3" )
+			.arg( ver )
+			.arg( date )
+			.arg( time ) );
 }
 
 bool Conditions::isEncAsTh( void )

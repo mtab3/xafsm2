@@ -95,6 +95,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupWebView();
 
   conds = new Conditions;
+  conds->setVersionInfo( VERSION, __DATE__, __TIME__ );
 #if 0
   conds->setEncAsTh( true );
   conds->setAddInfos( true );
