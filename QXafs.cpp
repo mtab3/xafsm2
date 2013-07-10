@@ -330,10 +330,10 @@ void MainWindow::QXafsMeasSequence( void )
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     MMainTh->SetHighSpeed( OrigHSpeed );
     MMainTh->SetSpeed( HIGH );
+    EncMainTh->GetValue();
     MeasStage++;
     break;
   case 1:
-    //    EncMainTh->GetValue();    !!!!!!!!!!!!!!!!!!!!!!!!!  いらないはず。
     if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
     MeasR = 0;    // Measurement Repeat count
@@ -411,7 +411,7 @@ void MainWindow::QXafsMeasSequence( void )
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
 #endif
     WriteQHeader2( MeasR, FORWARD );
-    WriteQBody();
+    //    WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
     DispQSpectrum( g );
     MeasStage++;

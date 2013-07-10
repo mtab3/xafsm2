@@ -137,6 +137,7 @@ int MainWindow::findMini( QStringList &v1, QStringList &v2,
   return list.at(0);
 }
 
+// EIB741なし(Enc2なし)の場合は正しく動かない気がする
 void MainWindow::WriteQBody( void )
 {
   int Us = mUnits.count();

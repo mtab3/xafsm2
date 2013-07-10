@@ -31,6 +31,15 @@ void MainWindow::setupScan2DArea( void )
     S2DOkSensors << ASensors[i];
     SelectS2DSensor->addItem( ASensors[i]->getName() );
   }
+
+  for ( int i = 0; i < Changers.count(); i++ ) {
+    // Changers[] は MwChanger (MwSetup) と共有
+    S2DChangerSelect->addItem( Changers[i]->name() );
+  }
+  S2DNewChangerSelected( S2DChangerSelect->currentIndex() );
+  connect( S2DChangerSelect, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( S2DNewChangerSelected( int ) ) );
+
   for ( int i = 0; i < AMotors.count(); i++ ) {
     // SetSpeed, SetMaxSpeed 等が使えないとダメ。現状 PM のみ
     if ( AMotors[i]->getType() == "PM" ) {
@@ -61,6 +70,18 @@ void MainWindow::setupScan2DArea( void )
     connect( S2DSteps[i], SIGNAL( editingFinished() ), this, SLOT( newS2DPoints() ) );
     connect( S2DPoints[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ) );
   }
+}
+
+void MainWindow::S2DNewChangerSelected( int i )
+{
+  disconnect( SIGNAL( newValue( QString ) ),
+	      this, SLOT( ShowS2DChangerPosition( QString ) ) );
+  connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
+	   this, SLOT( ShowS2DChangerPosition( QString ) ) );
+  connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
+	   this, SLOT( ShowS2DChangerPosition( QString ) ) );
+  Changers[i]->unit1()->GetValue();
+  Changers[i]->unit2()->GetValue();
 }
 
 void MainWindow::newS2DPoints( void )

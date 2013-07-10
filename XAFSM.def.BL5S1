@@ -403,7 +403,7 @@ SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
 SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
 SENSOR DV2 "S041" "GENERAL" "Agilent34410-3" "a34410a-3" "" "V" NO ""
 
-#SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC2      : Unit type   ENC2 is an encorder with memory

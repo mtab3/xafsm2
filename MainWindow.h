@@ -653,6 +653,7 @@ private slots:
   void newS2DPoints( void );
   void S2DScanStart( void );
   void S2DScanSequence( void );
+  void S2DNewChangerSelected( int i );
 
  signals:
   void SelectedSSD( int i, bool f );
