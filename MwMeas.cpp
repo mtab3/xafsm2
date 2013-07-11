@@ -808,6 +808,7 @@ void MainWindow::ChangeBLKpoints( void )
     }
   }
   if ( QXafsMode->isChecked() ) CheckQXafsParams();
+  ShowTotal();
 }
 
 void MainWindow::SetDwells( void )
