@@ -164,7 +164,8 @@ void MainWindow::CheckQXafsParams( void )
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 ))
     HSpeed = MaxHSpeed;
 
-  DispQHSpeed->setText( QString::number( HSpeed ) );
+  DispQSpeedInPPS->setText( QString::number( HSpeed ) );
+  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->getUPP() ) );
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
 
   if ( ( WidthInPuls / BLKpoints[0]->text().toInt() / HSpeed ) < MIN_INTERVAL ) {
@@ -243,7 +244,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
     HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
-  DispQHSpeed->setText( QString::number( HSpeed ) );
+  DispQSpeedInPPS->setText( QString::number( HSpeed ) );
+  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->getUPP() ) );
 
   QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の始点
   QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の終点
