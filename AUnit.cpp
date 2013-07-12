@@ -314,13 +314,13 @@ bool AUnit::QStart( void )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0,  0 ) ) {
     IsBusy2On( Driver, "Start" );
-    s->SendCMD2( Uid, Driver, "qInitialize", QString::number( setTime ) );
+    s->SendCMD2( Uid, DevCh, "qInitialize", QString::number( setTime ) );
     rv = false;
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  1 ) ) {
     IsBusy2On( Driver, "Start" );
-    s->SendCMD2( Uid, Driver, "StandBy" );
+    s->SendCMD2( Uid, DevCh, "StandBy" );
     rv = false;
   }
 
@@ -333,13 +333,13 @@ bool AUnit::QRead( void )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0,  0 ) ) {
     IsBusy2On( Driver, "Read" );
-    s->SendCMD2( Uid, Driver, "qGetData" );
+    s->SendCMD2( Uid, DevCh, "qGetData" );
     rv = false;
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  1 ) ) {
     IsBusy2On( Driver, "Read" );
-    s->SendCMD2( Uid, Driver, "GetData" );
+    s->SendCMD2( Uid, DevCh, "GetData" );
     rv = false;
   }
 
@@ -353,7 +353,7 @@ bool AUnit::QEnd( void )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0,  0 ) ) {
     IsBusy2On( Driver, "End" );
-    s->SendCMD2( Uid, Driver, "qFinalize" );
+    s->SendCMD2( Uid, DevCh, "qFinalize" );
     rv = false;
   }
 
@@ -594,7 +594,7 @@ void AUnit::AskIsBusy( void )
   // SSDPには訊かない
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  1,  0,  0,  1,  0,   0,  0,  1,  0,  0,  1, 1,  1 ) ) {
-    s->SendCMD2( Uid, Driver, "IsBusy" );
+    s->SendCMD2( Uid, DevCh, "IsBusy" );
   }
 }
 
@@ -663,7 +663,7 @@ void AUnit::SetCurPos( SMsg msg )
 void AUnit::SetIsBusyByMsg( SMsg msg )
 {
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  if ( TypeCHK(  1,  0,  0,  0,  0,  0,  0,   0,  1,  0,  0,  0,  0, 0,  0  ) ) {
+  if ( TypeCHK(  1,  0,  0,  0,  0,  0,  0,   0,  1,  0,  0,  0,  1, 1,  1  ) ) {
     if ( ( msg.From() == DevCh )
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       IsBusy = ( msg.Val().toInt() == 1 );
@@ -675,7 +675,7 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
     }
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  1,  1,  0,  1, 1,  1 ) ) {
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  1,  1,  0,  0, 0,  0 ) ) {
     if ( ( msg.From() == Driver )
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       IsBusy = ( msg.Val().toInt() == 1 );
@@ -758,7 +758,7 @@ double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数�
     if ( dtime > 1.0 ) dtime = 1.0;
     if ( Type == "DV2" ) {   // DV の場合、ここでは内部変数 setTime に値を設定するだけ。
       IsBusy2On( Driver, "SetAperture" );
-      s->SendCMD2( Uid, Driver, "SetAperture", QString( "%1" ).arg( dtime ) );
+      s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
     }
     setTime = dtime;
   }
@@ -773,7 +773,7 @@ void AUnit::SetTriggerDelay( double time )
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "SetTriggerDelay" );
-    s->SendCMD2( Uid, Driver, "SetTriggerDelay", QString::number( time ) );
+    s->SendCMD2( Uid, DevCh, "SetTriggerDelay", QString::number( time ) );
   }
 }
 
@@ -781,7 +781,7 @@ void AUnit::SetSamplingSource( QString source )   // source := TIM, IMM
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "SetSamplingSource" );
-    s->SendCMD2( Uid, Driver, "SetSamplingSource", source );
+    s->SendCMD2( Uid, DevCh, "SetSamplingSource", source );
   }
 }
 
@@ -789,7 +789,7 @@ void AUnit::SetTriggerSource( QString source )   // source := IMM, EXT, BUS
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "SetTriggerSource" );
-    s->SendCMD2( Uid, Driver, "SetTriggerSource", source );
+    s->SendCMD2( Uid, DevCh, "SetTriggerSource", source );
   }
 }
 
@@ -804,7 +804,7 @@ void AUnit::SetTriggerCounts( int counts )
     else
       arg = "INF";
 
-    s->SendCMD2( Uid, Driver, "SetTriggerCounts", arg );
+    s->SendCMD2( Uid, DevCh, "SetTriggerCounts", arg );
   }
 }
 
@@ -812,7 +812,7 @@ void AUnit::SetTriggerSlope( QString type )   // POS : rising-edge
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "SetTriggerSlope" );
-    s->SendCMD2( Uid, Driver, "SetTriggerSlope", type );
+    s->SendCMD2( Uid, DevCh, "SetTriggerSlope", type );
   }
 }
 
@@ -820,7 +820,7 @@ void AUnit::GetDataPoints( void )
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "GetDataPoints" );
-    s->SendCMD2( Uid, Driver, "GetDataPoints" );
+    s->SendCMD2( Uid, DevCh, "GetDataPoints" );
   }
 }
 
@@ -828,7 +828,7 @@ void AUnit::ReadDataPoints( int datas )
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "ReadDataPoints" );
-    s->SendCMD2( Uid, Driver, "GetDataPoints", QString::number( datas ) );
+    s->SendCMD2( Uid, DevCh, "GetDataPoints", QString::number( datas ) );
   }
 }
 
@@ -836,7 +836,7 @@ void AUnit::Abort( void )
 {
   if (( Type == "DV" )||( Type == "DV2" )) {
     IsBusy2On( Driver, "Abort" );
-    s->SendCMD2( Uid, Driver, "Abort" );
+    s->SendCMD2( Uid, DevCh, "Abort" );
   }
 }
 
@@ -926,7 +926,7 @@ bool AUnit::InitSensor( void )
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver, "InitSensor-c0" );
-      s->SendCMD2( "Scan", Driver, "Reset", "" );
+      s->SendCMD2( "Scan", DevCh, "Reset", "" );
       LocalStage++;
       rv = false;
       break;
@@ -939,13 +939,13 @@ bool AUnit::InitSensor( void )
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver, "InitSensor-c0" );
-      s->SendCMD2( "Scan", Driver, "Reset", "" );
+      s->SendCMD2( "Scan", DevCh, "Reset", "" );
       LocalStage++;
       rv = true;
       break;
     case 1:
       IsBusy2On( Driver, "InitSensor-c1" );
-      s->SendCMD2( "Scan", Driver, "SetAutoZero", "OFF" );
+      s->SendCMD2( "Scan", DevCh, "SetAutoZero", "OFF" );
       LocalStage++;
       rv = false;
       break;
@@ -1020,7 +1020,7 @@ bool AUnit::InitSensor( void )
   }
   if ( Type == "ENC2" ) {
     IsBusy2On( Driver, "InitSensor-c0" );
-    s->SendCMD2( "Init", Driver, "GetValue" );
+    s->SendCMD2( "Init", DevCh, "GetValue" );
     LocalStage++;
     rv = false;
   }

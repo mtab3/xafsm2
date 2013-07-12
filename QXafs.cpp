@@ -413,7 +413,7 @@ void MainWindow::QXafsMeasSequence( void )
 	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
 #endif
     WriteQHeader2( MeasR, FORWARD );
-    //    WriteQBody();
+    WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
     DispQSpectrum( g );
     MeasStage++;

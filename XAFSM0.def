@@ -390,9 +390,9 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "simmotor" "Ring" "mA" NO ""
 #
 # the DV is Agilent34410 for QXAFS
 #
-SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSKth1" "V" NO ""
-SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSKth2" "V" NO ""
-SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSKth3" "V" NO ""
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSq3-1" "V" NO ""
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSq3-2" "V" NO ""
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSq3-3" "V" NO ""
 #SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
 #SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
 #SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO ""
@@ -400,12 +400,15 @@ SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSKth3" "V" NO ""
 #
 # the DV2 is Agilent34410 for normal measurement
 #
-SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "simmotor" "SNSKth1" "V" NO ""
-SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "simmotor" "SNSKth2" "V" NO ""
+SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "simmotor" "SNSq3-1" "V" NO ""
+SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "simmotor" "SNSq3-2" "V" NO ""
+SENSOR DV2 "S041" "GENERAL" "Agilent34410-2" "simmotor" "SNSq3-3" "V" NO ""
 #SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
 #SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+#SENSOR DV2 "S041" "GENERAL" "Agilent34410-2" "a34410a-3" "" "V" NO ""
 
-SENSOR ENC2 "S041" "ENCTH2" "Encoder Th" "EIB741" "" "deg" NO "" 2.441406e-6
+SENSOR ENC2 "S042" "ENCTH2" "Encoder Th" "simmotor" "SNSeib" "deg" NO "" 2.441406e-6
+#SENSOR ENC2 "S042" "ENCTH2" "Encoder Th" "EIB741" "" "deg" NO "" 2.441406e-6
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC2      : Unit type   ENC2 is an encorder with memory

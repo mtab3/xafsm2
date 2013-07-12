@@ -117,6 +117,10 @@ SSDの一部のチャンネルに、
         <source>Measurement will conduct at even interval</source>
         <translation>XAFS測定を下記の単位で等間隔に刻む</translation>
     </message>
+    <message>
+        <source>Infos</source>
+        <translation>バージョン情報</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>
@@ -510,7 +514,7 @@ Q-XAFSモードでは１スキャンに必要な時間を表します。</transl
     </message>
     <message>
         <source>Use novel 1303 data format to record the measured data instead of the usual 9809 format.</source>
-        <translation>従来の 9809 フォーマットの代わりに 1303 フォーマットを用いて測定結果を記録する。</translation>
+        <translation type="obsolete">従来の 9809 フォーマットの代わりに 1303 フォーマットを用いて測定結果を記録する。</translation>
     </message>
     <message>
         <source>Use 1303 Format</source>
@@ -704,7 +708,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Meas. before Scan</source>
-        <translation>測定前にバックグラウンド計測</translation>
+        <translation type="obsolete">測定前にバックグラウンド計測</translation>
     </message>
     <message>
         <source>Show BGs</source>
@@ -732,7 +736,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>HSpeed</source>
-        <translation>スキャンスピード(pps)</translation>
+        <translation type="obsolete">スキャンスピード(pps)</translation>
     </message>
     <message>
         <source>0000</source>
@@ -2026,7 +2030,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Time</source>
-        <translation>時間</translation>
+        <translation type="obsolete">時間</translation>
     </message>
     <message>
         <source>Rel/Abs</source>
@@ -2197,6 +2201,34 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Aux1 should be selected for the measurement.</source>
         <translation>この測定のためには「その他１」が選択されていなければなりません。</translation>
+    </message>
+    <message>
+        <source>(pps) </source>
+        <translation>(pps)</translation>
+    </message>
+    <message>
+        <source>Speed</source>
+        <translation>速度</translation>
+    </message>
+    <message>
+        <source>(deg/s)</source>
+        <translation>(deg/s)</translation>
+    </message>
+    <message>
+        <source>D. Time</source>
+        <translation>計測時間</translation>
+    </message>
+    <message>
+        <source>Use Changer</source>
+        <translation>チェンジャ使用</translation>
+    </message>
+    <message>
+        <source>Changing to Q-XAFS mode.</source>
+        <translation>測定モードをQ-XAFSモードにします。</translation>
+    </message>
+    <message>
+        <source>Meas. before each Scan</source>
+        <translation>毎測定前にバックグラウンド計測</translation>
     </message>
 </context>
 <context>

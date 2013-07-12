@@ -2389,7 +2389,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item row="4" column="5" rowspan="2">
                 <widget class="QRadioButton" name="QXafsMode">
                  <property name="toolTip">
-                  <string>Use novel 1303 data format to record the measured data instead of the usual 9809 format.</string>
+                  <string>Changing to Q-XAFS mode.</string>
                  </property>
                  <property name="text">
                   <string>Q-XAFS mode</string>
@@ -2558,7 +2558,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Meas. before Scan</string>
+                  <string>Meas. before each Scan</string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>

@@ -205,7 +205,7 @@ void MainWindow::WriteQBody( void )
     i1 = vals1[i+1].toDouble() - dark1;
     if ( Us > 3 ) {
       i2 = vals2[i+1].toDouble() - dark2;
-      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %7.6f" " %7.6f" " %7.6f",
+      buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f" " %8.7f",
 		   deg, deg2, QXafsDwellTime, i0, i1, i2 );
     } else {
       buf.sprintf( "%10.5f" "%10.5f" "%10.4f" " %8.7f" " %8.7f",
