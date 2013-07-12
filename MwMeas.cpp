@@ -837,6 +837,11 @@ void MainWindow::SelectedWBFN( const QString &fname )
   int i;
   QTextStream out( &f );
 
+  // 一見、行の並びは自由に見えるが、B より後に U が来ると
+  // (かつ、その時の表示単位と U での単位が違っていると)
+  // B で読み込んだ値を 表示単位から U 指定単位に変換してしまうため
+  // おかしくなる。
+  // 従って必ず、U は B より先でないとダメ
   out << "N " << Blocks << endl;
   out << "U " << BLKUnit << endl;
   for ( i = 0; i < MaxBLKs; i++ ) {
@@ -856,6 +861,11 @@ void MainWindow::SelectedRBFN( const QString &fname )
 
   QTextStream in( &f );
 
+  // 一見、行の並びは自由に見えるが、B より後に U が来ると
+  // (かつ、その時の表示単位と U での単位が違っていると)
+  // B で読み込んだ値を 表示単位から U 指定単位に変換してしまうため
+  // おかしくなる。
+  // 従って必ず、U は B より先でないとダメ
   QRegExp sep("\\s+");
   while (!in.atEnd()) {
     int i;
@@ -867,6 +877,7 @@ void MainWindow::SelectedRBFN( const QString &fname )
     }
     if ( line[0] == QChar( 'U' ) ) {
       BLKUnit = (UNIT)line.section( sep, 1, 1 ).toInt();
+      SelBLKUnit->setCurrentIndex( BLKUnit );
     }
     if ( line[0] == QChar( 'B' ) ) {
       i = line.section( sep, 1, 1 ).toInt();
