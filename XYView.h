@@ -156,6 +156,9 @@ public:
 public slots:
   void ChooseAG( int i, bool f );
 
+ signals:
+  void SelectAPoint( double x, double y );
+
 private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );

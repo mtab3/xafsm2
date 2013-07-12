@@ -588,8 +588,11 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
   update();
 }
 
-void XYView::mouseDoubleClickEvent( QMouseEvent * )
+void XYView::mouseDoubleClickEvent( QMouseEvent *e )
 {
+  m.DClicked( e );
+
+  emit SelectAPoint( cc.s2rx( m.dcx() ), cc.s2ry( m.dcy() ) );
 }
 
 void XYView::wheelEvent( QWheelEvent *e )

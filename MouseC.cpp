@@ -35,3 +35,12 @@ void MouseC::Released( QMouseEvent *e )
   Button = e->button();
   Mod = e->modifiers();
 }
+
+void MouseC::DClicked( QMouseEvent *e )
+{
+  DCx = e->x();
+  DCy = e->y();
+
+  Button = e->button();
+  Mod = e->modifiers();
+}
