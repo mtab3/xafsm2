@@ -1229,6 +1229,19 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
+    // 同じユニットを2回使っていないか確認。
+    for ( int i = 0; i < mUnits.count(); i++ ) {
+      for ( int j = 0; j < mUnits.count(); j++ ) {
+	if ( mUnits.at(i) == mUnits.at(j) ) {
+	  QString msg
+	    = tr( "Identical sensor [%1] is used as different inputs, like I0 and I1." )
+	    .arg( mUnits.at(i)->getName() );
+	  statusbar->showMessage( msg, 2000 );
+            NewLogMsg( msg );
+            return;
+	}
+      }
+    }
     // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
     // 両方を同時には測定に使えない
