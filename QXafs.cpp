@@ -37,12 +37,14 @@ void MainWindow::setupQXafsMode( void )
 
 void MainWindow::QIntervalTimeout1( void )
 {
+  qDebug() << "timer1 timeout";
   QIntervalTimer1->stop();
   QIntervalBlock1 = false;
 }
 
 void MainWindow::QIntervalTimeout2( void )
 {
+  qDebug() << "timer2 timeout";
   QIntervalTimer2->stop();
   QIntervalBlock2 = false;
 }
@@ -326,6 +328,8 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 void MainWindow::QXafsMeasSequence( void )
 {
   int g;
+  double t1, t2;
+  qDebug() << MeasStage;
 
   switch( MeasStage ) {
   case 0:
@@ -382,15 +386,17 @@ void MainWindow::QXafsMeasSequence( void )
   case 3:
     // 分光器をスタート地点に向けて移動開始
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+    MeasStage++;
     // break しない
   case 4:      // Repeat Point 1
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99
     MeasR++;
-    if ( MeasR >= SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
+    if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
     }
+    MeasStage++;
     // break しない
   case 5:
     // 計測器を計測開始(Trigger待ち)状態にする(「待ち状態」ready になるまでループ)
@@ -421,8 +427,10 @@ void MainWindow::QXafsMeasSequence( void )
     // 測定開始！ ( = 分光器を終了地点へ移動)
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
     QIntervalBlock1 = QIntervalBlock2 = true;
-    QIntervalTimer1->start( fabs( QIntervalCycle->text().toDouble() * 1000 ) );
-    QIntervalTimer2->start( fabs( QIntervalHalf->text().toDouble() * 1000 ) ); 
+    t1 = fabs( QIntervalCycle->text().toDouble() * 1000 );
+    t2 = fabs( QIntervalHalf->text().toDouble() * 1000 );
+    QIntervalTimer1->start( t1 );
+    QIntervalTimer2->start( t2 ); 
     // mUnits.clearDoneF() : QRead を一台ずつ行うためのしかけ
     // OneByOne == true だと働くが、今は true にしていないので現状不要のはず。
     mUnits.clearDoneF();
@@ -443,6 +451,7 @@ void MainWindow::QXafsMeasSequence( void )
     WriteQHeader2( MeasR, FORWARD );
     WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
+    qDebug() << "Q display";
     DispQSpectrum( g );
     MeasStage++;
     break;
@@ -579,7 +588,6 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
-  //  qDebug() << "upp2 " << upp2 << EncValue0.toDouble() << Enc2Value0.toInt();
 
   if ( QLimitedDisplay->isChecked() ) {
     g = g % QLastLines->value();
