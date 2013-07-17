@@ -308,8 +308,6 @@ void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 void MainWindow::QXafsMeasSequence( void )
 {
   int g;
-  QDateTime DebugTime1, DebugTime2;
-  QString DebugBuf;
 
   if ( QIntervalBlock )
     return;
@@ -319,9 +317,10 @@ void MainWindow::QXafsMeasSequence( void )
     // PM16C のパラメータ決定
     // 代表ファイル作成
     // 推定測定時間の表示
-    // 計測器類の busy フラグクリア
+    // 計測器類の内部ループカウンタクリア
     // グラフ表示の準備 <<---- !! I0, I のみを想定している
-    // 分光器移動速度を既定の「高速」に
+    // 分光器を制御する PM16C のチャンネルに「高速」を指示
+    // 「高速」の値を分光器に許される最高速にセット
     // エンコーダ(nd287)の現在値読取り命令発行
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     GetPM16CParamsForQXAFS();
@@ -337,23 +336,26 @@ void MainWindow::QXafsMeasSequence( void )
     MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
     MeasView->SetWindow0( u->deg2keV( SBlockStartInDeg[0] ), 0,
 			  u->deg2keV( SBlockStartInDeg[ SBlocks ] ), 0 );
-    MMainTh->SetHighSpeed( OrigHSpeed );
     MMainTh->SetSpeed( HIGH );
+    MMainTh->SetHighSpeed( OrigHSpeed );
     EncMainTh->GetValue();
     MeasStage++;
     break;
   case 1:
     // 計測器類の初期化ループ (「終了」ステータスになるまで、break して 再入 でループ)
+    // 計測器類の内部ループカウンタクリア
     // R = 0 (repeat = 0)
     if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
+    mUnits.clearStage();
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
     break;
   case 2:
     // 読み取り命令を発行しておいたエンコーダ(nd287)の現在値の取得
     // EIB741 が使えるなら、その現在値も取得
-    // 
+    // 1点の計測時間の設定
+    // 計測器類の内部ループカウンタクリア
     EncValue0 = EncMainTh->value();
     if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
     mUnits.setDwellTimes( QXafsDwellTime );  
@@ -362,26 +364,39 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 3:
+    // 分光器をスタート地点に向けて移動開始
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
     MeasStage = 5;    // 最初は始点でのインターバル指定があってもインターバルを取らない
     break;
   case 4:      // Repeat Point 1
+    // インターバル期間中、この制御ループへの侵入をブロックするフラグを立てる
+    // インターバルタイマ起動
     QIntervalBlock = true;
     qDebug() << "Interval at Start Point";
     QIntervalTimer->start( QIntervalAtStart->text().toDouble() * 1000 );
     MeasStage++;
     break;
   case 5:      // Repeat Point 2
+    // R++ (1回目の測定に入る前に R=1 になることに注意)
+    // 終了判定 ---> 終了してれば stage = 99
+    // 
     MeasR++;
-    if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
+    if ( MeasR >= SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
     }
-    //    qDebug() << "after Interval";
-    DebugTime1 = QDateTime::currentDateTime();    // debug
+    // break; // ブレークしない
+  case 6:
+    // 計測器を計測開始(Trigger待ち)状態にする(「待ち状態」ready になるまでループ)
+    // 計測器類の内部ループカウンタクリア
+    // 記録ファイルのヘッダ部分書き出し
+    // 現在のリーピート番号表示 (Auto モードの進行変数 A と R)
+    // スキャン方向の表示 (forward)
+    // 「高速」の値を QXafs スキャンのために計算された値にセット
+    // 分光器を制御する PM16C のチャンネルが適切なトリガを出すように設定
     if ( mUnits.QStart() )
       break;
-    mUnits.clearStage();
+    mUnits.clearStage();  
     WriteQHeader( MeasR, FORWARD );
     if ( AutoModeButton->isChecked() ) {
       CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasA+1 ).arg( MeasR + 1 ) );
@@ -390,40 +405,29 @@ void MainWindow::QXafsMeasSequence( void )
     }
     CurrentPnt->setText( tr( "Fwd" ) );
     MMainTh->SetHighSpeed( HSpeed );
-    MeasStage++;
-    //break;
-  case 6:
     SetUpMainThToGenerageTriggerSignal( QXafsSP0, QXafsEP0 );
     MeasStage++;
     break;
   case 7:
-    DebugTime2 = QDateTime::currentDateTime();    // debug
+    // 分光器を終了地点へ移動
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
-
-    DebugBuf = "Interval to return at start point: "
-      + DebugTime1.toString("yy.MM.dd hh:mm.zzz") + " "
-      + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
-    NewLogMsg( DebugBuf );
-
-    // QRead を一台ずつ行うためのしかけ
+    // mUnits.clearDoneF() : QRead を一台ずつ行うためのしかけ
     // OneByOne == true だと働くが、今は true にしていないので現状不要のはず。
     mUnits.clearDoneF();
     MeasStage++;
     break;
   case 8:
-    DebugTime1 = QDateTime::currentDateTime();    // debug
+    // 計測器にデータ読み出し命令発行(完了するまでループ)
     if ( mUnits.QRead() )
       break;
-    MeasStage++;
     mUnits.clearStage();
+    MeasStage++;
     break;
   case 9:
-#if 0
-    qDebug() << "aa" << mUnits.count();
-    qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
-	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
-	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
-#endif
+    // スキャン終了時の情報をヘッダに追加書き込み
+    // データ本体の書き出し
+    // 何番目のスキャンになるかを g にセット
+    // グラフ表示
     WriteQHeader2( MeasR, FORWARD );
     WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
@@ -431,6 +435,15 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 10:
+    // 計測器の測定終了処理(完了するまでループ)
+    // 戻りも測定するかどうかで分岐
+    //   測定する場合
+    //     戻りの測定用に PM16C にトリガ信号発生の設定
+    //     "Bwd"(Backward) の表示
+    //     インターバル有りなしで分岐して次のステージへ
+    //   測定しない場合
+    //     分光器の速度を既定最高速度に設定する
+    //     PM16C がトリガを発生しないように設定
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
@@ -448,50 +461,51 @@ void MainWindow::QXafsMeasSequence( void )
       MeasStage = 13;
     }
     break;
-  case 11:
-    qDebug() << "Interval at End Point";
+  case 11:   // 分岐飛び込み点 1  : 戻りも測定 and Intrval 指定有り
+    // インターバル期間中、この制御ループへの侵入をブロックするフラグを立てる
+    // インターバルタイマ起動
     QIntervalBlock = true;
     QIntervalTimer->start( QIntervalAtEnd->text().toDouble() * 1000 );
     MeasStage++;
     break;
-  case 12:
-    //    qDebug() << "after Interval at End point";
+  case 12:   // 分岐飛び込み点 2  : 戻りも測定 and Intrval 指定無し
+    // 計測器にデータ読み出し命令発行(完了するまでループ)
     if ( mUnits.QStart() )
       break;
     MeasStage++;
     break;
-  case 13:
-    DebugTime2 = QDateTime::currentDateTime();    // debug
+  case 13:   // 分岐飛び込み点 3  : 戻り測定なし
+    // 分光器をスタート地点に戻す
+    // 「戻りも測定」の場合、戻り測定記録ファイルのヘッダ書き出し
+    // 分岐
+    // 1. 戻り測定する、
+    // 2. 戻り測定せず
+    //   2-a 始点でのインターバル有り
+    //   2-b 始点でのインターバル無し
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
-
-    DebugBuf =  "Interval to return at end point: "
-      + DebugTime1.toString("yy.MM.dd hh:mm.zzz") + " "
-      + DebugTime2.toString("yy.MM.dd hh:mm.zzz");
-    NewLogMsg( DebugBuf );
-
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       WriteQHeader( MeasR, BACKWARD );
-      MeasStage++;
+      mUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
+      MeasStage++;     // 戻り測定する場合 --> 分岐飛び込み点 A
     } else {
       if ( QIntervalAtStart->text().toDouble() > 0 )
 	MeasStage = 4; // 始点でのインターバル指定がある場合 : Repeat Point 1
       else
 	MeasStage = 5; // 始点でのインターバル指定がない場合 : Repeat Point 2
     }
-    mUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
     break;
-  case 14:
+  case 14:    // 分岐飛び込み点 A
+    // 計測器に測定結果を読み出す指示(完了するまでループ)
     if ( mUnits.QRead() )
       break;
     mUnits.clearStage();
     MeasStage++;
     break;
   case 15:
-#if 0
-    qDebug() << mUnits.at(0)->values()[0] << mUnits.at(0)->values().count()
-	     << mUnits.at(1)->values()[0] << mUnits.at(1)->values().count()
-	     << mUnits.at(2)->values()[0] << mUnits.at(2)->values().count();
-#endif
+    // スキャン終了時の情報をヘッダに追加書き込み
+    // データ本体の書き出し
+    // 何番目のスキャンになるかを g にセット
+    // グラフ表示
     WriteQHeader2( MeasR, BACKWARD );
     WriteQBody();
     g = ( MeasR - 1 ) * 2 + 1;
@@ -499,6 +513,8 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 16:
+    // 計測器の測定終了処理(完了するまでループ)
+    // 始点でインターバルがあるかないかで分岐
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
@@ -513,7 +529,6 @@ void MainWindow::QXafsMeasSequence( void )
     QXafsFinish();
     break;
   }
-  //  qDebug() << "out " << MeasStage;
 }
 
 void MainWindow::QXafsFinish0( void )

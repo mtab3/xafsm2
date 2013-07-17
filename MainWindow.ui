@@ -1421,7 +1421,7 @@
                   <item row="0" column="0">
                    <widget class="QLabel" name="label_115">
                     <property name="text">
-                     <string>Intervals:   at Start</string>
+                     <string>Intervals:   Cycle</string>
                     </property>
                    </widget>
                   </item>
@@ -1441,7 +1441,7 @@
                   <item row="0" column="2">
                    <widget class="QLabel" name="label_116">
                     <property name="text">
-                     <string>sec   at End</string>
+                     <string>sec   Backward</string>
                     </property>
                    </widget>
                   </item>
