@@ -2,6 +2,7 @@
 
 # What is New
 # 2013/04/03 add 'ENERGYRANGE' line
+# 2013/04/03 add 'DEFAULTUNIT' line
 # 2013/04/16 add 'ENC2'        line
 # 2013/04/19 add 'QXAFSOK'     line
 #                'NORMALOK'    line
@@ -12,6 +13,7 @@
 # 2013/05/27 add 3rd 34410a for QXafs
 # 2013/06/24 add RW_DXMCENTER_CFG line
 # 2013/07/08 change the origin of 4WS(in hatch) Z
+# 2013/07/17 add a parameter for 'DV' which decide maximum integration time.
 
 #
 # In this definition file,
@@ -32,6 +34,7 @@ XAFSTitle "XafsM2-BL5S1"
 RW_DXMCENTER_CFG  1  DXMCenterTest.cfg    # read/write DXMCenterTest.cfg
 # RW_DXMCENTER_CFG  1  DXMCenter.cfg      # read/write DXMCenter.cfg
 
+#
 # Preset gains of MCA channels
 #
 # MCAGAIN ch gain
@@ -390,9 +393,11 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "simmotor" "Ring" "mA" NO ""
 #
 # the DV is Agilent34410 for QXAFS
 #
-SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSq3-1" "V" NO ""
-SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSq3-2" "V" NO ""
-SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSq3-3" "V" NO ""
+#    the last parameter 0.06 set maximum integration time
+#
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSq3-1" "V" NO "" 0.06
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSq3-2" "V" NO "" 0.06
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSq3-3" "V" NO "" 0.06
 #SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
 #SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
 #SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO ""

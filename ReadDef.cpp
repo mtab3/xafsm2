@@ -103,6 +103,8 @@ void MainWindow::ReadDef( QString fname )
 	  } else if ( type == "SSD" ) {
 	  } else if ( type == "LSR" ) {
 	  } else if ( type == "DV" ) {
+	    next = nextItem( next, item );
+	    NewUnit->setMaxIntTime( item.toDouble() );
 	  } else if ( type == "DV2" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );

@@ -55,6 +55,9 @@ class AUnit : public QObject
   double setDarkTime;   // Actually set time;
   int points;           // Measured Data Points : 34410
 
+  double MaxIntTime;    // Maximum integration time
+  bool HasMaxIntTime;
+
   double Center;        // Center position in puls : only for PM
 
   double MaxV;          // only for PZ
@@ -199,6 +202,9 @@ public:
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
   void setMinV( QString minv ) { MinV = minv.toDouble(); };
 
+  // only for DV
+  void setMaxIntTime( double t ) { MaxIntTime = t; HasMaxIntTime = true; };
+
   int getALine( void ) { return aLine; };
   QString getGType( void ) { return GType; };
   QString getType( void ) { return Type; };
@@ -262,6 +268,9 @@ public:
   double getMaxV( void ) { return MaxV; };
   double getMinV( void ) { return MinV; };
   int highSpeed( void ) { return MaxS; };     // オリジナルのハイスピード
+  // only for DV
+  bool hasMaxIntTime( void ) { return HasMaxIntTime; };
+  double maxIntTime( void ) { return MaxIntTime; };
 
   void show( void );   // mainly for debugging
 

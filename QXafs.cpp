@@ -316,10 +316,16 @@ void MainWindow::QXafsMeasSequence( void )
 
   switch( MeasStage ) {
   case 0:
+    // PM16C のパラメータ決定
+    // 代表ファイル作成
+    // 推定測定時間の表示
+    // 計測器類の busy フラグクリア
+    // グラフ表示の準備 <<---- !! I0, I のみを想定している
+    // 分光器移動速度を既定の「高速」に
+    // エンコーダ(nd287)の現在値読取り命令発行
+    statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     GetPM16CParamsForQXAFS();
     MakeDelegateFile();
-    MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
-    MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
     if ( AutoModeButton->isChecked() ) {
       CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasA+1 ).arg( 1 ) );
     } else {
@@ -327,21 +333,27 @@ void MainWindow::QXafsMeasSequence( void )
     }
     //    WriteInfoFile();
     mUnits.clearStage();
+    MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
+    MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
     MeasView->SetWindow0( u->deg2keV( SBlockStartInDeg[0] ), 0,
 			  u->deg2keV( SBlockStartInDeg[ SBlocks ] ), 0 );
-    statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     MMainTh->SetHighSpeed( OrigHSpeed );
     MMainTh->SetSpeed( HIGH );
     EncMainTh->GetValue();
     MeasStage++;
     break;
   case 1:
+    // 計測器類の初期化ループ (「終了」ステータスになるまで、break して 再入 でループ)
+    // R = 0 (repeat = 0)
     if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
     break;
   case 2:
+    // 読み取り命令を発行しておいたエンコーダ(nd287)の現在値の取得
+    // EIB741 が使えるなら、その現在値も取得
+    // 
     EncValue0 = EncMainTh->value();
     if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
     mUnits.setDwellTimes( QXafsDwellTime );  
