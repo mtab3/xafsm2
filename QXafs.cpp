@@ -8,16 +8,23 @@ void MainWindow::setupQXafsMode( void )
   connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
   connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
   connect( QLimitedDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
-  connect( QIntervalAtStart, SIGNAL( editingFinished() ),
+
+  connect( QIntervalCycle, SIGNAL( editingFinished() ),
 	   this, SLOT( CheckQXafsParams() ) );
-  connect( QIntervalAtEnd, SIGNAL( editingFinished() ),
+  connect( QIntervalHalf, SIGNAL( editingFinished() ),
 	   this, SLOT( CheckQXafsParams() ) );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QConditionBox->setHidden( true );
-  QIntervalTimer = new QTimer;
-  QIntervalTimer->setSingleShot( true );
-  connect( QIntervalTimer, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout() ) );
+
+  QIntervalTimer1 = new QTimer;
+  QIntervalTimer1->setSingleShot( true );
+  connect( QIntervalTimer1, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout1() ) );
+
+  QIntervalTimer2 = new QTimer;
+  QIntervalTimer2->setSingleShot( true );
+  connect( QIntervalTimer2, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout2() ) );
+
 #if 0
   QMeasOnBackward->setHidden( true );
   QMinMaxBox->setHidden( true );
@@ -28,10 +35,16 @@ void MainWindow::setupQXafsMode( void )
 #endif
 }
 
-void MainWindow::QIntervalTimeout( void )
+void MainWindow::QIntervalTimeout1( void )
 {
-  QIntervalTimer->stop();
-  QIntervalBlock = false;
+  QIntervalTimer1->stop();
+  QIntervalBlock1 = false;
+}
+
+void MainWindow::QIntervalTimeout2( void )
+{
+  QIntervalTimer2->stop();
+  QIntervalBlock2 = false;
 }
 
 void MainWindow::SetNewRPTLimit( void )
@@ -145,6 +158,9 @@ void MainWindow::HideBLKs( bool f )
 
 void MainWindow::CheckQXafsParams( void )
 {
+
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interval の定義が変わった
+
   if ( ! QXafsMode->isChecked() )
     return;
 
@@ -201,9 +217,11 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
     } else {
       TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
     }
-    TTT = TT * SelRPT->value()
+    TTT = TT * SelRPT->value();
+#if 0
       + QIntervalAtStart->text().toDouble() * ( SelRPT->value() - 1 )
       + QIntervalAtEnd->text().toDouble() * SelRPT->value();
+#endif
   } else {
     TTT = TT = 0;
   }
@@ -309,9 +327,6 @@ void MainWindow::QXafsMeasSequence( void )
 {
   int g;
 
-  if ( QIntervalBlock )
-    return;
-
   switch( MeasStage ) {
   case 0:
     // PM16C のパラメータ決定
@@ -322,6 +337,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 分光器を制御する PM16C のチャンネルに「高速」を指示
     // 「高速」の値を分光器に許される最高速にセット
     // エンコーダ(nd287)の現在値読取り命令発行
+    QIntervalBlock1 = QIntervalBlock2 = false;
     statusbar->showMessage( tr( "Start QXAFS Measurement!" ) );
     GetPM16CParamsForQXAFS();
     MakeDelegateFile();
@@ -366,27 +382,17 @@ void MainWindow::QXafsMeasSequence( void )
   case 3:
     // 分光器をスタート地点に向けて移動開始
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
-    MeasStage = 5;    // 最初は始点でのインターバル指定があってもインターバルを取らない
-    break;
+    // break しない
   case 4:      // Repeat Point 1
-    // インターバル期間中、この制御ループへの侵入をブロックするフラグを立てる
-    // インターバルタイマ起動
-    QIntervalBlock = true;
-    qDebug() << "Interval at Start Point";
-    QIntervalTimer->start( QIntervalAtStart->text().toDouble() * 1000 );
-    MeasStage++;
-    break;
-  case 5:      // Repeat Point 2
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99
-    // 
     MeasR++;
     if ( MeasR >= SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
     }
-    // break; // ブレークしない
-  case 6:
+    // break しない
+  case 5:
     // 計測器を計測開始(Trigger待ち)状態にする(「待ち状態」ready になるまでループ)
     // 計測器類の内部ループカウンタクリア
     // 記録ファイルのヘッダ部分書き出し
@@ -408,22 +414,28 @@ void MainWindow::QXafsMeasSequence( void )
     SetUpMainThToGenerageTriggerSignal( QXafsSP0, QXafsEP0 );
     MeasStage++;
     break;
-  case 7:
-    // 分光器を終了地点へ移動
+  case 6:
+    // 前の測定から、既定のインターバル時間が経ってなければループ
+    if ( QIntervalBlock1 )
+      break;
+    // 測定開始！ ( = 分光器を終了地点へ移動)
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
+    QIntervalBlock1 = QIntervalBlock2 = true;
+    QIntervalTimer1->start( fabs( QIntervalCycle->text().toDouble() * 1000 ) );
+    QIntervalTimer2->start( fabs( QIntervalHalf->text().toDouble() * 1000 ) ); 
     // mUnits.clearDoneF() : QRead を一台ずつ行うためのしかけ
     // OneByOne == true だと働くが、今は true にしていないので現状不要のはず。
     mUnits.clearDoneF();
     MeasStage++;
     break;
-  case 8:
+  case 7:
     // 計測器にデータ読み出し命令発行(完了するまでループ)
     if ( mUnits.QRead() )
       break;
     mUnits.clearStage();
     MeasStage++;
     break;
-  case 9:
+  case 8:
     // スキャン終了時の情報をヘッダに追加書き込み
     // データ本体の書き出し
     // 何番目のスキャンになるかを g にセット
@@ -434,7 +446,7 @@ void MainWindow::QXafsMeasSequence( void )
     DispQSpectrum( g );
     MeasStage++;
     break;
-  case 10:
+  case 9:
     // 計測器の測定終了処理(完了するまでループ)
     // 戻りも測定するかどうかで分岐
     //   測定する場合
@@ -450,58 +462,43 @@ void MainWindow::QXafsMeasSequence( void )
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
       CurrentPnt->setText( tr( "Bwd" ) );
-      if ( QIntervalAtEnd->text().toDouble() > 0 )
-	MeasStage = 11;      // 終了点での Interval時間指定があった場合
-      else
-	MeasStage = 12;      // 終了点での Interval時間指定が無かった場合
+      MeasStage = 10;
     } else {
       MMainTh->SetHighSpeed( MaxHSpeed );
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
-      MeasStage = 13;
+      MeasStage = 11;
+      break;
     }
-    break;
-  case 11:   // 分岐飛び込み点 1  : 戻りも測定 and Intrval 指定有り
-    // インターバル期間中、この制御ループへの侵入をブロックするフラグを立てる
-    // インターバルタイマ起動
-    QIntervalBlock = true;
-    QIntervalTimer->start( QIntervalAtEnd->text().toDouble() * 1000 );
-    MeasStage++;
-    break;
-  case 12:   // 分岐飛び込み点 2  : 戻りも測定 and Intrval 指定無し
+    // 戻りも測定する場合は break しない
+  case 10:   // 分岐飛び込み点 1  : 戻りも測定 and Intrval 指定有り
+    if ( QIntervalBlock2 )
+      break;
     // 計測器にデータ読み出し命令発行(完了するまでループ)
     if ( mUnits.QStart() )
       break;
     MeasStage++;
-    break;
-  case 13:   // 分岐飛び込み点 3  : 戻り測定なし
+    // break; しない
+  case 11:   // 分岐飛び込み点 2  : 戻り測定なし
     // 分光器をスタート地点に戻す
     // 「戻りも測定」の場合、戻り測定記録ファイルのヘッダ書き出し
-    // 分岐
-    // 1. 戻り測定する、
-    // 2. 戻り測定せず
-    //   2-a 始点でのインターバル有り
-    //   2-b 始点でのインターバル無し
-    MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+    MMainTh->SetValue( QXafsSP );   // 測定開始!!! ( = 助走距離を含めたスタート地点へ)
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       WriteQHeader( MeasR, BACKWARD );
       mUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
-      MeasStage++;     // 戻り測定する場合 --> 分岐飛び込み点 A
+      MeasStage++;
     } else {
-      if ( QIntervalAtStart->text().toDouble() > 0 )
-	MeasStage = 4; // 始点でのインターバル指定がある場合 : Repeat Point 1
-      else
-	MeasStage = 5; // 始点でのインターバル指定がない場合 : Repeat Point 2
+      MeasStage = 4; // 戻りで測定しない場合 : Repeat Point 1
     }
     break;
-  case 14:    // 分岐飛び込み点 A
+  case 12:
     // 計測器に測定結果を読み出す指示(完了するまでループ)
     if ( mUnits.QRead() )
       break;
     mUnits.clearStage();
     MeasStage++;
     break;
-  case 15:
+  case 13:
     // スキャン終了時の情報をヘッダに追加書き込み
     // データ本体の書き出し
     // 何番目のスキャンになるかを g にセット
@@ -511,17 +508,14 @@ void MainWindow::QXafsMeasSequence( void )
     g = ( MeasR - 1 ) * 2 + 1;
     DispQSpectrum( g );
     MeasStage++;
-    break;
-  case 16:
+    // break; しない
+  case 14:
     // 計測器の測定終了処理(完了するまでループ)
     // 始点でインターバルがあるかないかで分岐
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
-    if ( QIntervalAtStart->text().toDouble() > 0 )
-      MeasStage = 4; // 始点でのインターバル指定がある場合 : Repeat Point 1
-    else
-      MeasStage = 5; // 始点でのインターバル指定がない場合 : Repeat Point 2
+    MeasStage = 4;
     break;
 
   case 99:

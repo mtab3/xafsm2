@@ -1232,10 +1232,14 @@ void MainWindow::StartMeasurement( void )
     // 同じユニットを2回使っていないか確認。
     for ( int i = 0; i < mUnits.count(); i++ ) {
       for ( int j = 0; j < mUnits.count(); j++ ) {
-	if ( mUnits.at(i) == mUnits.at(j) ) {
+	if ( ( i != j ) && ( mUnits.at(i) == mUnits.at(j) ) ) {
 	  QString msg
-	    = tr( "Identical sensor [%1] is used as different inputs, like I0 and I1." )
-	    .arg( mUnits.at(i)->getName() );
+	    = tr( "Identical sensor [%1:%2,%3:%4]"
+		  "is used as different inputs, like I0 and I1." )
+	    .arg( i )
+	    .arg( mUnits.at(i)->getName() )
+	    .arg( j )
+	    .arg( mUnits.at(j)->getName() );
 	  statusbar->showMessage( msg, 2000 );
             NewLogMsg( msg );
             return;
@@ -1344,7 +1348,6 @@ void MainWindow::StartMeasurement( void )
     EndTimeDisp->setText( QDateTime::currentDateTime()
                           .addSecs( EstimatedMeasurementTimeInSec )
                           .toString("yy.MM.dd hh:mm:ss") );
-    QIntervalBlock = false;
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
