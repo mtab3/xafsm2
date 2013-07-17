@@ -1231,7 +1231,7 @@ void MainWindow::StartMeasurement( void )
 
     // 同じユニットを2回使っていないか確認。
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      for ( int j = 0; j < mUnits.count(); j++ ) {
+      for ( int j = i+1; j < mUnits.count(); j++ ) {
 	if ( mUnits.at(i) == mUnits.at(j) ) {
 	  QString msg
 	    = tr( "Identical sensor [%1] is used as different inputs, like I0 and I1." )
