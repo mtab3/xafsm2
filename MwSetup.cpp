@@ -744,6 +744,7 @@ void MainWindow::Monitor( void )
 	MonOut << "# XafsM2 Monitor Data\n";
 	MonOut << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
 	       << "\n";
+	MonFile.close();
       }
     } else {
       monRecF = false;

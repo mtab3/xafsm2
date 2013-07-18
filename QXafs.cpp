@@ -160,9 +160,6 @@ void MainWindow::HideBLKs( bool f )
 
 void MainWindow::CheckQXafsParams( void )
 {
-
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interval の定義が変わった
-
   if ( ! QXafsMode->isChecked() )
     return;
 
@@ -210,8 +207,9 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
 
   int Th, Tm, Ts;
-  double TT, TTT;
+  double TT, TTF, TTB, TTT;
   // TT は一回のスキャンだけの時間。
+  // TTF 
   // TTT はインターバルを入れて、繰り返し回数をかけた時間
   if ( dtime > 0 ) {
     if ( QMeasOnBackward->isChecked() ) {
