@@ -77,12 +77,20 @@ void MainWindow::MonSequence( void )
     }
 
     if ( monRecF ) {
-      MonOut << (double)etime/1000;
-      for ( int i = 0; i < mUnits.count(); i++ ) {
-	MonOut << "\t" << MeasVals[i];
+      MonFile.setFileName( MonRecFile->text() );
+      if ( MonFile.open( QIODevice::Append | QIODevice::Text ) ) {
+	MonOut.setDevice( &MonFile );
+	
+	MonOut << (double)etime/1000;
+	for ( int i = 0; i < mUnits.count(); i++ ) {
+	  MonOut << "\t" << MeasVals[i];
+	}
+	if ( SLS != NULL ) 
+	  MonOut << "\t # " << SLS->value();
+	MonOut << "\t # " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
+	MonOut << "\n";
       }
-      MonOut << "\t # " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
-      MonOut << "\n";
+      MonFile.close();
     }
     MonStage = 10;
 #if 0
