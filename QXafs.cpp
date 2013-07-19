@@ -381,7 +381,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 終了判定 ---> 終了してれば stage = 99
     // 
     MeasR++;
-    if ( MeasR >= SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
+    if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
     }
