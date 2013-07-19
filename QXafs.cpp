@@ -390,6 +390,7 @@ void MainWindow::QXafsMeasSequence( void )
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99
     MeasR++;
+    qDebug() << "measr" << MeasR;
     if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
