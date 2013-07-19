@@ -327,7 +327,7 @@ void MainWindow::QXafsMeasSequence( void )
 {
   int g;
   double t1, t2;
-  qDebug() << MeasStage;
+  qDebug() << "MeasStage " << MeasStage;
 
   switch( MeasStage ) {
   case 0:
@@ -390,7 +390,6 @@ void MainWindow::QXafsMeasSequence( void )
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99
     MeasR++;
-    qDebug() << "measr" << MeasR;
     if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
       break;
@@ -450,7 +449,6 @@ void MainWindow::QXafsMeasSequence( void )
     WriteQHeader2( MeasR, FORWARD );
     WriteQBody();
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
-    qDebug() << "Q display";
     DispQSpectrum( g );
     MeasStage++;
     break;
@@ -558,24 +556,33 @@ void MainWindow::QXafsFinish( void )
 
 void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 {
-  int Us = mUnits.count();
-  QStringList vals0 = mUnits.at(0)->values();
-  QStringList vals1 = mUnits.at(1)->values();
-  QStringList vals2;
-  if ( Us > 3 ) 
-    vals2 = mUnits.at(2)->values();
-  QStringList valsEnc;
-  if ( Enc2 != NULL )
-    valsEnc = Enc2->values();
-  else 
-    valsEnc.clear();
-  int num = findMini( vals0, vals1, valsEnc );
+  QVector<QString> Labels;
+  Labels << tr( "I0" )
+    << tr( "I1" ) << tr( "mu" )
+    << tr( "A1" ) << tr( "mu2" )
+    << tr( "A2" ) << tr( "mu3" );
 
-  double dark0 = mUnits.at(0)->getDark() * QXafsDwellTime;
-  double dark1 = mUnits.at(1)->getDark() * QXafsDwellTime;
-  double dark2 = 0;
-  if ( Us > 3 )
-    dark2 = mUnits.at(2)->getDark() * QXafsDwellTime;
+  int Us = mUnits.count();
+
+  QStringList valsEnc;
+  if ( Enc2 != NULL ) {
+    valsEnc = Enc2->values();
+    Us -= 1;
+  } else {
+    valsEnc.clear();
+  }
+
+  QVector<QStringList> vals;
+  QVector<double> dark;
+  int num = 100000000;
+  for ( int i = 0; i < Us; i++ ) {
+    vals << mUnits.at(i)->values();
+    dark << mUnits.at(i)->getDark() * QXafsDwellTime;
+    if ( num > vals[i][0].toInt() )
+      num = vals[i][0].toInt();
+  }
+  if ( num > valsEnc[0].toInt() )
+    num = valsEnc[0].toInt();
 
   int p = QXafsSP0;
   int d = QXafsInterval;
@@ -584,70 +591,62 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   double deg2;
   double upp2 = 0;
   double E, I0, I1, I2;
+
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
-
   if ( QLimitedDisplay->isChecked() ) {
     g = g % QLastLines->value();
   }
 
-  int Ls = ( Us - 2 ) * 2 + 1;
+  int Ls = Us * 2 - 1;
   MeasView->SetLR( g*Ls, RIGHT_AX );                    // I0 
   MeasView->SetScaleType( g*Ls, I0TYPE );
-  MeasView->SetLineName( g*Ls, "I0" );
+  MeasView->SetLineName( g*Ls, Labels[0] );
   MeasView->SetDispF( g*Ls, true );
   MeasView->SetPoints( g*Ls, 0 );
   MeasView->SetDG( g*Ls, 0 );
 
-  MeasView->SetLR( g*Ls+1, LEFT_AX );                   // I1
-  MeasView->SetScaleType( g*Ls+1, FULLSCALE );
-  MeasView->SetLineName( g*Ls+1, "I1" );
-  MeasView->SetDispF( g*Ls+1, false );
-  MeasView->SetPoints( g*Ls+1, 0 );
-  MeasView->SetDG( g*Ls+1, 1 );
-
-  MeasView->SetLR( g*Ls+2, LEFT_AX );                   // mu
-  MeasView->SetScaleType( g*Ls+2, FULLSCALE );
-  MeasView->SetLineName( g*Ls+2, tr( "mu" ) );
-  MeasView->SetDispF( g*Ls+2, true );
-  MeasView->SetPoints( g*Ls+2, 0 );
-  MeasView->SetDG( g*Ls+2, 2 );
-
-  if ( Us > 3 ) {
-    MeasView->SetLR( g*Ls+3, LEFT_AX );                   // I1
-    MeasView->SetScaleType( g*Ls+3, FULLSCALE );
-    MeasView->SetLineName( g*Ls+3, "I2" );
-    MeasView->SetDispF( g*Ls+3, false );
-    MeasView->SetPoints( g*Ls+3, 0 );
-    MeasView->SetDG( g*Ls+3, 3 );
-    
-    MeasView->SetLR( g*Ls+4, LEFT_AX );                   // mu
-    MeasView->SetScaleType( g*Ls+4, FULLSCALE );
-    MeasView->SetLineName( g*Ls+4, tr( "mu2" ) );
-    MeasView->SetDispF( g*Ls+4, true );
-    MeasView->SetPoints( g*Ls+4, 0 );
-    MeasView->SetDG( g*Ls+4, 4 );
+  qDebug() << "aaa";
+  int L;
+  for ( int i = 1; i < Ls; i++ ) {
+    L = g*Ls+i;
+    MeasView->SetLR( L, LEFT_AX );
+    MeasView->SetScaleType( L, FULLSCALE );
+    MeasView->SetLineName( L, Labels[ i ] );
+    MeasView->SetDispF( L, ( ( i % 2 ) == 1 ) ? false : true );
+    MeasView->SetPoints( L, 0 );
+    MeasView->SetDG( L, i );
   }
 
+  qDebug() << "bbb";
   for ( int i = 0; i < num; i++ ) {
+    qDebug() << "bbb1" << num << valsEnc[0] << valsEnc.count();
     if ( Enc2 == NULL ) {
       deg2 = ( p - c ) * upp + d * i;
     } else {
       deg2 = EncValue0.toDouble() + ( valsEnc[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-
+    qDebug() << "bbb2";
     E = u->deg2keV( deg2 );
-    I0 = vals0[i+1].toDouble() - dark0;
-    I1 = vals1[i+1].toDouble() - dark1;
-    MeasView->NewPoint( g*3 + 0, E, I0 );
-    MeasView->NewPoint( g*3 + 1, E, I1 );
-    if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
-      MeasView->NewPoint( g*3 + 2, E, log( I0/I1 ) );
-    } else {
-      MeasView->NewPoint( g*3 + 2, E, 0 );
+    I0 = vals[0][i+1].toDouble() - dark[0];
+    MeasView->NewPoint( g*Ls + 0, E, I0 );
+    qDebug() << "bbb3";
+    for ( int j = 1; j < Us; j++ ) {
+      qDebug() << "bbb4";
+      L = g * Ls + ( j - 1 ) * 2 + 1;
+      I1 = vals[j][i+1].toDouble() - dark[j];
+      MeasView->NewPoint( L, E, I1 );
+      qDebug() << "bbb5";
+      if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
+	MeasView->NewPoint( L+1, E, log( I0/I1 ) );
+      } else {
+	MeasView->NewPoint( L+1, E, 0 );
+      }
+      qDebug() << "bbb6";
     }
-
+    qDebug() << "bbb7";
+#if 0
     if ( Us > 3 ) {
       I2 = vals2[i+1].toDouble() - dark2;
       MeasView->NewPoint( g*3 + 3, E, I2 );
@@ -657,10 +656,10 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 	MeasView->NewPoint( g*3 + 4, E, 0 );
       }
     }
-
+#endif
   }
+
+  qDebug() << "ccc";
   MeasView->update();
 }
 
-
-  

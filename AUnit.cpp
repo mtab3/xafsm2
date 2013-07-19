@@ -490,7 +490,6 @@ void AUnit::SetValue( double v )
 {
   //  IsBusy2 = true;    // setvalue に対する応答は無視するので isBusy2 もセットしない
   if ( Type == "PM" ) {
-    qDebug() << "SetValue : " << Name << v << ( v - Center ) * UPP;
     IsBusy = true;
     emit ChangedIsBusy1( DevCh );
     s->SendCMD2( Uid, DevCh, "SetValue", QString::number( ilastSetV = (int)v ) );

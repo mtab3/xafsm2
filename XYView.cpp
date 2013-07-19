@@ -297,7 +297,7 @@ void XYView::Draw( QPainter *p )
   }
   // 見つけた点に線を引く
   //  p->drawLine( m.x(), m.y(), hx, hy );
-  
+
   if ( AreaSelecting ) {
     p->setPen( ASelC );
     p->drawLine( m.sx(), m.sy(), m.sx(), m.y() );
@@ -305,20 +305,21 @@ void XYView::Draw( QPainter *p )
     p->drawLine( m.x(),  m.y(),  m.x(),  m.sy() );
     p->drawLine( m.x(),  m.sy(), m.sx(), m.sy() );
   }
-  
+
   // お笑いクリッピング ^^;;;
   p->fillRect( 0, 0, LM, height(), bgColor );
   p->fillRect( width()-RM, 0, RM, height(), bgColor );
   p->fillRect( 0, 0, width(), TM, bgColor );
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
   // お笑いクリッピング ^^;;;
-  
+
   cc.ShowAScaleButton( p, autoScale, height() );
   cc.ShowSScaleButton( p, singleScale, height() );
   
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
+
   for ( double xx = sx; xx < cc.Rmaxx(); xx += dx ) {
     p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦の罫線
     rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
@@ -328,6 +329,7 @@ void XYView::Draw( QPainter *p )
     }
     memc++;
   }
+
   rec = QRectF( cc.r2sx( cc.Rmaxx() ), height()-BM+5, 80, BM*0.3 );   // X軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, XName );
   rec = QRectF( cc.r2sx( cc.Rmaxx() )+80, height()-BM+5, 80, BM*0.3 );   // X軸の単位
@@ -384,7 +386,7 @@ void XYView::Draw( QPainter *p )
     cc.DrawText( p, rec, F1, AlRC, SCALESIZE,
 		 QString( "%1" ).arg( SaveYatNowXp[l] ) );
   }
-  
+
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( m.x(), TM, m.x(), height()-BM );
