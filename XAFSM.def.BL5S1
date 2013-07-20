@@ -223,6 +223,31 @@ CHANGER "C002" "4ax Grater Stage XZ" "M011" "M012" 1 1  0 0  0 0  1 1 0 0
 
 # define Sensor units
 
+SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
+#SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
+#
+# // You can use any other sensor as I0, by selecting it after running the program.
+# // Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
+# The rule might be obsolute now.
+#
+SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
+#SENSOR CNT "S001" "GENERAL" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
+# The parameters following the identifier 'SENSOR' are
+#   CNT              : Unit type   CNT : Counter nct08
+#   "S000"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "I0"             : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Counter 0 (I0)" : The name of the unit (only for display)
+#   "nct0801"        : Stars driver name
+#   "ch0"            : Node name in the stars driver
+#   "count"          : Name of the metric unit (only for display)
+#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   "S000"             : The identifier of the parent (group reader)
+
+SENSOR CNT "S100" "GENERAL" "Counter 2 (I2)" "nct0801" "ch2" "count" YES "S000"
+
 SENSOR CNT2 "S002" "GENERAL" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
 SENSOR CNT2 "S003" "GENERAL" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000" "S005" -2 -9
 #SENSOR CNT2 "S002" "I0" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000" "S004" -2 -9
@@ -299,31 +324,6 @@ SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
 #     "deg"        : Name of the metric unit (only for display)
 #     NO           : If the sensor has a parente (group leader) or not. YES or NO
 #     ""           : The identifier of the parent (group reader)
-
-SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
-#SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
-#
-# // You can use any other sensor as I0, by selecting it after running the program.
-# // Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
-# The rule might be obsolute now.
-#
-SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
-#SENSOR CNT "S001" "GENERAL" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
-# The parameters following the identifier 'SENSOR' are
-#   CNT              : Unit type   CNT : Counter nct08
-#   "S000"           : Uniq identifire of the sensor. The identifier must be identical.
-#                    : The identifier can be any string, while it is identical.
-#   "I0"             : Identifier of the sensor
-#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
-#                    : default sensors for I0, I1, Aux1,...
-#   "Counter 0 (I0)" : The name of the unit (only for display)
-#   "nct0801"        : Stars driver name
-#   "ch0"            : Node name in the stars driver
-#   "count"          : Name of the metric unit (only for display)
-#   YES              : If the sensor has a parente (group leader) or not. YES or NO
-#   "S000"             : The identifier of the parent (group reader)
-
-SENSOR CNT "S100" "GENERAL" "Counter 2 (I2)" "nct0801" "ch2" "count" YES "S000"
 
 #SENSOR OTC "S027" "GENERAL" "Otc974 ch1(timer)" "ortec974" "counter01" "count" YES "S027"
 #SENSOR OTC "S028" "GENERAL" "Otc974 ch2" "ortec974" "counter02" "count" YES "S027"
