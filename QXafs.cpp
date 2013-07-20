@@ -215,19 +215,21 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
   int Th, Tm, Ts;
   double TT, TTF, TTB, TTT;
   // TT は一回のスキャンだけの時間。
-  // TTF 
+  // TTF は往の時間、TTB は復の時間
   // TTT はインターバルを入れて、繰り返し回数をかけた時間
   if ( dtime > 0 ) {
+    TTB = TTF = dtime + RunUpTime * 2 + 1.5;   // 1.5 は補正値
     if ( QMeasOnBackward->isChecked() ) {
-      TT = ( dtime + RunUpTime * 2 ) * 2 + 3;      // +1 は実測の補正値
+      if ( TTF < QIntervalHalf->text().toDouble() )
+	TTF = QIntervalHalf->text().toDouble();
     } else {
-      TT = dtime + RunUpTime * 2 + ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 3;
+      TTB = ( RunUpPulses + WidthInPuls ) / MaxHSpeed + 1.5;  // 1.5 は補正値
     }
+    TT = TTF + TTB;
+    if ( TT < QIntervalCycle->text().toDouble() )
+      TT = QIntervalCycle->text().toDouble();
+
     TTT = TT * SelRPT->value();
-#if 0
-      + QIntervalAtStart->text().toDouble() * ( SelRPT->value() - 1 )
-      + QIntervalAtEnd->text().toDouble() * SelRPT->value();
-#endif
   } else {
     TTT = TT = 0;
   }
