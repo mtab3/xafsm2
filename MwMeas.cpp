@@ -1151,47 +1151,41 @@ void MainWindow::StartMeasurement( void )
       // 0 以外は全部 TRANS。ちょっと荒っぽい
       if ( ModeA1->currentIndex() == 0 ) { // 蛍光
 	MeasDispMode[ LC ] =  FLUO;
-	MeasDispPol[ LC ] = 1;
-	mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
-	LC++;
-	aGsb.stat = PBTrue;  aGsb.label = "A1"; GSBSs << aGsb;
       } else {  // 透過
 	MeasDispMode[ LC ] = TRANS;
-	MeasDispPol[ LC ] = 1;
-	if ( ModeA1->currentIndex() == 2 ) MeasDispPol[ LC ] = -1;
-	if ( ModeA1->currentIndex() == 4 ) MeasDispPol[ LC ] = -1;
-	mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
-	LC++;
-	aGsb.stat = PBFalse; aGsb.label = "A1";     GSBSs << aGsb;
-	aGsb.stat = PBTrue;  aGsb.label = "mu1"; GSBSs << aGsb;
       }
+      MeasDispPol[ LC ] = 1;
+      if ( ModeA1->currentIndex() == 2 ) MeasDispPol[ LC ] = -1;
+      if ( ModeA1->currentIndex() == 4 ) MeasDispPol[ LC ] = -1;
+      mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
+      LC++;
+      aGsb.stat = PBFalse; aGsb.label = "A1"; GSBSs << aGsb;
+      aGsb.stat = PBTrue;  aGsb.label = "mu2"; GSBSs << aGsb;
     }
     if ( UseAux2->isChecked() ) {
       // 0 以外は全部 TRANS。ちょっと荒っぽい
       if ( ModeA2->currentIndex() == 0 ) { // 蛍光
 	MeasDispMode[ LC ] = FLUO;
-	MeasDispPol[ LC ] = 1;
-	mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
-	LC++;
-	aGsb.stat = PBTrue;  aGsb.label = "A2"; GSBSs << aGsb;
       } else {
 	MeasDispMode[ LC ] = TRANS;
-	MeasDispPol[ LC ] = 1;
-	if ( ( ModeA2->currentIndex() == 2 )
-	     ||( ModeA2->currentIndex() == 4 )
-	     ||( ModeA2->currentIndex() == 6 ) )
-	  MeasDispPol[ LC ] = -1;
-	mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
-	LC++;
-	aGsb.stat = PBFalse; aGsb.label = "A2";     GSBSs << aGsb;
-	aGsb.stat = PBTrue;  aGsb.label = "mu2"; GSBSs << aGsb;
       }
+      MeasDispPol[ LC ] = 1;
+      if ( ( ModeA2->currentIndex() == 2 )
+	   ||( ModeA2->currentIndex() == 4 )
+	   ||( ModeA2->currentIndex() == 6 ) )
+	MeasDispPol[ LC ] = -1;
+      mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
+      LC++;
+      aGsb.stat = PBFalse; aGsb.label = "A2";     GSBSs << aGsb;
+      aGsb.stat = PBTrue;  aGsb.label = "mu3"; GSBSs << aGsb;
     }
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL ) {
         mUnits.addUnit( Enc2 );
       }
       mUnits.setOneByOne( false );
+      // 検出器(主に a34410a)の設定を一個ずつ順番にやるかどうか
+      // 必要かもと思われたこともあったけど、結局、順番にやるモードを使ったことはない。
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -1285,6 +1279,11 @@ void MainWindow::StartMeasurement( void )
     ClearXViewScreenForMeas( MeasView );
     if ( QXafsMode->isChecked() ) {
       MeasView->SetQXafsMode( true );
+      if ( ! UseAux1->isChecked() ) {
+	MeasView->SetGroupLines( 3 );
+      } else {
+	MeasView->SetGroupLines( 5 );
+      }
     } else {
       MeasView->SetQXafsMode( false );
     }
@@ -1336,8 +1335,10 @@ void MainWindow::StartMeasurement( void )
       mcaDir.cd( BaseFile.baseName() );
     }
 
-    // 測定に使う MaitnTh と検出器の登録、これ以降に XAFS 測定をやめるときは
-    // UUnits.clear() が必要。
+    // 測定に使う MaitnTh と検出器の登録。
+    // *************************************************************************
+    // これ以降に XAFS 測定をやめるときは UUnits.clear() が必要。!!!!!!!!!!!!!!!
+    // *************************************************************************
     UUnits.addUnit( MEAS_ID, MMainTh );
     for ( int i = 0; i < mUnits.count(); i++ ) {
       UUnits.addUnit( MEAS_ID, mUnits.at(i) );

@@ -8,12 +8,15 @@
 #include "ChCoord.h"
 
 #define MAXPOINTS  ( 10000 )
-#define MAXLINENO  ( 30000 )  // 0 ～ 19999      // I0 と I, mu があるので実質 10,000
-#define GROUPLINES ( 3 )      // 何本の線が一つのグループになるか (I0, I, mu)
-#define MAXLINES   ( 600 )    // 内部で準備する線の数 (ほんとは 594 でいいはず)
+#define MAXLINENO  ( 50000 ) // 0 ～ 19999      // I0 と I, mu があるので実質 10,000
+#define MAXGROUPLINES ( 5 )  // 最大何本の線が一つのグループになるか (I0, I, mu, A1, mu2)
+#define MAXLINES   ( 1000 )  // 内部で準備する線の数 (ほんとは 990 でいいはず)
 // 受け入れられる line No. の最大値
 // (足跡表示の線の数) * (足跡間隔) + 連番表示の線の数
 // のはずだけど、ちょっと怖いので、(足跡表示の線の数) * (足跡間隔)という事にしておく
+
+// 以下 GROUPLINES == 3 の時の話。
+// 確認の為 GROUPLINES == 5 の時のこともこの下に書いてみた
 
 // l 番目のラインの内部でのライン番号 L を
 //   G1 = ( l / GROUPLINES )
@@ -28,13 +31,12 @@
 //                     (60 61 62)(63 64 65)(66 67 68)...                    (97 98 99)
 //                             (100 101 102)...
 // ということで、
-// 1) 総 group 数 100 まで (line 数 300まで)
+// 1) 総 group 数 100 まで (line 数 300まで) は
 //    CGROUPS = 100, FINTERVAL = 100 にしておく
 //    要は、全部の line をそのまま描く (最大 L=300)
 // 2) 総 group 数が 100 を超えた時点で
 //    先頭から 10 group分 (g=0,1,2,...9)を
-//    g = 0, 10, 20, 30, ... 90 にある
-//    g = 0, 10, 20, 30, ... 90 と置き換えて
+//    g = 0, 10, 20, 30, ... 90 にある group と置き換えて
 //    CGROUPS = 10, FINTERVAL = 10 に変更する
 //    以降、例えば 100 番目のグループについては
 //          G = ( 100 mod 10 ) + (int)( 100 / 10 ) = 10
@@ -47,6 +49,43 @@
 //    CGROUPS = 100, FINTERVAL = 100 に変更する
 //    以降、例えば 1000 番目は G = ( 1000 mod 100 ) + (int)( 1000 / 100 ) = 0 + 10 = 10
 //    0 100 ... 9900(G=99) 9901 9902 ... 9999 (G=198,L=594) が最大
+
+// 確認の為 GROUPLINES == 5 の時
+
+// l 番目のラインの内部でのライン番号 L を
+//   G1 = ( l / GROUPLINES )
+//   G2 = ( l mod GROUPLINES )
+//   L = ( ( G1 mod CGROUPS ) + B ) * GROUPLINES + G2
+//   B = (int)( G1 / FINTERVAL ) 
+// とすると
+//
+// FINTERVAL = 10, CGROUPS = 10, GROUPLINES = 5 の場合
+// (0...)(5...)(10...)...              (45...)
+//       (50..)(55...)(60...)                 (95...)
+//             (100..)(105..)                            (145...)
+//                    (150..)...
+//
+// ということで、
+// 1) 総 group 数 100 まで (line 数 500まで) は
+//    CGROUPS = 100, FINTERVAL = 100 にしておく
+//    要は、全部の line をそのまま描く (最大 L=500)
+// 2) 総 group 数が 100 を超えた時点で
+//    先頭から 10 group分 (g=0,1,2,...9)を
+//    g = 0, 10, 20, 30, ... 90 にある group と置き換えて
+//    CGROUPS = 10, FINTERVAL = 10 に変更する
+//    以降、例えば 100 番目のグループについては
+//          G = ( 100 mod 10 ) + (int)( 100 / 10 ) = 10
+//    になって、最初から CGROUPS = 10, FINTERVAL = 10 だった場合と同じ位置に置かれる
+// 3) 総 group 数が 1000 を超えた時点で
+//    0 10 20 ... 990(G=99) 991 992 993 ... 999(G=108,L=540)
+//    先頭から 10 グループ分(G=0,1,...9)を
+//    G = 0, 10, 20, 30, ... 90 にある
+//    g = 0, 200, 400, 600, ... 1800 と置き換えて
+//    CGROUPS = 100, FINTERVAL = 100 に変更する
+//    以降、例えば 1000 番目は G = ( 1000 mod 100 ) + (int)( 1000 / 100 ) = 0 + 10 = 10
+//    0 100 ... 9900(G=99) 9901 9902 ... 9999 (G=198,L=990) が最大
+
+
 
 enum LINEF { NODRAW, LEFT, RIGHT, LINEFS };
 enum SCALET { FULLSCALE, I0TYPE, SCALETS }; 
@@ -97,6 +136,7 @@ private:
   double minGy[ MAXLINES ];
   double maxGy[ MAXLINES ];
   double SaveYatNowXp[ MAXLINES ];
+  int grouplines;
 
   MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
@@ -152,6 +192,7 @@ public:
   void SetAutoScale( bool ascale ) { autoScale = ascale; };
   void SetDispF( int l, bool f ) { dispf[ getL( l ) ] = f; };
   void SetQXafsMode( bool f ) { QXafsMode = f; };
+  void SetGroupLines( int ls ) { grouplines = ls; };
 
 public slots:
   void ChooseAG( int i, bool f );

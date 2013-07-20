@@ -92,6 +92,12 @@ void MainWindow::ToggleQXafsMode( bool )
 	break;
       }
     }
+    for ( int i = 0; i < I1Sensors.count(); i++ ) {
+      if ( I1Sensors[i]->getID() == "QXAFS-I2" ) {
+	SelectAux1->setCurrentIndex( i );
+	break;
+      }
+    }
 
     SaveNowBlocks = SelBLKs->value();
     CheckQXafsParams();
@@ -108,7 +114,7 @@ void MainWindow::ToggleQXafsMode( bool )
     UseAux2->setChecked( false );
     Use19chSSD->setEnabled( false );
     UseAux1->setEnabled( true );       // QXafs で使えることにする
-    UseAux2->setEnabled( true );       // QXafs で使えることにする
+    UseAux2->setEnabled( false );      // やっぱこっちはだめ
 
     SetNewRPTLimit();
 
@@ -590,7 +596,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   double upp = MMainTh->getUPP();
   double deg2;
   double upp2 = 0;
-  double E, I0, I1, I2;
+  double E, I0, I00, I1, I2;
 
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
@@ -607,7 +613,6 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   MeasView->SetPoints( g*Ls, 0 );
   MeasView->SetDG( g*Ls, 0 );
 
-  qDebug() << "aaa";
   int L;
   for ( int i = 1; i < Ls; i++ ) {
     L = g*Ls+i;
@@ -619,47 +624,46 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     MeasView->SetDG( L, i );
   }
 
-  qDebug() << "bbb";
   for ( int i = 0; i < num; i++ ) {
-    qDebug() << "bbb1" << num << valsEnc[0] << valsEnc.count();
     if ( Enc2 == NULL ) {
       deg2 = ( p - c ) * upp + d * i;
     } else {
       deg2 = EncValue0.toDouble() + ( valsEnc[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }
-    qDebug() << "bbb2";
     E = u->deg2keV( deg2 );
     I0 = vals[0][i+1].toDouble() - dark[0];
-    MeasView->NewPoint( g*Ls + 0, E, I0 );
-    qDebug() << "bbb3";
-    for ( int j = 1; j < Us; j++ ) {
-      qDebug() << "bbb4";
-      L = g * Ls + ( j - 1 ) * 2 + 1;
-      I1 = vals[j][i+1].toDouble() - dark[j];
-      MeasView->NewPoint( L, E, I1 );
-      qDebug() << "bbb5";
-      if ( ( I1 != 0 ) && ( ( I0 / I1 ) > 0 ) ) {
-	MeasView->NewPoint( L+1, E, log( I0/I1 ) );
+    I1 = vals[1][i+1].toDouble() - dark[1];
+    if ( Us > 2 )
+      I2 = vals[2][i+1].toDouble() - dark[2];
+    L = g * Ls;
+
+    // I0
+    MeasView->NewPoint( L, E, I0 );
+
+    // I1
+    MeasView->NewPoint( L+1, E, I1 );
+    if ( fabs( I1 ) < 1e-10 ) I1 = 1e-10;
+    MeasView->NewPoint( L+2, E, log( fabs( I0/I1 ) ) );
+
+    // Aux1
+    if ( Us > 2 ) {
+      int dMode = ModeA1->currentIndex();
+      MeasView->NewPoint( L+3, E, I2 );
+      if ( dMode == 0 ) {
+	if ( fabs( I0 ) < 1e-10 ) I0 = 1e-10;
+	MeasView->NewPoint( L+4, E, log( fabs( I2/I0 ) ) );
       } else {
-	MeasView->NewPoint( L+1, E, 0 );
-      }
-      qDebug() << "bbb6";
-    }
-    qDebug() << "bbb7";
-#if 0
-    if ( Us > 3 ) {
-      I2 = vals2[i+1].toDouble() - dark2;
-      MeasView->NewPoint( g*3 + 3, E, I2 );
-      if ( ( I2 != 0 ) && ( ( I0 / I2 ) > 0 ) ) {
-	MeasView->NewPoint( g*3 + 4, E, log( I0/I2 ) );
-      } else {
-	MeasView->NewPoint( g*3 + 4, E, 0 );
+	I00 = (( dMode == 3 )||( dMode == 4 )) ? I1 : I0;
+	if (( dMode == 2 )||( dMode == 4 )) I2 *= -1;
+	if ( fabs( I2 ) < 1e-10 ) I2 = 1e-10;
+	if ( I00/I2 > 0 )
+	  MeasView->NewPoint( L+4, E, log( fabs( I00/I2 ) ) );
+	else 
+	  MeasView->NewPoint( L+4, E, 0 );
       }
     }
-#endif
   }
 
-  qDebug() << "ccc";
   MeasView->update();
 }
 

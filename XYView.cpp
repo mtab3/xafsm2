@@ -20,11 +20,6 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   valid = false;
   QXafsMode = false;
 
-  for ( int i = 0; i < MAXLINES; i++ ) {
-    SetLR( i, LEFT_AX );
-    SetScaleType( i, FULLSCALE );
-  }
-
   CGroups = FInterval = 100;    // Continuous drawn lines, Interval of foot print lines
   maxGroups = maxLines = inLines = 0;
   cc.SetRealCoord( 0, 0, 1, 1 );
@@ -32,6 +27,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   BLACK = QColor( 0, 0, 0 );
   MCLineC = QColor( 210, 180, 0 );    // mouse cursor line color
   ASelC = QColor( 0, 255, 120 );      // Area Select Color
+  grouplines = 3;
 
   upp = 1;
   center = 0;
@@ -56,6 +52,16 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   }
 }
 
+#if 0
+void XYView::PostInit( void )
+{
+  for ( int i = 0; i < MAXLINES; i++ ) {
+    SetLR( i, LEFT_AX );
+    SetScaleType( i, FULLSCALE );
+  }
+}
+#endif
+
 void XYView::Clear( void )
 {
   for ( int i = 0; i < MAXLINES; i++ ) {
@@ -75,9 +81,9 @@ void XYView::ReFillFirst10Groups( void )
 {
   for ( int g = 10; g < 100; g += 10 ) {
     int g0 = g / 10;
-    for ( int i = 0; i < GROUPLINES; i++ ) {
-      int a = g0 * GROUPLINES + i;
-      int b = g * GROUPLINES + i;
+    for ( int i = 0; i < grouplines; i++ ) {
+      int a = g0 * grouplines + i;
+      int b = g * grouplines + i;
       for ( int j = 0; j < points[ b ]; j++ ) {
 	x[ a ][j] = x[ b ][j];
 	y[ a ][j] = x[ b ][j];
@@ -105,7 +111,7 @@ void XYView::NewPoint( int l, double xx, double yy )
   if ( l > maxLines )
     maxLines = l;
 
-  int g = l / GROUPLINES;
+  int g = l / grouplines;
   if ( g > maxGroups ) {  // 新しいグループ
     if (( maxGroups < 100 )&&( g >= 100 )) {
       ReFillFirst10Groups();
@@ -137,13 +143,13 @@ int XYView::getL( int l )
 {
   int L;
 
-  int g = l / GROUPLINES;
-  int gg = l % GROUPLINES;
+  int g = l / grouplines;
+  int gg = l % grouplines;
   int B = maxGroups / FInterval;
   if ( g > B * FInterval ) {
-    L = ( ( g % CGroups ) + B ) * GROUPLINES + gg;
+    L = ( ( g % CGroups ) + B ) * grouplines + gg;
   } else {
-    L = ( g / FInterval ) * GROUPLINES + gg;
+    L = ( g / FInterval ) * grouplines + gg;
   }
 
   return L;
@@ -253,7 +259,7 @@ void XYView::Draw( QPainter *p )
   }
 
   for ( int l = 0; l <= inLines; l++ ) { // 先に線だけ描画
-    bool f = ( QXafsMode ) ? dispf[ l % GROUPLINES ] : dispf[ l ];
+    bool f = ( QXafsMode ) ? dispf[ l % grouplines ] : dispf[ l ];
     if ( f ) {
       ScaleChange( l );
       pen1.setColor( LC[ l % LC.count() ] );

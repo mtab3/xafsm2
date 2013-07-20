@@ -362,13 +362,13 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダー�
   }
   if ( UseAux1->isChecked() ) {
     A1 = V0 = MeasCPSs[ MUC ];
+    MeasView->NewPoint( DLC, GoToKeV, V0 );   // I の値も表示する
+    DLC++;
     if ( MeasDispMode[ MUC ] == TRANS ) {
       I00 = I0;
       if (( ModeA1->currentIndex() == 3 )||( ModeA1->currentIndex() == 4 ))
 	I00 = I1;
-      MeasView->NewPoint( DLC, GoToKeV, V0 );   // I の値も表示する
-      DLC++;
-      if ( V0 < 1e-10 ) V0 = 1e-10;
+      if ( fabs( V0 ) < 1e-10 ) V0 = 1e-10;
       if ( ( V = ( I00 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
 	MeasView->NewPoint( DLC, GoToKeV, log( V ) );
       } else {
