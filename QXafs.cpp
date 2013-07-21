@@ -335,7 +335,6 @@ void MainWindow::QXafsMeasSequence( void )
 {
   int g;
   double t1, t2;
-  qDebug() << "MeasStage " << MeasStage;
 
   switch( MeasStage ) {
   case 0:
@@ -400,6 +399,10 @@ void MainWindow::QXafsMeasSequence( void )
     MeasR++;
     if ( MeasR > SelRPT->value() ) { // 規定回数回り終わってれば終了処理に入る!!
       MeasStage = 99;
+      break;
+    }
+    if ( inPause ) {
+      MeasStage = 90;
       break;
     }
     MeasStage++;
@@ -481,19 +484,25 @@ void MainWindow::QXafsMeasSequence( void )
       MMainTh->SetHighSpeed( MaxHSpeed );
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
-      MeasStage = 11;
+      MeasStage = 12;
       break;
     }
     // 戻りも測定する場合は break しない
   case 10:   // 分岐飛び込み点 1  : 戻りも測定 and Intrval 指定有り
     if ( QIntervalBlock2 )
       break;
+    if ( inPause ) {
+      MeasStage = 91;
+      break;
+    }
+    MeasStage++;
     // 計測器にデータ読み出し命令発行(完了するまでループ)
+  case 11:
     if ( mUnits.QStart() )
       break;
     MeasStage++;
     // break; しない
-  case 11:   // 分岐飛び込み点 2  : 戻り測定なし
+  case 12:   // 分岐飛び込み点 2  : 戻り測定なし
     // 分光器をスタート地点に戻す
     // 「戻りも測定」の場合、戻り測定記録ファイルのヘッダ書き出し
     MMainTh->SetValue( QXafsSP );   // 測定開始!!! ( = 助走距離を含めたスタート地点へ)
@@ -505,14 +514,14 @@ void MainWindow::QXafsMeasSequence( void )
       MeasStage = 4; // 戻りで測定しない場合 : Repeat Point 1
     }
     break;
-  case 12:
+  case 13:
     // 計測器に測定結果を読み出す指示(完了するまでループ)
     if ( mUnits.QRead() )
       break;
     mUnits.clearStage();
     MeasStage++;
     break;
-  case 13:
+  case 14:
     // スキャン終了時の情報をヘッダに追加書き込み
     // データ本体の書き出し
     // 何番目のスキャンになるかを g にセット
@@ -523,13 +532,22 @@ void MainWindow::QXafsMeasSequence( void )
     DispQSpectrum( g );
     MeasStage++;
     // break; しない
-  case 14:
+  case 15:
     // 計測器の測定終了処理(完了するまでループ)
     // 始点でインターバルがあるかないかで分岐
     if ( mUnits.QEnd() )
       break;
     mUnits.clearStage();
     MeasStage = 4;
+    break;
+
+  case 90:             // MeasStage = 4 で pause
+    if ( !inPause )
+      MeasStage = 5;
+    break;
+  case 91:             // MeasStage = 10 で pause
+    if ( !inPause )
+      MeasStage = 11;
     break;
 
   case 99:
@@ -599,6 +617,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   double deg2;
   double upp2 = 0;
   double E, I0, I00, I1, I2;
+  I2 = 0;
 
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
