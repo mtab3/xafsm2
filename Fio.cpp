@@ -145,7 +145,6 @@ void MainWindow::WriteHeaderCore( void )
     for ( int i = 0; i < MeasChNo; i++ )
       out << QString( "%1" ).arg( i+1, 10 );
     out << endl;
-    qDebug() << "Mode1";
     out << QString( "      Mode         0         0"
                            "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
 
@@ -170,7 +169,6 @@ void MainWindow::WriteHeaderCore( void )
     out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // resets
     out << endl;
 
-    qDebug() << "Mode2";
     out << QString( "      Mode         0         0" );    // Modes Line
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
@@ -238,7 +236,6 @@ void MainWindow::WriteHeaderCore( void )
     }
     out << endl;
 
-    qDebug() << "Mode3";
     out << QString( "      Mode         0         0" );    // Modes Line
     for ( int i = 0; i < Munits; i++ ) {
       if ( mUnits.at(i) != SFluo ) {

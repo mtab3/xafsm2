@@ -37,14 +37,12 @@ void MainWindow::setupQXafsMode( void )
 
 void MainWindow::QIntervalTimeout1( void )
 {
-  qDebug() << "timer1 timeout";
   QIntervalTimer1->stop();
   QIntervalBlock1 = false;
 }
 
 void MainWindow::QIntervalTimeout2( void )
 {
-  qDebug() << "timer2 timeout";
   QIntervalTimer2->stop();
   QIntervalBlock2 = false;
 }

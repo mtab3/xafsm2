@@ -1954,11 +1954,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Intervals:   at Start</source>
-        <translation>休止:  始点 </translation>
+        <translation type="obsolete">休止:  始点 </translation>
     </message>
     <message>
         <source>sec   at End</source>
-        <translation>秒   終点</translation>
+        <translation type="obsolete">秒   終点</translation>
     </message>
     <message>
         <source>ReDef. Center:  Current Holder </source>
@@ -2229,6 +2229,26 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Meas. before each Scan</source>
         <translation>毎測定前にバックグラウンド計測</translation>
+    </message>
+    <message>
+        <source>Intervals:   Cycle</source>
+        <translation>測定間隔:   １周期</translation>
+    </message>
+    <message>
+        <source>sec   Backward</source>
+        <translation>秒   復測定前</translation>
+    </message>
+    <message>
+        <source>Identical sensor [%1:%2,%3:%4]is used as different inputs, like I0 and I1.</source>
+        <translation>異なる入力に(例えばI0, I1に)同一の検出器[%1:%2, %3:%4]が使われています。</translation>
+    </message>
+    <message>
+        <source>A1</source>
+        <translation>A1</translation>
+    </message>
+    <message>
+        <source>A2</source>
+        <translation>A2</translation>
     </message>
 </context>
 <context>
