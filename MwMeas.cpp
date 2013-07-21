@@ -1322,6 +1322,10 @@ void MainWindow::StartMeasurement( void )
     if ( Use19chSSD->isChecked() ) {
       MeasChNo += ( MaxSSDs -1 );
     }
+    if ( QXafsMode->isChecked() && ( Enc2 != NULL ) ) {
+      MeasChNo -= 1;
+    }
+
     SetDispMeasModes();
     CpBlock2SBlock();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )

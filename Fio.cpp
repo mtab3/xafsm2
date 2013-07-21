@@ -131,8 +131,12 @@ void MainWindow::WriteHeaderCore( void )
           << endl;
     }
   }
-  
-  // ssd camac 3 20
+
+  int Munits = mUnits.count();
+  if ( QXafsMode->isChecked() && ( Enc2 != NULL ) ) {
+    Munits -= 1;
+  }
+
   QVector<double> darks;
   switch( MeasFileType ) {
   case TRANS:
@@ -141,7 +145,7 @@ void MainWindow::WriteHeaderCore( void )
     for ( int i = 0; i < MeasChNo; i++ )
       out << QString( "%1" ).arg( i+1, 10 );
     out << endl;
-
+    qDebug() << "Mode1";
     out << QString( "      Mode         0         0"
                            "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
 
@@ -166,6 +170,7 @@ void MainWindow::WriteHeaderCore( void )
     out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // resets
     out << endl;
 
+    qDebug() << "Mode2";
     out << QString( "      Mode         0         0" );    // Modes Line
     for ( int j = 0; j < MaxSSDs; j++ ) {
       out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
@@ -212,7 +217,7 @@ void MainWindow::WriteHeaderCore( void )
     out << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
     out << "  Angle(c)  Angle(o)    time/s";
     cnt = 1;
-    for ( int i = 0; i < mUnits.count(); i++ ) {
+    for ( int i = 0; i < Munits; i++ ) {
       if ( mUnits.at(i) != SFluo ) {
         out << QString( "%1" ).arg( cnt, 10 );
       } else {
@@ -233,8 +238,9 @@ void MainWindow::WriteHeaderCore( void )
     }
     out << endl;
 
+    qDebug() << "Mode3";
     out << QString( "      Mode         0         0" );    // Modes Line
-    for ( int i = 0; i < mUnits.count(); i++ ) {
+    for ( int i = 0; i < Munits; i++ ) {
       if ( mUnits.at(i) != SFluo ) {
         out << QString( "%1" ).arg( MeasDispMode[i], 10 );
       } else {
@@ -250,7 +256,7 @@ void MainWindow::WriteHeaderCore( void )
     out << endl;
 
     out << QString( "    Offset         0         0" ); //Offsets Line(per socond)
-    for ( int i = 0; i < mUnits.count(); i++ ) {
+    for ( int i = 0; i < Munits; i++ ) {
       if ( mUnits.at(i) != SFluo ) {
         out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
       } else {
@@ -286,9 +292,13 @@ void MainWindow::WriteInfoFile( void )
     return;
   QTextStream out( &f );
 
+  int Munits = mUnits.count();
+  if ( QXafsMode->isChecked() && ( Enc2 != NULL ) )
+    Munits -= 1;
+
   out << "Version :" << " 1303" << endl;
   out << "Channel Names:";
-  for ( int i = 0; i < mUnits.count(); i++ )
+  for ( int i = 0; i < Munits; i++ )
     out << QString( " \"%1\"" ).arg( mUnits.at(i)->getName() );
   out << endl;
   
@@ -400,7 +410,7 @@ void MainWindow::WriteHeaderCore2( void )
 //     conds->isAddInfos()
 // で決まる。
 
-void MainWindow::RecordData( void )    // Data Body
+void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わない
 // MeasVals は dark 補正済み count
 // dark 補正済み cps が欲しければ MeasCPSs
 // (dark 補正がかかっているのは Measurement で readValue するとき
