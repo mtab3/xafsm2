@@ -854,3 +854,19 @@ void MCAView::setNewPSSens( QString newSens )
     update();
   }
 }
+
+QStringList MCAView::getSelectedElms( void )
+{
+  QStringList ret;
+  QVector<Fluo> inRange = fdbase->inRange( MinE, MaxE,
+					   cc.s2rx( NEAR3 ) - cc.s2rx( 0 ) );
+  for ( int i = 0; i < inRange.count(); i++ ) {
+    if ( inRange[i].dispf ) {
+      QString show = inRange[i].fullName;
+      show += " " + QString::number( inRange[i].val );
+      ret << show;
+    }
+  }    
+
+  return ret;
+}

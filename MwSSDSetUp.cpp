@@ -312,6 +312,15 @@ void MainWindow::WriteMCAHead( QTextStream &out )
     out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
                 << head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\n";
   }
+  if ( cMCAView != NULL ) {
+    if ( ShowAlwaysSelElm->isChecked() ) {
+      out << "# Selected elements list\n";
+      QStringList Elms = cMCAView->getSelectedElms();
+      for ( int i = 0; i < Elms.count(); i++ ) {
+	out << "# " << Elms[i] << "\n";
+      }
+    }
+  }
 }
 
 void MainWindow::WriteMCAData( QTextStream &out )

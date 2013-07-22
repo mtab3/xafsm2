@@ -92,6 +92,7 @@ public:
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
+  QStringList getSelectedElms( void );
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
