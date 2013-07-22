@@ -102,10 +102,10 @@ void MainWindow::MeasDarkSequence( void )
     MeasDarkStage = 1;
     break;
   case 1:
-    if ( dUnits.init() == false ) {  // true :: initializing
-      dUnits.clearStage();
-      MeasDarkStage = 2;
-    }
+    if ( dUnits.init() )  // true :: initializing
+      break;
+    dUnits.clearStage();
+    MeasDarkStage = 2;
     break;
   case 2: 
     dUnits.setDwellTime();
@@ -116,16 +116,16 @@ void MainWindow::MeasDarkSequence( void )
     }
     break;
   case 3:
-    if ( dUnits.getValue0() == false ) { // only for counters and SSDs
-      dUnits.clearStage();
-      MeasDarkStage = 4;
-    }
+    if ( dUnits.getValue0() )  // only for counters and SSDs
+      break;
+    dUnits.clearStage();
+    MeasDarkStage = 4;
     break;
   case 4:
-    if ( dUnits.getValue() == false ) {  // true :: Getting
-      dUnits.clearStage();
-      MeasDarkStage = 5;
-    }
+    if ( dUnits.getValue() )  // true :: Getting
+      break;
+    dUnits.clearStage();
+    MeasDarkStage = 5;
     break;
   case 5:
     double setTime;

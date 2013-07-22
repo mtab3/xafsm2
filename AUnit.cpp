@@ -368,7 +368,7 @@ bool AUnit::GetValue( void )
 
   //                PZ                    // この GetValue まだ対応してない
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  0, 1,  1 ) ) {
+  if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  1, 1,  1 ) ) {
     IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, "GetValue" );
   }

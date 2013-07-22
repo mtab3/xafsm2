@@ -389,6 +389,7 @@ void MainWindow::QXafsMeasSequence( void )
   case 3:
     // 分光器をスタート地点に向けて移動開始
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
+    statusbar->showMessage( tr( "Moving DXM to the start point" ) );
     MeasStage++;
     break;     // break 必要。分光器が止まっていないとトリガの設定画できない
   case 4:      // Repeat Point 1
@@ -429,9 +430,11 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 6:
     // 前の測定から、既定のインターバル時間が経ってなければループ
+    statusbar->showMessage( tr( "Waiting Interval at start position" ) );
     if ( QIntervalBlock1 )
       break;
     // 測定開始！ ( = 分光器を終了地点へ移動)
+    statusbar->showMessage( tr( "Forward scan" ) );
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
     QIntervalBlock1 = QIntervalBlock2 = true;
     t1 = fabs( QIntervalCycle->text().toDouble() * 1000 );
@@ -482,17 +485,20 @@ void MainWindow::QXafsMeasSequence( void )
       MMainTh->SetHighSpeed( MaxHSpeed );
       MMainTh->SetTimingOutMode( 0 );
       MMainTh->SetTimingOutReady( 0 );
+      statusbar->showMessage( tr( "Return back to the start position" ) );
       MeasStage = 12;
       break;
     }
     // 戻りも測定する場合は break しない
   case 10:   // 分岐飛び込み点 1  : 戻りも測定 and Intrval 指定有り
+    statusbar->showMessage( tr( "Waiting Interval at end position" ) );
     if ( QIntervalBlock2 )
       break;
     if ( inPause ) {
       MeasStage = 91;
       break;
     }
+    statusbar->showMessage( tr( "Backward scan" ) );
     MeasStage++;
     // 計測器にデータ読み出し命令発行(完了するまでループ)
   case 11:
@@ -540,10 +546,12 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 90:             // MeasStage = 4 で pause
+    statusbar->showMessage( tr( "Pausing at start position" ) );
     if ( !inPause )
       MeasStage = 5;
     break;
   case 91:             // MeasStage = 10 で pause
+    statusbar->showMessage( tr( "Pausing at end position" ) );
     if ( !inPause )
       MeasStage = 11;
     break;
