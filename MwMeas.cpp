@@ -405,15 +405,24 @@ void MainWindow::newA2Range( int newR )
 void MainWindow::SetNewGases( void )
 {
   I0Recommend->clear();
-  double trans, near = 100;
+  double trans1, trans2;
+  double near = 100;
   int Rec = 0;
   for ( int i = 0; i < Gases.count(); i++ ) {
-    double mut = calcMuT( I0ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
-    trans = exp( -mut );
+    double mut1 = calcMuT( I0ChSelect->currentIndex(), i,     // 1次
+			   ManTEkeV->text().toDouble() );
+    double mut2 = calcMuT( I0ChSelect->currentIndex(), i,
+			   ManTEkeV->text().toDouble() * 3 ); // 3次
+    trans1 = exp( -mut1 );
+    trans2 = exp( -mut2 );
     I0Recommend
-      ->addItem( QString( "%1 :  %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
-    if ( fabs( trans - 0.9 ) < near ) {
-      near = fabs( trans - 0.9 );
+      ->addItem( QString( "%1 :  %2 (%3:%4)" )
+		 .arg( Gases[i]->Name )
+		 .arg( trans1, 5, 'f', 3 )
+		 .arg( trans2, 5, 'f', 3 )
+		 .arg( (1. - trans2 ) / ( 1. - trans1 ), 4, 'e', 2 ) );
+    if ( fabs( trans1 - 0.9 ) < near ) {
+      near = fabs( trans1 - 0.9 );
       Rec = i;
     }
   }
@@ -422,12 +431,20 @@ void MainWindow::SetNewGases( void )
   Rec = 0;
   I1Recommend->clear();
   for ( int i = 0; i < Gases.count(); i++ ) {
-    double mut = calcMuT( I1ChSelect->currentIndex(), i, ManTEkeV->text().toDouble() );
-    trans = exp( -mut );
+    double mut1 = calcMuT( I1ChSelect->currentIndex(), i,
+			   ManTEkeV->text().toDouble() );
+    double mut2 = calcMuT( I1ChSelect->currentIndex(),
+			   i, ManTEkeV->text().toDouble() * 3 );
+    trans1 = exp( -mut1 );
+    trans2 = exp( -mut2 );
     I1Recommend
-      ->addItem( QString( "%1: %2" ).arg( Gases[i]->Name ).arg( trans, 5, 'f', 3 ) );
-    if ( fabs( trans - 0.1 ) < near ) {
-      near = fabs( trans - 0.1 );
+      ->addItem( QString( "%1: %2 (%3:%4)" )
+		 .arg( Gases[i]->Name )
+		 .arg( trans1, 5, 'f', 3 )
+		 .arg( trans2, 5, 'f', 3 )
+		 .arg( (1. - trans2 ) / ( 1. - trans1 ), 4, 'e', 2 ) );
+    if ( fabs( trans1 - 0.1 ) < near ) {
+      near = fabs( trans1 - 0.1 );
       Rec = i;
     }
   }

@@ -484,7 +484,7 @@ Q-XAFSモードでは１スキャンに必要な時間を表します。</transl
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Recommended gas for I0 chamber.&lt;/p&gt;&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>I0 チャンバに使用するお勧め混合ガス。
+        <translation type="obsolete">I0 チャンバに使用するお勧め混合ガス。
 表示されたガスに自動的には切り替わらないので手動で切り替える必要があります。</translation>
     </message>
     <message>
@@ -493,7 +493,7 @@ Q-XAFSモードでは１スキャンに必要な時間を表します。</transl
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Recommended gas for I1 chamber.&lt;/p&gt;&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>I1 チャンバに使用するお勧め混合ガス。
+        <translation type="obsolete">I1 チャンバに使用するお勧め混合ガス。
 表示されたガスに自動的には切り替わらないので手動で切り替える必要があります。</translation>
     </message>
     <message>
@@ -2281,6 +2281,30 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Pausing at end position</source>
         <translation>ポーズ(終了地点)</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;Recommended gas for I0 chamber.&lt;/p&gt;
+&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;
+&lt;p&gt;Gas. No.  and Name: Transmittance of 1st order X-ray (Transmittance of 3rd order X-ray: Ratio of Sesitivities 3rd/1st)
+&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;I0 チャンバに推奨されるガス&lt;/p&gt;
+&lt;p&gt;イオンチャンバのガスは自動では変更されません。手動で切り替えてください。&lt;/p&gt;
+&lt;p&gt;表示内容:: ガス番号 ガス種: 1次光の透過率 (3次光の透過率: 3次光と1次光の検出感度の比 3次/1次)
+&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;Recommended gas for I1 chamber.&lt;/p&gt;
+&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;
+&lt;p&gt;Gas. No.  and Name: Transmittance of 1st order X-ray (Transmittance of 3rd order X-ray: Ratio of Sesitivities 3rd/1st)
+&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;I1 チャンバに推奨されるガス&lt;/p&gt;
+&lt;p&gt;イオンチャンバのガスは自動では変更されません。手動で切り替えてください。&lt;/p&gt;
+&lt;p&gt;表示内容:: ガス番号 ガス種: 1次光の透過率 (3次光の透過率: 3次光と1次光の検出感度の比 3次/1次)
+&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

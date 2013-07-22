@@ -1993,7 +1993,11 @@
                <item>
                 <widget class="QComboBox" name="I0Recommend">
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Recommended gas for I0 chamber.&lt;/p&gt;&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;Recommended gas for I0 chamber.&lt;/p&gt;
+&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;
+&lt;p&gt;Gas. No.  and Name: Transmittance of 1st order X-ray (Transmittance of 3rd order X-ray: Ratio of Sesitivities 3rd/1st)
+&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </item>
@@ -2007,7 +2011,11 @@
                <item>
                 <widget class="QComboBox" name="I1Recommend">
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Recommended gas for I1 chamber.&lt;/p&gt;&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;Recommended gas for I1 chamber.&lt;/p&gt;
+&lt;p&gt;To use the recommended gas, you need to exchange it manually.&lt;/p&gt;
+&lt;p&gt;Gas. No.  and Name: Transmittance of 1st order X-ray (Transmittance of 3rd order X-ray: Ratio of Sesitivities 3rd/1st)
+&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
                </item>
