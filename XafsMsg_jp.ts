@@ -2156,7 +2156,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Measure on Backward</source>
-        <translation>戻りでの測定</translation>
+        <translation type="unfinished">戻りでも測定</translation>
     </message>
     <message>
         <source>Meas. Background Time.[s] </source>

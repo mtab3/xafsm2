@@ -390,7 +390,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 分光器をスタート地点に向けて移動開始
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
     MeasStage++;
-    // break しない
+    break;     // break 必要。分光器が止まっていないとトリガの設定画できない
   case 4:      // Repeat Point 1
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99

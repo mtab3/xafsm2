@@ -166,8 +166,15 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
 void MainWindow::SetDXMPMC( void )
 {
-  int dP = EncMainTh->value().toDouble() / MMainTh->getUPP() - MMainTh->value().toInt();
+  int dP = MMainTh->value().toInt() - EncMainTh->value().toDouble() / MMainTh->getUPP();
   int oldCenter = MMainTh->getCenter();
+
+  qDebug() << "dP " << dP
+	   << "Enc " << EncMainTh->value().toDouble()
+	   << "Enc " << EncMainTh->value().toDouble() / MMainTh->getUPP()
+	   << "MTh " << MMainTh->value().toInt()
+	   << "recal " << ( MMainTh->value().toInt() - dP ) * MMainTh->getUPP();
+
   MMainTh->setCenter( dP );
   MMainTh->GetValue();
 
