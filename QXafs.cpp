@@ -300,6 +300,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
 
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
+  if ( RunUpPulses < 0 )
+    RunUpPulses = 10;
   // HSpeed までの加速に必要なパルス数
   if ( QXafsSP0 > QXafsEP0 )
     RunUpPulses *= -1;
@@ -404,6 +406,7 @@ void MainWindow::QXafsMeasSequence( void )
       MeasStage = 90;
       break;
     }
+    mUnits.clearStage();  
     MeasStage++;
     // break しない
   case 5:
@@ -499,6 +502,7 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     }
     statusbar->showMessage( tr( "Backward scan" ) );
+    mUnits.clearStage();  
     MeasStage++;
     // 計測器にデータ読み出し命令発行(完了するまでループ)
   case 11:
