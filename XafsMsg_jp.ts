@@ -2156,7 +2156,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Measure on Backward</source>
-        <translation type="unfinished">戻りでも測定</translation>
+        <translation>戻りでも測定</translation>
     </message>
     <message>
         <source>Meas. Background Time.[s] </source>
@@ -2249,6 +2249,38 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>A2</source>
         <translation>A2</translation>
+    </message>
+    <message>
+        <source>Moving DXM to the start point</source>
+        <translation>分光器を測定開始点に移動中</translation>
+    </message>
+    <message>
+        <source>Waiting Interval at start position</source>
+        <translation>インターバル待ち(開始点)</translation>
+    </message>
+    <message>
+        <source>Forward scan</source>
+        <translation>順方向スキャン</translation>
+    </message>
+    <message>
+        <source>Return back to the start position</source>
+        <translation>開始地点へ回帰中</translation>
+    </message>
+    <message>
+        <source>Waiting Interval at end position</source>
+        <translation>インターバル待ち(終了地点)</translation>
+    </message>
+    <message>
+        <source>Backward scan</source>
+        <translation>逆方向スキャン</translation>
+    </message>
+    <message>
+        <source>Pausing at start position</source>
+        <translation>ポーズ(開始地点)</translation>
+    </message>
+    <message>
+        <source>Pausing at end position</source>
+        <translation>ポーズ(終了地点)</translation>
     </message>
 </context>
 <context>
