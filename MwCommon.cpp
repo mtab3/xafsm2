@@ -242,4 +242,28 @@ void MainWindow::MoveCurThPosKeV( double keV )
   }
   MMainTh->setIsBusy( true );
   MMainTh->SetValue( SettingMainTh );
+
+  if ( conds->isUseDTh1TTable() )
+    TuneDTh1( keV );
 }
+
+void MainWindow::TuneDTh1( double keV )
+{
+  int NewDTh1;
+
+  if (( TTable->isAvailable() )&&( MDTh1 != NULL )) {
+    NewDTh1 = TTable->p( keV );
+    if ( OldDTh1 != NewDTh1 ) {
+      qDebug() << "New DTh1 " << NewDTh1;
+      MDTh1->SetValue( NewDTh1 );
+      OldDTh1 = NewDTh1;
+    }
+  }
+}
+
+void MainWindow::AddNewDTh1TunePoint( void )
+{
+  TTable->AddAPoint( ShowCurrentEnergy->text().toDouble(), DispDTh1->text().toInt() );
+}
+
+

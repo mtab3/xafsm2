@@ -21,9 +21,11 @@ public:
   bool isRecordAllSSDChs( void );
   bool isMakeInfo( void );
   bool isMeasInDeg( void );
+  bool isUseDTh1TTable( void );
 
  signals:
   void SetDXMPMC( void );
+  void AskToSaveDTh1TTable( void );
 };
 
 #endif

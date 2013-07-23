@@ -182,7 +182,10 @@ void MainWindow::onMeasFinishWorks( void )
 
 bool MainWindow::isBusyMotorInMeas( void )
 {
-  return MMainTh->isBusy() || MMainTh->isBusy2();
+  bool rf = MMainTh->isBusy() || MMainTh->isBusy2();
+  if ( MDTh1 != NULL )
+    rf = rf || MDTh1->isBusy() || MDTh1->isBusy2();
+  return  rf;
 }
 
 void MainWindow::SetDispMeasModes( void )

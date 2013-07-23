@@ -12,6 +12,7 @@ Conditions::Conditions( void ) : QFrame()
 			.arg( __TIME__ ) );
 
   connect( CalibDXMPMC, SIGNAL( clicked() ), this, SIGNAL( SetDXMPMC() ) );
+  connect( SaveDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToSaveDTh1TTable() ) );
 }
 
 void Conditions::setVersionInfo( QString ver, QString date, QString time )
@@ -45,4 +46,9 @@ bool Conditions::isMakeInfo( void )
 bool Conditions::isMeasInDeg( void )
 {
   return SelStepInDegree->isChecked();
+}
+
+bool Conditions::isUseDTh1TTable( void )
+{
+  return UseDTh1TTable->isChecked();
 }

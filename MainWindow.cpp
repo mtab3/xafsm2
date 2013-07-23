@@ -21,6 +21,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
+
  
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
@@ -51,7 +52,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   }
 #endif
 
-  MMainTh = EncMainTh = Enc2 = NULL;
+  MMainTh = MDTh1 = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
   //  ChangerX = ChangerZ = NULL;
   oldDeg = -100;
@@ -59,6 +60,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   EncOrPM = XENC;
   MCAGains.clear();
   MeasA = 0;
+  OldDTh1 = 0;
 
   StatDisp = new Status();
   StatTab->layout()->addWidget( StatDisp );
@@ -77,6 +79,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
   s->SetNewSVAddress( starsSV->SSVAddress() );
   s->SetNewSVPort( starsSV->SSVPort() );
+
+  TTable = new TuningTable;
 
   Initialize();
   setupView();
@@ -159,6 +163,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
   connect( MeasDarkTimer, SIGNAL( timeout() ), this, SLOT( MeasDarkSequence() ) );
   connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ) );
+
+  connect( AddNewDTh1TPoint, SIGNAL( clicked() ), this, SLOT( AddNewDTh1TunePoint() ) );
+  connect( conds, SIGNAL( AskToSaveDTh1TTable() ), TTable, SLOT( SaveTuneTable() ) );
 
   s->AskStatus();
   s->MakeConnection();
@@ -244,6 +251,15 @@ void MainWindow::InitAndIdentifyMotors( void )
       }
       MMainTh = am;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+    }
+
+    if ( am->getID() == "DTH1" ) {
+      if ( MDTh1 != NULL ) {
+        disconnect( MDTh1, SIGNAL( newValue( QString ) ),
+                    this, SLOT( ShowCurDTh1() ) );
+      }
+      MDTh1 = am;
+      connect( MDTh1, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurDTh1() ) );
     }
   }
   if ( MMainTh != NULL ) {
@@ -370,6 +386,12 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
 	as->Initialize( s );
     }
   }
+}
+
+void MainWindow::ShowCurDTh1( void )
+{
+  if ( MDTh1 != NULL )
+    DispDTh1->setText( MDTh1->value() );
 }
 
 void MainWindow::ShowCurThPos( void )

@@ -35,6 +35,7 @@
 #include "Changer.h"
 #include "cBar.h"
 #include "UsingUnits.h"
+#include "TuningTable.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
@@ -68,6 +69,9 @@ private:
 
   QTime *T;
   Status* StatDisp;
+
+  TuningTable *TTable;
+  int OldDTh1;
 
   QString XAFSName;
   QString XAFSKey;
@@ -133,6 +137,7 @@ private:
 
   /* Special Units */
   AUnit *MMainTh;                 // main Th ax
+  AUnit *MDTh1;                   // Delta Theta 1 ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
   //  AUnit *ChangerX, *ChangerZ;
@@ -183,6 +188,7 @@ private:
   //  { return ( EncOrPM == XENC ) ? "Encorder" : "PM"; };
   // return Mono. Chro. deg. measured by selected way
   void MoveCurThPosKeV( double keV ); // Move current Pos. of Mon. in keV
+  void TuneDTh1( double keV );
 
   /***********************************************/
 
@@ -465,6 +471,7 @@ private slots:
   //  void SetNewLatticeConstant( double LC ) { u->setD( LC ); };
 
   bool MeasureDark( void );
+  void AddNewDTh1TunePoint( void );
 
   void ChangeBLKparams( void );
   void ChangeBLKpoints( void );
@@ -473,6 +480,7 @@ private slots:
   void ShowCurThPos( void );
   void ShowCurMotorPos( SMsg msg );
   void ShowNewRingCurrent( QString Val, QStringList Vals );
+  void ShowCurDTh1( void );
 
   void SetGoMSpeedH( void );
   void SetGoMSpeedM( void );
