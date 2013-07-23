@@ -26,6 +26,7 @@ public:
  signals:
   void SetDXMPMC( void );
   void AskToSaveDTh1TTable( void );
+  void AskToShowDTh1TTable( void );
 };
 
 #endif

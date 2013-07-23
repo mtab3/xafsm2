@@ -166,6 +166,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   connect( AddNewDTh1TPoint, SIGNAL( clicked() ), this, SLOT( AddNewDTh1TunePoint() ) );
   connect( conds, SIGNAL( AskToSaveDTh1TTable() ), TTable, SLOT( SaveTuneTable() ) );
+  connect( conds, SIGNAL( AskToShowDTh1TTable() ), TTable, SLOT( ShowTuneTable() ) );
 
   s->AskStatus();
   s->MakeConnection();

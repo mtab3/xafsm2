@@ -6,9 +6,13 @@
 #include <QString>
 #include <QStringList>
 #include <QDateTime>
+#include <QTableWidgetItem>
 
 TuningTable::TuningTable( void ) : QObject()
 {
+  tuneTable = new TuneTable;
+  connect( tuneTable, SIGNAL( Ok() ), this, SLOT( EditedTuneTable() ) );
+
   ReadTable( "TuningTable.txt" );
 }
 
@@ -33,7 +37,6 @@ void TuningTable::ReadTable( QString fname )
 	Comments << line;
       }
     }
-
   }
 
   f.close();
@@ -74,9 +77,12 @@ void TuningTable::AddAPoint( double E, int p )
   AddAPoint0( E, p );
 
   qSort( Points.begin(), Points.end() );
+}
 
-  for ( int i = 0; i < Points.count(); i++ ) {
-    qDebug() << Points[i].eng << Points[i].pulse;
+void TuningTable::ClearPoints( void )
+{
+  while( Points.count() > 0 ) {
+    Points.remove( 0 );
   }
 }
 
@@ -105,3 +111,33 @@ int TuningTable::p( double keV )
   return Points[ Points.count() - 1 ].pulse;
 }
 
+void TuningTable::ShowTuneTable( void )
+{
+  QTableWidgetItem *item;
+
+  tuneTable->clearItems();
+
+  tuneTable->setRowCol( Points.count(), 2 );
+  for ( int i = 0; i < Points.count(); i++ ) {
+    item = new QTableWidgetItem ( QString::number( Points[i].eng ) );
+    tuneTable->setItem( i, 0, item );
+    item = new QTableWidgetItem ( QString::number( Points[i].pulse ) );
+    item->setTextAlignment( Qt::AlignRight | Qt::AlignVCenter );
+    tuneTable->setItem( i, 1, item );
+  }
+  tuneTable->show();
+}
+
+void TuningTable::EditedTuneTable( void )
+{
+  ClearPoints();
+  double eng;
+
+  for ( int i = 0; i < tuneTable->rowCount(); i++ ) {
+    eng = tuneTable->getItem( i, 0 )->text().toDouble();
+    if ( eng > 0 ) {
+      AddAPoint0( eng, tuneTable->getItem( i, 1 )->text().toInt() );
+    }
+  }
+  qSort( Points.begin(), Points.end() );
+}

@@ -13,6 +13,7 @@ Conditions::Conditions( void ) : QFrame()
 
   connect( CalibDXMPMC, SIGNAL( clicked() ), this, SIGNAL( SetDXMPMC() ) );
   connect( SaveDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToSaveDTh1TTable() ) );
+  connect( ShowDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToShowDTh1TTable() ) );
 }
 
 void Conditions::setVersionInfo( QString ver, QString date, QString time )

@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QStringList>
 
+#include "TuneTable.h"
+
 struct aPoint
 {
  public:
@@ -21,6 +23,7 @@ class TuningTable : public QObject
 
   QVector<aPoint> Points;
   QStringList Comments;
+  TuneTable *tuneTable;
 
 public:
   TuningTable( void );
@@ -29,9 +32,12 @@ public:
   void AddAPoint( double e, int p );
   bool isAvailable( void );
   int p( double E );
+  void ClearPoints( void );
 
 public slots:
   void SaveTuneTable( void );
+  void ShowTuneTable( void );
+  void EditedTuneTable( void );
 };
 
 #endif
