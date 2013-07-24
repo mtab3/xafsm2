@@ -121,6 +121,36 @@ SSDの一部のチャンネルに、
         <source>Infos</source>
         <translation>バージョン情報</translation>
     </message>
+    <message>
+        <source>Calibrate the original point of the Pulse Moter Controller which controll the DXM.
+The original point will be changed as the angle calculated from the pulse will be equal to the angle observed by the encorder. </source>
+        <translation>パルス値から計算した分光器角度と、エンコーダで見た分光器角度が一致するよう、分光器を制御しているパルスモータコントローラの原点を較正します。</translation>
+    </message>
+    <message>
+        <source>When the Th of the DXM is changed, Delta Theta 1 is changed according to the presented tuning table.    A new line can be add to the table, by using the &quot;DTh1 &apos;Set&apos;&quot; button.
+</source>
+        <translation>このボタンをチェックすると、分光器の角度(θ)を変更する際、予め登録されたテーブルに従って⊿θ1を調整します。</translation>
+    </message>
+    <message>
+        <source>Use Dth1 tuning table</source>
+        <translation>テーブルを使用して⊿θ1をチューニングする</translation>
+    </message>
+    <message>
+        <source>The tuning table will be saved with the file name of &quot;date-TuningTable.txt&quot; style, like as, &quot;130722-TuningTable.txt&quot;.     When you want to make XafsM2 read the table, rename the file to TuningTable.txt.   Then XafsM2 read the file on start up.</source>
+        <translation>チューニング用のテールをセーブします。その際ファイル名は「日付-TuningTable.txt」となります(例えば 130722-TuningTable.txt)。  セーブしたテーブルをXafsM2に読ませる場合、名前から日付を消して「TuningTable.txt」とすると、XafsM2の起動時に読まれます。</translation>
+    </message>
+    <message>
+        <source>Save The Table</source>
+        <translation>テーブル保存</translation>
+    </message>
+    <message>
+        <source>Pop up a window to show the tuning table of the Delta Theta 1.    The table can be edited in the window.</source>
+        <translation>⊿θ1のチューニングテーブルを表示します。現れた表は編集可能です。</translation>
+    </message>
+    <message>
+        <source>Show The Table</source>
+        <translation>テーブル表示</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>
@@ -1274,7 +1304,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>eV       Carib.</source>
-        <translation>eV        較正.</translation>
+        <translation type="obsolete">eV        較正.</translation>
     </message>
     <message>
         <source>Set All</source>
@@ -2306,6 +2336,26 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
 &lt;p&gt;表示内容:: ガス番号 ガス種: 1次光の透過率 (3次光の透過率: 3次光と1次光の検出感度の比 3次/1次)
 &lt;/body&gt;&lt;/html&gt;</translation>
     </message>
+    <message>
+        <source>DTh1</source>
+        <translation>⊿θ1</translation>
+    </message>
+    <message>
+        <source>pls</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Add the pair of current Energy and DTh1 values to the DTh1-tuning table.</source>
+        <translation>現在のエネルギー値と⊿θ1の値のペアを⊿θ1のチューニングテーブルに追加します。</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation>設定</translation>
+    </message>
+    <message>
+        <source>eV       Calib.</source>
+        <translation>eV      較正</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -3099,6 +3149,33 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>%1</source>
         <translation>%1</translation>
+    </message>
+</context>
+<context>
+    <name>TuneTable</name>
+    <message>
+        <source>Frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Both of the Calibratio Energy and the Delta Th1 value can be edited.    When the Calibration Energy set to be 0, the line is deleted when the editing window is closed by pushing the OK button.</source>
+        <translation>較正を行うエネルギーとその時の⊿θ1の値のいずれも編集可能です(行の追加も可能)。エネルギーの値を0にしておくと、「OK」を押してウインドウを閉じた時、その行は削除されます。</translation>
+    </message>
+    <message>
+        <source>Calibration Energy [keV]</source>
+        <translation>較正エネルギー [keV]</translation>
+    </message>
+    <message>
+        <source>Delta Th1 value [pulse]</source>
+        <translation>⊿θ1の値 [pulse]</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation></translation>
     </message>
 </context>
 <context>

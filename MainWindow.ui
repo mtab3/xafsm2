@@ -529,7 +529,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -6508,7 +6508,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               <item row="2" column="2">
                <widget class="QLabel" name="label_55">
                 <property name="text">
-                 <string>eV       Carib.</string>
+                 <string>eV       Calib.</string>
                 </property>
                </widget>
               </item>

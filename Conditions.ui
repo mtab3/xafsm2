@@ -112,6 +112,10 @@
      </item>
      <item>
       <widget class="QFrame" name="frame_6">
+       <property name="toolTip">
+        <string>Calibrate the original point of the Pulse Moter Controller which controll the DXM.
+The original point will be changed as the angle calculated from the pulse will be equal to the angle observed by the encorder. </string>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: #eeffee</string>
        </property>
@@ -172,8 +176,8 @@
         <item row="0" column="0">
          <widget class="QRadioButton" name="UseDTh1TTable">
           <property name="toolTip">
-           <string>Some additional information is recorded 
-with usual 9809 format datas.</string>
+           <string>When the Th of the DXM is changed, Delta Theta 1 is changed according to the presented tuning table.    A new line can be add to the table, by using the &quot;DTh1 'Set'&quot; button.
+</string>
           </property>
           <property name="text">
            <string>Use Dth1 tuning table</string>
@@ -188,6 +192,9 @@ with usual 9809 format datas.</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>The tuning table will be saved with the file name of &quot;date-TuningTable.txt&quot; style, like as, &quot;130722-TuningTable.txt&quot;.     When you want to make XafsM2 read the table, rename the file to TuningTable.txt.   Then XafsM2 read the file on start up.</string>
+          </property>
           <property name="text">
            <string>Save The Table</string>
           </property>
@@ -200,6 +207,9 @@ with usual 9809 format datas.</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Pop up a window to show the tuning table of the Delta Theta 1.    The table can be edited in the window.</string>
           </property>
           <property name="text">
            <string>Show The Table</string>

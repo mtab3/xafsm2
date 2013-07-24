@@ -49,6 +49,9 @@
        </property>
        <item row="0" column="0">
         <widget class="QTableWidget" name="TTable">
+         <property name="toolTip">
+          <string>Both of the Calibratio Energy and the Delta Th1 value can be edited.    When the Calibration Energy set to be 0, the line is deleted when the editing window is closed by pushing the OK button.</string>
+         </property>
          <property name="rowCount">
           <number>100</number>
          </property>
@@ -169,7 +172,7 @@
          <row/>
          <column>
           <property name="text">
-           <string>Caribration Energy [keV]</string>
+           <string>Calibration Energy [keV]</string>
           </property>
          </column>
          <column>
