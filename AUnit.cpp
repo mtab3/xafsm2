@@ -141,8 +141,8 @@ void AUnit::Initialize( Stars *S )
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV, DV2 ENC2
-  // 駆動系だけ
-  if ( TypeCHK(  1,  1,  0,  0,  1,  0,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
+  // 駆動系だけ(PZ は外した)
+  if ( TypeCHK(  1,  0,  0,  0,  1,  0,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
     // SetValue は Ok: でも Er: でも無視する。
     // connect( s, SIGNAL( AnsSetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
@@ -153,7 +153,7 @@ void AUnit::Initialize( Stars *S )
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                         CNT, OTC は Ch に IsBusy を訊くとエラー
-  if ( TypeCHK(  1,  1,  0,  1,  1,  1,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
+  if ( TypeCHK(  1,  0,  0,  1,  1,  1,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
     s->SendCMD2( "Init", DevCh, "IsBusy" );
   }
   if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  1,  1,  0,  0,  0,  0 ) ) {
@@ -276,6 +276,12 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL(AnsStandBy( SMsg )), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ) );
   }
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
+  //                                                                             PZだけ
+  if ( TypeCHK(  0,  1,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
+    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
+    s->SendCMD2( "Init", DevCh, "Init" );
+  }
 
   // 以下 Unit タイプではなくて、特定のユニットに固有の処理
   // MMainTh   : "THETA"
@@ -379,9 +385,8 @@ bool AUnit::GetValue( void )
 {
   bool rv = false;
 
-  //                PZ                    // この GetValue まだ対応してない
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
-  if ( TypeCHK(  1,  0,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  1, 1,  1 ) ) {
+  if ( TypeCHK(  1,  1,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  1, 1,  1 ) ) {
     IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, "GetValue" );
   }
