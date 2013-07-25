@@ -300,8 +300,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
 
   int RunUpPulses = ( HSpeed - LowSpeed ) * ( HSpeed + LowSpeed ) * RunUpRate / 2000.;
-  if ( RunUpPulses < 0 )
-    RunUpPulses = 10;
+  if ( RunUpPulses < 0 ) // High Speed の方が Low Speed より遅いと RunUpPulses は負になる
+    RunUpPulses *= -1;   // 減速にも同じ時間(とパルス)が必要だと仮定。
   // HSpeed までの加速に必要なパルス数
   if ( QXafsSP0 > QXafsEP0 )
     RunUpPulses *= -1;
