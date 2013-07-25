@@ -395,9 +395,9 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "simmotor" "Ring" "mA" NO ""
 #
 #    the last parameter 0.06 set maximum integration time
 #
-SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSq3-1" "V" NO "" 0.05
-SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSq3-2" "V" NO "" 0.05
-SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSq3-3" "V" NO "" 0.05
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "simmotor" "SNSq3-1" "V" NO "" 0.999
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "simmotor" "SNSq3-2" "V" NO "" 0.999
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "simmotor" "SNSq3-3" "V" NO "" 0.999
 #SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO ""
 #SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO ""
 #SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO ""

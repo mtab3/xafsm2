@@ -11,7 +11,7 @@
 #define hb ( 1.05457266e-34 )
 #define EE ( 1.60217733e-19 )
 #define E2A ( 2 * PI * hb * CC / EE * 1e10 )
-#define KE2A ( 2 * PI * hb * CC / EE / 1000. * 1e10 )
+#define KE2A ( 2 * PI * hb * CC / EE / 1000. * 1e10 )   // 12.39842436
 
 struct UNITNAME {
   QString name;
