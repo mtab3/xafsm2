@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( develop2 )
+#define BRANCH_NAME ( "develop2" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jul 26 14:21:42 2013 +0900\n"\
+                "    gitlog.pl and gitlog.h was add to the repository\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 25 21:13:08 2013 +0900\n"\
                 "    checking QXafs parameter check\n"\
@@ -20,8 +24,5 @@
                 "Date        : Wed Jul 24 12:50:04 2013 +0900\n"\
                 "    LION\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jul 23 20:35:24 2013 +0900\n"\
-                "    TuningTable can be editied in Stat/Config tab\n"\
-		"\n"\
                 ""
+#endif

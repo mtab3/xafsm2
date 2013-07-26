@@ -17,7 +17,7 @@ while( <IN> ) {
 
 print OUT<<EOF;
 
-#define BRANCH_NAME ( $Branch )
+#define BRANCH_NAME ( "$Branch" )
 #define GITLOGS ""\\
 EOF
 
@@ -30,6 +30,7 @@ while ( <IN> ) {
     if ( $cnt > 5 ) {
 print OUT<<EOF;
                 ""
+#endif
 EOF
 	exit;
     }

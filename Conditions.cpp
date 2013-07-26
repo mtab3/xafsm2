@@ -1,6 +1,7 @@
 
 #include "XafsM.h"
 #include "Conditions.h"
+#include "gitlog.h"
 
 Conditions::Conditions( void ) : QFrame()
 {
@@ -18,10 +19,11 @@ Conditions::Conditions( void ) : QFrame()
 
 void Conditions::setVersionInfo( QString ver, QString date, QString time )
 {
-  VersionInfo->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3" )
+  VersionInfo->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3, Branch : %4" )
 			.arg( ver )
 			.arg( date )
-			.arg( time ) );
+			.arg( time )
+			.arg( BRANCH_NAME ) );
 }
 
 bool Conditions::isEncAsTh( void )
