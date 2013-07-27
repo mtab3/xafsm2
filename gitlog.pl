@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl
 
-open( OUT, ">gitlog.h" );
+open( OUT, ">gitlog.tmp" );
 
 print OUT<<EOF;
 #ifndef GITLOG_H
@@ -27,14 +27,8 @@ $cnt = 0;
 $in = 0;
 while ( <IN> ) {
     chomp;
-    if ( $cnt > 5 ) {
-print OUT<<EOF;
-                ""
-#endif
-EOF
-	exit;
-    }
-    if    ( /^commit\s+/ ) {
+    last if ( $cnt > 5 );
+    if ( /^commit\s+/ ) {
 	if ( $in == 1 ) {
 print OUT<<EOF;
                 "Author      : $Author\\n"\\
@@ -58,3 +52,16 @@ EOF
     }
 }
 
+print OUT<<EOF;
+                ""
+#endif
+EOF
+
+if ( -e "gitlog.h" ) {
+    if ( `diff gitlog.h gitlog.tmp` ) {
+	system( "cp gitlog.tmp gitlog.h" );
+    }
+} else {
+    system( "cp gitlog.tmp gitlog.h" );
+}
+system( "rm gitlog.tmp" );

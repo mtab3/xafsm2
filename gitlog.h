@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jul 26 14:29:26 2013 +0900\n"\
+                "    master was stampled in gitlog.h\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jul 26 14:27:58 2013 +0900\n"\
                 "    the information in gitlog.h is used in Conditions.cpp\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 25 17:57:03 2013 +0900\n"\
                 "    XAFSM0.def was new\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jul 24 21:01:34 2013 +0900\n"\
-                "    Checking on PZ\n"\
 		"\n"\
                 ""
 #endif
