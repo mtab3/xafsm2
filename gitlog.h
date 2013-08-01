@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Aug 1 19:20:57 2013 +0900\n"\
+                "    do nothing\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jul 26 14:29:26 2013 +0900\n"\
                 "    master was stampled in gitlog.h\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 25 21:13:08 2013 +0900\n"\
                 "    checking QXafs parameter check\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jul 25 17:57:03 2013 +0900\n"\
-                "    XAFSM0.def was new\n"\
 		"\n"\
                 ""
 #endif
