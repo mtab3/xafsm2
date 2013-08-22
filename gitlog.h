@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "develop2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Aug 22 19:55:03 2013 +0900\n"\
+                "    do nothing\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Aug 22 19:54:06 2013 +0900\n"\
                 "    clear some debug messages from AUnit.cpp\n"\
 		"\n"\
@@ -18,10 +22,6 @@
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Aug 6 12:29:17 2013 +0900\n"\
-                "    do nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Aug 1 19:41:03 2013 +0900\n"\
                 "    do nothing\n"\
 		"\n"\
                 ""
