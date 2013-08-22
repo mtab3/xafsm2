@@ -324,6 +324,8 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
 
 void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
 {
+  MMainTh->AssignDispCh( 0 );              // QXafs のために PM16C からトリガパルスをとる
+                                           // 配線は、チャンネル A ( 0 ) に繋いでる。
   MMainTh->SetTimingOutMode( 3 );          // 10um puls at every interval
   MMainTh->SetTimingOutStart( sp );
   MMainTh->SetTimingOutEnd( ep );
