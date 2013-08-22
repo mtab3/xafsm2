@@ -776,9 +776,7 @@ double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数�
   if (( Type == "DV" )||( Type == "DV2" )) {
     if ( dtime < 0.0001 ) dtime = 0.0001;
     if ( dtime > 1.0 ) dtime = 1.0;
-    qDebug() << "dtime1 " << dtime;
     if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
-    qDebug() << "dtime2 " << dtime;
     if ( Type == "DV2" ) {   // DV の場合、ここでは内部変数 setTime に値を設定するだけ。
       IsBusy2On( Driver, "SetAperture" );
       s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
