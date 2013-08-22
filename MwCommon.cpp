@@ -13,7 +13,7 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   ShowTAE();
 
   for ( int i = 0; i < ATOMS; i++ ) {
-    buf = QString( "%1 %2" ).arg( i, 2 ).arg( A[i].AName );
+    buf = QString( "%2 (%1)" ).arg( i, 2 ).arg( A[i].AName );
     SelectTA->addItem( buf, QVariant( i ) );
   }
   SelectTA->setCurrentIndex( SelectedA );
@@ -143,6 +143,14 @@ void MainWindow::HideB( bool f )
 
 void MainWindow::NewSelA( int i )
 {
+  if ( SelectTA->count() > ATOMS ) {       // 既存のリストにない元素名が入力されたら
+    while ( SelectTA->count() > ATOMS ) {  // そのゴミの名前を削って
+      SelectTA->removeItem( ATOMS );
+    }
+    SelectTA->setCurrentIndex( SelectedA ); // 選択元素は元に戻しておく
+    return;
+  }
+
   if ( u->keV2deg( Vic[ i ].AE[ SelectedE ] ) > 0 ) {
     SelectedA = (AtomNo)i;
     SelectTA->setCurrentIndex( i );
@@ -172,7 +180,7 @@ void MainWindow::NewSelA( int i )
       }
     } // それでもダメならエラー表示して何もしない
     statusbar->showMessage( tr( "Absorption edge of the atom is out of range." ), 5000 );
-    SelectTA->setCurrentIndex( SelectedA );
+    SelectTA->setCurrentIndex( SelectedA ); 
   }
 }
 
