@@ -1053,7 +1053,7 @@ bool AUnit::InitSensor( void )
 
 bool AUnit::GetStat( void )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSD" ) {
     IsBusy2On( Driver, "GetStat" );
@@ -1098,7 +1098,7 @@ double AUnit::stat( STATELM i )
 
 bool AUnit::SetRealTime( double val )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSDP" ) {
     IsBusy2On( Driver, "SetRealTime1" );
@@ -1111,7 +1111,7 @@ bool AUnit::SetRealTime( double val )
 
 bool AUnit::SetRealTime( int ch, double val )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSD" ) {
     IsBusy2On( Driver, "SetRealTime2" );
@@ -1125,7 +1125,7 @@ bool AUnit::SetRealTime( int ch, double val )
 
 bool AUnit::GetRealTime( int ch )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSD" ) {
     IsBusy2On( Driver, "GetRealTime" );
@@ -1160,7 +1160,7 @@ double AUnit::realTime( int ch )
 
 bool AUnit::SetLiveTime( double val )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSDP" ) {
     IsBusy2On( Driver, "SetLiveTime1" );
@@ -1173,7 +1173,7 @@ bool AUnit::SetLiveTime( double val )
 
 bool AUnit::SetLiveTime( int ch, double val )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSD" ) {
     IsBusy2On( Driver, "SetLiveTime2" );
@@ -1187,7 +1187,7 @@ bool AUnit::SetLiveTime( int ch, double val )
 
 bool AUnit::GetLiveTime( int ch )
 {
-  bool rv;
+  bool rv = false;
 
   if ( Type == "SSD" ) {
     IsBusy2On( Driver, "GetLiveTime2" );

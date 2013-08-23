@@ -45,9 +45,8 @@ QString MainWindow::fixS( QString s, int l )
 
   r.fill( ' ', l - s.size() );
   s += r;
-  s.left( l );
 
-  return s;
+  return s.left( l );
 }
 
 void MainWindow::WriteHeader( int Rpt )

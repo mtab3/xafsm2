@@ -15,6 +15,6 @@ void cBar::paintEvent( QPaintEvent * )
   Draw( &painter );
 }
 
-void cBar::Draw( QPainter *p )
+void cBar::Draw( QPainter * )
 {
 }

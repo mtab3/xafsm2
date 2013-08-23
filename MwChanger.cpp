@@ -15,7 +15,18 @@ void MainWindow::setupChangerArea( void )
     }
     ChangerSelect->addItem( Changers[i]->name() );
   }
-  NewChangerSelected( ChangerSelect->currentIndex() );
+  if ( Changers.count() > 0 ) {
+    AutoModeButton->setEnabled( true );
+    ChangerGo->setEnabled( true );
+    SetChangerCenter->setEnabled( true );
+    DatumChanger->setEnabled( true );
+    NewChangerSelected( ChangerSelect->currentIndex() );
+  } else {
+    AutoModeButton->setEnabled( false );
+    ChangerGo->setEnabled( false );
+    SetChangerCenter->setEnabled( false );
+    DatumChanger->setEnabled( false );
+  }
   connect( ChangerSelect, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( NewChangerSelected( int ) ) );
   connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
@@ -64,6 +75,9 @@ void MainWindow::AutoMeasurement( void )
 
 void MainWindow::AutoSequence( void )
 {
+  if ( Changers.count() <= 0 )
+    return;
+
   AutoModeFirst = false;
 
   //  qDebug() << "AutoSequence";
@@ -88,6 +102,9 @@ void MainWindow::AutoSequence( void )
 
 void MainWindow::SetNewChangerCenter( void )
 {
+  if ( Changers.count() <= 0 )
+    return;
+
   Changer *changer = Changers[ ChangerSelect->currentIndex() ];
   AUnit *c1 = changer->unit1();
   AUnit *c2 = changer->unit2();
@@ -103,6 +120,9 @@ void MainWindow::SetNewChangerCenter( void )
 
 void MainWindow::moveToTarget( int target, double dx, double dz )
 {
+  if ( Changers.count() <= 0 )
+    return;
+
   Changer *changer = Changers[ ChangerSelect->currentIndex() ];
   AUnit *c1 = changer->unit1();
   AUnit *c2 = changer->unit2();
@@ -124,6 +144,9 @@ void MainWindow::moveToTarget( int target, double dx, double dz )
 
 void MainWindow::ChangerGoToNewPosition( void )
 {
+  if ( Changers.count() <= 0 )
+    return;
+
   moveToTarget( ChangerToGoHolderSelect->value(),
 		ChangerToGoFinePosition1->text().toDouble(),
 		ChangerToGoFinePosition2->text().toDouble() );
@@ -158,6 +181,9 @@ void MainWindow::ChangerReached( QString )
 
 void MainWindow::NewChangerSelected( int i )
 {
+  if ( Changers.count() <= 0 )
+    return;
+
   ChangerToGoHolderSelect->setMinimum( 1 );
   ChangerToGoHolderSelect->setMaximum( Changers[ i ]->holders() );
   ChangerCurrentHolder->setMinimum( 1 );
@@ -177,6 +203,9 @@ void MainWindow::NewChangerSelected( int i )
 
 void MainWindow::ShowChangerPosition( QString )
 {
+  if ( Changers.count() <= 0 )
+    return;
+
   Changer *changer = Changers[ ChangerSelect->currentIndex() ];
   AUnit *c1 = changer->unit1();
   AUnit *c2 = changer->unit2();
