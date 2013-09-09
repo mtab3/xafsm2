@@ -16,6 +16,10 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   SelLR[ LEFT_AX ] = 0;
   SelLR[ RIGHT_AX ] = 1;
 
+  ShowProgressB = false;
+  ProgressScale = 1.0;
+  Progress = 0.0;
+
   Clear();
   valid = false;
   QXafsMode = false;
@@ -27,6 +31,8 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   BLACK = QColor( 0, 0, 0 );
   MCLineC = QColor( 210, 180, 0 );    // mouse cursor line color
   ASelC = QColor( 0, 255, 120 );      // Area Select Color
+  ProgressBBC = QColor( 0, 255, 0 );
+  ProgressBC = QColor( 220, 220, 0 );
   grouplines = 3;
 
   upp = 1;
@@ -400,6 +406,15 @@ void XYView::Draw( QPainter *p )
     rec = QRectF( LM + HW, TM + VH + BM * 0.5, LM * 0.9, BM * 0.45 );
     cc.DrawText( p, rec, F1, AlLC, SCALESIZE,
 		 QString( "%1" ).arg( ( cc.s2rx( m.x() ) - center ) * upp ) );
+  }
+
+  if ( ShowProgressB ) {
+    int PBWidth = HW * 0.8;
+    int PBHeight = VH * 0.2;
+    p->fillRect( LM + HW * 0.1, height() - TM - VH * 0.4,
+		 PBWidth * Progress / ProgressScale, PBHeight, ProgressBC );
+    p->setPen( ProgressBBC );
+    p->drawRect( LM + HW * 0.1, height() - TM - VH * 0.4, PBWidth, PBHeight );
   }
 }
 

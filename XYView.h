@@ -105,6 +105,8 @@ private:
   QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
   QColor ASelC;
+  QColor ProgressBBC;      // Progress Bar box color
+  QColor ProgressBC;       // Progress Bar color
   
   int DispGroup[ MAXLINES ];     // 同じスケールで表示される線のグループ分け
   LRAX LineLR[ MAXLINES ];       // 線のスケールを左右どちらに表示するか
@@ -146,6 +148,10 @@ private:
   void wheelEvent( QWheelEvent *e );
   int getL( int l );
   void ReFillFirst10Groups( void );
+
+  bool ShowProgressB;
+  double ProgressScale;
+  double Progress;
 
 public:
   XYView( QWidget *parent = NULL );
@@ -193,6 +199,9 @@ public:
   void SetDispF( int l, bool f ) { dispf[ getL( l ) ] = f; };
   void SetQXafsMode( bool f ) { QXafsMode = f; };
   void SetGroupLines( int ls ) { grouplines = ls; };
+  void ShowProgressBar( bool f ) { ShowProgressB = f; };
+  void SetProgressScale( double s ) { ProgressScale = s; };
+  void SetProgress( double p ) { Progress = p; };
 
 public slots:
   void ChooseAG( int i, bool f );

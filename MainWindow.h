@@ -428,6 +428,7 @@ private:
   void TouchDelegateFile( void );
   QString AutoModeComment;
 
+  void ShowQXafsProgress( void );
   void setupQXafsMode( void );
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );

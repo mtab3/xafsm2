@@ -439,6 +439,7 @@ void MainWindow::QXafsMeasSequence( void )
     if ( QIntervalBlock1 )
       break;
     // 測定開始！ ( = 分光器を終了地点へ移動)
+    MeasView->ShowProgressBar( true );
     statusbar->showMessage( tr( "Forward scan" ) );
     MMainTh->SetValue( QXafsEP );   // 減速距離を含めた終了地点へ
     QIntervalBlock1 = QIntervalBlock2 = true;
@@ -455,6 +456,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 計測器にデータ読み出し命令発行(完了するまでループ)
     if ( mUnits.QRead() )
       break;
+    MeasView->ShowProgressBar( false );
     mUnits.clearStage();
     MeasStage++;
     break;
@@ -504,14 +506,17 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     }
     statusbar->showMessage( tr( "Backward scan" ) );
+    MeasView->ShowProgressBar( true );
     mUnits.clearStage();  
     MeasStage++;
-    // 計測器にデータ読み出し命令発行(完了するまでループ)
   case 11:
+    // 計測器に計測開始命令発行(完了するまでループ)
     if ( mUnits.QStart() )
       break;
+    mUnits.clearStage();  
     MeasStage++;
     // break; しない
+    break;  // してみる。
   case 12:   // 分岐飛び込み点 2  : 戻り測定なし
     // 分光器をスタート地点に戻す
     // 「戻りも測定」の場合、戻り測定記録ファイルのヘッダ書き出し
@@ -528,6 +533,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 計測器に測定結果を読み出す指示(完了するまでループ)
     if ( mUnits.QRead() )
       break;
+    MeasView->ShowProgressBar( false );
     mUnits.clearStage();
     MeasStage++;
     break;
@@ -590,7 +596,6 @@ void MainWindow::QXafsFinish( void )
   QXafsFinish0();
   onMeasFinishWorks();
 }
-
 
 void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 {
@@ -700,3 +705,12 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   MeasView->update();
 }
 
+void MainWindow::ShowQXafsProgress( void )
+{
+  if ( QXafsSP != QXafsEP ) {
+    MeasView
+      ->SetProgress( fabs( ( MMainTh->value().toDouble() - QXafsSP )
+			   / ( QXafsEP - QXafsSP ) ) );
+    MeasView->update();
+  }
+}

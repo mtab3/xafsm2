@@ -327,13 +327,6 @@ bool AUnit::QStart( void )
       IsBusy2On( Driver, "Start" );
       s->SendCMD2( Uid, DevCh, "qInitialize", QString::number( setTime ) );
       LocalStage++;
-      rv = true;
-      break;
-    case 1:
-      qDebug() << "set time " << setTime;
-      IsBusy2On( Driver, "Start" );
-      s->SendCMD2( Uid, DevCh, "qInitialize", QString::number( setTime ) );
-      LocalStage++;
       rv = false;
       break;
     }

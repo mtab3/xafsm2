@@ -7,6 +7,11 @@ void MainWindow::MeasSequence( void )
 
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
+
+  if ( QXafsMode->isChecked() ) {
+    ShowQXafsProgress();
+  }
+
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
     return;
   }

@@ -95,6 +95,7 @@ bool MUnits::QStart( void )   // QXAFS
 // 親ユニットを持った QXAFS 可能なユニットが出てくるまで親ユニットのことは気にしない
 bool MUnits::QRead( void )   // QXAFS
 {
+  bool f;
   bool ff = false;
 
   for ( int i = 0; i < Units.count(); i++ ) {
@@ -105,7 +106,8 @@ bool MUnits::QRead( void )   // QXAFS
 	break;
       }
     } else {
-      ff |= Units.at(i)->au->QRead();
+      ff |= ( f = Units.at(i)->au->QRead() );
+      qDebug() << "munit " << i << f;
     }
   }
 
