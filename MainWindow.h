@@ -289,7 +289,6 @@ private:
   void S2DWriteBody2( void );
   void S2DWriteBlankLine( void );
   void S2DWriteTail( void );
-  void S2DSetUseChangers( bool f );
 
   QVector<AUnit*> SensWithRange;
 
@@ -665,6 +664,7 @@ private slots:
   void S2DScanStart( void );
   void S2DScanSequence( void );
   void S2DNewChangerSelected( int i );
+  void S2DSetUseChangers( bool f );
 
  signals:
   void SelectedSSD( int i, bool f );

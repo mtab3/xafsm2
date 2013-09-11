@@ -32,24 +32,6 @@ void MainWindow::setupScan2DArea( void )
     SelectS2DSensor->addItem( ASensors[i]->getName() );
   }
 
-  for ( int i = 0; i < Changers.count(); i++ ) {
-    // Changers[] は MwChanger (MwSetup) と共有
-    S2DChangerSelect->addItem( Changers[i]->name() );
-  }
-  if ( Changers.count() > 0 ) {
-    S2DUseChanger->setChecked( true );
-    S2DUseChanger->setEnabled( true );
-    S2DNewChangerSelected( S2DChangerSelect->currentIndex() );
-    connect( S2DChangerSelect, SIGNAL( currentIndexChanged( int ) ),
-	     this, SLOT( S2DNewChangerSelected( int ) ) );
-    S2DUse3rdAx->setChecked( false );
-    S2DUse3rdAx->setEnabled( false );
-  } else {
-    S2DUseChanger->setChecked( false );
-    S2DUseChanger->setEnabled( false );
-    S2DUse3rdAx->setEnabled( true );
-  }
-
   for ( int i = 0; i < AMotors.count(); i++ ) {
     // SetSpeed, SetMaxSpeed 等が使えないとダメ。現状 PM のみ
     if ( AMotors[i]->getType() == "PM" ) {
@@ -63,6 +45,24 @@ void MainWindow::setupScan2DArea( void )
     newAx0( i, S2DAxis[i]->currentIndex() );
     connect( S2DAxis[i], SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( newAx( int ) ) );
+  }
+
+  for ( int i = 0; i < Changers.count(); i++ ) {
+    // Changers[] は MwChanger (MwSetup) と共有
+    S2DChangerSelect->addItem( Changers[i]->name() );
+  }
+  if ( Changers.count() > 0 ) {
+    S2DUseChanger->setChecked( true );
+    S2DUseChanger->setEnabled( true );
+    S2DNewChangerSelected( S2DChangerSelect->currentIndex() );
+    connect( S2DChangerSelect, SIGNAL( currentIndexChanged( int ) ),
+	     this, SLOT( S2DNewChangerSelected( int ) ) );
+    S2DUse3rdAx->setChecked( false );
+    // S2DUse3rdAx->setEnabled( false );
+  } else {
+    S2DUseChanger->setChecked( false );
+    S2DUseChanger->setEnabled( false );
+    // S2DUse3rdAx->setEnabled( true );
   }
 
   inS2D = false;
@@ -80,16 +80,17 @@ void MainWindow::setupScan2DArea( void )
     connect( S2DSteps[i], SIGNAL( editingFinished() ), this, SLOT( newS2DPoints() ) );
     connect( S2DPoints[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ) );
   }
-  connect( S2DUseChanger, SIGNAL( toggled(bool) ), this, SLOT( SetUseChangers(bool) ) );
+  connect( S2DUseChanger, SIGNAL( toggled(bool) ), this, SLOT( S2DSetUseChangers(bool) ) );
 }
 
 void MainWindow::S2DSetUseChangers( bool f )
 {
   if ( f ) {
     S2DUse3rdAx->setChecked( false );
-    S2DUse3rdAx->setEnabled( false );
+    // S2DUse3rdAx->setEnabled( false );
+    S2DNewChangerSelected( S2DChangerSelect->currentIndex() );
   } else {
-    S2DUse3rdAx->setEnabled( true );
+    // S2DUse3rdAx->setEnabled( true );
   }
 }
 
@@ -98,14 +99,26 @@ void MainWindow::S2DNewChangerSelected( int i )
   if ( Changers.count() <= 0 )
     return;
 
+#if 0
   disconnect( SIGNAL( newValue( QString ) ),
 	      this, SLOT( ShowS2DChangerPosition( QString ) ) );
   connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
 	   this, SLOT( ShowS2DChangerPosition( QString ) ) );
   connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
 	   this, SLOT( ShowS2DChangerPosition( QString ) ) );
+
   Changers[i]->unit1()->GetValue();
   Changers[i]->unit2()->GetValue();
+#endif
+
+  for ( int j = 0; j < S2DOkMotors.count(); j++ ) {
+    if ( Changers[i]->unit1() == S2DOkMotors[j] ) {
+      S2DAx1->setCurrentIndex( j );
+    }
+    if ( Changers[i]->unit2() == S2DOkMotors[j] ) {
+      S2DAx2->setCurrentIndex( j );
+    }
+  }
 }
 
 void MainWindow::newS2DPoints( void )
