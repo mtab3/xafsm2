@@ -395,28 +395,31 @@ void MainWindow::S2DScanSequence( void )
   // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
-  // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
-
+  // モータ駆動中は入らない
+  // 以下、センサーのチェックは連続スキャンのことを考え始めているが
+  // モータに関してはまだステップのことだけ考える
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] && S2DMotors[i]->isBusy0() )
       return;
   }
-  // センサー busy でも入ってこない
-  if ( S2DStepF ) {
+
+  if ( S2DStepF ) {  // Step Scan の場合: センサー busy の時は入らない
     if ( mUnits.isBusy() ) {
       return;
     }
-  } else {
-    if ( isS2DSFluo ) {
-      if ( S2DStage < 3 ) {
+  } else {  // 連続スキャンの場合
+    if ( isS2DSFluo ) {   // 検出器が SSD だったら
+      if ( S2DStage < 3 ) {   // Stage3 までは mUnits Busy なら入らない
 	if ( mUnits.isBusy() )
 	  return;
       } else {
 	if ( SFluo->isBusy2() ) {
+	  // Stage3 以降は SSD が busy2 かどうかだけを訊く
+	  // (連続スキャン中busy は常に外れない)
 	  return;
 	}
       }
-    } else {
+    } else { // そうでなければ、mUnits Busy なら入らない
       if ( mUnits.isBusy() )
 	return;
     }
