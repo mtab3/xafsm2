@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "develop2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Sep 12 18:44:38 2013 +0900\n"\
+                "    working on S2D\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 11 15:25:48 2013 +0900\n"\
                 "    in S2D tab, 'Changer' selection is available\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Aug 22 20:59:18 2013 +0900\n"\
                 "    it looks it works\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Aug 22 20:57:43 2013 +0900\n"\
-                "    Merge branch 'develop2'\n"\
 		"\n"\
                 ""
 #endif
