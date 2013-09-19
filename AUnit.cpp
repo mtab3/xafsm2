@@ -1213,6 +1213,30 @@ double AUnit::liveTime( int ch )
   return rv;
 }
 
+void AUnit::SetLowLimit( int ch, double ll )
+{
+  if ( ch < MaxSSDs ) {
+    MCALowLimit[ ch ] = ll;
+  } else {
+    qDebug() << "Setting LowLimit the ch " << ch << "is too big";
+  }
+}
+
+double AUnit::lowLimit( int ch )
+{
+  double rv = 0;
+
+  if ( Type == "SSD" ) {
+    if ( ch < MaxSSDs ) {
+      rv = MCALowLimit[ ch ];
+    } else {
+      qDebug() << "getting LowLimit the ch " << ch << "is too big";
+    }
+  }
+
+  return rv;
+}
+
 void AUnit::ReactGetDataLinkCh( SMsg msg )
 {
   if ( Type == "SSD" ) {

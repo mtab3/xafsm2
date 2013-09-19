@@ -28,11 +28,12 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
     connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ) );
   }
 
+  ReadLowerLimitSetting();
   StartResume = MCA_START;
   
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
 	   this, SLOT( showPeakingTime( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetThreshold( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
+  connect( s, SIGNAL( AnsGetThreshold2( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
   connect( s, SIGNAL( AnsGetCalibration( SMsg ) ),
 	   this, SLOT( showCalibration( SMsg ) ) );
   connect( s, SIGNAL( AnsGetDynamicRange( SMsg ) ),
@@ -119,6 +120,31 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( SelectedLimitPSEnergy( bool ) ) );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ) );
+}
+
+void MainWindow::ReadLowerLimitSetting( void )
+{
+  if ( SFluo == NULL )
+    return;
+
+  QFile file( QString( ":SSDLowLimits.txt" ) );
+  if ( !file.open( QIODevice::ReadOnly ) ) {
+    qDebug() << "Cannot open [SSDLowLimits.txt]\n";
+    return;
+  }
+  
+  QTextStream in(&file);
+
+  while( !in.atEnd() ) {
+    QStringList cols = in.readLine().simplified().split( ' ' );
+    if ( cols.count() > 1 ) {
+      if ( cols[0][0] != '#' ) {
+	SFluo->SetLowLimit( cols[0].toInt(), cols[1].toDouble() );
+      }
+    }
+  }
+
+  file.close();
 }
 
 void MainWindow::newCalibration( void )
@@ -414,7 +440,7 @@ void MainWindow::SelSSDs( int ch )
 void MainWindow::getMCASettings( int ch )
 {
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold2", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
@@ -498,7 +524,7 @@ void MainWindow::showPeakingTime( SMsg msg )
 void MainWindow::showThreshold( SMsg msg )
 {
   if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
-    ThresholdInput->setText( msg.Val() );
+    ThresholdInput->setText( msg.Vals().at(1) );
   }
 }
 

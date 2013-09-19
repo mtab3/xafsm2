@@ -34,6 +34,7 @@ private:
   int MCACh;
   double realTime;
   double liveTime;
+  double lowerLimit;
 
   bool dispLog;
   FluoDBase *fdbase;
@@ -84,6 +85,7 @@ public:
   int *setMCAdataPointer( int length );
   void SetRealTime( double rt ) { realTime = rt; };
   void SetLiveTime( double lt ) { liveTime = lt; };
+  void SetLowLimit( double LL ) { lowerLimit = LL; };
   void SetMCACh( int i ) { MCACh = i; };
   void makeValid( bool v ) { valid = v; };
   double getRealTime( void ) { return realTime; };

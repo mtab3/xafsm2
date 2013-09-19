@@ -32,6 +32,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   MCACh = -1;
   realTime = 0;
   liveTime = 0;
+  lowerLimit = 0;
   MaxE = 20.;
   MinE = 0.;
   mMode = M_NO;

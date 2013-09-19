@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "SSDThreshold" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Sep 17 18:54:10 2013 +0900\n"\
+                "    do nothing\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 11 15:25:48 2013 +0900\n"\
+                "    in S2D tab, 'Changer' selection is available\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Sep 9 15:22:39 2013 +0900\n"\
                 "    Progress-bar is displaied while QXAFS measurement.   A severe bug that QXafs-on-backward was broken was fixed\n"\
@@ -15,14 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Aug 22 20:59:18 2013 +0900\n"\
                 "    it looks it works\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Aug 22 20:57:43 2013 +0900\n"\
-                "    Merge branch 'develop2'\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Aug 22 20:57:23 2013 +0900\n"\
-                "    Now, Target Atom is input-able.  By typing 1 or 2 letters of the target atom name, the atom is selected.\n"\
 		"\n"\
                 ""
 #endif

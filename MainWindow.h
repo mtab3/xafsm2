@@ -620,6 +620,7 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
+  void ReadLowerLimitSetting( void );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );
