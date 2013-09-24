@@ -114,6 +114,7 @@ int KeV2Pix::E2p( int i, double E )
   int irv = (int)( rv + 0.5 );
   if ( irv < 0 ) irv = 0;
   if ( irv > MCALen ) irv = MCALen - 1;
+
   return irv;
 }
 

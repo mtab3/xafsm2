@@ -28,7 +28,6 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
     connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ) );
   }
 
-  ReadLowerLimitSetting();
   StartResume = MCA_START;
   
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
@@ -127,9 +126,17 @@ void MainWindow::ReadLowerLimitSetting( void )
   if ( SFluo == NULL )
     return;
 
-  QFile file( QString( ":SSDLowLimits.txt" ) );
+  QString fname;
+  QString basefname = "SSDLowLimits";
+  QFileInfo fi( basefname + ".txt" );
+  if ( fi.exists() )
+    fname = basefname + ".txt";
+  else 
+    fname = QString( ":" ) + basefname + "0.txt";
+
+  QFile file( fname );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    qDebug() << "Cannot open [SSDLowLimits.txt]\n";
+    qDebug() << tr( "Cannot open [%1]" ).arg( fname );
     return;
   }
   
@@ -139,7 +146,8 @@ void MainWindow::ReadLowerLimitSetting( void )
     QStringList cols = in.readLine().simplified().split( ' ' );
     if ( cols.count() > 1 ) {
       if ( cols[0][0] != '#' ) {
-	SFluo->SetLowLimit( cols[0].toInt(), cols[1].toDouble() );
+	SFluo->SetLowLimit( cols[0].toInt(),
+			    kev2pix->E2p( cols[0].toInt(), cols[1].toDouble()/1000. ) );
       }
     }
   }
@@ -463,6 +471,8 @@ void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ば�
   int ch = MCACh->text().toInt();
   ROIStartInput->setText( ROIStart[ ch ] );
   ROIEndInput->setText( ROIEnd[ ch ] );
+  kev2pix->setMCALen( MCALength );
+  ReadLowerLimitSetting();
 }
 
 void MainWindow::newROIStart( const QString &newv )

@@ -67,6 +67,7 @@ NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC
 
 # 'CRYSTAL' lines define crystals which can be used at the baam line.
 CRYSTAL  "Si(111)"   3.1355316
+CRYSTAL  "Si(311)"   1.637478
 CRYSTAL  "Si(333)"   1.0451772
 CRYSTAL  "Ge(111)"   3.2663822
 CRYSTAL  "Ge(333)"   1.0887941

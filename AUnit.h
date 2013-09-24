@@ -97,7 +97,7 @@ class AUnit : public QObject
   QStringList MCAStats;
   double MCARealTime[ MaxSSDs + 1 ];
   double MCALiveTime[ MaxSSDs + 1 ];
-  double MCALowLimit[ MaxSSDs + 1 ];
+  //  int MCALowLimit[ MaxSSDs + 1 ];
   bool SSDUsingCh[ MaxSSDs + 1 ];       // Only 19 is necessary, 20 is only for safety.
 
   int LocalStage;
@@ -237,8 +237,7 @@ public:
   double stat( STATELM i );
   double realTime( int ch );
   double liveTime( int ch );
-  double lowLimit( int ch );
-  void SetLowLimit( int ch, double th );
+  void SetLowLimit( int ch, int llpix );
   bool getSSDUsingCh( int i )
   { if ( i < MaxSSDs ) return SSDUsingCh[i]; else return false; };
   bool isRangeSelectable( void ) { return RangeSelectable; };
