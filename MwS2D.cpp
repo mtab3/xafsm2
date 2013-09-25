@@ -380,6 +380,206 @@ void MainWindow::SetupS2DParams( void )
 
 #define S2D_END_STAGE    ( 99 )
 
+void MainWindow::S2DStepScanSequence( void )
+{
+  // 1番目の軸と、2, 3番目の軸は、ステップの考え方が違う。
+  // 1番目の軸は、測定中に次の点に移動するように制御しているので
+  // s: -10, e: -10, periods 10 (step 2) とすると、
+  //    -10〜-8, -8〜-6, ... 8〜10 と 10回測定 + 移動する。
+  // 2番目の軸は、同じく
+  // s: -10, e: -10, periods 10 (step 2) とすると、
+  //    -10, -8, -6, ... 8, 10 と 10回移動して11回測定する。
+  // このため、1番目の軸と、2番目の軸を同じにしても、正方形の測定にならない。
+  // もし同じにしたければ
+  // 1番目の軸:: s: -11, e: -11, periods 11 (step 2) 
+  // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
+  // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
+
+  // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
+
+  for ( int i = 0; i < S2DMotors.count(); i++ ) {
+    if ( S2DMotorUse[i] && S2DMotors[i]->isBusy0() )
+      return;
+  }
+  // センサー busy でも入ってこない
+  if ( S2DStepF ) {
+    if ( mUnits.isBusy() ) {
+      return;
+    }
+  } else {
+    if ( isS2DSFluo ) {
+      if ( S2DStage < 3 ) {
+	if ( mUnits.isBusy() )
+	  return;
+      } else {
+	if ( SFluo->isBusy2() ) {
+	  return;
+	}
+      }
+    } else {
+      if ( mUnits.isBusy() )
+	return;
+    }
+  }
+
+  int Limit0;
+  int pps;
+
+  switch( S2DStage ) {
+  case 0:
+    // 検出器初期化
+    if ( mUnits.init() == false ) {  // true :: initializing
+      mUnits.clearStage();
+      if ( S2DStepF )
+	S2DStage = 2;
+      else
+	SFluo->setSSDPresetType( "NONE" );
+	S2DStage = 1;
+    }
+    break;
+  case 1:
+    if ( SFluo->InitSensor() == false ) {  // true :: initializing
+      SFluo->RunStart();
+      SFluo->InitLocalStage();
+      S2DStage = 3;
+    }
+    break;
+  case 2:
+    // 検出器の計測時間セット
+    mUnits.setDwellTimes( S2DTime1->text().toDouble() );
+    mUnits.setDwellTime();
+    S2DStage++;
+    break;
+  case 3:
+    // 全軸に対して
+    for ( int i = 0; i < S2DMotors.count(); i++ ) {
+      S2DMotors[i]->SetSpeed( HIGH );                          // スピードマックス
+      S2DMotors[i]->SetValue( S2DMotors[i]->u2p( S2Dsx[i] ) ); // 始点に移動
+      S2Di[i] = 0; // ステップコントロール変数初期化
+    }
+    S2DStage++;
+    break;
+  case 4:
+    // 1st Ax のみ、スキャン用のスピードにセット
+    pps = (int)fabs( (double)S2Ddx[0]
+		     / S2DMotors[0]->getUPP()
+		     / S2DTime1->text().toDouble() );
+    if ( pps == 0 ) pps = 1;
+    if ( pps > S2DMotors[0]->highSpeed() )
+      pps = S2DMotors[0]->highSpeed();
+    S2DMotors[0]->SetHighSpeed( pps );
+    S2DStage++;
+    // break しない
+  case 5:     // リピートポイント
+    // 計測開始準備
+    if ( S2DStepF ) {
+      mUnits.clearStage();
+      if ( ! mUnits.isParent() )  // 親がいなければ次のステップはとばす
+	S2DStage++;
+      S2DStage++;
+    } else {                      // SSD の連続測定
+      SFluo->GetMCAs();
+      qDebug() << "get mca";
+      // 同時に次の点に移動開始
+      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
+      S2DStage = 8;
+    }
+    break;
+  case 6:
+    if ( mUnits.getValue0() == false ) { // 親ユニットの準備
+      mUnits.clearStage();
+      S2DStage++;
+    }
+    break;
+  case 7:
+    if ( mUnits.getValue() == false ) {  // 計測開始
+      mUnits.clearStage();
+      // 同時に次の点に移動開始
+      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
+      S2DStage++;
+    }
+    break;
+  case 8:
+    // 計測値読み取り
+    mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
+    // ファイル記録
+    S2DWriteBody( S2DVals[0] - S2DLastV );
+    if ( !isS2DSFluo || S2DStepF || S2Di[0] > 0 ) { // 蛍光連続測定なら
+      // 描画
+      S2DV->setData( S2Di[0] - ( (isS2DSFluo && !S2DStepF) ? 1 : 0 ),
+		     S2Di[1], S2DVals[0] - S2DLastV );
+    }
+    S2DLastV = S2DVals[0];
+    // ステップコントロール変数更新
+    S2Di[0]++;
+    Limit0 = S2Dps[0];
+    if ( isS2DSFluo && !S2DStepF ) // 蛍光連続測定なら
+      Limit0 += 1;
+    if ( S2Di[0] < Limit0 ) { // 1st ax の端点でなければ
+      S2DStage = 5;
+      break;
+    }
+    // 1st ax の端点に到達していたら
+    S2DWriteBlankLine();
+    S2Di[0] = 0;
+    S2Di[1]++;
+    if ( S2Di[1] <= S2Dps[1] ) {       // 2nd ax の端点でなければ
+      S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
+      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+      S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] + S2Di[1] * S2Ddx[1] ) );
+                                                               // 2nd ax は次の点に移動
+      S2DStage = 4;    // 1st ax の速度をステップ用の速度に戻す
+      break;
+    }
+    // 2nd ax の端点に達していたら
+    if ( S2DUse3rdAx->isChecked() ) {  // 3軸スキャンする場合
+      S2Di[1] = 0;
+      S2Di[2]++;
+      if ( S2Di[2] <= S2Dps[2] ) {  // 3rd ax の端点でなければ
+	S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
+	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+	S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] ) ); // 2nd ax も原点に戻し
+	S2DMotors[2]->SetValue( S2DMotors[2]->u2p( S2Dsx[2] + S2Di[2] * S2Ddx[2] ) );
+	                                                         // 3rd ax は次の点に移動
+	S2DStage = 4;    // 1st ax の速度をステップ用の速度に戻す
+	break;
+      }
+    }
+    // 終了
+    S2DStage = S2D_END_STAGE;
+    break;
+
+  case S2D_END_STAGE:
+    S2DWriteTail();
+    S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
+    for ( int i = 0; i < S2DMotors.count(); i++ ) {          // 全軸原点に戻す
+      S2DMotors[i]->SetValue( S2Dnow[i] );
+    }
+    // とりあえずスピードは「High」設定のママほっとく。
+    S2DStage++;
+    break;
+  case S2D_END_STAGE+1:
+    inS2D = false;
+    UUnits.clear( S2D_ID );
+    NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
+    statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
+    S2DStart->setText( tr( "Start" ) );
+    S2DStart->setStyleSheet( NormalB );
+    S2DTimer->stop();
+    break;
+  }
+}
+
+
+
+
+
+// ScanSequence のコピー
+// ステップスキャンが完成していて、連続スキャンを取り入れかけた中間形
+// ここから、連続スキャンを除いてもう一度単純化したものが、現在の
+// StepScanSequence
+#if 0         
+
 void MainWindow::S2DScanSequence( void )
 {
   // 1番目の軸と、2, 3番目の軸は、ステップの考え方が違う。
@@ -569,6 +769,19 @@ void MainWindow::S2DScanSequence( void )
     break;
   }
 }
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
 
 void MainWindow::S2DStop0( void )
 {
