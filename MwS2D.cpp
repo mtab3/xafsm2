@@ -70,7 +70,7 @@ void MainWindow::setupScan2DArea( void )
   isS2DSFluo = false;
 
   connect( S2DStart, SIGNAL( clicked() ), this, SLOT( S2DScanStart() ) );
-  connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DScanSequence() ) );
+  connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ) );
   connect( S2DFileSelect, SIGNAL( clicked() ), S2DFileSel, SLOT( show() ) );
   connect( S2DFileSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( newS2DFileSelected( const QString & ) ) );
@@ -301,9 +301,8 @@ void MainWindow::S2DScanStart( void )
     if ( S2DStepScan->isChecked() ) {  // ステップスキャン
       S2DStepF = true;
     } else {
-      // 連続スキャンは現在サポートしていない
-      if ( ( SFluo == NULL )
-	   ||( S2DOkSensors.value( SelectS2DSensor->currentIndex() ) != SFluo ) ) {
+      // 連続スキャン SFluo の時のみサポートする
+      if ( ( SFluo == NULL )||( !isS2DSFluo ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	return;
       }
@@ -351,6 +350,14 @@ void MainWindow::S2DScanStart( void )
     S2DWriteHead();
     mUnits.clearStage();
     S2DStage = 0;
+    S2DTimer->disconnect();
+    if ( S2DStepF ) {
+      connect( S2DTimer, SIGNAL( timeout() ),
+	       this, SLOT( S2DStepScanSequence() ) );
+    } else {
+      connect( S2DTimer, SIGNAL( timeout() ),
+	       this, SLOT( S2DContinuousSSDScanSequence() ) );
+    }
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
@@ -380,6 +387,10 @@ void MainWindow::SetupS2DParams( void )
 
 #define S2D_END_STAGE    ( 99 )
 
+
+// 連続スキャンのコードは消して、ステップスキャンだけに特化する
+// S2DStepF とかのチェックはこれの外で終わってるものとする
+
 void MainWindow::S2DStepScanSequence( void )
 {
   // 1番目の軸と、2, 3番目の軸は、ステップの考え方が違う。
@@ -395,6 +406,7 @@ void MainWindow::S2DStepScanSequence( void )
   // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
+
   // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
@@ -402,55 +414,30 @@ void MainWindow::S2DStepScanSequence( void )
       return;
   }
   // センサー busy でも入ってこない
-  if ( S2DStepF ) {
-    if ( mUnits.isBusy() ) {
+  if (( isS2DSFluo )&&( S2DStage >= 3 )) {
+    if ( SFluo->isBusy2() )
       return;
-    }
   } else {
-    if ( isS2DSFluo ) {
-      if ( S2DStage < 3 ) {
-	if ( mUnits.isBusy() )
-	  return;
-      } else {
-	if ( SFluo->isBusy2() ) {
-	  return;
-	}
-      }
-    } else {
-      if ( mUnits.isBusy() )
-	return;
-    }
+    if ( mUnits.isBusy() )
+      return;
   }
 
-  int Limit0;
   int pps;
-
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
     if ( mUnits.init() == false ) {  // true :: initializing
       mUnits.clearStage();
-      if ( S2DStepF )
-	S2DStage = 2;
-      else
-	SFluo->setSSDPresetType( "NONE" );
-	S2DStage = 1;
+      S2DStage++;
     }
     break;
   case 1:
-    if ( SFluo->InitSensor() == false ) {  // true :: initializing
-      SFluo->RunStart();
-      SFluo->InitLocalStage();
-      S2DStage = 3;
-    }
-    break;
-  case 2:
     // 検出器の計測時間セット
     mUnits.setDwellTimes( S2DTime1->text().toDouble() );
     mUnits.setDwellTime();
     S2DStage++;
     break;
-  case 3:
+  case 2:
     // 全軸に対して
     for ( int i = 0; i < S2DMotors.count(); i++ ) {
       S2DMotors[i]->SetSpeed( HIGH );                          // スピードマックス
@@ -459,7 +446,7 @@ void MainWindow::S2DStepScanSequence( void )
     }
     S2DStage++;
     break;
-  case 4:
+  case 3:     // もうひとつのリピートポイント
     // 1st Ax のみ、スキャン用のスピードにセット
     pps = (int)fabs( (double)S2Ddx[0]
 		     / S2DMotors[0]->getUPP()
@@ -470,28 +457,20 @@ void MainWindow::S2DStepScanSequence( void )
     S2DMotors[0]->SetHighSpeed( pps );
     S2DStage++;
     // break しない
-  case 5:     // リピートポイント
+  case 4:     // リピートポイント
     // 計測開始準備
-    if ( S2DStepF ) {
-      mUnits.clearStage();
-      if ( ! mUnits.isParent() )  // 親がいなければ次のステップはとばす
-	S2DStage++;
+    mUnits.clearStage();
+    if ( ! mUnits.isParent() )  // 親がいなければ次のステップはとばす
       S2DStage++;
-    } else {                      // SSD の連続測定
-      SFluo->GetMCAs();
-      qDebug() << "get mca";
-      // 同時に次の点に移動開始
-      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
-      S2DStage = 8;
-    }
+    S2DStage++;
     break;
-  case 6:
+  case 5:
     if ( mUnits.getValue0() == false ) { // 親ユニットの準備
       mUnits.clearStage();
       S2DStage++;
     }
     break;
-  case 7:
+  case 6:
     if ( mUnits.getValue() == false ) {  // 計測開始
       mUnits.clearStage();
       // 同時に次の点に移動開始
@@ -499,24 +478,16 @@ void MainWindow::S2DStepScanSequence( void )
       S2DStage++;
     }
     break;
-  case 8:
+  case 7:
     // 計測値読み取り
     mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
     // ファイル記録
-    S2DWriteBody( S2DVals[0] - S2DLastV );
-    if ( !isS2DSFluo || S2DStepF || S2Di[0] > 0 ) { // 蛍光連続測定なら
-      // 描画
-      S2DV->setData( S2Di[0] - ( (isS2DSFluo && !S2DStepF) ? 1 : 0 ),
-		     S2Di[1], S2DVals[0] - S2DLastV );
-    }
-    S2DLastV = S2DVals[0];
+    S2DWriteBody( S2DVals[0] );
+    S2DV->setData( S2Di[0], S2Di[1], S2DVals[0] ); // 描画
     // ステップコントロール変数更新
     S2Di[0]++;
-    Limit0 = S2Dps[0];
-    if ( isS2DSFluo && !S2DStepF ) // 蛍光連続測定なら
-      Limit0 += 1;
-    if ( S2Di[0] < Limit0 ) { // 1st ax の端点でなければ
-      S2DStage = 5;
+    if ( S2Di[0] < S2Dps[0] ) { // 1st ax の端点でなければ
+      S2DStage = 4;
       break;
     }
     // 1st ax の端点に到達していたら
@@ -528,7 +499,7 @@ void MainWindow::S2DStepScanSequence( void )
       S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
       S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] + S2Di[1] * S2Ddx[1] ) );
                                                                // 2nd ax は次の点に移動
-      S2DStage = 4;    // 1st ax の速度をステップ用の速度に戻す
+      S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
       break;
     }
     // 2nd ax の端点に達していたら
@@ -541,7 +512,7 @@ void MainWindow::S2DStepScanSequence( void )
 	S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] ) ); // 2nd ax も原点に戻し
 	S2DMotors[2]->SetValue( S2DMotors[2]->u2p( S2Dsx[2] + S2Di[2] * S2Ddx[2] ) );
 	                                                         // 3rd ax は次の点に移動
-	S2DStage = 4;    // 1st ax の速度をステップ用の速度に戻す
+	S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
 	break;
       }
     }
@@ -570,17 +541,8 @@ void MainWindow::S2DStepScanSequence( void )
   }
 }
 
-
-
-
-
-// ScanSequence のコピー
-// ステップスキャンが完成していて、連続スキャンを取り入れかけた中間形
-// ここから、連続スキャンを除いてもう一度単純化したものが、現在の
-// StepScanSequence
-#if 0         
-
-void MainWindow::S2DScanSequence( void )
+// SSD を使った連続スキャンに限る
+void MainWindow::S2DContinuousSSDScanSequence( void )
 {
   // 1番目の軸と、2, 3番目の軸は、ステップの考え方が違う。
   // 1番目の軸は、測定中に次の点に移動するように制御しているので
@@ -596,35 +558,25 @@ void MainWindow::S2DScanSequence( void )
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
   // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
-
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] && S2DMotors[i]->isBusy0() )
       return;
   }
-  // センサー busy でも入ってこない
-  if ( S2DStepF ) {
-    if ( mUnits.isBusy() ) {
+  // センサー busy でも入ってこない 
+  // 但し、一旦測定を始めてしまうと SSD はずっと busy なので、内部の busy2 だけチェック
+  if ( S2DStage < 3 ) {
+    if ( mUnits.isBusy() )
       return;
-    }
   } else {
-    if ( isS2DSFluo ) {
-      if ( S2DStage < 3 ) {
-	if ( mUnits.isBusy() )
-	  return;
-      } else {
-	if ( SFluo->isBusy2() ) {
-	  return;
-	}
-      }
-    } else {
-      if ( mUnits.isBusy() )
-	return;
+    if ( SFluo->isBusy2() ) {
+      return;
     }
   }
 
-  int Limit0;
-  int pps;
+  qDebug() << "Stage " << S2DStage
+	   << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss.zzz");
 
+  int pps;
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
@@ -672,39 +624,22 @@ void MainWindow::S2DScanSequence( void )
     // break しない
   case 5:     // リピートポイント
     // 計測開始準備
-    if ( S2DStepF ) {
-      mUnits.clearStage();
-      if ( ! mUnits.isParent() )  // 親がいなければ次のステップはとばす
-	S2DStage++;
-      S2DStage++;
-    } else {                      // SSD の連続測定
-      SFluo->GetMCAs();
-      qDebug() << "get mca";
-      // 同時に次の点に移動開始
-      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
-      S2DStage = 8;
-    }
-    break;
-  case 6:
-    if ( mUnits.getValue0() == false ) { // 親ユニットの準備
-      mUnits.clearStage();
-      S2DStage++;
-    }
-    break;
-  case 7:
-    if ( mUnits.getValue() == false ) {  // 計測開始
-      mUnits.clearStage();
-      // 同時に次の点に移動開始
-      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
-      S2DStage++;
-    }
+    SFluo->GetMCAs();
+    // 同時に次の点に移動開始
+    S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
+    S2DStage = 8;
     break;
   case 8:
     // 計測値読み取り
+    // 連続測定なので、各ラインの最初の値は、それまでの積分値になる。
+    // di0 = 0, 1, 2, ... 10 と 11 点の計測を行うとき、
+    // di0 = 0 の点は、そこまでのモータの移動時間等を含んだ積分値
+    // V(1)-V(0), V(2)-V(1), V(3)-V(2),... V(10)-V(9) の 10 の値が、
+    // 表示、記録の対象
     mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
-    // ファイル記録
-    S2DWriteBody( S2DVals[0] - S2DLastV );
-    if ( !isS2DSFluo || S2DStepF || S2Di[0] > 0 ) { // 蛍光連続測定なら
+    if ( S2Di[0] > 0 ) {
+      // ファイル記録
+      S2DWriteBody( S2DVals[0] - S2DLastV );
       // 描画
       S2DV->setData( S2Di[0] - ( (isS2DSFluo && !S2DStepF) ? 1 : 0 ),
 		     S2Di[1], S2DVals[0] - S2DLastV );
@@ -712,10 +647,8 @@ void MainWindow::S2DScanSequence( void )
     S2DLastV = S2DVals[0];
     // ステップコントロール変数更新
     S2Di[0]++;
-    Limit0 = S2Dps[0];
-    if ( isS2DSFluo && !S2DStepF ) // 蛍光連続測定なら
-      Limit0 += 1;
-    if ( S2Di[0] < Limit0 ) { // 1st ax の端点でなければ
+    // 上に書いた事情で、意図したより一点少ない計測になる分、終点を一つ増やしておく
+    if ( S2Di[0] < S2Dps[0]+1 ) { // 1st ax の端点でなければ
       S2DStage = 5;
       break;
     }
@@ -769,17 +702,6 @@ void MainWindow::S2DScanSequence( void )
     break;
   }
 }
-
-#endif
-
-
-
-
-
-
-
-
-
 
 
 
@@ -827,6 +749,9 @@ void MainWindow::S2DWriteHead( void )
 
 void MainWindow::S2DWriteBody( double v )
 {
+  if ( S2DFile.simplified().isEmpty() )
+    return;
+
   QFile f( S2DFile );
 
   if ( !f.open( QIODevice::Append | QIODevice::Text ) )
@@ -871,6 +796,9 @@ void MainWindow::S2DWriteBody2( void )
 
 void MainWindow::S2DWriteBlankLine( void )
 {
+  if ( S2DFile.simplified().isEmpty() )
+    return;
+
   QFile f( S2DFile );
 
   if ( !f.open( QIODevice::Append | QIODevice::Text ) )
@@ -885,6 +813,9 @@ void MainWindow::S2DWriteBlankLine( void )
 
 void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末尾)
 {
+  if ( S2DFile.simplified().isEmpty() )
+    return;
+
   QFile f( S2DFile );
 
   if ( !f.open( QIODevice::Append | QIODevice::Text ) )
@@ -899,4 +830,3 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
 
   f.close();
 }
-

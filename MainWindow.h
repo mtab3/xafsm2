@@ -664,6 +664,7 @@ private slots:
   void newS2DPoints( void );
   void S2DScanStart( void );
   void S2DStepScanSequence( void );
+  void S2DContinuousSSDScanSequence( void );
   void S2DNewChangerSelected( int i );
   void S2DSetUseChangers( bool f );
 
