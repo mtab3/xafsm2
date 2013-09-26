@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "ContinuousS2DMode" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 25 20:35:52 2013 +0900\n"\
+                "    Pseudo Continuous Scan is available with SSD (only with SSD).\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 25 15:32:51 2013 +0900\n"\
                 "    it works\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Sep 19 20:12:18 2013 +0900\n"\
                 "    working on SSDLowLimit\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Sep 17 18:54:10 2013 +0900\n"\
-                "    do nothing\n"\
 		"\n"\
                 ""
 #endif
