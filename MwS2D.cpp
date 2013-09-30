@@ -302,8 +302,7 @@ void MainWindow::S2DScanStart( void )
       S2DStepF = true;
     } else {
       // 連続スキャンは現在サポートしていない
-      if ( ( SFluo == NULL )
-	   ||( S2DOkSensors.value( SelectS2DSensor->currentIndex() ) != SFluo ) ) {
+      if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	return;
       }

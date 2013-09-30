@@ -408,7 +408,7 @@ private:
   void PlaySound( QString name, int times );
 
   // QXAFS
-  QStringList QXafsOk, NXafsOk;
+  QStringList QXafsOk, NXafsOk, CScanOk;
   bool isQXafsModeAvailable;
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
   bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
