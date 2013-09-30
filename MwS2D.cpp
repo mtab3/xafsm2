@@ -301,8 +301,7 @@ void MainWindow::S2DScanStart( void )
     if ( S2DStepScan->isChecked() ) {  // ステップスキャン
       S2DStepF = true;
     } else {
-      // 連続スキャン SFluo の時のみサポートする
-      if ( ( SFluo == NULL )||( !isS2DSFluo ) ) {
+      if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	return;
       }
@@ -406,22 +405,27 @@ void MainWindow::S2DStepScanSequence( void )
   // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
-
   // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] && S2DMotors[i]->isBusy0() )
       return;
   }
+
+#if 0
   // センサー busy でも入ってこない
   if (( isS2DSFluo )&&( S2DStage >= 3 )) {
     if ( SFluo->isBusy2() )
       return;
   } else {
-    if ( mUnits.isBusy() )
-      return;
+#endif
+  if ( mUnits.isBusy() ) {
+    return;
   }
-
+#if 0
+  }
+#endif
+  
   int pps;
   switch( S2DStage ) {
   case 0:

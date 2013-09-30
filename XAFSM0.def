@@ -14,6 +14,7 @@
 # 2013/06/24 add RW_DXMCENTER_CFG line
 # 2013/07/08 change the origin of 4WS(in hatch) Z
 # 2013/07/17 add a parameter for 'DV' which decide maximum integration time.
+# 2013/09/30 add 'CONTOK'      line
 
 #
 # In this definition file,
@@ -59,9 +60,11 @@ QXAFSMODE 1 6000 15000 100 0.1
 #
 # Detectors which can be used for Q-Xafs : QXAFSOK
 # Detectors which can be used for Normal Xafs : NORMALOK
+# Detectors which can be used for Quasi Continuous Scan (in S2D) : CONTOK
 #
 QXAFSOK DV ENC2
 NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC
+CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
 
