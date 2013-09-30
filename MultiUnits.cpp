@@ -63,6 +63,20 @@ bool MUnits::isBusy( void )
   return ff;
 }
 
+bool MUnits::isBusy2( void )
+{
+  bool ff = false;
+
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    ff |= PUnits.at(i)->au->isBusy2();
+  }
+  for ( int i = 0; i < Units.count(); i++ ) {
+    ff |= Units.at(i)->au->isBusy2();
+  }
+
+  return ff;
+}
+
 void MUnits::clearStage( void )
 {
   for ( int i = 0; i < PUnits.count(); i++ ) {
@@ -179,6 +193,7 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
   }
 }
 
+
 void MUnits::ShownMessage( QAbstractButton * )
 {
   QMessageBox *msg1 = (QMessageBox *)sender();
@@ -196,6 +211,18 @@ bool MUnits::getValue0( void )
 
   return ff;
 }
+
+bool MUnits::getValue02( void )
+{
+  bool ff = false;
+
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    ff |= PUnits.at(i)->au->GetValue02();
+  }
+
+  return ff;
+}
+
 
 bool MUnits::getValue( void )
 {

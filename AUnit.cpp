@@ -414,12 +414,18 @@ bool AUnit::GetValue0( void )  // 値読み出しコマンドの前に何か必�
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver, "GetValue0c0" );
-      s->SendCMD2( Uid, Driver, "CounterReset" );
+      s->SendCMD2( Uid, Driver, "SetStopMode", "T" );
       LocalStage++;
       rv = true;
       break;
     case 1:
       IsBusy2On( Driver, "GetValue0c1" );
+      s->SendCMD2( Uid, Driver, "CounyterReset" );
+      LocalStage++;
+      rv = true;
+      break;
+    case 2:
+      IsBusy2On( Driver, "GetValue0c2" );
       IsBusy = true;
       LastFunc = "GetValue0c1";
       emit ChangedIsBusy1( Driver );
@@ -475,6 +481,74 @@ bool AUnit::GetValue0( void )  // 値読み出しコマンドの前に何か必�
 
   return rv;
 }
+
+
+// 値読み出しコマンドの前に何か必要なタイプの場合
+// 別バージョン、presetTime 等の終了条件無しにしてある
+// 連続スキャン (差分で値を見る)モード用
+bool AUnit::GetValue02( void )
+{
+  bool rv = false;
+
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  0,  0,  0,  0, 0,  0 ) ) {
+    switch( LocalStage ) {
+    case 0:
+      IsBusy2On( Driver, "GetValue0c0" );
+      s->SendCMD2( Uid, Driver, "SetStopMode", "N" );
+      LocalStage++;
+      rv = true;
+      break;
+    case 1:
+      IsBusy2On( Driver, "GetValue0c1" );
+      s->SendCMD2( Uid, Driver, "CounyterReset" );
+      LocalStage++;
+      rv = true;
+      break;
+    case 2:
+      IsBusy2On( Driver, "GetValue0c2" );
+      IsBusy = true;
+      LastFunc = "GetValue0c1";
+      emit ChangedIsBusy1( Driver );
+      s->SendCMD2( Uid, Driver, "CountStart" );
+      LocalStage++;
+      rv = false;
+      break;
+    }
+  }
+
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
+  //                       SSDP ではなにもしない (SSDP の時も代表して SSD を呼ぶ)
+  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
+    switch( LocalStage ) {
+    case 0:
+      IsBusy2On( Driver, "GetValue0c0" );
+      s->SendCMD2( Uid, Driver, "SetPresetType", "NONE" );
+      rv = true;
+      LocalStage++;
+      break;
+    case 1:
+      IsBusy2On( Driver, "GetValue0c1" );
+      s->SendCMD2( Uid, Driver, "RunStop" );
+      rv = true;
+      LocalStage++;
+      break;
+    case 2:
+      IsBusy2On( Driver, "GetValue0c2" );
+      IsBusy = true;
+      LastFunc = "GetValue0c1";
+      emit ChangedIsBusy1( Driver );
+      s->SendCMD2( Uid, Driver, "RunStart" );
+      rv = false;
+      LocalStage++;
+      break;
+    }
+  }
+
+  return rv;
+}
+
+
 
 void AUnit::RunStart( void )
 {
