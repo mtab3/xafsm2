@@ -42,6 +42,7 @@ class MUnits : public QObject
   bool getValue0( void );    // ステップ動作用
   bool getValue02( void );   // 連続スキャン用 (PresetTime 等を見ない設定)
   bool getValue( void );
+  bool Close( void );
   //  void readValue( double *rvs, bool correctBack );
   void readValue( double *rvs, double *cpss, bool correctBack );
   QString getName( int i ) { return Units.at(i)->au->getName(); }

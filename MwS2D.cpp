@@ -531,9 +531,15 @@ void MainWindow::S2DStepScanSequence( void )
       S2DMotors[i]->SetValue( S2Dnow[i] );
     }
     // とりあえずスピードは「High」設定のママほっとく。
+    mUnits.clearStage();
     S2DStage++;
     break;
   case S2D_END_STAGE+1:
+     if ( mUnits.Close() )
+      break;
+     S2DStage++;
+    break;
+  case S2D_END_STAGE+2:
     inS2D = false;
     UUnits.clear( S2D_ID );
     NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
@@ -569,7 +575,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
   }
   // センサー busy でも入ってこない 
   // 但し、一旦測定を始めてしまうと検出器はずっと busy なので、内部の busy2 だけチェック
-  if ( S2DStage < 3 ) {
+  if ( S2DStage < 2 ) {
     if ( mUnits.isBusy() )
       return;
   } else {
@@ -682,9 +688,17 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       S2DMotors[i]->SetValue( S2Dnow[i] );
     }
     // とりあえずスピードは「High」設定のママほっとく。
+    mUnits.clearStage();
     S2DStage++;
     break;
   case S2D_END_STAGE+1:
+    qDebug() << "before";
+    if ( mUnits.Close() )
+      break;
+    qDebug() << "after";
+    S2DStage++;
+    break;
+  case S2D_END_STAGE+2:
     inS2D = false;
     UUnits.clear( S2D_ID );
     NewLogMsg( QString( tr( "2D Scan Finished." ) ) );

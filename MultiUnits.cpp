@@ -235,6 +235,17 @@ bool MUnits::getValue( void )
   return ff;
 }
 
+bool MUnits::Close( void )
+{
+  bool ff = false;
+
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    ff |= PUnits.at(i)->au->Close();
+  }
+
+  return ff;
+}
+
 void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
@@ -258,3 +269,4 @@ bool MUnits::getMCA( int ch )
   return ff;
 }
 #endif
+

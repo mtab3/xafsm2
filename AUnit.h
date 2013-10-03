@@ -283,6 +283,7 @@ public:
   bool GetValue02( void );
   bool GetValue( void );
   void SetValue( double v );
+  bool Close( void );
   void RunStart( void );
   void RunStop( void );
   void RunResume( void );
