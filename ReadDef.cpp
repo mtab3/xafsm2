@@ -168,6 +168,8 @@ void MainWindow::ReadDef( QString fname )
 	QXafsOk = next.split( QRegExp( "\\s+" ) );
       } else if ( item == "NORMALOK" ) {
 	NXafsOk = next.split( QRegExp( "\\s+" ) );
+      } else if ( item == "CONTOK" ) {
+	CScanOk = next.split( QRegExp( "\\s+" ) );
       } else if ( item == "MCAGAIN" ) {
 	MCAGain *mcaGain = new MCAGain;
 	next = nextItem( next, item ); mcaGain->ch = item.toInt();

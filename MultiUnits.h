@@ -35,10 +35,12 @@ class MUnits : public QObject
   void setDwellTimes( double dt );
   double getSetTime( int i );
   bool isBusy( void );
+  bool isBusy2( void );
   void clearStage( void );
   bool init( void );
   void setDwellTime( void );
-  bool getValue0( void );
+  bool getValue0( void );    // ステップ動作用
+  bool getValue02( void );   // 連続スキャン用 (PresetTime 等を見ない設定)
   bool getValue( void );
   //  void readValue( double *rvs, bool correctBack );
   void readValue( double *rvs, double *cpss, bool correctBack );

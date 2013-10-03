@@ -1,7 +1,0 @@
-# Tuning Table of DXM delta theta 1
-# Energy[keV] DeltaTheta1[pule]
-9	48700
-10	48800
-11	48900
-13	49100
-15	49000

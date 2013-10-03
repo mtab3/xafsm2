@@ -280,6 +280,7 @@ public:
   void InitLocalStage( void );
   bool InitSensor( void );
   bool GetValue0( void );
+  bool GetValue02( void );
   bool GetValue( void );
   void SetValue( double v );
   void RunStart( void );

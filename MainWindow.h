@@ -408,7 +408,7 @@ private:
   void PlaySound( QString name, int times );
 
   // QXAFS
-  QStringList QXafsOk, NXafsOk;
+  QStringList QXafsOk, NXafsOk, CScanOk;
   bool isQXafsModeAvailable;
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
   bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
@@ -664,7 +664,7 @@ private slots:
   void newS2DPoints( void );
   void S2DScanStart( void );
   void S2DStepScanSequence( void );
-  void S2DContinuousSSDScanSequence( void );
+  void S2DQuasiContinuousScanSequence( void );
   void S2DNewChangerSelected( int i );
   void S2DSetUseChangers( bool f );
 
