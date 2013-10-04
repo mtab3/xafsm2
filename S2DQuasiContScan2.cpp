@@ -2,7 +2,7 @@
 
 // SSD を使った連続スキャンに限る
 // nct08 も同じことができるはず
-void MainWindow::S2DQuasiContinuousScanSequence( void )
+void MainWindow::S2DQuasiContinuousScanSequence2( void )
 {
   // 1番目の軸と、2, 3番目の軸は、ステップの考え方が違う。
   // 1番目の軸は、測定中に次の点に移動するように制御しているので

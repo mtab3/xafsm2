@@ -665,8 +665,14 @@ private slots:
   void newS2DSteps( void );
   void newS2DPoints( void );
   void S2DScanStart( void );
+
+  // ステップスキャン (検出器、モータともにステップ)
   void S2DStepScanSequence( void );
+  // 擬似連続スキャン (検出器は連続、モータはステップ)
   void S2DQuasiContinuousScanSequence( void );
+  // 擬似連続スキャンで往復でのスキャンを行う
+  void S2DQuasiContinuousScanSequence2( void );
+
   void S2DNewChangerSelected( int i );
   void S2DSetUseChangers( bool f );
 
