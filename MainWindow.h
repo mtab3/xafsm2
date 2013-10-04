@@ -52,6 +52,8 @@ enum OLDNEW { OLD, NEW };
 
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
+#define S2D_END_STAGE    ( 99 )
+
 struct AutoModeParam {
   int num;
   double dx, dz;
