@@ -260,7 +260,11 @@ private:
 
   // Scan 2D
   bool S2DStepF;
+  DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
+  DIRECTION ReversedDir( DIRECTION d )
+  { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
+
   QVector<QComboBox*> S2DAxis;
   QVector<QLabel *> S2DCurPos;
   QVector<QLabel *> S2DUnits;

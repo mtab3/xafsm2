@@ -354,6 +354,7 @@ void MainWindow::S2DScanStart( void )
       connect( S2DTimer, SIGNAL( timeout() ),
 	       this, SLOT( S2DStepScanSequence() ) );
     } else {
+      S2DScanDir = FORWARD;
       connect( S2DTimer, SIGNAL( timeout() ),
 	       this, SLOT( S2DQuasiContinuousScanSequence() ) );
     }
