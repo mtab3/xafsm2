@@ -412,6 +412,17 @@ void MainWindow::S2DWriteHead( void )
   if ( SLS != NULL ) 
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
+  out << "# Scan Mode : ";
+  if ( S2DStepScan->isChecked() ) {
+    out << "Step Scan" << endl;
+  } else {
+    if ( S2DContScanBothDir->isChecked() ) {
+      out << "Cont. Scan in Both Dir" << endl;
+    } else {
+      out << "Cont. Scan in Single Dir" << endl;
+    }
+  }
+
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] ) {
       out << "#" << QString( " Axis %1    : " ).arg( i, 1 )

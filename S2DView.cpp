@@ -1,17 +1,20 @@
-
 #include <QtGui>
+#include <QRectF>
 
 #include "S2DView.h"
+
 
 S2DView::S2DView( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
+  showIx = showIy = lastIx = lastIy = 0;
   data = NULL;
   rType = AS_SCREEN;
   setRange( -10., 10., -10., 10., 2., 2. );
   cc.SetRealCoord( minx, maxx, miny, maxy );
 
+  Grey = QColor( 220, 220, 220 );
   AutoScale = true;
   for ( int i = 0; i < 256 * 4; i++ )
     cbar[ i ] = QColor( 0, 0, 0 );
@@ -23,6 +26,8 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
     cbar[ 512 + b ] = QColor( 255, 255, b );
   cmax = 767;
   cmin = 0;
+
+  setMouseTracking( true );
 }
 
 int S2DView::cNum( double v )
@@ -68,13 +73,23 @@ void S2DView::setRange( double Sx, double Sy, double Dx, double Dy, int ix, int 
     }
     delete [] data;
   }
+  if ( valid != NULL ) {
+    for ( int i = 0; i < maxix; i++ ) {
+      delete [] valid[i];
+    }
+    delete [] valid;
+  }
+
   maxix = ix;
   maxiy = iy;
   data = new double * [ maxix + 1 ];        // x, y 両方向に 1ずつ大きく取る
+  valid = new bool * [ maxix + 1 ];        // x, y 両方向に 1ずつ大きく取る
   for ( int i = 0; i < maxix + 1; i++ ) {
     data[i] = new double [ maxiy + 1 ];
+    valid[i] = new bool [ maxiy + 1 ];
     for ( int j = 0; j < maxiy + 1; j++ ) {
       data[i][j] = 0;
+      valid[i][j] = false;
     }
   }
 }
@@ -83,6 +98,9 @@ void S2DView::setData( int ix, int iy, double v )
 {
   if (( ix >= 0 )&&( iy >= 0 )&&( ix < maxix )&&( iy < maxiy )) {
     data[ix][iy] = v;
+    valid[ix][iy] = true;
+    lastIx = ix;
+    lastIy = iy;
     update();
   }
 }
@@ -107,6 +125,10 @@ void S2DView::Draw( QPainter *p )
   int RM = w * 0.05;
   if ( RM > 40 ) RM = 40;
   int HW = w - LM - RM;
+  int TicL = RM / 10;
+  if ( TicL < 2 )
+    TicL = 2;
+
   int TM = h * 0.05;
   if ( TM > 40 ) TM = 40;
   int BM = h * 0.1;
@@ -114,6 +136,8 @@ void S2DView::Draw( QPainter *p )
   int VW = h - TM - BM;
   double dLM = LM / 10;
   double dVW = VW / 20;     // 1行の高さ(文字の高さ)
+  if ( dVW > TM )
+    dVW = TM * 0.8;
   double dVW2 = dVW * 1.2;  // 行間
 
   double screen_w = HW;
@@ -138,6 +162,8 @@ void S2DView::Draw( QPainter *p )
   default:
     break;
   }
+  RM = w - LM - HW;
+  TM = h - BM - VW;
   cc.SetScreenCoord( LM, h-BM-VW, LM+HW, h-BM );
   cc.SetRealCoord( minx, miny, maxx, maxy );
 
@@ -151,8 +177,10 @@ void S2DView::Draw( QPainter *p )
     maxz = -1e300;
     for ( int ix = 0; ix < maxix; ix++ ) {
       for ( int iy = 0; iy < maxiy; iy++ ) {
-	if ( data[ix][iy] < minz ) minz = data[ix][iy];
-	if ( data[ix][iy] > maxz ) maxz = data[ix][iy];
+	if ( valid[ix][iy] ) {
+	  if ( data[ix][iy] < minz ) minz = data[ix][iy];
+	  if ( data[ix][iy] > maxz ) maxz = data[ix][iy];
+	}
       }
     }
   }
@@ -169,17 +197,114 @@ void S2DView::Draw( QPainter *p )
       y0 = ( y1 < y2 ) ? y1 : y2;
       xd = abs( x1 - x2 );
       yd = abs( y1 - y2 );
-      p->fillRect( x0, y0, xd, yd, cbar[ cNum( data[ix][iy] ) ] );
+      if ( valid[ix][iy] ) 
+	p->fillRect( x0, y0, xd, yd, cbar[ cNum( data[ix][iy] ) ] );
+      else 
+	p->fillRect( x0, y0, xd, yd, Grey );
     }
   }
-	
-  for ( int ix = 0; ix < maxix; ix++ ) {
+
+  p->setPen( QColor( 0, 0, 0 ) );
+  // 格子
+  for ( int ix = 0; ix <= maxix; ix++ ) {
     p->drawLine( cc.r2sx( sx + dx * ix ), cc.r2sy( maxy ),
 		 cc.r2sx( sx + dx * ix ), cc.r2sy( miny ) );
   }
-  for ( int iy = 0; iy < maxiy; iy++ ) {
+  for ( int iy = 0; iy <= maxiy; iy++ ) {
     p->drawLine( cc.r2sx( minx ), cc.r2sy( sy + dy * iy ),
 		 cc.r2sx( maxx ), cc.r2sy( sy + dy * iy ) );
   }
+  // 格子の中央点からのヒゲ
+  for ( int ix = 0; ix < maxix; ix++ ) {
+    p->drawLine( cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( maxy ),
+		 cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( maxy )-TicL );
+    p->drawLine( cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( miny ),
+		 cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( miny )+TicL );
+  }
+  for ( int iy = 0; iy < maxiy; iy++ ) {
+    p->drawLine( cc.r2sx( minx ), cc.r2sy( sy + dy * ( iy + 0.5 ) ),
+		 cc.r2sx( minx )-TicL, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
+    p->drawLine( cc.r2sx( maxx ), cc.r2sy( sy + dy * ( iy + 0.5 ) ),
+		 cc.r2sx( maxx )+TicL, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
+  }
+  // メモリ数字
+  QRectF rec;
+  QFont F1;
+  F1.setPointSizeF( 10 );
+  // 横軸
+  rec = QRectF( cc.r2sx( sx+dx*0.5 )-HW/4, cc.r2sy( miny )+5,
+		HW/2, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
+	       QString::number( sx + dx * 0.5 ) );
+  rec = QRectF( cc.r2sx( sx+dx*(maxix-0.5) )-HW/4, cc.r2sy( miny )+5,
+		HW/2, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
+	       QString::number( sx + dx * (maxix - 0.5) ) );
+  // 縦軸
+  rec = QRectF( cc.r2sx( maxx )+5, cc.r2sy( sy+dx*0.5 )-dVW2/2,
+		RM - 5, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       QString::number( sy ) );
+  rec = QRectF( cc.r2sx( maxx )+5, cc.r2sy( sy+dx*(maxiy-0.5) )-dVW2/2,
+		RM - 5, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       QString::number( sy + dy * ( maxiy - 1 ) ) );
 
+  // 情報表示
+  int inf = 0;
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       QString( "Measured : (%1, %2)" )
+	       .arg( sx + dx * ( lastIx + 0.5 ) ).arg( sy + dy * lastIy ) );
+
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       QString( "         : %1" )
+	       .arg( valid[lastIx][lastIy] ? QString::number( data[lastIx][lastIy] )
+		     : QString( "--" ) ) );
+
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       QString( "Pinted : (%1, %2)" )
+	       .arg( sx + dx * ( showIx + 0.5 ) ).arg( sy + dy * showIy ) );
+
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       QString( "         : %1" )
+	       .arg( valid[showIx][showIy] ? QString::number( data[showIx][showIy] )
+		     : QString( "--" ) ) );
+}
+
+void S2DView::mouseMoveEvent( QMouseEvent *e )
+{
+  m.Moved( e );
+
+  showIx = ( int )( ( cc.s2rx( m.x() ) - sx ) / dx );
+  showIy = ( int )( ( cc.s2ry( m.y() ) - sy ) / dy );
+  if ( showIx < 0 ) showIx = 0;
+  if ( showIx >= maxix ) showIx = maxix - 1;
+  if ( showIy < 0 ) showIy = 0;
+  if ( showIy >= maxiy ) showIy = maxiy - 1;
+
+  update();
+}
+
+void S2DView::mousePressEvent( QMouseEvent * )
+{
+  qDebug() << "aa";
+}
+
+void S2DView::mouseReleaseEvent( QMouseEvent * )
+{
+  qDebug() << "bb";
+}
+
+void S2DView::mouseDoubleClickEvent( QMouseEvent * )
+{
+  qDebug() << "cc";
+}
+
+void S2DView::wheelEvent( QWheelEvent * )
+{
+  qDebug() << "dd";
 }
