@@ -354,6 +354,7 @@ void MainWindow::S2DScanStart( void )
       connect( S2DTimer, SIGNAL( timeout() ),
 	       this, SLOT( S2DStepScanSequence() ) );
     } else {
+      S2DScanDir = FORWARD;
       connect( S2DTimer, SIGNAL( timeout() ),
 	       this, SLOT( S2DQuasiContinuousScanSequence() ) );
     }
@@ -410,6 +411,17 @@ void MainWindow::S2DWriteHead( void )
                                      .toString("yy.MM.dd hh:mm:ss.zzz") << endl;
   if ( SLS != NULL ) 
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
+
+  out << "# Scan Mode : ";
+  if ( S2DStepScan->isChecked() ) {
+    out << "Step Scan" << endl;
+  } else {
+    if ( S2DContScanBothDir->isChecked() ) {
+      out << "Cont. Scan in Both Dir" << endl;
+    } else {
+      out << "Cont. Scan in Single Dir" << endl;
+    }
+  }
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] ) {

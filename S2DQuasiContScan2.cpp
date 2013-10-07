@@ -2,6 +2,7 @@
 
 // SSD を使った連続スキャンに限る
 // nct08 も同じことができるはず
+// 帰り道でもスキャンする
 void MainWindow::S2DQuasiContinuousScanSequence2( void )
 {
   // 1番目の軸と、2, 3番目の軸は、ステップの考え方が違う。
@@ -17,7 +18,7 @@ void MainWindow::S2DQuasiContinuousScanSequence2( void )
   // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
-  // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
+  // モータ駆動中は入ってこない
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] && S2DMotors[i]->isBusy0() )
       return;
@@ -31,9 +32,6 @@ void MainWindow::S2DQuasiContinuousScanSequence2( void )
     if ( mUnits.isBusy2() )
       return;
   }
-
-  qDebug() << "Stage " << S2DStage
-	   << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss.zzz");
 
   int pps;
   switch( S2DStage ) {
@@ -74,8 +72,9 @@ void MainWindow::S2DQuasiContinuousScanSequence2( void )
     // 計測開始準備
     mUnits.getValue();
     // 同時に次の点に移動開始
-    S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
-    S2DStage = 5;
+    if ( S2Di[0] < S2Dps[0] )
+      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
+    S2DStage++;
     break;
   case 5:
     // 計測値読み取り

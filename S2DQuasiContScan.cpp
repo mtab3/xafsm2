@@ -1,5 +1,9 @@
 #include "MainWindow.h"
 
+
+/* debugging vals */
+QString readPntX, readPntY, readPntX0, readPntY0;
+
 // SSD を使った連続スキャンに限る
 // nct08 も同じことができるはず
 void MainWindow::S2DQuasiContinuousScanSequence( void )
@@ -32,8 +36,10 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       return;
   }
 
+#if 0
   qDebug() << "Stage " << S2DStage
 	   << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss.zzz");
+#endif
 
   int pps;
   switch( S2DStage ) {
@@ -73,9 +79,23 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
   case 4:     // リピートポイント
     // 計測開始準備
     mUnits.getValue();
+
+    /* debug display */
+    readPntX0 = readPntX;
+    readPntY0 = readPntY;
+    readPntX = S2DMotors[0]->value();
+    readPntY = S2DMotors[1]->value();
+    /* debug display */
+
     // 同時に次の点に移動開始
-    S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
-    S2DStage = 5;
+    if ( S2Di[0] < S2Dps[0] ) {
+      if ( S2DScanDir == FORWARD ) {
+	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
+      } else {
+	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dex[0] - (S2Di[0]+1)*S2Ddx[0] ) );
+      }
+    }
+    S2DStage++;
     break;
   case 5:
     // 計測値読み取り
@@ -89,8 +109,14 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       // ファイル記録
       S2DWriteBody( S2DVals[0] - S2DLastV );
       // 描画
-      S2DV->setData( S2Di[0] - 1,
-		     S2Di[1], S2DVals[0] - S2DLastV );
+      qDebug() << QString( "new point (%1, %2)-(%3, %4) : %5" )
+	.arg( readPntX0 ).arg( readPntY0 ).arg( readPntX ).arg( readPntY )
+	.arg( S2DVals[0] - S2DLastV );
+      if ( S2DScanDir == FORWARD ) {
+	S2DV->setData( S2Di[0] - 1, S2Di[1], S2DVals[0] - S2DLastV );
+      } else {
+	S2DV->setData( S2Dps[0] - S2Di[0], S2Di[1], S2DVals[0] - S2DLastV );
+      }
     }
     S2DLastV = S2DVals[0];
     // ステップコントロール変数更新
@@ -105,11 +131,23 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     S2Di[0] = 0;
     S2Di[1]++;
     if ( S2Di[1] <= S2Dps[1] ) {       // 2nd ax の端点でなければ
-      S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
-      S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+      /* debug display */
+      readPntX0 = readPntX;
+      readPntY0 = readPntY;
+      readPntX = S2DMotors[0]->value();
+      readPntY = S2DMotors[1]->value();
+      /* debug display */
+
       S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] + S2Di[1] * S2Ddx[1] ) );
-                                                               // 2nd ax は次の点に移動
-      S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
+      // 2nd ax は次の点に移動
+      if ( ! S2DContScanBothDir->isChecked() ) { 
+	S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
+	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+	S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
+      } else {
+	S2DScanDir = ReversedDir( S2DScanDir );
+	S2DStage = 4;    // 速度変更は不要
+      }
       break;
     }
     // 2nd ax の端点に達していたら
@@ -117,19 +155,31 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       S2Di[1] = 0;
       S2Di[2]++;
       if ( S2Di[2] <= S2Dps[2] ) {  // 3rd ax の端点でなければ
-	S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
-	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
-	S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] ) ); // 2nd ax も原点に戻し
+	/* debug display */
+	readPntX0 = readPntX;
+	readPntY0 = readPntY;
+	readPntX = S2DMotors[0]->value();
+	readPntY = S2DMotors[1]->value();
+	/* debug display */
+
+	S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] ) ); // 2nd ax は原点に戻し
 	S2DMotors[2]->SetValue( S2DMotors[2]->u2p( S2Dsx[2] + S2Di[2] * S2Ddx[2] ) );
-	                                                         // 3rd ax は次の点に移動
-	S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
+	// 3rd ax は次の点に移動
+	if ( ! S2DContScanBothDir->isChecked() ) { 
+	  S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
+	  S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+	  S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
+	} else {
+	  S2DScanDir = ReversedDir( S2DScanDir );
+	  S2DStage = 4;    // 速度変更は不要
+	}
 	break;
       }
     }
     // 終了
     S2DStage = S2D_END_STAGE;
     break;
-
+    
   case S2D_END_STAGE:
     S2DWriteTail();
     S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
