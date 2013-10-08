@@ -423,15 +423,6 @@ bool AUnit::GetValue0( void )  // 値読み出しコマンドの前に何か必�
       break;
     case 1:
       IsBusy2On( Driver, "GetValue0c1" );
-<<<<<<< HEAD
-      s->SendCMD2( Uid, Driver, "CounterReset" );
-      LocalStage++;
-      rv = true;
-      break;
-    case 2:
-      IsBusy2On( Driver, "GetValue0c2" );
-=======
->>>>>>> 44e9cc43bf20f520dede5aa4a114a14e9709ff81
       IsBusy = true;
       LastFunc = "GetValue0c1";
       emit ChangedIsBusy1( Driver );

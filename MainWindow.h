@@ -259,7 +259,7 @@ private:
   bool MonSensF[ 3 ];
 
   // Scan 2D
-  bool S2DStepF;
+  bool S2DStepF, S2DRealScanF;
   DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
   DIRECTION ReversedDir( DIRECTION d )
@@ -674,8 +674,8 @@ private slots:
   void S2DStepScanSequence( void );
   // 擬似連続スキャン (検出器は連続、モータはステップ)
   void S2DQuasiContinuousScanSequence( void );
-  // 擬似連続スキャンで往復でのスキャンを行う
-  void S2DQuasiContinuousScanSequence2( void );
+  // ホントの連続スキャン準備中
+  void S2DRealContinuousScanSequence( void );
 
   void S2DNewChangerSelected( int i );
   void S2DSetUseChangers( bool f );

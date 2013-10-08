@@ -300,12 +300,23 @@ void MainWindow::S2DScanStart( void )
     }
     if ( S2DStepScan->isChecked() ) {  // ステップスキャン
       S2DStepF = true;
-    } else {
+    } else if ( S2DQuasiContScan->isChecked() ) {
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	return;
       }
       S2DStepF = false;
+      S2DRealScanF = false;
+    } else if ( S2DQuasiContScan->isChecked() ) {
+      if ( ! CheckOkList( as, CScanOk ) ) {
+	NewLogMsg( tr( "Continuous scan is not available now." ) );
+	return;
+      }
+      S2DStepF = false;
+      S2DRealScanF = true;
+    } else {
+      qDebug() << "No Scan mode is selected !!!";
+      return;
     }
 
     inS2D = true;
@@ -355,8 +366,13 @@ void MainWindow::S2DScanStart( void )
 	       this, SLOT( S2DStepScanSequence() ) );
     } else {
       S2DScanDir = FORWARD;
-      connect( S2DTimer, SIGNAL( timeout() ),
-	       this, SLOT( S2DQuasiContinuousScanSequence() ) );
+      if ( ! S2DRealScanF ) {
+	connect( S2DTimer, SIGNAL( timeout() ),
+		 this, SLOT( S2DQuasiContinuousScanSequence() ) );
+      } else {
+	connect( S2DTimer, SIGNAL( timeout() ),
+		 this, SLOT( S2DRealContinuousScanSequence() ) );
+      }
     }
     S2DTimer->start( 10 );
   } else {
@@ -415,12 +431,22 @@ void MainWindow::S2DWriteHead( void )
   out << "# Scan Mode : ";
   if ( S2DStepScan->isChecked() ) {
     out << "Step Scan" << endl;
-  } else {
+  } else if ( S2DQuasiContScan->isChecked() ) {
     if ( S2DContScanBothDir->isChecked() ) {
-      out << "Cont. Scan in Both Dir" << endl;
+      out << "Quasi Cont. Scan in Both Dir" << endl;
     } else {
-      out << "Cont. Scan in Single Dir" << endl;
+      out << "Quasi Cont. Scan in Single Dir" << endl;
     }
+  } else if ( S2DRealContScan->isChecked() ) {
+    if ( S2DContScanBothDir->isChecked() ) {
+      out << "Real Cont. Scan in Both Dir" << endl;
+    } else {
+      out << "Real Cont. Scan in Single Dir" << endl;
+    }
+  } else {
+    qDebug() << "No Scan mode is selected !!";
+    f.close();
+    return;
   }
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
