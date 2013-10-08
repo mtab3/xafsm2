@@ -63,7 +63,11 @@ class AUnit : public QObject
   double MaxV;          // only for PZ
   double MinV;          // only for PZ
 
-  int MaxS; // max speed (pps) 最初に設定されていたオリジナルのスピード
+  bool HasSpeedsLine;
+  int MaxS;      // max speed (pps) 最初に設定されていたオリジナルのスピード
+  int MaxMaxS;   // 許される最高のスピード
+  int AccRate;   // 加減速レート ( AccRage ms/1000pps )
+  int AccRateNo; // 対応する加減速レートの PM16C のテーブル番号
 
   bool hasConnected;
   QTcpSocket *dLink;
@@ -270,6 +274,16 @@ public:
   double getMaxV( void ) { return MaxV; };
   double getMinV( void ) { return MinV; };
   int highSpeed( void ) { return MaxS; };     // オリジナルのハイスピード
+  void setHighSpeed( int h ) { MaxS = h; };
+  int highestSpeed( void ) { return ( HasSpeedsLine ) ? MaxMaxS : MaxS; };// 許容最高速度
+  void setHighestSpeed( int h ) { MaxMaxS = h; qDebug() << "set MaxMax" << Name; };
+  int accRate( void ) { return AccRate; };    // 加減速レート
+  void setAccRate( int r ) { AccRate = r; };
+  int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
+  void setAccRateNo( int n ) { AccRateNo = n; };
+  bool hasSpeedsLine( void ) { return HasSpeedsLine; };
+  void setHasSpeedsLine( bool f ) { HasSpeedsLine = f; };
+
   // only for DV
   bool hasMaxIntTime( void ) { return HasMaxIntTime; };
   double maxIntTime( void ) { return MaxIntTime; };

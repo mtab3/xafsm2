@@ -18,6 +18,8 @@ void MainWindow::S2DStepScanSequence( void )
   // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
+  QString msg;
+
   // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
@@ -69,8 +71,13 @@ void MainWindow::S2DStepScanSequence( void )
 		     / S2DMotors[0]->getUPP()
 		     / S2DTime1->text().toDouble() );
     if ( pps == 0 ) pps = 1;
-    if ( pps > S2DMotors[0]->highSpeed() )
-      pps = S2DMotors[0]->highSpeed();
+    if ( pps > S2DMotors[0]->highestSpeed() ) {
+      msg = tr( "The scan speed %1 was limited to %2" )
+	.arg( pps ).arg( S2DMotors[0]->highestSpeed() );
+      qDebug() << msg;
+      statusbar->showMessage( msg, 2000 );
+      pps = S2DMotors[0]->highestSpeed();
+    }
     S2DMotors[0]->SetHighSpeed( pps );
     S2DStage++;
     // break しない

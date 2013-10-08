@@ -27,6 +27,7 @@ void MainWindow::ReadDef( QString fname )
     return;
   }
 
+  int i, j;
   int line = 0;
   QString aline;
   QString next;
@@ -195,6 +196,22 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "RW_DXMCENTER_CFG" ) {
 	next = nextItem( next, item ); RWDXMCenterF = ( item.toInt() == 1 );
 	next = nextItem( next, item ); DXMCenterFile = item;
+      } else if ( item == "SPEEDS" ) {
+	next = nextItem( next, item );
+	for ( i = 0; i < AMotors.count(); i++ ) {
+	  if ( AMotors[i]->getUid() == item )
+	    break;
+	}
+	if ( i < AMotors.count() ) {
+	  AMotors[i]->setHasSpeedsLine( true );
+	  next = nextItem( next, item ); AMotors[i]->setHighSpeed( item.toInt() );
+	  next = nextItem( next, item ); AMotors[i]->setHighestSpeed( item.toInt() );
+	  next = nextItem( next, item ); AMotors[i]->setAccRate( item.toInt() );
+	  next = nextItem( next, item ); AMotors[i]->setAccRateNo( item.toInt() );
+	} else {
+	  qDebug() << tr( "Can not find a unit ID %1 for the SPEEDS line" ).
+	    arg( item );
+	}
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
@@ -207,10 +224,10 @@ void MainWindow::ReadDef( QString fname )
   // Uid のダブりチェック
   CheckDuplicateUID();
 
-  int i, j;   // 親ユニット有り、と宣言したセンサーに親ユニットのポインタを渡す。
-              // また、2nd Driver があるユニット Uid2 を元に Driver2, Ch2, DevCh2 を設定
-              // 全部の定義が終わってからやっているのは、親と宣言したユニットの定義が
-              // 後から出てきても大丈夫にするため。
+  // 親ユニット有り、と宣言したセンサーに親ユニットのポインタを渡す。
+  // また、2nd Driver があるユニット Uid2 を元に Driver2, Ch2, DevCh2 を設定
+  // 全部の定義が終わってからやっているのは、親と宣言したユニットの定義が
+  // 後から出てきても大丈夫にするため。
   for ( i = 0; i < ASensors.count(); i++ ) {
     if ( ASensors.at(i)->hasParent() ) {
       for ( j = 0; j < ASensors.count(); j++ ) {

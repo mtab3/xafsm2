@@ -5,24 +5,24 @@
 #define BRANCH_NAME ( "ContinuousS2DMode" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Oct 8 21:11:38 2013 +0900\n"\
+                "    Make all connections 'UNIQUE' git add .git add .\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Oct 8 20:19:36 2013 +0900\n"\
+                "    working on real cont scan\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Oct 8 17:11:00 2013 +0900\n"\
                 "    no\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Oct 7 11:33:45 2013 +0900\n"\
+                "Date        : Tue Oct 8 14:53:12 2013 +0900\n"\
+                "    working on real scan\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Oct 8 12:35:41 2013 +0900\n"\
                 "    no\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Oct 7 11:33:27 2013 +0900\n"\
-                "    nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Oct 6 23:21:18 2013 +0900\n"\
-                "    S2D: it looks the both dir scan is OK.  Working on the display.   Basically the display might be OK.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Oct 6 01:07:20 2013 +0900\n"\
-                "    Working on both dir scan\n"\
 		"\n"\
                 ""
 #endif

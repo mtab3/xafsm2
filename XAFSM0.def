@@ -15,6 +15,7 @@
 # 2013/07/08 change the origin of 4WS(in hatch) Z
 # 2013/07/17 add a parameter for 'DV' which decide maximum integration time.
 # 2013/09/30 add 'CONTOK'      line
+# 2013/10/08 add 'SPEEDS'      line
 
 #
 # In this definition file,
@@ -175,19 +176,44 @@ MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
 #     -10         : Minimum Voltage
 #     120         : Maximum Voltage
 
+#
+# SPEEDS "M009" 3000 5000 100
+#  "M009"  : Uniq ID defined by 'MOTOR'
+#  3000    : Optimal drive speed
+#  5000    : Maximum drive speed
+#   100    : Pre-defined accel-rate (ms/1000pps)
+#    24    : Table No of Pre-defined accel-rate (ms/1000pps) for PM16C04
+#            0: 1000ms/1000pps, 24: 100ms/1000pps, 48: 10ms/1000pps, 72: 1ms/1000pps
+
 MOTOR PM "M002" "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 INT 0
 MOTOR PM "M003" "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 INT 0
 MOTOR PM "M004" "STAGEY" "Stage Y" "simmotor" "ch2" "mm" 0.001 INT 0
+SPEEDS "M002" 3000 5000 300 13     # 300ms/1000pps
+SPEEDS "M003" 3000 5000 300 13     # 300ms/1000pps
+SPEEDS "M004" 3000 5000 300 13     # 300ms/1000pps
+
 MOTOR PM "M005" "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 INT 0
 MOTOR PM "M006" "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 INT 0
 MOTOR PM "M007" "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 INT 0
 MOTOR PM "M008" "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 INT 0
+SPEEDS "M005" 1000 1500 100 24
+SPEEDS "M006" 1000 1500 100 24
+SPEEDS "M007" 3000 5000 100 24
+SPEEDS "M008" 3000 5000 100 24
+
 MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
 MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
+SPEEDS "M009" 3000 5000 100 24
+SPEEDS "M010" 3000 5000 100 24
+
 MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 INT 0
 MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 INT 0
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 INT 0
 MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "simmotor" "ch12" "mm" 0.001 INT 0
+SPEEDS "M012" 3000 5000 100 24
+SPEEDS "M013" 3000 5000 100 24
+SPEEDS "M014" 3000 5000 100 24
+SPEEDS "M015" 3000 5000 100 24
 
 MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
 MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
@@ -224,6 +250,10 @@ CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
 CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15 -1 -1 30000 30000
 CHANGER "C002" "4ax Stage XZ" "M011" "M012" 1 1  0 0  0 0  1 1 0 0
 
+
+
+
+#######################################################################
 # define Sensor units
 
 #SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"

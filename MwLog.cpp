@@ -10,10 +10,13 @@ void MainWindow::setupLogArea( void )   /* ログエリア */
   SelLFND->setAcceptMode( QFileDialog::AcceptSave );
   SelLFND->setDirectory( QDir::currentPath() );
 
-  connect( LogFileSelect, SIGNAL( clicked() ), this, SLOT( SelLFN() ) );
+  connect( LogFileSelect, SIGNAL( clicked() ), this, SLOT( SelLFN() ),
+	   Qt::UniqueConnection );
   connect( SelLFND, SIGNAL( fileSelected( const QString & ) ),
-			    this, SLOT( SetNewLFName( const QString & ) ) );
-  connect( LogComment, SIGNAL( editingFinished() ), this, SLOT( AddLogComment() ) );
+	   this, SLOT( SetNewLFName( const QString & ) ),
+	   Qt::UniqueConnection );
+  connect( LogComment, SIGNAL( editingFinished() ), this, SLOT( AddLogComment() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::NewLogMsg( QString msg )

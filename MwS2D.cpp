@@ -45,7 +45,8 @@ void MainWindow::setupScan2DArea( void )
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
     newAx0( i, S2DAxis[i]->currentIndex() );
     connect( S2DAxis[i], SIGNAL( currentIndexChanged( int ) ),
-	     this, SLOT( newAx( int ) ) );
+	     this, SLOT( newAx( int ) ),
+	     Qt::UniqueConnection );
   }
 
   for ( int i = 0; i < Changers.count(); i++ ) {
@@ -57,7 +58,8 @@ void MainWindow::setupScan2DArea( void )
     S2DUseChanger->setEnabled( true );
     S2DNewChangerSelected( S2DChangerSelect->currentIndex() );
     connect( S2DChangerSelect, SIGNAL( currentIndexChanged( int ) ),
-	     this, SLOT( S2DNewChangerSelected( int ) ) );
+	     this, SLOT( S2DNewChangerSelected( int ) ),
+	     Qt::UniqueConnection );
     S2DUse3rdAx->setChecked( false );
     // S2DUse3rdAx->setEnabled( false );
   } else {
@@ -71,19 +73,30 @@ void MainWindow::setupScan2DArea( void )
   S2DTimer2 = new QTimer;
   isS2DSFluo = false;
 
-  connect( S2DStart, SIGNAL( clicked() ), this, SLOT( S2DScanStart() ) );
-  connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ) );
-  connect( S2DFileSelect, SIGNAL( clicked() ), S2DFileSel, SLOT( show() ) );
+  connect( S2DStart, SIGNAL( clicked() ), this, SLOT( S2DScanStart() ),
+	   Qt::UniqueConnection );
+  connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ),
+	   Qt::UniqueConnection );
+  connect( S2DFileSelect, SIGNAL( clicked() ), S2DFileSel, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( S2DFileSel, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( newS2DFileSelected( const QString & ) ) );
+	   this, SLOT( newS2DFileSelected( const QString & ) ),
+	   Qt::UniqueConnection );
   for ( int i = 0; i < S2DStarts.count(); i++ ) {
-    connect( S2DStarts[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ) );
-    connect( S2DEnds[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ) );
-    connect( S2DSteps[i], SIGNAL( editingFinished() ), this, SLOT( newS2DPoints() ) );
-    connect( S2DPoints[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ) );
+    connect( S2DStarts[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ),
+	     Qt::UniqueConnection );
+    connect( S2DEnds[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ),
+	     Qt::UniqueConnection );
+    connect( S2DSteps[i], SIGNAL( editingFinished() ), this, SLOT( newS2DPoints() ),
+	     Qt::UniqueConnection );
+    connect( S2DPoints[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ),
+	     Qt::UniqueConnection );
   }
-  connect( S2DUseChanger, SIGNAL( toggled(bool) ), this, SLOT( S2DSetUseChangers(bool) ) );
-  connect( S2DTimer2, SIGNAL( timeout() ), this, SLOT( S2DRContScanMeas() ) );
+  connect( S2DUseChanger, SIGNAL( toggled(bool) ),
+	   this, SLOT( S2DSetUseChangers(bool) ),
+	   Qt::UniqueConnection );
+  connect( S2DTimer2, SIGNAL( timeout() ), this, SLOT( S2DRContScanMeas() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::S2DSetUseChangers( bool f )
@@ -106,9 +119,11 @@ void MainWindow::S2DNewChangerSelected( int i )
   disconnect( SIGNAL( newValue( QString ) ),
 	      this, SLOT( ShowS2DChangerPosition( QString ) ) );
   connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
-	   this, SLOT( ShowS2DChangerPosition( QString ) ) );
+	   this, SLOT( ShowS2DChangerPosition( QString ) ),
+	   Qt::UniqueConnection );
   connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
-	   this, SLOT( ShowS2DChangerPosition( QString ) ) );
+	   this, SLOT( ShowS2DChangerPosition( QString ) ),
+	   Qt::UniqueConnection );
 
   Changers[i]->unit1()->GetValue();
   Changers[i]->unit2()->GetValue();
@@ -189,7 +204,8 @@ void MainWindow::newAx0( int ax, int motor )
   }
   S2DMotors[ax] = S2DOkMotors[motor];   // その軸に選ばれたモータを覚えておく
   connect( S2DMotors[ax], SIGNAL( newValue( QString ) ),
-	   this, SLOT( showS2DNewAxValue( QString ) ) );
+	   this, SLOT( showS2DNewAxValue( QString ) ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::newAx( int m )
@@ -364,15 +380,18 @@ void MainWindow::S2DScanStart( void )
     S2DScanDir = FORWARD;
     switch ( S2DScanMode ) {
     case STEP:
-      connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ) );
+      connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ),
+	       Qt::UniqueConnection );
       break;
     case QCONT:
       connect( S2DTimer, SIGNAL( timeout() ),
-		 this, SLOT( S2DQuasiContinuousScanSequence() ) );
+	       this, SLOT( S2DQuasiContinuousScanSequence() ),
+	       Qt::UniqueConnection );
       break;
     case RCONT:
       connect( S2DTimer, SIGNAL( timeout() ),
-	       this, SLOT( S2DRealContinuousScanSequence() ) );
+	       this, SLOT( S2DRealContinuousScanSequence() ),
+	       Qt::UniqueConnection );
       break;
     default:
       qDebug() << "non-defined scan mode !";
@@ -434,24 +453,15 @@ void MainWindow::S2DWriteHead( void )
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
   out << "# Scan Mode : ";
-  if ( S2DStepScan->isChecked() ) {
-    out << "Step Scan" << endl;
-  } else if ( S2DQuasiContScan->isChecked() ) {
-    if ( S2DContScanBothDir->isChecked() ) {
-      out << "Quasi Cont. Scan in Both Dir" << endl;
-    } else {
-      out << "Quasi Cont. Scan in Single Dir" << endl;
-    }
-  } else if ( S2DRealContScan->isChecked() ) {
-    if ( S2DContScanBothDir->isChecked() ) {
-      out << "Real Cont. Scan in Both Dir" << endl;
-    } else {
-      out << "Real Cont. Scan in Single Dir" << endl;
-    }
+  switch( S2DScanMode ) {
+  case STEP: out << "Step Scan" << endl; break;
+  case QCONT: out << "Quasi Continuous Scan" << endl; break;
+  case RCONT: out << "Real Continuous Scan" << endl; break;
+  }
+  if ( S2DContScanBothDir->isChecked() ) {
+    out << "# Scan dir : Both" << endl;
   } else {
-    qDebug() << "No Scan mode is selected !!";
-    f.close();
-    return;
+    out << "# Scan dir : Single" << endl;
   }
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
@@ -486,7 +496,7 @@ void MainWindow::S2DWriteBody( double v )
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
     if ( S2DMotorUse[i] ) {
-      out << QString( " %1" ).arg( S2Dsx[i] + S2Di[i] * S2Ddx[i], 10 );
+      out << QString( " %1" ).arg( S2Dsx[i] + ( S2Di[i] + 0.5 ) * S2Ddx[i], 10 );
     }
   }
   out <<  QString( " %1" ).arg( v, 10 ) << endl;

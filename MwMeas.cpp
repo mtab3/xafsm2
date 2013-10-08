@@ -107,57 +107,92 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   newSensSelectedForA2( SelectAux2->currentIndex() );
 
   connect( SelectI0, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( newSensSelectedForI0( int ) ) );
+	   this, SLOT( newSensSelectedForI0( int ) ),
+	   Qt::UniqueConnection );
   connect( SelectI1, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( newSensSelectedForI1( int ) ) );
+	   this, SLOT( newSensSelectedForI1( int ) ),
+	   Qt::UniqueConnection );
   connect( SelectAux1, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( newSensSelectedForA1( int ) ) );
+	   this, SLOT( newSensSelectedForA1( int ) ),
+	   Qt::UniqueConnection );
   connect( SelectAux2, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( newSensSelectedForA2( int ) ) );
-  connect( I0Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI0Range( int ) ) );
-  connect( I1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI1Range( int ) ) );
-  connect( A1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA1Range( int ) ) );
-  connect( A2Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA2Range( int ) ) );
+	   this, SLOT( newSensSelectedForA2( int ) ),
+	   Qt::UniqueConnection );
+  connect( I0Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI0Range( int ) ),
+	   Qt::UniqueConnection );
+  connect( I1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newI1Range( int ) ),
+	   Qt::UniqueConnection );
+  connect( A1Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA1Range( int ) ),
+	   Qt::UniqueConnection );
+  connect( A2Range, SIGNAL( valueChanged( int ) ), this, SLOT( newA2Range( int ) ),
+	   Qt::UniqueConnection );
 
   for ( int i = 0; i < BLKstart.count(); i++ ) {
-    connect( BLKstart[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()) );
+    connect( BLKstart[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
+	     Qt::UniqueConnection );
   }
   for ( int i = 0; i < BLKstep.count(); i++ ) {
-    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()) );
-    connect( BLKdwell[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()));
-    connect( BLKpoints[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints()) );
+    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
+	     Qt::UniqueConnection );
+    connect( BLKdwell[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
+	     Qt::UniqueConnection );
+    connect( BLKpoints[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKpoints()),
+	     Qt::UniqueConnection );
   }
 
   connect( SelBLKUnit, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( ChangeBLKUnit( int ) ) );
-  connect( SelBLKs, SIGNAL( valueChanged( int ) ), this, SLOT( ChangeBLKs( int ) ) );
-  connect( StdEXAFS, SIGNAL( clicked() ), this, SLOT( SetStdEXAFSBLKs() ) );
-  connect( StdXAFS, SIGNAL( clicked() ), this, SLOT( SetStdXAFSBLKs() ) );
-  connect( StdXANES, SIGNAL( clicked() ), this, SLOT( SetStdXANESBLKs() ) );
-  connect( DwellAll, SIGNAL( editingFinished() ), this, SLOT( SetDwells() ) );
-  connect( SaveBLKs, SIGNAL( clicked() ), SelWBFND, SLOT( show() ) );
-  connect( LoadBLKs, SIGNAL( clicked() ), SelRBFND, SLOT( show() ) );
+	   this, SLOT( ChangeBLKUnit( int ) ),
+	   Qt::UniqueConnection );
+  connect( SelBLKs, SIGNAL( valueChanged( int ) ), this, SLOT( ChangeBLKs( int ) ),
+	   Qt::UniqueConnection );
+  connect( StdEXAFS, SIGNAL( clicked() ), this, SLOT( SetStdEXAFSBLKs() ),
+	   Qt::UniqueConnection );
+  connect( StdXAFS, SIGNAL( clicked() ), this, SLOT( SetStdXAFSBLKs() ),
+	   Qt::UniqueConnection );
+  connect( StdXANES, SIGNAL( clicked() ), this, SLOT( SetStdXANESBLKs() ),
+	   Qt::UniqueConnection );
+  connect( DwellAll, SIGNAL( editingFinished() ), this, SLOT( SetDwells() ),
+	   Qt::UniqueConnection );
+  connect( SaveBLKs, SIGNAL( clicked() ), SelWBFND, SLOT( show() ),
+	   Qt::UniqueConnection );
+  connect( LoadBLKs, SIGNAL( clicked() ), SelRBFND, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( SelWBFND, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( SelectedWBFN( const QString & ) ) );
+	   this, SLOT( SelectedWBFN( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( SelRBFND, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( SelectedRBFN( const QString & ) ) );
+	   this, SLOT( SelectedRBFN( const QString & ) ),
+	   Qt::UniqueConnection );
 
   connect( EditDFName, SIGNAL( editingFinished() ),
-	   this, SLOT( CheckNewMeasFileName() ) );
-  connect( SelDFName, SIGNAL( clicked() ), SelDFND, SLOT( show() ) );
+	   this, SLOT( CheckNewMeasFileName() ),
+	   Qt::UniqueConnection );
+  connect( SelDFName, SIGNAL( clicked() ), SelDFND, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( SelDFND, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( SelectedNDFN( const QString & ) ) );
+	   this, SLOT( SelectedNDFN( const QString & ) ),
+	   Qt::UniqueConnection );
 
-  connect( MeasStart, SIGNAL( clicked() ), this, SLOT( AutoMeasurement() ) );
-  connect( MeasPause, SIGNAL( clicked() ), this, SLOT( PauseMeasurement() ) );
-  connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ) );
-  connect( StopP, SIGNAL( rejected() ), this, SLOT( GoingOn() ) );
-  connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( NewRpt() ) );
-  connect( AskOverWrite, SIGNAL( accepted() ), this, SLOT( OkOverWrite() ) );
-  connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
-  connect( MakeSureOfRangeSelect, SIGNAL( accepted() ), this, SLOT( RangeSelOK() ) );
-  connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ) );
-  connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ) );
+  connect( MeasStart, SIGNAL( clicked() ), this, SLOT( AutoMeasurement() ),
+	   Qt::UniqueConnection );
+  connect( MeasPause, SIGNAL( clicked() ), this, SLOT( PauseMeasurement() ),
+	   Qt::UniqueConnection );
+  connect( StopP, SIGNAL( accepted() ), this, SLOT( SurelyStop() ),
+	   Qt::UniqueConnection );
+  connect( StopP, SIGNAL( rejected() ), this, SLOT( GoingOn() ),
+	   Qt::UniqueConnection );
+  connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( NewRpt() ),
+	   Qt::UniqueConnection );
+  connect( AskOverWrite, SIGNAL( accepted() ), this, SLOT( OkOverWrite() ),
+	   Qt::UniqueConnection );
+  connect( AskOverWrite, SIGNAL( rejected() ), this, SLOT( SurelyStop() ),
+	   Qt::UniqueConnection );
+  connect( MakeSureOfRangeSelect, SIGNAL( accepted() ), this, SLOT( RangeSelOK() ),
+	   Qt::UniqueConnection );
+  connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ),
+	   Qt::UniqueConnection );
+  connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ),
+	   Qt::UniqueConnection );
 
   inMeasDark = false;
   MeasDarkStage = 0;
@@ -167,10 +202,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MeasView = NULL;
 
   connect( this, SIGNAL( SelectedSSD( int, bool ) ),
-	      this, SLOT( ReCalcSSDTotal( int, bool ) ) );
+	   this, SLOT( ReCalcSSDTotal( int, bool ) ),
+	   Qt::UniqueConnection );
 
   darkTable = new DarkTable;
-  connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ) );
+  connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ),
+	   Qt::UniqueConnection );
 
   int i0 = 0, i1 = 0;
   for ( int i = 0; i < ICLengths.count(); i++ ) {
@@ -185,17 +222,22 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   I1ChSelect->setCurrentIndex( i1 );
   SetNewGases();
   connect( I0ChSelect, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( SetNewGases() ) );
+	   this, SLOT( SetNewGases() ),
+	   Qt::UniqueConnection );
   connect( I1ChSelect, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( SetNewGases() ) );
+	   this, SLOT( SetNewGases() ),
+	   Qt::UniqueConnection );
   connect( ManTEkeV, SIGNAL( textChanged( const QString & ) ),
-	   this, SLOT( SetNewGases() ) );
+	   this, SLOT( SetNewGases() ),
+	   Qt::UniqueConnection );
 
-  connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ) );
+  connect( QXafsMode, SIGNAL( toggled( bool ) ), this, SLOT( ToggleQXafsMode( bool ) ),
+	   Qt::UniqueConnection );
 
   // Auto mode   :  The parse can be done, on starting measurement
   connect( AutoMode, SIGNAL( editingFinished() ),
-	   this, SLOT( ShowItemsForAutoMode() ) );
+	   this, SLOT( ShowItemsForAutoMode() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::CheckNewMeasFileName( void )

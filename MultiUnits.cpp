@@ -170,7 +170,8 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
 		     .arg( PUnits.at(i)->dt ) );
       msg1->setWindowTitle( tr( "Warning on dwell time" ) );
       connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
-	       this, SLOT( ShownMessage( QAbstractButton * ) ) );
+	       this, SLOT( ShownMessage( QAbstractButton * ) ),
+	       Qt::UniqueConnection );
       msg1->show();
     }
   }
@@ -186,7 +187,8 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
 		     .arg( Units.at(i)->dt ) );
       msg1->setWindowTitle( tr( "Warning on dwell time" ) );
       connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
-	       this, SLOT( ShownMessage( QAbstractButton * ) ) );
+	       this, SLOT( ShownMessage( QAbstractButton * ) ),
+	       Qt::UniqueConnection );
       msg1->show();
     }
     // }

@@ -18,38 +18,53 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   for ( int i = 0; i < SSDbs.count(); i++ ) {
     SSDbs[i]->setStyleSheet( SSDActive );
     SSDbs[i]->setToolTip( tr( "Active" ) );
-    connect( SSDbs[i],  SIGNAL( clicked() ), this, SLOT( SelSSDs0() ) );
+    connect( SSDbs[i],  SIGNAL( clicked() ), this, SLOT( SelSSDs0() ),
+	     Qt::UniqueConnection );
   }
 
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
     SSDbs2[i]->setStyleSheet( SSDActive );
     SSDbs2[i]->setToolTip( tr( "Active" ) );
     SSDbs2[i]->setChecked( PBTrue );
-    connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ) );
+    connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ),
+	     Qt::UniqueConnection );
   }
 
   StartResume = MCA_START;
   
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
-	   this, SLOT( showPeakingTime( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetThreshold2( SMsg ) ), this, SLOT( showThreshold( SMsg ) ) );
+	   this, SLOT( showPeakingTime( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetThreshold2( SMsg ) ), this, SLOT( showThreshold( SMsg ) ),
+	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsGetCalibration( SMsg ) ),
-	   this, SLOT( showCalibration( SMsg ) ) );
+	   this, SLOT( showCalibration( SMsg ) ),
+	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsGetDynamicRange( SMsg ) ),
-	   this, SLOT( showDynamicRange( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetPreAMPGain( SMsg ) ), this, SLOT( showPreAMPGain( SMsg ) ) );
-  connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ) );
+	   this, SLOT( showDynamicRange( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetPreAMPGain( SMsg ) ), this, SLOT( showPreAMPGain( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ),
+	   Qt::UniqueConnection );
   
-  connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ) );
-  connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ) );
+  connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ),
+	   Qt::UniqueConnection );
+  connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ),
+	   Qt::UniqueConnection );
   connect( ROIStartInput, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( newROIStart( const QString & ) ) );
+	   this, SLOT( newROIStart( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( ROIEndInput, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( newROIEnd( const QString & ) ) );
-  connect( MCAClear, SIGNAL( clicked() ), this, SLOT( clearMCA() ) );
+	   this, SLOT( newROIEnd( const QString & ) ),
+	   Qt::UniqueConnection );
+  connect( MCAClear, SIGNAL( clicked() ), this, SLOT( clearMCA() ),
+	   Qt::UniqueConnection );
   
-  connect( SelRealTime, SIGNAL( clicked() ), this, SLOT( RealTimeIsSelected() ) );
-  connect( SelLiveTime, SIGNAL( clicked() ), this, SLOT( LiveTimeIsSelected() ) );
+  connect( SelRealTime, SIGNAL( clicked() ), this, SLOT( RealTimeIsSelected() ),
+	   Qt::UniqueConnection );
+  connect( SelLiveTime, SIGNAL( clicked() ), this, SLOT( LiveTimeIsSelected() ),
+	   Qt::UniqueConnection );
 
   MCAFSel = new QFileDialog;
   MCAFSel->setAcceptMode( QFileDialog::AcceptSave );
@@ -57,26 +72,36 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   MCAFSel->setFilter( "*.dat" );
 
   connect( GainInput, SIGNAL( editingFinished() ), 
-	   this, SLOT( newGain() ) );
+	   this, SLOT( newGain() ),
+	   Qt::UniqueConnection );
 
-  connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ) );
+  connect( SelMCARecFile, SIGNAL( clicked() ), MCAFSel, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( MCAFSel, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( setSelectedMCAFName( const QString & ) ) );
-  //  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData0() ) );
-  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ) );
+	   this, SLOT( setSelectedMCAFName( const QString & ) ),
+	   Qt::UniqueConnection );
+  //  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData0() ),
+  //           Qt::UniqueConnection );
+  connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ),
+	   Qt::UniqueConnection );
 #if 0                 // new mcas
-  connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ) );
+  connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ),
+	   Qt::UniqueConnection );
 #else
   connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
-	   this, SLOT( ShowNewMCAStat( char * ) ) );
+	   this, SLOT( ShowNewMCAStat( char * ) ),
+	   Qt::UniqueConnection);
 #endif
 
   connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
-	   this, SLOT( ShowNewMCARealTime( int ) ) );
+	   this, SLOT( ShowNewMCARealTime( int ) ),
+	   Qt::UniqueConnection );
   connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
-	   this, SLOT( ShowNewMCALiveTime( int ) ) );
+	   this, SLOT( ShowNewMCALiveTime( int ) ),
+	   Qt::UniqueConnection );
 
-  connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ) );
+  connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
+	   Qt::UniqueConnection );
 
   inMCAMeas = false;
   validMCAData = false;
@@ -97,28 +122,38 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   for ( int i = 0; i < PT->Atoms(); i++ ) {
     PT2->SetAColor( i, NonSelC );
   }
-  connect( SelectElmNames, SIGNAL( clicked() ), PT2, SLOT( show() ) );
+  connect( SelectElmNames, SIGNAL( clicked() ), PT2, SLOT( show() ),
+	   Qt::UniqueConnection );
   PT2->setAll();
   connect( PT2, SIGNAL( AtomToggled( bool, int ) ),
-	   fdbase, SLOT( ElementSelected( bool, int ) ) );
+	   fdbase, SLOT( ElementSelected( bool, int ) ),
+	   Qt::UniqueConnection );
 
   connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	   this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ) );
+	   this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ),
+	   Qt::UniqueConnection );
   connect( DispElmNames, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewSetShowElements( bool ) ) );
+	   this, SLOT( NoticeMCAViewSetShowElements( bool ) ),
+	   Qt::UniqueConnection );
   connect( ShowAlwaysSelElm, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ) );
+	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ),
+	   Qt::UniqueConnection );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ) );
+	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ),
+	   Qt::UniqueConnection );
   //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
 
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
-	   this, SLOT( newPSSens() ) );
-  connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ) );
+	   this, SLOT( newPSSens() ),
+	   Qt::UniqueConnection );
+  connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ),
+	   Qt::UniqueConnection );
   connect( LimitPSEnergy, SIGNAL( toggled( bool ) ),
-	   this, SLOT( SelectedLimitPSEnergy( bool ) ) );
+	   this, SLOT( SelectedLimitPSEnergy( bool ) ),
+	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
-	   this, SLOT( newCalibration() ) );
+	   this, SLOT( newCalibration() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::ReadLowerLimitSetting( void )

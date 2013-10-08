@@ -66,12 +66,16 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   // data-disp で表示した時、にマズイかも
   connect( this, SIGNAL( CurrentValues( int, int ) ),
-	   Parent, SLOT( showCurrentValues( int, int ) ) );
+	   Parent, SLOT( showCurrentValues( int, int ) ),
+	   Qt::UniqueConnection );
   connect( this, SIGNAL( newROI( int, int ) ),
-	   Parent, SLOT( setNewROI( int, int ) ) );
+	   Parent, SLOT( setNewROI( int, int ) ),
+	   Qt::UniqueConnection );
   connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
-	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
-  connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ) );
+	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ),
+	   Qt::UniqueConnection );
+  connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
+	   Qt::UniqueConnection );
 }
 
 MCAView::~MCAView( void )

@@ -12,9 +12,12 @@ Conditions::Conditions( void ) : QFrame()
 			.arg( __DATE__ )
 			.arg( __TIME__ ) );
 
-  connect( CalibDXMPMC, SIGNAL( clicked() ), this, SIGNAL( SetDXMPMC() ) );
-  connect( SaveDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToSaveDTh1TTable() ) );
-  connect( ShowDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToShowDTh1TTable() ) );
+  connect( CalibDXMPMC, SIGNAL( clicked() ), this, SIGNAL( SetDXMPMC() ),
+	   Qt::UniqueConnection );
+  connect( SaveDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToSaveDTh1TTable() ),
+	   Qt::UniqueConnection );
+  connect( ShowDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToShowDTh1TTable() ),
+	   Qt::UniqueConnection );
 }
 
 void Conditions::setVersionInfo( QString ver, QString date, QString time )

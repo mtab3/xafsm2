@@ -39,15 +39,20 @@ Data::Data( QWidget *p ) : QFrame( p )
   DataTypeNames << tr( "Measured" ) << tr( "Scaned" )
 		<< tr( "Monitored" ) << tr( "MCA" ) << "";
 
-  connect( FileSelect, SIGNAL( clicked() ), FSDialog, SLOT( show() ) );
+  connect( FileSelect, SIGNAL( clicked() ), FSDialog, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( FSDialog, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( ShowFName( const QString & ) ) );
-  connect( DataShow, SIGNAL( clicked() ), this, SLOT( StartToShowData() ) );
+	   this, SLOT( ShowFName( const QString & ) ),
+	   Qt::UniqueConnection );
+  connect( DataShow, SIGNAL( clicked() ), this, SLOT( StartToShowData() ),
+	   Qt::UniqueConnection );
   for ( int i = 0; i < DColors.count(); i++ ) {
-    connect( DColors.at(i), SIGNAL( clicked() ), this, SLOT( callCSDialog() ) );
+    connect( DColors.at(i), SIGNAL( clicked() ), this, SLOT( callCSDialog() ),
+	     Qt::UniqueConnection );
   }
   connect( CSDialog, SIGNAL( colorSelected( const QColor & ) ),
-	   this, SLOT( newColorSelected( const QColor & ) ) );
+	   this, SLOT( newColorSelected( const QColor & ) ),
+	   Qt::UniqueConnection );
 }
 
 Data::~Data( void )

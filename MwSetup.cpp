@@ -42,20 +42,25 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   ShowAllGos();
 
   connect( GoUnit0, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( SetAllGoUnits( int ) ) );
+	   this, SLOT( SetAllGoUnits( int ) ),
+	   Qt::UniqueConnection );
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoUnit[i], SIGNAL( currentIndexChanged( int ) ),
-	     this, SLOT( ShowAllGos() ) );
+	     this, SLOT( ShowAllGos() ),
+	     Qt::UniqueConnection );
   }
   for ( int i = 0; i < GOS; i++ ) {
     connect( GoPosEdit[i], SIGNAL( editingFinished() ),
-	     this, SLOT( GetNewGos() ) );
+	     this, SLOT( GetNewGos() ),
+	     Qt::UniqueConnection );
   }
 
   for ( int i = 0; i < AMotors.count(); i++ ) {
     MotorN->addItem( AMotors.value(i)->getName() );
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
-    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ),
+	     Qt::UniqueConnection );
   }
   for ( int i = 0; i < MSPEEDS; i++ ) {
     GoMotorS->addItem( MSpeeds[i].MSName );
@@ -74,13 +79,15 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SelectD22->addItem( ASensors.value(i)->getName() );
     SelectD3->addItem( ASensors.value(i)->getName() );
     connect( ASensors.value(i), SIGNAL( newDark( double ) ),
-	     this, SLOT( ShowNewDark( double ) ) );
+	     this, SLOT( ShowNewDark( double ) ),
+	     Qt::UniqueConnection );
     if ( ASensors.at(i)->isRangeSelectable() ) {
       SelSensToSetRange->addItem( ASensors.at(i)->getName() );
       SensWithRange << ASensors.at(i);
       ASensors.at(i)->setRange( ASensors.at(i)->getRangeU() );
       connect( ASensors.at(i), SIGNAL( AskedNowRange( int ) ),
-	       this, SLOT( GotNowRange( int ) ) );
+	       this, SLOT( GotNowRange( int ) ),
+	       Qt::UniqueConnection );
     }
   }
 
@@ -92,19 +99,26 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
 
   connect( SelectAutoRange, SIGNAL( toggled( bool ) ),
-	   this, SLOT( SelAutoRange( bool ) ) );
+	   this, SLOT( SelAutoRange( bool ) ),
+	   Qt::UniqueConnection );
   connect( SelSensToSetRange, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( newSensSelected( int ) ) );
+	   this, SLOT( newSensSelected( int ) ),
+	   Qt::UniqueConnection );
   connect( RangeSelect, SIGNAL( valueChanged( int ) ),
-	   this, SLOT( newRangeSelected( int ) ) );
-  connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ) );
-  connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ) );
+	   this, SLOT( newRangeSelected( int ) ),
+	   Qt::UniqueConnection );
+  connect( GetRange, SIGNAL( clicked() ), this, SLOT( askNowRange() ),
+	   Qt::UniqueConnection );
+  connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ),
+	   Qt::UniqueConnection );
 
   InputDark
     ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
   connect( SelectD3, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( NewDarkChSelected( int ) ) );
-  connect( SetDark, SIGNAL( clicked() ), this, SLOT( AskedToSetDark() ) );
+	   this, SLOT( NewDarkChSelected( int ) ),
+	   Qt::UniqueConnection );
+  connect( SetDark, SIGNAL( clicked() ), this, SLOT( AskedToSetDark() ),
+	   Qt::UniqueConnection );
 
   for ( int i = 0; i < MSCALES; i++ ) {
     SelectScale->addItem( MScales[i].MSName );
@@ -121,41 +135,62 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   monFSel->setDirectory( QDir::currentPath() );
   monFSel->setFilter( "*.dat" );
 
-  connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ) );
-  connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ) );
-  connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ) );
+  connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ),
+	   Qt::UniqueConnection );
+  connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ),
+	   Qt::UniqueConnection );
+  connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ),
+	   Qt::UniqueConnection );
 
 #if 0
-  connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ) );
-  connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ) );
-  connect( GoTo3, SIGNAL( clicked() ), this, SLOT( GoToPosKeV3() ) );
-  connect( GoTo4, SIGNAL( clicked() ), this, SLOT( GoToPosKeV4() ) );
+  connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ),
+	   Qt::UniqueConnection );
+  connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ),
+	   Qt::UniqueConnection );
+  connect( GoTo3, SIGNAL( clicked() ), this, SLOT( GoToPosKeV3() ),
+	   Qt::UniqueConnection );
+  connect( GoTo4, SIGNAL( clicked() ), this, SLOT( GoToPosKeV4() ),
+	   Qt::UniqueConnection );
 #endif
   for ( int i = 0; i < GoTos.count(); i++ ) {
-    connect( GoTos[i], SIGNAL( clicked() ), this, SLOT( GoToPosKeV() ) );
+    connect( GoTos[i], SIGNAL( clicked() ), this, SLOT( GoToPosKeV() ),
+	     Qt::UniqueConnection );
   }
 
-  connect( MotorN, SIGNAL( currentIndexChanged( int ) ), this, SLOT( NewMotor() ) );
-  connect( GoMotor, SIGNAL( clicked() ), this, SLOT( GoMAtP() ) );
+  connect( MotorN, SIGNAL( currentIndexChanged( int ) ), this, SLOT( NewMotor() ),
+	   Qt::UniqueConnection );
+  connect( GoMotor, SIGNAL( clicked() ), this, SLOT( GoMAtP() ),
+	   Qt::UniqueConnection );
   connect( GoMotorPosPuls, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( NewGoMotorPosPuls( const QString & ) ) );
+	   this, SLOT( NewGoMotorPosPuls( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( GoMotorPosUnit, SIGNAL( textEdited( const QString & ) ),
-	   this, SLOT( NewGoMotorPosUnit( const QString & ) ) );
+	   this, SLOT( NewGoMotorPosUnit( const QString & ) ),
+	   Qt::UniqueConnection );
 
-  connect( SPSScan, SIGNAL( clicked() ), this, SLOT( ScanStart() ) );
-  connect( MStart, SIGNAL( clicked() ), this, SLOT( Monitor() ) );
+  connect( SPSScan, SIGNAL( clicked() ), this, SLOT( ScanStart() ),
+	   Qt::UniqueConnection );
+  connect( MStart, SIGNAL( clicked() ), this, SLOT( Monitor() ),
+	   Qt::UniqueConnection );
 
-  connect( SelMonRecFile, SIGNAL( clicked() ), monFSel, SLOT( show() ) );
+  connect( SelMonRecFile, SIGNAL( clicked() ), monFSel, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( monFSel, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( setSelectedMonFName( const QString & ) ) );
+	   this, SLOT( setSelectedMonFName( const QString & ) ),
+	   Qt::UniqueConnection );
 
-  connect( SelScanRecFile, SIGNAL( clicked() ), scanFSel, SLOT( show() ) );
+  connect( SelScanRecFile, SIGNAL( clicked() ), scanFSel, SLOT( show() ),
+	   Qt::UniqueConnection );
   connect( scanFSel, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( setSelectedScanFName( const QString & ) ) );
-  connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ) );
-  connect( SaveMonData, SIGNAL( clicked() ), this, SLOT( saveMonData() ) );
+	   this, SLOT( setSelectedScanFName( const QString & ) ),
+	   Qt::UniqueConnection );
+  connect( ScanRec, SIGNAL( clicked() ), this, SLOT( saveScanData() ),
+	   Qt::UniqueConnection );
+  connect( SaveMonData, SIGNAL( clicked() ), this, SLOT( saveMonData() ),
+	   Qt::UniqueConnection );
   connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
-	   this, SLOT( ToggleGoToButtons( QString ) ) );
+	   this, SLOT( ToggleGoToButtons( QString ) ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::ToggleGoToButtons( QString )
@@ -819,12 +854,16 @@ void MainWindow::Monitor( void )
 
     MonitorView->SetMonScale( SelectScale->currentIndex() );
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
-	     MonitorView, SLOT( SetMonScale( int ) ) );
-    connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
+	     MonitorView, SLOT( SetMonScale( int ) ),
+	     Qt::UniqueConnection );
+    connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ),
+	     Qt::UniqueConnection );
     if ( MonSensF[1] )
-      connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
+      connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ),
+	       Qt::UniqueConnection );
     if ( MonSensF[2] )
-      connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
+      connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ),
+	       Qt::UniqueConnection );
 		 
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( InActive );

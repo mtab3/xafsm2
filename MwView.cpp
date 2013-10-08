@@ -22,7 +22,8 @@ void MainWindow::setupView( void )
   oldCurrentView = 0;
 
   connect( ViewTab, SIGNAL( currentChanged( int ) ),
-	   this, SLOT( moveToATab( int ) ) );
+	   this, SLOT( moveToATab( int ) ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::moveToATab( int tab ) 

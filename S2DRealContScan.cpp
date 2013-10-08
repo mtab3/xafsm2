@@ -17,6 +17,8 @@ void MainWindow::S2DRealContinuousScanSequence( void )
   // 2番目の軸:: s: -10, e: -10, periods 10 (step 2) 
   // の様に、1番目の軸の指定と2番目の軸の指定を、半ステップずらす必要がある。
 
+  QString msg;
+
   // モータ駆動中は入ってこない
   // 計測は別のタイマーで行う。
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
@@ -63,8 +65,13 @@ void MainWindow::S2DRealContinuousScanSequence( void )
 		     / S2DMotors[0]->getUPP()
 		     / S2DDwell );
     if ( pps == 0 ) pps = 1;
-    if ( pps > S2DMotors[0]->highSpeed() )
-      pps = S2DMotors[0]->highSpeed();
+    if ( pps > S2DMotors[0]->highestSpeed() ) {
+      msg = tr( "The scan speed %1 was limited to %2" )
+	.arg( pps ).arg( S2DMotors[0]->highestSpeed() );
+      qDebug() << msg;
+      statusbar->showMessage( msg, 2000 );
+      pps = S2DMotors[0]->highestSpeed();
+    }
     S2DMotors[0]->SetHighSpeed( pps );
     S2DStage++;
     // break しない
@@ -72,14 +79,17 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     // 計測開始準備
     S2Di[0] = -1;
     connect( mUnits.at(0), SIGNAL( newValue( QString ) ),
-	     this, SLOT( S2DNewScanValue( QString ) ) );
+	     this, SLOT( S2DNewScanValue( QString ) ),
+	     Qt::UniqueConnection );
     S2DTimer2->start( S2DDwell * 1000 );
     mUnits.getValue();
     // 同時に「終点」に移動開始
     if ( S2DScanDir == FORWARD ) {
       S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dex[0] ) );
+      qDebug() << "SetV " << S2Dex[0];
     } else {
       S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) );
+      qDebug() << "SetV " << S2Dsx[0];
     }
     S2DStage++;
     break;
@@ -147,6 +157,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     S2DStart->setText( tr( "Start" ) );
     S2DStart->setStyleSheet( NormalB );
     S2DTimer->stop();
+    S2DTimer2->stop();
     break;
   }
 }
@@ -154,21 +165,21 @@ void MainWindow::S2DRealContinuousScanSequence( void )
 void MainWindow::S2DRContScanMeas( void )
 {
   mUnits.getValue();
-  S2Di[0]++;
 }
 
 void MainWindow::S2DNewScanValue( QString v )
 {
   double V = v.toDouble();
-  if ( S2Di[0] >= 0 ) {
+  if (( S2Di[0] >= 0 ) && ( S2Di[0] <= S2Dps[0] )) {
     // ファイル記録
     S2DWriteBody( V - S2DLastV );
     // 描画
     if ( S2DScanDir == FORWARD ) {
-      S2DV->setData( S2Di[0] - 1, S2Di[1], V - S2DLastV );
+      S2DV->setData( S2Di[0], S2Di[1], V - S2DLastV );
     } else {
-      S2DV->setData( S2Dps[0] - S2Di[0], S2Di[1], V - S2DLastV );
+      S2DV->setData( S2Dps[0] - S2Di[0] - 1, S2Di[1], V - S2DLastV );
     }
   }
   S2DLastV = V;
+  S2Di[0]++;
 }
