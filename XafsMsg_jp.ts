@@ -2356,6 +2356,18 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>eV       Calib.</source>
         <translation>eV      較正</translation>
     </message>
+    <message>
+        <source>Both Dir.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot open [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

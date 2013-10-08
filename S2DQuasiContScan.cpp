@@ -1,9 +1,5 @@
 #include "MainWindow.h"
 
-
-/* debugging vals */
-QString readPntX, readPntY, readPntX0, readPntY0;
-
 // SSD を使った連続スキャンに限る
 // nct08 も同じことができるはず
 void MainWindow::S2DQuasiContinuousScanSequence( void )
@@ -69,7 +65,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // 1st Ax のみ、スキャン用のスピードにセット
     pps = (int)fabs( (double)S2Ddx[0]
 		     / S2DMotors[0]->getUPP()
-		     / S2DTime1->text().toDouble() );
+		     / S2DDwell );
     if ( pps == 0 ) pps = 1;
     if ( pps > S2DMotors[0]->highSpeed() )
       pps = S2DMotors[0]->highSpeed();
@@ -79,14 +75,6 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
   case 4:     // リピートポイント
     // 計測開始準備
     mUnits.getValue();
-
-    /* debug display */
-    readPntX0 = readPntX;
-    readPntY0 = readPntY;
-    readPntX = S2DMotors[0]->value();
-    readPntY = S2DMotors[1]->value();
-    /* debug display */
-
     // 同時に次の点に移動開始
     if ( S2Di[0] < S2Dps[0] ) {
       if ( S2DScanDir == FORWARD ) {
@@ -109,11 +97,6 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       // ファイル記録
       S2DWriteBody( S2DVals[0] - S2DLastV );
       // 描画
-#if 0
-      qDebug() << QString( "new point (%1, %2)-(%3, %4) : %5" )
-	.arg( readPntX0 ).arg( readPntY0 ).arg( readPntX ).arg( readPntY )
-	.arg( S2DVals[0] - S2DLastV );
-#endif
       if ( S2DScanDir == FORWARD ) {
 	S2DV->setData( S2Di[0] - 1, S2Di[1], S2DVals[0] - S2DLastV );
       } else {
@@ -123,7 +106,8 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     S2DLastV = S2DVals[0];
     // ステップコントロール変数更新
     S2Di[0]++;
-    // 上に書いた事情で、意図したより一点少ない計測になる分、終点を一つ増やしておく
+    // 上に書いた事情で、そのままでは意図したより一点少ない計測になる分、
+    // 終点を一つ増やしておく
     if ( S2Di[0] < S2Dps[0]+1 ) { // 1st ax の端点でなければ
       S2DStage = 4;
       break;
@@ -133,13 +117,6 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     S2Di[0] = 0;
     S2Di[1]++;
     if ( S2Di[1] <= S2Dps[1] ) {       // 2nd ax の端点でなければ
-      /* debug display */
-      readPntX0 = readPntX;
-      readPntY0 = readPntY;
-      readPntX = S2DMotors[0]->value();
-      readPntY = S2DMotors[1]->value();
-      /* debug display */
-
       S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] + S2Di[1] * S2Ddx[1] ) );
       // 2nd ax は次の点に移動
       if ( ! S2DContScanBothDir->isChecked() ) { 
@@ -157,13 +134,6 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       S2Di[1] = 0;
       S2Di[2]++;
       if ( S2Di[2] <= S2Dps[2] ) {  // 3rd ax の端点でなければ
-	/* debug display */
-	readPntX0 = readPntX;
-	readPntY0 = readPntY;
-	readPntX = S2DMotors[0]->value();
-	readPntY = S2DMotors[1]->value();
-	/* debug display */
-
 	S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] ) ); // 2nd ax は原点に戻し
 	S2DMotors[2]->SetValue( S2DMotors[2]->u2p( S2Dsx[2] + S2Di[2] * S2Ddx[2] ) );
 	// 3rd ax は次の点に移動

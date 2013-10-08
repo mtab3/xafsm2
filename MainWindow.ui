@@ -6948,9 +6948,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QRadioButton" name="S2DContScan">
+               <widget class="QRadioButton" name="S2DQuasiContScan">
                 <property name="text">
-                 <string>Cnt.Scn.</string>
+                 <string>Q. Cnt.Scn.</string>
                 </property>
                </widget>
               </item>
@@ -6961,6 +6961,13 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 </property>
                 <property name="autoExclusive">
                  <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QRadioButton" name="S2DRealContScan">
+                <property name="text">
+                 <string>R. Cnt. Scn.</string>
                 </property>
                </widget>
               </item>

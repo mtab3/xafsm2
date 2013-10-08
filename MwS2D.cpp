@@ -26,6 +26,7 @@ void MainWindow::setupScan2DArea( void )
   S2Dex << 0 << 0 << 0;
   S2Ddx << 0 << 0 << 0;
   S2Di << 0 << 0 << 0;
+  S2DScanMode = STEP;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     S2DOkSensors << ASensors[i];
@@ -67,6 +68,7 @@ void MainWindow::setupScan2DArea( void )
 
   inS2D = false;
   S2DTimer = new QTimer;
+  S2DTimer2 = new QTimer;
   isS2DSFluo = false;
 
   connect( S2DStart, SIGNAL( clicked() ), this, SLOT( S2DScanStart() ) );
@@ -81,6 +83,7 @@ void MainWindow::setupScan2DArea( void )
     connect( S2DPoints[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ) );
   }
   connect( S2DUseChanger, SIGNAL( toggled(bool) ), this, SLOT( S2DSetUseChangers(bool) ) );
+  connect( S2DTimer2, SIGNAL( timeout() ), this, SLOT( S2DRContScanMeas() ) );
 }
 
 void MainWindow::S2DSetUseChangers( bool f )
@@ -220,6 +223,8 @@ void MainWindow::S2DScanStart( void )
   AUnit *as = NULL;
 
   if ( !inS2D ) {
+    SetupS2DParams();   // スキャンパラメータを GUI から内部変数にコピー
+
     if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas ) {
       statusbar
 	->showMessage( tr( "Can't start 2D Scan. Othre Process is going on." ), 2000 );
@@ -235,7 +240,7 @@ void MainWindow::S2DScanStart( void )
       }
     }
     // 計測時間が 0 になってないかチェック
-    if ( S2DTime1->text().toDouble() <= 0 ) {
+    if ( S2DDwell <= 0 ) {
       statusbar->showMessage( tr( "Meas Time is 0 or less." ), 2000 );
     }
 
@@ -275,7 +280,7 @@ void MainWindow::S2DScanStart( void )
 
     mUnits.clearUnits();
     mUnits.addUnit( as = S2DOkSensors.value( SelectS2DSensor->currentIndex() ) );
-    mUnits.setDwellTimes( S2DTime1->text().toDouble() );
+    mUnits.setDwellTimes( S2DDwell );
     mUnits.setDwellTime();
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( ! mUnits.at(i)->isEnable() ) {
@@ -298,14 +303,21 @@ void MainWindow::S2DScanStart( void )
     if ( as == SFluo ) {
       isS2DSFluo = true;
     }
-    if ( S2DStepScan->isChecked() ) {  // ステップスキャン
-      S2DStepF = true;
-    } else {
+    if ( S2DStepScan->isChecked() )
+      S2DScanMode = STEP;
+    if ( S2DQuasiContScan->isChecked() ) {
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	return;
       }
-      S2DStepF = false;
+      S2DScanMode = QCONT;
+    }
+    if ( S2DRealContScan->isChecked() ) {
+      if ( ! CheckOkList( as, CScanOk ) ) {
+	NewLogMsg( tr( "Continuous scan is not available now." ) );
+	return;
+      }
+      S2DScanMode = RCONT;
     }
 
     inS2D = true;
@@ -322,7 +334,6 @@ void MainWindow::S2DScanStart( void )
     S2DFileName->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
     S2DFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 
-    SetupS2DParams();   // スキャンパラメータを GUI から内部変数にコピー
     // 1st と 2nd の軸の単位が同じなら、表示の縦横比をスキャン範囲の
     // 縦横比に合わせるように努力する。
     // そうでなければ、画面いっぱいを使う。
@@ -350,13 +361,22 @@ void MainWindow::S2DScanStart( void )
     mUnits.clearStage();
     S2DStage = 0;
     S2DTimer->disconnect();
-    if ( S2DStepF ) {
+    S2DScanDir = FORWARD;
+    switch ( S2DScanMode ) {
+    case STEP:
+      connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ) );
+      break;
+    case QCONT:
       connect( S2DTimer, SIGNAL( timeout() ),
-	       this, SLOT( S2DStepScanSequence() ) );
-    } else {
-      S2DScanDir = FORWARD;
+		 this, SLOT( S2DQuasiContinuousScanSequence() ) );
+      break;
+    case RCONT:
       connect( S2DTimer, SIGNAL( timeout() ),
-	       this, SLOT( S2DQuasiContinuousScanSequence() ) );
+	       this, SLOT( S2DRealContinuousScanSequence() ) );
+      break;
+    default:
+      qDebug() << "non-defined scan mode !";
+      return;
     }
     S2DTimer->start( 10 );
   } else {
@@ -366,7 +386,7 @@ void MainWindow::S2DScanStart( void )
 
 void MainWindow::SetupS2DParams( void )
 {
-  
+  S2DDwell = S2DTime1->text().toDouble();
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
     S2Dnow[i] = S2DMotors[i]->value().toInt();
     if ( S2DRelAbs[i]->stat() == ABS ) {
@@ -416,12 +436,22 @@ void MainWindow::S2DWriteHead( void )
   out << "# Scan Mode : ";
   if ( S2DStepScan->isChecked() ) {
     out << "Step Scan" << endl;
-  } else {
+  } else if ( S2DQuasiContScan->isChecked() ) {
     if ( S2DContScanBothDir->isChecked() ) {
-      out << "Cont. Scan in Both Dir" << endl;
+      out << "Quasi Cont. Scan in Both Dir" << endl;
     } else {
-      out << "Cont. Scan in Single Dir" << endl;
+      out << "Quasi Cont. Scan in Single Dir" << endl;
     }
+  } else if ( S2DRealContScan->isChecked() ) {
+    if ( S2DContScanBothDir->isChecked() ) {
+      out << "Real Cont. Scan in Both Dir" << endl;
+    } else {
+      out << "Real Cont. Scan in Single Dir" << endl;
+    }
+  } else {
+    qDebug() << "No Scan mode is selected !!";
+    f.close();
+    return;
   }
 
   for ( int i = 0; i < S2DMotors.count(); i++ ) {
@@ -435,7 +465,7 @@ void MainWindow::S2DWriteHead( void )
     }
   }
 
-  out << "#" << QString( " Dwell Time : %1" ).arg( S2DTime1->text() ) << endl;
+  out << "#" << QString( " Dwell Time : %1" ).arg( S2DDwell ) << endl;
 
   out << "#" << endl;
 

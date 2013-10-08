@@ -324,7 +324,6 @@ bool AUnit::QStart( void )
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0,  0 ) ) {
     switch( LocalStage ) {
     case 0:
-      qDebug() << "set time " << setTime;
       IsBusy2On( Driver, "Start" );
       s->SendCMD2( Uid, DevCh, "qInitialize", QString::number( setTime ) );
       LocalStage++;
@@ -387,6 +386,8 @@ bool AUnit::GetValue( void )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
     IsBusy2On( Driver, "GetValue" );
+    // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
+    //        data-link 経由で完全なデータをもらった時に消す
     //    s->SendCMD2( Uid, Driver, "GetValues" );    // new mcas
     s->SendCMD2( Uid, Driver, "GetMCAs" );
   }
@@ -579,7 +580,6 @@ bool AUnit::Close( void )
     }
   }
 
-  qDebug() << "Local Stage " << LocalStage << rv;
   return rv;
 }
 

@@ -41,6 +41,7 @@ enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
+enum SCANMODE { STEP, QCONT, RCONT };
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -151,7 +152,7 @@ private:
   void InitAndIdentifySensors( void );
 
   QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
-  QTimer *S2DTimer;
+  QTimer *S2DTimer, *S2DTimer2;
 
   Stars *s;
 
@@ -259,7 +260,7 @@ private:
   bool MonSensF[ 3 ];
 
   // Scan 2D
-  bool S2DStepF;
+  SCANMODE S2DScanMode;
   DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
   DIRECTION ReversedDir( DIRECTION d )
@@ -282,6 +283,7 @@ private:
   QVector<int> S2Dnow;
   QVector<int> S2Di, S2Dps;
   QVector<double> S2Dsx, S2Dex, S2Ddx;
+  double S2DDwell;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   QString S2DFile;
   bool isS2DSFluo;
@@ -674,11 +676,13 @@ private slots:
   void S2DStepScanSequence( void );
   // 擬似連続スキャン (検出器は連続、モータはステップ)
   void S2DQuasiContinuousScanSequence( void );
-  // 擬似連続スキャンで往復でのスキャンを行う
-  void S2DQuasiContinuousScanSequence2( void );
+  // ホントの連続スキャン準備中
+  void S2DRealContinuousScanSequence( void );
 
   void S2DNewChangerSelected( int i );
   void S2DSetUseChangers( bool f );
+  void S2DRContScanMeas( void );
+  void S2DNewScanValue( QString v );
 
  signals:
   void SelectedSSD( int i, bool f );

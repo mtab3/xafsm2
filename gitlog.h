@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "ContinuousS2DMode" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Oct 8 17:11:00 2013 +0900\n"\
+                "    no\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Oct 7 11:33:45 2013 +0900\n"\
                 "    no\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Oct 6 01:07:20 2013 +0900\n"\
                 "    Working on both dir scan\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Oct 4 14:02:48 2013 +0900\n"\
-                "    working on S2DQCS2\n"\
 		"\n"\
                 ""
 #endif

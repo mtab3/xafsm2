@@ -50,7 +50,7 @@ void MainWindow::S2DStepScanSequence( void )
     break;
   case 1:
     // 検出器の計測時間セット
-    mUnits.setDwellTimes( S2DTime1->text().toDouble() );
+    mUnits.setDwellTimes( S2DDwell );
     mUnits.setDwellTime();
     S2DStage++;
     break;
