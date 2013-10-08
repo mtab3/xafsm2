@@ -4,7 +4,8 @@ DarkTable::DarkTable( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
-  connect( closeB, SIGNAL( clicked() ), this, SLOT( hide() ) );
+  connect( closeB, SIGNAL( clicked() ), this, SLOT( hide() ),
+	   Qt::UniqueConnection );
   resize( 430, 300 );
 }
 

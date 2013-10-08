@@ -8,8 +8,8 @@ RelAbs::RelAbs( QWidget *p ) : QFrame( p )
 
   Stat = REL;
   Show();
-  connect( Rel, SIGNAL( clicked() ), this, SLOT( ToRel() ) );
-  connect( Abs, SIGNAL( clicked() ), this, SLOT( ToAbs() ) );
+  connect( Rel, SIGNAL( clicked() ), this, SLOT( ToRel() ), Qt::UniqueConnection );
+  connect( Abs, SIGNAL( clicked() ), this, SLOT( ToAbs() ), Qt::UniqueConnection );
 }
 
 void RelAbs::ToRel( void )

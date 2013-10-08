@@ -178,7 +178,8 @@ void MainWindow::onMeasFinishWorks( void )
     MoveCurThPosKeV( InitialKeV );
     if ( AutoModeButton->isChecked() ) {
       connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
-	       this, SLOT( AutoSequence() ) );
+	       this, SLOT( AutoSequence() ),
+	       Qt::UniqueConnection );
     }
   } else {
     emit ChangerNext();

@@ -13,10 +13,13 @@ StarsSV2::StarsSV2() : QFrame()
   StarsSVP->addItem( "6058" );
 
   connect( StarsSVA, SIGNAL( currentIndexChanged( const QString & ) ),
-	   this, SIGNAL( SSVNewAddress( const QString & ) ) );
+	   this, SIGNAL( SSVNewAddress( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( StarsSVP, SIGNAL( currentIndexChanged( const QString & ) ),
-	   this, SIGNAL( SSVNewPort( const QString & ) ) );
-  connect( ReConnect, SIGNAL( clicked() ), this, SIGNAL( AskReConnect() ) );
+	   this, SIGNAL( SSVNewPort( const QString & ) ),
+	   Qt::UniqueConnection );
+  connect( ReConnect, SIGNAL( clicked() ), this, SIGNAL( AskReConnect() ),
+	   Qt::UniqueConnection );
 
   ReadHistory();
 }

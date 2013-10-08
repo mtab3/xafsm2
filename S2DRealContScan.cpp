@@ -72,7 +72,8 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     // 計測開始準備
     S2Di[0] = -1;
     connect( mUnits.at(0), SIGNAL( newValue( QString ) ),
-	     this, SLOT( S2DNewScanValue( QString ) ) );
+	     this, SLOT( S2DNewScanValue( QString ) ),
+	     Qt::UniqueConnection );
     S2DTimer2->start( S2DDwell * 1000 );
     mUnits.getValue();
     // 同時に「終点」に移動開始
@@ -147,6 +148,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     S2DStart->setText( tr( "Start" ) );
     S2DStart->setStyleSheet( NormalB );
     S2DTimer->stop();
+    S2DTimer2->stop();
     break;
   }
 }
@@ -159,6 +161,7 @@ void MainWindow::S2DRContScanMeas( void )
 
 void MainWindow::S2DNewScanValue( QString v )
 {
+  qDebug() << "newvalue " << v;
   double V = v.toDouble();
   if ( S2Di[0] >= 0 ) {
     // ファイル記録

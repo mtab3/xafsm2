@@ -28,11 +28,16 @@ void MainWindow::setupChangerArea( void )
     DatumChanger->setEnabled( false );
   }
   connect( ChangerSelect, SIGNAL( currentIndexChanged( int ) ),
-	   this, SLOT( NewChangerSelected( int ) ) );
-  connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ) );
-  connect( ChangerGo, SIGNAL( clicked() ), this, SLOT( ChangerGoToNewPosition() ) );
-  connect( DatumChanger, SIGNAL( clicked() ), this, SLOT( StartDatumChanger() ) );
-  connect( this, SIGNAL( ChangerNext() ), this, SLOT( AutoSequence() ) );
+	   this, SLOT( NewChangerSelected( int ) ),
+	   Qt::UniqueConnection );
+  connect( SetChangerCenter, SIGNAL( clicked() ), this, SLOT( SetNewChangerCenter() ),
+	   Qt::UniqueConnection );
+  connect( ChangerGo, SIGNAL( clicked() ), this, SLOT( ChangerGoToNewPosition() ),
+	   Qt::UniqueConnection );
+  connect( DatumChanger, SIGNAL( clicked() ), this, SLOT( StartDatumChanger() ),
+	   Qt::UniqueConnection );
+  connect( this, SIGNAL( ChangerNext() ), this, SLOT( AutoSequence() ),
+	   Qt::UniqueConnection );
   
   movingC1 = movingC2 = NULL;
 }
@@ -159,9 +164,11 @@ void MainWindow::ChangerGoToNewPosition( void )
   movingC1 = changer->unit1();
   movingC2 = changer->unit2();
   connect( movingC1, SIGNAL( ChangedIsBusy1( QString ) ),
-	   this, SLOT( ChangerReached( QString ) ) );
+	   this, SLOT( ChangerReached( QString ) ),
+	   Qt::UniqueConnection );
   connect( movingC2, SIGNAL( ChangedIsBusy1( QString ) ),
-	   this, SLOT( ChangerReached( QString ) ) );
+	   this, SLOT( ChangerReached( QString ) ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::ChangerReached( QString )
@@ -194,9 +201,11 @@ void MainWindow::NewChangerSelected( int i )
   disconnect( SIGNAL( newValue( QString ) ),
 	      this, SLOT( ShowChangerPosition( QString ) ) );
   connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
-	   this, SLOT( ShowChangerPosition( QString ) ) );
+	   this, SLOT( ShowChangerPosition( QString ) ),
+	   Qt::UniqueConnection );
   connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
-	   this, SLOT( ShowChangerPosition( QString ) ) );
+	   this, SLOT( ShowChangerPosition( QString ) ),
+	   Qt::UniqueConnection );
   Changers[i]->unit1()->GetValue();
   Changers[i]->unit2()->GetValue();
 }

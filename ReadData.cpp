@@ -11,15 +11,20 @@ void MainWindow::setupReadDataArea( void )
 
   for ( int i = 0; i < Datas.count(); i++ ) {
     connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE ) ),
-	     this, SLOT( TryToGiveNewView( DATATYPE ) ) );
+	     this, SLOT( TryToGiveNewView( DATATYPE ) ),
+	     Qt::UniqueConnection );
     //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
-    //	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ) );
+    //	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ),
+    //       Qt::UniqueConnection );
     connect( Datas.at(i), SIGNAL( showMessage( QString, int ) ),
-	     this, SLOT( ShowMessageOnSBar( QString, int ) ) );
+	     this, SLOT( ShowMessageOnSBar( QString, int ) ),
+	     Qt::UniqueConnection );
     connect( Datas.at(i), SIGNAL( GiveMeCurrentView( void ) ),
-	     this, SLOT( TryToNoticeCurrentView( void ) ) );
+	     this, SLOT( TryToNoticeCurrentView( void ) ),
+	     Qt::UniqueConnection );
   }
-  connect( CloseView, SIGNAL( clicked() ), this, SLOT( DeleteTheView() ) );
+  connect( CloseView, SIGNAL( clicked() ), this, SLOT( DeleteTheView() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::TryToNoticeCurrentView( void )

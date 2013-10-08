@@ -120,7 +120,8 @@ void AUnit::Initialize( Stars *S )
 {
   s = S;
 
-  connect( s, SIGNAL( ReceiveError( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+  connect( s, SIGNAL( ReceiveError( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
   // 何らかのコマンドに対する応答がエラーだった場合の対処。
   // 単に、isBusy2 をクリアしているだけ。
   // こんなに単純でいいかどうかは難しいところだけれど、
@@ -131,9 +132,12 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   // SSDP を除く全て
   if ( TypeCHK(  1,  1,  1,  1,  1,  0,  0,   1,  1,  1,  1,  0,  1, 1,   1 ) ) {
-    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ) );
+    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", "System", "flgon", DevCh );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     // flgon を DevCh と Driver  両方にかけると二重になるかもしれないが
@@ -143,9 +147,11 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV, DV2 ENC2
   // 駆動系だけ(PZ は外した)
   if ( TypeCHK(  1,  0,  0,  0,  1,  0,  0,   0,  1,  0,  0,  0,  0,  0,  0 ) ) {
-    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
+    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	     Qt::UniqueConnection );
     // SetValue は Ok: でも Er: でも無視する。
-    // connect( s, SIGNAL( AnsSetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    // connect( s, SIGNAL( AnsSetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+    //          Qt::UniqueConnection );
     s->SendCMD2( "Init", DevCh, "GetValue" );
   }                                                               // 駆動系以外
   if ( TypeCHK(  0,  0,  1,  1,  1,  1,  1,   0,  0,  1,  1,  0,  0,  0,  0 ) ) {
@@ -164,22 +170,33 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                     カウンタ(nct08)だけ
   if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  0,  0,  0,  0, 0,  0 ) ) {
-    connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", Driver, "SetStopMode", "T" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                     カウンタ(ortec974)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  1,  1,  0,  0, 0,  0 ) ) {
-    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetCountPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsRun( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetCountPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsRun( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", Driver, "Reset" );
     s->SendCMD2( "Init", Driver, "SetMode", "0" );
   }
@@ -187,57 +204,88 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                      PAM(Keithley)だけ
   if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
-    connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
-    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetDataFormat( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetDataFormat( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                         CNT2, OCT2 だけ。Keithley対応
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   1,  0,  0,  1,  0,  0, 0,  0 ) ) {
-    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetRange( SMsg ) ), this, SLOT( ReactGetRange( SMsg ) ) );
+    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetZeroCheck( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetRange( SMsg ) ), this, SLOT( ReactGetRange( SMsg ) ),
+	     Qt::UniqueConnection );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                                  DV2(34410)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 1,  0 ) ) {
-    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetAperture( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetAutoZero( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetAperture( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetAutoZero( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
     //    s->SendCMD2( "Init", Driver, "Reset" );  // Reset に対する返答は無視
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                             DV (34410)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  1, 0,  0 ) ) {
-    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsQInitialize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsQGetData( SMsg ) ), this, SLOT( RcvQGetData( SMsg ) ) );
-    connect( s, SIGNAL( AnsQFinalize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsQInitialize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsQGetData( SMsg ) ), this, SLOT( RcvQGetData( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsQFinalize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
     //    s->SendCMD2( "Init", Driver, "Reset" );  // Reset に対する返答は無視
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                           SSD(Xmap)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
-    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsRunStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg )));
-    connect( s, SIGNAL( AnsGetRealTime( SMsg )), this, SLOT( ReactGetRealTime( SMsg )));
-    connect( s, SIGNAL( AnsGetLiveTime( SMsg )), this, SLOT( ReactGetLiveTime( SMsg )));
+    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsRunStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetRealTime( SMsg )), this, SLOT( ReactGetRealTime( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetLiveTime( SMsg )), this, SLOT( ReactGetLiveTime( SMsg )),
+	     Qt::UniqueConnection );
     connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
-	     this, SLOT( ReactGetDataLinkCh( SMsg ) ) );
+	     this, SLOT( ReactGetDataLinkCh( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
     s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
@@ -245,42 +293,61 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                          SSDP(Xmap)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  1,   0,  0,  0,  0,  0,  0, 0,  0  ) ) {
-    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ) );
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", "System", "flgon", DevCh );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 // LSR だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  1,  0, 0,  0  ) ) {
-    connect( s, SIGNAL(EvReportCurrent( SMsg )), this, SLOT(OnReportCurrent( SMsg )));
+    connect( s, SIGNAL(EvReportCurrent( SMsg )), this, SLOT(OnReportCurrent( SMsg )),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", Driver, "flgon", Ch );
     s->SendCMD2( "Init", "System", "flgon", Driver );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // PM だけ
   if ( TypeCHK(  1,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0  ) ) {
-    connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsSetTimingOutMode( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsSetTimingOutStart( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsSetTimingOutEnd( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsSetTimingOutInterval( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsSetTimingOutReady( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsSelect( SMsg )), this, SLOT(ClrBusy( SMsg )));
-    connect( s, SIGNAL(AnsGetHighSpeed( SMsg )), this, SLOT(RcvHighSpeed( SMsg )));
+    connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetTimingOutMode( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetTimingOutStart( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetTimingOutEnd( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetTimingOutInterval( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetTimingOutReady( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSelect( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsGetHighSpeed( SMsg )), this, SLOT(RcvHighSpeed( SMsg )),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", DevCh, "GetHighSpeed" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2  // ENC2 だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  1  ) ) {
-    connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ) );
-    connect( s, SIGNAL(AnsTrigger( SMsg )), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL(AnsStandBy( SMsg )), this, SLOT( ClrBusy( SMsg ) ) );
-    connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ) );
+    connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsTrigger( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsStandBy( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ),
+	     Qt::UniqueConnection );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   //                                                                             PZだけ
   if ( TypeCHK(  0,  1,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
-    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ) );
+    connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", DevCh, "Init" );
   }
 
@@ -295,7 +362,8 @@ void AUnit::Initialize( Stars *S )
     GetValue();
   }
   if ( ID == "TotalF" ) {
-    connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALength( SMsg ) ) );
+    connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALength( SMsg ) ),
+	     Qt::UniqueConnection );
     s->SendCMD2( "SetUpMCA", getDriver(), "GetMCALength" );
   }
   if ( ID == "ENCTH" ) {
@@ -1442,7 +1510,8 @@ void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
     MCAs0 = new char [ MCABUFSIZE ];
     dLinkCount = 0;
     MCAsReady = false;  // MCAs のバッファに有効なデータが無い
-    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ) );
+    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ),
+	     Qt::UniqueConnection );
     dLink->connectToHost( host, port );
   }
 }

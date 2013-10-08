@@ -4,9 +4,12 @@ TuneTable::TuneTable( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
-  connect( OkB, SIGNAL( clicked() ), this, SLOT( hide() ) );
-  connect( CancelB, SIGNAL( clicked() ), this, SLOT( hide() ) );
-  connect( OkB, SIGNAL( clicked() ), this, SIGNAL( Ok() ) );
+  connect( OkB, SIGNAL( clicked() ), this, SLOT( hide() ),
+	   Qt::UniqueConnection );
+  connect( CancelB, SIGNAL( clicked() ), this, SLOT( hide() ),
+	   Qt::UniqueConnection );
+  connect( OkB, SIGNAL( clicked() ), this, SIGNAL( Ok() ),
+	   Qt::UniqueConnection );
   resize( 430, 300 );
 }
 

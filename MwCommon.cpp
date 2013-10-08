@@ -32,15 +32,23 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
     PT->SetAGColor( AtomGroups.at(i) );
   }
 
-  connect( SelectTA, SIGNAL( activated( int ) ), this, SLOT( NewSelA( int ) ) );
-  connect( SelectTE, SIGNAL( activated( int ) ), this, SLOT( NewSelE( int ) ) );
-  connect( ManTEdeg, SIGNAL( editingFinished() ), SLOT( ManSelTEdeg() ) );
-  connect( ManTEkeV, SIGNAL( editingFinished() ), SLOT( ManSelTEkeV() ) );
-  connect( ShowPT, SIGNAL( clicked() ), PT, SLOT( show() ) );
-  connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ) );
+  connect( SelectTA, SIGNAL( activated( int ) ), this, SLOT( NewSelA( int ) ),
+	   Qt::UniqueConnection );
+  connect( SelectTE, SIGNAL( activated( int ) ), this, SLOT( NewSelE( int ) ),
+	   Qt::UniqueConnection );
+  connect( ManTEdeg, SIGNAL( editingFinished() ), SLOT( ManSelTEdeg() ),
+	   Qt::UniqueConnection );
+  connect( ManTEkeV, SIGNAL( editingFinished() ), SLOT( ManSelTEkeV() ),
+	   Qt::UniqueConnection );
+  connect( ShowPT, SIGNAL( clicked() ), PT, SLOT( show() ),
+	   Qt::UniqueConnection );
+  connect( PT, SIGNAL( AtomSelected( int ) ), this, SLOT( NewSelA( int ) ),
+	   Qt::UniqueConnection );
 
-  connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( HideT( bool ) ) );
-  connect( HideGraphView, SIGNAL( clicked( bool ) ), this, SLOT( HideB( bool ) ) );
+  connect( HideCTRLPanel, SIGNAL( clicked( bool ) ), this, SLOT( HideT( bool ) ),
+	   Qt::UniqueConnection );
+  connect( HideGraphView, SIGNAL( clicked( bool ) ), this, SLOT( HideB( bool ) ),
+	   Qt::UniqueConnection );
 
   GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
@@ -50,7 +58,8 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
        << GSB26 << GSB27;
 
   for ( int i = 0; i < GSBs.count(); i++ ) {
-    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ) );
+    connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ),
+	     Qt::UniqueConnection );
   }
 }
 

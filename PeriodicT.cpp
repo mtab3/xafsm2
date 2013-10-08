@@ -34,12 +34,17 @@ PeriodicTable::PeriodicTable( VICS *Vic ) : QMainWindow()
   PBMap = new QSignalMapper( this );
   for ( int i = 0; i < PBs; i++ ) {
     PBMap->setMapping( PB[i], i );
-    connect( PB[i], SIGNAL( clicked() ), PBMap, SLOT( map() ) );
+    connect( PB[i], SIGNAL( clicked() ), PBMap, SLOT( map() ),
+	     Qt::UniqueConnection );
   }
-  connect( PBMap, SIGNAL( mapped( int ) ), this, SLOT( doPB( int ) ) );
-  connect( Close, SIGNAL( clicked() ), this, SLOT( PTClose() ) );
-  connect( SetAll, SIGNAL( clicked() ), this, SLOT( setAll() ) );
-  connect( SetNone, SIGNAL( clicked() ), this, SLOT( setNone() ) );
+  connect( PBMap, SIGNAL( mapped( int ) ), this, SLOT( doPB( int ) ),
+	   Qt::UniqueConnection );
+  connect( Close, SIGNAL( clicked() ), this, SLOT( PTClose() ),
+	   Qt::UniqueConnection );
+  connect( SetAll, SIGNAL( clicked() ), this, SLOT( setAll() ),
+	   Qt::UniqueConnection );
+  connect( SetNone, SIGNAL( clicked() ), this, SLOT( setNone() ),
+	   Qt::UniqueConnection);
 
   AllNoneBs->setVisible( false );
 }

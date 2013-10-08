@@ -105,10 +105,12 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   conds->setAddInfos( true );
 #endif
   //  useFixedDelta = false;
-  connect( conds, SIGNAL( SetDXMPMC() ), this, SLOT( SetDXMPMC() ) );
+  connect( conds, SIGNAL( SetDXMPMC() ), this, SLOT( SetDXMPMC() ),
+	   Qt::UniqueConnection );
 
   StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds );
-  connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ) );
+  connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ),
+	   Qt::UniqueConnection );
   //  QString msg = "XafsMsg_" + QLocale::system().name();
   //  NewLogMsg( msg );
   NewLogMsg( QString( tr( "Mono: %1 (%2 A)" ) )
@@ -116,33 +118,49 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	     .arg( mccd[ selmc->MC() ]->getD() ) );
 
   connect( s, SIGNAL( AskShowStat( QString, int ) ),
-	   this, SLOT( ShowMessageOnSBar( QString, int ) ) );
-  connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ) );
+	   this, SLOT( ShowMessageOnSBar( QString, int ) ),
+	   Qt::UniqueConnection );
+  connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ),
+	   Qt::UniqueConnection );
   //  connect( action_SelMC, SIGNAL( triggered() ), selmc, SLOT( show() ) );
   connect( selmc, SIGNAL( NewLogMsg( QString ) ),
-	   this, SLOT( NewLogMsg( QString ) ) );
+	   this, SLOT( NewLogMsg( QString ) ),
+	   Qt::UniqueConnection );
   connect( selmc, SIGNAL( NewLatticeConstant( double ) ),
-	   u, SLOT( setD( double ) ) );
-  //  connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ) );
+	   u, SLOT( setD( double ) ),
+	   Qt::UniqueConnection );
+  //  connect( action_SetSSV, SIGNAL( triggered() ), starsSV, SLOT( show() ),
+  //           Qt::UniqueConnection );
 
   connect( starsSV, SIGNAL( SSVNewAddress( const QString & ) ),
-	   s, SLOT( SetNewSVAddress( const QString & ) ) );
+	   s, SLOT( SetNewSVAddress( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( starsSV, SIGNAL( SSVNewPort( const QString & ) ),
-	   s, SLOT( SetNewSVPort( const QString & ) ) );
+	   s, SLOT( SetNewSVPort( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( s, SIGNAL( RecordSSVHistoryA( const QString & ) ),
-	   starsSV, SLOT( RecordSSVHistoryA( const QString & ) ) );
+	   starsSV, SLOT( RecordSSVHistoryA( const QString & ) ),
+	   Qt::UniqueConnection );
   connect( s, SIGNAL( RecordSSVHistoryP( const QString & ) ),
-	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ) );
-  connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ) );
-  connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ) );
-  //  connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ) );
+	   starsSV, SLOT( RecordSSVHistoryP( const QString & ) ),
+	   Qt::UniqueConnection );
+  connect( starsSV, SIGNAL( AskReConnect() ), s, SLOT( ReConnect() ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( ReConnected() ), this, SLOT( InitializeUnitsAgain() ),
+	   Qt::UniqueConnection );
+  //  connect( starsSV, SIGNAL( accepted() ), s, SLOT( ReConnect() ),
+  //           Qt::UniqueConnection );
 
-  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ) );
-  connect( s, SIGNAL( AnsListNodes( SMsg ) ), this, SLOT( RcvListNodes( SMsg ) ) );
+  connect( s, SIGNAL( ConnectionIsReady( void ) ), this, SLOT( Initialize( void ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsListNodes( SMsg ) ), this, SLOT( RcvListNodes( SMsg ) ),
+	   Qt::UniqueConnection );
   connect( s, SIGNAL( EvConnected( SMsg ) ),
-	   this, SLOT( SomeDrvIsConnected( SMsg ) ) );
+	   this, SLOT( SomeDrvIsConnected( SMsg ) ),
+	   Qt::UniqueConnection );
   connect( s, SIGNAL( EvDisconnected( SMsg ) ),
-	   this, SLOT( SomeDrvIsDisconnected( SMsg ) ) );
+	   this, SLOT( SomeDrvIsDisconnected( SMsg ) ),
+	   Qt::UniqueConnection );
 
   if ( ! isQXafsModeAvailable ) {
     QXafsMode->setChecked( false );
@@ -156,17 +174,27 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MeasTimer = new QTimer;
   MeasDarkTimer = new QTimer;
 
-  connect( GoTimer, SIGNAL( timeout() ), this, SLOT( MotorMove() ) );
-  connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ) );
-  connect( ScanTimer, SIGNAL( timeout() ), this, SLOT( ScanSequence() ) );
-  connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ) );
-  connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ) );
-  connect( MeasDarkTimer, SIGNAL( timeout() ), this, SLOT( MeasDarkSequence() ) );
-  connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ) );
+  connect( GoTimer, SIGNAL( timeout() ), this, SLOT( MotorMove() ),
+	   Qt::UniqueConnection );
+  connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ),
+	   Qt::UniqueConnection );
+  connect( ScanTimer, SIGNAL( timeout() ), this, SLOT( ScanSequence() ),
+	   Qt::UniqueConnection );
+  connect( MonTimer, SIGNAL( timeout() ), this, SLOT( MonSequence() ),
+	   Qt::UniqueConnection );
+  connect( MeasTimer, SIGNAL( timeout() ), this, SLOT( MeasSequence() ),
+	   Qt::UniqueConnection );
+  connect( MeasDarkTimer, SIGNAL( timeout() ), this, SLOT( MeasDarkSequence() ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( SSisActive( bool ) ), StatDisp, SLOT( SetSSVStat( bool ) ),
+	   Qt::UniqueConnection );
 
-  connect( AddNewDTh1TPoint, SIGNAL( clicked() ), this, SLOT( AddNewDTh1TunePoint() ) );
-  connect( conds, SIGNAL( AskToSaveDTh1TTable() ), TTable, SLOT( SaveTuneTable() ) );
-  connect( conds, SIGNAL( AskToShowDTh1TTable() ), TTable, SLOT( ShowTuneTable() ) );
+  connect( AddNewDTh1TPoint, SIGNAL( clicked() ), this, SLOT( AddNewDTh1TunePoint() ),
+	   Qt::UniqueConnection );
+  connect( conds, SIGNAL( AskToSaveDTh1TTable() ), TTable, SLOT( SaveTuneTable() ),
+	   Qt::UniqueConnection );
+  connect( conds, SIGNAL( AskToShowDTh1TTable() ), TTable, SLOT( ShowTuneTable() ),
+	   Qt::UniqueConnection );
 
   s->AskStatus();
   s->MakeConnection();
@@ -207,8 +235,10 @@ void MainWindow::Initialize( void )
   InitAndIdentifySensors();
   if ( ! AllInited ) {
     AllInited = true;
-    connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
-    connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ) );
+    connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ),
+	     Qt::UniqueConnection );
+    connect( SelThCalcPulse, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ),
+	     Qt::UniqueConnection );
   }
   resize( 1, 1 );
   SendListNodes();
@@ -251,7 +281,8 @@ void MainWindow::InitAndIdentifyMotors( void )
                     this, SLOT( ShowCurThPos() ) );
       }
       MMainTh = am;
-      connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+      connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
+	       Qt::UniqueConnection );
     }
 
     if ( am->getID() == "DTH1" ) {
@@ -260,7 +291,8 @@ void MainWindow::InitAndIdentifyMotors( void )
                     this, SLOT( ShowCurDTh1() ) );
       }
       MDTh1 = am;
-      connect( MDTh1, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurDTh1() ) );
+      connect( MDTh1, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurDTh1() ),
+	       Qt::UniqueConnection );
     }
   }
   if ( MMainTh != NULL ) {
@@ -296,7 +328,8 @@ void MainWindow::InitAndIdentifySensors( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
     as->Initialize( s );
-    connect( as, SIGNAL( LogMsg( QString ) ), this, SLOT( NewLogMsg( QString ) ) );
+    connect( as, SIGNAL( LogMsg( QString ) ), this, SLOT( NewLogMsg( QString ) ),
+	     Qt::UniqueConnection );
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
@@ -307,18 +340,22 @@ void MainWindow::InitAndIdentifySensors( void )
       }
       SLS = as;
       connect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
-		  this, SLOT( ShowNewRingCurrent( QString, QStringList ) ) );
+	       this, SLOT( ShowNewRingCurrent( QString, QStringList ) ),
+	       Qt::UniqueConnection );
     }
     if ( as->getID() == "ENCTH" ) {
       if ( EncMainTh != NULL ) {
-	disconnect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
+		    this, SLOT( ShowCurThPos() ) );
 	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
 		    StatDisp, SLOT( newEncTh( QString ) ) );
       }
       EncMainTh = as;
-      connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ) );
+      connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
+	       Qt::UniqueConnection );
       connect( EncMainTh, SIGNAL( newValue( QString ) ),
-	       StatDisp, SLOT( newEncTh( QString ) ) );
+	       StatDisp, SLOT( newEncTh( QString ) ),
+	       Qt::UniqueConnection );
     }
     if ( as->getID() == "ENCTH2" ) {
       Enc2 = as;
@@ -330,8 +367,11 @@ void MainWindow::InitAndIdentifySensors( void )
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);
       if (( as->getTheParent() == SFluo )&&( as != SFluo )) {
-	connect( SFluo, SIGNAL( newValue( QString ) ), as, SLOT( getNewValue( QString ) ) );
-	connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ) );
+	connect( SFluo, SIGNAL( newValue( QString ) ),
+		 as, SLOT( getNewValue( QString ) ),
+		 Qt::UniqueConnection );
+	connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ),
+		 Qt::UniqueConnection );
       }
     }
   }
@@ -339,7 +379,8 @@ void MainWindow::InitAndIdentifySensors( void )
   if ( ! SensorsInited ) {
     SensorsInited = true;
     connect( StatDisp, SIGNAL( setEncNewTh( QString, QString ) ),
-	     this, SLOT( setEncNewTh( QString, QString ) ) );
+	     this, SLOT( setEncNewTh( QString, QString ) ),
+	     Qt::UniqueConnection );
   }
 }
 

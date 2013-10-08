@@ -148,7 +148,8 @@ void Stars::MakeConnection( void )
 		      .arg( StarsServer ).arg( StarsSPort ).arg( MyNameOnStars ) );
       ConnectionStage = CSTAGE0;
       connect( ss, SIGNAL( readyRead( void ) ),
-	       this, SLOT( ReceiveMessageFromStars( void ) ) );
+	       this, SLOT( ReceiveMessageFromStars( void ) ),
+	       Qt::UniqueConnection );
       ss->connectToHost( StarsServer, StarsSPort );
     }
   }

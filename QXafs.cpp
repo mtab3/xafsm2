@@ -4,26 +4,34 @@
 // QXafs 関連のイニシャライズ setupMwMeas より前に呼ばれてる
 void MainWindow::setupQXafsMode( void )
 {
-  connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
-  connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ) );
-  connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ) );
-  connect( QLimitedDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ) );
+  connect( QMaxSpeed, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ),
+	   Qt::UniqueConnection );
+  connect( QMinTime, SIGNAL( toggled( bool ) ), this, SLOT( CheckQXafsParams() ),
+	   Qt::UniqueConnection );
+  connect( SelRPT, SIGNAL( valueChanged( int ) ), this, SLOT( CheckQXafsParams() ),
+	   Qt::UniqueConnection );
+  connect( QLimitedDisplay, SIGNAL( toggled( bool ) ), this, SLOT( SetNewRPTLimit() ),
+	   Qt::UniqueConnection );
 
   connect( QIntervalCycle, SIGNAL( editingFinished() ),
-	   this, SLOT( CheckQXafsParams() ) );
+	   this, SLOT( CheckQXafsParams() ),
+	   Qt::UniqueConnection );
   connect( QIntervalHalf, SIGNAL( editingFinished() ),
-	   this, SLOT( CheckQXafsParams() ) );
+	   this, SLOT( CheckQXafsParams() ),
+	   Qt::UniqueConnection );
 
   OrigHSpeed = HSpeed = 6000;    // 6000 pps, 0.1arcsec/pulse = 2.777..x10-5 deg/pulse
   QConditionBox->setHidden( true );
 
   QIntervalTimer1 = new QTimer;
   QIntervalTimer1->setSingleShot( true );
-  connect( QIntervalTimer1, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout1() ) );
+  connect( QIntervalTimer1, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout1() ),
+	   Qt::UniqueConnection );
 
   QIntervalTimer2 = new QTimer;
   QIntervalTimer2->setSingleShot( true );
-  connect( QIntervalTimer2, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout2() ) );
+  connect( QIntervalTimer2, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout2() ),
+	   Qt::UniqueConnection );
 
 #if 0
   QMeasOnBackward->setHidden( true );

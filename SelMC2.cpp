@@ -25,9 +25,12 @@ SelMC2::SelMC2( QVector<MCCD*> &Mccd ) : QFrame()
   IsReallyChgMC->setWindowTitle( tr( "Really Change?" ) );
   IsReallyChgMC->setDefaultButton( tmpB );
 
-  connect( ChgMonoCry, SIGNAL( clicked() ), IsReallyChgMC, SLOT( show() ) );
-  connect( IsReallyChgMC, SIGNAL( accepted() ), this, SLOT( SurelyChgMC() ) );
-  connect( SelectMonoCry, SIGNAL( activated( int ) ), this, SLOT( HaveChgMC( int ) ) );
+  connect( ChgMonoCry, SIGNAL( clicked() ), IsReallyChgMC, SLOT( show() ),
+	   Qt::UniqueConnection );
+  connect( IsReallyChgMC, SIGNAL( accepted() ), this, SLOT( SurelyChgMC() ),
+	   Qt::UniqueConnection );
+  connect( SelectMonoCry, SIGNAL( activated( int ) ), this, SLOT( HaveChgMC( int ) ),
+	   Qt::UniqueConnection );
 }
 
 void SelMC2::SurelyChgMC( void )

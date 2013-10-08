@@ -11,7 +11,8 @@
 TuningTable::TuningTable( void ) : QObject()
 {
   tuneTable = new TuneTable;
-  connect( tuneTable, SIGNAL( Ok() ), this, SLOT( EditedTuneTable() ) );
+  connect( tuneTable, SIGNAL( Ok() ), this, SLOT( EditedTuneTable() ),
+	   Qt::UniqueConnection );
 
   ReadTable( "TuningTable.txt" );
 }

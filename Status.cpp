@@ -20,11 +20,14 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   for ( int i = 0; i < drivers.count(); i++ ) {   // XAFSM.def にある全ドライバ名を集める
     Drivers << drivers.at(i)->getDriver();
     connect( drivers.at(i), SIGNAL( Enabled( QString, bool ) ),
-	     this, SLOT( OnEnabled( QString, bool ) ) );
+	     this, SLOT( OnEnabled( QString, bool ) ),
+	     Qt::UniqueConnection );
     connect( drivers.at(i), SIGNAL( ChangedIsBusy1( QString ) ),
-	     this, SLOT( OnChangedIsBusy1( QString ) ) );
+	     this, SLOT( OnChangedIsBusy1( QString ) ),
+	     Qt::UniqueConnection );
     connect( drivers.at(i), SIGNAL( ChangedIsBusy2( QString ) ),
-	     this, SLOT( OnChangedIsBusy2( QString ) ) );
+	     this, SLOT( OnChangedIsBusy2( QString ) ),
+	     Qt::UniqueConnection );
   }
   Drivers.removeDuplicates();
 
@@ -61,7 +64,8 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   RB0->setChecked( true );
   DrvsGrid->addWidget( RB0, DrvVItems++, 0, 1, 2 );
   SWactive = true;
-  connect( RB0, SIGNAL( clicked() ), this, SLOT( SelStatWatch() ) );
+  connect( RB0, SIGNAL( clicked() ), this, SLOT( SelStatWatch() ),
+	   Qt::UniqueConnection );
 
   QLabel *TT;
   QVector<QLabel*> TTs;
@@ -130,7 +134,8 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
     CEB->setText( tr( "Clear" ) );
     CEB->setStyleSheet( PBBack );
     DrvsGrid->addWidget( CEB, i + DrvVItems, col++ );
-    connect( CEB, SIGNAL( clicked() ), this, SLOT( OnClear1() ) );
+    connect( CEB, SIGNAL( clicked() ), this, SLOT( OnClear1() ),
+	     Qt::UniqueConnection );
 
     LIsB1 = new QLabel;
     LIB1s << LIsB1;
@@ -163,7 +168,8 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
     CBB->setText( tr( "Clear" ) );
     CBB->setStyleSheet( PBBack );
     DrvsGrid->addWidget( CBB, i + DrvVItems, col++ );
-    connect( CBB, SIGNAL( clicked() ), this, SLOT( OnClear2() ) );
+    connect( CBB, SIGNAL( clicked() ), this, SLOT( OnClear2() ),
+	     Qt::UniqueConnection );
 
     OnChangedIsBusy1( Drivers.at(i) );
     OnChangedIsBusy2( Drivers.at(i) );
@@ -195,7 +201,8 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   EncB->setStyleSheet( PBBack );
   EncB->setMaximumWidth( 40 );
   EncGrid->addWidget( EncB, 0, 2 );
-  connect( EncB, SIGNAL( clicked() ), this, SLOT( setEnc() ) );
+  connect( EncB, SIGNAL( clicked() ), this, SLOT( setEnc() ),
+	   Qt::UniqueConnection );
 
   MainGrid->addWidget( conds, VItems++, 0, 1, 8 );
 
