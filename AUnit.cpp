@@ -386,6 +386,8 @@ bool AUnit::GetValue( void )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
     IsBusy2On( Driver, "GetValue" );
+    // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
+    //        data-link 経由で完全なデータをもらった時に消す
     //    s->SendCMD2( Uid, Driver, "GetValues" );    // new mcas
     s->SendCMD2( Uid, Driver, "GetMCAs" );
   }
@@ -420,7 +422,7 @@ bool AUnit::GetValue0( void )  // 値読み出しコマンドの前に何か必�
       break;
     case 1:
       IsBusy2On( Driver, "GetValue0c1" );
-      s->SendCMD2( Uid, Driver, "CounyterReset" );
+      s->SendCMD2( Uid, Driver, "CounterReset" );
       LocalStage++;
       rv = true;
       break;
