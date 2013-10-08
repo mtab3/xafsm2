@@ -123,11 +123,13 @@ void S2DView::Draw( QPainter *p )
   int LM = w * 0.25;        // 画面を描くときの基準になる定数を幾つか決めておく
   if ( LM > 180 ) LM = 180;
   int RM = w * 0.05;
-  if ( RM > 40 ) RM = 40;
+  if ( RM > 80 ) RM = 80;
   int HW = w - LM - RM;
   int TicL = RM / 10;
   if ( TicL < 2 )
     TicL = 2;
+  if ( TicL > 5 )
+    TicL = 5;
 
   int TM = h * 0.05;
   if ( TM > 40 ) TM = 40;

@@ -366,6 +366,7 @@ void MainWindow::S2DScanStart( void )
 
 void MainWindow::SetupS2DParams( void )
 {
+  
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
     S2Dnow[i] = S2DMotors[i]->value().toInt();
     if ( S2DRelAbs[i]->stat() == ABS ) {
@@ -433,6 +434,9 @@ void MainWindow::S2DWriteHead( void )
 	  << " : " << S2DMotors[i]->getName() << endl;
     }
   }
+
+  out << "#" << QString( " Dwell Time : %1" ).arg( S2DTime1->text() ) << endl;
+
   out << "#" << endl;
 
   f.close();

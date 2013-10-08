@@ -109,9 +109,11 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       // ファイル記録
       S2DWriteBody( S2DVals[0] - S2DLastV );
       // 描画
+#if 0
       qDebug() << QString( "new point (%1, %2)-(%3, %4) : %5" )
 	.arg( readPntX0 ).arg( readPntY0 ).arg( readPntX ).arg( readPntY )
 	.arg( S2DVals[0] - S2DLastV );
+#endif
       if ( S2DScanDir == FORWARD ) {
 	S2DV->setData( S2Di[0] - 1, S2Di[1], S2DVals[0] - S2DLastV );
       } else {
@@ -191,10 +193,10 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     S2DStage++;
     break;
   case S2D_END_STAGE+1:
-    qDebug() << "before";
+    //    qDebug() << "before";
     if ( mUnits.Close() )
       break;
-    qDebug() << "after";
+    //    qDebug() << "after";
     S2DStage++;
     break;
   case S2D_END_STAGE+2:
