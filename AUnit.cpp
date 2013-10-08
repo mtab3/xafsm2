@@ -168,6 +168,7 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
+    connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ) );
     s->SendCMD2( "Init", Driver, "SetStopMode", "T" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
@@ -416,18 +417,21 @@ bool AUnit::GetValue0( void )  // 値読み出しコマンドの前に何か必�
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver, "GetValue0c0" );
-      s->SendCMD2( Uid, Driver, "SetStopMode", "T" );
+      s->SendCMD2( Uid, Driver, "CounterReset" );
       LocalStage++;
       rv = true;
       break;
     case 1:
       IsBusy2On( Driver, "GetValue0c1" );
+<<<<<<< HEAD
       s->SendCMD2( Uid, Driver, "CounterReset" );
       LocalStage++;
       rv = true;
       break;
     case 2:
       IsBusy2On( Driver, "GetValue0c2" );
+=======
+>>>>>>> 44e9cc43bf20f520dede5aa4a114a14e9709ff81
       IsBusy = true;
       LastFunc = "GetValue0c1";
       emit ChangedIsBusy1( Driver );
@@ -503,7 +507,7 @@ bool AUnit::GetValue02( void )
       break;
     case 1:
       IsBusy2On( Driver, "GetValue0c1" );
-      s->SendCMD2( Uid, Driver, "CounyterReset" );
+      s->SendCMD2( Uid, Driver, "CounterReset" );
       LocalStage++;
       rv = true;
       break;
@@ -550,7 +554,45 @@ bool AUnit::GetValue02( void )
   return rv;
 }
 
+/* 連続スキャンの後にノーマルモードに戻す */
+bool AUnit::Close( void )
+{
+  bool rv = false;
 
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  0,  0,  0,  0, 0,  0 ) ) {
+    switch( LocalStage ) {
+    case 0:
+      IsBusy2On( Driver, "Close0" );
+      s->SendCMD2( Uid, Driver, "Stop" );
+      LocalStage++;
+      rv = true;
+      break;
+    case 1:
+      IsBusy2On( Driver, "Close1" );
+      s->SendCMD2( Uid, Driver, "SetStopMode", "T" );
+      LocalStage++;
+      rv = false;
+      break;
+    }
+  }
+
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2
+  //                       SSDP ではなにもしない (SSDP の時も代表して SSD を呼ぶ)
+  if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0 ) ) {
+    switch( LocalStage ) {
+    case 0:
+      IsBusy2On( Driver, "GetValue0c0" );
+      s->SendCMD2( Uid, Driver, "RunStop" );
+      rv = false;
+      LocalStage++;
+      break;
+    }
+  }
+
+  qDebug() << "Local Stage " << LocalStage << rv;
+  return rv;
+}
 
 void AUnit::RunStart( void )
 {

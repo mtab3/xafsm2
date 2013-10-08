@@ -52,6 +52,8 @@ enum OLDNEW { OLD, NEW };
 
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
+#define S2D_END_STAGE    ( 99 )
+
 struct AutoModeParam {
   int num;
   double dx, dz;
@@ -258,7 +260,11 @@ private:
 
   // Scan 2D
   bool S2DStepF;
+  DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
+  DIRECTION ReversedDir( DIRECTION d )
+  { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
+
   QVector<QComboBox*> S2DAxis;
   QVector<QLabel *> S2DCurPos;
   QVector<QLabel *> S2DUnits;
@@ -663,8 +669,14 @@ private slots:
   void newS2DSteps( void );
   void newS2DPoints( void );
   void S2DScanStart( void );
+
+  // ステップスキャン (検出器、モータともにステップ)
   void S2DStepScanSequence( void );
+  // 擬似連続スキャン (検出器は連続、モータはステップ)
   void S2DQuasiContinuousScanSequence( void );
+  // 擬似連続スキャンで往復でのスキャンを行う
+  void S2DQuasiContinuousScanSequence2( void );
+
   void S2DNewChangerSelected( int i );
   void S2DSetUseChangers( bool f );
 

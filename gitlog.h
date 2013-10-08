@@ -4,25 +4,25 @@
 
 #define BRANCH_NAME ( "ContinuousS2DMode" )
 #define GITLOGS ""\
-                "Author      : M. Tabuchi <tabuchi@dimos3.nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Sep 30 19:31:14 2013 +0900\n"\
-                "    In S2DScan, QuasiContinuous-scan is extended not only for the measurement using SSD.....\n"\
-		"\n"\
-                "Author      : M. Tabuchi <tabuchi@dimos3.nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Sep 30 19:29:59 2013 +0900\n"\
-                "    In S2DScan, QuasiContinuous-scan is extended not only for the measurement using SSD but also NUC08.  The extention has not been checked!  The change might affect for the normal XAFS measurements using NCT08 and SSD.   It must be checked very carefullygit add .git add .\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Oct 6 01:07:20 2013 +0900\n"\
+                "    Working on both dir scan\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Sep 25 20:35:52 2013 +0900\n"\
-                "    Pseudo Continuous Scan is available with SSD (only with SSD).\n"\
+                "Date        : Fri Oct 4 14:02:48 2013 +0900\n"\
+                "    working on S2DQCS2\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Sep 25 15:32:51 2013 +0900\n"\
-                "    it works\n"\
+                "Date        : Fri Oct 4 13:57:20 2013 +0900\n"\
+                "    Create S2DQuasiContScan2 to test both side scan mode\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Sep 25 14:59:53 2013 +0900\n"\
-                "    do nothing\n"\
+                "Date        : Fri Oct 4 13:56:02 2013 +0900\n"\
+                "    Scann functions are divided from MwS2D.cpp to S2DStepScan.cpp and S2DQuasiContScan.cpp\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Oct 3 19:54:41 2013 +0900\n"\
+                "    Countinuous S2D looks working well with Counter(nct08) and SSD(QtXmapSSD).  There might be small bug on step counting in quasi-continuous mode, but cause only in the display\n"\
 		"\n"\
                 ""
 #endif
