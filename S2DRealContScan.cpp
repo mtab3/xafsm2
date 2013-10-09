@@ -169,6 +169,7 @@ void MainWindow::S2DRContScanMeas( void )
 
 void MainWindow::S2DNewScanValue( QString v )
 {
+  qDebug() << "newvalue " << v;
   double V = v.toDouble();
   if (( S2Di[0] >= 0 ) && ( S2Di[0] <= S2Dps[0] )) {
     // ファイル記録
