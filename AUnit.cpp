@@ -1573,6 +1573,7 @@ void AUnit::receiveMCAs( void )
     }
     emit LogMsg( "emitted New MCAs" );
     emit NewMCAsAvailable( MCAs );
+    emit newValue( Value );
   }
 }
 

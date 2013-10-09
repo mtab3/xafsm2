@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "ContinuousS2DMode" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Oct 9 14:56:04 2013 +0900\n"\
+                "    no\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Oct 8 21:11:38 2013 +0900\n"\
+                "    Make all connections 'UNIQUE' git add .git add .\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Oct 8 21:11:38 2013 +0900\n"\
                 "    Make all connections 'UNIQUE' git add .git add .\n"\
 		"\n"\
@@ -14,14 +22,6 @@
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Oct 8 17:11:00 2013 +0900\n"\
-                "    no\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Oct 8 14:53:12 2013 +0900\n"\
-                "    working on real scan\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Oct 8 12:35:41 2013 +0900\n"\
                 "    no\n"\
 		"\n"\
                 ""

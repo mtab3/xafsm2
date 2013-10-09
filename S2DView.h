@@ -13,6 +13,7 @@ class S2DView : public QFrame, private Ui::S2DView
 {
   Q_OBJECT
 
+  QWidget *Parent;
   ChCoord cc;
   RATIO_TYPE rType;
   double minx, maxx, miny, maxy;
@@ -48,6 +49,8 @@ class S2DView : public QFrame, private Ui::S2DView
   void setRange( double sx, double sy, double dx, double dy, int ix, int iy );
   void setData( int ix, int iy, double v );
 
+ signals:
+  void AskMoveToPointedPosition( int x, int y );
 };
 
 #endif

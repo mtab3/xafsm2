@@ -8,6 +8,7 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
+  Parent = p;
   showIx = showIy = lastIx = lastIy = 0;
   data = NULL;
   rType = AS_SCREEN;
@@ -28,6 +29,8 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   cmin = 0;
 
   setMouseTracking( true );
+  connect( this, SIGNAL( AskMoveToPointedPosition( int, int ) ),
+	   Parent, SLOT( S2DmoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
 }
 
 int S2DView::cNum( double v )
@@ -294,19 +297,17 @@ void S2DView::mouseMoveEvent( QMouseEvent *e )
 void S2DView::mousePressEvent( QMouseEvent * )
 {
   qDebug() << "aa";
+  emit AskMoveToPointedPosition( showIx, showIy );
 }
 
 void S2DView::mouseReleaseEvent( QMouseEvent * )
 {
-  qDebug() << "bb";
 }
 
 void S2DView::mouseDoubleClickEvent( QMouseEvent * )
 {
-  qDebug() << "cc";
 }
 
 void S2DView::wheelEvent( QWheelEvent * )
 {
-  qDebug() << "dd";
 }

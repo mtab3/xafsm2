@@ -20,8 +20,8 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
   QString msg;
 
   // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
-  for ( int i = 0; i < S2DMotors.count(); i++ ) {
-    if ( S2DMotorUse[i] && S2DMotors[i]->isBusy0() )
+  for ( int i = 0; i < S2DI.motors; i++ ) {
+    if ( S2DI.used[i] && S2DI.unit[i]->isBusy0() )
       return;
   }
   // センサー busy でも入ってこない 
@@ -56,38 +56,42 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     break;
   case 2:
     // 全軸に対して
-    for ( int i = 0; i < S2DMotors.count(); i++ ) {
-      S2DMotors[i]->SetSpeed( HIGH );                          // スピードマックス
-      S2DMotors[i]->SetValue( S2DMotors[i]->u2p( S2Dsx[i] ) ); // 始点に移動
-      S2Di[i] = 0; // ステップコントロール変数初期化
+    for ( int i = 0; i < S2DI.motors; i++ ) {
+      if ( S2DI.used[i] ) {
+	S2DI.unit[i]->SetSpeed( HIGH );                          // スピードマックス
+	S2DI.unit[i]->SetValue( S2DI.unit[i]->u2p( S2DI.sx[i] ) ); // 始点に移動
+	S2DI.i[i] = 0; // ステップコントロール変数初期化
+      }
     }
     S2DStage++;
     break;
   case 3:
     // 1st Ax のみ、スキャン用のスピードにセット
-    pps = (int)fabs( (double)S2Ddx[0]
-		     / S2DMotors[0]->getUPP()
-		     / S2DDwell );
+    pps = (int)fabs( (double)S2DI.dx[0]
+		     / S2DI.unit[0]->getUPP()
+		     / S2DI.Dwell );
     if ( pps == 0 ) pps = 1;
-    if ( pps > S2DMotors[0]->highestSpeed() ) {
+    if ( pps > S2DI.unit[0]->highestSpeed() ) {
       msg = tr( "The scan speed %1 was limited to %2" )
-	.arg( pps ).arg( S2DMotors[0]->highestSpeed() );
+	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
       qDebug() << msg;
       statusbar->showMessage( msg, 2000 );
-      pps = S2DMotors[0]->highestSpeed();
+      pps = S2DI.unit[0]->highestSpeed();
     }
-    S2DMotors[0]->SetHighSpeed( pps );
+    S2DI.unit[0]->SetHighSpeed( pps );
     S2DStage++;
     // break しない
   case 4:     // リピートポイント
     // 計測開始準備
     mUnits.getValue();
     // 同時に次の点に移動開始
-    if ( S2Di[0] < S2Dps[0] ) {
+    if ( S2DI.i[0] < S2DI.ps[0] ) {
       if ( S2DScanDir == FORWARD ) {
-	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] + (S2Di[0]+1)*S2Ddx[0] ) );
+	S2DI.unit[0]->SetValue( S2DI.unit[0]
+				->u2p( S2DI.sx[0] + (S2DI.i[0]+1)*S2DI.dx[0] ) );
       } else {
-	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dex[0] - (S2Di[0]+1)*S2Ddx[0] ) );
+	S2DI.unit[0]->SetValue( S2DI.unit[0]
+				->u2p( S2DI.ex[0] - (S2DI.i[0]+1)*S2DI.dx[0] ) );
       }
     }
     S2DStage++;
@@ -100,35 +104,35 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // V(1)-V(0), V(2)-V(1), V(3)-V(2),... V(10)-V(9) の 10 の値が、
     // 表示、記録の対象
     mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
-    if ( S2Di[0] > 0 ) {
+    if ( S2DI.i[0] > 0 ) {
       // ファイル記録
       S2DWriteBody( S2DVals[0] - S2DLastV );
       // 描画
       if ( S2DScanDir == FORWARD ) {
-	S2DV->setData( S2Di[0] - 1, S2Di[1], S2DVals[0] - S2DLastV );
+	S2DV->setData( S2DI.i[0] - 1, S2DI.i[1], S2DVals[0] - S2DLastV );
       } else {
-	S2DV->setData( S2Dps[0] - S2Di[0], S2Di[1], S2DVals[0] - S2DLastV );
+	S2DV->setData( S2DI.ps[0] - S2DI.i[0], S2DI.i[1], S2DVals[0] - S2DLastV );
       }
     }
     S2DLastV = S2DVals[0];
     // ステップコントロール変数更新
-    S2Di[0]++;
+    S2DI.i[0]++;
     // 上に書いた事情で、そのままでは意図したより一点少ない計測になる分、
     // 終点を一つ増やしておく
-    if ( S2Di[0] < S2Dps[0]+1 ) { // 1st ax の端点でなければ
+    if ( S2DI.i[0] < S2DI.ps[0]+1 ) { // 1st ax の端点でなければ
       S2DStage = 4;
       break;
     }
     // 1st ax の端点に到達していたら
     S2DWriteBlankLine();
-    S2Di[0] = 0;
-    S2Di[1]++;
-    if ( S2Di[1] <= S2Dps[1] ) {       // 2nd ax の端点でなければ
-      S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] + S2Di[1] * S2Ddx[1] ) );
+    S2DI.i[0] = 0;
+    S2DI.i[1]++;
+    if ( S2DI.i[1] <= S2DI.ps[1] ) {       // 2nd ax の端点でなければ
+      S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( S2DI.sx[1] + S2DI.i[1] * S2DI.dx[1] ) );
       // 2nd ax は次の点に移動
-      if ( ! S2DContScanBothDir->isChecked() ) { 
-	S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
-	S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+      if ( ! S2DI.ScanBothDir ) { 
+	S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highSpeed() ); // 1st ax を高速にして
+	S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( S2DI.sx[0] ) ); // 1st ax は原点に戻し
 	S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
       } else {
 	S2DScanDir = ReversedDir( S2DScanDir );
@@ -137,16 +141,17 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       break;
     }
     // 2nd ax の端点に達していたら
-    if ( S2DUse3rdAx->isChecked() ) {  // 3軸スキャンする場合
-      S2Di[1] = 0;
-      S2Di[2]++;
-      if ( S2Di[2] <= S2Dps[2] ) {  // 3rd ax の端点でなければ
-	S2DMotors[1]->SetValue( S2DMotors[1]->u2p( S2Dsx[1] ) ); // 2nd ax は原点に戻し
-	S2DMotors[2]->SetValue( S2DMotors[2]->u2p( S2Dsx[2] + S2Di[2] * S2Ddx[2] ) );
+    if ( S2DI.Use3rdAx ) {  // 3軸スキャンする場合
+      S2DI.i[1] = 0;
+      S2DI.i[2]++;
+      if ( S2DI.i[2] <= S2DI.ps[2] ) {  // 3rd ax の端点でなければ
+	S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( S2DI.sx[1] ) ); // 2nd ax は原点に戻し
+	S2DI.unit[2]->SetValue( S2DI.unit[2]
+				->u2p( S2DI.sx[2] + S2DI.i[2] * S2DI.dx[2] ) );
 	// 3rd ax は次の点に移動
-	if ( ! S2DContScanBothDir->isChecked() ) { 
-	  S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
-	  S2DMotors[0]->SetValue( S2DMotors[0]->u2p( S2Dsx[0] ) ); // 1st ax は原点に戻し
+	if ( ! S2DI.ScanBothDir ) { 
+	  S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highSpeed() ); // 1st ax を高速にして
+	  S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( S2DI.sx[0] ) ); // 1st ax は原点に
 	  S2DStage = 3;    // 1st ax の速度をステップ用の速度に戻す
 	} else {
 	  S2DScanDir = ReversedDir( S2DScanDir );
@@ -161,9 +166,10 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     
   case S2D_END_STAGE:
     S2DWriteTail();
-    S2DMotors[0]->SetHighSpeed( S2DMotors[0]->highSpeed() ); // 1st ax を高速にして
-    for ( int i = 0; i < S2DMotors.count(); i++ ) {          // 全軸原点に戻す
-      S2DMotors[i]->SetValue( S2Dnow[i] );
+    S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highSpeed() ); // 1st ax を高速にして
+    for ( int i = 0; i < S2DI.motors; i++ ) {          // 全軸原点に戻す
+      if ( S2DI.used[i] )
+	S2DI.unit[i]->SetValue( S2DI.now[i] );
     }
     // とりあえずスピードは「High」設定のママほっとく。
     mUnits.clearStage();

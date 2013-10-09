@@ -36,6 +36,7 @@
 #include "cBar.h"
 #include "UsingUnits.h"
 #include "TuningTable.h"
+#include "S2DInfo.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
@@ -274,16 +275,20 @@ private:
   QVector<QLineEdit *> S2DSteps;
   QVector<QLineEdit *> S2DPoints;
   QVector<RelAbs *> S2DRelAbs;
-  QVector<bool> S2DMotorUse;
+  //  QVector<bool> S2DMotorUse;
   QVector<AUnit *> S2DOkSensors;
   QVector<AUnit *> S2DOkMotors;
-  QVector<AUnit *> S2DMotors;
+  QVector<AUnit *> S2DSelectedMotors;
   bool inS2D;
   int S2DStage;
+  bool S2DInfoIsValid;
+  S2DInfo S2DI;
+#if 0
   QVector<int> S2Dnow;
   QVector<int> S2Di, S2Dps;
   QVector<double> S2Dsx, S2Dex, S2Ddx;
   double S2DDwell;
+#endif
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   QString S2DFile;
   bool isS2DSFluo;
@@ -683,6 +688,7 @@ private slots:
   void S2DSetUseChangers( bool f );
   void S2DRContScanMeas( void );
   void S2DNewScanValue( QString v );
+  void S2DMoveToPointedPosition( int x, int y );
 
  signals:
   void SelectedSSD( int i, bool f );

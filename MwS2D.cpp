@@ -10,7 +10,7 @@ void MainWindow::setupScan2DArea( void )
   S2DFileSel->setDirectory( QDir::currentPath() );
   S2DFileSel->setFilter( "*.dat" );
 
-  S2DAxis << S2DAx1 << S2DAx2 <<S2DAx3;
+  S2DAxis << S2DAx1 << S2DAx2 << S2DAx3;
   S2DCurPos << S2DCurPos1 << S2DCurPos2 << S2DCurPos3;
   S2DUnits << S2DUnit1 << S2DUnit2 << S2DUnit3;
   S2DStarts << S2DStartP1 << S2DStartP2 << S2DStartP3;
@@ -18,15 +18,22 @@ void MainWindow::setupScan2DArea( void )
   S2DSteps << S2DStep1 << S2DStep2 << S2DStep3;
   S2DPoints << S2DPoints1 << S2DPoints2 << S2DPoints3;
   S2DRelAbs << S2DRelAbs1 << S2DRelAbs2 << S2DRelAbs3;
-  S2DMotors << NULL << NULL << NULL;
-  S2DMotorUse << true << true << false;
-  S2Dps << 0 << 0 << 0;
-  S2Dnow << 0 << 0 << 0;
-  S2Dsx << 0 << 0 << 0;
-  S2Dex << 0 << 0 << 0;
-  S2Ddx << 0 << 0 << 0;
-  S2Di << 0 << 0 << 0;
+  S2DSelectedMotors << NULL << NULL << NULL;
+
+  S2DI.motors = 3;
+  S2DI.ScanBothDir = false;
+  S2DI.Use3rdAx = false;
+  S2DI.unit << NULL << NULL << NULL;
+  S2DI.used << true << true << false;
+  S2DI.ps << 0 << 0 << 0;
+  S2DI.now << 0 << 0 << 0;
+  S2DI.sx << 0 << 0 << 0;
+  S2DI.ex << 0 << 0 << 0;
+  S2DI.dx << 0 << 0 << 0;
+  S2DI.i << 0 << 0 << 0;
+
   S2DScanMode = STEP;
+  S2DInfoIsValid = false;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     S2DOkSensors << ASensors[i];
@@ -60,7 +67,7 @@ void MainWindow::setupScan2DArea( void )
     connect( S2DChangerSelect, SIGNAL( currentIndexChanged( int ) ),
 	     this, SLOT( S2DNewChangerSelected( int ) ),
 	     Qt::UniqueConnection );
-    S2DUse3rdAx->setChecked( false );
+    S2DUse3rdAxF->setChecked( false );
     // S2DUse3rdAx->setEnabled( false );
   } else {
     S2DUseChanger->setChecked( false );
@@ -102,7 +109,7 @@ void MainWindow::setupScan2DArea( void )
 void MainWindow::S2DSetUseChangers( bool f )
 {
   if ( f ) {
-    S2DUse3rdAx->setChecked( false );
+    S2DUse3rdAxF->setChecked( false );
     // S2DUse3rdAx->setEnabled( false );
     S2DNewChangerSelected( S2DChangerSelect->currentIndex() );
   } else {
@@ -190,20 +197,20 @@ void MainWindow::newAx0( int ax, int motor )
 {
   S2DUnits[ax]->setText( S2DOkMotors[ motor ]->getUnit() );
   S2DCurPos[ax]->setText( QString::number( S2DOkMotors[ motor ]->metricValue() ) );
-  if ( S2DMotors[ax] != NULL ) {
+  if ( S2DSelectedMotors[ax] != NULL ) {
     bool Uniq = true;
-    for ( int i = 0; i < S2DMotors.count(); i++ ) {
-      if ( ( i != ax )&&( S2DMotors[i] == S2DMotors[ax] ) ) {
+    for ( int i = 0; i < S2DSelectedMotors.count(); i++ ) {
+      if ( ( i != ax )&&( S2DSelectedMotors[i] == S2DSelectedMotors[ax] ) ) {
 	Uniq = false;
 	break;
       }
     }
     if ( Uniq )
-      disconnect( S2DMotors[ax], SIGNAL( newValue( QString ) ),
+      disconnect( S2DSelectedMotors[ax], SIGNAL( newValue( QString ) ),
 		  this, SLOT( showS2DNewAxValue( QString ) ) );
   }
-  S2DMotors[ax] = S2DOkMotors[motor];   // その軸に選ばれたモータを覚えておく
-  connect( S2DMotors[ax], SIGNAL( newValue( QString ) ),
+  S2DSelectedMotors[ax] = S2DOkMotors[motor];   // その軸に選ばれたモータを覚えておく
+  connect( S2DSelectedMotors[ax], SIGNAL( newValue( QString ) ),
 	   this, SLOT( showS2DNewAxValue( QString ) ),
 	   Qt::UniqueConnection );
 }
@@ -228,8 +235,8 @@ void MainWindow::newS2DFileSelected( const QString &fname )
 void MainWindow::showS2DNewAxValue( QString )
 {
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
-    if ( S2DMotors[i] == sender() ) {
-      S2DCurPos[i]->setText( QString::number( S2DMotors[i]->metricValue() ) );
+    if ( S2DSelectedMotors[i] == sender() ) {
+      S2DCurPos[i]->setText( QString::number( S2DSelectedMotors[i]->metricValue() ) );
     }
   }
 }
@@ -239,56 +246,64 @@ void MainWindow::S2DScanStart( void )
   AUnit *as = NULL;
 
   if ( !inS2D ) {
+    S2DInfo oldInfo = S2DI;
     SetupS2DParams();   // スキャンパラメータを GUI から内部変数にコピー
 
     if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas ) {
       statusbar
 	->showMessage( tr( "Can't start 2D Scan. Othre Process is going on." ), 2000 );
+      S2DI = oldInfo;
       return;
     }
-    S2DMotorUse[ S2DMotorUse.count() - 1 ] = S2DUse3rdAx->isChecked();
-    for ( int i = 0; i < S2DMotors.count(); i++ ) {
-      if ( S2DMotorUse[i] && ( ! S2DMotors[i]->isEnable() ) ) {
+    for ( int i = 0; i < S2DI.motors; i++ ) {
+      if ( S2DI.used[i] && ( ! S2DI.unit[i]->isEnable() ) ) {
 	QString msg = tr( "2D Scan cannot Start : (%1) is disabled" )
-	  .arg( S2DMotors[i]->getName() );
+	  .arg( S2DI.unit[i]->getName() );
 	statusbar->showMessage( msg, 2000 );
+	S2DI = oldInfo;
 	return;
       }
     }
     // 計測時間が 0 になってないかチェック
-    if ( S2DDwell <= 0 ) {
+    if ( S2DI.Dwell <= 0 ) {
       statusbar->showMessage( tr( "Meas Time is 0 or less." ), 2000 );
+      S2DI = oldInfo;
+      return;
     }
 
     QString User;
-    for ( int i = 0; i < S2DMotors.count(); i++ ) {
-      if ( S2DMotorUse[i] ) {
+    for ( int i = 0; i < S2DI.motors; i++ ) {
+      if ( S2DI.used[i] ) {
 	// スキャン範囲に幅があるかをチェック
-	if ( S2DStarts[i]->text().toDouble() == S2DEnds[i]->text().toDouble() ) {
+	if ( S2DI.sx[i] == S2DI.ex[i] ) {
 	  statusbar->showMessage( tr( "2D Scan Range Error." ), 2000 );
+	  S2DI = oldInfo;
 	  return;
 	}
 	// 測定点数が 1以上あることを確認
-	if ( S2DPoints[i]->text().toInt() <= 0 ) {
+	if ( S2DI.ps[i] <= 0 ) {
 	  statusbar->showMessage( tr( "2D Scan Points Error." ), 2000 );
+	  S2DI = oldInfo;
 	  return;
 	}
 	// 軸がダブってないかチェック
-	for ( int j = i+1; j < S2DMotors.count(); j++ ) {
-	  if ( S2DMotorUse[j] ) {
-	    if ( S2DMotors[i] == S2DMotors[j] ) {
+	for ( int j = i+1; j < S2DI.motors; j++ ) {
+	  if ( S2DI.used[j] ) {
+	    if ( S2DI.unit[i] == S2DI.unit[j] ) {
 	      statusbar
 		->showMessage( tr( "The same motor was selected for different axis." ),
 			       2000 );
+	      S2DI = oldInfo;
 	      return;
 	    }
 	  }
 	}
 
-	if ( ( User = UUnits.isTheUnitInUse( S2DMotors[i] ) ) != "" ) {
+	if ( ( User = UUnits.isTheUnitInUse( S2DI.unit[i] ) ) != "" ) {
 	  // モーターが他のことに使われていたらダメ
 	  statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
-				  .arg( S2DMotors[i]->getName() ).arg( User ), 2000 );
+				  .arg( S2DI.unit[i]->getName() ).arg( User ), 2000 );
+	  S2DI = oldInfo;
 	  return;
 	}
       }
@@ -296,7 +311,7 @@ void MainWindow::S2DScanStart( void )
 
     mUnits.clearUnits();
     mUnits.addUnit( as = S2DOkSensors.value( SelectS2DSensor->currentIndex() ) );
-    mUnits.setDwellTimes( S2DDwell );
+    mUnits.setDwellTimes( S2DI.Dwell );
     mUnits.setDwellTime();
     for ( int i = 0; i < mUnits.count(); i++ ) {
       if ( ! mUnits.at(i)->isEnable() ) {
@@ -304,6 +319,7 @@ void MainWindow::S2DScanStart( void )
 	  .arg( mUnits.at(i)->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
+	S2DI = oldInfo;
 	return;
       }
 
@@ -311,6 +327,7 @@ void MainWindow::S2DScanStart( void )
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
 				.arg( mUnits.at(i)->getName() ).arg( User ), 2000 );
+	S2DI = oldInfo;
 	return;
       }
     }
@@ -324,6 +341,7 @@ void MainWindow::S2DScanStart( void )
     if ( S2DQuasiContScan->isChecked() ) {
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
+	S2DI = oldInfo;
 	return;
       }
       S2DScanMode = QCONT;
@@ -331,17 +349,25 @@ void MainWindow::S2DScanStart( void )
     if ( S2DRealContScan->isChecked() ) {
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
+	S2DI = oldInfo;
 	return;
       }
       S2DScanMode = RCONT;
     }
 
     inS2D = true;
-    NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3 (%4))" ) )
-	       .arg( as->getName() )
-	       .arg( S2DMotors[0]->getName() )
-	       .arg( S2DMotors[1]->getName() )
-	       .arg( S2DMotors[2]->getName() ) );
+    if ( S2DI.Use3rdAx ) {
+      NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3 (%4))" ) )
+		 .arg( as->getName() )
+		 .arg( S2DI.unit[0]->getName() )
+		 .arg( S2DI.unit[1]->getName() )
+		 .arg( S2DI.unit[2]->getName() ) );
+    } else {
+      NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3)" ) )
+		 .arg( as->getName() )
+		 .arg( S2DI.unit[0]->getName() )
+		 .arg( S2DI.unit[1]->getName() ) );
+    }
 
     S2DStart->setText( tr( "Stop" ) );
     S2DStart->setStyleSheet( InActive );
@@ -353,18 +379,18 @@ void MainWindow::S2DScanStart( void )
     // 1st と 2nd の軸の単位が同じなら、表示の縦横比をスキャン範囲の
     // 縦横比に合わせるように努力する。
     // そうでなければ、画面いっぱいを使う。
-    if ( S2DMotors[0]->getUnit() == S2DMotors[1]->getUnit() ) {
+    if ( S2DI.unit[0]->getUnit() == S2DI.unit[1]->getUnit() ) {
       S2DV->setRatioType( REAL_RATIO );
     } else {
       S2DV->setRatioType( AS_SCREEN );
     }
-    S2DV->setRange( S2Dsx[0], S2Dsx[1],
-		    S2Ddx[0], S2Ddx[1],
-		    S2Dps[0], S2Dps[1]+1 );
+    S2DV->setRange( S2DI.sx[0], S2DI.sx[1],
+		    S2DI.dx[0], S2DI.dx[1],
+		    S2DI.ps[0], S2DI.ps[1]+1 );
 
-    for ( int i = 0; i < S2DMotors.count(); i++ ) {
-      if ( S2DMotorUse[i] ) {
-	UUnits.addUnit( S2D_ID, S2DMotors[i] );
+    for ( int i = 0; i < S2DI.motors; i++ ) {
+      if ( S2DI.used[i] ) {
+	UUnits.addUnit( S2D_ID, S2DI.unit[i] );
       }
     }
     for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -397,6 +423,7 @@ void MainWindow::S2DScanStart( void )
       qDebug() << "non-defined scan mode !";
       return;
     }
+    S2DInfoIsValid = true;
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
@@ -405,21 +432,27 @@ void MainWindow::S2DScanStart( void )
 
 void MainWindow::SetupS2DParams( void )
 {
-  S2DDwell = S2DTime1->text().toDouble();
+  S2DI.ScanBothDir = S2DScanBothDir->isChecked();
+  S2DI.Use3rdAx = S2DUse3rdAxF->isChecked();
+  S2DI.Dwell = S2DTime1->text().toDouble();
+  S2DI.used[0] = true;
+  S2DI.used[1] = true;
+  S2DI.used[2] = S2DI.Use3rdAx;
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
-    S2Dnow[i] = S2DMotors[i]->value().toInt();
+    S2DI.unit[i] = S2DSelectedMotors[i];
+    S2DI.now[i] = S2DI.unit[i]->value().toInt();
     if ( S2DRelAbs[i]->stat() == ABS ) {
-      S2Dsx[i] = S2DStarts[i]->text().toDouble();
-      S2Dex[i] = S2DEnds[i]->text().toDouble();
+      S2DI.sx[i] = S2DStarts[i]->text().toDouble();
+      S2DI.ex[i] = S2DEnds[i]->text().toDouble();
     } else {
-      S2Dsx[i] = S2DCurPos[i]->text().toDouble() + S2DStarts[i]->text().toDouble();
-      S2Dex[i] = S2DCurPos[i]->text().toDouble() + S2DEnds[i]->text().toDouble();
+      S2DI.sx[i] = S2DCurPos[i]->text().toDouble() + S2DStarts[i]->text().toDouble();
+      S2DI.ex[i] = S2DCurPos[i]->text().toDouble() + S2DEnds[i]->text().toDouble();
     }
-    S2Dps[i] = abs( S2DPoints[i]->text().toInt() );
-    if ( S2Dps[i] == 0 )
-      S2Dps[i] = 1;
-    S2Ddx[i] = ( S2Dex[i] - S2Dsx[i] ) / S2Dps[i];
-    if ( S2Ddx[i] == 0 ) {
+    S2DI.ps[i] = abs( S2DPoints[i]->text().toInt() );
+    if ( S2DI.ps[i] == 0 )
+      S2DI.ps[i] = 1;
+    S2DI.dx[i] = ( S2DI.ex[i] - S2DI.sx[i] ) / S2DI.ps[i];
+    if ( S2DI.dx[i] == 0 ) {
       //      S2Ddx[i] = S2Dsign[i];
     }
   }
@@ -458,24 +491,24 @@ void MainWindow::S2DWriteHead( void )
   case QCONT: out << "Quasi Continuous Scan" << endl; break;
   case RCONT: out << "Real Continuous Scan" << endl; break;
   }
-  if ( S2DContScanBothDir->isChecked() ) {
+  if ( S2DI.ScanBothDir ) {
     out << "# Scan dir : Both" << endl;
   } else {
     out << "# Scan dir : Single" << endl;
   }
 
-  for ( int i = 0; i < S2DMotors.count(); i++ ) {
-    if ( S2DMotorUse[i] ) {
+  for ( int i = 0; i < S2DI.motors; i++ ) {
+    if ( S2DI.used[i] ) {
       out << "#" << QString( " Axis %1    : " ).arg( i, 1 )
-	  << QString( " %1" ).arg( S2Dsx[i], 10 )
-	  << QString( " %1" ).arg( S2Dex[i], 10 )
-	  << QString( " %1" ).arg( S2Ddx[i], 10 )
-	  << QString( " %1" ).arg( S2Dps[i], 10 )
-	  << " : " << S2DMotors[i]->getName() << endl;
+	  << QString( " %1" ).arg( S2DI.sx[i], 10 )
+	  << QString( " %1" ).arg( S2DI.ex[i], 10 )
+	  << QString( " %1" ).arg( S2DI.dx[i], 10 )
+	  << QString( " %1" ).arg( S2DI.ps[i], 10 )
+	  << " : " << S2DI.unit[i]->getName() << endl;
     }
   }
 
-  out << "#" << QString( " Dwell Time : %1" ).arg( S2DDwell ) << endl;
+  out << "#" << QString( " Dwell Time : %1" ).arg( S2DI.Dwell ) << endl;
 
   out << "#" << endl;
 
@@ -494,9 +527,10 @@ void MainWindow::S2DWriteBody( double v )
 
   QTextStream out(&f);
 
-  for ( int i = 0; i < S2DMotors.count(); i++ ) {
-    if ( S2DMotorUse[i] ) {
-      out << QString( " %1" ).arg( S2Dsx[i] + ( S2Di[i] + 0.5 ) * S2Ddx[i], 10 );
+  for ( int i = 0; i < S2DI.motors; i++ ) {
+    if ( S2DI.used[i] ) {
+      out << QString( " %1" ).arg( S2DI.sx[i]
+				   + ( S2DI.i[i] + ((i==0)? 0.5 : 0) ) * S2DI.dx[i], 10 );
     }
   }
   out <<  QString( " %1" ).arg( v, 10 ) << endl;
@@ -511,19 +545,19 @@ void MainWindow::S2DWriteBody2( void )
   if ( isS2DSFluo && S2DRecordMCA->isChecked() ) {
     QFileInfo BaseFile( S2DFile );
     QFileInfo mcaFile;
-    if ( S2DUse3rdAx->isChecked() ) {
+    if ( S2DI.Use3rdAx ) {
       mcaFile = QFileInfo( mcaDir,
 			   QString( "%1-%2-%3-%4.dat" )
 			   .arg( BaseFile.baseName() )
-			   .arg( S2Di[0], 4, 10, QChar( '0' ) )
-			   .arg( S2Di[1], 4, 10, QChar( '0' ) )
-			   .arg( S2Di[2], 4, 10, QChar( '0' ) ) );
+			   .arg( S2DI.i[0], 4, 10, QChar( '0' ) )
+			   .arg( S2DI.i[1], 4, 10, QChar( '0' ) )
+			   .arg( S2DI.i[2], 4, 10, QChar( '0' ) ) );
     } else {
       mcaFile = QFileInfo( mcaDir,
 			   QString( "%1-%2-%3.dat" )
 			   .arg( BaseFile.baseName() )
-			   .arg( S2Di[0], 4, 10, QChar( '0' ) )
-			   .arg( S2Di[1], 4, 10, QChar( '0' ) ) );
+			   .arg( S2DI.i[0], 4, 10, QChar( '0' ) )
+			   .arg( S2DI.i[1], 4, 10, QChar( '0' ) ) );
     }
     saveMCAData0( mcaFile.canonicalFilePath() );
   }
@@ -565,3 +599,18 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
 
   f.close();
 }
+ 
+ void MainWindow::S2DMoveToPointedPosition( int ix, int iy )
+ {
+   qDebug() << "before";
+
+   if (( ! S2DInfoIsValid )||( inS2D ))
+     return;
+
+   qDebug() << "in";
+
+   double x = S2DI.sx[0] + S2DI.dx[0] * ( ix + 0.5 );
+   double y = S2DI.sx[1] + S2DI.dx[1] * iy;
+   S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( x ) );
+   S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( y ) );
+ }

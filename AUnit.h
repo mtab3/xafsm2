@@ -276,7 +276,7 @@ public:
   int highSpeed( void ) { return MaxS; };     // オリジナルのハイスピード
   void setHighSpeed( int h ) { MaxS = h; };
   int highestSpeed( void ) { return ( HasSpeedsLine ) ? MaxMaxS : MaxS; };// 許容最高速度
-  void setHighestSpeed( int h ) { MaxMaxS = h; qDebug() << "set MaxMax" << Name; };
+  void setHighestSpeed( int h ) { MaxMaxS = h; };
   int accRate( void ) { return AccRate; };    // 加減速レート
   void setAccRate( int r ) { AccRate = r; };
   int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
