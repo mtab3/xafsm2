@@ -335,6 +335,7 @@ void MainWindow::S2DScanStart( void )
     isS2DSFluo = false;
     if ( as == SFluo ) {
       isS2DSFluo = true;
+      getNewMCAView();
     }
     if ( S2DStepScan->isChecked() )
       S2DScanMode = STEP;
@@ -429,6 +430,14 @@ void MainWindow::S2DScanStart( void )
     S2DStop0();
   }
 }
+
+
+
+
+
+
+
+
 
 void MainWindow::SetupS2DParams( void )
 {

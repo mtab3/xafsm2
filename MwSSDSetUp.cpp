@@ -30,8 +30,6 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	     Qt::UniqueConnection );
   }
 
-  StartResume = MCA_START;
-  
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
 	   this, SLOT( showPeakingTime( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -84,14 +82,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   //           Qt::UniqueConnection );
   connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ),
 	   Qt::UniqueConnection );
-#if 0                 // new mcas
-  connect( SFluo, SIGNAL( ReceivedNewMCAValue() ), this, SLOT( ShowNewMCAStat() ),
-	   Qt::UniqueConnection );
-#else
   connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
 	   this, SLOT( ShowNewMCAStat( char * ) ),
 	   Qt::UniqueConnection);
-#endif
 
   connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
 	   this, SLOT( ShowNewMCARealTime( int ) ),
@@ -109,6 +102,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   cMCAView = NULL;
   cMCACh = 0;
   //  oldMCACh = -1;
+  StartResume = MCA_START;
+  cMCAViewTabNo = -1;;
 
   SelSSDs( 0 );
 
@@ -628,6 +623,8 @@ void MainWindow::StartMCA( void )
     //    cMCACh = MCACh->text().toInt();
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
+    getNewMCAView();
+#if 0
     if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
 	 || ( StartResume == MCA_START ) ) {
       if ( cMCAView != NULL ) {
@@ -652,6 +649,7 @@ void MainWindow::StartMCA( void )
       if ( StartResume == MCA_START )
 	for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
     }
+#endif
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
@@ -675,6 +673,34 @@ void MainWindow::StartMCA( void )
     MCAStart->setText( tr( "Start" ) );
     MCAStart->setStyleSheet( NormalB );
     cMCAViewC->setIsDeletable( false );
+  }
+}
+
+void MainWindow::getNewMCAView( void )
+{
+  if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
+       || ( StartResume == MCA_START ) ) {
+    if ( cMCAView != NULL ) {
+      cMCAViewC->setIsDeletable( true );
+    }
+    
+    if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
+      return;
+    ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
+    cMCAViewC->setNowDType( MCADATA );
+    cMCAView = (MCAView*)(cMCAViewC->getView());
+    cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
+    
+    MCAData = cMCAView->setMCAdataPointer( MCALength );
+    validMCAData = true;
+    cMCAViewTabNo = ViewTab->currentIndex();
+    cMCAView->setLog( SetDisplayLog->isChecked() );
+    cMCAView->SetMCACh( cMCACh );
+    cMCAView->makeValid( true );
+    
+    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+    if ( StartResume == MCA_START )
+      for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
   }
 }
 
@@ -764,22 +790,6 @@ void MainWindow::MCASequence( void )
   }
 }
 
-#if 0                   // new mcas
-void MainWindow::ShowNewMCAStat( void )
-{
-  QStringList MCA;
-
-  if ( cMCAView != NULL ) {
-    MCA = SFluo->MCAvalues();
-    for ( int i = 0; i < MCA.count() && i < MCALength; i++ ) {
-      MCAData[i] = MCA.at(i).toInt();
-    }
-    cMCAView->SetRealTime( SFluo->realTime( cMCACh ) );
-    cMCAView->SetLiveTime( SFluo->liveTime( cMCACh ) );
-    cMCAView->update();
-  }
-}
-#else
 void MainWindow::ShowNewMCAStat( char * )
 {
   if ( cMCAView != NULL ) {
@@ -793,7 +803,6 @@ void MainWindow::ShowNewMCAStat( char * )
     cMCAView->update();
   }
 }
-#endif
 
 void MainWindow::ShowNewMCARealTime( int ch )
 {

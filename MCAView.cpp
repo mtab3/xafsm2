@@ -811,45 +811,6 @@ void MCAView::wheelEvent( QWheelEvent *e )
   update();
 }
 
-#if 0
-void MCAView::doPeakFit( void )
-{
-  QVector<double> xxx, yyy;    // peak fit 用
-  double maxInROI = 0;     // peak fit 用
-  qDebug() << "aa1";
-  for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
-    double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
-    if (( E >= rROIsx )&&( E <= rROIex )) {
-      xxx << E;
-      yyy << MCA[i];
-      if ( MCA[i] > maxInROI )  // peak fit 用
-	maxInROI = MCA[i];
-    }
-  }
-  qDebug() << "aa2";
-  QVector<double> ppp;    // peak fit
-  qDebug() << "bb3";
-  ppp << maxInROI << ( ( rROIsx + rROIex ) / 2. ) << fabs( ( rROIsx - rROIex ) / 2. );
-  ppp << 0 << 0;
-  qDebug() << "bb4";
-  PeakFit *peakF = new PeakFit;
-  qDebug() << "bb5";
-  peakF->init( 1, xxx.count() );
-  qDebug() << "bb6";
-  peakF->setXYP0( xxx, yyy, ppp );
-  qDebug() << "bb7";
-  for ( int i = 0; i < 1; i++ ) {
-    peakF->calcNewP( 0. );
-    qDebug() << "PeakFit " << i << peakF->getP() << peakF->Norm();
-  }
-  qDebug() << "bb8";
-  peakF->release();
-  qDebug() << "bb9";
-  delete peakF;
-  qDebug() << "bb10";
-}
-#endif
-
 void MCAView::setNewPSSens( QString newSens )
 {
   double s = newSens.toDouble();

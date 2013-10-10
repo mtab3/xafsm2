@@ -460,6 +460,8 @@ private:
   bool theSensorIsAvailable( AUnit *as );
   void ShowQTime( double dtime, double WidthInPuls );
 
+  void getNewMCAView( void );
+
 private slots:
 
   // Auto mode
