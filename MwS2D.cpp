@@ -35,6 +35,8 @@ void MainWindow::setupScan2DArea( void )
   S2DScanMode = STEP;
   S2DInfoIsValid = false;
 
+  S2DV->setParent( this );
+
   for ( int i = 0; i < ASensors.count(); i++ ) {
     S2DOkSensors << ASensors[i];
     SelectS2DSensor->addItem( ASensors[i]->getName() );
@@ -620,6 +622,15 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
 
    double x = S2DI.sx[0] + S2DI.dx[0] * ( ix + 0.5 );
    double y = S2DI.sx[1] + S2DI.dx[1] * iy;
+
+
+   S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highestSpeed() );
+   S2DI.unit[0]->SetSpeed( HIGH );
+   S2DI.unit[1]->SetHighSpeed( S2DI.unit[1]->highestSpeed() );
+   S2DI.unit[1]->SetSpeed( HIGH );
+
    S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( x ) );
    S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( y ) );
  }
+
+

@@ -48,6 +48,7 @@ class S2DView : public QFrame, private Ui::S2DView
   void setRatioType( RATIO_TYPE r ) { rType = r; };
   void setRange( double sx, double sy, double dx, double dy, int ix, int iy );
   void setData( int ix, int iy, double v );
+  void setParent( QWidget *p );
 
  signals:
   void AskMoveToPointedPosition( int x, int y );

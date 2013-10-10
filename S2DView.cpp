@@ -29,8 +29,13 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   cmin = 0;
 
   setMouseTracking( true );
+}
+
+void S2DView::setParent( QWidget *p )
+{
+  Parent = p;
   connect( this, SIGNAL( AskMoveToPointedPosition( int, int ) ),
-	   Parent, SLOT( S2DmoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
+	   Parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
 }
 
 int S2DView::cNum( double v )
