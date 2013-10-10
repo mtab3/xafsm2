@@ -6,6 +6,8 @@
 #include <QString>
 #include <QVector>
 
+enum SCANMODE { STEP, QCONT, RCONT };
+
 /******************************************************************************/
 /* Don't change these numbers ! without deep considerations.                  */
 /* Window design of the program is assuming these values are as defined here. */

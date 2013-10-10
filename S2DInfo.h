@@ -3,11 +3,14 @@
 
 #include <QVector>
 
+#include "XafsM.h"
 #include "AUnit.h"
 
 struct S2DInfo
 {
  public:
+
+  SCANMODE ScanMode;
   int motors;
   bool Use3rdAx;
   bool ScanBothDir;

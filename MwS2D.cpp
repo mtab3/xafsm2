@@ -31,8 +31,8 @@ void MainWindow::setupScan2DArea( void )
   S2DI.ex << 0 << 0 << 0;
   S2DI.dx << 0 << 0 << 0;
   S2DI.i << 0 << 0 << 0;
+  S2DI.ScanMode = STEP;
 
-  S2DScanMode = STEP;
   S2DInfoIsValid = false;
 
   S2DV->setParent( this );
@@ -340,14 +340,14 @@ void MainWindow::S2DScanStart( void )
       getNewMCAView();
     }
     if ( S2DStepScan->isChecked() )
-      S2DScanMode = STEP;
+      S2DI.ScanMode = STEP;
     if ( S2DQuasiContScan->isChecked() ) {
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	S2DI = oldInfo;
 	return;
       }
-      S2DScanMode = QCONT;
+      S2DI.ScanMode = QCONT;
     }
     if ( S2DRealContScan->isChecked() ) {
       if ( ! CheckOkList( as, CScanOk ) ) {
@@ -355,7 +355,7 @@ void MainWindow::S2DScanStart( void )
 	S2DI = oldInfo;
 	return;
       }
-      S2DScanMode = RCONT;
+      S2DI.ScanMode = RCONT;
     }
 
     inS2D = true;
@@ -409,7 +409,7 @@ void MainWindow::S2DScanStart( void )
     S2DStage = 0;
     S2DTimer->disconnect();
     S2DScanDir = FORWARD;
-    switch ( S2DScanMode ) {
+    switch ( S2DI.ScanMode ) {
     case STEP:
       connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ),
 	       Qt::UniqueConnection );
@@ -491,7 +491,7 @@ void MainWindow::S2DWriteHead( void )
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
 
   out << "# Scan Mode : ";
-  switch( S2DScanMode ) {
+  switch( S2DI.ScanMode ) {
   case STEP: out << "Step Scan" << endl; break;
   case QCONT: out << "Quasi Continuous Scan" << endl; break;
   case RCONT: out << "Real Continuous Scan" << endl; break;
@@ -540,14 +540,12 @@ void MainWindow::S2DWriteBody( double v )
     
     f.close();
   }
-
-  S2DWriteBody2();  // ファイル名の指定がなくても SSD の記録はする
 }
 
-void MainWindow::S2DWriteBody2( void )
+void MainWindow::S2DWriteBody2( int ix, int iy )
 {
   if ( isS2DSFluo ) {
-    QFileInfo mcaFile = S2DGenerateMCAFileName( S2DI.i[0], S2DI.i[1], S2DI.i[2] );
+    QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
     saveMCAData0( mcaFile.canonicalFilePath() );
   }
 }
@@ -635,7 +633,6 @@ void MainWindow::S2DReCalcMap( double s, double e )
 {
   setAllROIs();
 
-  qDebug() << "S2Dinfo is valid " << S2DInfoIsValid;
   if ( ! S2DInfoIsValid )
     return;
 
@@ -643,36 +640,42 @@ void MainWindow::S2DReCalcMap( double s, double e )
   double sum = 0;
   double lastsum = 0;
 
-  for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
-    if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
-      for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
-	qDebug() << "lastsum" << i << j << lastsum;
+  if ( S2DI.ScanMode == STEP ) {
+    for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
+      for ( int j = 0; j < S2DI.ps[0]; j++ ) {
 	mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
-	     && ( j < S2DI.ps[0] ) ) {
-	  qDebug() << "sum = " << sum;
-	  S2DV->setData( j, i, sum - lastsum );
-	}
-	qDebug() << "sum2 = " << sum;
-	if ( sum < 0 )
+	if ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 ) {
+	  S2DV->setData( j, i, sum );
+	} else {
 	  return;
+	}
 	lastsum = sum;
-	qDebug() << "after sum " << sum;
       }
-    } else {
-      for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
-	qDebug() << "lastsum" << i << j << lastsum;
-	mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
-	     && ( j > 0 ) ) {
-	  qDebug() << "sum = " << sum;
-	  S2DV->setData( j - 1, i, sum - lastsum );
+    }
+  } else {
+    for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
+      if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
+	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
+	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	  if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
+	       && ( j < S2DI.ps[0] ) ) {
+	    S2DV->setData( j, i, sum - lastsum );
+	  }
+	  if ( sum < 0 )
+	    return;
+	  lastsum = sum;
 	}
-	qDebug() << "sum2 = " << sum;
-	if ( sum < 0 )
-	  return;
-	lastsum = sum;
-	qDebug() << "after sum" << sum;
+      } else {
+	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
+	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	  if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
+	       && ( j > 0 ) ) {
+	    S2DV->setData( j - 1, i, sum - lastsum );
+	  }
+	  if ( sum < 0 )
+	    return;
+	  lastsum = sum;
+	}
       }
     }
   }
@@ -684,8 +687,6 @@ double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
   QFile f( fname );
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
     return -1.;
-
-  qDebug() << "window " << s << e << fname;
 
   QTextStream in( &f );
   double eng;
@@ -704,7 +705,6 @@ double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
       }
     }
   }
-  qDebug() << "SUM " << sum;
   f.close();
   return sum;
 }

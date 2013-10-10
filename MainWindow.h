@@ -42,7 +42,6 @@ enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
 enum ENCORPM { XENC, XPM };
 enum OLDNEW { OLD, NEW };
-enum SCANMODE { STEP, QCONT, RCONT };
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -261,7 +260,7 @@ private:
   bool MonSensF[ 3 ];
 
   // Scan 2D
-  SCANMODE S2DScanMode;
+  //  SCANMODE S2DScanMode0;
   DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
   DIRECTION ReversedDir( DIRECTION d )
@@ -299,7 +298,7 @@ private:
   void SetupS2DParams( void );
   void S2DWriteHead( void );
   void S2DWriteBody( double v );
-  void S2DWriteBody2( void );
+  void S2DWriteBody2( int ix, int iy );
   void S2DWriteBlankLine( void );
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );

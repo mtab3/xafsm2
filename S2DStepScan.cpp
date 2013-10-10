@@ -60,6 +60,7 @@ void MainWindow::S2DStepScanSequence( void )
     // 全軸に対して
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] ) {
+	S2DI.unit[i]->SetHighSpeed( S2DI.unit[i]->highestSpeed() ); // スピードマックス
 	S2DI.unit[i]->SetSpeed( HIGH );                          // スピードマックス
 	S2DI.unit[i]->SetValue( S2DI.unit[i]->u2p( S2DI.sx[i] ) ); // 始点に移動
 	S2DI.i[i] = 0; // ステップコントロール変数初期化
@@ -110,6 +111,7 @@ void MainWindow::S2DStepScanSequence( void )
     mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
     // ファイル記録
     S2DWriteBody( S2DVals[0] );
+    S2DWriteBody2( S2DI.i[0], S2DI.i[1] );
     S2DV->setData( S2DI.i[0], S2DI.i[1], S2DVals[0] ); // 描画
     // ステップコントロール変数更新
     S2DI.i[0]++;

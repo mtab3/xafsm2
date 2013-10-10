@@ -58,6 +58,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // 全軸に対して
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] ) {
+	S2DI.unit[i]->SetHighSpeed( S2DI.unit[i]->highestSpeed() ); // スピードマックス
 	S2DI.unit[i]->SetSpeed( HIGH );                          // スピードマックス
 	S2DI.unit[i]->SetValue( S2DI.unit[i]->u2p( S2DI.sx[i] ) ); // 始点に移動
 	S2DI.i[i] = 0; // ステップコントロール変数初期化
@@ -104,6 +105,11 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // V(1)-V(0), V(2)-V(1), V(3)-V(2),... V(10)-V(9) の 10 の値が、
     // 表示、記録の対象
     mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
+    if ( S2DScanDir == FORWARD )
+      S2DWriteBody2( S2DI.i[0], S2DI.i[1] );
+    else
+      S2DWriteBody2( S2DI.ps[0]-S2DI.i[0], S2DI.i[1] );
+
     if ( S2DI.i[0] > 0 ) {
       // ファイル記録
       S2DWriteBody( S2DVals[0] - S2DLastV );
@@ -119,7 +125,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     S2DI.i[0]++;
     // 上に書いた事情で、そのままでは意図したより一点少ない計測になる分、
     // 終点を一つ増やしておく
-    if ( S2DI.i[0] < S2DI.ps[0]+1 ) { // 1st ax の端点でなければ
+    if ( S2DI.i[0] <= S2DI.ps[0] ) { // 1st ax の端点でなければ
       S2DStage = 4;
       break;
     }

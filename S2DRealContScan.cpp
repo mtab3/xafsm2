@@ -54,6 +54,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     // 全軸に対して
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] ) {
+	S2DI.unit[i]->SetHighSpeed( S2DI.unit[i]->highestSpeed() ); // スピードマックス
 	S2DI.unit[i]->SetSpeed( HIGH );                          // スピードマックス
 	S2DI.unit[i]->SetValue( S2DI.unit[i]->u2p( S2DI.sx[i] ) ); // 始点に移動
 	S2DI.i[i] = 0; // ステップコントロール変数初期化
@@ -171,6 +172,11 @@ void MainWindow::S2DRContScanMeas( void )
 void MainWindow::S2DNewScanValue( QString v )
 {
   double V = v.toDouble();
+  
+  if ( S2DScanDir == FORWARD ) 
+    S2DWriteBody2( S2DI.i[0]+1, S2DI.i[1] );  // SSD の記録はする
+  else
+    S2DWriteBody2( S2DI.ps[0]-S2DI.i[0]-1, S2DI.i[1] );  // SSD の記録はする
 
   if (( S2DI.i[0] >= 0 ) && ( S2DI.i[0] <= S2DI.ps[0] )) {
     // ファイル記録
