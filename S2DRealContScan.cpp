@@ -171,6 +171,7 @@ void MainWindow::S2DRContScanMeas( void )
 void MainWindow::S2DNewScanValue( QString v )
 {
   double V = v.toDouble();
+
   if (( S2DI.i[0] >= 0 ) && ( S2DI.i[0] <= S2DI.ps[0] )) {
     // ファイル記録
     S2DWriteBody( V - S2DLastV );

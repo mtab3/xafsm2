@@ -302,6 +302,8 @@ private:
   void S2DWriteBody2( void );
   void S2DWriteBlankLine( void );
   void S2DWriteTail( void );
+  QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
+  double S2DReCalcAMapPoint( QString fname, double s, double e );
 
   QVector<AUnit*> SensWithRange;
 
@@ -691,6 +693,7 @@ private slots:
   void S2DRContScanMeas( void );
   void S2DNewScanValue( QString v );
   void S2DMoveToPointedPosition( int x, int y );
+  void S2DReCalcMap( double s, double e );
 
  signals:
   void SelectedSSD( int i, bool f );
@@ -698,6 +701,7 @@ private slots:
   //  void GiveNewView( QObject *to, ViewCTRL *view );
   void NewEnergy( double e );
   void ChangerNext( void );
+  void NewROI( int s, int e );
 };
 
 #endif

@@ -17,6 +17,7 @@ struct S2DInfo
   QVector<int> i, ps;
   QVector<double> sx, ex, dx;
   double Dwell;
+  QString MCAFile;
 };
 
 #endif

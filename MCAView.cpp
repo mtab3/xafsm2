@@ -71,6 +71,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   connect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ),
 	   Qt::UniqueConnection );
+  connect( this, SIGNAL( newROIinEng( double, double ) ),
+	   Parent, SLOT( S2DReCalcMap( double, double ) ),
+	   Qt::UniqueConnection );
   connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ),
 	   Qt::UniqueConnection );
@@ -94,6 +97,7 @@ MCAView::~MCAView( void )
 	   Parent, SLOT( setNewROI( int, int ) ) );
   disconnect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
+  disconnect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ) );
 }
 
 int *MCAView::setMCAdataPointer( int len )
@@ -768,6 +772,17 @@ void MCAView::mouseReleaseEvent( QMouseEvent *e )
   if ( mMode == M_ROI ) {
     m.Released( e );
     rROIex = cc.s2rx( m.ex() );
+
+    double tmp;
+    double wrROIsx = rROIsx;
+    double wrROIex = rROIex;
+    if ( wrROIsx > wrROIex ) { // 起点、終点の大小関係が逆になってたら入れ替えておく
+      tmp = wrROIsx;
+      wrROIsx = wrROIex;
+      wrROIex = tmp;
+    }
+    emit newROIinEng( wrROIsx, wrROIex );
+
     update();
   }
   mMode = M_NO;

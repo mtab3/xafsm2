@@ -108,6 +108,7 @@ public slots:
 signals:
   void CurrentValues( int atCur, int inROI );
   void newROI( int ROIstart, int ROIend );
+  void newROIinEng( double s, double e );
   void newPeakList( QVector<MCAPeak>* );
 };
 

@@ -401,7 +401,9 @@ void MainWindow::S2DScanStart( void )
     }
 
     S2DLastV = 0;
-    S2DFile = S2DFileName->text();
+    S2DI.MCAFile = S2DFile = S2DFileName->text();
+    if ( S2DI.MCAFile.isEmpty() )
+      S2DI.MCAFile = QString( "S2DMCA0000.dat" );
     S2DWriteHead();
     mUnits.clearStage();
     S2DStage = 0;
@@ -432,14 +434,6 @@ void MainWindow::S2DScanStart( void )
     S2DStop0();
   }
 }
-
-
-
-
-
-
-
-
 
 void MainWindow::SetupS2DParams( void )
 {
@@ -528,50 +522,58 @@ void MainWindow::S2DWriteHead( void )
 
 void MainWindow::S2DWriteBody( double v )
 {
-  if ( S2DFile.simplified().isEmpty() )
-    return;
-
-  QFile f( S2DFile );
-
-  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
-    return;
-
-  QTextStream out(&f);
-
-  for ( int i = 0; i < S2DI.motors; i++ ) {
-    if ( S2DI.used[i] ) {
-      out << QString( " %1" ).arg( S2DI.sx[i]
-				   + ( S2DI.i[i] + ((i==0)? 0.5 : 0) ) * S2DI.dx[i], 10 );
+  if ( ! S2DFile.simplified().isEmpty() ) {
+    QFile f( S2DFile );
+    
+    if ( !f.open( QIODevice::Append | QIODevice::Text ) )
+      return;
+    
+    QTextStream out(&f);
+    
+    for ( int i = 0; i < S2DI.motors; i++ ) {
+      if ( S2DI.used[i] ) {
+	out << QString( " %1" )
+	  .arg( S2DI.sx[i] + ( S2DI.i[i] + ((i==0)? 0.5 : 0) ) * S2DI.dx[i], 10 );
+      }
     }
+    out <<  QString( " %1" ).arg( v, 10 ) << endl;
+    
+    f.close();
   }
-  out <<  QString( " %1" ).arg( v, 10 ) << endl;
 
-  f.close();
-
-  S2DWriteBody2();
+  S2DWriteBody2();  // ファイル名の指定がなくても SSD の記録はする
 }
 
 void MainWindow::S2DWriteBody2( void )
 {
-  if ( isS2DSFluo && S2DRecordMCA->isChecked() ) {
-    QFileInfo BaseFile( S2DFile );
-    QFileInfo mcaFile;
-    if ( S2DI.Use3rdAx ) {
-      mcaFile = QFileInfo( mcaDir,
-			   QString( "%1-%2-%3-%4.dat" )
-			   .arg( BaseFile.baseName() )
-			   .arg( S2DI.i[0], 4, 10, QChar( '0' ) )
-			   .arg( S2DI.i[1], 4, 10, QChar( '0' ) )
-			   .arg( S2DI.i[2], 4, 10, QChar( '0' ) ) );
-    } else {
-      mcaFile = QFileInfo( mcaDir,
-			   QString( "%1-%2-%3.dat" )
-			   .arg( BaseFile.baseName() )
-			   .arg( S2DI.i[0], 4, 10, QChar( '0' ) )
-			   .arg( S2DI.i[1], 4, 10, QChar( '0' ) ) );
-    }
+  if ( isS2DSFluo ) {
+    QFileInfo mcaFile = S2DGenerateMCAFileName( S2DI.i[0], S2DI.i[1], S2DI.i[2] );
     saveMCAData0( mcaFile.canonicalFilePath() );
   }
+}
+
+
+QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
+{
+  QFileInfo BaseFile( S2DI.MCAFile );
+  QFileInfo mcaFile;
+
+  if ( S2DI.Use3rdAx ) {
+    mcaFile = QFileInfo( mcaDir,
+			 QString( "%1-%2-%3-%4.dat" )
+			 .arg( BaseFile.baseName() )
+			 .arg( i1, 4, 10, QChar( '0' ) )
+			 .arg( i2, 4, 10, QChar( '0' ) )
+			 .arg( i3, 4, 10, QChar( '0' ) ) );
+  } else {
+    mcaFile = QFileInfo( mcaDir,
+			 QString( "%1-%2-%3.dat" )
+			 .arg( BaseFile.baseName() )
+			 .arg( i1, 4, 10, QChar( '0' ) )
+			 .arg( i2, 4, 10, QChar( '0' ) ) );
+  }
+
+  return mcaFile;
 }
 
 void MainWindow::S2DWriteBlankLine( void )
@@ -613,16 +615,11 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
  
  void MainWindow::S2DMoveToPointedPosition( int ix, int iy )
  {
-   qDebug() << "before";
-
    if (( ! S2DInfoIsValid )||( inS2D ))
      return;
 
-   qDebug() << "in";
-
    double x = S2DI.sx[0] + S2DI.dx[0] * ( ix + 0.5 );
    double y = S2DI.sx[1] + S2DI.dx[1] * iy;
-
 
    S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highestSpeed() );
    S2DI.unit[0]->SetSpeed( HIGH );
@@ -634,3 +631,80 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
  }
 
 
+void MainWindow::S2DReCalcMap( double s, double e )
+{
+  setAllROIs();
+
+  qDebug() << "S2Dinfo is valid " << S2DInfoIsValid;
+  if ( ! S2DInfoIsValid )
+    return;
+
+  QFileInfo mcaFile;
+  double sum = 0;
+  double lastsum = 0;
+
+  for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
+    if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
+      for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
+	qDebug() << "lastsum" << i << j << lastsum;
+	mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
+	     && ( j < S2DI.ps[0] ) ) {
+	  qDebug() << "sum = " << sum;
+	  S2DV->setData( j, i, sum - lastsum );
+	}
+	qDebug() << "sum2 = " << sum;
+	if ( sum < 0 )
+	  return;
+	lastsum = sum;
+	qDebug() << "after sum " << sum;
+      }
+    } else {
+      for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
+	qDebug() << "lastsum" << i << j << lastsum;
+	mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
+	     && ( j > 0 ) ) {
+	  qDebug() << "sum = " << sum;
+	  S2DV->setData( j - 1, i, sum - lastsum );
+	}
+	qDebug() << "sum2 = " << sum;
+	if ( sum < 0 )
+	  return;
+	lastsum = sum;
+	qDebug() << "after sum" << sum;
+      }
+    }
+  }
+}
+
+double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
+{
+  QStringList vals;
+  QFile f( fname );
+  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    return -1.;
+
+  qDebug() << "window " << s << e << fname;
+
+  QTextStream in( &f );
+  double eng;
+  double cnt, sum = 0;
+  while( !in.atEnd() ) {
+    vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
+    if (( vals[0] != "#" )&&( vals.count() >= 36 )) {
+      for ( int i = 0; i < 19; i++ ) {
+	if ( SSDbs2[i]->isChecked() == PBTrue ) {
+	  eng = vals[i*2+1].toDouble();
+	  cnt = vals[i*2+2].toDouble();
+	  if (( eng >= s )&&( eng <= e )) {
+	    sum += cnt;
+	  }
+	}
+      }
+    }
+  }
+  qDebug() << "SUM " << sum;
+  f.close();
+  return sum;
+}

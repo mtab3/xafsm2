@@ -6916,13 +6916,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             <number>1</number>
            </property>
            <item row="1" column="0">
-            <widget class="QRadioButton" name="S2DRecordMCA">
-             <property name="text">
-              <string>Record MCA Spectra</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
             <widget class="QFrame" name="frame_33">
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -7136,6 +7129,52 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <property name="spacing">
             <number>1</number>
            </property>
+           <item row="3" column="3">
+            <widget class="QLabel" name="S2DUnit3">
+             <property name="text">
+              <string>mm</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QRadioButton" name="S2DUse3rdAxF">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label_128">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 230,190);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <property name="text">
+              <string>Setup Axis</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="8">
+            <widget class="QLabel" name="label_96">
+             <property name="text">
+              <string>  [sec]</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="9">
             <widget class="RelAbs" name="S2DRelAbs1">
              <property name="frameShape">
@@ -7321,28 +7360,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
              <property name="text">
-              <string>2</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="7">
-            <widget class="QLineEdit" name="S2DPoints1">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>3</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-             <property name="text">
               <string>10</string>
              </property>
              <property name="alignment">
@@ -7464,7 +7481,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
              <property name="text">
-              <string>2</string>
+              <string>10</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7486,7 +7503,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
              <property name="text">
-              <string>10</string>
+              <string>2</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7596,46 +7613,22 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              </property>
             </widget>
            </item>
-           <item row="3" column="3">
-            <widget class="QLabel" name="S2DUnit3">
-             <property name="text">
-              <string>mm</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QRadioButton" name="S2DUse3rdAxF">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="label_128">
+           <item row="1" column="7">
+            <widget class="QLineEdit" name="S2DPoints1">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>3</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the 1st axis, the measurement will be conducted while the axis is moving from a point to the next.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be the same as the 'periods'.&lt;/p&gt;&lt;p&gt;However, for the 2nd and 3rd axes, the measurement will conducted at each point.&lt;/p&gt;&lt;p&gt;So that, the number of the measurements will be 'periods + 1'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 230,190);</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
              <property name="text">
-              <string>Setup Axis</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="8">
-            <widget class="QLabel" name="label_96">
-             <property name="text">
-              <string>  [sec]</string>
+              <string>2</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
