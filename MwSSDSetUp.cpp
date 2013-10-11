@@ -346,7 +346,7 @@ void MainWindow::saveMCAData( void )
 
 void MainWindow::saveMCAData0( QString fname )
 {
-  //  qDebug() << "SSD file name " << fname;
+  qDebug() << "SSD file name " << fname;
 
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {

@@ -6947,16 +6947,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
-               <widget class="QRadioButton" name="S2DScanBothDir">
-                <property name="text">
-                 <string>Both Dir.</string>
-                </property>
-                <property name="autoExclusive">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="0">
                <widget class="QRadioButton" name="S2DRealContScan">
                 <property name="text">
@@ -6965,6 +6955,16 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </widget>
               </item>
              </layout>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QRadioButton" name="S2DScanBothDir">
+             <property name="text">
+              <string>Both Dir.</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>false</bool>
+             </property>
             </widget>
            </item>
           </layout>
@@ -7018,6 +7018,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             <horstretch>1</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>When a file name is selected, measured 2D/3D map is automatically saved to the file on a measurement.     Using the 'Save' button, the 2D/3D map can be saved after a measurement at any time.</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(215, 225, 210);</string>
@@ -7077,6 +7080,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <width>0</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>When a file name is selected, measured 2D/3D map is automatically saved to the file on a measurement.     Using the 'Save' button, the 2D/3D map can be saved after a measurement at any time.</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>

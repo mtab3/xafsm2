@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "ContinuousS2DMode" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Oct 10 20:38:05 2013 +0900\n"\
+                "    In S2D, Re-definition of ROI is available on any time\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Oct 10 17:28:50 2013 +0900\n"\
                 "    working on change ROI in S2D\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Oct 9 20:24:42 2013 +0900\n"\
                 "    Real Scan is checked and is OK.   S2DInfo is used to save parameters of S2D.   Working on MoveToPointedPosition, but it has not been work.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Oct 9 14:56:04 2013 +0900\n"\
-                "    no\n"\
 		"\n"\
                 ""
 #endif
