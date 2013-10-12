@@ -152,6 +152,8 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     S2DStage++;
     break;
   case S2D_END_STAGE+2:
+    disconnect( mUnits.at(0), SIGNAL( newValue( QString ) ),
+		this, SLOT( S2DNewScanValue( QString ) ) );
     inS2D = false;
     UUnits.clear( S2D_ID );
     NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
