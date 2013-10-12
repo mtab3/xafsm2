@@ -1524,6 +1524,8 @@ void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
 
 void AUnit::receiveMCAs( void )
 {
+  qDebug() << "something comes to MCA data connection";
+
   uint bytes0, bytes;
 
   bytes0 = dLink->bytesAvailable();

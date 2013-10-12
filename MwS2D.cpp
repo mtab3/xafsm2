@@ -633,8 +633,10 @@ void MainWindow::S2DReCalcMap( double s, double e )
 {
   setAllROIs();
 
-  if ( ! S2DInfoIsValid )
+  if ( ( ! S2DInfoIsValid )||( ! S2DReCalcWNewROI->isChecked() )
+       || inMeas || inMCAMeas ) {
     return;
+  }
 
   QFileInfo mcaFile;
   double sum = 0;
