@@ -37,6 +37,7 @@
 #include "UsingUnits.h"
 #include "TuningTable.h"
 #include "S2DInfo.h"
+#include "MCA.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
@@ -282,6 +283,7 @@ private:
   int S2DStage;
   bool S2DInfoIsValid;
   S2DInfo S2DI;
+  MCA **S2DMCAs;
 #if 0
   QVector<int> S2Dnow;
   QVector<int> S2Di, S2Dps;
@@ -303,6 +305,7 @@ private:
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
   double S2DReCalcAMapPoint( QString fname, double s, double e );
+  void S2DSaveMCAData( int ix, int iy, int iz );
 
   QVector<AUnit*> SensWithRange;
 

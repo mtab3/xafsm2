@@ -545,11 +545,17 @@ void MainWindow::S2DWriteBody( double v )
 void MainWindow::S2DWriteBody2( int ix, int iy )
 {
   if ( isS2DSFluo ) {
+    // ファイル名の指定がなくてもとにかく名前を作る。
     QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
-    saveMCAData0( mcaFile.canonicalFilePath() );
+    saveMCAData0( mcaFile.canonicalFilePath() ); // 通常のテキスト形式でのセーブ
+    S2DSaveMCAData( ix, iy, S2DI.i[2] ); // binary レコードでセーブ ?
   }
 }
 
+void MainWindow::S2DSaveMCAData( int ix, int iy, int iz )  // iz は当面無視
+{
+  
+}
 
 QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
 {
@@ -634,7 +640,7 @@ void MainWindow::S2DReCalcMap( double s, double e )
   setAllROIs();
 
   if ( ( ! S2DInfoIsValid )||( ! S2DReCalcWNewROI->isChecked() )
-       || inMeas || inMCAMeas ) {
+       || inMeas || inMCAMeas || inS2D ) {
     return;
   }
 
