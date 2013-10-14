@@ -34,8 +34,8 @@ void MainWindow::setupScan2DArea( void )
   S2DI.ScanMode = STEP;
 
   S2DInfoIsValid = false;
-
   S2DV->setParent( this );
+  S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     S2DOkSensors << ASensors[i];
@@ -82,6 +82,8 @@ void MainWindow::setupScan2DArea( void )
   S2DTimer2 = new QTimer;
   isS2DSFluo = false;
 
+  CheckS2DDwellTime();
+
   connect( S2DStart, SIGNAL( clicked() ), this, SLOT( S2DScanStart() ),
 	   Qt::UniqueConnection );
   connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ),
@@ -106,6 +108,10 @@ void MainWindow::setupScan2DArea( void )
 	   Qt::UniqueConnection );
   connect( S2DTimer2, SIGNAL( timeout() ), this, SLOT( S2DRContScanMeas() ),
 	   Qt::UniqueConnection );
+
+  connect( S2DStepScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ) );
+  connect( S2DQuasiContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ) );
+  connect( S2DRealContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ) );
 }
 
 void MainWindow::S2DSetUseChangers( bool f )
@@ -170,6 +176,7 @@ void MainWindow::newS2DPoints( void )
       S2DPoints[i]->setText( "1" );
     }
   }
+  CheckS2DDwellTime();
 }
 
 void MainWindow::newS2DSteps( void )
@@ -192,6 +199,7 @@ void MainWindow::newS2DSteps( void )
 	->setText( QString::number( ( S2DEnds[i]->text().toDouble()
 				      - S2DStarts[i]->text().toDouble() ) / 1 ) );
   }
+  CheckS2DDwellTime();
 }
 
 
@@ -249,6 +257,7 @@ void MainWindow::S2DScanStart( void )
 
   if ( !inS2D ) {
     S2DInfo oldInfo = S2DI;
+    CheckS2DDwellTime();
     SetupS2DParams();   // スキャンパラメータを GUI から内部変数にコピー
 
     if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas ) {
@@ -337,7 +346,7 @@ void MainWindow::S2DScanStart( void )
     isS2DSFluo = false;
     if ( as == SFluo ) {
       isS2DSFluo = true;
-      getNewMCAView();
+      getNewMCAView();   // ここで確実に MCAData が有効になる
     }
     if ( S2DStepScan->isChecked() )
       S2DI.ScanMode = STEP;
@@ -400,6 +409,7 @@ void MainWindow::S2DScanStart( void )
       UUnits.addUnit( S2D_ID, mUnits.at(i) );
     }
 
+    S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
     S2DLastV = 0;
     S2DI.MCAFile = S2DFile = S2DFileName->text();
     if ( S2DI.MCAFile.isEmpty() )
@@ -407,8 +417,9 @@ void MainWindow::S2DScanStart( void )
     S2DWriteHead();
     mUnits.clearStage();
     S2DStage = 0;
-    S2DTimer->disconnect();
     S2DScanDir = FORWARD;
+
+    S2DTimer->disconnect();
     switch ( S2DI.ScanMode ) {
     case STEP:
       connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ),
@@ -433,6 +444,43 @@ void MainWindow::S2DScanStart( void )
   } else {
     S2DStop0();
   }
+}
+
+void MainWindow::CheckS2DDwellTime( void )
+{
+  AUnit *as = S2DSelectedMotors[0];
+  double sx, ex, dx, dwell;
+  int pps, ps;
+
+  dwell = S2DTime1->text().toDouble();
+  if ( dwell == 0 ) dwell = 1;
+
+  sx = S2DStarts[0]->text().toDouble();
+  ex = S2DEnds[0]->text().toDouble();
+  ps = S2DPoints[0]->text().toInt();
+  if ( ps < 1 ) ps = 1;
+  dx = ( ex - sx ) / ps;
+
+  if ( S2DStepScan->isChecked() ) {
+    // Step Scan の時 dwell にパルスモータの最高速に起因した制限は無いはず
+  }
+  else if ( S2DQuasiContScan->isChecked() ) {
+    pps = (int)fabs( dx / as->getUPP() / dwell );
+    if ( pps > as->highestSpeed() ) {
+      pps = as->highestSpeed();
+    }
+    dwell = fabs( dx / as->getUPP() / pps );
+  }
+  else if ( S2DRealContScan->isChecked() ) {
+    pps = (int)fabs( dx * ps / as->getUPP() / dwell );
+    if ( pps > as->highestSpeed() ) {
+      pps = as->highestSpeed();
+    }
+    dwell = fabs( dx * ps / as->getUPP() / pps );
+  }
+  S2DTime1->setText( QString::number( dwell ) );
+  S2DPoints[0]->setText( QString::number( ps ) );
+  S2DSteps[0]->setText( QString::number( dx ) );
 }
 
 void MainWindow::SetupS2DParams( void )
@@ -545,16 +593,33 @@ void MainWindow::S2DWriteBody( double v )
 void MainWindow::S2DWriteBody2( int ix, int iy )
 {
   if ( isS2DSFluo ) {
-    // ファイル名の指定がなくてもとにかく名前を作る。
-    QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
-    saveMCAData0( mcaFile.canonicalFilePath() ); // 通常のテキスト形式でのセーブ
-    S2DSaveMCAData( ix, iy, S2DI.i[2] ); // binary レコードでセーブ ?
+    if (( ix < 0 )||( ix > S2DI.ps[0] )
+	||( iy < 0 )||( iy > S2DI.ps[1] ))
+      return;
+
+    if ( S2DMCADataOnMemF ) {
+      S2DSaveMCADataOnMem( ix, iy, S2DI.i[2] ); // binary レコードでセーブ ?
+    } else {
+      // ファイル名の指定がなくてもとにかく名前を作る。
+      QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
+      saveMCAData0( mcaFile.canonicalFilePath() ); // 通常のテキスト形式でのセーブ
+    }
   }
 }
 
-void MainWindow::S2DSaveMCAData( int ix, int iy, int iz )  // iz は当面無視
+void MainWindow::S2DSaveMCADataOnMem( int ix, int iy, int iz )  // iz は当面無視
 {
-  
+  aMCASet *set = S2DMCAMap.aPoint( ix, iy );
+
+  for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
+    double *E = set->Ch[ ch ].E;
+    quint32 *cnt = set->Ch[ ch ].cnt;
+    for ( int i = 0; i < SAVEMCASize; i++ ) {
+      E[i] = kev2pix->p2E( ch, i );
+      cnt[i] = SFluo->getAMCAdata( ch, i );
+    }
+  }
+  set->setValid( true );
 }
 
 QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
@@ -651,8 +716,13 @@ void MainWindow::S2DReCalcMap( double s, double e )
   if ( S2DI.ScanMode == STEP ) {
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       for ( int j = 0; j < S2DI.ps[0]; j++ ) {
-	mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	if ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 ) {
+	if ( S2DMCADataOnMemF ) {
+	  sum = S2DReCalcAMapPointOnMem( j, i, s, e );
+	} else {
+	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e );
+	}
+	if ( sum > 0 ) {
 	  S2DV->setData( j, i, sum );
 	} else {
 	  return;
@@ -664,9 +734,13 @@ void MainWindow::S2DReCalcMap( double s, double e )
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
 	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
-	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	  if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
-	       && ( j < S2DI.ps[0] ) ) {
+	  if ( S2DMCADataOnMemF ) {
+	    sum = S2DReCalcAMapPointOnMem( j, i, s, e );
+	  } else {
+	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e );
+	  }
+	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
 	    S2DV->setData( j, i, sum - lastsum );
 	  }
 	  if ( sum < 0 )
@@ -675,9 +749,13 @@ void MainWindow::S2DReCalcMap( double s, double e )
 	}
       } else {
 	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
-	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	  if ( ( ( sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e ) ) > 0 )
-	       && ( j > 0 ) ) {
+	  if ( S2DMCADataOnMemF ) {
+	    sum = S2DReCalcAMapPointOnMem( j, i, s, e );
+	  } else {
+	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
+	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e );
+	  }
+	  if ( ( sum > 0 ) && ( j > 0 ) ) {
 	    S2DV->setData( j - 1, i, sum - lastsum );
 	  }
 	  if ( sum < 0 )
@@ -714,5 +792,27 @@ double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
     }
   }
   f.close();
+  return sum;
+}
+
+double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e )
+{
+  double sum = 0;
+
+  aMCASet *set = S2DMCAMap.aPoint( ix, iy );
+  if ( set->isValid() ) {
+    for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
+      if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
+	double *E = set->Ch[ ch ].E;
+	quint32 *cnt = set->Ch[ ch ].cnt;
+	for ( int i = 0; i < SAVEMCASize; i++ ) {
+	  if (( E[i] >= s )&&( E[i] <= e )) {
+	    sum += cnt[i];
+	  }
+	}
+      }
+    }
+  }
+
   return sum;
 }

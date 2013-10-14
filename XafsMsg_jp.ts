@@ -2080,7 +2080,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Cnt.Scn.</source>
-        <translation>連続</translation>
+        <translation type="obsolete">連続</translation>
     </message>
     <message>
         <source>Periods</source>
@@ -2358,15 +2358,59 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Both Dir.</source>
-        <translation type="unfinished"></translation>
+        <translation>往復測定</translation>
     </message>
     <message>
         <source>Start Scan</source>
-        <translation type="unfinished"></translation>
+        <translation>スキャン開始</translation>
     </message>
     <message>
         <source>Cannot open [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>[%1]が開けません</translation>
+    </message>
+    <message>
+        <source>Q. Cnt.Scn.</source>
+        <translation>擬似連続スキャン</translation>
+    </message>
+    <message>
+        <source>R. Cnt. Scn.</source>
+        <translation>連続スキャン</translation>
+    </message>
+    <message>
+        <source>When a file name is selected, measured 2D/3D map is automatically saved to the file on a measurement.     Using the &apos;Save&apos; button, the 2D/3D map can be saved after a measurement at any time.</source>
+        <translation>ファイル名が選択されているとスキャンを行った時得られたマップデータは自動的に保存されます。「保存」ボタンを押すことでスキャン後の任意の時点で得られたマップデータを保存することができます。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save current map which are shown.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>表示されているマップデータを保存します</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On &apos;Step&apos; and &apos;Quasi Continuous&apos; scan, the dwell time is a time to measre each one point.&lt;/p&gt;&lt;p&gt;On &apos;Real Continuous&apos; scan, the dwell time is a time to scan 1 line along 1st axis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>「ステップ」と「擬似連続」スキャンでは「測定時間(Dwell Time)」は、各1点を測定する時間です。「連続」スキャンでは、第1軸を始点から終点までスキャンする時間になります。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the map is obtaind by using SSD, the map can be re-calculated with new ROI after the measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>SSD を使って測定して得られたマップの場合、測定後に ROI を変更して新たなマップを得ることができます。</translation>
+    </message>
+    <message>
+        <source>Recalc w. New ROI</source>
+        <translation>ROIの変更を許す</translation>
+    </message>
+    <message>
+        <source>2D Scan Start (%1 %2 %3)</source>
+        <translation>2D スキャン開始 (%1 %2 %3)</translation>
+    </message>
+    <message>
+        <source>Can not find a unit ID %1 for the SPEEDS line</source>
+        <translation>Can not find a unit ID %1 for the SPEEDS line</translation>
+    </message>
+    <message>
+        <source>The scan speed %1 was limited to %2</source>
+        <translation>設定しようとしたスキャンスピード[%1](pps)は[%2](pps)に制限されました</translation>
     </message>
 </context>
 <context>

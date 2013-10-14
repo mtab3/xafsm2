@@ -124,7 +124,7 @@ private:
   ViewCTRL *cMCAViewC;
   MCAView *cMCAView;
   int cMCAViewTabNo;
-  int *MCAData;
+  quint32 *MCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
   QFileDialog *MCAFSel;
@@ -283,7 +283,8 @@ private:
   int S2DStage;
   bool S2DInfoIsValid;
   S2DInfo S2DI;
-  MCA **S2DMCAs;
+  aMCAMap S2DMCAMap;
+  bool S2DMCADataOnMemF;
 #if 0
   QVector<int> S2Dnow;
   QVector<int> S2Di, S2Dps;
@@ -305,7 +306,9 @@ private:
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
   double S2DReCalcAMapPoint( QString fname, double s, double e );
-  void S2DSaveMCAData( int ix, int iy, int iz );
+  double S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e );
+  //  void S2DSaveMCAData( int ix, int iy, int iz );
+  void S2DSaveMCADataOnMem( int ix, int iy, int iz );
 
   QVector<AUnit*> SensWithRange;
 
@@ -682,6 +685,7 @@ private slots:
   void newS2DSteps( void );
   void newS2DPoints( void );
   void S2DScanStart( void );
+  void CheckS2DDwellTime( void );
 
   // ステップスキャン (検出器、モータともにステップ)
   void S2DStepScanSequence( void );

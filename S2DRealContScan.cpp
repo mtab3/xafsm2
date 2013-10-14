@@ -64,7 +64,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     break;
   case 3:
     // 1st Ax のみ、スキャン用のスピードにセット
-    pps = (int)fabs( (double)S2DI.dx[0]
+    pps = (int)fabs( (double)S2DI.dx[0] * S2DI.ps[0]
 		     / S2DI.unit[0]->getUPP()
 		     / S2DI.Dwell );
     if ( pps == 0 ) pps = 1;

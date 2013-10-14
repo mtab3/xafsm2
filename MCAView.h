@@ -28,8 +28,9 @@ private:
 
   int valid;
   //  QVecotot<int *> MCAs;
-  int *MCA;
+  quint32 *MCA;
   double *SMCA, *DMCA, *dMCA;   // スムージング結果、1次微分、統計変動
+  double *E;
   int MCALen;
   int MCACh;
   double realTime;
@@ -82,7 +83,7 @@ public:
 
   void setKeV2Pix( KeV2Pix *K2P ) { k2p = K2P; };
   void setFDBase( FluoDBase *FDBase ) { fdbase = FDBase; };
-  int *setMCAdataPointer( int length );
+  quint32 *setMCAdataPointer( int length );
   void SetRealTime( double rt ) { realTime = rt; };
   void SetLiveTime( double lt ) { liveTime = lt; };
   void SetLowLimit( double LL ) { lowerLimit = LL; };
@@ -95,6 +96,7 @@ public:
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   QStringList getSelectedElms( void );
+  double *getMCAEnergys( void ) { return E; };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel

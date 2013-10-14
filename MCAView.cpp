@@ -91,6 +91,8 @@ MCAView::~MCAView( void )
     delete DMCA;
   if ( dMCA != NULL )
     delete dMCA;
+  if ( E != NULL )
+    delete E;
   disconnect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
@@ -100,9 +102,10 @@ MCAView::~MCAView( void )
   disconnect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ) );
 }
 
-int *MCAView::setMCAdataPointer( int len )
+quint32 *MCAView::setMCAdataPointer( int len )
 {
-  MCA = new int[ MCALen = len ];
+  MCA = new quint32[ MCALen = len ];
+  E = new double[ MCALen ];
   SMCA = new double[ MCALen ];
   DMCA = new double[ MCALen ];
   dMCA = new double[ MCALen ];

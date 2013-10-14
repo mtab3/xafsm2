@@ -404,7 +404,7 @@ void Data::showMCAData( QTextStream &in, ViewCTRL *viewC )
   int ROIs = heads.at(5).toInt();
   int ROIe = heads.at(6).toInt();
 
-  int *MCA = view->setMCAdataPointer( MCALength );
+  quint32 *MCA = view->setMCAdataPointer( MCALength );
   view->SetRealTime( RealTime );
   view->SetLiveTime( LiveTime );
   view->SetMCACh( MCACh );

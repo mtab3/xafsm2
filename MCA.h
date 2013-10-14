@@ -3,10 +3,42 @@
 
 #include <QtGlobal>
 
-struct MCA {
-  double E[ 2048 ];
-  quint32 cnt[ 2048 ];
+#define SAVEMCASize  ( 2048 )
+#define SAVEMCACh    ( 19 )
+
+struct aCh {
+  double E[ SAVEMCASize ];
+  quint32 cnt[ SAVEMCASize ];
 };
+
+struct aMCASet {
+  bool valid;
+  aCh Ch[ SAVEMCACh ];
+
+  aMCASet() { valid = false; };
+  void setValid( bool f ) { valid = f; };
+  bool isValid( void ) { return valid; };
+};
+
+struct aMCAMap {
+  int iX, iY;
+  aMCASet *Points;
+
+  aMCAMap() { iX = iY = 0; Points = NULL; };
+  ~aMCAMap() { if ( Points != NULL ) delete [] Points; };
+  void New( int ix, int iy )
+  {
+    if ( Points != NULL ) {
+      delete [] Points;
+    }
+    iX = ix;
+    iY = iy;
+    Points = new aMCASet[ iX * iY ];
+    qDebug() << "IX IY " << iX << iY;
+  };
+  aMCASet *aPoint( int ix, int iy ) { return &(Points[ iy * iX + ix ]); };
+};
+
 
 
 #endif

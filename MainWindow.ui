@@ -6970,28 +6970,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           </layout>
          </widget>
         </item>
-        <item row="3" column="3" rowspan="3">
-         <widget class="cBar" name="CBar">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0" colspan="2">
          <widget class="QFrame" name="frame_30">
           <property name="sizePolicy">
@@ -7452,6 +7430,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On 'Step' and 'Quasi Continuous' scan, the dwell time is a time to measre each one point.&lt;/p&gt;&lt;p&gt;On 'Real Continuous' scan, the dwell time is a time to scan 1 line along 1st axis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
@@ -7738,6 +7719,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            </property>
            <item row="0" column="0">
             <widget class="QRadioButton" name="S2DReCalcWNewROI">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the map is obtaind by using SSD, the map can be re-calculated with new ROI after the measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Recalc w. New ROI</string>
              </property>
@@ -7756,6 +7740,28 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3" rowspan="4">
+         <widget class="cBar" name="CBar">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
