@@ -23,6 +23,7 @@ void MainWindow::setupScan2DArea( void )
   S2DI.motors = 3;
   S2DI.ScanBothDir = false;
   S2DI.Use3rdAx = false;
+  S2DI.isSFluo = false;
   S2DI.unit << NULL << NULL << NULL;
   S2DI.used << true << true << false;
   S2DI.ps << 0 << 0 << 0;
@@ -80,7 +81,6 @@ void MainWindow::setupScan2DArea( void )
   inS2D = false;
   S2DTimer = new QTimer;
   S2DTimer2 = new QTimer;
-  isS2DSFluo = false;
 
   CheckS2DDwellTime();
 
@@ -343,9 +343,9 @@ void MainWindow::S2DScanStart( void )
       }
     }
 
-    isS2DSFluo = false;
+    S2DI.isSFluo = false;
     if ( as == SFluo ) {
-      isS2DSFluo = true;
+      S2DI.isSFluo = true;
       getNewMCAView();   // ここで確実に MCAData が有効になる
     }
     if ( S2DStepScan->isChecked() )
@@ -509,6 +509,7 @@ void MainWindow::SetupS2DParams( void )
       //      S2Ddx[i] = S2Dsign[i];
     }
   }
+  S2DI.startDir = ( S2DI.sx[0] < S2DI.ex[0] ) ? FORWARD : BACKWARD;
 }
 
 void MainWindow::S2DStop0( void )
@@ -592,7 +593,7 @@ void MainWindow::S2DWriteBody( double v )
 
 void MainWindow::S2DWriteBody2( int ix, int iy )
 {
-  if ( isS2DSFluo ) {
+  if ( S2DI.isSFluo ) {
     if (( ix < 0 )||( ix > S2DI.ps[0] )
 	||( iy < 0 )||( iy > S2DI.ps[1] ))
       return;
@@ -815,4 +816,55 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e )
   }
 
   return sum;
+}
+
+void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
+{
+  if (( ! S2DInfoIsValid )||( inS2D )||( ! S2DI.isSFluo )
+      ||( cMCAView == NULL )||( MCAData== NULL ))
+    return;
+
+  int dx;
+  aMCASet *set1, *set2;
+  quint32 *cnt1, *cnt2;
+
+  set1 = S2DMCAMap.aPoint( ix, iy );
+  if ( ! set1->isValid() )
+    return;
+  cnt1 = set1->Ch[ cMCACh ].cnt;
+
+  if ( S2DI.ScanMode == STEP ) {
+    for ( int i = 0; i < SAVEMCASize; i++ ) {
+      MCAData[i] = cnt1[i];
+    }
+  } else {
+    set2 = S2DMCAMap.aPoint( ix+1, iy );
+    if ( ! set2->isValid() )
+      return;
+    cnt2 = set2->Ch[ cMCACh ].cnt;
+
+    // 前進で測定しているときは val(ix+1, iy) - val(ix, iy)
+    // 後進で測定しているときは val(ix, iy) - val(ix+1, iy)
+    // 片道スキャンなら、最初の行が前進ならずっと前進、後進ならずっと後進
+    // 往復スキャンなら、奇数業は最初の行の逆向けのスキャン
+    dx = ( S2DI.startDir == FORWARD ) ? 1 : -1;
+    if (( S2DI.ScanBothDir )&&( iy % 2 == 1 )) dx *= -1;
+    for ( int i = 0; i < SAVEMCASize; i++ ) {
+      MCAData[i] = ( cnt2[i] - cnt1[i] ) * dx;
+    }
+  }
+
+  cMCAView->update();
+}
+
+void MainWindow::S2DChangeMCACh( int dCh )
+{
+  int ch = cMCACh + dCh;
+
+  while ( ch < 0 )
+    ch += MaxSSDs;
+  while ( ch >= MaxSSDs )
+    ch -= MaxSSDs;
+
+  MCACh->setValue( ch );
 }

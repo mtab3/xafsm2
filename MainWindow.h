@@ -39,11 +39,6 @@
 #include "S2DInfo.h"
 #include "MCA.h"
 
-enum DIRECTION { FORWARD, BACKWARD };
-enum MCASTARTRESUME { MCA_START, MCA_RESUME };
-enum ENCORPM { XENC, XPM };
-enum OLDNEW { OLD, NEW };
-
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
 #define GOKEV_ID "Monochromator Motion"
@@ -293,7 +288,6 @@ private:
 #endif
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   QString S2DFile;
-  bool isS2DSFluo;
   double S2DLastV;
 
   void newAx0( int ax, int motor );
@@ -699,6 +693,8 @@ private slots:
   void S2DRContScanMeas( void );
   void S2DNewScanValue( QString v );
   void S2DMoveToPointedPosition( int x, int y );
+  void S2DShowInfoAtNewPosition( int x, int y );
+  void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( double s, double e );
 
  signals:

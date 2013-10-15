@@ -10,6 +10,7 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
 
   Parent = p;
   showIx = showIy = lastIx = lastIy = 0;
+  showIx0 = showIy0 = -1;
   data = NULL;
   rType = AS_SCREEN;
   setRange( -10., 10., -10., 10., 2., 2. );
@@ -36,6 +37,10 @@ void S2DView::setParent( QWidget *p )
   Parent = p;
   connect( this, SIGNAL( AskMoveToPointedPosition( int, int ) ),
 	   Parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
+  connect( this, SIGNAL( PointerMovedToNewPosition( int, int ) ),
+	   Parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ) );
+  connect( this, SIGNAL( AskToChangeMCACh( int ) ),
+	   Parent, SLOT( S2DChangeMCACh( int ) ) );
 }
 
 int S2DView::cNum( double v )
@@ -287,21 +292,35 @@ void S2DView::Draw( QPainter *p )
 
 void S2DView::mouseMoveEvent( QMouseEvent *e )
 {
+  bool rangeoutf = false;
+
   m.Moved( e );
 
+  if (( cc.s2rx( m.x() ) < sx )||( cc.s2ry( m.y() ) < sy )) { rangeoutf = true; }
   showIx = ( int )( ( cc.s2rx( m.x() ) - sx ) / dx );
   showIy = ( int )( ( cc.s2ry( m.y() ) - sy ) / dy );
-  if ( showIx < 0 ) showIx = 0;
-  if ( showIx >= maxix ) showIx = maxix - 1;
-  if ( showIy < 0 ) showIy = 0;
-  if ( showIy >= maxiy ) showIy = maxiy - 1;
+
+  if ( showIx < 0 ) { showIx = 0; rangeoutf = true; }
+  if ( showIx >= maxix ) { showIx = maxix - 1; rangeoutf = true; }
+  if ( showIy < 0 ) { showIy = 0; rangeoutf = true; }
+  if ( showIy >= maxiy ) { showIy = maxiy - 1; rangeoutf = true; }
+
+  if ((( showIx != showIx0 )||( showIy != showIy0 ))&&(!rangeoutf)) {
+    emit PointerMovedToNewPosition( showIx, showIy );
+  }
+
+  if ( rangeoutf ) {
+    showIx0 = showIy0 = -1;
+  } else {
+    showIx0 = showIx;
+    showIy0 = showIy;
+  }
 
   update();
 }
 
 void S2DView::mousePressEvent( QMouseEvent * )
 {
-  qDebug() << "aa";
   emit AskMoveToPointedPosition( showIx, showIy );
 }
 
@@ -313,6 +332,8 @@ void S2DView::mouseDoubleClickEvent( QMouseEvent * )
 {
 }
 
-void S2DView::wheelEvent( QWheelEvent * )
+void S2DView::wheelEvent( QWheelEvent *e )
 {
+  int step = ( e->delta() / 8. ) / 15.;    // deg := e->delta / 8.
+  emit AskToChangeMCACh( step );
 }

@@ -21,6 +21,7 @@ class S2DView : public QFrame, private Ui::S2DView
   int maxix, maxiy;
   int lastIx, lastIy;
   int showIx, showIy;
+  int showIx0, showIy0;
   double **data;
   bool **valid;
 
@@ -52,6 +53,8 @@ class S2DView : public QFrame, private Ui::S2DView
 
  signals:
   void AskMoveToPointedPosition( int x, int y );
+  void PointerMovedToNewPosition( int x, int y );
+  void AskToChangeMCACh( int dCh );
 };
 
 #endif

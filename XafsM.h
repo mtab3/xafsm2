@@ -7,6 +7,10 @@
 #include <QVector>
 
 enum SCANMODE { STEP, QCONT, RCONT };
+enum DIRECTION { FORWARD, BACKWARD };
+enum MCASTARTRESUME { MCA_START, MCA_RESUME };
+enum ENCORPM { XENC, XPM };
+enum OLDNEW { OLD, NEW };
 
 /******************************************************************************/
 /* Don't change these numbers ! without deep considerations.                  */

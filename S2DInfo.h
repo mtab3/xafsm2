@@ -14,6 +14,8 @@ struct S2DInfo
   int motors;
   bool Use3rdAx;
   bool ScanBothDir;
+  bool isSFluo;
+  DIRECTION startDir; 
   QVector<AUnit*> unit;
   QVector<bool> used;
   QVector<int> now;
