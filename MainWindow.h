@@ -38,6 +38,7 @@
 #include "TuningTable.h"
 #include "S2DInfo.h"
 #include "MCA.h"
+#include "ScanInfo.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -228,6 +229,7 @@ private:
   int ScanStage;
   int ScanMotor, ScanSensor;
   double ScanOrigin, ScanSP, ScanEP, ScanSTP;
+  ScanInfo SInfo;
   int NowScanP;
   ViewCTRL *ScanViewC;
   XYView *ScanView;
@@ -504,6 +506,7 @@ private slots:
   void SetGoMSpeedL( void );
   void ScanStart( void );
   void saveScanData( void );
+  void SelectedAPointInScanArea( double x, double y );
 
   void SetDXMPMC( void );
 
