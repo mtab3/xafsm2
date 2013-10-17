@@ -10,6 +10,7 @@ struct S2DInfo
 {
  public:
 
+  bool valid;
   SCANMODE ScanMode;
   int motors;
   bool Use3rdAx;

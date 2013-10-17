@@ -296,6 +296,7 @@ private:
   void S2DStop0( void );
   void SetupS2DParams( void );
   void S2DWriteHead( void );
+  void S2DWriteHead2( void );
   void S2DWriteBody( double v );
   void S2DWriteBody2( int ix, int iy );
   void S2DWriteBlankLine( void );
@@ -683,6 +684,7 @@ private slots:
   void newS2DPoints( void );
   void S2DScanStart( void );
   void CheckS2DDwellTime( void );
+  void SaveS2DResult( void );
 
   // ステップスキャン (検出器、モータともにステップ)
   void S2DStepScanSequence( void );

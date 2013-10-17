@@ -118,6 +118,15 @@ void S2DView::setData( int ix, int iy, double v )
   }
 }
 
+double S2DView::getData( int ix, int iy )
+{
+  if (( ix >= 0 )&&( iy >= 0 )&&( ix < maxix )&&( iy < maxiy )) {
+    if ( valid[ix][iy] )
+      return data[ix][iy];
+  }
+  return 0;
+}
+
 void S2DView::paintEvent( QPaintEvent * )
 {
   QStylePainter painter( this );

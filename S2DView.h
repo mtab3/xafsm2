@@ -50,6 +50,7 @@ class S2DView : public QFrame, private Ui::S2DView
   void setRange( double sx, double sy, double dx, double dy, int ix, int iy );
   void setData( int ix, int iy, double v );
   void setParent( QWidget *p );
+  double getData( int ix, int iy );
 
  signals:
   void AskMoveToPointedPosition( int x, int y );

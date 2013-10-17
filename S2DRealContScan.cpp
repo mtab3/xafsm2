@@ -84,7 +84,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     connect( mUnits.at(0), SIGNAL( newValue( QString ) ),
 	     this, SLOT( S2DNewScanValue( QString ) ),
 	     Qt::UniqueConnection );
-    S2DTimer2->start( S2DI.Dwell * 1000 );
+    S2DTimer2->start( S2DI.Dwell * 1000 / S2DI.ps[0] );
     mUnits.getValue();
     // 同時に「終点」に移動開始
     if ( S2DScanDir == FORWARD ) {

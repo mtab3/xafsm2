@@ -623,7 +623,8 @@ void MainWindow::ScanStart( void )
     ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
     connect( ScanView, SIGNAL( SelectAPoint( double, double ) ),
-	     this, SLOT( SelectedAPointInScanArea( double, double ) ) );
+	     this, SLOT( SelectedAPointInScanArea( double, double ) ),
+	     Qt::UniqueConnection );
 
     ScanMotor = MotorN->currentIndex();
     SInfo.unit = am = AMotors.value( ScanMotor );
