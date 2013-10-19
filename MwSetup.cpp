@@ -29,6 +29,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoPosKeV[3] = Eg + 1.10;
   ScanStage = 0;
 
+  SInfo.valid = false;
+
   for ( int i = 0; i < UNITS; i++ ) {
     GoUnit0->addItem( QString( UnitName[i].name ) );
     for ( int j = 0; j < GOS; j++ ) {
@@ -596,6 +598,14 @@ void MainWindow::GoMStop0( void )
   GoMotor->setStyleSheet( NormalB );
 }
 
+void MainWindow::SelectedAPointInScanArea( double x, double )
+{
+  if ( sender() == ScanView ) {
+    // 受け取った x はパルス値
+    SInfo.unit->SetValue( x );
+  }
+}
+
 void MainWindow::ScanStart( void )
 {
   AUnit *am, *as, *as1 = NULL;
@@ -612,9 +622,12 @@ void MainWindow::ScanStart( void )
     ViewTab->setTabText( ViewTab->currentIndex(), "SCAN" );
     ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
+    connect( ScanView, SIGNAL( SelectAPoint( double, double ) ),
+	     this, SLOT( SelectedAPointInScanArea( double, double ) ),
+	     Qt::UniqueConnection );
 
     ScanMotor = MotorN->currentIndex();
-    am = AMotors.value( ScanMotor );
+    SInfo.unit = am = AMotors.value( ScanMotor );
     mUnits.clearUnits();
     mUnits.addUnit( as = ASensors.value( SelectD1->currentIndex() ) );
     mUnits.addUnit( as1 = ASensors.value( SelectD10->currentIndex() ) );
@@ -665,14 +678,18 @@ void MainWindow::ScanStart( void )
     SPSSelU = SPSUnit->currentIndex();
     SPSUPP = ( SPSSelU == 0 ) ? 1 : am->getUPP();
     ScanOrigin = am->value().toDouble();
-    ScanSP = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
-    ScanEP = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
+    SInfo.sx = ScanSP
+      = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
+    SInfo.ex = ScanEP
+      = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
     ScanSTP = SPSstep->text().toDouble() / SPSUPP;
     if ( ScanEP > ScanSP ) {
       ScanSTP = fabs( ScanSTP );
     } else {
       ScanSTP = - fabs( ScanSTP );
     }
+    SInfo.dx = ScanSTP;
+    SInfo.valid = true;
     if ( ScanSTP == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;

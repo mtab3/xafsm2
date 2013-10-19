@@ -1,6 +1,7 @@
 
 #include "MainWindow.h"
 
+#include "XafsM.h"
 #include "SMsg.h"
 
 void MainWindow::setupScan2DArea( void )
@@ -34,7 +35,7 @@ void MainWindow::setupScan2DArea( void )
   S2DI.i << 0 << 0 << 0;
   S2DI.ScanMode = STEP;
 
-  S2DInfoIsValid = false;
+  S2DI.valid = false;
   S2DV->setParent( this );
   S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
 
@@ -117,6 +118,9 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DQuasiContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
 	   Qt::UniqueConnection );
   connect( S2DRealContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
+	   Qt::UniqueConnection );
+
+  connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( SaveS2DResult() ),
 	   Qt::UniqueConnection );
 }
 
@@ -354,23 +358,22 @@ void MainWindow::S2DScanStart( void )
       S2DI.isSFluo = true;
       getNewMCAView();   // ここで確実に MCAData が有効になる
     }
-    if ( S2DStepScan->isChecked() )
-      S2DI.ScanMode = STEP;
-    if ( S2DQuasiContScan->isChecked() ) {
+    switch( S2DI.ScanMode ) {
+    case STEP: break;
+    case QCONT:
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	S2DI = oldInfo;
 	return;
       }
-      S2DI.ScanMode = QCONT;
-    }
-    if ( S2DRealContScan->isChecked() ) {
+      break;
+    case RCONT:
       if ( ! CheckOkList( as, CScanOk ) ) {
 	NewLogMsg( tr( "Continuous scan is not available now." ) );
 	S2DI = oldInfo;
 	return;
       }
-      S2DI.ScanMode = RCONT;
+      break;
     }
 
     inS2D = true;
@@ -445,7 +448,7 @@ void MainWindow::S2DScanStart( void )
       qDebug() << "non-defined scan mode !";
       return;
     }
-    S2DInfoIsValid = true;
+    S2DI.valid = true;
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
@@ -491,6 +494,12 @@ void MainWindow::CheckS2DDwellTime( void )
 
 void MainWindow::SetupS2DParams( void )
 {
+  S2DI.ScanMode = STEP;  // default
+  if ( S2DQuasiContScan->isChecked() )
+    S2DI.ScanMode = QCONT;
+  if ( S2DRealContScan->isChecked() )
+    S2DI.ScanMode = RCONT;
+
   S2DI.ScanBothDir = S2DScanBothDir->isChecked();
   S2DI.Use3rdAx = S2DUse3rdAxF->isChecked();
   S2DI.Dwell = S2DTime1->text().toDouble();
@@ -516,6 +525,22 @@ void MainWindow::SetupS2DParams( void )
     }
   }
   S2DI.startDir = ( S2DI.sx[0] < S2DI.ex[0] ) ? FORWARD : BACKWARD;
+
+  if ( S2DI.ScanMode == RCONT ) {
+    int pps = (int)fabs( (double)S2DI.dx[0] * S2DI.ps[0]
+			 / S2DI.unit[0]->getUPP()
+			 / S2DI.Dwell );
+    if ( pps == 0 ) pps = 1;
+    if ( pps > S2DI.unit[0]->highestSpeed() ) {
+      QString msg = tr( "The scan speed %1 was limited to %2" )
+	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
+      qDebug() << msg;
+      statusbar->showMessage( msg, 2000 );
+      pps = S2DI.unit[0]->highestSpeed();
+    }
+    S2DI.pps = pps;
+    S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->getUPP() / pps;
+  }
 }
 
 void MainWindow::S2DStop0( void )
@@ -524,16 +549,48 @@ void MainWindow::S2DStop0( void )
   S2DStage = S2D_END_STAGE;
 }
 
+void MainWindow::SaveS2DResult( void )
+{
+  S2DFile = S2DFileName->text();
+  if ( S2DI.valid ) {
+    S2DWriteHead();
+    S2DWriteHead2();
+
+    if ( ! S2DFile.simplified().isEmpty() ) {
+      QFile f( S2DFile );
+      
+      if ( !f.open( QIODevice::Append | QIODevice::Text ) )
+	return;
+      
+      QTextStream out(&f);
+      
+      for ( int iy = 0; iy <= S2DI.ps[1]; iy++ ) {
+	for ( int ix = 0; ix < S2DI.ps[0]; ix++ ) {
+	  out << QString( " %1" ).arg( S2DI.sx[0] + ( ix + 0.5 ) * S2DI.dx[0], 10 )
+	      << QString( " %1" ).arg( S2DI.sx[1] + ( iy ) * S2DI.dx[1], 10 )
+	      << QString( " %1" ).arg( S2DV->getData( ix, iy ), 10 )
+	      << endl;
+	}
+      }
+      
+      f.close();
+    }
+  }
+}
+
 void MainWindow::S2DWriteHead( void )
 {
+  qDebug() << "a";
   if ( S2DFile.simplified().isEmpty() )
     return;
 
+  qDebug() << "b";
   QFile f( S2DFile );
 
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
 
+  qDebug() << "c";
   // Writing fixed headers
   QTextStream out(&f);
 
@@ -571,6 +628,26 @@ void MainWindow::S2DWriteHead( void )
   out << "#" << QString( " Dwell Time : %1" ).arg( S2DI.Dwell ) << endl;
 
   out << "#" << endl;
+
+  f.close();
+}
+
+void MainWindow::S2DWriteHead2( void )
+{
+  if ( S2DFile.simplified().isEmpty() )
+    return;
+  
+  QFile f( S2DFile );
+  
+  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
+    return;
+  
+  // Writing additional headers
+  QTextStream out(&f);
+  
+  out << "# ***************************************************" << endl;
+  out << "# ** This file was generated after the measurement **" << endl;
+  out << "# ***************************************************" << endl;
 
   f.close();
 }
@@ -691,7 +768,7 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
  
  void MainWindow::S2DMoveToPointedPosition( int ix, int iy )
  {
-   if (( ! S2DInfoIsValid )||( inS2D ))
+   if (( ! S2DI.valid )||( inS2D ))
      return;
 
    double x = S2DI.sx[0] + S2DI.dx[0] * ( ix + 0.5 );
@@ -711,7 +788,7 @@ void MainWindow::S2DReCalcMap( double s, double e )
 {
   setAllROIs();
 
-  if ( ( ! S2DInfoIsValid )||( ! S2DReCalcWNewROI->isChecked() )
+  if ( ( ! S2DI.valid )||( ! S2DReCalcWNewROI->isChecked() )
        || inMeas || inMCAMeas || inS2D ) {
     return;
   }
@@ -826,7 +903,7 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e )
 
 void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
 {
-  if (( ! S2DInfoIsValid )||( inS2D )||( ! S2DI.isSFluo )
+  if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
       ||( cMCAView == NULL )||( MCAData== NULL ))
     return;
 

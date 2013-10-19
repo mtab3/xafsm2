@@ -64,18 +64,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     break;
   case 3:
     // 1st Ax のみ、スキャン用のスピードにセット
-    pps = (int)fabs( (double)S2DI.dx[0] * S2DI.ps[0]
-		     / S2DI.unit[0]->getUPP()
-		     / S2DI.Dwell );
-    if ( pps == 0 ) pps = 1;
-    if ( pps > S2DI.unit[0]->highestSpeed() ) {
-      msg = tr( "The scan speed %1 was limited to %2" )
-	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
-      qDebug() << msg;
-      statusbar->showMessage( msg, 2000 );
-      pps = S2DI.unit[0]->highestSpeed();
-    }
-    S2DI.unit[0]->SetHighSpeed( pps );
+    S2DI.unit[0]->SetHighSpeed( S2DI.pps );
     S2DStage++;
     // break しない
   case 4:     // リピートポイント
@@ -84,7 +73,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     connect( mUnits.at(0), SIGNAL( newValue( QString ) ),
 	     this, SLOT( S2DNewScanValue( QString ) ),
 	     Qt::UniqueConnection );
-    S2DTimer2->start( S2DI.Dwell * 1000 );
+    S2DTimer2->start( S2DI.Dwell * 1000 / S2DI.ps[0] );
     mUnits.getValue();
     // 同時に「終点」に移動開始
     if ( S2DScanDir == FORWARD ) {
@@ -95,6 +84,13 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     S2DStage++;
     break;
   case 5:
+    if ( S2DI.i[0] <= S2DI.ps[0] ) {
+      qDebug() << "at PM scan end, the measured points are less than expected"
+	       << S2DI.i[0];
+      break;
+    }
+    S2DStage++;
+  case 6:
     S2DTimer2->stop();
    // 1st ax の端点に到達したので
     S2DWriteBlankLine();
@@ -189,6 +185,9 @@ void MainWindow::S2DNewScanValue( QString v )
     } else {
       S2DV->setData( S2DI.ps[0] - S2DI.i[0] - 1, S2DI.i[1], V - S2DLastV );
     }
+  } else {
+    qDebug() << QString( "measured points (%1) are out of range (%2-%3)" )
+      .arg( S2DI.i[0] ).arg( 0 ).arg( S2DI.ps[0] );
   }
   S2DLastV = V;
   S2DI.i[0]++;

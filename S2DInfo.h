@@ -10,6 +10,7 @@ struct S2DInfo
 {
  public:
 
+  bool valid;
   SCANMODE ScanMode;
   int motors;
   bool Use3rdAx;
@@ -23,6 +24,7 @@ struct S2DInfo
   QVector<double> sx, ex, dx;
   double Dwell;
   QString MCAFile;
+  int pps;               // use only in RCONT
 };
 
 #endif

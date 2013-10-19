@@ -38,6 +38,7 @@
 #include "TuningTable.h"
 #include "S2DInfo.h"
 #include "MCA.h"
+#include "ScanInfo.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -228,6 +229,7 @@ private:
   int ScanStage;
   int ScanMotor, ScanSensor;
   double ScanOrigin, ScanSP, ScanEP, ScanSTP;
+  ScanInfo SInfo;
   int NowScanP;
   ViewCTRL *ScanViewC;
   XYView *ScanView;
@@ -294,6 +296,7 @@ private:
   void S2DStop0( void );
   void SetupS2DParams( void );
   void S2DWriteHead( void );
+  void S2DWriteHead2( void );
   void S2DWriteBody( double v );
   void S2DWriteBody2( int ix, int iy );
   void S2DWriteBlankLine( void );
@@ -504,6 +507,7 @@ private slots:
   void SetGoMSpeedL( void );
   void ScanStart( void );
   void saveScanData( void );
+  void SelectedAPointInScanArea( double x, double y );
 
   void SetDXMPMC( void );
 
@@ -680,6 +684,7 @@ private slots:
   void newS2DPoints( void );
   void S2DScanStart( void );
   void CheckS2DDwellTime( void );
+  void SaveS2DResult( void );
 
   // ステップスキャン (検出器、モータともにステップ)
   void S2DStepScanSequence( void );
