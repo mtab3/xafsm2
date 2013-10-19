@@ -122,7 +122,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   Qt::UniqueConnection );
   connect( action_Quit, SIGNAL( triggered() ), qApp, SLOT( closeAllWindows() ),
 	   Qt::UniqueConnection );
-  //  connect( action_SelMC, SIGNAL( triggered() ), selmc, SLOT( show() ) );
+  //  connect( action_SelMC, SIGNAL( triggered() ), selmc, SLOT( show() ),
+  //       Qt::UniqueConnection );
   connect( selmc, SIGNAL( NewLogMsg( QString ) ),
 	   this, SLOT( NewLogMsg( QString ) ),
 	   Qt::UniqueConnection );

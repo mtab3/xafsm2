@@ -93,6 +93,9 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DFileSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( newS2DFileSelected( const QString & ) ),
 	   Qt::UniqueConnection );
+  connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( S2DSaveMeasuredMap() ),
+	   Qt::UniqueConnection );
+
   for ( int i = 0; i < S2DStarts.count(); i++ ) {
     connect( S2DStarts[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ),
 	     Qt::UniqueConnection );
@@ -109,9 +112,12 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DTimer2, SIGNAL( timeout() ), this, SLOT( S2DRContScanMeas() ),
 	   Qt::UniqueConnection );
 
-  connect( S2DStepScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ) );
-  connect( S2DQuasiContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ) );
-  connect( S2DRealContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ) );
+  connect( S2DStepScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
+	   Qt::UniqueConnection );
+  connect( S2DQuasiContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
+	   Qt::UniqueConnection );
+  connect( S2DRealContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::S2DSetUseChangers( bool f )

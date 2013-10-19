@@ -136,7 +136,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ),
 	   Qt::UniqueConnection );
-  //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ) );
+  //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ),
+  //           Qt::UniqueConnection );
 
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
 	   this, SLOT( newPSSens() ),

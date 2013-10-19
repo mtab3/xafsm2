@@ -38,9 +38,9 @@ void S2DView::setParent( QWidget *p )
   connect( this, SIGNAL( AskMoveToPointedPosition( int, int ) ),
 	   Parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
   connect( this, SIGNAL( PointerMovedToNewPosition( int, int ) ),
-	   Parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ) );
+	   Parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
   connect( this, SIGNAL( AskToChangeMCACh( int ) ),
-	   Parent, SLOT( S2DChangeMCACh( int ) ) );
+	   Parent, SLOT( S2DChangeMCACh( int ) ), Qt::UniqueConnection );
 }
 
 int S2DView::cNum( double v )
