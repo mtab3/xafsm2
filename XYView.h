@@ -8,7 +8,7 @@
 #include "ChCoord.h"
 
 #define MAXPOINTS  ( 10000 )
-#define MAXLINENO  ( 50000 ) // 0 ～ 19999      // I0 と I, mu があるので実質 10,000
+#define MAXLINENO  ( 50000 ) // 0 - 19999      // I0 と I, mu があるので実質 10,000
 #define MAXGROUPLINES ( 5 )  // 最大何本の線が一つのグループになるか (I0, I, mu, A1, mu2)
 #define MAXLINES   ( 1000 )  // 内部で準備する線の数 (ほんとは 990 でいいはず)
 // 受け入れられる line No. の最大値
@@ -202,6 +202,7 @@ public:
   void ShowProgressBar( bool f ) { ShowProgressB = f; };
   void SetProgressScale( double s ) { ProgressScale = s; };
   void SetProgress( double p ) { Progress = p; };
+  void print( QPrinter *p );
 
 public slots:
   void ChooseAG( int i, bool f );

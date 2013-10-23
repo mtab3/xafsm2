@@ -58,6 +58,7 @@ public:
   int getDatas( void ) { return datas; };
   int getT( int i ) { return mont[ ep - datas + i ]; };
   double getY( int l, int i ) { return mony[l][ ep - datas + i ]; };
+  void print( QPrinter *p );
 
 public slots:
   void SetMonScale( int ms ) { MonScale = ms; };;

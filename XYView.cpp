@@ -197,6 +197,12 @@ void XYView::paintEvent( QPaintEvent * )
   Draw( &painter );
 }
 
+void XYView::print( QPrinter *p )
+{
+  QPainter pp( p );
+  Draw( &pp );
+}
+
 void XYView::Draw( QPainter *p )
 {
   if ( valid != true ) 

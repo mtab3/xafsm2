@@ -95,6 +95,7 @@ public:
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   QStringList getSelectedElms( void );
+  void print( QPrinter *p );
 
 public slots:
   void setROI( int s, int e );   // MCA pixel

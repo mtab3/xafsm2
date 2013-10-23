@@ -77,6 +77,8 @@ private:
   QString XAFSKey;
   QString XAFSTitle;
 
+  QPrintDialog *PrintD;
+
   QVector<AtomGroup*> AtomGroups;
   UsingUnits UUnits;
 
@@ -448,6 +450,8 @@ private:
   void ShowQTime( double dtime, double WidthInPuls );
 
 private slots:
+  // Main Part
+  void Print( QPrinter *p );
 
   // Auto mode
   bool ParseAutoMode( void );
