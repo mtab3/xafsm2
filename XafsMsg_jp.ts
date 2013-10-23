@@ -2412,6 +2412,18 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>The scan speed %1 was limited to %2</source>
         <translation>設定しようとしたスキャンスピード[%1](pps)は[%2](pps)に制限されました</translation>
     </message>
+    <message>
+        <source>Print</source>
+        <translation>印刷</translation>
+    </message>
+    <message>
+        <source>Both the name and the data is old.</source>
+        <translation>ファイル名とデータの両方が古いものです。</translation>
+    </message>
+    <message>
+        <source>The block parameter is out of range.</source>
+        <translation>測定ブロックのパラメータが正しくありません。</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
