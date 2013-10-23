@@ -78,6 +78,12 @@ void TYView::paintEvent( QPaintEvent * )
   Draw( &painter );
 }
 
+void TYView::print( QPrinter *p )
+{
+  QPainter pp( p );
+  Draw( &pp );
+}
+
 void TYView::Draw( QPainter *p )
 {
   if ( valid != true ) return;
