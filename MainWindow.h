@@ -266,6 +266,9 @@ private:
   DIRECTION ReversedDir( DIRECTION d )
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
 
+  bool S2DFileCheckIsReady;
+  QMessageBox *S2DAskOverWrite;
+  QMessageBox *S2DAskOverWrite2;
   QVector<QComboBox*> S2DAxis;
   QVector<QLabel *> S2DCurPos;
   QVector<QLabel *> S2DUnits;
@@ -291,11 +294,11 @@ private:
   double S2DDwell;
 #endif
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
-  QString S2DFile;
   double S2DLastV;
 
   void newAx0( int ax, int motor );
   void S2DStop0( void );
+  void S2DStop00( void );
   void SetupS2DParams( void );
   void S2DWriteHead( void );
   void S2DWriteHead2( void );
@@ -308,6 +311,7 @@ private:
   double S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DSaveMCADataOnMem( int ix, int iy, int iz );
+  void S2DFileCheck( void );
 
   QVector<AUnit*> SensWithRange;
 
@@ -688,7 +692,12 @@ private slots:
   void newS2DPoints( void );
   void S2DScanStart( void );
   void CheckS2DDwellTime( void );
+  void SaveS2DResult0( void );
   void SaveS2DResult( void );
+
+  void S2DOkOverWrite( void );
+  void S2DOkOverWrite2( void );
+  void S2DScanNotStart( void );
 
   // ステップスキャン (検出器、モータともにステップ)
   void S2DStepScanSequence( void );

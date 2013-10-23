@@ -7021,7 +7021,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="S2DFileName">
+            <widget class="QLineEdit" name="S2DFileName0">
              <property name="enabled">
               <bool>true</bool>
              </property>

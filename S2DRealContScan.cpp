@@ -19,6 +19,10 @@ void MainWindow::S2DRealContinuousScanSequence( void )
 
   QString msg;
 
+  // ファイルの上書きチェックが完了していなければ入ってこない
+  if ( ! S2DFileCheckIsReady )
+    return;
+
   // モータ駆動中は入ってこない
   // 計測は別のタイマーで行う。
   for ( int i = 0; i < S2DI.motors; i++ ) {
@@ -41,6 +45,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     // 検出器初期化
     if ( mUnits.init() ) // true :: initializing
       break;
+    S2DWriteHead();
     mUnits.clearStage();
     S2DStage++;
     break;
@@ -150,13 +155,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
   case S2D_END_STAGE+2:
     disconnect( mUnits.at(0), SIGNAL( newValue( QString ) ),
 		this, SLOT( S2DNewScanValue( QString ) ) );
-    inS2D = false;
-    UUnits.clear( S2D_ID );
-    NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
-    statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
-    S2DStart->setText( tr( "Start" ) );
-    S2DStart->setStyleSheet( NormalB );
-    S2DTimer->stop();
+    S2DStop00();
     S2DTimer2->stop();
     break;
   }
