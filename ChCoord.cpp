@@ -273,6 +273,24 @@ void ChCoord::DrawText( QPainter *p,
   p->setFont( font );
 }
 
+void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
+			   int x0, int w, int y0 )
+{
+  QFont F1;
+
+  if ( BState )
+    p->fillRect( x0 + 5, y0 - 19, 14, 14, ASBOnC );
+  else 
+    p->fillRect( x0 + 5, y0 - 19, 14, 14, ASBOffC );
+  p->setPen( ASBBorderC );
+  p->drawRect( x0 + 5, y0 - 19, 14, 14 );
+
+  p->setPen( BLACK );
+  QRectF rec = QRectF( x0 + 24, y0-17, w, 11 );
+  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, BName );
+}
+
+#if 0
 void ChCoord::ShowAScaleButton( QPainter *p, bool autoScale, int height )
 {
   int x0 = 0;
@@ -306,4 +324,5 @@ void ChCoord::ShowSScaleButton( QPainter *p, bool singleScale, int height )
   QRectF rec = QRectF( x0 + 24, height-17, 100, 11 );
   DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "S. Scale" );
 }
+#endif
 

@@ -13,6 +13,8 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   showIx0 = showIy0 = -1;
   data = NULL;
   rType = AS_SCREEN;
+  invXf = invYf = false;
+
   setRange( -10., 10., -10., 10., 2., 2. );
   cc.SetRealCoord( minx, maxx, miny, maxy );
 
@@ -37,10 +39,12 @@ void S2DView::setParent( QWidget *p )
   Parent = p;
   connect( this, SIGNAL( AskMoveToPointedPosition( int, int ) ),
 	   Parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
-  connect( this, SIGNAL( PointerMovedToNewPosition( int, int ) ),
-	   Parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
   connect( this, SIGNAL( AskToChangeMCACh( int ) ),
 	   Parent, SLOT( S2DChangeMCACh( int ) ), Qt::UniqueConnection );
+  connect( this, SIGNAL( PointerMovedToNewPosition( int, int ) ),
+	   Parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
+  connect( this, SIGNAL( PointerMovedOnIntMCA( int, int ) ),
+	   Parent, SLOT( S2DShowIntMCA( int, int ) ), Qt::UniqueConnection );
 }
 
 int S2DView::cNum( double v )
@@ -139,7 +143,6 @@ void S2DView::print( QPrinter *p )
   QPainter pp( p );
   Draw( &pp );
 }
-
  
 void S2DView::Draw( QPainter *p )
 {
@@ -202,6 +205,10 @@ void S2DView::Draw( QPainter *p )
   p->setPen( GridC );
   p->drawRect( cc.r2sx( minx ), cc.r2sy( maxy ),
 	       cc.r2sdx( maxx - minx ), cc.r2sdy( maxy - miny ) );
+
+  cc.ShowAButton( p, true, tr( "Int. MCA" ), 0, 100, height() );
+  cc.ShowAButton( p, invXf, tr( "Inv. X" ), 0, 100, height() - 40 );
+  cc.ShowAButton( p, invYf, tr( "Inv. Y" ), 0, 100, height() - 20 );
   
   if ( AutoScale ) {
     minz = 1e300;
@@ -308,7 +315,7 @@ void S2DView::Draw( QPainter *p )
 
 void S2DView::mouseMoveEvent( QMouseEvent *e )
 {
-  bool rangeoutf = false;
+  rangeoutf = false;
 
   m.Moved( e );
 
@@ -337,11 +344,50 @@ void S2DView::mouseMoveEvent( QMouseEvent *e )
 
 void S2DView::mousePressEvent( QMouseEvent * )
 {
-  emit AskMoveToPointedPosition( showIx, showIy );
+  if ( !rangeoutf )
+    emit AskMoveToPointedPosition( showIx, showIy );
 }
 
-void S2DView::mouseReleaseEvent( QMouseEvent * )
+void S2DView::CheckOnIntMCA( void )
 {
+  if ( m.CheckABPush( 0, height() ) ) {
+    qDebug() << "on Int MCA";
+    for ( int iy = maxiy-1; iy >= 0; iy-- ) {
+      for ( int ix = maxix-1; ix >= 0; ix-- ) {
+	if ( valid[ix][iy] ) {
+	  qDebug() << "Emit";
+	  emit PointerMovedOnIntMCA( ix, iy );
+	  return;
+	}
+      }
+    }
+  }
+}
+
+void S2DView::CheckIXBPush( void )
+{
+  if ( m.CheckABPush( 0, height() - 40 ) )
+    invXf = !invXf;
+  
+  update();
+}
+
+void S2DView::CheckIYBPush( void )
+{
+  if ( m.CheckABPush( 0, height() - 20 ) )
+    invYf = !invYf;
+
+  update();
+}
+
+
+void S2DView::mouseReleaseEvent( QMouseEvent *e )
+{
+  m.Released( e );
+
+  CheckOnIntMCA();
+  CheckIXBPush();
+  CheckIYBPush();
 }
 
 void S2DView::mouseDoubleClickEvent( QMouseEvent * )

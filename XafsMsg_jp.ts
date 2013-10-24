@@ -2948,6 +2948,18 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Frame</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Int. MCA</source>
+        <translation>積分MCA</translation>
+    </message>
+    <message>
+        <source>Inv. X</source>
+        <translation>X軸反転</translation>
+    </message>
+    <message>
+        <source>Inv. Y</source>
+        <translation>Y軸反転</translation>
+    </message>
 </context>
 <context>
     <name>ScrollWGrid</name>
@@ -3220,11 +3232,15 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <name>TYView</name>
     <message>
         <source>By clicking the &apos;A. Scale&apos; (Auto Scale) button at left-bottom corner, the auto-scale mode is toggled on and off.</source>
-        <translation>左下の「A. Scale」 (Auto Scale)と書かれたボタンを押すことで、オートスケールモードをオン・オフできます。</translation>
+        <translation>左下の「自動スケール」と書かれたボタンを押すことで、オートスケールモードをオン・オフできます。</translation>
     </message>
     <message>
         <source>%1</source>
         <translation>%1</translation>
+    </message>
+    <message>
+        <source>A. Scale</source>
+        <translation>自動スケール</translation>
     </message>
 </context>
 <context>
@@ -3269,7 +3285,15 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <name>XYView</name>
     <message>
         <source>By clicking the &apos;A. Scale&apos; (Auto Scale) button at left-bottom corner, the auto-scale mode is toggled on and off.</source>
-        <translation>左下の「A. Scale」 (Auto Scale)と書かれたボタンを押すことで、オートスケールモードをオン・オフできます。</translation>
+        <translation>左下の「自動スケール」 と書かれたボタンを押すことで、オートスケールモードをオン・オフできます。</translation>
+    </message>
+    <message>
+        <source>A. Scale</source>
+        <translation>自動スケール</translation>
+    </message>
+    <message>
+        <source>S. Scale</source>
+        <translation>単一スケール</translation>
     </message>
 </context>
 <context>

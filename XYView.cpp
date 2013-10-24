@@ -331,9 +331,9 @@ void XYView::Draw( QPainter *p )
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
   // お笑いクリッピング ^^;;;
 
-  cc.ShowAScaleButton( p, autoScale, height() );
-  cc.ShowSScaleButton( p, singleScale, height() );
-  
+  cc.ShowAButton( p, autoScale, tr( "A. Scale" ), 0, 100, height() );
+  cc.ShowAButton( p, singleScale, tr( "S. Scale" ), 110, 100, height() );
+
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
@@ -451,9 +451,7 @@ void XYView::ScaleChange( int l )
 
 void XYView::CheckASPush( void )
 {
-  int x0 = 0;
-  if ( ( m.ex() > 5 + x0 )&&( m.ex() < 19 + x0 )
-       &&( m.ey() > ( height() - 19 ) )&&( m.ey() < ( height() - 5 ) ) ) {
+  if ( m.CheckABPush( 0, height() ) ) {
     if ( autoScale ) {
       autoScale = false;
     } else {
@@ -468,9 +466,7 @@ void XYView::CheckASPush( void )
 
 void XYView::CheckSSPush( void )
 {
-  int x0 = 110;
-  if ( ( m.ex() > 5 + x0 )&&( m.ex() < 19 + x0 )
-       &&( m.ey() > ( height() - 19 ) )&&( m.ey() < ( height() - 5 ) ) ) {
+  if ( m.CheckABPush( 110, height() ) ) {
     if ( singleScale ) {
       singleScale = false;
     } else {

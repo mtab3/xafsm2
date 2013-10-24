@@ -24,6 +24,8 @@ class S2DView : public QFrame, private Ui::S2DView
   int showIx0, showIy0;
   double **data;
   bool **valid;
+  bool rangeoutf;
+  bool invXf, invYf;
 
   bool AutoScale;
   QColor Grey;
@@ -43,6 +45,10 @@ class S2DView : public QFrame, private Ui::S2DView
   void mouseDoubleClickEvent( QMouseEvent *e );
   void wheelEvent( QWheelEvent *e );
 
+  void CheckOnIntMCA( void );
+  void CheckIXBPush( void );
+  void CheckIYBPush( void );
+
  public:
   S2DView( QWidget *p );
 
@@ -59,6 +65,7 @@ public slots:
   void AskMoveToPointedPosition( int x, int y );
   void PointerMovedToNewPosition( int x, int y );
   void AskToChangeMCACh( int dCh );
+  void PointerMovedOnIntMCA( int x, int y );
 };
 
 #endif

@@ -244,7 +244,7 @@ void TYView::Draw( QPainter *p )
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
   }
 
-  cc.ShowAScaleButton( p, autoScale, height() );
+  cc.ShowAButton( p, autoScale, tr( "A. Scale" ), 0, 100, height() );
 
   // マウスポインタの位置に縦線を引く
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
@@ -283,8 +283,7 @@ void TYView::UpDateYWindowRing( void )
 
 void TYView::CheckASPush( void )
 {
-  if ( ( m.ex() > 5 )&&( m.ex() < 19 )
-       &&( m.ey() > ( height() - 19 ) )&&( m.ey() < ( height() - 5 ) ) ) {
+  if ( m.CheckABPush( 0, height() ) ) {
     if ( autoScale ) {
       autoScale = false;
     } else {

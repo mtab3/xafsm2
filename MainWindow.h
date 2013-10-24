@@ -713,6 +713,7 @@ private slots:
   void S2DNewScanValue( QString v );
   void S2DMoveToPointedPosition( int x, int y );
   void S2DShowInfoAtNewPosition( int x, int y );
+  void S2DShowIntMCA( int x, int y );
   void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( double s, double e );
 

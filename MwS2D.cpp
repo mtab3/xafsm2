@@ -1043,3 +1043,24 @@ void MainWindow::S2DChangeMCACh( int dCh )
 
   MCACh->setValue( ch );
 }
+
+void MainWindow::S2DShowIntMCA( int ix, int iy )
+{
+  if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
+      ||( cMCAView == NULL )||( MCAData== NULL ))
+    return;
+
+  aMCASet *set;
+  quint32 *cnt;
+
+  set = S2DMCAMap.aPoint( ix, iy );
+  if ( ! set->isValid() )
+    return;
+  cnt = set->Ch[ cMCACh ].cnt;
+
+  for ( int i = 0; i < SAVEMCASize; i++ ) {
+    MCAData[i] = cnt[i];
+  }
+
+  cMCAView->update();
+}

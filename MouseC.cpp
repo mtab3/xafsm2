@@ -44,3 +44,13 @@ void MouseC::DClicked( QMouseEvent *e )
   Button = e->button();
   Mod = e->modifiers();
 }
+
+bool MouseC::CheckABPush( int x0, int y0 )
+{
+  if ( ( Ex > ( x0 + 5 ) )&&( Ex < ( x0 + 19 ) )
+       &&( Ey > ( y0 - 19 ) )&&( Ey < ( y0 - 5 ) ) ) {
+    return true;
+  } else {
+    return false;
+  }
+}

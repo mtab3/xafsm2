@@ -63,8 +63,12 @@ class ChCoord : public QObject
 
   void DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
+  void ShowAButton( QPainter *p, bool BState, QString BName,
+		    int x0, int w, int height );
+#if 0
   void ShowAScaleButton( QPainter *p, bool autoScale, int height );
   void ShowSScaleButton( QPainter *p, bool singleScale, int height );
+#endif
 };
 
 #endif
