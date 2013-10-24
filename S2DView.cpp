@@ -133,6 +133,13 @@ void S2DView::paintEvent( QPaintEvent * )
 
   Draw( &painter );
 }
+
+void S2DView::print( QPrinter *p )
+{
+  QPainter pp( p );
+  Draw( &pp );
+}
+
  
 void S2DView::Draw( QPainter *p )
 {

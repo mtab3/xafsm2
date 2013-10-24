@@ -141,6 +141,12 @@ void MainWindow::setupScan2DArea( void )
 
   connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( SaveS2DResult0() ),
 	   Qt::UniqueConnection );
+
+  S2DPrintD = new QPrintDialog;
+  connect( S2DPrintB, SIGNAL( clicked() ), S2DPrintD, SLOT( show() ),
+	   Qt::UniqueConnection );
+  connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
+	   S2DV, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
 }
 
 void MainWindow::S2DSetUseChangers( bool f )

@@ -2424,6 +2424,14 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>The block parameter is out of range.</source>
         <translation>測定ブロックのパラメータが正しくありません。</translation>
     </message>
+    <message>
+        <source>Save MCAs</source>
+        <translation>各MCA保存</translation>
+    </message>
+    <message>
+        <source>For SSD</source>
+        <translation>SSD使用時</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

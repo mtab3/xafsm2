@@ -78,6 +78,7 @@ private:
   QString XAFSTitle;
 
   QPrintDialog *PrintD;
+  QPrintDialog *S2DPrintD;
 
   QVector<AtomGroup*> AtomGroups;
   UsingUnits UUnits;

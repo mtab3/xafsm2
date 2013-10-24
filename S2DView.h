@@ -52,6 +52,9 @@ class S2DView : public QFrame, private Ui::S2DView
   void setParent( QWidget *p );
   double getData( int ix, int iy );
 
+public slots:
+  void print( QPrinter *p );
+
  signals:
   void AskMoveToPointedPosition( int x, int y );
   void PointerMovedToNewPosition( int x, int y );
