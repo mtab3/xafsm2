@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Oct 24 11:32:11 2013 +0900\n"\
+                "    Version info was updated\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Oct 23 21:00:06 2013 +0900\n"\
                 "    WhatToDo is updated\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Oct 23 17:28:10 2013 +0900\n"\
                 "    Print button is ready\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Oct 23 17:26:55 2013 +0900\n"\
-                "    Print in view tab matters is ready\n"\
 		"\n"\
                 ""
 #endif

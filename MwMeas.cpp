@@ -759,12 +759,13 @@ void MainWindow::ShowBLKs( void )
     if ( step != 0 ) {
       buf.sprintf( "% 4d", points = (int)( abs( width / step ) + 0.5) );
       BLKpoints[i]->setText( buf );
-      if ( points > 0 )
+      if ( points > 0 ) {
 	if ( !QXafsMode->isChecked() ) {
 	  buf.sprintf( UnitName[ BLKUnit ].form, width / points );
 	} else {
 	  BLKstep[i]->setText( QString::number( width / points ) );
 	}
+      }
     } else {	// もし刻幅が 0 の場合
       // 点数が正の数なら、逆に区間幅と点数から刻幅を計算する
       if ( points > 0 ) {
