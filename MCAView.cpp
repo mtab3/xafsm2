@@ -119,6 +119,12 @@ void MCAView::paintEvent( QPaintEvent * )
   Draw( &painter );
 }
 
+void MCAView::print( QPrinter *p )
+{
+  QPainter pp( p );
+  Draw( &pp );
+}
+
 double LOGS[ 9 ] = {
   0.0,         // log10( 1 )
   0.30103,     // log10( 2 )

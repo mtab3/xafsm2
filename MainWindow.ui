@@ -385,7 +385,7 @@
       <item row="0" column="3" rowspan="2">
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
-         <number>3</number>
+         <number>1</number>
         </property>
         <item>
          <widget class="QPushButton" name="HideCTRLPanel">
@@ -419,6 +419,19 @@
           </property>
           <property name="checkable">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="PrintB">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Print</string>
           </property>
          </widget>
         </item>
@@ -7008,7 +7021,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="S2DFileName">
+            <widget class="QLineEdit" name="S2DFileName0">
              <property name="enabled">
               <bool>true</bool>
              </property>

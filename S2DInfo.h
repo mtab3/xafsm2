@@ -24,6 +24,7 @@ struct S2DInfo
   QVector<double> sx, ex, dx;
   double Dwell;
   QString MCAFile;
+  QString SaveFile;
   int pps;               // use only in RCONT
 };
 

@@ -27,7 +27,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   T = new QTime;
   T->start();
 
-  FSTATMsgs[0][0] = tr( "" );
+  FSTATMsgs[0][0] = tr( "Both the name and the data is old." );
   FSTATMsgs[0][1] = tr( "The name is new, but the data is old." );
   FSTATMsgs[1][0] = tr( "The data is new, but the name is old." );
   FSTATMsgs[1][1] = tr( "The data and the name is new, but not saved." );

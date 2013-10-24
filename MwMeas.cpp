@@ -1078,7 +1078,7 @@ void MainWindow::StartMeasurement( void )
 			      .arg( MMainTh->getName() ), 2000 );
     }
     if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
-      statusbar->showMessage( "The block parameter is out of range.", 2000 );
+      statusbar->showMessage( tr( "The block parameter is out of range." ), 2000 );
       return;
     }
     if ( ( TP <= 0 ) || ( TT0 <= 0 ) ) {   // 測定点数等ブロック指定がおかしかったらダメ

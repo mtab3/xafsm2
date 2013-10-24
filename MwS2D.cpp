@@ -10,6 +10,26 @@ void MainWindow::setupScan2DArea( void )
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
   S2DFileSel->setDirectory( QDir::currentPath() );
   S2DFileSel->setFilter( "*.dat" );
+  S2DFileSel->setConfirmOverwrite( false );
+
+  QPushButton *tmpB;
+  S2DAskOverWrite = new QMessageBox;
+  tmpB = S2DAskOverWrite->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  S2DAskOverWrite->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  S2DAskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
+  S2DAskOverWrite->setDefaultButton( tmpB );
+  connect( S2DAskOverWrite, SIGNAL( accepted() ), this, SLOT( S2DOkOverWrite() ),
+	   Qt::UniqueConnection );
+  connect( S2DAskOverWrite, SIGNAL( rejected() ), this, SLOT( S2DScanNotStart() ),
+	   Qt::UniqueConnection );
+
+  S2DAskOverWrite2 = new QMessageBox;
+  tmpB = S2DAskOverWrite2->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  S2DAskOverWrite2->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  S2DAskOverWrite2->setWindowTitle( tr( "Over Write ?" ) );
+  S2DAskOverWrite2->setDefaultButton( tmpB );
+  connect( S2DAskOverWrite2, SIGNAL( accepted() ), this, SLOT( S2DOkOverWrite2() ),
+	   Qt::UniqueConnection );
 
   S2DAxis << S2DAx1 << S2DAx2 << S2DAx3;
   S2DCurPos << S2DCurPos1 << S2DCurPos2 << S2DCurPos3;
@@ -38,6 +58,7 @@ void MainWindow::setupScan2DArea( void )
   S2DI.valid = false;
   S2DV->setParent( this );
   S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
+  S2DFileCheckIsReady = false;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     S2DOkSensors << ASensors[i];
@@ -94,8 +115,6 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DFileSel, SIGNAL( fileSelected( const QString & ) ),
 	   this, SLOT( newS2DFileSelected( const QString & ) ),
 	   Qt::UniqueConnection );
-  connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( S2DSaveMeasuredMap() ),
-	   Qt::UniqueConnection );
 
   for ( int i = 0; i < S2DStarts.count(); i++ ) {
     connect( S2DStarts[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ),
@@ -120,7 +139,7 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DRealContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
 	   Qt::UniqueConnection );
 
-  connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( SaveS2DResult() ),
+  connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( SaveS2DResult0() ),
 	   Qt::UniqueConnection );
 }
 
@@ -244,12 +263,41 @@ void MainWindow::newAx( int m )
   }
 }
 
+void MainWindow::SaveS2DResult0( void )
+{
+  QFileInfo f( S2DFileName0->text() );
+
+  if ( f.exists() ) {
+    S2DAskOverWrite2
+      ->setText( tr( "File [%1] Over Write ?" ).arg( f.completeBaseName() ) );
+    S2DAskOverWrite2->show();
+  } else {
+    S2DI.SaveFile = S2DFileName0->text();
+    SaveS2DResult();
+  }
+}
+
+void MainWindow::S2DOkOverWrite2( void )
+{
+  S2DI.SaveFile = S2DFileName0->text();
+  SaveS2DResult();
+}
+
 void MainWindow::newS2DFileSelected( const QString &fname )
 {
-  S2DFileName->setText( fname );
-  S2DNameStat = NEW;
-  S2DFileName->setStyleSheet( FSTATCOLORS[ S2DDataStat ][ S2DNameStat ] );
-  S2DFileName->setToolTip( FSTATMsgs[ S2DDataStat ][ S2DNameStat ] );
+  S2DFileName0->setText( fname );
+  QFileInfo f( fname );
+
+  if ( f.exists() ) {
+    S2DNameStat = OLD;
+    S2DDataStat = NEW;
+    // 本当はファイルは New ではないが、ファイルの中身と(おそらく)違うので、
+    // 書き込んではいけないという意味で、{ Name, Data } = { OLD, NEW } としておく。
+  } else {
+    S2DNameStat = NEW;
+  }
+  S2DFileName0->setStyleSheet( FSTATCOLORS[ S2DDataStat ][ S2DNameStat ] );
+  S2DFileName0->setToolTip( FSTATMsgs[ S2DDataStat ][ S2DNameStat ] );
 }
 
 void MainWindow::showS2DNewAxValue( QString )
@@ -394,8 +442,8 @@ void MainWindow::S2DScanStart( void )
     S2DStart->setStyleSheet( InActive );
     
     S2DDataStat = NEW;
-    S2DFileName->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
-    S2DFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
+    S2DFileName0->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
+    S2DFileName0->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 
     // 1st と 2nd の軸の単位が同じなら、表示の縦横比をスキャン範囲の
     // 縦横比に合わせるように努力する。
@@ -420,10 +468,11 @@ void MainWindow::S2DScanStart( void )
 
     S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
     S2DLastV = 0;
-    S2DI.MCAFile = S2DFile = S2DFileName->text();
+    S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
       S2DI.MCAFile = QString( "S2DMCA0000.dat" );
-    S2DWriteHead();
+    //    S2DWriteHead();
+    S2DFileCheck();
     mUnits.clearStage();
     S2DStage = 0;
     S2DScanDir = FORWARD;
@@ -453,6 +502,30 @@ void MainWindow::S2DScanStart( void )
   } else {
     S2DStop0();
   }
+}
+
+void MainWindow::S2DFileCheck( void )
+{
+  QFileInfo f( S2DI.SaveFile );
+  if ( f.exists() ) {
+    S2DFileCheckIsReady = false;
+    S2DAskOverWrite
+      ->setText( tr( "File [%1] Over Write ?" ).arg( f.completeBaseName() ) );
+    S2DAskOverWrite->show();
+  } else {
+    S2DFileCheckIsReady = true;
+  }
+}
+
+void MainWindow::S2DOkOverWrite( void )
+{
+  S2DFileCheckIsReady = true;
+}
+
+void MainWindow::S2DScanNotStart( void )
+{
+  S2DStop0();
+  S2DFileCheckIsReady = true;
 }
 
 void MainWindow::CheckS2DDwellTime( void )
@@ -494,6 +567,7 @@ void MainWindow::CheckS2DDwellTime( void )
 
 void MainWindow::SetupS2DParams( void )
 {
+  S2DI.SaveFile = S2DFileName0->text();
   S2DI.ScanMode = STEP;  // default
   if ( S2DQuasiContScan->isChecked() )
     S2DI.ScanMode = QCONT;
@@ -534,7 +608,6 @@ void MainWindow::SetupS2DParams( void )
     if ( pps > S2DI.unit[0]->highestSpeed() ) {
       QString msg = tr( "The scan speed %1 was limited to %2" )
 	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
-      qDebug() << msg;
       statusbar->showMessage( msg, 2000 );
       pps = S2DI.unit[0]->highestSpeed();
     }
@@ -547,17 +620,33 @@ void MainWindow::S2DStop0( void )
 {
   S2DStart->setText( tr( "Start" ) );
   S2DStage = S2D_END_STAGE;
+
+  S2DDataStat = OLD;
+  S2DDataStat = OLD;
+  S2DFileName0->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
+  S2DFileName0->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
+
+}
+
+void MainWindow::S2DStop00( void )
+{
+  inS2D = false;
+  UUnits.clear( S2D_ID );
+  NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
+  statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
+  S2DStart->setText( tr( "Start" ) );
+  S2DStart->setStyleSheet( NormalB );
+  S2DTimer->stop();
 }
 
 void MainWindow::SaveS2DResult( void )
 {
-  S2DFile = S2DFileName->text();
   if ( S2DI.valid ) {
     S2DWriteHead();
     S2DWriteHead2();
 
-    if ( ! S2DFile.simplified().isEmpty() ) {
-      QFile f( S2DFile );
+    if ( ! S2DI.SaveFile.simplified().isEmpty() ) {
+      QFile f( S2DI.SaveFile );
       
       if ( !f.open( QIODevice::Append | QIODevice::Text ) )
 	return;
@@ -571,6 +660,7 @@ void MainWindow::SaveS2DResult( void )
 	      << QString( " %1" ).arg( S2DV->getData( ix, iy ), 10 )
 	      << endl;
 	}
+	out << endl;
       }
       
       f.close();
@@ -580,17 +670,14 @@ void MainWindow::SaveS2DResult( void )
 
 void MainWindow::S2DWriteHead( void )
 {
-  qDebug() << "a";
-  if ( S2DFile.simplified().isEmpty() )
+  if ( S2DI.SaveFile.simplified().isEmpty() )
     return;
 
-  qDebug() << "b";
-  QFile f( S2DFile );
+  QFile f( S2DI.SaveFile );
 
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
 
-  qDebug() << "c";
   // Writing fixed headers
   QTextStream out(&f);
 
@@ -626,7 +713,6 @@ void MainWindow::S2DWriteHead( void )
   }
 
   out << "#" << QString( " Dwell Time : %1" ).arg( S2DI.Dwell ) << endl;
-
   out << "#" << endl;
 
   f.close();
@@ -634,12 +720,12 @@ void MainWindow::S2DWriteHead( void )
 
 void MainWindow::S2DWriteHead2( void )
 {
-  if ( S2DFile.simplified().isEmpty() )
+  if ( S2DI.SaveFile.simplified().isEmpty() )
     return;
   
-  QFile f( S2DFile );
+  QFile f( S2DI.SaveFile );
   
-  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) )
+  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
     return;
   
   // Writing additional headers
@@ -654,8 +740,8 @@ void MainWindow::S2DWriteHead2( void )
 
 void MainWindow::S2DWriteBody( double v )
 {
-  if ( ! S2DFile.simplified().isEmpty() ) {
-    QFile f( S2DFile );
+  if ( ! S2DI.SaveFile.simplified().isEmpty() ) {
+    QFile f( S2DI.SaveFile );
     
     if ( !f.open( QIODevice::Append | QIODevice::Text ) )
       return;
@@ -681,8 +767,8 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
 	||( iy < 0 )||( iy > S2DI.ps[1] ))
       return;
 
-    if ( S2DMCADataOnMemF ) {
-      S2DSaveMCADataOnMem( ix, iy, S2DI.i[2] ); // binary レコードでセーブ ?
+    if ( S2DMCADataOnMemF ) {  // 今はこのフラグが常に true 
+      S2DSaveMCADataOnMem( ix, iy, S2DI.i[2] );
     } else {
       // ファイル名の指定がなくてもとにかく名前を作る。
       QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
@@ -731,10 +817,10 @@ QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
 
 void MainWindow::S2DWriteBlankLine( void )
 {
-  if ( S2DFile.simplified().isEmpty() )
+  if ( S2DI.SaveFile.simplified().isEmpty() )
     return;
 
-  QFile f( S2DFile );
+  QFile f( S2DI.SaveFile );
 
   if ( !f.open( QIODevice::Append | QIODevice::Text ) )
     return;
@@ -748,10 +834,10 @@ void MainWindow::S2DWriteBlankLine( void )
 
 void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末尾)
 {
-  if ( S2DFile.simplified().isEmpty() )
+  if ( S2DI.SaveFile.simplified().isEmpty() )
     return;
 
-  QFile f( S2DFile );
+  QFile f( S2DI.SaveFile );
 
   if ( !f.open( QIODevice::Append | QIODevice::Text ) )
     return;

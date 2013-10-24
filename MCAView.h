@@ -97,6 +97,7 @@ public:
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
+  void print( QPrinter *p );
 
 public slots:
   void setROI( int s, int e );   // MCA pixel

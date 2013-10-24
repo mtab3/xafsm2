@@ -20,8 +20,11 @@ void MainWindow::S2DStepScanSequence( void )
 
   QString msg;
 
-  // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
+  // ファイルの上書きチェックが完了していなければ入ってこない
+  if ( ! S2DFileCheckIsReady )
+    return;
 
+  // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
   for ( int i = 0; i < S2DI.motors; i++ ) {
     if ( S2DI.used[i] && S2DI.unit[i]->isBusy0() )
       return;
@@ -46,6 +49,7 @@ void MainWindow::S2DStepScanSequence( void )
   case 0:
     // 検出器初期化
     if ( mUnits.init() == false ) {  // true :: initializing
+      S2DWriteHead();
       mUnits.clearStage();
       S2DStage++;
     }
@@ -166,13 +170,7 @@ void MainWindow::S2DStepScanSequence( void )
      S2DStage++;
     break;
   case S2D_END_STAGE+2:
-    inS2D = false;
-    UUnits.clear( S2D_ID );
-    NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
-    statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
-    S2DStart->setText( tr( "Start" ) );
-    S2DStart->setStyleSheet( NormalB );
-    S2DTimer->stop();
+    S2DStop00();
     break;
   }
 }

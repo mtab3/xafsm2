@@ -50,6 +50,11 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( HideGraphView, SIGNAL( clicked( bool ) ), this, SLOT( HideB( bool ) ),
 	   Qt::UniqueConnection );
 
+  PrintD = new QPrintDialog;
+  connect( PrintB, SIGNAL( clicked() ), PrintD, SLOT( show() ), Qt::UniqueConnection );
+  connect( PrintD, SIGNAL( accepted( QPrinter * ) ), this, SLOT( Print( QPrinter * ) ),
+	   Qt::UniqueConnection );
+
   GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
        << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
