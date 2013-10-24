@@ -1,7 +1,8 @@
 #ifndef XAFSM_H
 #define XAFSM_H
 
-#define VERSION "2.00"
+// #define VERSION "2.00"
+#define VERSION "2.1 : 2D scan is ready"
 
 #include <QString>
 #include <QVector>

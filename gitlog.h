@@ -2,27 +2,27 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "ContinuousS2DMode" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Oct 17 18:35:18 2013 +0900\n"\
-                "    GoTo by double-click on Scan screen is available\n"\
+                "Date        : Wed Oct 23 21:00:06 2013 +0900\n"\
+                "    WhatToDo is updated\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Oct 15 22:05:57 2013 +0900\n"\
-                "    S2D was almost done.  The futures, show MCA spectra at pointed position, and change SSD ch with mouse-wheel in S2DView are ready\n"\
+                "Date        : Wed Oct 23 20:18:57 2013 +0900\n"\
+                "    Some problems for file-save in S2D were solved.\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Oct 15 01:18:21 2013 +0900\n"\
-                "    S2D mode is almost done.  LION.\n"\
+                "Date        : Wed Oct 23 17:35:27 2013 +0900\n"\
+                "    merged with master to include 'Print' function\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Oct 13 23:09:23 2013 +0900\n"\
-                "    ?\n"\
+                "Date        : Wed Oct 23 17:28:10 2013 +0900\n"\
+                "    Print button is ready\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Oct 13 02:14:38 2013 +0900\n"\
-                "    S2D update map with new ROI is limited only when in S2D\n"\
+                "Date        : Wed Oct 23 17:26:55 2013 +0900\n"\
+                "    Print in view tab matters is ready\n"\
 		"\n"\
                 ""
 #endif
