@@ -545,7 +545,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3929,7 +3929,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
                <property name="text">
-                <string/>
+                <string>100</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4126,6 +4126,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
+               <property name="text">
+                <string>-100</string>
+               </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
@@ -4249,6 +4252,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="text">
+                <string>10</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

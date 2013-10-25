@@ -92,6 +92,13 @@ double ChCoord::r2sy( double ry )
   return smaxy - ( smaxy - sminy ) / ( rmaxy - rminy ) * ( ry - rminy );
 }
 
+// 最大最小が (min, max) の範囲にある関数 y を、現在の real window の範囲に合わせる
+double ChCoord::fixy( double y, double min, double max )
+{
+  double ry = ( y - min ) / ( max - min ) * ( rmaxy - rminy ) + rminy;
+  return r2sy( ry );
+}
+
 double ChCoord::r2sdx( double rx )
 {
   return ( smaxx - sminx ) / ( rmaxx - rminx ) * rx;

@@ -68,6 +68,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     GoMotorS->addItem( MSpeeds[i].MSName );
     SPSMotorS->addItem( MSpeeds[i].MSName );
   }
+  GoMotorS->setCurrentIndex( 1 );
+  SPSMotorS->setCurrentIndex( 1 );
   AMotors.at( MotorN->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
   SPSUnit->addItem( "Pulse" );

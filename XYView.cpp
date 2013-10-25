@@ -2,6 +2,7 @@
 
 #include "XafsM.h"
 #include "XYView.h"
+#include "Diff.h"
 
 XYView::XYView( QWidget *parent ) : QFrame( parent )
 {
@@ -23,6 +24,9 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   Clear();
   valid = false;
   QXafsMode = false;
+
+  showDiff1 = false;
+  showDiff2 = false;
 
   CGroups = FInterval = 100;    // Continuous drawn lines, Interval of foot print lines
   maxGroups = maxLines = inLines = 0;
@@ -275,13 +279,24 @@ void XYView::Draw( QPainter *p )
     if ( f ) {
       ScaleChange( l );
       pen1.setColor( LC[ l % LC.count() ] );
-      p->setPen( pen1 );
+      pen1.setStyle( Qt::SolidLine );
       nowx = cc.s2rx( m.x() );
       nowxp = 0;
+
+      double *diff1, *diff2;
+      double dmin1, dmin2, dmax1, dmax2;
+      if ( showDiff1 || showDiff2 ) {
+	diff1 = new double [ points[l] ];
+	diff2 = new double [ points[l] ];
+	Diff2( y[l], diff1, diff2, points[l],
+	       W0, WS0, W0, WS0, &dmin1, &dmax1, &dmin2, &dmax2 );
+      }
+
       for ( int i = 0; i < points[l] - 1; i++ ) {
 	if ( linedir[l] * ( x[l][i+1] - x[l][i] ) < 0 ) {
 	  linedir[l] *= -1;
 	} else {
+	  p->setPen( pen1 );
 	  p->drawLine( x0 = cc.r2sx( x[l][i] ), y0 = cc.r2sy( y[l][i] ),
 		       x1 = cc.r2sx( x[l][i+1] ), y1 = cc.r2sy( y[l][i+1] ) );
 	  if (( x[l][i+1] >= nowx )&&( x[l][i] < nowx ))  // カーソルがある場所に最も近い
@@ -304,6 +319,26 @@ void XYView::Draw( QPainter *p )
 	  ND[ LineLR[l] ] = d;
 	  FindL[ LineLR[l] ] = l;
 	}
+      }
+      if ( showDiff1 ) {
+	pen1.setStyle( Qt::DashLine );
+	p->setPen( pen1 );
+	for ( int i = WS0; i < points[l] - 1 - WS0; i++ ) {
+	  p->drawLine( cc.r2sx( x[l][i] ), cc.fixy( diff1[i], dmin1, dmax1 ),
+		       cc.r2sx( x[l][i+1] ), cc.fixy( diff1[i+1], dmin1, dmax1 ) );
+	} 
+      }
+      if ( showDiff2 ) {
+	pen1.setStyle( Qt::DashDotLine );
+	p->setPen( pen1 );
+	for ( int i = ( WS0 + WS0 ); i < points[l] - ( WS0 + WS0 ); i++ ) {
+	  p->drawLine( cc.r2sx( x[l][i] ), cc.fixy( diff2[i], dmin2, dmax2 ),
+		       cc.r2sx( x[l][i+1] ), cc.fixy( diff2[i+1], dmin2, dmax2 ) );
+	}
+      }
+      if ( showDiff1 || showDiff2 ) {
+	delete [] diff1;
+	delete [] diff2;
       }
       SaveYatNowXp[l] = y[l][nowxp];
     }
@@ -333,6 +368,8 @@ void XYView::Draw( QPainter *p )
 
   cc.ShowAButton( p, autoScale, tr( "A. Scale" ), 0, 100, height() );
   cc.ShowAButton( p, singleScale, tr( "S. Scale" ), 110, 100, height() );
+  cc.ShowAButton( p, showDiff1, tr( "Diff1" ), 220, 100, height() );
+  cc.ShowAButton( p, showDiff2, tr( "Diff2" ), 330, 100, height() );
 
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
@@ -460,17 +497,6 @@ void XYView::CheckASPush( void )
       for ( int l = 0; l <= inLines; l++ ) {
 	YShift[l] = YShift0[l] = yshift[l] = 0;
       }
-    }
-  }
-}
-
-void XYView::CheckSSPush( void )
-{
-  if ( m.CheckABPush( 110, height() ) ) {
-    if ( singleScale ) {
-      singleScale = false;
-    } else {
-      singleScale = true;
     }
   }
 }
@@ -609,7 +635,13 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
     break;
   }
   CheckASPush();
-  CheckSSPush();
+  if ( m.CheckABPush( 110, height() ) )
+    singleScale = ! singleScale;
+  if ( m.CheckABPush( 220, height() ) )
+    showDiff1 = ! showDiff1;
+  if ( m.CheckABPush( 330, height() ) )
+    showDiff2 = ! showDiff2;
+
   update();
 }
 

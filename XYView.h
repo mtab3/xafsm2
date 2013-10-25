@@ -153,6 +153,9 @@ private:
   double ProgressScale;
   double Progress;
 
+  bool showDiff1;
+  bool showDiff2;
+
 public:
   XYView( QWidget *parent = NULL );
 
@@ -216,7 +219,6 @@ private:
   void UpDateYWindow( int g, SCALET s );
   void ShowAScaleButton( QPainter *p );
   void CheckASPush( void );
-  void CheckSSPush( void );
 };
 
 #endif

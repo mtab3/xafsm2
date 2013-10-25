@@ -45,6 +45,8 @@ class ChCoord : public QObject
   double s2rdx( double x );
   double s2rdy( double y );
 
+  double fixy( double y, double min, double max );
+
   double Rmaxx( void ) { return rmaxx; };
   double Rminx( void ) { return rminx; };
   double Rmaxy( void ) { return rmaxy; };
