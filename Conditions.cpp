@@ -18,6 +18,10 @@ Conditions::Conditions( void ) : QFrame()
 	   Qt::UniqueConnection );
   connect( ShowDTh1TTable, SIGNAL( clicked() ), this, SIGNAL( AskToShowDTh1TTable() ),
 	   Qt::UniqueConnection );
+  connect( SelectDiffType1, SIGNAL( currentIndexChanged( int ) ),
+	   this, SIGNAL( NewDiff1( int ) ), Qt::UniqueConnection );
+  connect( SelectDiffType2, SIGNAL( currentIndexChanged( int ) ),
+	   this, SIGNAL( NewDiff2( int ) ), Qt::UniqueConnection );
 }
 
 void Conditions::setVersionInfo( QString ver, QString date, QString time )
@@ -57,4 +61,14 @@ bool Conditions::isMeasInDeg( void )
 bool Conditions::isUseDTh1TTable( void )
 {
   return UseDTh1TTable->isChecked();
+}
+
+int Conditions::Diff1Type( void )
+{
+  return SelectDiffType1->currentIndex();
+}
+
+int Conditions::Diff2Type( void )
+{
+  return SelectDiffType2->currentIndex();
 }

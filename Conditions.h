@@ -22,11 +22,15 @@ public:
   bool isMakeInfo( void );
   bool isMeasInDeg( void );
   bool isUseDTh1TTable( void );
+  int Diff1Type( void );
+  int Diff2Type( void );
 
  signals:
   void SetDXMPMC( void );
   void AskToSaveDTh1TTable( void );
   void AskToShowDTh1TTable( void );
+  void NewDiff1( int i );
+  void NewDiff2( int i );
 };
 
 #endif

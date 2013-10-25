@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "ui_XView.h"
 
+#include "Diff.h"
 #include "MouseC.h"
 #include "ChCoord.h"
 
@@ -97,6 +98,8 @@ class XYView : public QFrame, private Ui::XView
 
 private:
   ChCoord cc;
+
+  QWidget *parent;
   bool autoScale;
   bool singleScale;
   bool QXafsMode;
@@ -155,6 +158,7 @@ private:
 
   bool showDiff1;
   bool showDiff2;
+  WTYPE dwtype1, dwtype2;
 
 public:
   XYView( QWidget *parent = NULL );
@@ -207,8 +211,12 @@ public:
   void SetProgress( double p ) { Progress = p; };
   void print( QPrinter *p );
 
+  void setParent( QWidget *p );
+
 public slots:
   void ChooseAG( int i, bool f );
+  void setDiffType1( int i ) { dwtype1 = (WTYPE)i; };
+  void setDiffType2( int i ) { dwtype2 = (WTYPE)i; };
 
  signals:
   void SelectAPoint( double x, double y );

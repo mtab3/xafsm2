@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Oct 25 14:51:08 2013 +0900\n"\
+                "    in XYView differentials of each line can be shown\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Oct 25 11:37:16 2013 +0900\n"\
                 "    Inverse display axis is ready in S2DView\n"\
 		"\n"\
@@ -18,10 +22,6 @@
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Oct 24 13:18:45 2013 +0900\n"\
-                "    do nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Oct 24 13:17:26 2013 +0900\n"\
                 "    do nothing\n"\
 		"\n"\
                 ""

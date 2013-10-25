@@ -1,7 +1,7 @@
 
 #include "Diff.h"
 
-#include <stdio.h>
+const double *Ws[ WTS ] = { W0, W1, W2 };
 
 // y   : 微分される関数の値の列
 // y1  : 微分した結果
@@ -13,8 +13,7 @@
 //       w は微分点を中心に対象と考え、片側だけを与える
 //       w さらに微分点の w は必ず 0 と考え、これも省く
 
-void Diff( double *y, double *y1, int len,
-	   const double *w, int ws,
+void Diff( double *y, double *y1, int len, WTYPE wtype,
 	   double *min, double *max )
 {
   *min = 1e300;
@@ -22,25 +21,23 @@ void Diff( double *y, double *y1, int len,
   
   for ( int i = 0; i < len; i++ ) {
     y1[ i ] = 0;
-    for ( int j = 0; j < ws; j++ ) {
+    for ( int j = 0; j < WTs[ wtype ]; j++ ) {
       int j1 = i + ( j + 1 );
       int j2 = i - ( j + 1 );
-      if ( j1 < len ) y1[i] += w[j] * y[ j1 ];
-      if ( j2 >= 0 )  y1[i] -= w[j] * y[ j2 ];
+      if ( j1 < len ) y1[i] += Ws[wtype][j] * y[ j1 ];
+      if ( j2 >= 0 )  y1[i] -= Ws[wtype][j] * y[ j2 ];
     }
-    if ( y1[i] > *max ) *max = y1[i];
-    if ( y1[i] < *min ) *min = y1[i];
+    if (( i > WTs[wtype] )&&( i < len - WTs[wtype] - 1 )) {
+      if ( y1[i] > *max ) *max = y1[i];
+      if ( y1[i] < *min ) *min = y1[i];
+    }
   }
 }
 
 void Diff2( double *y, double *y1, double *y2, int len,
-	    const double *w1, int ws1, const double *w2, int ws2,
+	    WTYPE wtype1, WTYPE wtype2,
 	    double *min1, double *max1, double *min2, double *max2 )
 {
-  Diff( y, y1, len, w1, ws1, min1, max1 );
-  Diff( y1, y2, len, w2, ws2, min2, max2 );
-  for ( int i = 0; i < len; i++ ) {
-    printf( "diff %d %g %g %g\n", i, y[i], y1[i], y2[i] );
-  }
-  printf( "     min max %g %g %g %g\n", *min1, *max1, *min2, *max2 );
+  Diff( y, y1, len, wtype1, min1, max1 );
+  Diff( y1, y2, len, wtype2, min2, max2 );
 }

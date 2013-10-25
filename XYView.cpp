@@ -2,7 +2,6 @@
 
 #include "XafsM.h"
 #include "XYView.h"
-#include "Diff.h"
 
 XYView::XYView( QWidget *parent ) : QFrame( parent )
 {
@@ -135,8 +134,6 @@ void XYView::NewPoint( int l, double xx, double yy )
   }
 
   int L = getL( l );
-  //  if ( points[L] == 0 ) {  qDebug() << "L L " << L << getL( l );  }
-
   if ( L > inLines )
     inLines = L;
 
@@ -283,13 +280,13 @@ void XYView::Draw( QPainter *p )
       nowx = cc.s2rx( m.x() );
       nowxp = 0;
 
-      double *diff1, *diff2;
+      double *diff1 = NULL, *diff2 = NULL;
       double dmin1, dmin2, dmax1, dmax2;
       if ( showDiff1 || showDiff2 ) {
 	diff1 = new double [ points[l] ];
 	diff2 = new double [ points[l] ];
 	Diff2( y[l], diff1, diff2, points[l],
-	       W0, WS0, W0, WS0, &dmin1, &dmax1, &dmin2, &dmax2 );
+	       dwtype1, dwtype2, &dmin1, &dmax1, &dmin2, &dmax2 );
       }
 
       for ( int i = 0; i < points[l] - 1; i++ ) {
@@ -331,7 +328,7 @@ void XYView::Draw( QPainter *p )
       if ( showDiff2 ) {
 	pen1.setStyle( Qt::DashDotLine );
 	p->setPen( pen1 );
-	for ( int i = ( WS0 + WS0 ); i < points[l] - ( WS0 + WS0 ); i++ ) {
+	for ( int i = ( WS0 + WS0 ); i < points[l] - 1 - ( WS0 + WS0 ); i++ ) {
 	  p->drawLine( cc.r2sx( x[l][i] ), cc.fixy( diff2[i], dmin2, dmax2 ),
 		       cc.r2sx( x[l][i+1] ), cc.fixy( diff2[i+1], dmin2, dmax2 ) );
 	}
@@ -691,4 +688,13 @@ void XYView::ChooseAG( int i, bool f )
 {
   dispf[ getL( i ) ] = f;
   update();
+}
+
+void XYView::setParent( QWidget *p )
+{
+  parent = p;
+  connect( parent, SIGNAL( NewDiff1( int ) ), this, SLOT( setDiffType1( int ) ),
+	   Qt::UniqueConnection );
+  connect( parent, SIGNAL( NewDiff2( int ) ), this, SLOT( setDiffType2( int ) ),
+	   Qt::UniqueConnection );
 }

@@ -724,6 +724,8 @@ private slots:
   void NewEnergy( double e );
   void ChangerNext( void );
   void NewROI( int s, int e );
+  void NewDiff1( int i );
+  void NewDiff2( int i );
 };
 
 #endif

@@ -196,6 +196,10 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   Qt::UniqueConnection );
   connect( conds, SIGNAL( AskToShowDTh1TTable() ), TTable, SLOT( ShowTuneTable() ),
 	   Qt::UniqueConnection );
+  connect( conds, SIGNAL( NewDiff1( int ) ), this, SIGNAL( NewDiff1( int ) ),
+	   Qt::UniqueConnection );
+  connect( conds, SIGNAL( NewDiff2( int ) ), this, SIGNAL( NewDiff2( int ) ),
+	   Qt::UniqueConnection );
 
   s->AskStatus();
   s->MakeConnection();
@@ -483,7 +487,11 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
   void *newView = NULL;
   switch( vtype ) {
   case XYVIEW:
-    newView = (void *)(new XYView); break;
+    newView = (void *)(new XYView);
+    ((XYView*)newView)->setParent( this );
+    ((XYView*)newView)->setDiffType1( conds->Diff1Type() );
+    ((XYView*)newView)->setDiffType2( conds->Diff2Type() );
+    break;
   case TYVIEW:
     newView = (void *)(new TYView); break;
   case MCAVIEW:
