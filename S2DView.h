@@ -57,9 +57,13 @@ class S2DView : public QFrame, private Ui::S2DView
   void setData( int ix, int iy, double v );
   void setParent( QWidget *p );
   double getData( int ix, int iy );
+  bool getInvXf( void ) { return invXf; };
+  bool getInvYf( void ) { return invYf; };
 
 public slots:
   void print( QPrinter *p );
+  void setInvXf( bool f ) { invXf = f; };
+  void setInvYf( bool f ) { invXf = f; };
 
  signals:
   void AskMoveToPointedPosition( int x, int y );

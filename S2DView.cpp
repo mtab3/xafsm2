@@ -199,7 +199,14 @@ void S2DView::Draw( QPainter *p )
   RM = w - LM - HW;
   TM = h - BM - VW;
   cc.SetScreenCoord( LM, h-BM-VW, LM+HW, h-BM );
-  cc.SetRealCoord( minx, miny, maxx, maxy );
+  if ( ! invXf )
+    cc.SetRealX( minx, maxx );
+  else
+    cc.SetRealX( maxx, minx );
+  if ( ! invYf )
+    cc.SetRealY( miny, maxy );
+  else
+    cc.SetRealY( maxy, miny );
 
   p->fillRect( 0, 0, w, h, White );
   p->setPen( GridC );
@@ -252,39 +259,43 @@ void S2DView::Draw( QPainter *p )
     p->drawLine( cc.r2sx( minx ), cc.r2sy( sy + dy * iy ),
 		 cc.r2sx( maxx ), cc.r2sy( sy + dy * iy ) );
   }
+
+  // 軸反転した時のレイアウトの向きの補正用
+  int xdir = ( invXf ) ? -1 : 1;
+  int ydir = ( invYf ) ? -1 : 1;
   // 格子の中央点からのヒゲ
   for ( int ix = 0; ix < maxix; ix++ ) {
     p->drawLine( cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( maxy ),
-		 cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( maxy )-TicL );
+		 cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( maxy )-TicL * ydir );
     p->drawLine( cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( miny ),
-		 cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( miny )+TicL );
+		 cc.r2sx( sx + dx * ( ix + 0.5 ) ), cc.r2sy( miny )+TicL * ydir);
   }
   for ( int iy = 0; iy < maxiy; iy++ ) {
     p->drawLine( cc.r2sx( minx ), cc.r2sy( sy + dy * ( iy + 0.5 ) ),
-		 cc.r2sx( minx )-TicL, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
+		 cc.r2sx( minx )-TicL * xdir, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
     p->drawLine( cc.r2sx( maxx ), cc.r2sy( sy + dy * ( iy + 0.5 ) ),
-		 cc.r2sx( maxx )+TicL, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
+		 cc.r2sx( maxx )+TicL * xdir, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
   }
+
+  // 軸反転した時のレイアウトの補正用
+  int xbase = cc.r2sx( ( invXf ) ? minx : maxx ) + 5;
+  int ybase = cc.r2sy( ( invYf ) ? maxy : miny ) + 5;
   // メモリ数字
   QRectF rec;
   QFont F1;
   F1.setPointSizeF( 10 );
   // 横軸
-  rec = QRectF( cc.r2sx( sx+dx*0.5 )-HW/4, cc.r2sy( miny )+5,
-		HW/2, dVW );
+  rec = QRectF( cc.r2sx( sx+dx*0.5 )-HW/4, ybase, HW/2, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
 	       QString::number( sx + dx * 0.5 ) );
-  rec = QRectF( cc.r2sx( sx+dx*(maxix-0.5) )-HW/4, cc.r2sy( miny )+5,
-		HW/2, dVW );
+  rec = QRectF( cc.r2sx( sx+dx*(maxix-0.5) )-HW/4, ybase, HW/2, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
 	       QString::number( sx + dx * (maxix - 0.5) ) );
   // 縦軸
-  rec = QRectF( cc.r2sx( maxx )+5, cc.r2sy( sy+dx*0.5 )-dVW2/2,
-		RM - 5, dVW );
+  rec = QRectF( xbase, cc.r2sy( sy+dx*0.5 )-dVW2/2, RM - 5, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       QString::number( sy ) );
-  rec = QRectF( cc.r2sx( maxx )+5, cc.r2sy( sy+dx*(maxiy-0.5) )-dVW2/2,
-		RM - 5, dVW );
+  rec = QRectF( xbase, cc.r2sy( sy+dx*(maxiy-0.5) )-dVW2/2, RM - 5, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       QString::number( sy + dy * ( maxiy - 1 ) ) );
 
@@ -351,11 +362,9 @@ void S2DView::mousePressEvent( QMouseEvent * )
 void S2DView::CheckOnIntMCA( void )
 {
   if ( m.CheckABPush( 0, height() ) ) {
-    qDebug() << "on Int MCA";
     for ( int iy = maxiy-1; iy >= 0; iy-- ) {
       for ( int ix = maxix-1; ix >= 0; ix-- ) {
 	if ( valid[ix][iy] ) {
-	  qDebug() << "Emit";
 	  emit PointerMovedOnIntMCA( ix, iy );
 	  return;
 	}
