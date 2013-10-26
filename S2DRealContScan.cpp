@@ -39,7 +39,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
       return;
   }
 
-  int pps;
+  //  int pps;
   switch( S2DStage ) {
   case 0:
     // 検出器初期化

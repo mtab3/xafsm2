@@ -38,12 +38,6 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       return;
   }
 
-#if 0
-  qDebug() << "Stage " << S2DStage
-	   << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss.zzz");
-#endif
-
-  int pps;
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
@@ -73,18 +67,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     break;
   case 3:
     // 1st Ax のみ、スキャン用のスピードにセット
-    pps = (int)fabs( (double)S2DI.dx[0]
-		     / S2DI.unit[0]->getUPP()
-		     / S2DI.Dwell );
-    if ( pps == 0 ) pps = 1;
-    if ( pps > S2DI.unit[0]->highestSpeed() ) {
-      msg = tr( "The scan speed %1 was limited to %2" )
-	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
-      qDebug() << msg;
-      statusbar->showMessage( msg, 2000 );
-      pps = S2DI.unit[0]->highestSpeed();
-    }
-    S2DI.unit[0]->SetHighSpeed( pps );
+    S2DI.unit[0]->SetHighSpeed( S2DI.pps );
     S2DStage++;
     // break しない
   case 4:     // リピートポイント

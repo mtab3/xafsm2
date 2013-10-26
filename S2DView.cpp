@@ -168,7 +168,7 @@ void S2DView::Draw( QPainter *p )
   int BM = h * 0.1;
   if ( BM > 80 ) BM = 80;
   int VW = h - TM - BM;
-  double dLM = LM / 10;
+  //  double dLM = LM / 10;
   double dVW = VW / 20;     // 1行の高さ(文字の高さ)
   if ( dVW > TM )
     dVW = TM * 0.8;

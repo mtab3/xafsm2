@@ -606,20 +606,27 @@ void MainWindow::SetupS2DParams( void )
   }
   S2DI.startDir = ( S2DI.sx[0] < S2DI.ex[0] ) ? FORWARD : BACKWARD;
 
+  int pps = 0;
   if ( S2DI.ScanMode == RCONT ) {
-    int pps = (int)fabs( (double)S2DI.dx[0] * S2DI.ps[0]
+    pps = (int)fabs( (double)S2DI.dx[0] * S2DI.ps[0]
 			 / S2DI.unit[0]->getUPP()
 			 / S2DI.Dwell );
-    if ( pps == 0 ) pps = 1;
-    if ( pps > S2DI.unit[0]->highestSpeed() ) {
-      QString msg = tr( "The scan speed %1 was limited to %2" )
-	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
-      statusbar->showMessage( msg, 2000 );
-      pps = S2DI.unit[0]->highestSpeed();
-    }
-    S2DI.pps = pps;
-    S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->getUPP() / pps;
+  } else {
+    pps = (int)fabs( (double)S2DI.dx[0]
+		     / S2DI.unit[0]->getUPP()
+		     / S2DI.Dwell );
+    
+    
   }
+  if ( pps == 0 ) pps = 1;
+  if ( pps > S2DI.unit[0]->highestSpeed() ) {
+    QString msg = tr( "The scan speed %1 was limited to %2" )
+      .arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
+    statusbar->showMessage( msg, 2000 );
+    pps = S2DI.unit[0]->highestSpeed();
+  }
+  S2DI.pps = pps;
+  S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->getUPP() / pps;
 }
 
 void MainWindow::S2DStop0( void )
@@ -783,7 +790,7 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
   }
 }
 
-void MainWindow::S2DSaveMCADataOnMem( int ix, int iy, int iz )  // iz は当面無視
+void MainWindow::S2DSaveMCADataOnMem( int ix, int iy, int /* iz */ )  // iz は当面無視
 {
   aMCASet *set = S2DMCAMap.aPoint( ix, iy );
 

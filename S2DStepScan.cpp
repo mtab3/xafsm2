@@ -30,21 +30,11 @@ void MainWindow::S2DStepScanSequence( void )
       return;
   }
 
-#if 0
   // センサー busy でも入ってこない
-  if (( isS2DSFluo )&&( S2DStage >= 3 )) {
-    if ( SFluo->isBusy2() )
-      return;
-  } else {
-#endif
   if ( mUnits.isBusy() ) {
     return;
   }
-#if 0
-  }
-#endif
   
-  int pps;
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
@@ -74,18 +64,7 @@ void MainWindow::S2DStepScanSequence( void )
     break;
   case 3:     // もうひとつのリピートポイント
     // 1st Ax のみ、スキャン用のスピードにセット
-    pps = (int)fabs( (double)S2DI.dx[0]
-		     / S2DI.unit[0]->getUPP()
-		     / S2DTime1->text().toDouble() );
-    if ( pps == 0 ) pps = 1;
-    if ( pps > S2DI.unit[0]->highestSpeed() ) {
-      msg = tr( "The scan speed %1 was limited to %2" )
-	.arg( pps ).arg( S2DI.unit[0]->highestSpeed() );
-      qDebug() << msg;
-      statusbar->showMessage( msg, 2000 );
-      pps = S2DI.unit[0]->highestSpeed();
-    }
-    S2DI.unit[0]->SetHighSpeed( pps );
+    S2DI.unit[0]->SetHighSpeed( S2DI.pps );
     S2DStage++;
     // break しない
   case 4:     // リピートポイント
