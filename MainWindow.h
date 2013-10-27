@@ -351,6 +351,7 @@ private:
   int EstimatedMeasurementTimeInSec;
   bool SvSelRealTime, SvSelLiveTime;
   bool SvSelExtPattern;
+  bool SvSaveQDataAsStepScan;
   QString defaultFileName;
 
   //  void ClearBLKs( void );
@@ -456,11 +457,16 @@ private:
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
   void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
-  void SetDFName2( int rpt, DIRECTION dir );
+
+  void SetDFName2( int rpt, DIRECTION dir, int type );
+  // type :: 0 normal Q-XAFS, 1 : Simulate Step Scan
+
   void MakeDelegateFile( void );
   void WriteQHeader( int rpt, DIRECTION dir );
   void WriteQHeader2( int rpt, DIRECTION dir );
-  void WriteQBody( void );
+  void WriteQBody( int rpt, DIRECTION dir );
+  void WriteQBody1( DIRECTION dir );
+  void WriteQBody2( DIRECTION dir );
   int findMini( QStringList &v1, QStringList &v2, QStringList &v3 );
   int findMini( QStringList &v1, QStringList &v2,
                 QStringList &v3, QStringList &v4 );

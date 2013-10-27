@@ -474,7 +474,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 何番目のスキャンになるかを g にセット
     // グラフ表示
     WriteQHeader2( MeasR, FORWARD );
-    WriteQBody();
+    WriteQBody( MeasR, FORWARD );
     g = ( QMeasOnBackward->isChecked() ) ? ( ( MeasR - 1 ) * 2 ) : ( MeasR - 1 );
     DispQSpectrum( g );
     MeasStage++;
@@ -551,7 +551,7 @@ void MainWindow::QXafsMeasSequence( void )
     // 何番目のスキャンになるかを g にセット
     // グラフ表示
     WriteQHeader2( MeasR, BACKWARD );
-    WriteQBody();
+    WriteQBody( MeasR, BACKWARD );
     g = ( MeasR - 1 ) * 2 + 1;
     DispQSpectrum( g );
     MeasStage++;

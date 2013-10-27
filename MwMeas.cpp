@@ -1137,15 +1137,6 @@ void MainWindow::StartMeasurement( void )
       }
 #endif
 
-#if 0   // 多分不要 (QXAFS と AutoMode は両立するはず)
-    } else if ( AutoModeButton->isChecked() ) { // Auto mode
-      if ( QXafsMode->isChecked() ) {
-        statusbar->showMessage( tr( "Auto mode cannot be used with QXAFS mode" ),
-                                2000 );
-        return;
-      }
-#endif
-
     } else {   // Normal モード時専用のチェック
       int TotalPoints = 0;
       for ( int i = 0; i < Blocks; i++ ) {
@@ -1387,7 +1378,8 @@ void MainWindow::StartMeasurement( void )
     }
 
     SetDispMeasModes();
-    CpBlock2SBlock();
+    CpBlock2SBlock();    // QXafs の時でも使う
+    SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
     else
@@ -1399,6 +1391,12 @@ void MainWindow::StartMeasurement( void )
       mcaDir.cd( BaseFile.baseName() );
     }
 
+    StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
+    NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
+    EndTimeDisp->setText( QDateTime::currentDateTime()
+                          .addSecs( EstimatedMeasurementTimeInSec )
+                          .toString("yy.MM.dd hh:mm:ss") );
+
     // 測定に使う MaitnTh と検出器の登録。
     // *************************************************************************
     // これ以降に XAFS 測定をやめるときは UUnits.clear() が必要。!!!!!!!!!!!!!!!
@@ -1408,11 +1406,6 @@ void MainWindow::StartMeasurement( void )
       UUnits.addUnit( MEAS_ID, mUnits.at(i) );
     }
 
-    StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
-    NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
-    EndTimeDisp->setText( QDateTime::currentDateTime()
-                          .addSecs( EstimatedMeasurementTimeInSec )
-                          .toString("yy.MM.dd hh:mm:ss") );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
