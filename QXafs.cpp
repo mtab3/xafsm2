@@ -106,6 +106,23 @@ void MainWindow::ToggleQXafsMode( bool )
     }
 
     SaveNowBlocks = SelBLKs->value();
+    NXAFSBInfo.Blocks = SaveNowBlocks;
+    NXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
+    SelBLKUnit->setCurrentIndex( (int)(QXAFSBInfo.Unit) );
+    int i;
+    for ( int i = 0; i < MaxBLKs; i++ ) {
+      NXAFSBInfo.Block[i].start = BLKstart[i]->text();
+      BLKstart[i]->setText( QXAFSBInfo.Block[i].start );
+      NXAFSBInfo.Block[i].step = BLKstep[i]->text();
+      BLKstep[i]->setText( QXAFSBInfo.Block[i].step );
+      NXAFSBInfo.Block[i].points = BLKpoints[i]->text();
+      BLKpoints[i]->setText( QXAFSBInfo.Block[i].points );
+      NXAFSBInfo.Block[i].dwell = BLKdwell[i]->text();
+      BLKdwell[i]->setText( QXAFSBInfo.Block[i].dwell );
+    }
+    NXAFSBInfo.Block[ i ].start = BLKstart[ i ]->text();
+    BLKstart[ i ]->setText( QXAFSBInfo.Block[ i ].start );
+    
     CheckQXafsParams();
     ChangeBLKs( 1 );
     SelBLKs->setEnabled( false );
@@ -130,10 +147,25 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SelBLKs->setEnabled( true );
     ChangeBLKs( SaveNowBlocks );
+    QXAFSBInfo.Blocks = SelBLKs->value();
+    QXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
+    SelBLKUnit->setCurrentIndex( (int)(NXAFSBInfo.Unit) );
+    int i;
+    for ( int i = 0; i < MaxBLKs; i++ ) {
+      QXAFSBInfo.Block[i].start = BLKstart[i]->text();
+      BLKstart[i]->setText( NXAFSBInfo.Block[i].start );
+      QXAFSBInfo.Block[i].step = BLKstep[i]->text();
+      BLKstep[i]->setText( NXAFSBInfo.Block[i].step );
+      QXAFSBInfo.Block[i].points = BLKpoints[i]->text();
+      BLKpoints[i]->setText( NXAFSBInfo.Block[i].points );
+      QXAFSBInfo.Block[i].dwell = BLKdwell[i]->text();
+      BLKdwell[i]->setText( NXAFSBInfo.Block[i].dwell );
+    }
+    QXAFSBInfo.Block[ i ].start = BLKstart[ i ]->text();
+    BLKstart[ i ]->setText( NXAFSBInfo.Block[ i ].start );
+
     HideBLKs( false );
-
     QConditionBox->setHidden( true );
-
     SetUpSensorComboBoxes();
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );

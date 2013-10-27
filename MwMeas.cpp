@@ -20,6 +20,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     Use19chSSD->setEnabled( false );
 
   BLKUnit = (UNIT)DefaultUnit;
+  NXAFSBInfo.Unit = BLKUnit;
+  QXAFSBInfo.Unit = BLKUnit;
   //  ClearBLKs();
   ChangeBLKs( 4 );
   for ( int i = 0; i < UNITS; i++ ) {

@@ -206,6 +206,33 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
 // 結局 dir はいらんかった ?
 // そんなことはない !!!! ほんとうは使わないとダメ (いまは backward の時におかしい)
 {
+  // Step Scan 用の Block パラメータを使えるようにしておく
+  bool MeasInDeg = conds->isMeasInDeg();
+  int NBlocks = NXAFSBInfo.Blocks;
+  UNIT NBLKUnit = NXAFSBInfo.Unit;
+  double NBlockStartAsDisp[ MaxBLKs + 1 ];
+  double NBlockStepAsDisp[ MaxBLKs + 1 ];
+  double NBlockStartInDeg[ MaxBLKs + 1 ];
+  double NBlockStepInDeg[ MaxBLKs + 1 ];
+  double NBlockDwell[ MaxBLKs + 1 ];
+  int NBlockPoints[ MaxBLKs + 1 ];
+
+  int i;
+  for ( i = 0; i < MaxBLKs; i++ ) {
+    NBlockStartAsDisp[i] = NXAFSBInfo.Block[i].start.toDouble();
+    NBlockStartInDeg[i] = u->any2deg( NBLKUnit, NBlockStartAsDisp[i] );
+    NBlockStepAsDisp[i] = NXAFSBInfo.Block[i].step.toDouble();
+    NBlockPoints[i] = NXAFSBInfo.Block[i].points.toInt();
+    NBlockDwell[i] = NXAFSBInfo.Block[i].dwell.toDouble();
+  }
+  NBlockStartAsDisp[i] = NXAFSBInfo.Block[i].start.toDouble();
+  NBlockStartInDeg[i] = u->any2deg( BLKUnit, SBlockStartAsDisp[i] );
+  for ( int i = 0; i < MaxBLKs; i++ ) {
+    NBlockStepInDeg[i]
+      = ( NBlockStartInDeg[i+1] - NBlockStartInDeg[i] ) / NBlockPoints[i];
+  }
+  NBlockStepInDeg[ MaxBLKs ] = 0;
+
   int Us = mUnits.count();
 
   QStringList valsEnc;
@@ -248,26 +275,6 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   if ( Enc2 != NULL ) {
     upp2 = Enc2->getUPP();
   }
-
-#if 0
-  SMeasInDeg = conds->isMeasInDeg();
-  SBlocks = Blocks;
-  SBLKUnit = BLKUnit;
-  for ( i = 0; i < MaxBLKs; i++ ) {
-    SBlockStartAsDisp[i] = BLKstart[i]->text().toDouble();
-    SBlockStartInDeg[i] = u->any2deg( BLKUnit, SBlockStartAsDisp[i] );
-    SBlockStepAsDisp[i] = BLKstep[i]->text().toDouble();
-    SBlockPoints[i] = BLKpoints[i]->text().toInt();
-    SBlockDwell[i] = BLKdwell[i]->text().toDouble();
-  }
-  SBlockStartAsDisp[i] = BLKstart[i]->text().toDouble();
-  SBlockStartInDeg[i] = u->any2deg( BLKUnit, SBlockStartAsDisp[i] );
-  for ( int i = 0; i < MaxBLKs; i++ ) {
-    SBlockStepInDeg[i]
-      = ( SBlockStartInDeg[i+1] - SBlockStartInDeg[i] ) / SBlockPoints[i];
-  }
-  SBlockStepInDeg[ MaxBLKs ] = 0;
-#endif
 
   double encV0 = EncValue0.toDouble();
   double enc2V0 = Enc2Value0.toDouble();

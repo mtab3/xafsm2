@@ -39,6 +39,7 @@
 #include "S2DInfo.h"
 #include "MCA.h"
 #include "ScanInfo.h"
+#include "BlockInfo.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -337,6 +338,8 @@ private:
   //  double BlockStart[ MaxBLKs + 1 ];
   //  double BlockDwell[ MaxBLKs + 1 ];
   //  int BlockPoints[ MaxBLKs + 1 ];
+
+  BlockInfo NXAFSBInfo, QXAFSBInfo;
 
   bool SMeasInDeg;
   UNIT SBLKUnit;
