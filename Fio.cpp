@@ -53,10 +53,10 @@ void MainWindow::WriteHeader( int Rpt )
 {
   SetDFName( Rpt );   // Generate a file name with repitation number
 
-  WriteHeaderCore();
+  WriteHeaderCore( true );
 }
 
-void MainWindow::WriteHeaderCore( void )
+void MainWindow::WriteHeaderCore( bool SnotN )
 {
   int cnt;
   QFile file( DFName );
@@ -87,8 +87,10 @@ void MainWindow::WriteHeaderCore( void )
       << fixS( CMode[ MeasFileType ], 13 ) << QString( "(%1)" ).arg( MeasFileType, 2 )
       << QString( "   Repetition=%1" ).arg( MeasR , 3 )
       << QString( "     Points=%1" ).arg( TP, 5 ) << endl;
-  
-  if ( SBLKUnit == DEG ) {
+
+  UNIT Unit = ( SnotN ) ? SBLKUnit : NBLKUnit;
+  int Blocks = ( SnotN ) ? SBlocks : NBlocks;
+  if ( Unit == DEG ) {
     out << " "
         << QString( "Param file : %1  angle axis (1)    Block = %2" )
            .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 5 ) << endl;
@@ -98,15 +100,27 @@ void MainWindow::WriteHeaderCore( void )
         << "Block      Init-ang  final-ang     Step/deg     Time/s       Num" << endl;
 
     for ( int i = 0; i < Blocks; i++ ) {
-      out << " "
-          << QString( "%1     %2%3%4%5%6" )
-	.arg( i+1, 5 )
-	.arg( SBlockStartAsDisp[i], 10, 'f', 5 )
-	.arg( SBlockStartAsDisp[i+1], 10, 'f', 5 )
-	.arg( SBlockStepAsDisp[i], 12, 'f', 6 )
-	.arg( SBlockDwell[i], 11, 'f', 2 )
-	.arg( SBlockPoints[i], 10 )
-          << endl;
+      if ( SnotN ) {
+	out << " "
+	    << QString( "%1     %2%3%4%5%6" )
+	  .arg( i+1, 5 )
+	  .arg( SBlockStartAsDisp[i], 10, 'f', 5 )
+	  .arg( SBlockStartAsDisp[i+1], 10, 'f', 5 )
+	  .arg( SBlockStepAsDisp[i], 12, 'f', 6 )
+	  .arg( SBlockDwell[i], 11, 'f', 2 )
+	  .arg( SBlockPoints[i], 10 )
+	    << endl;
+      } else {
+	out << " "
+	    << QString( "%1     %2%3%4%5%6" )
+	  .arg( i+1, 5 )
+	  .arg( NBlockStartAsDisp[i], 10, 'f', 5 )
+	  .arg( NBlockStartAsDisp[i+1], 10, 'f', 5 )
+	  .arg( NBlockStepAsDisp[i], 12, 'f', 6 )
+	  .arg( NBlockDwell[i], 11, 'f', 2 )
+	  .arg( NBlockPoints[i], 10 )
+	    << endl;
+      }
     }
   } else {
     out << " "
@@ -117,17 +131,31 @@ void MainWindow::WriteHeaderCore( void )
     out << " "
         << "Block      Init-Eng  final-Eng     Step/eV     Time/s       Num" << endl;
     for ( int i = 0; i < Blocks; i++ ) {
-      double s = u->any2keV( SBLKUnit, SBlockStartAsDisp[i] )*1000;
-      double e = u->any2keV( SBLKUnit, SBlockStartAsDisp[i+1] )*1000;
-      out << " "
-          << QString( "%1     %2%3%4%5%6" )
-	.arg( i+1, 5 )
-	.arg( s, 10, 'f', 2 )
-	.arg( e, 10, 'f', 2 )
-	.arg( ( e - s )/SBlockPoints[i], 12, 'f', 2 )
-	.arg( SBlockDwell[i], 11, 'f', 2 )
-	.arg( SBlockPoints[i], 10 )
-          << endl;
+      if ( SnotN ) {
+	double s = u->any2keV( SBLKUnit, SBlockStartAsDisp[i] )*1000;
+	double e = u->any2keV( SBLKUnit, SBlockStartAsDisp[i+1] )*1000;
+	out << " "
+	    << QString( "%1     %2%3%4%5%6" )
+	  .arg( i+1, 5 )
+	  .arg( s, 10, 'f', 2 )
+	  .arg( e, 10, 'f', 2 )
+	  .arg( ( e - s )/SBlockPoints[i], 12, 'f', 2 )
+	  .arg( SBlockDwell[i], 11, 'f', 2 )
+	  .arg( SBlockPoints[i], 10 )
+	    << endl;
+      } else {
+	double s = u->any2keV( NBLKUnit, NBlockStartAsDisp[i] )*1000;
+	double e = u->any2keV( NBLKUnit, NBlockStartAsDisp[i+1] )*1000;
+	out << " "
+	    << QString( "%1     %2%3%4%5%6" )
+	  .arg( i+1, 5 )
+	  .arg( s, 10, 'f', 2 )
+	  .arg( e, 10, 'f', 2 )
+	  .arg( ( e - s )/NBlockPoints[i], 12, 'f', 2 )
+	  .arg( NBlockDwell[i], 11, 'f', 2 )
+	  .arg( NBlockPoints[i], 10 )
+	    << endl;
+      }
     }
   }
 

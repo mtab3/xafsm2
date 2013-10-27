@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>859</width>
-    <height>1084</height>
+    <height>1108</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1628,7 +1628,7 @@
                       <string>Save data also as step scan</string>
                      </property>
                      <property name="checkable">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="autoExclusive">
                       <bool>false</bool>

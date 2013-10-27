@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "QSave" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Oct 28 00:33:06 2013 +0900\n"\
+                "    prepare NXAFS block params in QFio WriteBody\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Oct 27 22:59:37 2013 +0900\n"\
                 "    working on new QXafs data file\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Oct 25 14:51:08 2013 +0900\n"\
                 "    in XYView differentials of each line can be shown\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Oct 25 11:37:16 2013 +0900\n"\
-                "    Inverse display axis is ready in S2DView\n"\
 		"\n"\
                 ""
 #endif

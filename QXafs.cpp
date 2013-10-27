@@ -110,7 +110,7 @@ void MainWindow::ToggleQXafsMode( bool )
     NXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
     SelBLKUnit->setCurrentIndex( (int)(QXAFSBInfo.Unit) );
     int i;
-    for ( int i = 0; i < MaxBLKs; i++ ) {
+    for ( i = 0; i < MaxBLKs; i++ ) {
       NXAFSBInfo.Block[i].start = BLKstart[i]->text();
       BLKstart[i]->setText( QXAFSBInfo.Block[i].start );
       NXAFSBInfo.Block[i].step = BLKstep[i]->text();
@@ -151,7 +151,7 @@ void MainWindow::ToggleQXafsMode( bool )
     QXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
     SelBLKUnit->setCurrentIndex( (int)(NXAFSBInfo.Unit) );
     int i;
-    for ( int i = 0; i < MaxBLKs; i++ ) {
+    for ( i = 0; i < MaxBLKs; i++ ) {
       QXAFSBInfo.Block[i].start = BLKstart[i]->text();
       BLKstart[i]->setText( NXAFSBInfo.Block[i].start );
       QXAFSBInfo.Block[i].step = BLKstep[i]->text();

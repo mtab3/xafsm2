@@ -357,6 +357,16 @@ private:
   bool SvSaveQDataAsStepScan;
   QString defaultFileName;
 
+  bool NMeasInDeg;
+  int NBlocks;
+  UNIT NBLKUnit;
+  double NBlockStartAsDisp[ MaxBLKs + 1 ];
+  double NBlockStepAsDisp[ MaxBLKs + 1 ];
+  double NBlockStartInDeg[ MaxBLKs + 1 ];
+  double NBlockStepInDeg[ MaxBLKs + 1 ];
+  double NBlockDwell[ MaxBLKs + 1 ];
+  int NBlockPoints[ MaxBLKs + 1 ];
+
   //  void ClearBLKs( void );
   void ShowBLKs( void );
   void WriteBF( void );
@@ -409,7 +419,7 @@ private:
   void WriteInfoFile2( void );
   void WriteHeader( int Rpt );
   void WriteHeader2( int Rpt );
-  void WriteHeaderCore( void );
+  void WriteHeaderCore( bool SnotN );
   void WriteHeaderCore2( void );
   void SetDispMeasModes( void );
   void DispMeasDatas( void );

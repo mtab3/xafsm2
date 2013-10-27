@@ -92,14 +92,34 @@ void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
   double sblkdwell = SBlockDwell[0];
   SBlockDwell[0] = QXafsDwellTime;
 
-  WriteHeaderCore();
+  WriteHeaderCore( true );
 
   SBlockDwell[0] = sblkdwell;
 
   // Step Scan 型のファイル
   if ( SvSaveQDataAsStepScan ) {
+    // Step Scan 用の Block パラメータを使えるようにしておく
+    NMeasInDeg = conds->isMeasInDeg();
+    NBlocks = NXAFSBInfo.Blocks;
+    NBLKUnit = NXAFSBInfo.Unit;
+    int i;
+    for ( i = 0; i < MaxBLKs; i++ ) {
+      NBlockStartAsDisp[i] = NXAFSBInfo.Block[i].start.toDouble();
+      NBlockStartInDeg[i] = u->any2deg( NBLKUnit, NBlockStartAsDisp[i] );
+      NBlockStepAsDisp[i] = NXAFSBInfo.Block[i].step.toDouble();
+      NBlockPoints[i] = NXAFSBInfo.Block[i].points.toInt();
+      NBlockDwell[i] = NXAFSBInfo.Block[i].dwell.toDouble();
+    }
+    NBlockStartAsDisp[i] = NXAFSBInfo.Block[i].start.toDouble();
+    NBlockStartInDeg[i] = u->any2deg( BLKUnit, SBlockStartAsDisp[i] );
+    for ( int i = 0; i < MaxBLKs; i++ ) {
+      NBlockStepInDeg[i]
+	= ( NBlockStartInDeg[i+1] - NBlockStartInDeg[i] ) / NBlockPoints[i];
+    }
+    NBlockStepInDeg[ MaxBLKs ] = 0;
+
     SetDFName2( rpt, dir, 1 );   // Generate a file name with repitation number
-    WriteHeaderCore();
+    WriteHeaderCore( false );
   }
 }
 
@@ -206,33 +226,6 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
 // 結局 dir はいらんかった ?
 // そんなことはない !!!! ほんとうは使わないとダメ (いまは backward の時におかしい)
 {
-  // Step Scan 用の Block パラメータを使えるようにしておく
-  bool MeasInDeg = conds->isMeasInDeg();
-  int NBlocks = NXAFSBInfo.Blocks;
-  UNIT NBLKUnit = NXAFSBInfo.Unit;
-  double NBlockStartAsDisp[ MaxBLKs + 1 ];
-  double NBlockStepAsDisp[ MaxBLKs + 1 ];
-  double NBlockStartInDeg[ MaxBLKs + 1 ];
-  double NBlockStepInDeg[ MaxBLKs + 1 ];
-  double NBlockDwell[ MaxBLKs + 1 ];
-  int NBlockPoints[ MaxBLKs + 1 ];
-
-  int i;
-  for ( i = 0; i < MaxBLKs; i++ ) {
-    NBlockStartAsDisp[i] = NXAFSBInfo.Block[i].start.toDouble();
-    NBlockStartInDeg[i] = u->any2deg( NBLKUnit, NBlockStartAsDisp[i] );
-    NBlockStepAsDisp[i] = NXAFSBInfo.Block[i].step.toDouble();
-    NBlockPoints[i] = NXAFSBInfo.Block[i].points.toInt();
-    NBlockDwell[i] = NXAFSBInfo.Block[i].dwell.toDouble();
-  }
-  NBlockStartAsDisp[i] = NXAFSBInfo.Block[i].start.toDouble();
-  NBlockStartInDeg[i] = u->any2deg( BLKUnit, SBlockStartAsDisp[i] );
-  for ( int i = 0; i < MaxBLKs; i++ ) {
-    NBlockStepInDeg[i]
-      = ( NBlockStartInDeg[i+1] - NBlockStartInDeg[i] ) / NBlockPoints[i];
-  }
-  NBlockStepInDeg[ MaxBLKs ] = 0;
-
   int Us = mUnits.count();
 
   QStringList valsEnc;
@@ -283,7 +276,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
 
   int TotalPoints = 0;
   for ( int i = 0; i < SBlocks; i++ ) {
-    TotalPoints += SBlockPoints[i];
+    TotalPoints += NBlockPoints[i];
   }
 
   double Deg[ TotalPoints ];
@@ -305,24 +298,24 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
     i++;
     deg2 = ( Enc2 == NULL ) ? deg : 
       encV0 + ( valsEnc[i+1].toInt() - enc2V0 ) * upp2;
-    if ( SMeasInDeg ) {
+    if ( NMeasInDeg ) {
       x0 = deg;
       x1 = deg2;
     } else {
-      x0 = u->deg2any( SBLKUnit, deg );
-      x1 = u->deg2any( SBLKUnit, deg2 );
+      x0 = u->deg2any( NBLKUnit, deg );
+      x1 = u->deg2any( NBLKUnit, deg2 );
     }
     
     int SumPoints = 0;
-    for ( blk = 0; blk < SBlocks; blk++ ) {
-      if ( SMeasInDeg ) {
-	xs = SBlockStartInDeg[ blk ];
-	xe = SBlockStartInDeg[ blk + 1 ];
-	dx = fabs( SBlockStepInDeg[ blk ] );
+    for ( blk = 0; blk < NBlocks; blk++ ) {
+      if ( NMeasInDeg ) {
+	xs = NBlockStartInDeg[ blk ];
+	xe = NBlockStartInDeg[ blk + 1 ];
+	dx = fabs( NBlockStepInDeg[ blk ] );
       } else {
-	xs = SBlockStartAsDisp[ blk ];
-	xe = SBlockStartAsDisp[ blk + 1 ];
-	dx = fabs( SBlockStepAsDisp[ blk ] );
+	xs = NBlockStartAsDisp[ blk ];
+	xe = NBlockStartAsDisp[ blk + 1 ];
+	dx = fabs( NBlockStepAsDisp[ blk ] );
       }
       if ( xs > xe ) 
 	dx = -dx;
@@ -334,9 +327,9 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
 	if (( x1 <= xs )&&( x1 > xe ))
 	  break;
       }
-      SumPoints += SBlockPoints[ blk ];
+      SumPoints += NBlockPoints[ blk ];
     }
-    for ( ps = 0; ps < SBlockPoints[ blk ]; ps++ ) {
+    for ( ps = 0; ps < NBlockPoints[ blk ]; ps++ ) {
       if ( xs < xe ) {
 	if (( x1 >= ( xs + dx * ps ))&&( x1 < ( xs + dx * ( ps + 1 ) ) ))
 	  break;
