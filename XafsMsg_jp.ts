@@ -151,6 +151,26 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>Show The Table</source>
         <translation>テーブル表示</translation>
     </message>
+    <message>
+        <source>Type of 1st order Differential</source>
+        <translation>1階微分のタイプ</translation>
+    </message>
+    <message>
+        <source>Type 1</source>
+        <translation>タイプ 1 (平滑弱)</translation>
+    </message>
+    <message>
+        <source>Type 2</source>
+        <translation>タイプ 2 (平滑中)</translation>
+    </message>
+    <message>
+        <source>Type 3</source>
+        <translation>タイプ 3 (平滑強)</translation>
+    </message>
+    <message>
+        <source>Type of 2nd order Differential</source>
+        <translation>2階微分のタイプ</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>
@@ -1859,7 +1879,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Auto mode cannot be used with QXAFS mode</source>
-        <translation>QXAFSモードでは試料の自動交換は行えません。</translation>
+        <translation type="obsolete">QXAFSモードでは試料の自動交換は行えません。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please put the numder to be scanned (eg. 1,2,3 or 3-6) &lt;img src=&quot;:/Changer.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2431,6 +2451,38 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>For SSD</source>
         <translation>SSD使用時</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measured data in Q-XAFS mode will be reformed into a step-scan like data stream with block parameters for step-scan and saved with an altanative file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Q-XAFS の測定結果を、ステップスキャンの画面で指定したブロックパラメータで測定したステップスキャンの結果であるかのように加工したものも保存します。(ファイル名は、通常のQ-XAFS の測定結果のファイル名に &quot;-S&quot;が付いたものになります)</translation>
+    </message>
+    <message>
+        <source>Save data also as step scan</source>
+        <translation>ステップスキャン型データファイル生成</translation>
+    </message>
+    <message>
+        <source>1step at </source>
+        <translation> </translation>
+    </message>
+    <message>
+        <source>eV is</source>
+        <translation>eV での1ステップは</translation>
+    </message>
+    <message>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <source>-100</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open QXafs data file as Step Scan [%1] to write data body.</source>
+        <translation>ファイル[%1]が開けません(ステップスキャン型ファイル)。</translation>
+    </message>
+    <message>
+        <source>eV.</source>
+        <translation>eV です</translation>
     </message>
 </context>
 <context>
@@ -3294,6 +3346,14 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>S. Scale</source>
         <translation>単一スケール</translation>
+    </message>
+    <message>
+        <source>Diff1</source>
+        <translation>1階微分</translation>
+    </message>
+    <message>
+        <source>Diff2</source>
+        <translation>2階微分</translation>
     </message>
 </context>
 <context>
