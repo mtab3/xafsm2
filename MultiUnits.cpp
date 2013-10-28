@@ -121,7 +121,6 @@ bool MUnits::QRead( void )   // QXAFS
       }
     } else {
       ff |= ( f = Units.at(i)->au->QRead() );
-      qDebug() << "munit " << i << f;
     }
   }
 

@@ -275,7 +275,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   int blk, ps;
 
   int TotalPoints = 0;
-  for ( int i = 0; i < SBlocks; i++ ) {
+  for ( int i = 0; i < NBlocks; i++ ) {
     TotalPoints += NBlockPoints[i];
   }
 
@@ -286,16 +286,34 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   double pinbox[ TotalPoints ];
   for ( int i = 0; i < TotalPoints; i++ ) {
     for ( int j = 0; j < Us; j++ ) {
-      boxes[i][j] = 0;
+      boxes[i] << 0;
     }
     DTime[i] = 0;
     pinbox[i] = 0;
   }
 
+#if 1          // only for debug
+  for ( blk = 0; blk < NBlocks; blk++ ) {
+    if ( NMeasInDeg ) {
+      xs = NBlockStartInDeg[ blk ];
+      xe = NBlockStartInDeg[ blk + 1 ];
+      dx = fabs( NBlockStepInDeg[ blk ] );
+    } else {
+      xs = NBlockStartAsDisp[ blk ];
+      xe = NBlockStartAsDisp[ blk + 1 ];
+      dx = fabs( NBlockStepAsDisp[ blk ] );
+    }
+    if ( xs > xe ) 
+      dx = -dx;
+    
+    qDebug() << "block " << blk << xs << xe << dx;
+  }
+#endif
+
+  int maxii = 0;
   xs = xe = dx = 0;
   for ( int i = 0; i < num; i++ ) {
     deg = ( p - d * i - c ) * upp; // pm16c14 のパルス値から計算
-    i++;
     deg2 = ( Enc2 == NULL ) ? deg : 
       encV0 + ( valsEnc[i+1].toInt() - enc2V0 ) * upp2;
     if ( NMeasInDeg ) {
@@ -305,7 +323,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
       x0 = u->deg2any( NBLKUnit, deg );
       x1 = u->deg2any( NBLKUnit, deg2 );
     }
-    
+
     int SumPoints = 0;
     for ( blk = 0; blk < NBlocks; blk++ ) {
       if ( NMeasInDeg ) {
@@ -321,30 +339,44 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
 	dx = -dx;
       
       if ( xs < xe ) {
-	if (( x1 >= xs )&&( x1 < xe ))
+	if ( x1 < xe )
 	  break;
       } else {
-	if (( x1 <= xs )&&( x1 > xe ))
+	if ( x1 > xe )
 	  break;
       }
       SumPoints += NBlockPoints[ blk ];
     }
-    for ( ps = 0; ps < NBlockPoints[ blk ]; ps++ ) {
+    
+    for ( ps = 0; ps <= NBlockPoints[ blk ]; ps++ ) {
       if ( xs < xe ) {
-	if (( x1 >= ( xs + dx * ps ))&&( x1 < ( xs + dx * ( ps + 1 ) ) ))
+	if ( x1 < ( xs + dx * ( ps + 1 ) ) )
 	  break;
       } else {
-	if (( x1 > ( xs + dx * ( ps + 1 ) ))&&( x1 <= ( xs + dx * ps ) ))
+	if ( x1 > ( xs + dx * ( ps + 1 ) ) )
 	  break;
       }
     }
-    pinbox[ ps + SumPoints ]++;   // points in the box
-    Deg[ ps + SumPoints ] = deg;
-    Deg2[ ps + SumPoints ] = deg2;
-    DTime[ ps + SumPoints ] += QXafsDwellTime;
+    int ii = ps + SumPoints;
+    if ( ii >= TotalPoints ) ii = TotalPoints - 1;
+    if ( ii > maxii ) maxii = ii;
+
+    pinbox[ ii ]++;   // points in the box
+    Deg[ ii ] = deg;
+    Deg2[ ii ] = deg2;
+    DTime[ ii ] += QXafsDwellTime;
     for ( int j = 0; j < Us; j++ ) {
-      boxes[ ps + SumPoints ][ j ] += vals[j][i+1].toDouble() - dark[j];
+      boxes[ ii ][ j ] += vals[j][i+1].toDouble() - dark[j];
     }
+  }
+
+  for ( int i = 0; i <= maxii; i++ ) {
+    buf.sprintf( "%10.5f" "%10.5f" "%10.4f", Deg[i], Deg2[i], DTime[i] );
+    for ( int j = 0; j < Us; j++ ) {
+      buf2.sprintf( " %9.6f", boxes[i][j] );  // 8.7 --> 9.6
+      buf += buf2;
+    }
+    out << buf << endl;
   }
 
   file.close();

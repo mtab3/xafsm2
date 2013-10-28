@@ -241,9 +241,9 @@ void MainWindow::CheckQXafsParams( void )
 void MainWindow::ShowDeltaAtRefPoint( void )
 {
   double rpEV = QRefPoint->text().toDouble() / 1000.;
-  double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
-  double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
-  double ddeg = fabs( edeg - sdeg ) / BLKpoints[ 0 ]->text().toInt();
+  double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKs01->text().toDouble() ) );
+  double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKs02->text().toDouble() ) );
+  double ddeg = fabs( edeg - sdeg ) / BLKpoints01->text().toInt();
   double dpEV2 = fabs( u->deg2keV( u->keV2deg( rpEV ) + ddeg ) - rpEV ) * 1000;
   QDeltaAtRefPoint->setText( QString( "%1" ).arg( dpEV2, 5, 'f', 3 ) );
 }

@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "QSave" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Oct 28 18:46:10 2013 +0900\n"\
+                "    ShowDeltaAtRefPoint in QXafs mode is ready\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Oct 28 14:47:42 2013 +0900\n"\
                 "    working on QXafs, small things\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Oct 27 22:59:37 2013 +0900\n"\
                 "    working on new QXafs data file\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Oct 27 01:46:17 2013 +0900\n"\
-                "    tidy codes of S2D a little\n"\
 		"\n"\
                 ""
 #endif
