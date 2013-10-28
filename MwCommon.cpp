@@ -218,6 +218,9 @@ void MainWindow::ShowTAE( void )
   ManTEdeg->setText( buf );
   buf.sprintf( UnitName[KEV].form, Vic[SelectedA].AE[SelectedE] );
   ManTEkeV->setText( buf );
+  buf.sprintf( UnitName[EV].form, Vic[SelectedA].AE[SelectedE] * 1000 );
+  QRefPoint->setText( buf );
+  ShowDeltaAtRefPoint();
 }
 
 void MainWindow::ManSelTEdeg( void )
@@ -226,6 +229,9 @@ void MainWindow::ManSelTEdeg( void )
 
   buf.sprintf( UnitName[KEV].form, u->deg2keV( ManTEdeg->text().toDouble() ) );
   ManTEkeV->setText( buf );
+  buf.sprintf( UnitName[EV].form, u->deg2keV( ManTEdeg->text().toDouble() ) * 1000 );
+  QRefPoint->setText( buf );
+  ShowDeltaAtRefPoint();
   SetNewGos();
 }
 

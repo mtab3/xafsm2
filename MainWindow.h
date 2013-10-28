@@ -703,6 +703,7 @@ private slots:
   void SetNewRPTLimit( void );
   void QIntervalTimeout1( void );
   void QIntervalTimeout2( void );
+  void ShowDeltaAtRefPoint( void );
 
   // S2D Scan2D
   void newS2DFileSelected( const QString &fname );

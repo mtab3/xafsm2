@@ -33,14 +33,7 @@ void MainWindow::setupQXafsMode( void )
   connect( QIntervalTimer2, SIGNAL( timeout() ), this, SLOT( QIntervalTimeout2() ),
 	   Qt::UniqueConnection );
 
-#if 0
-  QMeasOnBackward->setHidden( true );
-  QMinMaxBox->setHidden( true );
-  QMaxSpeed->setHidden( true );
-  QMinTime->setHidden( true );
-  QSepLine->setHidden( true );
-  QLimitedDisplay->setHidden( true );
-#endif
+  connect( QRefPoint, SIGNAL( editingFinished() ), this, SLOT( ShowDeltaAtRefPoint() ) );
 }
 
 void MainWindow::QIntervalTimeout1( void )
@@ -241,6 +234,18 @@ void MainWindow::CheckQXafsParams( void )
   dtime = WidthInPuls / HSpeed;
   BLKdwell[0]->setText( QString::number( dtime ) );
   ShowQTime( dtime, WidthInPuls );
+
+  ShowDeltaAtRefPoint();
+}
+
+void MainWindow::ShowDeltaAtRefPoint( void )
+{
+  double rpEV = QRefPoint->text().toDouble() / 1000.;
+  double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
+  double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
+  double ddeg = fabs( edeg - sdeg ) / BLKpoints[ 0 ]->text().toInt();
+  double dpEV2 = fabs( u->deg2keV( u->keV2deg( rpEV ) + ddeg ) - rpEV ) * 1000;
+  QDeltaAtRefPoint->setText( QString( "%1" ).arg( dpEV2, 5, 'f', 3 ) );
 }
 
 void MainWindow::ShowQTime( double dtime, double WidthInPuls )
