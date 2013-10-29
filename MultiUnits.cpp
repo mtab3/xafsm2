@@ -229,8 +229,13 @@ bool MUnits::getValue( void )
 {
   bool ff = false;
 
+  for ( int i = 0; i < PUnits.count(); i++ ) {
+    if ( PUnits.at(i)->au->getType() == "PAM2" )
+      ff |= PUnits.at(i)->au->GetValue();
+  }
   for ( int i = 0; i < Units.count(); i++ ) {
-    ff |= Units.at(i)->au->GetValue();
+    if ( Units.at(i)->au->getType() != "PAM2" )
+      ff |= Units.at(i)->au->GetValue();
   }
 
   return ff;
@@ -250,11 +255,22 @@ bool MUnits::Close( void )
 void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
+  AUnit *as, *ap;
   for ( int i = 0; i < Units.count(); i++ ) {
-    rvs[i] = Units.at(i)->au->value().toDouble();
+    as = Units.at(i)->au;
+    if ( as->getType() == "PAM2" ) {
+      ap = as->getTheParent();
+      qDebug() << "readVal" << as->getCh().toInt() << ap->values().count() << ap->values();
+      if ( as->getCh().toInt() >= ap->values().count() )  // 異常事態
+	rvs[i] = 0;
+      else 
+	rvs[i] = ap->values().at( as->getCh().toInt() ).toDouble();
+    } else {
+      rvs[i] = as->value().toDouble();
+    }
     if ( correctBack )
-      rvs[i] -= Units.at(i)->au->getDark() * Units.at(i)->au->GetSetTime();
-    cps[i] = rvs[i] / Units.at(i)->au->GetSetTime();
+      rvs[i] -= as->getDark() * as->GetSetTime();
+    cps[i] = rvs[i] / as->GetSetTime();
   }
 }
 

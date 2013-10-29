@@ -167,10 +167,10 @@ void AUnit::Initialize( Stars *S )
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 
   //                                         CNT, OTC は Ch に IsBusy を訊くとエラー
-  if ( TypeCHK(  1,  0,  0,  1,  1,  1,  0,   0,  1,  0,  0,  0,  0,  0,  0,  1 ) ) {
+  if ( TypeCHK(  1,  0,  0,  1,  1,  1,  0,   0,  1,  0,  0,  0,  0,  0,  0,  0 ) ) {
     s->SendCMD2( "Init", DevCh, "IsBusy" );
   }
-  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  1,  1,  0,  0,  0,  0,  0 ) ) {
+  if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  1,  1,  0,  0,  0,  0,  1 ) ) {
     s->SendCMD2( "Init", Driver, "IsBusy" );
   }
 
@@ -210,7 +210,7 @@ void AUnit::Initialize( Stars *S )
   }
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
-  //                                                      PAM(Keithley)だけ
+  //                                                      PAM, PAM2(Keithley)だけ
   if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
     connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	     Qt::UniqueConnection );
@@ -471,9 +471,15 @@ bool AUnit::GetValue( void )
     s->SendCMD2( Uid, Driver, "GetMCAs" );
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
-  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
+  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   0 ) ) {
     IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, "Read" );
+    rv = false;
+  }
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
+  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
+    IsBusy2On( Driver, "GetValue" );
+    s->SendCMD2( Uid, Driver, "Read" );
     rv = false;
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
@@ -835,10 +841,13 @@ void AUnit::SetCurPos( SMsg msg )
 {
   QString buf;
 
-  if ( ( msg.From() == DevCh )
+  if ( (( msg.From() == DevCh )||( msg.From() == Driver ))
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
 	    || ( msg.Msgt() == READ ) ) ) {
-    if ( Type == "SC" ) {
+    if ( Type == "PAM2" ) {
+      Values = msg.Val().split( QChar( ',' ) );
+      Value = Values.at(0);
+    } else if ( Type == "SC" ) {
       if ( msg.Msgt() == EvCHANGEDVALUE ) {
 	Value = msg.Val();
       } else {
@@ -853,7 +862,8 @@ void AUnit::SetCurPos( SMsg msg )
 	qDebug() << "main th " << Value;
 #endif
     }
-    Values = msg.Vals();
+    if ( Type != "PAM2" )
+      Values = msg.Vals();
     emit newValue( Value );
     IsBusy2Off( Driver );
   }
@@ -936,7 +946,10 @@ double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数�
     time = dtime * 60;
     if ( time < 1 ) time = 1;
     if ( time > 40 ) time = 40;
-    s->SendCMD2( Uid, DevCh, "SetNPLCycles", QString::number( time ) );
+    if ( Type == "PAM" )
+      s->SendCMD2( Uid, DevCh, "SetNPLCycles", QString::number( time ) );
+    else 
+      s->SendCMD2( Uid, Driver, "SetNPLCycles", QString::number( time ) );
     setTime = time / 60;    // これで「秒」単位の普通の時間に戻ってる
   }
   if (( Type == "CNT" )||( Type == "CNT2" )) {
@@ -1092,28 +1105,39 @@ bool AUnit::InitSensor( void )
   bool rv = false;
 
   if (( Type == "PAM" )||( Type == "PAM2" )) { // Keithley 6845
+    QString Dev;
+    if ( Type == "PAM" ) { Dev = DevCh; } else { Dev = Driver; }
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver, "InitSensor-c0" );
-      s->SendCMD2( "Scan", DevCh, "Reset", "" );
+      s->SendCMD2( "Scan", Dev, "Reset", "" );
       LocalStage++;
       rv = true;
       break;
     case 1:
       IsBusy2On( Driver, "InitSensor-c1" );
-      s->SendCMD2( "Scan", DevCh, "SetAutoRangeEnable", "1" );
+      s->SendCMD2( "Scan", Dev, "SetAutoRangeEnable", "1" );
       LocalStage++;
       rv = true;
       break;
     case 2:
       IsBusy2On( Driver, "InitSensor-c2" );
-      s->SendCMD2( "Scan", DevCh, "SetDataFormatElements", "READ" );
-      LocalStage++;
-      rv = true;
+      if ( Type == "PAM" )
+	s->SendCMD2( "Scan", Dev, "SetDataFormatElements", "READ" );
+      if ( Type == "PAM2" )
+	s->SendCMD2( "Scan", Dev, "SetDataFormatElements", "CURR1,CURR2" );
+
+      if ( Type == "PAM" ) {
+	LocalStage++;
+	rv = true;
+      } else {
+	rv = false;      // PAM2 は ZeroCheck の設定ないらしい
+	LocalStage = 4;
+      }
       break;
     case 3:
       IsBusy2On( Driver, "InitSensor-c3" );
-      s->SendCMD2( "Scan", DevCh, "SetZeroCheckEnable", "0" );
+      s->SendCMD2( "Scan", Dev, "SetZeroCheckEnable", "0" );
       rv = false;
       LocalStage++;
       break;

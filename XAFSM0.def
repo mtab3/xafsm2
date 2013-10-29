@@ -64,7 +64,7 @@ QXAFSMODE 1 6000 15000 100 0.1
 # Detectors which can be used for Quasi Continuous Scan (in S2D) : CONTOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -462,8 +462,8 @@ SENSOR ENC2 "S042" "ENCTH2" "Encoder Th" "simmotor" "SNSeib" "deg" NO "" 2.44140
 #     "S006"       : The identifier of the parent (group reader)
 #     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg
 
-SENSOR PAM2 "S043" "Aux1" "Keithley 6482-1-1" "m6485drv-1" "1" "mA" YES "S043"
-SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6485drv-1" "2" "mA" YES "S043"
+SENSOR PAM2 "S043" "Aux1" "Keithley 6482-1-1" "m6482drv" "0" "mA" YES "S043"
+SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
 
 # The parameters following the identifier 'SENSOR' are
 #   PAM2      : Unit type   PAM : Pico-am-mator keithley 6482
@@ -472,9 +472,10 @@ SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6485drv-1" "2" "mA" YES "S043"
 #     "GENERAL"         : Identifier that this is a generally used sensor
 #                       : I0, I1, Aux1, Aux2, TotalF,... is used to identify
 #                       : default sensors for I0, I1, Aux1,...
-#     "Keithley 6485-1" : The name of the unit (only for display)
-#     "m6485drv-1"      : Stars driver name
-#     ""                : Node name in the stars driver
+#     "Keithley 6482-1" : The name of the unit (only for display)
+#     "m6482drv"        : Stars driver name
+#     "0"               : Node name in the stars driver, it must be "0", "1", "2",...
+#                       :                                      for PAM2
 #     "mA"              : Name of the metric unit (only for display)
 #     YES               : If the sensor has a parente (group leader) or not. YES or NO
 #     "S043"            : The identifier of the parent (group reader)
