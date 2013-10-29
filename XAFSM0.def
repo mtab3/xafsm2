@@ -461,3 +461,20 @@ SENSOR ENC2 "S042" "ENCTH2" "Encoder Th" "simmotor" "SNSeib" "deg" NO "" 2.44140
 #     YES          : If the sensor has a parente (group leader) or not. YES or NO
 #     "S006"       : The identifier of the parent (group reader)
 #     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg
+
+SENSOR PAM2 "S043" "Aux1" "Keithley 6482-1-1" "m6485drv-1" "1" "mA" YES "S043"
+SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6485drv-1" "2" "mA" YES "S043"
+
+# The parameters following the identifier 'SENSOR' are
+#   PAM2      : Unit type   PAM : Pico-am-mator keithley 6482
+#     "S004"            : Uniq identifire of the sensor. The identifier must be identical.
+#                       : The identifier can be any string, while it is identical.
+#     "GENERAL"         : Identifier that this is a generally used sensor
+#                       : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                       : default sensors for I0, I1, Aux1,...
+#     "Keithley 6485-1" : The name of the unit (only for display)
+#     "m6485drv-1"      : Stars driver name
+#     ""                : Node name in the stars driver
+#     "mA"              : Name of the metric unit (only for display)
+#     YES               : If the sensor has a parente (group leader) or not. YES or NO
+#     "S043"            : The identifier of the parent (group reader)

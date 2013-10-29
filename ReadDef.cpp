@@ -89,6 +89,7 @@ void MainWindow::ReadDef( QString fname )
 	    next = nextItem( next, item );
 	    NewUnit->setUPP( item );
 	  } else if ( type == "PAM" ) {
+	  } else if ( type == "PAM2" ) {
 	  } else if ( type == "CNT" ) {
 	  } else if ( type == "OTC" ) {
 	  } else if (( type == "CNT2" )||( type == "OTC2" )) {
