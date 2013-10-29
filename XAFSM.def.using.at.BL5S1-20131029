@@ -1,0 +1,467 @@
+# XAFS-M setting file : Edited 2013/04/02
+
+# What is New
+# 2013/04/03 add 'ENERGYRANGE' line
+# 2013/04/03 add 'DEFAULTUNIT' line
+# 2013/04/16 add 'ENC2'        line
+# 2013/04/19 add 'QXAFSOK'     line
+#                'NORMALOK'    line
+# 2013/04/25 add 'MCAGAIN'     line
+# 2013/05/03 add new IDs 'ChangerX' and 'ChangerZ' for PMs
+# 2013/05/23 add 'CHANGER'     line.
+#                The IDs 'ChangerX' and 'ChangerY' will be obsolete soon.
+# 2013/05/27 add 3rd 34410a for QXafs
+# 2013/06/24 add RW_DXMCENTER_CFG line
+# 2013/07/08 change the origin of 4WS(in hatch) Z
+# 2013/07/17 add a parameter for 'DV' which decide maximum integration time.
+# 2013/09/30 add 'CONTOK'      line
+# 2013/10/08 add 'SPEEDS'      line
+
+#
+# In this definition file,
+# for any item, you can use "" (double quotation marks) as you want,
+# though, it cause no difference use or not use the "" basically.
+# The "" is necessary only when you define strings with 'space'.
+# For example, the notation SENSOR and "SENSOR" cause no difference.
+# However, when the key-word includes 'space', the "" is essentially important.
+# For example, "Keithley 6485" can not be writtern Keithley 6485.
+#
+
+XAFSName  "XafsM2-BL5S1-Win"
+XAFSKey   "XafsM2"
+XAFSTitle "XafsM2-BL5S1"
+
+#
+RW_DXMCENTER_CFG  0  NOFILE.cfg           # Do not read/write DXMCenter.cfg
+# RW_DXMCENTER_CFG  1  DXMCenterTest.cfg  # read/write DXMCenterTest.cfg
+# RW_DXMCENTER_CFG  1  DXMCenter.cfg      # read/write DXMCenter.cfg
+
+#
+# Preset gains of MCA channels
+#
+# MCAGAIN ch gain
+#
+#MCAGAIN 5 0.768
+
+#
+# Define if Quick-Xafs Mode is available or not
+#
+#  QXAFSMODE 1 6000 15000
+#  QXAFSMODE 0 6000 15000
+#
+# 0 : not available  :: default
+# 1 : available
+#  6000 : standard pps
+# 15000 : highest pps
+#   100 : low speed pps (the value set as Low Speed)
+#   0.1 : run up rate [ms/pps]
+#
+#QXAFSMODE 1 6000 15000 100 0.1
+QXAFSMODE 1 1000 3000 100 1.0
+
+#
+# Detectors which can be used for Q-Xafs : QXAFSOK
+# Detectors which can be used for Normal Xafs : NORMALOK
+#
+QXAFSOK DV ENC2
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC
+CONTOK SSD CNT
+
+# now the keyword STARSDRIVER is obsolete
+
+CRYSTAL  "Si(111)"   3.1355316
+CRYSTAL  "Si(311)"   1.637478
+CRYSTAL  "Si(333)"   1.0451772
+CRYSTAL  "Ge(111)"   3.2663822
+CRYSTAL  "Ge(333)"   1.0887941
+
+# 'GAS' lines define gases available for Ion Chambers
+# GAS            : the identifier of the line
+# "He:N2 30:70"  : the name of the gas only for display
+# followings are definitions of componets of the gas
+#   "N2"         : the chemical form of the gas.
+#   0.70         : the partial pressure of the N2. (The total does not have to be 1.)
+#   "He"         ....
+#
+GAS      "No.1 He:N2 70:30"  "N2" 0.700 "He" 0.300 ""
+GAS      "No.2 N2         "  "N2" 1.000            ""
+GAS      "No.3 N2:Ar 85:15"  "N2" 0.845 "Ar" 0.155 ""
+GAS      "No.4 N2:Ar 75:25"  "N2" 0.745 "Ar" 0.255 ""
+GAS      "No.5 N2:Ar 50:50"  "N2" 0.492 "Ar" 0.508 ""
+GAS      "No.6 Ar         "             "Ar" 1.000 ""
+
+# 'ICLENGTH' lines provide information for ion-chambers
+# ICLENGTH        : the identifier of the line
+# "I0 chamber"    : the name of the ion-chamber only for display
+# "I0"            : an identifier which indicates that the chamber is default I0 chamber.
+# 14              : the length of the chamber in units of "cm"
+# "cm"            : the unit name of the length only for display
+#
+ICLENGTH "I0 ch (14cm)" "I0" 14 "cm"
+ICLENGTH "I1 ch (28cm)" "I1" 28 "cm"
+ICLENGTH "I2 ch (28cm)" ""   28 "cm"
+
+#
+# Define energy range. 
+# To check the range where the monochromator can go.
+# It should be written in the unit 'eV'.
+#
+ENERGYRANGE 3500 25000
+
+#
+# Define default unit to control monochromator
+# 0: eV, 1: keV, 2: angstrome, 3: deg
+#
+DEFAULTUNIT 0
+
+# define the groups of atoms which can be measured.
+AGROUP 0 "H"  "U"  ""                    # To use user defined color, 
+                                         # clear default color setting for all the atoms
+AGROUP 1 "V"  "Mo" "#ffff7f"             # "#ffff7f"      is bright-yellow
+AGROUP 2 "Cs" "U"  "rgb(255,170,255)"    # "255,170,255"  is bright-pink
+
+# define Moveable units
+
+# MOTOR PM "M000" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 INT -11776
+#    # The definition for "Theta" located at the end of the list of motors.
+
+# The parameters following the identifier 'MOTOR' are
+#   PM      : Unit type   PM : puls motor controlled via pm16c04
+#     "M000"      : Uniq identifier of the motor. The identifier must be identical
+#                 : The identifier can be any string, while it is identical.
+#     "THETA"     : Identifier that this is the main axis of the monochromator
+#                 : The Identifier must be identical.
+#     "Theta"     : The name of the unit (only for display)
+#     "pm16c04-1" : Stars driver name
+#     "ch3"       : Node name in the stars driver
+#     "deg"       : Name of the metric unit (only for display)
+#     0.000027... : The metric unit / puls
+#     INT         : The unit of the motion should be integer ( or REAL )
+#     -11406      : Center position in puls
+
+MOTOR PM "M001" "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 INT 0
+# MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
+
+#
+# Following definitions connecting to pm16c04-3 are real
+#
+# SPEEDS "M009" 3000 5000 100 24
+#  "M009"  : Uniq ID defined by 'MOTOR'
+#  3000    : Optimal drive speed
+#  5000    : Maximum drive speed
+#   100    : Pre-defined accel-rate (ms/1000pps)
+#    24    : Table No of Pre-defined accel-rate (ms/1000pps) for PM16C04
+#            0: 1000ms/1000pps, 24: 100ms/1000pps, 48: 10ms/1000pps, 72: 1ms/1000pps
+
+MOTOR PM "M002" "STAGEZ" "Stage Z" "pm16c04-3" "ch12" "mm" 0.00003333 INT 0
+MOTOR PM "M003" "STAGEX" "Stage X" "pm16c04-3" "ch10" "mm" 0.0004 INT 0
+MOTOR PM "M004" "STAGEY" "Stage Y" "pm16c04-3" "ch11" "mm" 0.0004 INT 0
+SPEEDS "M002" 3000 5000 300 13     # 300ms/1000pps
+SPEEDS "M003" 3000 5000 300 13     # 300ms/1000pps
+SPEEDS "M004" 3000 5000 300 13     # 300ms/1000pps
+
+MOTOR PM "M005" "4WSZa"   "4WS-Z open"   "pm16c04-3" "ch0" "mm" 0.002 INT -5000
+MOTOR PM "M006" "4WSXa"   "4WS-X open"   "pm16c04-3" "ch1" "mm" 0.002 INT -5000
+MOTOR PM "M008" "4WSXb"   "4WS-Z move"   "pm16c04-3" "ch3" "mm" 0.002 INT 0
+MOTOR PM "M007" "4WSZb"   "4WS-X move"   "pm16c04-3" "ch2" "mm" 0.002 INT 0
+SPEEDS "M005" 1000 1500 100 24
+SPEEDS "M006" 1000 1500 100 24
+SPEEDS "M007" 3000 5000 100 24
+SPEEDS "M008" 3000 5000 100 24
+
+MOTOR PM "M009" "ChangerX" "Sample Stage 1(Xs)"    "pm16c04-3" "ch4"  "mm" 0.004 INT 0
+MOTOR PM "M010" "ChangerZ" "Sample Stage 1(Zs)"    "pm16c04-3" "ch5"  "mm" 0.004 INT 0
+SPEEDS "M009" 3000 5000 100 24
+SPEEDS "M010" 3000 5000 100 24
+
+MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch6" "mm" 0.0005 INT 0
+MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch7"  "mm" 0.0005 INT 0
+MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch8" "deg" 0.004 INT 0
+MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch9" "deg" 0.00153 INT 0
+SPEEDS "M012" 3000 5000 100 24
+SPEEDS "M013" 3000 5000 100 24
+SPEEDS "M014" 3000 5000 100 24
+SPEEDS "M015" 3000 5000 100 24
+
+MOTOR PM "M015" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 INT -11776
+MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 INT 0
+MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the range !!!
+
+MOTOR SC "M018" "NEATh" "NEATh" "sc400" "unused_1" "deg" 0.00125 INT 0 
+MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0 
+
+MOTOR PM "M020" "CEY-Z" "CEY Stage Z" "pm16c04-3" "ch13" "mm" 0.001 INT 0
+MOTOR PM "M021" "CEY-th" "CEY Stage th" "pm16c04-3" "ch14" "deg" 0.0001 INT 0
+MOTOR PM "M022" "CEY-X" "CEY Stage X" "pm16c04-3" "ch15" "mm" 0.001 INT 0
+
+MOTOR PM "M023" "CEY-Z" "mini Z" "pm16c04-3" "ch13" "mm" 0.00025 INT 0     # re-definition of CEY-Z
+
+MOTOR PM "M024" "CapillaryOmega" "Capillary Stage Omega" "pm16c04-3" "ch14" "deg" 0.00096 INT 0
+MOTOR PM "M025" "CapillaryZ" "Capillary Stage Z" "pm16c04-3" "ch13" "mm" 0.0005 INT 0
+MOTOR PM "M026" "CapillaryX" "Capillary Stage X" "pm16c04-3" "ch15" "mm" 0.001 INT 0
+MOTOR PM "M027" "CapillaryPhi" "Capillary Stage Phi" "pm16c04-2" "ch13" "deg" 0.004 INT 0
+
+#   PZ      : Unit type   PZ : piezo actuator controlled via e665
+#     "DTH1P"     : Identifier that this is the dth1p
+#     "Dth1p"     : The name of the unit (only for display)
+#     "e665"      : Stars driver name
+#     ""          : Node name in the stars driver
+#     "um"        : Name of the metric unit (only for display)
+#     0.056       : The metric unit / Volt
+#     REAL        : The unit of the motion should be real ( or INT )
+#     -10         : Minimum Voltage
+#     120         : Maximum Voltage
+
+#MOTOR PM "M002" "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 INT 0
+#MOTOR PM "M003" "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 INT 0
+#MOTOR PM "M004" "STAGEY" "Stage Y" "simmotor" "ch2" "mm" 0.001 INT 0
+#MOTOR PM "M005" "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 INT 0
+#MOTOR PM "M006" "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 INT 0
+#MOTOR PM "M007" "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 INT 0
+#MOTOR PM "M008" "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 INT 0
+#MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
+#MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
+#MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 INT 0
+#MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 INT 0
+#MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 INT 0
+#MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "simmotor" "ch12" "mm" 0.001 INT 0
+
+#MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
+#MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
+#MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
+
+CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
+
+# CHANGER      :   The key word is used to define a sample changer
+#  "C000"      :   Uniq identifire of the changer. The ID must be identical
+#  "3x3 Stage" :   Name of the Changer, which will be used only for display.
+#  "M009"      :   The first axis of the changer
+#  "M010"      :   The second axis of the changer
+#     3        :   Number of samples along the first axis.
+#     3        :   Number of samples along the second axis.
+#     1        :   Sample holder number count along first axis,
+#              :       0, 1, ...,  which should be center.
+#     1        :   Sample holder number count along second axis,
+#              :       0, 1, ...,  which should be center.
+#    50        :   spacing along the first axis.
+#              :   The unit should be the metric unit defined for the first axis.
+#              :   In this case it is "mm".
+#    45        :   spacing along the second axis. 
+#              :   The unit should be the metric unit defined for the second axis.
+#              :   In this case it is "mm".
+#    -1        :   If the sample No. count up direction is parallel or anti-parallel.
+#              :       1 : parallel, -1 : anti-parallel
+#    -1        :   If the sample No. count up direction is parallel or anti-parallel.
+#              :       1 : parallel, -1 : anti-parallel
+#  30000       :   Maximum width in puls in the 1st direction
+#  30000       :   Maximum width in puls in the 2nd direction
+
+CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15 -1 -1 30000 30000
+CHANGER "C002" "4ax Stage XZ" "M011" "M012" 1 1  0 0  0 0  1 1 0 0
+
+
+
+
+
+#######################################################################
+# define Sensor units
+
+SENSOR CNT "S000" "I0" "Counter 0 (I0)" "nct0801" "ch0" "count" YES "S000"
+#SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
+#
+# // You can use any other sensor as I0, by selecting it after running the program.
+# // Keep the identifier "I0" for 1 of the "nct0801" channels, anyway.
+# The rule might be obsolute now.
+#
+SENSOR CNT "S001" "I1" "Counter 1 (I1)" "nct0801" "ch1" "count" YES "S000"
+#SENSOR CNT "S001" "GENERAL" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
+# The parameters following the identifier 'SENSOR' are
+#   CNT              : Unit type   CNT : Counter nct08
+#   "S000"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "I0"             : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Counter 0 (I0)" : The name of the unit (only for display)
+#   "nct0801"        : Stars driver name
+#   "ch0"            : Node name in the stars driver
+#   "count"          : Name of the metric unit (only for display)
+#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   "S000"             : The identifier of the parent (group reader)
+
+SENSOR CNT "S100" "GENERAL" "Counter 2 (I2)" "nct0801" "ch2" "count" YES "S000"
+
+SENSOR CNT2 "S002" "GENERAL" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
+SENSOR CNT2 "S003" "GENERAL" "Counter 3 (I1 via KTL)" "nct0801" "ch3" "count" YES "S000" "S005" -2 -9
+#SENSOR CNT2 "S002" "I0" "Counter 2 (I0 via KTL)" "simmotor" "SNScnt2" "count" YES "S000" "S004" -2 -9
+#SENSOR CNT2 "S003" "I1" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "count" YES "S000" "S005" -2 -9
+
+#SENSOR CNT "S001" "I1" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
+# The parameters following the identifier 'SENSOR' are
+#   CNT2             : Unit type  CNT2 : Counter nct08 exteded connected to keithley
+#   "S002"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "GENERAL"        : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Counter 2 (I0)" : The name of the unit (only for display)
+#   "nct0801"        : Stars driver name
+#   "ch2"            : Node name in the stars driver
+#   "count"          : Name of the metric unit (only for display)
+#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   "S000"           : The identifier of the parent (group reader)
+#   "S004"           : The identifier of the second driver
+#   -2               : Upper range limit
+#   -9               : Lower range limit
+
+SENSOR PAM "S004" "I00" "Keithley 6485-1" "m6485drv-1" "" "mA" NO ""
+SENSOR PAM "S005" "I01" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
+#SENSOR PAM "S004" "Aux1" "Keithley 6485-1" "simmotor" "SNSkth1" "mA" NO ""
+#SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
+
+# The parameters following the identifier 'SENSOR' are
+#   PAM      : Unit type   PAM : Pico-am-mator keithley 6485
+#     "S004"            : Uniq identifire of the sensor. The identifier must be identical.
+#                       : The identifier can be any string, while it is identical.
+#     "GENERAL"         : Identifier that this is a generally used sensor
+#                       : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                       : default sensors for I0, I1, Aux1,...
+#     "Keithley 6485-1" : The name of the unit (only for display)
+#     "m6485drv-1"      : Stars driver name
+#     ""                : Node name in the stars driver
+#     "mA"              : Name of the metric unit (only for display)
+#     NO                : If the sensor has a parente (group leader) or not. YES or NO
+#     ""                : The identifier of the parent (group reader)
+
+SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006"
+SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
+SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
+SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"
+SENSOR SSDP "S010" "SingleF" "SSD-ch03"  "QtXmapSSD"      "3"  "count" YES "S006"
+SENSOR SSDP "S011" "SingleF" "SSD-ch04"  "QtXmapSSD"      "4"  "count" YES "S006"
+SENSOR SSDP "S012" "SingleF" "SSD-ch05"  "QtXmapSSD"      "5"  "count" YES "S006"
+SENSOR SSDP "S013" "SingleF" "SSD-ch06"  "QtXmapSSD"      "6"  "count" YES "S006"
+SENSOR SSDP "S014" "SingleF" "SSD-ch07"  "QtXmapSSD"      "7"  "count" YES "S006"
+SENSOR SSDP "S015" "SingleF" "SSD-ch08"  "QtXmapSSD"      "8"  "count" YES "S006"
+SENSOR SSDP "S016" "SingleF" "SSD-ch19"  "QtXmapSSD"      "9"  "count" YES "S006"
+SENSOR SSDP "S017" "SingleF" "SSD-ch10"  "QtXmapSSD"      "10" "count" YES "S006"
+SENSOR SSDP "S018" "SingleF" "SSD-ch11"  "QtXmapSSD"      "11" "count" YES "S006"
+SENSOR SSDP "S019" "SingleF" "SSD-ch12"  "QtXmapSSD"      "12" "count" YES "S006"
+SENSOR SSDP "S020" "SingleF" "SSD-ch13"  "QtXmapSSD"      "13" "count" YES "S006"
+SENSOR SSDP "S021" "SingleF" "SSD-ch14"  "QtXmapSSD"      "14" "count" YES "S006"
+SENSOR SSDP "S022" "SingleF" "SSD-ch15"  "QtXmapSSD"      "15" "count" YES "S006"
+SENSOR SSDP "S023" "SingleF" "SSD-ch16"  "QtXmapSSD"      "16" "count" YES "S006"
+SENSOR SSDP "S024" "SingleF" "SSD-ch17"  "QtXmapSSD"      "17" "count" YES "S006"
+SENSOR SSDP "S025" "SingleF" "SSD-ch18"  "QtXmapSSD"      "18" "count" YES "S006"
+
+SENSOR ENC "S026" "ENCTH" "Encoder Th" "nd287" "" "deg" NO ""
+#SENSOR ENC "S026" "ENCTH" "Encoder Th" "simmotor" "SNSnd287" "deg" NO ""
+
+#   ENC      : Unit type   ENC an encorder observed/controlled via nd287
+#     "S026"       : Uniq identifire of the sensor. The identifier must be identical.
+#                  : The identifier can be any string, while it is identical.
+#     "ENCTH"      : Identifier that this is the main axis of the monochromator
+#     "Encoder Th" : The name of the unit (only for display)
+#     "nd287"      : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+#     NO           : If the sensor has a parente (group leader) or not. YES or NO
+#     ""           : The identifier of the parent (group reader)
+
+#SENSOR OTC "S027" "GENERAL" "Otc974 ch1(timer)" "ortec974" "counter01" "count" YES "S027"
+#SENSOR OTC "S028" "GENERAL" "Otc974 ch2" "ortec974" "counter02" "count" YES "S027"
+#SENSOR OTC "S029" "GENERAL" "Otc974 ch3" "ortec974" "counter03" "count" YES "S027"
+#SENSOR OTC "S030" "GENERAL" "Otc974 ch4" "ortec974" "counter04" "count" YES "S027"
+#SENSOR OTC "S027" "GENERAL" "Otc974 ch1(timer)" "simmotor" "OTCCh01" "count" YES "S027"
+#SENSOR OTC "S028" "GENERAL" "Otc974 ch2" "simmotor" "OTCCh02" "count" YES "S027"
+#SENSOR OTC "S029" "GENERAL" "Otc974 ch3" "simmotor" "OTCCh03" "count" YES "S027"
+#SENSOR OTC "S030" "GENERAL" "Otc974 ch4" "simmotor" "OTCCh04" "count" YES "S027"
+
+# The parameters following the identifier 'SENSOR' are
+#   OTC              : Unit type   OTC : Counter ortec978
+#   "S027"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "GENERAL"        : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Otc974 0"       : The name of the unit (only for display)
+#   "ortec974"       : Stars driver name
+#   "counter01"      : Node name in the stars driver
+#   "count"          : Name of the metric unit (only for display)
+#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   "S027"           : The identifier of the parent (group reader)
+
+#SENSOR OTC2 "S031" "GENERAL" "Otc974 ch2(via KTL-1)" "ortec974" "counter02" "count" YES "S027" "S004" -2 -9
+#SENSOR OTC2 "S032" "GENERAL" "Orc974 ch3(via KTL-2)" "ortec974" "counter03" "count" YES "S027" "S005" -2 -9
+#SENSOR OTC2 "S031" "GENERAL" "Otc974 ch2(via KTL-1)" "simmotor" "OTCCh03" "count" YES "S027" "S004" -2 -9
+#SENSOR OTC2 "S032" "GENERAL" "Orc974 ch3(via KTL-2)" "simmotor" "OTCCh04" "count" YES "S027" "S005" -2 -9
+
+# The parameters following the identifier 'SENSOR' are
+#   OTC2             : Unit type  OTC2 : Counter ortec974 exteded connected to keithley
+#   "S029"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "GENERAL"        : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Otc974 2"       : The name of the unit (only for display)
+#   "ortec974"       : Stars driver name
+#   "counter03"      : Node name in the stars driver
+#   "count"          : Name of the metric unit (only for display)
+#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   "S027"           : The identifier of the parent (group reader)
+#   "S004"           : The identifier of the second driver
+#   -2               : Upper range limit
+#   -9               : Lower range limit
+
+SENSOR OTC "S033" "GENERAL" "Otc994 ch1" "ortec994" "ch0" "count" YES "S033"
+SENSOR OTC "S034" "GENERAL" "Otc994 ch2" "ortec994" "ch1" "count" YES "S033"
+
+# The driver ortec994 (by M. Tabuchi) can be used as "OTC" and "OTC2".
+
+
+SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
+
+#The sensor 'LSR' add newly on Feb. 25, 2013.
+#   LSR              : Unit type LSR : Brigde to the ring-network
+#   "S035"           : Uniq identifire of the sensor. The identifier must be identical.
+#                    : The identifier can be any string, while it is identical.
+#   "LS"             : Identifier of the sensor
+#                    : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                    : default sensors for I0, I1, Aux1,...
+#   "Ring CUrrent Monitor"" : The name of the unit (only for display)
+#   "LS"             : Stars driver name
+#   "Ring"           : Node name in the stars driver
+#   "mA"             : Name of the metric unit (only for display)
+#   NO               : If the sensor has a parente (group leader) or not. YES or NO
+#   ""               : The identifier of the parent (group reader)
+
+#
+# the DV is Agilent34410 for QXAFS
+#
+#    the last parameter 0.06 set maximum integration time
+#
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO "" 0.999
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO "" 0.999
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO "" 0.999
+
+#
+# the DV2 is Agilent34410 for normal measurement
+#
+SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
+SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
+SENSOR DV2 "S041" "GENERAL" "Agilent34410-3" "a34410a-3" "" "V" NO ""
+
+SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+
+# The parameters following the identifier 'SENSOR' are
+#   ENC2      : Unit type   ENC2 is an encorder with memory
+#     "S040"       : Uniq identifire of the sensor. The identifier must be identical.
+#                  : The identifier can be any string, while it is identical.
+#     "ENCTH2"     : Identifier that this is the main axis of the monochromator
+#     "EIB741"     : The name of the unit (only for display)
+#     "EIB741"     : Stars driver name
+#     ""           : Node name in the stars driver
+#     "deg"        : Name of the metric unit (only for display)
+#     YES          : If the sensor has a parente (group leader) or not. YES or NO
+#     "S006"       : The identifier of the parent (group reader)
+#     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg
