@@ -148,6 +148,8 @@ bool MUnits::init( void )
     ff |= PUnits.at(i)->au->InitSensor();
   }
   for ( int i = 0; i < Units.count(); i++ ) {
+    if (( Units.at(i)->au->hasParent() )&&( Units.at(i)->au->getType() == "PAM2" ))
+      continue;
     ff |= Units.at(i)->au->InitSensor();
   }
 
@@ -175,7 +177,8 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
     }
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    //    if ( ! Units.at(i)->au->hasParent() ) {
+    if (( Units.at(i)->au->hasParent() )&&( Units.at(i)->au->getType() == "PAM2" ))
+      continue;
     if ( ( rv = Units.at(i)->au->SetTime( Units.at(i)->dt ) ) != Units.at(i)->dt ) {
       // 設定しようとした値と実際に設定された値が違ってたら
       QMessageBox *msg1 = new QMessageBox;
@@ -190,7 +193,6 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
 	       Qt::UniqueConnection );
       msg1->show();
     }
-    // }
   }
 }
 
@@ -258,16 +260,21 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
   AUnit *as, *ap;
   for ( int i = 0; i < Units.count(); i++ ) {
     as = Units.at(i)->au;
+#if 0
     if ( as->getType() == "PAM2" ) {
       ap = as->getTheParent();
-      qDebug() << "readVal" << as->getCh().toInt() << ap->values().count() << ap->values();
       if ( as->getCh().toInt() >= ap->values().count() )  // 異常事態
 	rvs[i] = 0;
       else 
 	rvs[i] = ap->values().at( as->getCh().toInt() ).toDouble();
+//      qDebug() << "readVal" << as->getCh().toInt()
+//	       << ap->values().count() << ap->values() << rvs[i];
     } else {
+#endif
       rvs[i] = as->value().toDouble();
+#if 0
     }
+#endif
     if ( correctBack )
       rvs[i] -= as->getDark() * as->GetSetTime();
     cps[i] = rvs[i] / as->GetSetTime();

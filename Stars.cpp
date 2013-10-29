@@ -194,6 +194,7 @@ void Stars::ReceiveMessageFromStars( void )
       
       switch( smsg.ParseMsg( RBuf ) ) {
       case RES_MSG:
+//	qDebug() << "Stars >> " << RBuf;
 	emit AskRecord( tr( "Receive an answer from Stars [%1]" ).arg( RBuf.data() ) );
 	if ( smsg.Val() == "Er:" ) {
 	  emit ReceiveError( smsg ); break;
@@ -402,6 +403,7 @@ bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
   QString Cmd = MyNameOnStars + "." + fromCh + ">" + dev + " " + cmd1;
   if ( !cmd2.isEmpty() )
     Cmd += " " + cmd2;
+//  qDebug() << "Stars << " << Cmd;
   Cmd += "\n";
 
   emit AskRecord( tr( "Sending a message [%1] to Stars" ).arg( Cmd ) );

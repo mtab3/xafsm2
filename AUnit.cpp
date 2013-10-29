@@ -846,7 +846,7 @@ void AUnit::SetCurPos( SMsg msg )
 	    || ( msg.Msgt() == READ ) ) ) {
     if ( Type == "PAM2" ) {
       Values = msg.Val().split( QChar( ',' ) );
-      Value = Values.at(0);
+      Value = Values.at( Ch.toInt() );
     } else if ( Type == "SC" ) {
       if ( msg.Msgt() == EvCHANGEDVALUE ) {
 	Value = msg.Val();
@@ -1644,6 +1644,7 @@ void AUnit::setGain( int ch, double gain )
 
 void AUnit::IsBusy2On( QString drv, QString name )
 {
+//  qDebug() << "B2ON  " << drv << name;
   IsBusy2 = true;
   Busy2Count++;
   LastFunc2 = name;
@@ -1653,6 +1654,7 @@ void AUnit::IsBusy2On( QString drv, QString name )
 
 void AUnit::IsBusy2Off( QString drv )
 {
+//  qDebug() << "B2Off " << drv;
   IsBusy2 = false;
   Busy2Count--;
   if ( Busy2Count < 0 ) Busy2Count = 0;
