@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "NewKeithley" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Oct 29 19:55:35 2013 +0900\n"\
+                "    m6482 is fully supported.  I hope there is no problem\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Oct 29 17:28:43 2013 +0900\n"\
                 "    it looks it works\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Oct 29 00:18:28 2013 +0900\n"\
                 "    define PAM2 and edited AUnit.cpp with PAM2\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Oct 28 20:55:09 2013 +0900\n"\
-                "    Save Q-XAFS data as Step-Scan basically works\n"\
 		"\n"\
                 ""
 #endif

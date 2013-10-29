@@ -16,6 +16,7 @@
 # 2013/07/17 add a parameter for 'DV' which decide maximum integration time.
 # 2013/09/30 add 'CONTOK'      line
 # 2013/10/08 add 'SPEEDS'      line
+# 2013/10/29 a sensor PAM2 (m6482) is supported 
 
 #
 # In this definition file,

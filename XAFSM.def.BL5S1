@@ -16,6 +16,7 @@
 # 2013/07/17 add a parameter for 'DV' which decide maximum integration time.
 # 2013/09/30 add 'CONTOK'      line
 # 2013/10/08 add 'SPEEDS'      line
+# 2013/10/29 a sensor PAM2 (m6482) is supported 
 
 #
 # In this definition file,
@@ -178,10 +179,10 @@ MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch6" "mm" 0.0005 
 MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch7"  "mm" 0.0005 INT 0
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch8" "deg" 0.004 INT 0
 MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch9" "deg" 0.00153 INT 0
+SPEEDS "M011" 3000 5000 100 24
 SPEEDS "M012" 3000 5000 100 24
 SPEEDS "M013" 3000 5000 100 24
 SPEEDS "M014" 3000 5000 100 24
-SPEEDS "M015" 3000 5000 100 24
 
 MOTOR PM "M015" "THETA" "Theta" "pm16c04-2" "ch3" "deg" 0.0000277777777777 INT -11776
 MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 INT 0
@@ -454,3 +455,21 @@ SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
 #     YES          : If the sensor has a parente (group leader) or not. YES or NO
 #     "S006"       : The identifier of the parent (group reader)
 #     2.441406e-6  : Unit per Puls -- reading 1 puls is 2.441406 deg
+
+SENSOR PAM2 "S043" "Aux1" "Keithley 6482-1-1" "m6482drv" "0" "mA" YES "S043"
+SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
+
+# The parameters following the identifier 'SENSOR' are
+#   PAM2      : Unit type   PAM : Pico-am-mator keithley 6482
+#     "S004"            : Uniq identifire of the sensor. The identifier must be identical.
+#                       : The identifier can be any string, while it is identical.
+#     "GENERAL"         : Identifier that this is a generally used sensor
+#                       : I0, I1, Aux1, Aux2, TotalF,... is used to identify
+#                       : default sensors for I0, I1, Aux1,...
+#     "Keithley 6482-1" : The name of the unit (only for display)
+#     "m6482drv"        : Stars driver name
+#     "0"               : Node name in the stars driver, it must be "0", "1", "2",...
+#                       :                                      for PAM2
+#     "mA"              : Name of the metric unit (only for display)
+#     YES               : If the sensor has a parente (group leader) or not. YES or NO
+#     "S043"            : The identifier of the parent (group reader)

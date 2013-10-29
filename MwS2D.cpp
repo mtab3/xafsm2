@@ -165,20 +165,6 @@ void MainWindow::S2DNewChangerSelected( int i )
   if ( Changers.count() <= 0 )
     return;
 
-#if 0
-  disconnect( SIGNAL( newValue( QString ) ),
-	      this, SLOT( ShowS2DChangerPosition( QString ) ) );
-  connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
-	   this, SLOT( ShowS2DChangerPosition( QString ) ),
-	   Qt::UniqueConnection );
-  connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
-	   this, SLOT( ShowS2DChangerPosition( QString ) ),
-	   Qt::UniqueConnection );
-
-  Changers[i]->unit1()->GetValue();
-  Changers[i]->unit2()->GetValue();
-#endif
-
   for ( int j = 0; j < S2DOkMotors.count(); j++ ) {
     if ( Changers[i]->unit1() == S2DOkMotors[j] ) {
       S2DAx1->setCurrentIndex( j );
@@ -225,14 +211,15 @@ void MainWindow::newS2DSteps( void )
   }
   if ( i < S2DStarts.count() ) {
     int p = abs( S2DPoints[i]->text().toInt() );
-    if ( p > 0 )
+    if ( p > 0 ) {
       S2DSteps[i]
 	->setText( QString::number( ( S2DEnds[i]->text().toDouble()
 				      - S2DStarts[i]->text().toDouble() ) / p ) );
-    else 
+    } else {
       S2DSteps[i]
 	->setText( QString::number( ( S2DEnds[i]->text().toDouble()
 				      - S2DStarts[i]->text().toDouble() ) / 1 ) );
+    }
   }
   CheckS2DDwellTime();
 }
@@ -679,6 +666,10 @@ void MainWindow::SaveS2DResult( void )
       f.close();
     }
   }
+  S2DNameStat = OLD;
+  S2DDataStat = OLD;
+  S2DFileName0->setStyleSheet( FSTATCOLORS[ S2DDataStat ][ S2DNameStat ] );
+  S2DFileName0->setToolTip( FSTATMsgs[ S2DDataStat ][ S2DNameStat ] );
 }
 
 void MainWindow::S2DWriteHead( void )
