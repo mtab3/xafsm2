@@ -139,6 +139,7 @@ void AUnit::Initialize( Stars *S )
   // 現状ある unit は
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
   // SSDP を除く全て
+  // (PAM2 は実際には SetCurPos は使えない (GetValue を Driver で呼ぶので))
   if ( TypeCHK(  1,  1,  1,  1,  1,  0,  0,   1,  1,  1,  1,  0,  1, 1,   1,  1 ) ) {
     connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
 	     Qt::UniqueConnection );
@@ -225,6 +226,13 @@ void AUnit::Initialize( Stars *S )
     connect( s, SIGNAL( AnsSetNPLCycles( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	     Qt::UniqueConnection );
   }
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
+  //                                                             PAM2(Keithley)だけ
+  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
+    connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( RcvAnsGetValueOfDriver( SMsg ) ),
+	     Qt::UniqueConnection );
+  }
+
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
   //                                         CNT2, OCT2 だけ。Keithley対応
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   1,  0,  0,  1,  0,  0, 0,  0,   0 ) ) {
@@ -837,17 +845,28 @@ void AUnit::ReceiveValues( SMsg msg )
   }
 }
 
-void AUnit::SetCurPos( SMsg msg )
+void AUnit::RcvAnsGetValueOfDriver( SMsg msg )  // driver 名だけで呼ばれる場合
 {
-  QString buf;
-
-  if ( (( msg.From() == DevCh )||( msg.From() == Driver ))
+  if ( ( msg.From() == Driver )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
 	    || ( msg.Msgt() == READ ) ) ) {
     if ( Type == "PAM2" ) {
       Values = msg.Val().split( QChar( ',' ) );
       Value = Values.at( Ch.toInt() );
-    } else if ( Type == "SC" ) {
+      emit newValue( Value );
+      IsBusy2Off( Driver );
+    }
+  }
+}
+
+void AUnit::SetCurPos( SMsg msg )
+{
+  QString buf;
+  
+  if ( ( msg.From() == DevCh )
+       && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
+	    || ( msg.Msgt() == READ ) ) ) {
+    if ( Type == "SC" ) {
       if ( msg.Msgt() == EvCHANGEDVALUE ) {
 	Value = msg.Val();
       } else {
@@ -862,8 +881,6 @@ void AUnit::SetCurPos( SMsg msg )
 	qDebug() << "main th " << Value;
 #endif
     }
-    if ( Type != "PAM2" )
-      Values = msg.Vals();
     emit newValue( Value );
     IsBusy2Off( Driver );
   }

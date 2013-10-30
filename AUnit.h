@@ -356,6 +356,7 @@ public slots:
   void SetCurPos( SMsg msg );
   void ReceiveValues( SMsg msg );
   void getMCALength( SMsg msg );
+  void RcvAnsGetValueOfDriver( SMsg msg );
 
 #if 0           // new mcas
   void ReactGetMCA( SMsg msg );
