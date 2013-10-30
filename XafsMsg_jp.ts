@@ -2532,6 +2532,10 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Counter</source>
         <translation>カウンタ</translation>
     </message>
+    <message>
+        <source>axis</source>
+        <translation>軸</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -3059,6 +3063,18 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Inv. Y</source>
         <translation>Y軸反転</translation>
+    </message>
+    <message>
+        <source>Measured : (%1, %2)</source>
+        <translation>現在の測定点 : (%1, %2)</translation>
+    </message>
+    <message>
+        <source>Pinted : (%1, %2)</source>
+        <translation>指定点 : (%1, %2)</translation>
+    </message>
+    <message>
+        <source>Intensity : %1</source>
+        <translation>測定強度 : %1</translation>
     </message>
 </context>
 <context>

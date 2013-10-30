@@ -820,7 +820,7 @@ void AUnit::ReceiveValues( SMsg msg )
   TotalEvents.clear();
   ICRs.clear();
 
-  if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) {
+  if ( ( msg.From() == Driver ) && ( msg.Msgt() == GETVALUES ) ) { // Check !!!!! DevCh/Drv
     if ( Type == "SSD" ) {   // SSD だけ特殊処理。全チャンネルの合計値を取る
       int sum = 0;
       for ( int i = 0; i < MaxSSDs; i++ ) {
@@ -902,7 +902,7 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
   if ( TypeCHK(  0,  0,  1,  0,  0,  0,  0,   1,  0,  1,  1,  0,  0, 0,  0,   0 ) ) {
-    if ( ( msg.From() == Driver )
+    if ( ( msg.From() == Driver )   // Check !!!!! DevCh/Drv
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       IsBusy = ( msg.Val().toInt() == 1 );
       if ( IsBusy )
@@ -914,7 +914,7 @@ void AUnit::SetIsBusyByMsg( SMsg msg )
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
   if ( TypeCHK(  0,  0,  0,  0,  0,  1,  0,   0,  0,  0,  0,  0,  0, 0,  0,   0 ) ) {
-    if ( ( msg.From() == Driver )
+    if ( ( msg.From() == Driver )    // Check !!!!! DevCh/Drv
 	 && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
       IsBusy = ( msg.Val().toInt() == 1 );
       if ( IsBusy )
@@ -1091,7 +1091,7 @@ void AUnit::RcvQGetData( SMsg msg )
 
 void AUnit::RcvStat( SMsg msg )
 {
-  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETSTAT ) ) ) {
     if ( Type == "ENC2" ) {
       //      Values = msg.Vals();
@@ -1103,7 +1103,7 @@ void AUnit::RcvStat( SMsg msg )
 
 void AUnit::RcvHighSpeed( SMsg msg )
 {
-  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETHIGHSPEED ) ) ) {
     if ( Type == "PM" ) {
       MaxS = msg.Val().toInt();
@@ -1286,7 +1286,7 @@ bool AUnit::GetStat( void )
 
 void AUnit::ReactGetStat( SMsg msg )
 {
-  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {  // Check !!!!! DevCh/Drv
     IsBusy2Off( Driver );
     MCAStats = msg.Vals();
   }
@@ -1360,7 +1360,7 @@ void AUnit::ReactGetRealTime( SMsg msg )
 {
   int ch;
 
-  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {  // Check !!!!! DevCh/Drv
     IsBusy2Off( Driver );
     MCARealTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
     emit ReceivedNewMCARealTime( ch );
@@ -1422,7 +1422,7 @@ void AUnit::ReactGetLiveTime( SMsg msg )
 {
   int ch;
 
-  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Driver ) ) {  // Check !!!!! DevCh/Drv
     IsBusy2Off( Driver );
     MCALiveTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
     emit ReceivedNewMCALiveTime( ch );
@@ -1501,7 +1501,7 @@ bool AUnit::GetMCAs( void )
 void AUnit::ReactGetRange( SMsg msg )
 {
   if (( Type == "CNT2" )||( Type == "OTC2" )) {
-    if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) {
+    if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) { // Check !!!!! DevCh/Drv
       IsBusy2Off( Driver2 );
       double range = log10( msg.Vals().at(0).toDouble() / 2.1 );
       if ( range > RangeU ) range = RangeU;
@@ -1533,7 +1533,7 @@ void AUnit::OnReportCurrent( SMsg msg )
 
 void AUnit::getMCALength( SMsg msg )
 {
-  if ( msg.From() == Driver ) {
+  if ( msg.From() == Driver ) {  //   // Check !!!!! DevCh/Drv
     MCALength = msg.Val().toInt();
   }
 }

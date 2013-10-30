@@ -99,6 +99,7 @@ private:
   void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
   double MinEnergyInEV, MaxEnergyInEV;
   int DefaultUnit;
+  QString LocalizedName( QString name );
 
   /* cfg. */
   SelMC2 *selmc;

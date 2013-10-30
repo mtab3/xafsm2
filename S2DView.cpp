@@ -303,23 +303,23 @@ void S2DView::Draw( QPainter *p )
   int inf = 0;
   rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       QString( "Measured : (%1, %2)" )
+	       tr( "Measured : (%1, %2)" )
 	       .arg( sx + dx * ( lastIx + 0.5 ) ).arg( sy + dy * lastIy ) );
 
   rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       QString( "         : %1" )
+	       tr( "Intensity : %1" )
 	       .arg( valid[lastIx][lastIy] ? QString::number( data[lastIx][lastIy] )
 		     : QString( "--" ) ) );
 
   rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       QString( "Pinted : (%1, %2)" )
+	       tr( "Pinted : (%1, %2)" )
 	       .arg( sx + dx * ( showIx + 0.5 ) ).arg( sy + dy * showIy ) );
 
   rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       QString( "         : %1" )
+	       tr( "Intensity : %1" )
 	       .arg( valid[showIx][showIy] ? QString::number( data[showIx][showIy] )
 		     : QString( "--" ) ) );
 }
