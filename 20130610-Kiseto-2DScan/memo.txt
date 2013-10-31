@@ -1,9 +1,0 @@
-・欠けた黄瀬戸の中心付近のスキャン
-  Fe.dat, Cu.dat
-  30mm x 30mm, 1mm ステップ 900点のスキャン
-  ただし、Cu は後半 1/3 ぐらい光が無くなった。
-
-  Fe-map-1.png, Fe-map-2.png, Cu-map-1.png
-    上のデータから起こした色マップ
-    Fe-map-1.png と Cu-map-1.png は z レンジが揃っている
-    Fe-map-2.png は Fe 単独でフルレンジになるようにした
