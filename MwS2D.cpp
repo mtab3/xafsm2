@@ -4,6 +4,8 @@
 #include "XafsM.h"
 #include "SMsg.h"
 
+#define LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN ( 0.25 )
+
 void MainWindow::setupScan2DArea( void )
 {
   S2DFileSel = new QFileDialog;
@@ -137,6 +139,8 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DQuasiContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
 	   Qt::UniqueConnection );
   connect( S2DRealContScan, SIGNAL( clicked() ), this, SLOT( CheckS2DDwellTime() ),
+	   Qt::UniqueConnection );
+  connect( S2DTime1, SIGNAL( editingFinished() ), this, SLOT( CheckS2DDwellTime() ),
 	   Qt::UniqueConnection );
 
   connect( S2DFileSave, SIGNAL( clicked() ), this, SLOT( SaveS2DResult0() ),
@@ -536,17 +540,18 @@ void MainWindow::CheckS2DDwellTime( void )
   if ( ps < 1 ) ps = 1;
   dx = ( ex - sx ) / ps;
 
-  if ( S2DStepScan->isChecked() ) {
+  if ( S2DStepScan->isChecked() ) { // Step Scan
     // Step Scan の時 dwell にパルスモータの最高速に起因した制限は無いはず
   }
   else if ( S2DQuasiContScan->isChecked() ) {
     pps = (int)fabs( dx / as->getUPP() / dwell );
-    if ( pps > as->highestSpeed() ) {
+    if ( pps > as->highestSpeed() ) { // Quasi Cont. Scan
       pps = as->highestSpeed();
     }
     dwell = fabs( dx / as->getUPP() / pps );
   }
-  else if ( S2DRealContScan->isChecked() ) {
+  else if ( S2DRealContScan->isChecked() ) { // Real Cont. Scan
+    if ( dwell / ps < 0.25 ) dwell = ps * LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN;
     pps = (int)fabs( dx * ps / as->getUPP() / dwell );
     if ( pps > as->highestSpeed() ) {
       pps = as->highestSpeed();
