@@ -229,7 +229,7 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
   //                                                             PAM2(Keithley)だけ
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
-    connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( RcvAnsGetValueOfDriver( SMsg ) ),
+    connect( s, SIGNAL( AnsRead( SMsg ) ),this, SLOT( RcvAnsGetValueOfDriver( SMsg ) ),
 	     Qt::UniqueConnection );
   }
 
@@ -847,9 +847,7 @@ void AUnit::ReceiveValues( SMsg msg )
 
 void AUnit::RcvAnsGetValueOfDriver( SMsg msg )  // driver 名だけで呼ばれる場合
 {
-  if ( ( msg.From() == Driver )
-       && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) 
-	    || ( msg.Msgt() == READ ) ) ) {
+  if ( ( msg.From() == Driver ) && ( msg.Msgt() == READ ) ) {
     if ( Type == "PAM2" ) {
       Values = msg.Val().split( QChar( ',' ) );
       Value = Values.at( Ch.toInt() );
