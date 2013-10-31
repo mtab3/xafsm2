@@ -17,6 +17,7 @@
 # 2013/09/30 add 'CONTOK'      line
 # 2013/10/08 add 'SPEEDS'      line
 # 2013/10/29 a sensor PAM2 (m6482) is supported 
+# 2013/10/30 merged with actually using XAFM.def at BL5S1
 
 #
 # In this definition file,
@@ -161,10 +162,10 @@ SPEEDS "M002" 3000 5000 300 13     # 300ms/1000pps
 SPEEDS "M003" 3000 5000 300 13     # 300ms/1000pps
 SPEEDS "M004" 3000 5000 300 13     # 300ms/1000pps
 
-MOTOR PM "M005" "4WSZa"   "4WS-Z open"   "pm16c04-3" "ch0" "mm" 0.002 INT -5000
-MOTOR PM "M006" "4WSXa"   "4WS-X open"   "pm16c04-3" "ch1" "mm" 0.002 INT -5000
-MOTOR PM "M008" "4WSXb"   "4WS-Z move"   "pm16c04-3" "ch3" "mm" 0.002 INT 0
-MOTOR PM "M007" "4WSZb"   "4WS-X move"   "pm16c04-3" "ch2" "mm" 0.002 INT 0
+MOTOR PM "M005" "4WSZa"   "4WS Z open"   "pm16c04-3" "ch0" "mm" 0.002 INT -5000
+MOTOR PM "M006" "4WSXa"   "4WS X open"   "pm16c04-3" "ch1" "mm" 0.002 INT -5000
+MOTOR PM "M008" "4WSXb"   "4WS Z move"   "pm16c04-3" "ch3" "mm" 0.002 INT 0
+MOTOR PM "M007" "4WSZb"   "4WS X move"   "pm16c04-3" "ch2" "mm" 0.002 INT 0
 SPEEDS "M005" 1000 1500 100 24
 SPEEDS "M006" 1000 1500 100 24
 SPEEDS "M007" 3000 5000 100 24
@@ -178,7 +179,7 @@ SPEEDS "M010" 3000 5000 100 24
 MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "pm16c04-3" "ch6" "mm" 0.0005 INT 0
 MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "pm16c04-3" "ch7"  "mm" 0.0005 INT 0
 MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "pm16c04-3" "ch8" "deg" 0.004 INT 0
-MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "pm16c04-3" "ch9" "deg" 0.00153 INT 0
+MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omg)"   "pm16c04-3" "ch9" "deg" 0.00153 INT 0
 SPEEDS "M011" 3000 5000 100 24
 SPEEDS "M012" 3000 5000 100 24
 SPEEDS "M013" 3000 5000 100 24
@@ -190,6 +191,16 @@ MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the ra
 
 MOTOR SC "M018" "NEATh" "NEATh" "sc400" "unused_1" "deg" 0.00125 INT 0 
 MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0 
+
+MOTOR PM "M020" "GENERAL" "CEY Stg. Z"   "pm16c04-3" "ch13" "mm"  0.001  INT 0
+MOTOR PM "M022" "GENERAL" "CEY Stg. X"   "pm16c04-3" "ch15" "mm"  0.001  INT 0
+MOTOR PM "M021" "GENERAL" "CEY Stg. Omg" "pm16c04-3" "ch14" "deg" 0.0001 INT 0
+
+MOTOR PM "M023" "GENERAL" "mini Z"        "pm16c04-3" "ch13" "mm"  0.00025 INT 0  # CEY-Z
+MOTOR PM "M024" "GENERAL" "Cap. Stg. Omg"   "pm16c04-3" "ch14" "deg" 0.00096 INT 0
+MOTOR PM "M025" "GENERAL" "Cap. Stg. Z"   "pm16c04-3" "ch13" "mm"  0.0005  INT 0  # CEY-Z
+MOTOR PM "M026" "GENERAL" "Cap. Stg. X"   "pm16c04-3" "ch15" "mm"  0.001   INT 0
+MOTOR PM "M027" "GENERAL" "Cap. Stg. Phi" "pm16c04-2" "ch13" "deg" 0.004   INT 0
 
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
@@ -214,7 +225,7 @@ MOTOR SC "M019" "NEA-Z" "NEA-Z" "sc400" "unused_2" "mm" 0.00005 INT 0
 #MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 INT 0
 #MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 INT 0
 #MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 INT 0
-#MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omega)" "simmotor" "ch12" "mm" 0.001 INT 0
+#MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omg)"   "simmotor" "ch12" "mm" 0.001 INT 0
 
 #MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
 #MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0

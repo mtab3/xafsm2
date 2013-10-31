@@ -2484,6 +2484,58 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>eV.</source>
         <translation>eV です</translation>
     </message>
+    <message>
+        <source>CEY</source>
+        <translation>転換電子収量</translation>
+    </message>
+    <message>
+        <source>CAP</source>
+        <translation>キャピラリ</translation>
+    </message>
+    <message>
+        <source>Theta!</source>
+        <translation>θ</translation>
+    </message>
+    <message>
+        <source>DTh</source>
+        <translation type="obsolete">Δθ</translation>
+    </message>
+    <message>
+        <source>Sample</source>
+        <translation>試料</translation>
+    </message>
+    <message>
+        <source>Stage</source>
+        <translation>ステージ</translation>
+    </message>
+    <message>
+        <source>Phi</source>
+        <translation>Φ</translation>
+    </message>
+    <message>
+        <source>Omg</source>
+        <translation>ω</translation>
+    </message>
+    <message>
+        <source>open</source>
+        <translation>開/閉</translation>
+    </message>
+    <message>
+        <source>move</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>Dth</source>
+        <translation>Δθ</translation>
+    </message>
+    <message>
+        <source>Counter</source>
+        <translation>カウンタ</translation>
+    </message>
+    <message>
+        <source>axis</source>
+        <translation>軸</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -3011,6 +3063,18 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Inv. Y</source>
         <translation>Y軸反転</translation>
+    </message>
+    <message>
+        <source>Measured : (%1, %2)</source>
+        <translation>現在の測定点 : (%1, %2)</translation>
+    </message>
+    <message>
+        <source>Pinted : (%1, %2)</source>
+        <translation>指定点 : (%1, %2)</translation>
+    </message>
+    <message>
+        <source>Intensity : %1</source>
+        <translation>測定強度 : %1</translation>
     </message>
 </context>
 <context>

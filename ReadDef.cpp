@@ -65,6 +65,9 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); NewUnit->setCh( item );
 	next = nextItem( next, item ); NewUnit->setUnit( item );
 	NewUnit->setDevCh();
+	// 名前の中の特殊文字の置換
+	NewUnit->setName( LocalizedName( NewUnit->getName() ) );
+
 	// 以下、motor だけの項目
 	if ( isMotor ) {
 	  // 全 motor 共通
@@ -193,6 +196,7 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); newChanger->setDir2( item.toInt() );
 	next = nextItem( next, item ); newChanger->setWidth1( item.toInt() );
 	next = nextItem( next, item ); newChanger->setWidth2( item.toInt() );
+	newChanger->setName( LocalizedName( newChanger->name() ) );
 	Changers << newChanger;
       } else if ( item == "RW_DXMCENTER_CFG" ) {
 	next = nextItem( next, item ); RWDXMCenterF = ( item.toInt() == 1 );
