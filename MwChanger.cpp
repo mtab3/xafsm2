@@ -71,7 +71,8 @@ void MainWindow::AutoMeasurement( void )
     // AutoMode->setDisabled( true );  // Now, there is no need to set it to be disabled
     MeasA = 0;
     // AutoModeParams.remove( 0 );
-    moveToTarget( AutoModeParams[ MeasA ].num,
+    moveToTarget( Changers[ ChangerSelect->currentIndex() ],
+		  AutoModeParams[ MeasA ].num,
                   AutoModeParams[ MeasA ].dx,
                   AutoModeParams[ MeasA ].dz );
   }
@@ -98,7 +99,8 @@ void MainWindow::AutoSequence( void )
     MeasA++;
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
                 this, SLOT( AutoSequence() ) );
-    moveToTarget( AutoModeParams[ MeasA ].num,
+    moveToTarget( Changers[ ChangerSelect->currentIndex() ],
+		  AutoModeParams[ MeasA ].num,
                   AutoModeParams[ MeasA].dx,
                   AutoModeParams[ MeasA ].dz );
     StartMeasurement();
@@ -123,12 +125,14 @@ void MainWindow::SetNewChangerCenter( void )
   c2->setCenter( nowz - iz * changer->spacing2() / c2->getUPP() * changer->dir2() );
 }
 
-void MainWindow::moveToTarget( int target, double dx, double dz )
+void MainWindow::moveToTarget( Changer *changer, int target, double dx, double dz )
 {
+#if 0
   if ( Changers.count() <= 0 )
     return;
+#endif
 
-  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  //  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
   AUnit *c1 = changer->unit1();
   AUnit *c2 = changer->unit2();
 
@@ -152,7 +156,8 @@ void MainWindow::ChangerGoToNewPosition( void )
   if ( Changers.count() <= 0 )
     return;
 
-  moveToTarget( ChangerToGoHolderSelect->value(),
+  moveToTarget( Changers[ ChangerSelect->currentIndex() ],
+		ChangerToGoHolderSelect->value(),
 		ChangerToGoFinePosition1->text().toDouble(),
 		ChangerToGoFinePosition2->text().toDouble() );
 

@@ -2536,6 +2536,30 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>axis</source>
         <translation>軸</translation>
     </message>
+    <message>
+        <source>SSD Calibration</source>
+        <translation>SSD較正データ取得</translation>
+    </message>
+    <message>
+        <source>Dead Time Calib.</source>
+        <translation>数え落とし補正</translation>
+    </message>
+    <message>
+        <source>Auto Carib.</source>
+        <translation>自動計測</translation>
+    </message>
+    <message>
+        <source>Energy Calib.</source>
+        <translation>エネルギー較正</translation>
+    </message>
+    <message>
+        <source>keV</source>
+        <translation>keV</translation>
+    </message>
+    <message>
+        <source>GoThere</source>
+        <translation>移動</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

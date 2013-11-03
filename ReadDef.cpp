@@ -198,6 +198,47 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); newChanger->setWidth2( item.toInt() );
 	newChanger->setName( LocalizedName( newChanger->name() ) );
 	Changers << newChanger;
+      } else if ( item == "SPEC_CHG" ) {
+	SpecChanger *newSChanger = new SpecChanger;
+	next = nextItem( next, item ); newSChanger->setID( item );
+	next = nextItem( next, item ); newSChanger->setName( item );
+	next = nextItem( next, item ); newSChanger->setBaseChangerID( item );
+	for ( i = 0; i < Changers.count(); i++ ) {
+	  if ( Changers[i]->id() == item )
+	    break;
+	}
+	if ( i < Changers.count() ) {
+	  newSChanger->setBaseChangerP( Changers[i] );
+	  SChangers << newSChanger;
+	} else {
+	  qDebug()
+	    << QString( "There is no chager [%1] for the base of the changer [%2]" )
+	    .arg( item ).arg( newSChanger->id() );
+	}
+      } else if ( item == "POS_NAME" ) {
+	next = nextItem( next, item );
+	for ( i = 0; i < SChangers.count(); i++ ) {
+	  if ( SChangers[i]->id() == item )
+	    break;
+	}
+	if ( i < SChangers.count() ) {
+	  SpecName *newSName = new SpecName;
+	  next = nextItem( next, item ); newSName->setPosition( item.toInt() );
+	  next = nextItem( next, item ); newSName->setName( item );
+	  while ( next != "" ) {
+	    next = nextItem( next, item ); newSName->addAttrib( item );
+	  }
+	  SChangers[i]->addSpecName( newSName );
+	} else {
+	  qDebug()
+	    << QString( "There is no special chager [%1]"
+			" for the attributions [%2]" )
+	    .arg( item ).arg( next );
+	}
+      } else if ( item == "CALIB_ENGS" ) {
+	while ( next != "" ) {
+	  next = nextItem( next, item ); SSDCalibEnergys << item;
+	}
       } else if ( item == "RW_DXMCENTER_CFG" ) {
 	next = nextItem( next, item ); RWDXMCenterF = ( item.toInt() == 1 );
 	next = nextItem( next, item ); DXMCenterFile = item;
@@ -337,6 +378,7 @@ QString MainWindow::nextItem( QString start, QString &item )
       rs = start.mid( i + 1 );
     }
   }
+  item.replace( QChar( '~' ), QChar( ' ' ) );
 
   return rs;
 }

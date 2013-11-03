@@ -33,6 +33,7 @@
 #include "FluoDBase.h"
 #include "DarkTable.h"
 #include "Changer.h"
+#include "SpecChanger.h"
 #include "cBar.h"
 #include "UsingUnits.h"
 #include "TuningTable.h"
@@ -135,6 +136,8 @@ private:
   QFileInfo BaseFile;
   QVector<MCAGain*> MCAGains;
   QVector<MCAPeak> *MCAPeaks;
+  QStringList SSDCalibEnergys;
+  double AttenDx, AttenDy;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -149,6 +152,8 @@ private:
 
   QVector<Changer*> Changers;
   AUnit *movingC1, *movingC2;
+
+  QVector<SpecChanger*> SChangers;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -650,7 +655,7 @@ private slots:
   void newA2Range( int newR );
 
   void AutoMeasurement( void );
-  void moveToTarget( int target, double dx, double dy );
+  void moveToTarget( Changer *c, int target, double dx, double dy );
   void AutoSequence( void );
 
   void StartMeasurement( void );
@@ -670,6 +675,9 @@ private slots:
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
   void ReadLowerLimitSetting( void );
+
+  void NewAttenCh( int i );
+  void NewAttenPos( void );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );
