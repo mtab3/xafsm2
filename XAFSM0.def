@@ -274,7 +274,7 @@ POS_NAME "A001" 17 "Al ~64"  768  um
 POS_NAME "A001" 16 "Al ~80"  960  um
 POS_NAME "A001" 15 "Al ~96" 1152  um
 POS_NAME "A001" 14 "Al 128" 1536  um
-POS_NAME "A001" 28 "Al Inf" 9999  um
+POS_NAME "A001" 28 "Shutter" 999999 um
 POS_NAME "A001" 27 "1.5mm pin hole" u um
 
 SPEC_CHG "A002" "Another Pb Series" "C003" 

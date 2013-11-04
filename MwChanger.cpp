@@ -36,7 +36,7 @@ void MainWindow::setupChangerArea( void )
 	   Qt::UniqueConnection );
   connect( DatumChanger, SIGNAL( clicked() ), this, SLOT( StartDatumChanger() ),
 	   Qt::UniqueConnection );
-  connect( this, SIGNAL( ChangerNext() ), this, SLOT( AutoSequence() ),
+  connect( this, SIGNAL( ChangerNext() ), this, SLOT( AutoXAFSSequence() ),
 	   Qt::UniqueConnection );
   
   movingC1 = movingC2 = NULL;
@@ -79,14 +79,14 @@ void MainWindow::AutoMeasurement( void )
   StartMeasurement();
 }
 
-void MainWindow::AutoSequence( void )
+void MainWindow::AutoXAFSSequence( void )
 {
   if ( Changers.count() <= 0 )
     return;
 
   AutoModeFirst = false;
 
-  //  qDebug() << "AutoSequence";
+  //  qDebug() << "AutoXAFSSequence";
   //  qDebug() << "MeasA" << MeasA
   //           << "AutoModeParams.count()" << AutoModeParams.count();
 
@@ -94,11 +94,11 @@ void MainWindow::AutoSequence( void )
     Changers[ ChangerSelect->currentIndex() ]->unit1()->SetValue( 0 );
     Changers[ ChangerSelect->currentIndex() ]->unit2()->SetValue( 0 );
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
-                this, SLOT( AutoSequence() ) );
+                this, SLOT( AutoXAFSSequence() ) );
   } else if ( !(MMainTh->isBusy()) ) {
     MeasA++;
     disconnect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
-                this, SLOT( AutoSequence() ) );
+                this, SLOT( AutoXAFSSequence() ) );
     moveToTarget( Changers[ ChangerSelect->currentIndex() ],
 		  AutoModeParams[ MeasA ].num,
                   AutoModeParams[ MeasA].dx,

@@ -97,6 +97,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupReadDataArea();
   setupScan2DArea();
   setupWebView();
+  setupAutoSequence();
 
   conds = new Conditions;
   conds->setVersionInfo( VERSION, __DATE__, __TIME__ );

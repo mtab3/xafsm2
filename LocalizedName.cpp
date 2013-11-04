@@ -20,5 +20,10 @@ QString MainWindow::LocalizedName( QString name )
 
   name.replace( QString( "ax" ),        tr( "axis" ) );
 
+  name.replace( QString( "Series" ) ,   tr( "Series" ) );
+  name.replace( QString( "Shutter" ),   tr( "Shutter" ) );
+  name.replace( QString( "pin hole" ),  tr( "pin hole" ) );
+  name.replace( QString( "um" ),        tr( "um" ) );
+
   return name;
 }

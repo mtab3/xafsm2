@@ -201,7 +201,7 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "SPEC_CHG" ) {
 	SpecChanger *newSChanger = new SpecChanger;
 	next = nextItem( next, item ); newSChanger->setID( item );
-	next = nextItem( next, item ); newSChanger->setName( item );
+	next = nextItem( next, item ); newSChanger->setName( LocalizedName( item ) );
 	next = nextItem( next, item ); newSChanger->setBaseChangerID( item );
 	for ( i = 0; i < Changers.count(); i++ ) {
 	  if ( Changers[i]->id() == item )
@@ -224,9 +224,9 @@ void MainWindow::ReadDef( QString fname )
 	if ( i < SChangers.count() ) {
 	  SpecName *newSName = new SpecName;
 	  next = nextItem( next, item ); newSName->setPosition( item.toInt() );
-	  next = nextItem( next, item ); newSName->setName( item );
+	  next = nextItem( next, item ); newSName->setName( LocalizedName( item ) );
 	  while ( next != "" ) {
-	    next = nextItem( next, item ); newSName->addAttrib( item );
+	    next = nextItem( next, item ); newSName->addAttrib( LocalizedName( item ) );
 	  }
 	  SChangers[i]->addSpecName( newSName );
 	} else {

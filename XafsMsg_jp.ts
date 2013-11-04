@@ -2560,6 +2560,30 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>GoThere</source>
         <translation>移動</translation>
     </message>
+    <message>
+        <source>Center correct.  x: </source>
+        <translation>センター補正 x: </translation>
+    </message>
+    <message>
+        <source>y: </source>
+        <translation>y: </translation>
+    </message>
+    <message>
+        <source>Series</source>
+        <translation>シリーズ</translation>
+    </message>
+    <message>
+        <source>Shutter</source>
+        <translation>シャッター</translation>
+    </message>
+    <message>
+        <source>pin hole</source>
+        <translation>ピンホール</translation>
+    </message>
+    <message>
+        <source>um</source>
+        <translation>μm</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

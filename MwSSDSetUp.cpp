@@ -169,8 +169,10 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( NewAttenCh( int ) ), Qt::UniqueConnection );
   connect( AttenMoveTo, SIGNAL( clicked() ), this, SLOT( NewAttenPos() ),
 	   Qt::UniqueConnection );
+  connect( DTAutoCalib, SIGNAL( clicked() ), this, SLOT( DTAutoCalibStart() ),
+	   Qt::UniqueConnection );
 
-  // Eng. Calib.
+  // SSD Energy Calib.
   if ( SSDCalibEnergys.count() > 0 ) {
     for ( int i = 0; i < SSDCalibEnergys.count(); i++ ) {
       EnergySelect->addItem( SSDCalibEnergys[i] );
