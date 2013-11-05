@@ -117,8 +117,8 @@ void MainWindow::SetNewChangerCenter( void )
   AUnit *c2 = changer->unit2();
 
   int target = ChangerCurrentHolder->value();       // Target は 1 始まりの整数
-  int ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
-  int iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
+  double ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
+  double iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
   int nowx = c1->value().toInt();
   int nowz = c2->value().toInt();
   c1->setCenter( nowx - ix * changer->spacing1() / c1->getUPP() * changer->dir1() );
@@ -137,8 +137,8 @@ void MainWindow::moveToTarget( Changer *changer, int target, double dx, double d
   AUnit *c2 = changer->unit2();
 
   MovingToNewSamplePosition = true;   // このフラグで移動中の測定をブロックする
-  int ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
-  int iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
+  double ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
+  double iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
   int targetx = c1->u2p( changer->spacing1() * ix * changer->dir1() )
                    + dx / c1->getUPP() * changer->dir1();
   int targetz = c2->u2p( changer->spacing2() * iz * changer->dir2() )
@@ -156,15 +156,6 @@ void MainWindow::ChangerGoToNewPosition( void )
   if ( Changers.count() <= 0 )
     return;
 
-  moveToTarget( Changers[ ChangerSelect->currentIndex() ],
-		ChangerToGoHolderSelect->value(),
-		ChangerToGoFinePosition1->text().toDouble(),
-		ChangerToGoFinePosition2->text().toDouble() );
-
-  ChangerGo->setText( tr( "Moving" ) );
-  ChangerGo->setStyleSheet( InActive );
-  ChangerGo->setEnabled( false );
-
   Changer *changer = Changers[ ChangerSelect->currentIndex() ];
   movingC1 = changer->unit1();
   movingC2 = changer->unit2();
@@ -174,6 +165,15 @@ void MainWindow::ChangerGoToNewPosition( void )
   connect( movingC2, SIGNAL( ChangedIsBusy1( QString ) ),
 	   this, SLOT( ChangerReached( QString ) ),
 	   Qt::UniqueConnection );
+
+  moveToTarget( Changers[ ChangerSelect->currentIndex() ],
+		ChangerToGoHolderSelect->value(),
+		ChangerToGoFinePosition1->text().toDouble(),
+		ChangerToGoFinePosition2->text().toDouble() );
+
+  ChangerGo->setText( tr( "Moving" ) );
+  ChangerGo->setStyleSheet( InActive );
+  ChangerGo->setEnabled( false );
 }
 
 void MainWindow::ChangerReached( QString )
@@ -189,6 +189,21 @@ void MainWindow::ChangerReached( QString )
   ChangerGo->setText( tr( "MoveTo" ) );
   ChangerGo->setStyleSheet( NormalB );
   ChangerGo->setEnabled( true );
+}
+
+void MainWindow::SChangerReached( QString )
+{
+  if ( movingSC1->isBusy() || movingSC2->isBusy() ) 
+    return;
+
+  disconnect( movingSC1, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ChangerReached( QString ) ) );
+  disconnect( movingSC2, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( ChangerReached( QString ) ) );
+
+  AttenMoveTo->setText( tr( "GoThere" ) );
+  AttenMoveTo->setStyleSheet( NormalB );
+  AttenMoveTo->setEnabled( true );
 }
 
 void MainWindow::NewChangerSelected( int i )
@@ -227,20 +242,19 @@ void MainWindow::ShowChangerPosition( QString )
   double p2 = c2->value().toDouble();
 
   double x = ( p1 - c1->getCenter() )
-                * c1->getUPP() * changer->dir1() / changer->spacing1();
+    * c1->getUPP() * changer->dir1() / changer->spacing1() + changer->center1();
   double y = ( p2 - c2->getCenter() )
-                * c2->getUPP() * changer->dir2() / changer->spacing2();
+    * c2->getUPP() * changer->dir2() / changer->spacing2() + changer->center2();
 
   int ix, iy;
   if ( x > 0 ) { ix = (int)( x + 0.5 ); } else { ix = -(int)( -x + 0.5 ); }
   if ( y > 0 ) { iy = (int)( y + 0.5 ); } else { iy = -(int)( -y + 0.5 ); }
-  int num = changer->holders1() * ( iy + changer->center1() )
-             + ( ix + changer->center1() ) + 1;
+  int num = changer->holders1() * iy + ix + 1;
 
   double dx = ( p1 - c1->getCenter() ) * c1->getUPP() * changer->dir1()
-                  - ix * changer->spacing1();
+    - ( ix - changer->center1() ) * changer->spacing1();
   double dy = ( p2 - c2->getCenter() ) * c2->getUPP() * changer->dir2()
-                  - iy * changer->spacing2();
+    - ( iy - changer->center2() ) * changer->spacing2();
 
   ChangerToGoHolderSelect->setValue( num );
   ChangerCurrentHolder->setValue( num );
