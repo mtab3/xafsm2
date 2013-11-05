@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "att" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Nov 5 00:07:31 2013 +0900\n"\
+                "    working on auto-sequence for dt-calib\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Nov 4 01:10:47 2013 +0900\n"\
                 "    working on atten\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Oct 31 11:00:38 2013 +0900\n"\
                 "    Merge branch 'master' into S2D\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Oct 31 10:55:56 2013 +0900\n"\
-                "    Again it works with m6482\n"\
 		"\n"\
                 ""
 #endif

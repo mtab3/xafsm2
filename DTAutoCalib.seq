@@ -1,10 +1,17 @@
+# Data collect for SSD Dead Time corrction
 
-# test DT auto calib sequence
+SCHANGER SELECT    A001         # Select Special Changer A001
+SCHANGER SETDXDY   ASIS         # set dx, dy of the changer as selected on SSD-setting
 
-test
+MONOCH   ENERGY    10.0         # Set I0 energy at 10 keV
 
-test 2
+SCHANGER MOVE      SHUTTER      # (Selected)SpecialChanger MoveTo Shutter position
 
-# test 3
+MONITOR  CLEAR
+MONITOR  SENS      S000         # add S000 (Counter 0) to be monitored
+MONITOR  SENS      S001         # add S001 (Counter 1) to be monitored
+MONITOR  DTIME     1.000        # set dwell time 1.0 s
+MONITOR  CLEAR_LOCAL_STAGE
+MONITOR  MEASURE
+MONITOR  READ
 
-test 4

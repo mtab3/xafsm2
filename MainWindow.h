@@ -41,6 +41,7 @@
 #include "MCA.h"
 #include "ScanInfo.h"
 #include "BlockInfo.h"
+#include "CheckUnits.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -137,7 +138,8 @@ private:
   QVector<MCAGain*> MCAGains;
   QVector<MCAPeak> *MCAPeaks;
   QStringList SSDCalibEnergys;
-  double AttenDx, AttenDy;
+  //  double AttenDx, AttenDy;
+  AUnit *movingSC1, *movingSC2;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -195,8 +197,15 @@ private:
   QTimer *ASTimer;
   QFile ASFile;
   QTextStream ASin;
+  QVector<QStringList> ASCMDs;
+  int ASCMDi, ASCMDii;
+  CheckUnits CheckMUnits, CheckSUnits;
+  SpecChanger *ASSChanger;
+  double ASSCDx, ASSCDy;
+  MUnits ASMUnits;
+  double ASMeasVals[ 100 ];
+  double ASMeasCPSs[ 100 ];
   /* Auto Sequence */
-
 
 
   /***********************************************/
@@ -512,6 +521,7 @@ private:
   bool AutoSequenceShouldBeLocked( void );
   bool ASReadNextLine( QStringList &line );
   void AutoSequenceEnd( void );
+  void ASReadSEQFile( QString fname );
 
 private slots:
   // Main Part
@@ -694,6 +704,7 @@ private slots:
 
   void NewAttenCh( int i );
   void NewAttenPos( void );
+  void SChangerReached( QString );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );

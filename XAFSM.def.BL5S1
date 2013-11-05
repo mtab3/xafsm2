@@ -262,30 +262,30 @@ CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
 #  30000       :   Maximum width in puls in the 1st direction
 #  30000       :   Maximum width in puls in the 2nd direction
 
-CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7 3 3 15 15 -1 -1 30000 30000
-CHANGER "C002" "4ax Stage XZ"     "M011" "M012" 1 1 0 0  0  0  1  1     0     0
-CHANGER "C003" "6x5 Stage"        "M009" "M010" 6 5 0 0 18 20 -1 -1 30000 30000
+CHANGER "C001" "7x7 Grater Stage" "M009" "M010" 7 7   3 3 15 15 -1 -1 30000 30000
+CHANGER "C002" "4ax Stage XZ"     "M011" "M012" 1 1   0 0  0  0  1  1     0     0
+CHANGER "C003" "6x5 Stage"        "M009" "M010" 6 5 2.5 2 18 20 -1 -1 30000 30000
 
 SPEC_CHG "A001" "Al Series" "C003" 
-POS_NAME "A001" 26 "Al ~~0"    0  um
-POS_NAME "A001"  5 "Al ~~1"   12  um
-POS_NAME "A001"  4 "Al ~~2"   24  um
-POS_NAME "A001"  3 "Al ~~4"   48  um
-POS_NAME "A001"  2 "Al ~~6"   72  um
-POS_NAME "A001"  1 "Al ~~8"   96  um
-POS_NAME "A001"  0 "Al ~12"  144  um
-POS_NAME "A001" 11 "Al ~16"  192  um
-POS_NAME "A001" 10 "Al ~24"  288  um
-POS_NAME "A001"  9 "Al ~32"  384  um
-POS_NAME "A001"  8 "Al ~40"  480  um
-POS_NAME "A001"  7 "Al ~48"  576  um
-POS_NAME "A001"  6 "Al ~56"  672  um
-POS_NAME "A001" 17 "Al ~64"  768  um
-POS_NAME "A001" 16 "Al ~80"  960  um
-POS_NAME "A001" 15 "Al ~96" 1152  um
-POS_NAME "A001" 14 "Al 128" 1536  um
-POS_NAME "A001" 28 "Shutter" 999999 um
-POS_NAME "A001" 27 "1.5mm pin hole" u um
+POS_NAME "A001" 26 "Al ~~0"  Al000    0  um
+POS_NAME "A001"  5 "Al ~~1"  Al001   12  um
+POS_NAME "A001"  4 "Al ~~2"  Al002   24  um
+POS_NAME "A001"  3 "Al ~~4"  Al004   48  um
+POS_NAME "A001"  2 "Al ~~6"  Al006   72  um
+POS_NAME "A001"  1 "Al ~~8"  Al008   96  um
+POS_NAME "A001"  0 "Al ~12"  Al012  144  um
+POS_NAME "A001" 11 "Al ~16"  Al016  192  um
+POS_NAME "A001" 10 "Al ~24"  Al024  288  um
+POS_NAME "A001"  9 "Al ~32"  Al032  384  um
+POS_NAME "A001"  8 "Al ~40"  Al040  480  um
+POS_NAME "A001"  7 "Al ~48"  Al048  576  um
+POS_NAME "A001"  6 "Al ~56"  Al056  672  um
+POS_NAME "A001" 17 "Al ~64"  Al064  768  um
+POS_NAME "A001" 16 "Al ~80"  Al080  960  um
+POS_NAME "A001" 15 "Al ~96"  Al096 1152  um
+POS_NAME "A001" 14 "Al 128"  Al128 1536  um
+POS_NAME "A001" 28 "Shutter" SHUTTER 999999 um
+POS_NAME "A001" 27 "1.5mm pin hole" PINHOLE 0 um
 
 CALIB_ENGS 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 19.0
 

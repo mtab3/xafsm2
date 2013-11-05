@@ -15,7 +15,7 @@ class Changer : public QObject
   QString UnitID1, UnitID2;
   AUnit *Unit1, *Unit2;
   int Holders1, Holders2;
-  int Center1, Center2;
+  double Center1, Center2;
   double Spacing1, Spacing2;
   int Dir1, Dir2;
   int Width1, Width2;
@@ -31,8 +31,8 @@ class Changer : public QObject
   void setUnit2( AUnit *u2 ) { Unit2 = u2; };
   void setHolders1( int h1 ) { Holders1 = h1; };
   void setHolders2( int h2 ) { Holders2 = h2; };
-  void setCenter1( int c1 ) { Center1 = c1; };
-  void setCenter2( int c2 ) { Center2 = c2; };
+  void setCenter1( double c1 ) { Center1 = c1; };
+  void setCenter2( double c2 ) { Center2 = c2; };
   void setSpacing1( double s1 ) { Spacing1 = s1; };
   void setSpacing2( double s2 ) { Spacing2 = s2; };
   void setDir1( int d1 ) { Dir1 = d1; };
@@ -47,8 +47,8 @@ class Changer : public QObject
   int holders1( void ) { return Holders1; };
   int holders2( void ) { return Holders2; };
   int holders( void ) { return Holders1 * Holders2; };
-  int center1( void ) { return Center1; };
-  int center2( void ) { return Center2; };
+  double center1( void ) { return Center1; };
+  double center2( void ) { return Center2; };
   double spacing1( void ) { return Spacing1; };
   double spacing2( void ) { return Spacing2; };
   AUnit *unit1( void ) { return Unit1; };

@@ -164,7 +164,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
     AttenMoveTo->setEnabled( false );
     DTAutoCalib->setEnabled( false );
   }
-  AttenDx = AttenDy = 0;
+  //  AttenDx = AttenDy = 0;
   connect( AttChSelect, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( NewAttenCh( int ) ), Qt::UniqueConnection );
   connect( AttenMoveTo, SIGNAL( clicked() ), this, SLOT( NewAttenPos() ),
@@ -187,9 +187,24 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 void MainWindow::NewAttenPos( void )
 {
   SpecChanger *sc = SChangers[ AttChSelect->currentIndex() ];
+
+  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  movingSC1 = changer->unit1();
+  movingSC2 = changer->unit2();
+  connect( movingSC1, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( SChangerReached( QString ) ),
+	   Qt::UniqueConnection );
+  connect( movingSC2, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( SChangerReached( QString ) ),
+	   Qt::UniqueConnection );
+
   moveToTarget( sc->baseChangerP(),
 		sc->specName( AttenSelect->currentIndex() )->position(),
-		AttenDx, AttenDy );
+		AttDx->text().toDouble(), AttDy->text().toDouble() );
+
+  AttenMoveTo->setText( tr( "Moving" ) );
+  AttenMoveTo->setStyleSheet( InActive );
+  AttenMoveTo->setEnabled( false );
 }
 
 void MainWindow::NewAttenCh( int att )
