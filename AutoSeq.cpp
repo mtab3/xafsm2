@@ -1,6 +1,8 @@
 
 #include "MainWindow.h"
 
+#include <QIODevice>
+
 /**********************************************************************/
 
 #define DTAUTOSEQFNAME  "DTAutoCalib.seq"  
@@ -127,7 +129,7 @@ void MainWindow::AutoSequence0( void )
 	  qDebug() << "Can not find the selected Special Changer position" << VAL;
 	}
       }
-    } else if ( CMD == "MONITOR" ) {
+    } else if ( CMD == "MEASURE" ) {
       if ( FUNC == "CLEAR" ) {
 	ASMUnits.clearUnits();
       } else if ( FUNC == "SENS" ) {
@@ -165,16 +167,57 @@ void MainWindow::AutoSequence0( void )
 	}
       } else if ( FUNC == "READ" ) {
 	ASMUnits.readValue( ASMeasVals, ASMeasCPSs, false );  // true : correct dark
+#if 0
 	qDebug() << "units " << ASMUnits.count();
 	for ( int i = 0; i < ASMUnits.count(); i++ ) {
 	  qDebug() << "read vals" << i << ASMeasVals[i];
 	  qDebug() << "read cpss" << i << ASMeasCPSs[i];
 	}
+#endif
       }
-    } else {
+    } else if ( CMD == "FILE" ) {
+      VAL.remove( QChar( '"' ) );
+      QIODevice::OpenMode mode;
+      QString Item;
+      QFile f( VAL );
+      if ( ( FUNC == "WRITE" )||( FUNC == "APPEND" ) ) {
+	if ( FUNC == "WRITE" ) {
+	  mode = QIODevice::WriteOnly | QIODevice::Text;
+	} else {
+	  mode = QIODevice::Append | QIODevice::Text;
+	}
+	if ( f.open( mode ) ) {
+	  QTextStream out( &f );
+	  for ( int i = 3; i < ASCMDs[ASCMDi].count(); i++ ) {
+	    Item = ASCMDs[ASCMDi][i].replace( QChar( '~' ), QChar( ' ' ) );
+	    Item.remove( QChar( '"' ) );
+	    if ( Item == "@DATE" ) {
+	      out << QDate::currentDate().toString( "yyyy/MM/dd" );
+	    } else if ( Item == "@TIME" ) {
+	      out << QTime::currentTime().toString( "hh:mm:ss" );
+	    } else if ( Item == "@RING" ) {
+	      if ( SLS != NULL ) {
+		out << SLS->value();
+	      }
+	    } else if ( Item == "@MEASURED" ) {
+	      for ( int i = 0; i < ASMUnits.count(); i++ ) {
+		out << ASMeasVals[i] << "\t";
+	      }
+	    } else {
+	      out << Item;
+	    }
+	  }
+	  out << endl;
+	  f.close();
+	} else {
+	  qDebug() << "Cannot open file " << VAL << FUNC;
+	}
+      } else {
+	qDebug() << "Wrong file mode " << VAL << FUNC;
+      }
+    }else {
       qDebug() << "No CMD [" << CMD << "]";
     }
-
     if ( progress )
       ASCMDi++;
     return;

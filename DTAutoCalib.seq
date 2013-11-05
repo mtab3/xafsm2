@@ -5,13 +5,193 @@ SCHANGER SETDXDY   ASIS         # set dx, dy of the changer as selected on SSD-s
 
 MONOCH   ENERGY    10.0         # Set I0 energy at 10 keV
 
+MEASURE  CLEAR                  # Preparation of I0 and I1 sensors
+MEASURE  SENS      S000         # add S000 (Counter 0) to be monitored
+MEASURE  SENS      S001         # add S001 (Counter 1) to be monitored
+MEASURE  DTIME     1.000        # set dwell time 1.0 s
+
+FILE WRITE  "DTCorrectI0.dat" "#~I0~and~I~record~for~SSD~Dead~Time~Correction"
+FILE APPEND "DTCorrectI0.dat" "#~" @DATE "~" @TIME "~Ring~Cur.~:" @RING 
+FILE APPEND "DTCorrectI0.dat" "#~Dwell~Time~:~1.0"
+FILE APPEND "DTCorrectI0.dat" "#~----------------"
+
+# Shutter closed 
+
 SCHANGER MOVE      SHUTTER      # (Selected)SpecialChanger MoveTo Shutter position
 
-MONITOR  CLEAR
-MONITOR  SENS      S000         # add S000 (Counter 0) to be monitored
-MONITOR  SENS      S001         # add S001 (Counter 1) to be monitored
-MONITOR  DTIME     1.000        # set dwell time 1.0 s
-MONITOR  CLEAR_LOCAL_STAGE
-MONITOR  MEASURE
-MONITOR  READ
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~SHUTTER"
+
+# Open window
+
+SCHANGER MOVE      Al000      # (Selected)SpecialChanger MoveTo Al 0 position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~~0"
+
+# Al   1
+
+SCHANGER MOVE      Al001      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~~1"
+
+# Al   2
+
+SCHANGER MOVE      Al002      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~~2"
+
+# Al   4
+
+SCHANGER MOVE      Al004      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~~4"
+
+# Al   6
+
+SCHANGER MOVE      Al006      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~~6"
+
+# Al   8
+
+SCHANGER MOVE      Al008      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~~8"
+
+# Al   12
+
+SCHANGER MOVE      Al012      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~12"
+
+# Al   16
+
+SCHANGER MOVE      Al016      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~16"
+
+# Al   24
+
+SCHANGER MOVE      Al024      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~24"
+
+# Al   32
+
+SCHANGER MOVE      Al032      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~32"
+
+# Al  40
+
+SCHANGER MOVE      Al040      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~40"
+
+# Al  48
+
+SCHANGER MOVE      Al048      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~48"
+
+# Al  56
+
+SCHANGER MOVE      Al056      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~56"
+
+# Al  64
+
+SCHANGER MOVE      Al064      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~64"
+
+# Al  80
+
+SCHANGER MOVE      Al080      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~80"
+
+# Al  96
+
+SCHANGER MOVE      Al096      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~96"
+
+# Al 128
+
+SCHANGER MOVE      Al128      # (Selected)SpecialChanger MoveTo next position
+
+MEASURE  CLEAR_LOCAL_STAGE
+MEASURE  MEASURE
+MEASURE  READ
+
+FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~128"
 
