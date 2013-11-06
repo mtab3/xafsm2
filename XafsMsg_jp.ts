@@ -2536,6 +2536,54 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>axis</source>
         <translation>軸</translation>
     </message>
+    <message>
+        <source>SSD Calibration</source>
+        <translation>SSD較正データ取得</translation>
+    </message>
+    <message>
+        <source>Dead Time Calib.</source>
+        <translation>数え落とし補正</translation>
+    </message>
+    <message>
+        <source>Auto Carib.</source>
+        <translation>自動計測</translation>
+    </message>
+    <message>
+        <source>Energy Calib.</source>
+        <translation>エネルギー較正</translation>
+    </message>
+    <message>
+        <source>keV</source>
+        <translation>keV</translation>
+    </message>
+    <message>
+        <source>GoThere</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>Center correct.  x: </source>
+        <translation>センター補正 x: </translation>
+    </message>
+    <message>
+        <source>y: </source>
+        <translation>y: </translation>
+    </message>
+    <message>
+        <source>Series</source>
+        <translation>シリーズ</translation>
+    </message>
+    <message>
+        <source>Shutter</source>
+        <translation>シャッター</translation>
+    </message>
+    <message>
+        <source>pin hole</source>
+        <translation>ピンホール</translation>
+    </message>
+    <message>
+        <source>um</source>
+        <translation>μm</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

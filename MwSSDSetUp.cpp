@@ -150,6 +150,71 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ),
 	   Qt::UniqueConnection );
+
+  // Calibration Tab
+  // D.T. Calib.
+  if ( SChangers.count() > 0 ) {
+    for ( int i = 0; i < SChangers.count(); i++ ) {
+      AttChSelect->addItem( SChangers[i]->name() );
+    }
+    NewAttenCh( 0 );
+  } else {
+    AttChSelect->setEnabled( false );
+    AttenSelect->setEnabled( false );
+    AttenMoveTo->setEnabled( false );
+    DTAutoCalib->setEnabled( false );
+  }
+  //  AttenDx = AttenDy = 0;
+  connect( AttChSelect, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( NewAttenCh( int ) ), Qt::UniqueConnection );
+  connect( AttenMoveTo, SIGNAL( clicked() ), this, SLOT( NewAttenPos() ),
+	   Qt::UniqueConnection );
+  connect( DTAutoCalib, SIGNAL( clicked() ), this, SLOT( DTAutoCalibStart() ),
+	   Qt::UniqueConnection );
+
+  // SSD Energy Calib.
+  if ( SSDCalibEnergys.count() > 0 ) {
+    for ( int i = 0; i < SSDCalibEnergys.count(); i++ ) {
+      EnergySelect->addItem( SSDCalibEnergys[i] );
+    }
+  } else {
+    EnergySelect->setEnabled( false );
+    EnergyMoveTo->setEnabled( false );
+    SSDEngAutoCalib->setEnabled( false );
+  }
+}
+
+void MainWindow::NewAttenPos( void )
+{
+  SpecChanger *sc = SChangers[ AttChSelect->currentIndex() ];
+
+  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
+  movingSC1 = changer->unit1();
+  movingSC2 = changer->unit2();
+  connect( movingSC1, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( SChangerReached( QString ) ),
+	   Qt::UniqueConnection );
+  connect( movingSC2, SIGNAL( ChangedIsBusy1( QString ) ),
+	   this, SLOT( SChangerReached( QString ) ),
+	   Qt::UniqueConnection );
+
+  moveToTarget( sc->baseChangerP(),
+		sc->specName( AttenSelect->currentIndex() )->position(),
+		AttDx->text().toDouble(), AttDy->text().toDouble() );
+
+  AttenMoveTo->setText( tr( "Moving" ) );
+  AttenMoveTo->setStyleSheet( InActive );
+  AttenMoveTo->setEnabled( false );
+}
+
+void MainWindow::NewAttenCh( int att )
+{
+  SpecChanger *c = SChangers[ att ];
+
+  AttenSelect->clear();
+  for ( int i = 0; i < c->specNames(); i++ ) {
+    AttenSelect->addItem( c->specName(i)->name() );
+  }
 }
 
 void MainWindow::ReadLowerLimitSetting( void )

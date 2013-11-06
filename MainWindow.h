@@ -33,6 +33,7 @@
 #include "FluoDBase.h"
 #include "DarkTable.h"
 #include "Changer.h"
+#include "SpecChanger.h"
 #include "cBar.h"
 #include "UsingUnits.h"
 #include "TuningTable.h"
@@ -40,6 +41,7 @@
 #include "MCA.h"
 #include "ScanInfo.h"
 #include "BlockInfo.h"
+#include "CheckUnits.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -135,6 +137,9 @@ private:
   QFileInfo BaseFile;
   QVector<MCAGain*> MCAGains;
   QVector<MCAPeak> *MCAPeaks;
+  QStringList SSDCalibEnergys;
+  //  double AttenDx, AttenDy;
+  AUnit *movingSC1, *movingSC2;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -149,6 +154,8 @@ private:
 
   QVector<Changer*> Changers;
   AUnit *movingC1, *movingC2;
+
+  QVector<SpecChanger*> SChangers;
 
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
@@ -185,6 +192,21 @@ private:
 
   MUnits mUnits;
   MUnits dUnits;
+
+  /* Auto Sequence */
+  QTimer *ASTimer;
+  QFile ASFile;
+  QTextStream ASin;
+  QVector<QStringList> ASCMDs;
+  int ASCMDi, ASCMDii;
+  CheckUnits CheckMUnits, CheckSUnits;
+  SpecChanger *ASSChanger;
+  double ASSCDx, ASSCDy;
+  MUnits ASMUnits;
+  double ASMeasVals[ 100 ];
+  double ASMeasCPSs[ 100 ];
+  /* Auto Sequence */
+
 
   /***********************************************/
 
@@ -383,7 +405,7 @@ private:
   QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
-  bool inMeas, inPause, SinPause;
+  bool inMeas, inPause, SinPause, inDTAutoCalib;
   bool FixedPositionMode;
   int cMeasTab;       // Tab No. on which the current measurement result is displayed
   int inMoveTh;
@@ -492,6 +514,14 @@ private:
   void ShowQTime( double dtime, double WidthInPuls );
 
   void getNewMCAView( void );
+
+  /* Auto Sequence */
+  void setupAutoSequence( void );
+  void AutoSequence( QString fname );
+  bool AutoSequenceShouldBeLocked( void );
+  bool ASReadNextLine( QStringList &line );
+  void AutoSequenceEnd( void );
+  void ASReadSEQFile( QString fname );
 
 private slots:
   // Main Part
@@ -650,8 +680,8 @@ private slots:
   void newA2Range( int newR );
 
   void AutoMeasurement( void );
-  void moveToTarget( int target, double dx, double dy );
-  void AutoSequence( void );
+  void moveToTarget( Changer *c, int target, double dx, double dy );
+  void AutoXAFSSequence( void );
 
   void StartMeasurement( void );
   void PauseMeasurement( void );
@@ -670,6 +700,11 @@ private slots:
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
   void ReadLowerLimitSetting( void );
+  void DTAutoCalibStart( void );
+
+  void NewAttenCh( int i );
+  void NewAttenPos( void );
+  void SChangerReached( QString );
 
   double calcMuT( int ch, int gas, double keV );
   double calcAMuT( int an, double keV );
@@ -738,6 +773,10 @@ private slots:
   void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( double s, double e );
 
+  /* AutoSequence */
+  void AutoSequence0( void );
+  void DTAutoCalibFinished();
+
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
@@ -747,6 +786,9 @@ private slots:
   void NewROI( int s, int e );
   void NewDiff1( int i );
   void NewDiff2( int i );
+
+  /* Auto Sequence */
+  void AutoSequenceFinished( void );
 };
 
 #endif
