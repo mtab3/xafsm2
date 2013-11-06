@@ -462,7 +462,6 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 
   SetDFName( MeasR );
   QFile file( DFName );
-  //  qDebug() << "Fname " << DFName;
   double recTh;
   double encTh, PMTh;
   if ( file.open( QIODevice::Append | QIODevice::Text ) ) {
