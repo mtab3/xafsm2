@@ -158,7 +158,7 @@ private:
 
   Stars *s;
 
-  MEASMODE MeasFileType;
+  MEASMODE MeasFileType, MeasFileType2;   // Type2 : Aux を使ってても頑張って判断する
 
   AtomNo SelectedA;
   PeriodicTable *PT;

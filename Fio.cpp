@@ -84,7 +84,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       << endl;
 
   out << " " << fixS( BLNAME, 5 ) << "    "
-      << fixS( CMode[ MeasFileType ], 13 ) << QString( "(%1)" ).arg( MeasFileType, 2 )
+      << fixS( CMode[ MeasFileType2 ], 13 ) << QString( "(%1)" ).arg( MeasFileType2, 2 )
       << QString( "   Repetition=%1" ).arg( MeasR , 3 )
       << QString( "     Points=%1" ).arg( TP, 5 ) << endl;
 
