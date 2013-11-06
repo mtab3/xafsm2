@@ -210,7 +210,7 @@ FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~Al~~64"
 MEASSSD  MEAS REAL 30
 MEASSSD  RECORD "DTCorrectSSD-Al064.dat"
 
-#END                          # if you want you can terminate the sequence here
+END                           # Terminate the sequence here
 
 # Al  80
 

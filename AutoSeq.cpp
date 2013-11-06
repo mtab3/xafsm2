@@ -55,6 +55,7 @@ void MainWindow::AutoSequence( QString fname )
   CheckMUnits.clear();
   CheckSUnits.clear();
   ASCMDi = 0;
+  ASCMDii = 0;
   ASTimer->start( 10 );
 }
 
@@ -85,7 +86,7 @@ void MainWindow::AutoSequence0( void )
     if ( ASCMDs[ ASCMDi ].count() > 1 ) FUNC = ASCMDs[ ASCMDi ][1];
     if ( ASCMDs[ ASCMDi ].count() > 2 ) VAL = ASCMDs[ ASCMDi ][2];
     if ( ASCMDs[ ASCMDi ].count() > 3 ) VAL2 = ASCMDs[ ASCMDi ][3];
-    qDebug() << CMD << FUNC << VAL;
+    qDebug() << CMD << FUNC << VAL << ASCMDi << ASCMDii;
 
     if ( CMD == "MONOCH" ) {
       if ( FUNC == "ENERGY" ) {
@@ -146,21 +147,28 @@ void MainWindow::AutoSequence0( void )
       } else if ( FUNC == "DTIME" ) {
 	ASMUnits.setDwellTimes( VAL.toDouble() );
 	ASMUnits.setDwellTime();
+#if 0
       } else if ( FUNC == "CLEAR_LOCAL_STAGE" ) {
 	ASMUnits.clearStage();
 	ASCMDii = 0;
+#endif
       } else if ( FUNC == "MEASURE" ) {
 	progress = false;
 	switch( ASCMDii ) {
 	case 0:
+	    ASMUnits.clearStage();
+	    ASCMDii++;
+	    break;
+	case 1:
 	  if (( !ASMUnits.isParent() )||( ! ASMUnits.getValue0() )) {
 	    ASMUnits.clearStage();
 	    ASCMDii++;
 	  }
 	  break;
-	case 1:
+	case 2:
 	  if ( ! ASMUnits.getValue() ) {
-	    ASMUnits.clearStage();
+	    ASCMDii = 0;     // ASCMDii で回るサブループの最後では必ず ASCMDii = 0;
+	    ASMUnits.clearStage(); // これは不要のはずだけど念の為
 	    progress = true;
 	  }
 	  break;
@@ -215,7 +223,45 @@ void MainWindow::AutoSequence0( void )
       } else {
 	qDebug() << "Wrong file mode " << VAL << FUNC;
       }
-    }else {
+    } else if ( CMD == "MEASSSD" ) {
+      if ( ( SFluo != NULL )||( ( VAL != "REAL" )&&( VAL != "LIVE" ) ) ) {
+	if ( FUNC == "MEAS" ) {
+	  progress = false;
+	  switch( ASCMDii ) {
+	  case 0:
+	    ASMUnits.clearUnits();
+	    ASMUnits.addUnit( SFluo );
+	    SFluo->InitLocalStage();
+	    ASCMDii++;
+	    break;
+	  case 1:
+	    SFluo->setSSDPresetType( VAL );
+	    ASCMDii++;
+	    break;
+	  case 2:
+	    SFluo->SetTime( VAL2.toDouble() );
+	    ASCMDii++;
+	    break;
+	  case 3:
+	    if ( SFluo->InitSensor() == false ) {  // true :: initializing
+	      SFluo->RunStart();
+	      ASCMDii = 0;
+	      progress = true;
+	    }
+	    break;
+	  }
+	} else if ( FUNC == "RECORD" ) {
+	  VAL.remove( QChar( '"' ) );
+	  saveMCAData0( VAL );
+	}
+      } else {
+	if ( SFluo == NULL ) qDebug() << "MEASSSD: SSD is not available";
+	if (( VAL != "REAL" )&&( VAL != "LIVE" ))
+	  qDebug() << "MEASSSD: only REAL or LIVE is availabe";
+      }
+    } else if ( CMD == "END" ) {
+      break;                        // goto AutoSequenceStop
+    } else {
       qDebug() << "No CMD [" << CMD << "]";
     }
     if ( progress )
