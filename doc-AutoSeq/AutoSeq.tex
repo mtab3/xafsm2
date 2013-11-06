@@ -1,0 +1,242 @@
+\documentclass[a4paper,12pt]{jarticle}
+\usepackage{my}
+
+\BEGIN{
+\FC{\Large\bf XafsM2 の Auto Sequence 実行インタプリタの使い方}
+
+\section{制御構文}
+\subsection{行}
+
+行の先頭に、空白があっても無視される。
+残りの部分の空白も連続したものは一つの空白に置き換わる。
+あえて残したい空白は "~" を入れておくと、あとでスペースに置き換わる。
+
+\ENUMERATE{
+  \item "File :   test1.dat" だと、
+    「:」の後の空白は一つにまとまって「File : test1.dat」になる。
+  \item "File~:~~~test1.dat" としておくと、「:」の後ろには空白が3つ入る。
+}
+
+\subsection{コメント}
+
+「#」 で始まる行はコメント行
+
+\subsection{変数}
+
+「\$」で始まる文字列は変数。
+
+変数への値の代入: 行の最初の要素が変数だと、行の2番目の要素がその変数に代入される。
+
+\ENUMERATE{
+  \item 「\$I 0」とすると \$I == 0 になる。
+  \item 「\$F "FNAME"」とすると \$F == "FNAME" になる。
+}
+
+スクリプトの行の中に現れた \$で始まる文字列は、事前に定義された内容に置換される。
+その際、行頭の「\$」だけは置換の対象にならない
+
+\ENUMERATE{
+  \item \$I == "tabuchi" となっている時に
+    「MEAS \$I」とすると、実際には
+    「MEAS tabuchi」と解釈される。(MEAS はコマンド)
+  \item \$FNAME == "tabuchi" となっている時に
+    「\$I \$FNAME」 とすると、\$I == "tabuchi" になる。
+}
+
+行内の一つの要素に関して、\$が複数あるとき、後ろの\$から順番に解釈して置換していく
+
+\ENUMERATE{
+  \item \$fname:0 == "tset1.dat"、\$fname:1 == "test2.dat"、\$I == 1、となっている時に、
+    行内に「\$fname:\$I」があると \$fnaem:\$I -> \$fname:1 -> "test2.dat" と置換される。
+  \item この例の、\$I は数字である必要はない\\
+    \$fname:iti == "tset1.dat"、\$fname:ni == "test2.dat"、\$I == iti、なら、
+    同じ置換で、\$fname:\$I -> "test2.dat" になる。
+}
+
+\$fname:0, \$fname:1, \$fname:2 ... 等、整数指数の一連の変数を一気に定義するのに
+ARRAY というキーワードが使える。
+
+\ENUMERATE{
+  \item 「ARRAY fname "inu" "neko" "kaeru"」とすると、\\
+    \$fname:0 == "inu"\\
+    \$fname:1 == "neko"\\
+    \$fname:2 == "kaeru"\\
+    になる。\\
+    この形式で生成する変数名は 「名前:数字」なので、\$fname:\$I を先の例に挙げたが
+    実際には、'':''は必須ではなく、
+    \$fname0 == "yama" \$fname1 == "kawa" の時、\$i == 1 なら
+    \$fname\$i == "kawa" の様に置換される。
+}
+
+\subsection{演算}
+\subsubsection{INC}
+変数の値を整数とみなして 1増やす
+
+\ENUMERATE{
+  \item \$I == 1 の時に
+    「INC I」とすると、\$I = 2 になる。
+}
+
+\FL{\bf 注意}
+INC \$I とすると、これは実行の前に INC 1 と変換されてしまうので、意図した動作をしない。
+
+\subsubsection{ADD}
+2番目の項目の変数の値を数値とみなし、3番目の項目を加算する。
+
+\ENUMERATE{
+  \item \$a == 1、\$b == 2 の時に
+    「ADD a 1」とすると、a == 2 になる。\\
+    「ADD a \$b」とすると、a == 3 になる。\\
+    「ADD a b」とすると、a == 1 になる。\\
+    (b は置換されず、「b」という文字列のまま解釈され、数値としては 0 になる)\\
+    「ADD \$a 1」とすると、意図した動作をしない。\\
+    (「ADD 1 1」と変換されるので、\$a の値は変わらない )
+}
+
+\subsubsection{SADD}
+2番目の項目の変数の値を文字列とみなし、3番目の項目を継ぎ足す
+
+\ENUMERATE{
+  \item \$a == "tabuchi"、\$b == ".dat" の時
+    「SADD a \$b」とすると a == "tabuchi.dat" になる。\\
+    「SADD a ".dat"」でも同じ。\\
+    「SADD \$a \$b」はダメ。(理由は ADD と同じ)\\
+}
+\subsection{制御移動}
+ 「LABEL」 : GOTO で飛び込んでくる場所を示すラベルを付ける。
+ 「GOTO」 : 指定したラベルのついた行に制御を移す
+
+\ENUMERATE{
+  \item LABEL Loop1\\
+    ...\\
+    GOTO Loop1\\
+  \item GOTO Skip1\\
+    ...
+    LABEL Skip1\\
+}
+注意 LABEL は、変数置換する前に解釈するので、変数はラベルに使えない。
+GOTO の飛び先のラベル指定は変数でも可。
+
+
+\subsection{条件分岐}
+\subsubsection{IFEQ}
+ 2番めの項目と 3番目の項目が等しければ、次の行を実行する。
+ 違っていれば次の行をスキップする。
+
+\ENUMERATE{
+  \item \$I == 5, \$a == 5 の時、
+    「IFEQ \$I 10」だと、次の行はスキップされる。
+    「IFEQ \$I 5」 もしくは 「IFEQ \$I \$a」 だと次の行を実行する。
+}
+
+\subsubsection{IFNEQ}
+ 2番めの項目と 3番目の項目が違っていれば、次の行を実行する。
+ 違っていれば次の行をスキップする。
+
+\subsection{制御終了: END}
+ この時点で Auto Sequence を停止する。
+
+\subsection{定数}
+ @で始まる文字列は、解釈できた場合は特別な値に置換される。
+ 現在定義されている定数は以下
+
+\ENUMERATE{
+  \item @DATE : その日の年月日
+  \item @TIME : その時の時分秒
+  \item @RING : その時のリングカレント
+  \item @MEASURED : 後述する MEASURE で測定された値
+}
+
+\section{コマンド}
+\subsection{SCHANGER}
+Special Changer に対応するコマンド}
+\subsubsection{SELECT}
+Special Changer を選ぶ
+\ENUMERATE{
+  \item 「SCHANGER SELECT A001」。A001 を選ぶ ( A001 は XAFSM.def で定義した ID )
+}
+
+\subsubsection{SETDXDY}
+チェンジャポジション移動の際の x, y の位置の補正
+
+\ENUMERATE{
+  \item 「SCHANGER SETDXDY   0.1 0.2」 dx = 0.1 dy = 0.2 にする。
+  \item 「SCHANGER SETDYDY   ASIS」 SSD 設定画面のチェンジャの位置補正の数字を使う
+}
+
+\subsubsection{MOVE}
+チェンジャの指定された位置に移動する。
+位置の指定は、XAFSM.def の POS\_NAME 行の 6番目に書かれている文字列で指定する。
+\ENUMERATE{
+  \item SCHANGER MOVE Al001\\
+    \$POS "Al001"\\
+    SCHANGER MOVE \$POS
+}
+
+\subsection{MONOCH}
+分光器に対応するコマンド
+\subsubsection{ENERGY}
+エネルギーを指定する
+\ENUMERATE{
+  \item 「MONOCH ENERGY 10.0」 10.0 keV の位置に移動する。
+}
+
+
+
+FILE : ファイル操作コマンド
+ WRITE [ファイル名] [内容] : [ファイル名]を WriteOnly (上書き)でオープンして、
+                             [内容]を書き出す。
+ex. FILE WRITE  "DTCorrectI0.dat" "#~I0~and~I~record~for~SSD~Dead~Time~Correction"
+
+ APPEND [ファイル名] [内容] : [ファイル名]を Append (継ぎ足し)でオープンして、
+                             [内容]を書き出す。
+ex. FILE APPEND "DTCorrectI0.dat" "#~" @DATE "~" @TIME "~Ring~Cur.~:" @RING 
+
+MEASURE : 単独の1回限りの測定に対応。
+ CLEAR : 同時に測定できる検出器を複数指定できるが、前回に指定したものをクリアして忘れる。
+ex. MEASURE CLEAR
+
+ SENS  : 検出器の指定。
+ex.
+ MEASURE SENS S001    : S001 は XAFSM.def で指定した ID
+ MEASURE SENS S000    : CLEAR せずに複数指定すると、同時に測定する。
+
+ DTIME : dwell time の指定
+ex. 
+ MEASURE  DTIME     1.000  : dwell time を 1.0 秒にする。
+
+ MEASURE : 測定操作の実行
+ex.
+ MEASURE  MEASURE
+
+ READ : 測定内容の読み出し
+ 読みだした値は、以降 @MEASURED で参照できる
+ex. 
+ MEASURE  READ
+ FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~" \$ATTENS:\$I
+
+MEASSSD : SSD の操作に対応するコマンド
+ MODE [REAL/LIVE] : 測定のモードを指定
+ex.
+ MEASSSD MODE REAL
+
+ MEAS : 測定操作
+ex. 
+ MEASSSD  MEAS REAL 30     : "Real Time" で 30 秒間測定する。
+
+ 簡易コマンドの意味合いが強い。他の検出器と同時測定はできない。
+ 同時測定したければ、例えば
+
+ MEASURE CLEAR
+ MEASURE SENS S000        # ある XAFSM.def ではこれが I0
+ MEASURE SENS S001        # ある XAFSM.def ではこれが I1
+ MEASURE SENS S006        # ある XAFSM.def ではこれが SSD
+ MEASURE DTIME 1.0
+ MEASSSD MODE REAL
+ MEASURE MEASURE
+
+ とすれば良い
+
+ RECORD : MCA のデータを指定されたファイル名に保存。
+ex.
+ MEASSSD  RECORD \$FNAME

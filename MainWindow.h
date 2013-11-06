@@ -205,6 +205,8 @@ private:
   MUnits ASMUnits;
   double ASMeasVals[ 100 ];
   double ASMeasCPSs[ 100 ];
+  QMap<QString,QString> ASVals;
+  QMap<QString,int> ASLabels;
   /* Auto Sequence */
 
 

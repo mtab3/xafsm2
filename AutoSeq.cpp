@@ -54,6 +54,14 @@ void MainWindow::AutoSequence( QString fname )
 
   CheckMUnits.clear();
   CheckSUnits.clear();
+  ASVals.clear();
+
+  ASLabels.clear();
+  for ( int i = 0; i < ASCMDs.count(); i++ ) {
+    if ( ASCMDs[i][0] == "LABEL" )
+      ASLabels[ ASCMDs[i][1] ] = i;
+  }
+
   ASCMDi = 0;
   ASCMDii = 0;
   ASTimer->start( 10 );
@@ -75,20 +83,54 @@ void MainWindow::AutoSequence0( void )
   QString CMD;
   QString FUNC;
   QString VAL, VAL2;
+  QStringList LINE;
   bool progress = true;
 
   if ( AutoSequenceShouldBeLocked() )
     return;
 
   while ( ASCMDi < ASCMDs.count() ) {
+    LINE = ASCMDs[ ASCMDi ];
+    // 変数置換
+    if ( LINE[0][0] == '$' ) {  // 最初の項目は $aa:$bb の bb は置換するけど aa はしない
+      int p;
+      while( ( p = LINE[0].lastIndexOf( '$', -1 ) ) > 0 ) {
+	QString theVal = LINE[0].mid( p + 1 );
+	LINE[0] = LINE[0].left( p ) + ASVals[ theVal ];
+      }
+    }  // 2つ目以降は $aa:$bb の aa も bb もそれ以降も全部置換する
+    for ( int i = 1; i < LINE.count(); i++ ) {
+      if ( LINE[i][0] == '$' ) {
+	int p;
+	while( ( p = LINE[i].lastIndexOf( '$', -1 ) ) >= 0 ) {
+	  QString theVal = LINE[i].mid( p + 1 );
+	  LINE[i] = LINE[i].left( p ) + ASVals[ theVal ];
+	}
+      }
+    }
+    // 
     CMD = FUNC = VAL = VAL2 = "";
-    if ( ASCMDs[ ASCMDi ].count() > 0 ) CMD = ASCMDs[ ASCMDi ][0];
-    if ( ASCMDs[ ASCMDi ].count() > 1 ) FUNC = ASCMDs[ ASCMDi ][1];
-    if ( ASCMDs[ ASCMDi ].count() > 2 ) VAL = ASCMDs[ ASCMDi ][2];
-    if ( ASCMDs[ ASCMDi ].count() > 3 ) VAL2 = ASCMDs[ ASCMDi ][3];
+    if ( LINE.count() > 0 ) CMD = LINE[0];
+    if ( LINE.count() > 1 ) FUNC = LINE[1];
+    if ( LINE.count() > 2 ) VAL = LINE[2];
+    if ( LINE.count() > 3 ) VAL2 = LINE[3];
     qDebug() << CMD << FUNC << VAL << ASCMDi << ASCMDii;
 
-    if ( CMD == "MONOCH" ) {
+    if ( CMD[0] == '$' ) {
+      ASVals[ CMD.mid(1) ] = FUNC;
+    } else if ( CMD == "ARRAY" ) {
+      for ( int i = 2; i < LINE.count(); i++ ) {
+	ASVals[ FUNC+":"+QString::number(i-2) ] = LINE[i];
+      }
+    } else if ( CMD == "INC" ) {
+      ASVals[ FUNC ] = QString::number( ASVals[ FUNC ].toInt() + 1 );
+    } else if ( CMD == "ADD" ) {
+      ASVals[ FUNC ] = QString::number( ASVals[ FUNC ].toInt() + VAL.toInt() );
+    } else if ( CMD == "SADD" ) {
+      ASVals[ FUNC ] = ASVals[ FUNC ] + VAL;
+    } else if ( CMD == "SHOW" ) {
+      qDebug() << "Show " << FUNC << VAL;
+    } else if ( CMD == "MONOCH" ) {
       if ( FUNC == "ENERGY" ) {
 	CheckMUnits.add( MMainTh, true, true );
 	MoveCurThPosKeV( VAL.toDouble() );
@@ -196,8 +238,8 @@ void MainWindow::AutoSequence0( void )
 	}
 	if ( f.open( mode ) ) {
 	  QTextStream out( &f );
-	  for ( int i = 3; i < ASCMDs[ASCMDi].count(); i++ ) {
-	    Item = ASCMDs[ASCMDi][i].replace( QChar( '~' ), QChar( ' ' ) );
+	  for ( int i = 3; i < LINE.count(); i++ ) {
+	    Item = LINE[i].replace( QChar( '~' ), QChar( ' ' ) );
 	    Item.remove( QChar( '"' ) );
 	    if ( Item == "@DATE" ) {
 	      out << QDate::currentDate().toString( "yyyy/MM/dd" );
@@ -244,12 +286,20 @@ void MainWindow::AutoSequence0( void )
 	    break;
 	  case 3:
 	    if ( SFluo->InitSensor() == false ) {  // true :: initializing
+	      SFluo->setIsBusy( true );
 	      SFluo->RunStart();
-	      ASCMDii = 0;
-	      progress = true;
+	      ASCMDii++;
 	    }
 	    break;
+	  case 4:
+	    SFluo->GetMCAs();
+	    ASCMDii = 0;
+	    progress = true;
+	    break;
 	  }
+	} else if ( FUNC == "MODE" ) {
+	  SFluo->setSSDPresetType( VAL );
+	  CheckMUnits.add( SFluo, true, true );
 	} else if ( FUNC == "RECORD" ) {
 	  VAL.remove( QChar( '"' ) );
 	  saveMCAData0( VAL );
@@ -259,6 +309,14 @@ void MainWindow::AutoSequence0( void )
 	if (( VAL != "REAL" )&&( VAL != "LIVE" ))
 	  qDebug() << "MEASSSD: only REAL or LIVE is availabe";
       }
+    } else if ( CMD == "GOTO" ) {
+      ASCMDi = ASLabels[ FUNC ];
+    } else if ( CMD == "IFEQ" ) {
+      if ( FUNC != VAL )
+	ASCMDi++;
+    } else if ( CMD == "IFNEQ" ) {
+      if ( FUNC == VAL )
+	ASCMDi++;
     } else if ( CMD == "END" ) {
       break;                        // goto AutoSequenceStop
     } else {

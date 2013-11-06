@@ -23,21 +23,20 @@ FILE APPEND "DTCorrectI0.dat" "#~" @DATE "~" @TIME "~Ring~Cur.~:" @RING
 FILE APPEND "DTCorrectI0.dat" "#~Dwell~Time~:~1.0"
 FILE APPEND "DTCorrectI0.dat" "#~----------------"
 
-MEASURE  CLEAR                 # Preparation of I0 and I1 sensors
-MEASURE  SENS      S000        # add S000 (Counter 0) to be monitored
-MEASURE  SENS      S001        # add S001 (Counter 1) to be monitored
-MEASURE  SENS      S006        # add S006 (SSD)
-MEASURE  DTIME     30.000      # set dwell time 1.0 s
-MEASSSD  MODE REAL             # Measure SSD for 30s in real-time
-
 LABEL LoopPoint
 
  SCHANGER MOVE $ATTENS:$I       # (Selected)SpecialChanger MoveTo Shutter position
 
+ MEASURE  CLEAR                 # Preparation of I0 and I1 sensors
+ MEASURE  SENS      S000        # add S000 (Counter 0) to be monitored
+ MEASURE  SENS      S001        # add S001 (Counter 1) to be monitored
+ MEASURE  DTIME     1.000       # set dwell time 1.0 s
  MEASURE  MEASURE
  MEASURE  READ
+
  FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~" $ATTENS:$I
 
+ MEASSSD  MEAS REAL 30          # Measure SSD for 30s in real-time
  $FNAME $FNAMES:$I              # add ".dat" at the tail of the file name
  SADD FNAME ".dat"
  MEASSSD  RECORD $FNAME         # save the SSD data
