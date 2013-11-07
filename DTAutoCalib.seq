@@ -5,8 +5,10 @@ ARRAY ATTENS SHUTTER Al000 Al001 Al002 Al004 Al006 Al008 Al012 Al016 Al024 Al032
 $I 0                                      # $I = 0
 
 LABEL FNameInit                           # --FNameInit--
- $FNAMES:$I "DTCorrectSSD-"$ATTENS:$I     # $FNAMS[$I] = "DTCorrectSSD-" + $ATTENS[$I]
- SHOW $FNAMES:$I
+ $FNAME "DTCorrectSSD-"$ATTENS:$I
+ SADD FNAME ".dat"
+ SHOW "fname " $FNAME
+ $FNAMES:$I $FNAME                        # $FNAMS[$I] = "DTCorrectSSD-" + $ATTENS[$I]
  INC I                                    # $I++
 IFNEQ $I 15                               # if ( $I != 15 )
  GOTO FNameInit                           # goto --FNameInit--
@@ -18,10 +20,10 @@ SCHANGER SETDXDY   ASIS         # set dx, dy of the changer as selected on SSD-s
 
 MONOCH   ENERGY    10.0         # Set I0 energy at 10 keV
 
-FILE WRITE  "DTCorrectI0.dat" "#~I0~and~I~record~for~SSD~Dead~Time~Correction"
-FILE APPEND "DTCorrectI0.dat" "#~" @DATE "~" @TIME "~Ring~Cur.~:" @RING 
-FILE APPEND "DTCorrectI0.dat" "#~Dwell~Time~:~1.0"
-FILE APPEND "DTCorrectI0.dat" "#~----------------"
+FILE WRITE  "DTCorrectI0.dat" "# I0 and I record for SSD Dead Time Correction"
+FILE APPEND "DTCorrectI0.dat" "# " @DATE " " @TIME " Ring Cur. :" @RING 
+FILE APPEND "DTCorrectI0.dat" "# Dwell Time : 1.0"
+FILE APPEND "DTCorrectI0.dat" "# ----------------"
 
 MEASURE  CLEAR                 # Preparation of I0 and I1 sensors
 MEASURE  SENS      S000        # add S000 (Counter 0) to be monitored
@@ -36,11 +38,9 @@ LABEL LoopPoint
 
  MEASURE  MEASURE
  MEASURE  READ
- FILE APPEND "DTCorrectI0.dat" @MEASURED "~:~" $ATTENS:$I
-
- $FNAME $FNAMES:$I              # add ".dat" at the tail of the file name
- SADD FNAME ".dat"
- MEASSSD  RECORD $FNAME         # save the SSD data
+ FILE APPEND "DTCorrectI0.dat" @MEASURED " : " $ATTENS:$I
+ MEASSSD  RECORD $FNAMES:$I       # save the SSD data
+ SHOW $FNAMES:$I
 
  INC I
 

@@ -107,7 +107,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   newSensSelectedForI1( SelectI1->currentIndex() );
   newSensSelectedForA1( SelectAux1->currentIndex() );
   newSensSelectedForA2( SelectAux2->currentIndex() );
-
   connect( SelectI0, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( newSensSelectedForI0( int ) ),
 	   Qt::UniqueConnection );
@@ -970,13 +969,32 @@ void MainWindow::ClearXViewScreenForMeas( XYView *view )
 bool MainWindow::CheckDetectorSelection( void )
 {
   int NoOfSelectedSens = 0;
+  bool TransModeIs = false, FluoModeIs = false;
 
   MeasFileType = EXTRA;    // 実質 AUX タイプは無い
 
-  if ( UseI1->isChecked() ) NoOfSelectedSens++;
-  if ( Use19chSSD->isChecked() ) NoOfSelectedSens++;
-  if ( UseAux1->isChecked() ) NoOfSelectedSens++;
-  if ( UseAux2->isChecked() ) NoOfSelectedSens++;
+  if ( UseI1->isChecked() ) {
+    NoOfSelectedSens++;
+    TransModeIs = true;
+  }
+  if ( Use19chSSD->isChecked() ) {
+    NoOfSelectedSens++;
+    FluoModeIs = true;
+  }
+  if ( UseAux1->isChecked() ) {
+    NoOfSelectedSens++;
+    if ( ModeA1->currentIndex() == 0 )
+      FluoModeIs = true;
+    else
+      TransModeIs = true;
+  }
+  if ( UseAux2->isChecked() ) {
+    NoOfSelectedSens++;
+    if ( ModeA2->currentIndex() == 0 )
+      FluoModeIs = true;
+    else
+      TransModeIs = true;
+  }
 
   if ( NoOfSelectedSens == 0 ) { // I0 以外に一つはセンサが選ばれていなければダメ
     statusbar->showMessage( tr( "At least 1 detector should be selected, except I0." ),
@@ -986,12 +1004,16 @@ bool MainWindow::CheckDetectorSelection( void )
 
   if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
     if ( UseI1->isChecked() ) {
+#if 0
       AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
       if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
           ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )
           ||( as->getType() == "DV" )||( as->getType() == "DV2" )) {
         MeasFileType = TRANS;
       }  // その他は EXTRA
+#else
+      MeasFileType = TRANS;  // I0 を使ってれば常に Trans にしてしまう。
+#endif
     }
     if ( Use19chSSD->isChecked() ) {
       MeasFileType = FLUO;
@@ -1011,6 +1033,15 @@ bool MainWindow::CheckDetectorSelection( void )
       }
     }
   }
+  
+  // MeasFileType = 5 には、「2つ以上検出器を使ってる」
+  // という意味も含まれてしまってるので
+  // これはとりあえず保存して、別途 MeasFileType2 を作り
+  // 改めてファイル全体の測定器モードとする
+  MeasFileType2 = MeasFileType;  // 基本は MeasFileType を受け継ぎ
+  // 測定モードが混在していなければ TRANS/FLUO を決めてしまう
+  if ( TransModeIs & ! FluoModeIs ) { MeasFileType2 = TRANS; }
+  if ( FluoModeIs & ! TransModeIs ) { MeasFileType2 = FLUO; }
 
   if ( UseAux1->isChecked() ) {
     if ( ( ModeA1->currentIndex() == 3 )||( ModeA1->currentIndex() == 4 ) )

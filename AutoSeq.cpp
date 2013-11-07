@@ -91,21 +91,21 @@ void MainWindow::AutoSequence0( void )
 
   while ( ASCMDi < ASCMDs.count() ) {
     LINE = ASCMDs[ ASCMDi ];
+    // 後ろから前へ置換する
+    // 2つ目以降は $aa:$bb の aa も bb もそれ以降も全部置換する
+    for ( int i = LINE.count()-1; i > 0; i-- ) {
+      int p;
+      while( ( p = LINE[i].lastIndexOf( '$', -1 ) ) >= 0 ) {
+	QString theVal = LINE[i].mid( p + 1 );
+	LINE[i] = LINE[i].left( p ) + ASVals[ theVal ];
+      }
+    }
     // 変数置換
     if ( LINE[0][0] == '$' ) {  // 最初の項目は $aa:$bb の bb は置換するけど aa はしない
       int p;
       while( ( p = LINE[0].lastIndexOf( '$', -1 ) ) > 0 ) {
 	QString theVal = LINE[0].mid( p + 1 );
 	LINE[0] = LINE[0].left( p ) + ASVals[ theVal ];
-      }
-    }  // 2つ目以降は $aa:$bb の aa も bb もそれ以降も全部置換する
-    for ( int i = 1; i < LINE.count(); i++ ) {
-      if ( LINE[i][0] == '$' ) {
-	int p;
-	while( ( p = LINE[i].lastIndexOf( '$', -1 ) ) >= 0 ) {
-	  QString theVal = LINE[i].mid( p + 1 );
-	  LINE[i] = LINE[i].left( p ) + ASVals[ theVal ];
-	}
       }
     }
     // 
@@ -114,7 +114,6 @@ void MainWindow::AutoSequence0( void )
     if ( LINE.count() > 1 ) FUNC = LINE[1];
     if ( LINE.count() > 2 ) VAL = LINE[2];
     if ( LINE.count() > 3 ) VAL2 = LINE[3];
-    qDebug() << CMD << FUNC << VAL << ASCMDi << ASCMDii;
 
     if ( CMD[0] == '$' ) {
       ASVals[ CMD.mid(1) ] = FUNC;
@@ -129,7 +128,7 @@ void MainWindow::AutoSequence0( void )
     } else if ( CMD == "SADD" ) {
       ASVals[ FUNC ] = ASVals[ FUNC ] + VAL;
     } else if ( CMD == "SHOW" ) {
-      qDebug() << "Show " << FUNC << VAL;
+      qDebug() << "Show " << LINE;
     } else if ( CMD == "MONOCH" ) {
       if ( FUNC == "ENERGY" ) {
 	CheckMUnits.add( MMainTh, true, true );
@@ -217,13 +216,6 @@ void MainWindow::AutoSequence0( void )
 	}
       } else if ( FUNC == "READ" ) {
 	ASMUnits.readValue( ASMeasVals, ASMeasCPSs, false );  // true : correct dark
-#if 0
-	qDebug() << "units " << ASMUnits.count();
-	for ( int i = 0; i < ASMUnits.count(); i++ ) {
-	  qDebug() << "read vals" << i << ASMeasVals[i];
-	  qDebug() << "read cpss" << i << ASMeasCPSs[i];
-	}
-#endif
       }
     } else if ( CMD == "FILE" ) {
       VAL.remove( QChar( '"' ) );
@@ -309,6 +301,8 @@ void MainWindow::AutoSequence0( void )
 	if (( VAL != "REAL" )&&( VAL != "LIVE" ))
 	  qDebug() << "MEASSSD: only REAL or LIVE is availabe";
       }
+    } else if ( CMD == "LABEL" ) {
+      // ラベルの処理はここではしない
     } else if ( CMD == "GOTO" ) {
       ASCMDi = ASLabels[ FUNC ];
     } else if ( CMD == "IFEQ" ) {
@@ -358,14 +352,31 @@ void MainWindow::ASReadSEQFile( QString fname )
 
 bool MainWindow::ASReadNextLine( QStringList &items )
 {
+  int i;
+  QString line;
+
   while( ! ASin.atEnd() ) {
-    items = ASin.readLine().simplified().split( QRegExp( "\\s+" ) );
+    bool inQ = false;
+    line = ASin.readLine();
+    for ( i = 0; i < line.length(); i++ ) {
+      if ( line[i] == '"' ) inQ = ! inQ;
+      if (( line[i] == ' ' )&&( inQ )) line[i] = '~';
+      if ( line[i] == '#' ) break;
+    }
+    if ( i < line.length() ) {
+      line = line.left( i );
+    }
+    items = line.simplified().split( QRegExp( "\\s+" ) );
+    for ( int i = 0; i < items.count(); i++ ) {
+      items[i].remove( QChar( '"' ) );
+    }
     if ( items.count() <= 0 )
       continue;
     if ( items[0] == "" )
       continue;
     if ( items[0][0] == '#' )
       continue;
+
     return true;
   }
 
