@@ -392,6 +392,7 @@ void Data::showMCAData( QTextStream &in, ViewCTRL *viewC )
   }
   view->makeValid( true );
 
+#if 0
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();  // 3¹Ô¶õÆÉ
@@ -419,5 +420,7 @@ void Data::showMCAData( QTextStream &in, ViewCTRL *viewC )
     MCA[cnt] = vals.at(1).toInt();
     cnt++;
   }
+#endif
+
   view->update();
 }
