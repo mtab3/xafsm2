@@ -1,6 +1,4 @@
 
-#if 0
-
 #ifndef PEAKFIT_H
 #define PEAKFIT_H
 
@@ -10,6 +8,7 @@ class PeakFit : public QObject
 {
   Q_OBJECT
 
+  bool dataValid;
   int N0;     // number of peaks
   int N;      // number of parameters
   int L;      // number of data points
@@ -25,16 +24,13 @@ class PeakFit : public QObject
   double *Y, *s; // y: calculated value, s: residual
 
  public:
-  PeakFit( void ) {};
+  PeakFit( QObject *p = NULL ) ;
 
   void init( int n0, int l0 );
-  void release( void );
   void calcNewP( double gamma );
-  void setXYP0( QVector<double> x, QVector<double> y, QVector<double> p );
-  QVector<double> getP( void );
+  void setXYP0( double *x, double *y, double *p );
+  double *getP( void );
   double Norm( void ) { return norm; };
 };
-
-#endif
 
 #endif

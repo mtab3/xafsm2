@@ -16,8 +16,8 @@ class KeV2Pix : public QObject
   void MakeUpAB( int dim );
   const QVector<double>& getAB( int i );
   int getDim( void ) { return dim; };
-  double p2E( int i, int p );
-  int E2p( int i, double E );
+  double p2E( int ch, int p );
+  int E2p( int ch, double E );
   void setMCALen( int mcaLen ) { MCALen = mcaLen; };
 
  private:

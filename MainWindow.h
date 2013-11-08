@@ -788,6 +788,7 @@ private slots:
   void NewROI( int s, int e );
   void NewDiff1( int i );
   void NewDiff2( int i );
+  void NewMCACh( int ch );
 
   /* Auto Sequence */
   void AutoSequenceFinished( void );

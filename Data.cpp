@@ -25,9 +25,14 @@ Data::Data( QWidget *p ) : QFrame( p )
   FSDialog->setAcceptMode( QFileDialog::AcceptOpen );
   FSDialog->setDirectory( QDir::currentPath() );
   FSDialog->setNameFilters( filters );
-
-  view0 = NULL;
+  
+  theViewC = NULL;
+  theMCAView = NULL;
+  theTYView = NULL;
+  theXYView = NULL;
   XYLine0 = XYLines = 0;
+  MCADataIsValid = false;
+  MCALength = 0;
 
   DColors << DColor01 << DColor02 << DColor03 << DColor04 << DColor05
 	  << DColor06 << DColor07 << DColor08 << DColor09 << DColor10;
@@ -80,10 +85,10 @@ void Data::newColorSelected( const QColor &c )
 
 void Data::GotCurrentView( void *view )
 {
-  if ( (XYView*)view == view0 ) {
+  if ( (XYView*)view == theXYView ) {
     if ( SettingL < XYLines ) {
-      view0->SetColor( XYLine0 + SettingL, SettingC );
-      view0->update();
+      theXYView->SetColor( XYLine0 + SettingL, SettingC );
+      theXYView->update();
     }
   }
 }
@@ -147,8 +152,6 @@ void Data::StartToShowData( void )
 
 void Data::GotNewView( ViewCTRL *view )
 {
-  viewCtrl = view;
-
   QFile f( FName );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
@@ -156,14 +159,15 @@ void Data::GotNewView( ViewCTRL *view )
     emit showMessage( tr( "Can not open the file %1." ).arg( FName ), 2000 );
     return;
   }
+  theViewC = view;
 
   QTextStream in( &f );
 
   switch( dataType ) {
-  case MEASDATA: showMeasData( in, view ); break;
-  case SCANDATA: showScanData( in, view ); break;
-  case MONDATA:  showMonData( in, view );  break;
-  case MCADATA:  showMCAData( in, view );  break;
+  case MEASDATA: showMeasData( in ); break;
+  case SCANDATA: showScanData( in ); break;
+  case MONDATA:  showMonData( in );  break;
+  case MCADATA:  showMCAData( in );  break;
   default: break;
   }
 
@@ -175,22 +179,23 @@ void Data::SetColor( int i, const QColor &c )
   DColors.at(i)->setStyleSheet( "background-color: " + c.name() );
 }
 
-void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
+void Data::showMeasData( QTextStream &in )
 {
   QString HeaderEnd = "    Offset";
   QString line;
   QStringList vals;
-  XYView *view = (XYView*)viewC->getView();
 
-  if ( viewC->getNowDType() == NONDATA ) {
-    viewC->setNowDType( MEASDATA );
-    viewC->setNowVType( XYVIEW );
-    view->SetWindow0( 1e300, 0, -1e300, 0 );
-    view->SetLeftName( "mu(E)" );
-    view->SetRightName( "I0" );
+  theXYView = (XYView*)(theViewC->getView());
+
+  if ( theViewC->getNowDType() == NONDATA ) {
+    theViewC->setNowDType( MEASDATA );
+    theViewC->setNowVType( XYVIEW );
+    theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
+    theXYView->SetLeftName( "mu(E)" );
+    theXYView->SetRightName( "I0" );
   }
 
-  int L0 = view->GetLines();  // ここで描画をはじめる前にすでに描画されている線の数
+  int L0 = theXYView->GetLines();  // ここで描画をはじめる前にすでに描画されている線の数
 
   Head9809 head;
   if ( ! head.readFromStream( in ) ) {
@@ -253,110 +258,108 @@ void Data::showMeasData( QTextStream &in, ViewCTRL *viewC )
       default: dispf = false; break;
       }
       if ( dispf ) {
-        view->NewPoint( L0+i, x, y );
+        theXYView->NewPoint( L0+i, x, y );
       }
     }
     if ( aFluo ) {
-      view->NewPoint( L0+cols, x, totalf );
+      theXYView->NewPoint( L0+cols, x, totalf );
     }
   }
 
-  int L = view->GetLines();       // ここで描画した線もいれた線の数
+  int L = theXYView->GetLines();       // ここで描画した線もいれた線の数
   for ( int i = L0; i < L; i++ ) {
-    SetColor( i - L0, view->GetColor( i ) );
-    view->SetLR( i, LEFT_AX );  // 一旦全部は左軸
-    view->SetScaleType( i, FULLSCALE );
+    SetColor( i - L0, theXYView->GetColor( i ) );
+    theXYView->SetLR( i, LEFT_AX );  // 一旦全部は左軸
+    theXYView->SetScaleType( i, FULLSCALE );
   }
-  view->SetLR( L0, RIGHT_AX );  // 最初の一本だけ右軸 (I0)
-  view->SetScaleType( L0, I0TYPE );
-  view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
-  view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
+  theXYView->SetLR( L0, RIGHT_AX );  // 最初の一本だけ右軸 (I0)
+  theXYView->SetScaleType( L0, I0TYPE );
+  theXYView->SetLLine( L0+1 );  // デフォルトで情報表示される左軸の線はデータの1番め
+  theXYView->SetRLine( L0 );    // デフォルトで情報表示される右軸の線はデータの0番め (I0)
 
   XYLine0 = L0;          // このクラスで管理する線の番号の最初と、
   XYLines = L - L0 + 1;  // その本数
-  view0 = view;
 
-  view->update();
+  theXYView->update();
 }
 
-void Data::showScanData( QTextStream &in, ViewCTRL *viewC )
+void Data::showScanData( QTextStream &in )
 {
   QStringList heads, vals;
   QString line;
   
-  XYView *view = (XYView*)viewC->getView();
+  theXYView = (XYView*)theViewC->getView();
 
-  if ( viewC->getNowDType() == NONDATA ) {
-    view->SetWindow0( 1e300, 0, -1e300, 0 );
-    viewC->setNowDType( SCANDATA );
-    viewC->setNowVType( XYVIEW );
+  if ( theViewC->getNowDType() == NONDATA ) {
+    theViewC->setNowDType( SCANDATA );
+    theViewC->setNowVType( XYVIEW );
+    theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
   }
-  view->SetAutoScale( true );
+  theXYView->SetAutoScale( true );
 
-  int L0 = view->GetLines();
+  int L0 = theXYView->GetLines();
 
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();  // 2行空読
   if ( ! in.atEnd() ) line = in.readLine();
   heads = line.split( '\t' );
-  view->SetLineName( L0, heads.at( 1 ) );
-  view->SetLR( L0, RIGHT_AX ); view->SetScaleType( 0, FULLSCALE );
-  view->SetLineName( L0+1, heads.at( 2 ) );
-  view->SetLR( L0+1, LEFT_AX ); view->SetScaleType( 1, FULLSCALE );
+  theXYView->SetLineName( L0, heads.at( 1 ) );
+  theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+  theXYView->SetLineName( L0+1, heads.at( 2 ) );
+  theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
 
-  view->SetXName( heads.at( 3 ) );
-  view->SetXUnitName( heads.at( 4 ) );
-  view->SetUpp( heads.at( 5 ).toDouble() );
-  view->SetCenter( heads.at( 6 ).toDouble() );
+  theXYView->SetXName( heads.at( 3 ) );
+  theXYView->SetXUnitName( heads.at( 4 ) );
+  theXYView->SetUpp( heads.at( 5 ).toDouble() );
+  theXYView->SetCenter( heads.at( 6 ).toDouble() );
 
   while ( ! in.atEnd() ) {
     line = in.readLine();
     line = line.simplified();
     vals = line.split( QRegExp( "\\s" ) );
-    view->NewPoint( L0, vals.at( 0 ).toDouble(), vals.at( 1 ).toDouble() );
-    view->NewPoint( L0+1, vals.at( 0 ).toDouble(), vals.at( 2 ).toDouble() );
+    theXYView->NewPoint( L0, vals.at( 0 ).toDouble(), vals.at( 1 ).toDouble() );
+    theXYView->NewPoint( L0+1, vals.at( 0 ).toDouble(), vals.at( 2 ).toDouble() );
   }
-  int L = view->GetLines();
+  int L = theXYView->GetLines();
   for ( int i = L0; i < L; i++ ) {
-    SetColor( i - L0, view->GetColor( i ) );
+    SetColor( i - L0, theXYView->GetColor( i ) );
   }
 
-  view->SetLLine( L0+1 );    // デフォルトで情報表示される左軸の線はデータの1番め
-  view->SetRLine( L0 );      // デフォルトで情報表示される右軸の線はデータの0番め (I0)
+  theXYView->SetLLine( L0+1 ); // デフォルトで情報表示される左軸の線はデータの1番め
+  theXYView->SetRLine( L0 );   // デフォルトで情報表示される右軸の線はデータの0番め (I0)
 
   XYLine0 = L0;
   XYLines = 2;
-  view0 = view;
-  
-  view->makeValid( true );
-  view->update();
+
+  theXYView->makeValid( true );
+  theXYView->update();
 }
 
-void Data::showMonData( QTextStream &in, ViewCTRL *viewC )
+void Data::showMonData( QTextStream &in )
 {
   QStringList heads, vals;
   QString line;
   double Values[ MaxMon ];
   
-  TYView *view = (TYView*)viewC->getView();
+  theTYView = (TYView*)theViewC->getView();
 
-  if ( viewC->getNowDType() == NONDATA ) {
-    viewC->setNowDType( MONDATA );
-    viewC->setNowVType( TYVIEW );
+  if ( theViewC->getNowDType() == NONDATA ) {
+    theViewC->setNowDType( MONDATA );
+    theViewC->setNowVType( TYVIEW );
   }
-  view->SetMonScale( 0 );
-  view->makeValid( true );
+  theTYView->SetMonScale( 0 );
+  theTYView->makeValid( true );
 
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();  // 2行空読
   if ( ! in.atEnd() ) line = in.readLine();
   heads = line.split( '\t' );
   for ( int i = 2; i < heads.count(); i++ ) {
-    view->SetLName( i-2, heads.at( i ) );
+    theTYView->SetLName( i-2, heads.at( i ) );
   }
-  //  view->SetXName( heads.at( 1 ) );
-  view->ClearDataR();
-  view->SetLines( heads.count() - 2 );
+  //  theTYView->SetXName( heads.at( 1 ) );
+  theTYView->ClearDataR();
+  theTYView->SetLines( heads.count() - 2 );
 
   for ( int i = 0; i < MaxMon; i++ )
     Values[i] = 0;
@@ -369,58 +372,113 @@ void Data::showMonData( QTextStream &in, ViewCTRL *viewC )
     for ( int i = 1; i < Vals - 3; i++ ) {
       Values[i-1] = vals.at( i ).toDouble();
     }
-    view->NewPointR( vals.at(0).toDouble()*1000, Values[0], Values[1], Values[2] );
+    theTYView->NewPointR( vals.at(0).toDouble()*1000, Values[0], Values[1], Values[2] );
   }
-  int L = view->GetLines();
+  int L = theTYView->GetLines();
   for ( int i = 0; i < L; i++ ) {
-    SetColor( i, view->getColor( i ) );
+    SetColor( i, theTYView->getColor( i ) );
   }
 
-  view->update();
+  theTYView->update();
 }
 
-void Data::showMCAData( QTextStream &in, ViewCTRL *viewC )
+void Data::showMCAData( QTextStream &in )
 {
-  QStringList heads, vals;
-  QString line;
+  MCALength = 2048;
 
-  MCAView *view = (MCAView*)viewC->getView();
+  QStringList vals;
+  theMCAView = (MCAView*)theViewC->getView();
 
-  if ( viewC->getNowDType() == NONDATA ) {
-    viewC->setNowDType( MCADATA );
-    viewC->setNowVType( MCAVIEW );
+  KeV2Pix *k2p = theMCAView->keV2Pix();
+  cMCACh = 0;
+
+  if ( theViewC->getNowDType() == NONDATA ) {
+    theViewC->setNowDType( MCADATA );
+    theViewC->setNowVType( MCAVIEW );
   }
-  view->makeValid( true );
+  theMCAView->makeValid( true );
+  cMCA = theMCAView->setMCAdataPointer( MCALength );
 
-#if 0
-  if ( ! in.atEnd() ) line = in.readLine();
-  if ( ! in.atEnd() ) line = in.readLine();
-  if ( ! in.atEnd() ) line = in.readLine();  // 3行空読
-  if ( ! in.atEnd() ) line = in.readLine();
-  heads = line.split( QRegExp( "\\s" ) );
-  int MCALength = heads.at(1).toInt();
-  int MCACh = heads.at(2).toInt();
-  double RealTime = heads.at(3).toDouble();
-  double LiveTime = heads.at(4).toDouble();
-  int ROIs = heads.at(5).toInt();
-  int ROIe = heads.at(6).toInt();
+  MCADataIsValid = false;
+  getNewMCAs( MCALength );
 
-  quint32 *MCA = view->setMCAdataPointer( MCALength );
-  view->SetRealTime( RealTime );
-  view->SetLiveTime( LiveTime );
-  view->SetMCACh( MCACh );
-  view->setROI( ROIs, ROIe );
-  view->makeValid( true );
-
-  int cnt = 0;
-  while (( ! in.atEnd() )&&( cnt < MCALength )) {
-    line = in.readLine();
-    line = line.simplified();
-    vals = line.split( QRegExp( "\\s" ) );
-    MCA[cnt] = vals.at(1).toInt();
-    cnt++;
+  while ( ! in.atEnd() ) {
+    vals = in.readLine().simplified().split( QRegExp( "\\s" ) );
+    if ( vals[0][0] != '#' ) {
+      int i = vals[0].toInt();
+      for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+	double E = vals[ ch * 2 + 1 ].toDouble();
+	int count = vals[ ch * 2 + 2 ].toInt();
+	MCAEs[ch][i] = E;      // これは測定時にそのピクセルに対応していたエネルギー
+	MCAs0[ch][i] = count;
+      }
+    }
   }
-#endif
 
-  view->update();
+  // 測定時のエネルギーとピクセルの関係は、
+  // 今のエネルギーとピクセルの関係とは違っている可能性があるので
+  // 今のピクセルに対応するエネルギーでのカウント数を戦形補完で求めておく
+  for ( int i = 0; i < MCALength; i++ ) {
+    for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+      double nowE = k2p->p2E( ch, i );
+      int j;
+      for ( j = 1; j < MCALength - 1; j++ ) {
+	if ( nowE < MCAEs[ch][j] ) {
+	  break;
+	}
+      }
+      MCAs[ch][i] = (int)(( nowE - MCAEs[ch][j-1] ) / ( MCAEs[ch][j] - MCAEs[ch][j-1] )
+			  * ( (int)MCAs0[ch][j] - (int)MCAs0[ch][j-1] )
+			  + MCAs0[ch][j-1] );
+    }
+  }
+
+  for ( int i = 0; i < MCALength; i++ ) {
+    cMCA[i] = MCAs[cMCACh][i];
+  }
+
+  MCADataIsValid = true;
+  theMCAView->update();
+}
+
+void Data::getNewMCAs( int MCALength )
+{
+  while( MCAs.count() > 0 ) {
+    delete [] MCAs[0];
+    MCAs.remove( 0 );
+  }
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    quint32 *amca = new quint32 [ MCALength ];
+    MCAs << amca;
+  }
+
+  while( MCAs0.count() > 0 ) {
+    delete [] MCAs0[0];
+    MCAs0.remove( 0 );
+  }
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    quint32 *amca = new quint32 [ MCALength ];
+    MCAs0 << amca;
+  }
+
+  while( MCAEs.count() > 0 ) {
+    delete [] MCAEs[0];
+    MCAEs.remove( 0 );
+  }
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    double *amcaE = new double [ MCALength ];
+    MCAEs << amcaE;
+  }
+}
+
+void Data::SelectedNewMCACh( int ch ) 
+{
+  if ( ! MCADataIsValid ) return;
+
+  cMCACh = ch;
+  for ( int i = 0; i < MCALength; i++ ) {
+    cMCA[i] = MCAs[ cMCACh ][i];
+  }
+
+  theMCAView->update();
 }
