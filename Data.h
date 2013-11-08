@@ -9,6 +9,8 @@
 
 class ViewCTRL;
 class XYView;
+class TYView;
+class MCAView;
 
 enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, NONDATA };
 
@@ -30,14 +32,24 @@ class Data : public QFrame, private Ui::Data
   QStringList DataTypeNames;
   QString FName;
 
-  ViewCTRL *viewCtrl;
-  XYView *view0;
+  ViewCTRL *theViewC;
+  XYView *theXYView;
+  TYView *theTYView;
+  MCAView *theMCAView;
   int XYLine0, XYLines; 
 
-  void showMeasData( QTextStream &in, ViewCTRL *view );
-  void showScanData( QTextStream &in, ViewCTRL *view );
-  void showMonData( QTextStream &in, ViewCTRL *view );
-  void showMCAData( QTextStream &in, ViewCTRL *view );
+  int MCALength;
+  bool MCADataIsValid;
+  int cMCACh;
+  quint32 *cMCA;
+  QVector<quint32 *> MCAs0, MCAs;
+  QVector<double *> MCAEs;
+
+  void showMeasData( QTextStream &in );
+  void showScanData( QTextStream &in );
+  void showMonData( QTextStream &in );
+  void showMCAData( QTextStream &in );
+  void getNewMCAs( int length );
 
  public:
   Data( QWidget *p = NULL );
@@ -53,6 +65,7 @@ class Data : public QFrame, private Ui::Data
   void SetColor( int i, const QColor &selcolor );
   void callCSDialog( void );
   void newColorSelected( const QColor &c );
+  void SelectedNewMCACh( int ch );
 
  signals:
   void AskToGetNewView( DATATYPE dtype );

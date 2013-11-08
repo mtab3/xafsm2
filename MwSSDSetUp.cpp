@@ -606,6 +606,9 @@ void MainWindow::MCAChSelected( int i )
   if ( i < 0 ) { MCACh->setValue( MaxSSDs - 1 ); i = MaxSSDs - 1; }
   if ( i >= MaxSSDs ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
+
+  emit NewMCACh( cMCACh );
+
   getMCASettings( cMCACh );
   ROIStartInput->setText( ROIStart[ cMCACh ] );
   ROIEndInput->setText( ROIEnd[ cMCACh ] );

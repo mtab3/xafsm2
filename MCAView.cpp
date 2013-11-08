@@ -65,6 +65,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   rROIex = 20;
 
   // data-disp で表示した時、にマズイかも
+  // ---> まずくない。 Parent が対応した slot を持っていないのでコネクトできないだけ。
   connect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ),
 	   Qt::UniqueConnection );

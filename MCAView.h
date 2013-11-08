@@ -98,6 +98,7 @@ public:
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
   void print( QPrinter *p );
+  KeV2Pix *keV2Pix( void ) { return k2p; };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
