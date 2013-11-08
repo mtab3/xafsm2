@@ -8,6 +8,7 @@
 #include "ChCoord.h"
 #include "FluoDBase.h"
 #include "KeV2Pix.h"
+#include "PeakFit.h"
 
 enum MMODE { M_ROI, M_POINT, M_H_SHIFT, M_NO };
 
@@ -25,6 +26,8 @@ class MCAView : public QFrame, private Ui::MCAView
 
 private:
   QWidget *Parent;
+
+  PeakFit *PF;
 
   int valid;
   //  QVecotot<int *> MCAs;

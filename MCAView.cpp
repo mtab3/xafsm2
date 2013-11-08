@@ -28,6 +28,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   SMCA = NULL;  // スムージング
   DMCA = NULL;  // 1次微分
   dMCA = NULL;  // 統計変動
+
+  PF = new PeakFit;
+
   MCALen = 0;
   MCACh = -1;
   realTime = 0;
