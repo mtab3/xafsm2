@@ -17,7 +17,7 @@ struct MCAPeak {
   int end;
   double center;
   double centerE;
-  int peakH;
+  int peakH0, peakH;
 };
 
 class MCAView : public QFrame, private Ui::MCAView
@@ -32,7 +32,9 @@ private:
   int valid;
   //  QVecotot<int *> MCAs;
   quint32 *MCA;
-  double *SMCA, *DMCA, *dMCA;   // スムージング結果、1次微分、統計変動
+  double *SMCA;                   // スムージング結果
+  double *DMCA, *DMCA2, *DMCA3;   // 1〜3次微分
+  double *dMCA;                   // 統計変動
   double *E;
   int MCALen;
   int MCACh;
@@ -67,10 +69,11 @@ private:
   QColor Black, White;
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
-  QColor SMCAC, DMCAC;
+  QColor SMCAC, DMCAC, DMCAC2, DMCAC3;
   QColor PEAKPOINTC;
 
   void Draw( QPainter *p );
+  void PeakSearch( double Es, double Ee );
 
   void paintEvent( QPaintEvent *e );
   void mouseMoveEvent( QMouseEvent *e );

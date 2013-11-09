@@ -6798,7 +6798,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
           <item>
            <widget class="QTabWidget" name="tabWidget">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab_3">
              <attribute name="title">

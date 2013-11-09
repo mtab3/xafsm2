@@ -285,8 +285,8 @@ void XYView::Draw( QPainter *p )
       if ( showDiff1 || showDiff2 ) {
 	diff1 = new double [ points[l] ];
 	diff2 = new double [ points[l] ];
-	Diff2( y[l], diff1, diff2, points[l],
-	       dwtype1, dwtype2, &dmin1, &dmax1, &dmin2, &dmax2 );
+	Diff2( false, y[l], diff1, diff2, points[l],
+	       dwtype1, dwtype2, &dmin1, &dmax1, &dmin2, &dmax2, 0, points[l] );
       }
 
       for ( int i = 0; i < points[l] - 1; i++ ) {

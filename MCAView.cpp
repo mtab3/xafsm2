@@ -1,6 +1,7 @@
 #include "XafsM.h"
 #include "MCAView.h"
 #include "PeakFit.h"
+#include "Diff.h"
 
 #define PEAKSEARCH
 
@@ -26,7 +27,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   k2p = NULL;
   MCA = NULL;
   SMCA = NULL;  // スムージング
-  DMCA = NULL;  // 1次微分
+  DMCA = DMCA2 = DMCA3 = NULL;  // 1〜3次微分
   dMCA = NULL;  // 統計変動
 
   PF = new PeakFit;
@@ -61,7 +62,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   GridC       = QColor( 100, 100, 190 );  // グリッドの色
   AListC      = QColor( 200,   0, 100 );  // 元素名リスト 
   SMCAC       = QColor( 255,   0,   0 );  // スムージングしたスペクトル
-  DMCAC       = QColor(   0,   0, 255 );  // 微分
+  DMCAC       = QColor( 225, 180, 100 );  // 微分
+  DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
+  DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
   PEAKPOINTC  = QColor( 100, 100, 100 );  // 微分
 
   rROIsx = 0;
@@ -93,6 +96,10 @@ MCAView::~MCAView( void )
     delete SMCA;
   if ( DMCA != NULL )
     delete DMCA;
+  if ( DMCA2 != NULL )
+    delete DMCA2;
+  if ( DMCA3 != NULL )
+    delete DMCA3;
   if ( dMCA != NULL )
     delete dMCA;
   if ( E != NULL )
@@ -112,6 +119,8 @@ quint32 *MCAView::setMCAdataPointer( int len )
   E = new double[ MCALen ];
   SMCA = new double[ MCALen ];
   DMCA = new double[ MCALen ];
+  DMCA2 = new double[ MCALen ];
+  DMCA3 = new double[ MCALen ];
   dMCA = new double[ MCALen ];
   return MCA;
 }
@@ -145,9 +154,8 @@ double LOGS[ 9 ] = {
 // ピークサーチのためのスペクトルの平滑化と微分のクオリティ決定
 //
 #if 1       // ものすごく平滑化する例
-#define SMOOTHINGOFFSET ( -5 )   // スムージングを行う係数
-#define SMOOTHINGRANGE  ( 11 )
-double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+#define SMOOTHINGRANGE  ( 5 )
+double SWeight[ SMOOTHINGRANGE + 1 ] = { 1, 1, 1, 1, 1, 1 };  // 0 - 5 で 6点いる
 #define DIFFOFFSET  ( -5 )  // 微分を計算する係数
 #define DIFFRANGE  ( 11 )
 double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
@@ -155,9 +163,8 @@ double DiffNorm = 300;
 #endif
 
 #if 0       // 中間ぐらい (微分の方で平滑化を行う)
-#define SMOOTHINGOFFSET ( -2 )   // スムージングを行う係数
-#define SMOOTHINGRANGE  ( 5 )
-double SWeight[ SMOOTHINGRANGE ] = { 1, 4, 6, 4, 1 };
+#define SMOOTHINGRANGE  ( 2 )
+double SWeight[ SMOOTHINGRANGE + 1 ] = { 6, 4, 1 };
 #define DIFFOFFSET  ( -5 )  // 微分を計算する係数
 #define DIFFRANGE  ( 11 )
 double DWeight[ DIFFRANGE ] = { -12, -15, -20, -30, -60, 0, 60, 30, 20, 15, 12 };
@@ -165,9 +172,8 @@ double DiffNorm = 300;
 #endif
 
 #if 0       // 中間ぐらい (微分ではあまり平滑化しない)
-#define SMOOTHINGOFFSET ( -5 )   // スムージングを行う係数
-#define SMOOTHINGRANGE  ( 11 )
-double SWeight[ SMOOTHINGRANGE ] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+#define SMOOTHINGRANGE  ( 5 )
+double SWeight[ SMOOTHINGRANGE + 1 ] = { 1, 1, 1, 1, 1, 1 };
 #define DIFFOFFSET  ( -2 )  // 微分を計算する係数
 #define DIFFRANGE  ( 5 )
 double DWeight[ DIFFRANGE ] = { -2, -1, 0, 1, 2 };
@@ -175,9 +181,8 @@ double DiffNorm = 10;
 #endif
 
 #if 0       // ほとんど平滑化しない例
-#define SMOOTHINGOFFSET ( -2 )   // スムージングを行う係数
-#define SMOOTHINGRANGE  ( 5 )
-double SWeight[ SMOOTHINGRANGE ] = { 1, 4, 6, 4, 1 };
+#define SMOOTHINGRANGE  ( 2 )
+double SWeight[ SMOOTHINGRANGE + 1 ] = { 6, 4, 1 };
 #define DIFFOFFSET  ( -2 )  // 微分を計算する係数
 #define DIFFRANGE  ( 5 )
 double DWeight[ DIFFRANGE ] = { -2, -1, 0, 1, 2 };
@@ -267,35 +272,22 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
-  for ( int i = 0; i < MCALen; i++ ) {               // Smoothing した MCA スペクトル
-    double ss, ww;
-    ss = ww = 0;
-    for ( int j = 0; j < SMOOTHINGRANGE; j++ ) {
-      int jj = i + j + SMOOTHINGOFFSET;
-      if ( ( jj >= 0 ) && ( jj < MCALen ) ) {
-	ss += MCA[ jj ] * SWeight[ j ];
-	ww += SWeight[ j ];
-      }
-      if ( ww > 0 ) {
-	SMCA[i] = ss / ww;
-      } else {
-	SMCA[i] = 0;
-      }
-    }
-  }
-  double maxD = 0, minD = 0, maxd = 0;
-  // 微係数と局所的な統計変動を求めておく
+  Smooth( true, (int *)MCA, SMCA, MCALen, 10 /* SMOOTHINGRANGE */, NULL /* SWeight */ );
+  double maxD, minD, maxD2, minD2, maxD3, minD3;
+  maxD = minD = maxD2 = minD2 = maxD3 = minD3 = 0;
+  int minI = k2p->E2p( MCACh, MinE );
+  if ( minI < 0 ) minI = 0; if ( minI >= MCALen ) minI = MCALen - 1;
+  int maxI = k2p->E2p( MCACh, MaxE );
+  if ( maxI < 0 ) maxI = 0; if ( maxI >= MCALen ) maxI = MCALen - 1;
+  // 微係数
+  SDiff3( true, MCA, DMCA, DMCA2, DMCA3, MCALen, 10,
+	  WT3, WT2, WT2, 
+	  &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, minI, maxI );
+
+  // 局所的な統計変動
+  double maxd = 0;
   for ( int i = 0; i < MCALen; i++ ) {
-    double D = 0;
     double d = 1;
-    if ( ( ( i + DIFFOFFSET ) >= 0 ) && ( ( i - DIFFOFFSET ) < MCALen ) ) {
-      for ( int j = 0; j < DIFFRANGE; j++ ) {
-	D += DWeight[j] * SMCA[ i + j + DIFFOFFSET ];
-      }
-    }
-    DMCA[i] = D = D / DiffNorm;
-    if ( DMCA[i] > maxD ) { maxD = DMCA[i]; }
-    if ( DMCA[i] < minD ) { minD = DMCA[i]; }
     if ( ( ( i + DELOFFSET ) >= 0 ) && ( ( i - DELOFFSET ) < MCALen ) ) {
       for ( int j = 0; j < DIFFRANGE; j++ ) {
 	d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
@@ -305,46 +297,7 @@ void MCAView::Draw( QPainter *p )
     if ( d > maxd ) { maxd = d; }
   }
 
-  // ピークサーチ
-  MCAPeaks.clear();
-  MCAPeak aPeak;
-  int SearchMode = 0;                   // 0: before peak, 1:
-  for ( int i = 0; i < MCALen; i++ ) {
-    // ピークサーチのエネルギーを I0 のエネルギーで制限する (or しない)
-    if ( ( LimitPSEnergy ) && ( k2p->p2E( MCACh, i ) > I0Energy + 0.1 ) )
-      break;
-    switch( SearchMode ) {
-    case 0:
-      if ( DMCA[i] > ( dMCA[i] * PSSens ) ) {
-	aPeak.start = i;
-	//	PSChs << ( s = i );
-	SearchMode = 1;
-      }
-      break;
-    case 1:
-      if ( DMCA[i] < ( - dMCA[i] * PSSens ) ) {
-	int j;
-	for ( j = i; j > aPeak.start; j-- ) {
-	  if ( DMCA[j] > ( dMCA[j] * PSSens ) ) 
-	    break;
-	}
-	aPeak.center = ( i + j ) / 2.0;
-	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
-	aPeak.peakH = SMCA[ (int)aPeak.center ];
-	//	PCChs << ( c = ( i + j ) / 2.0 );
-	SearchMode = 2;
-      }
-      break;
-    case 2:
-      if ( fabs( DMCA[i] ) < dMCA[i] * PSSens ) {
-	aPeak.end = i;
-	MCAPeaks << aPeak;
-	//	PEChs << i;
-	SearchMode = 0;
-      }
-    }
-  }
-  emit newPeakList( &MCAPeaks );
+  PeakSearch( wrROIsx, wrROIex );
 
   double lastE = 0;
   int sum = 0;
@@ -356,7 +309,7 @@ void MCAView::Draw( QPainter *p )
     } else {
       p->setPen( ExROIRangeC );
     }
-    if ( dispLog ) {
+    if ( dispLog ) {  // Log 表示
       if ( MCA[i] > 0 ) {
 	p->drawLine( cc.r2sx( E ), cc.r2sy( log10( MCA[i] ) ),
 		     cc.r2sx( E ), cc.r2sy( 0 ) );
@@ -377,22 +330,38 @@ void MCAView::Draw( QPainter *p )
 				       * max * yRatio / ( maxD - minD ) ) ) );
 	}
       }
-    } else {
+    } else {  // リニア表示
       p->drawLine( cc.r2sx( E ), cc.r2sy( MCA[i] ), cc.r2sx( E ), cc.r2sy( 0 ) );
       if ( i > 0 ) {
 	p->setPen( SMCAC );
 	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
 		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
       }
-      if ( ShowDiff ) {
+      if ( ShowDiff ) { // 微分表示
 	if ( i > 0 ) {
-	  p->setPen( DMCAC );
+	  p->setPen( DMCAC ); // 1階微分
 	  p->drawLine( cc.r2sx( lastE ),
 		       cc.r2sy( ( DMCA[i-1] - minD )
 				* max * yRatio / ( maxD - minD ) ),
 		       cc.r2sx( E ),
 		       cc.r2sy( ( DMCA[i] - minD )
 				* max * yRatio / ( maxD - minD ) ) );
+
+	  p->setPen( DMCAC2 ); // 2階微分
+	  p->drawLine( cc.r2sx( lastE ),
+		       cc.r2sy( ( DMCA2[i-1] - minD2 )
+				* max * yRatio / ( maxD2 - minD2 ) ),
+		       cc.r2sx( E ),
+		       cc.r2sy( ( DMCA2[i] - minD2 )
+				* max * yRatio / ( maxD2 - minD2 ) ) );
+
+	  p->setPen( DMCAC3 ); // 3階微分
+	  p->drawLine( cc.r2sx( lastE ),
+		       cc.r2sy( ( DMCA3[i-1] - minD3 )
+				* max * yRatio / ( maxD3 - minD3 ) ),
+		       cc.r2sx( E ),
+		       cc.r2sy( ( DMCA3[i] - minD3 )
+				* max * yRatio / ( maxD3 - minD3 ) ) );
 	}
       }
     }
@@ -400,6 +369,7 @@ void MCAView::Draw( QPainter *p )
   }
 
   p->setPen( PEAKPOINTC );
+
   for ( int i = 0; i < MCAPeaks.count(); i++ ) {
     // 発見したピーク位置に○印
     p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3,
@@ -695,6 +665,130 @@ void MCAView::Draw( QPainter *p )
 	       QString::number( dt, 'f', 2 ) );
   LINE++;
 }
+
+void MCAView::PeakSearch( double Es, double Ee )
+{
+  MCAPeaks.clear();
+  MCAPeak aPeak;
+
+#if 1
+  QVector<int> Xps;
+  QVector<int> Signs;
+  int sXp = -1, Xp = -1;
+  int oSign = 0, Sign = 0;
+
+  if ( LimitPSEnergy ) // ピークサーチを入射X線のエネルギーまでに制限する
+    if ( Ee > I0Energy + 0.1 )
+      Ee = I0Energy + 0.1;
+  int minI = k2p->E2p( MCACh, Es );
+  int maxI = k2p->E2p( MCACh, Ee );
+  for ( int i = 1; i < MCALen; i++ ) {
+    if (( i >= minI )&&( i <= maxI )) {
+      if ( ( DMCA3[i] == 0 ) || ( DMCA3[ i-1 ] * DMCA3[ i ] < 0 ) ) {
+	// 3階微分が 0クロする点を発見 !
+	// 同じ点の 2階微分の符号
+	// (これが負ならピーク、これが正なら裾野の果て)
+	Sign = ( DMCA2[i] < 0 ) ? -1 : 1;
+	// 境界付近でバタバタして何回も 0 クロスする可能性があるので、
+	// Sign が変わらないままの一連の 0 クロス点はまとめて一つにする
+	if ( oSign != Sign ) { // 2階微分の符号が変わってた
+	  if ( sXp >= 0 ) { // その前までの(同符号の)ピークをまとめる
+	    Xps << (int)(( sXp + Xp ) / 2 );
+	    Signs << oSign;
+	  }
+	  sXp = i;
+	}
+	Xp = i;
+	oSign = Sign;
+      }
+    }
+  }
+
+  int w1, w2, w;
+  for ( int i = 0; i < Xps.count(); i++ ) {  // 見つけたピークに関して吟味
+    if ( Signs[i] < 0 ) {
+      w1 = ( i > 0 ) ? ( Xps[i] - Xps[i-1] ) : 0;
+      w2 = ( i < Xps.count() - 1 ) ? ( Xps[i+1] - Xps[i] ) : 0;
+
+      // ピーク近辺のカウントの平均
+      double avr = 0;
+      int cnt = 0;
+      for ( int j = Xps[i] - w1; j <= Xps[i] + w2; j++ ) {
+	avr += SMCA[i];
+	cnt++;
+      }
+      avr /= cnt;
+      // ピーク高さの見積り
+      double ph = 0;
+      double ph1 = SMCA[Xps[i]] - SMCA[Xps[i]-w1];
+      double ph2 = SMCA[Xps[i]] - SMCA[Xps[i]+w2];
+      if (( ph1 > 0 )&&( ph2 > 0 ))
+	ph = ( ph1 + ph2 ) / 2;
+      if (( ph1 < 0 )&&( ph2 > 0 ))
+	ph = ph2;
+      if (( ph1 > 0 )&&( ph2 < 0 ))
+	ph = ph1;
+      if (( ph1 < 0 )&&( ph2 < 0 ))
+	ph = SMCA[Xps[i]];
+
+      // 推定誤差( x 感度 )より大きなピークなら
+      // ほんとにピークと認める
+      if ( ph > sqrt( avr ) * PSSens ) {
+	w = ( w1 > w2 ) ? w1 : w2;   // 半値幅は大きな方を採用
+	aPeak.center = Xps[i];
+	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
+	aPeak.peakH = SMCA[ (int)aPeak.center ];
+	aPeak.peakH0 = SMCA[ (int)aPeak.center ] - avr;
+	aPeak.start = (( Xps[i] - w ) >= 0 ) ? ( Xps[i] - w ) : 0;
+	aPeak.end = (( Xps[i] + w ) < MCALen ) ? ( Xps[i] + w ) : MCALen - 1;
+	MCAPeaks << aPeak;
+      }
+    }
+  }
+
+  
+#else  // 旧版
+  // ピークサーチ
+  int SearchMode = 0;                   // 0: before peak, 1:
+  for ( int i = 0; i < MCALen; i++ ) {
+    // ピークサーチのエネルギーを I0 のエネルギーで制限する (or しない)
+    if ( ( LimitPSEnergy ) && ( k2p->p2E( MCACh, i ) > I0Energy + 0.1 ) )
+      break;
+    switch( SearchMode ) {
+    case 0:
+      if ( DMCA[i] > ( dMCA[i] * PSSens ) ) {
+	aPeak.start = i;
+	//	PSChs << ( s = i );
+	SearchMode = 1;
+      }
+      break;
+    case 1:
+      if ( DMCA[i] < ( - dMCA[i] * PSSens ) ) {
+	int j;
+	for ( j = i; j > aPeak.start; j-- ) {
+	  if ( DMCA[j] > ( dMCA[j] * PSSens ) ) 
+	    break;
+	}
+	aPeak.center = ( i + j ) / 2.0;
+	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
+	aPeak.peakH = SMCA[ (int)aPeak.center ];
+	//	PCChs << ( c = ( i + j ) / 2.0 );
+	SearchMode = 2;
+      }
+      break;
+    case 2:
+      if ( fabs( DMCA[i] ) < dMCA[i] * PSSens ) {
+	aPeak.end = i;
+	MCAPeaks << aPeak;
+	//	PEChs << i;
+	SearchMode = 0;
+      }
+    }
+  }
+#endif
+  emit newPeakList( &MCAPeaks );
+}
+
 
 void MCAView::mouseMoveEvent( QMouseEvent *e )
 {
