@@ -46,6 +46,16 @@ void SDiff3( bool intf,
 	     double *min3, double *max3,
 	     int minI, int maxI );
 
+void SDiff4( bool intf,
+	     void *y, double *y1, double *y2, double *y3, double *y4,
+	     int len, int smoothL,
+	     WTYPE wtype1, WTYPE wtype2, WTYPE wtype3, WTYPE wtype4,
+	     double *min1, double *max1,
+	     double *min2, double *max2,
+	     double *min3, double *max3,
+	     double *min4, double *max4,
+	     int minI, int maxI );
+
 const int WS0 = 1;
 const double W0[ WS0 ] = { 1 };
 const int WS1 = 2;

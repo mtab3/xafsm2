@@ -27,7 +27,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   k2p = NULL;
   MCA = NULL;
   SMCA = NULL;  // スムージング
-  DMCA = DMCA2 = DMCA3 = NULL;  // 1〜3次微分
+  DMCA = DMCA2 = DMCA3 = DMCA4 = NULL;  // 1〜4次微分
   dMCA = NULL;  // 統計変動
 
   PF = new PeakFit;
@@ -66,7 +66,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC       = QColor( 225, 180, 100 );  // 微分
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
-  PEAKPOINTC  = QColor( 100, 100, 100 );  // 微分
+  PEAKPOINTC  = QColor( 100, 100, 100 );  // ピークポイント
   PFLINEC     = QColor( 255, 220,   0 );  // ピーク合成ライン
 
   rROIsx = 0;
@@ -102,6 +102,9 @@ MCAView::~MCAView( void )
     delete DMCA2;
   if ( DMCA3 != NULL )
     delete DMCA3;
+  if ( DMCA4 != NULL )
+    delete DMCA4;
+
   if ( dMCA != NULL )
     delete dMCA;
   if ( E != NULL )
@@ -123,6 +126,7 @@ quint32 *MCAView::setMCAdataPointer( int len )
   DMCA = new double[ MCALen ];
   DMCA2 = new double[ MCALen ];
   DMCA3 = new double[ MCALen ];
+  DMCA4 = new double[ MCALen ];
   dMCA = new double[ MCALen ];
   return MCA;
 }
@@ -278,24 +282,26 @@ void MCAView::Draw( QPainter *p )
   Smooth( true, (int *)MCA, SMCA, MCALen, 10 /* SMOOTHINGRANGE */, NULL /* SWeight */ );
 
   // 微係数の計算
-  double maxD, minD, maxD2, minD2, maxD3, minD3;
+  double maxD, minD, maxD2, minD2, maxD3, minD3, maxD4, minD4;
   maxD = minD = maxD2 = minD2 = maxD3 = minD3 = 0;
   int minI = k2p->E2p( MCACh, MinE );
   if ( minI < 0 ) minI = 0; if ( minI >= MCALen ) minI = MCALen - 1;
   int maxI = k2p->E2p( MCACh, MaxE );
   if ( maxI < 0 ) maxI = 0; if ( maxI >= MCALen ) maxI = MCALen - 1;
   if ( ShowDiff || DoPeakSearch ) {
-    // 3次の微係数まで一気に計算
+    // 4次の微係数まで一気に計算
     //    SDiff3( true, MCA, DMCA, DMCA2, DMCA3, MCALen, 10,
-    SDiff3( false, SMCA, DMCA, DMCA2, DMCA3, MCALen, 10,
-	    WT3, WT3, WT3, 
-	    &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, minI, maxI );
-    minD = ( fabs( minD ) > fabs( maxD ) ) ? fabs( minD ) : fabs( maxD );
-    maxD = -minD;
-    minD2 = ( fabs( minD2 ) > fabs( maxD2 ) ) ? fabs( minD2 ) : fabs( maxD2 );
-    maxD2 = -minD2;
-    minD3 = ( fabs( minD3 ) > fabs( maxD3 ) ) ? fabs( minD3 ) : fabs( maxD3 );
-    maxD3 = -minD3;
+    SDiff4( false, SMCA, DMCA, DMCA2, DMCA3, DMCA4, MCALen, 10,
+	    WT3, WT3, WT3, WT3, 
+	    &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, &minD4, &maxD4, minI, maxI );
+    maxD = ( fabs( minD ) > fabs( maxD ) ) ? fabs( minD ) : fabs( maxD );
+    minD = -maxD;
+    maxD2 = ( fabs( minD2 ) > fabs( maxD2 ) ) ? fabs( minD2 ) : fabs( maxD2 );
+    minD2 = -maxD2;
+    maxD3 = ( fabs( minD3 ) > fabs( maxD3 ) ) ? fabs( minD3 ) : fabs( maxD3 );
+    minD3 = -maxD3;
+    maxD4 = ( fabs( minD4 ) > fabs( maxD4 ) ) ? fabs( minD4 ) : fabs( maxD4 );
+    minD4 = -maxD4;
   }
 
   // 局所的な統計変動
@@ -461,11 +467,12 @@ void MCAView::Draw( QPainter *p )
   }
 
   if ( DoPeakSearch ) {
-      for ( int i = 0; i < MCAPeaks.count(); i++ ) {
+    p->setPen( PEAKPOINTC );
+    for ( int i = 0; i < MCAPeaks.count(); i++ ) {
       // 発見したピーク位置に○印
-	int Y = dispLog ? log10( MCAPeaks[i].peakH ) : MCAPeaks[i].peakH;
-	p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3, cc.r2sy( Y ) - 3,
-			7, 7 );
+      int Y = dispLog ? log10( MCAPeaks[i].peakH ) : MCAPeaks[i].peakH;
+      p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3, cc.r2sy( Y ) - 3,
+		      7, 7 );
       // 丸の横にひげ線
       p->drawLine( cc.r2sx( MCAPeaks[i].centerE ) + 2,
 		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 2 : -2 ),
@@ -480,7 +487,7 @@ void MCAView::Draw( QPainter *p )
 		   QString::number( i ) );
     }
   }
-
+  
   p->setPen( Black );                      // グラフ外枠の四角描画
   p->drawRect( LM, TM, HW, VW );
   p->setPen( GridC );                      // グラフの罫線描画
@@ -771,6 +778,8 @@ void MCAView::PeakSearch( double Es, double Ee )
       Ee = I0Energy + 0.1;
   int minI = k2p->E2p( MCACh, Es );
   int maxI = k2p->E2p( MCACh, Ee );
+
+  // こっちが本来のピークサーチ
   for ( int i = 1; i < MCALen; i++ ) {
     if (( i >= minI )&&( i <= maxI )) {
       if ( ( DMCA3[i] == 0 ) || ( DMCA3[ i-1 ] * DMCA3[ i ] < 0 ) ) {
@@ -808,6 +817,7 @@ void MCAView::PeakSearch( double Es, double Ee )
       }
       avr /= cnt;
       // ピーク高さの見積り
+#if 1
       double ph = 0;
       double ph1 = SMCA[Xps[i]] - SMCA[Xps[i]-w1];
       double ph2 = SMCA[Xps[i]] - SMCA[Xps[i]+w2];
@@ -819,6 +829,9 @@ void MCAView::PeakSearch( double Es, double Ee )
 	ph = ph1;
       if (( ph1 < 0 )&&( ph2 < 0 ))
 	ph = SMCA[Xps[i]];
+#else
+      double ph = SMCA[ Xps[i] ] - ( SMCA[ Xps[i]-w1 ] + SMCA[ Xps[i]-w2 ] ) / 2;
+#endif
 
       // 推定誤差( x 感度 )より大きなピークなら
       // ほんとにピークと認める
@@ -827,13 +840,51 @@ void MCAView::PeakSearch( double Es, double Ee )
 	aPeak.center = Xps[i];
 	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
 	aPeak.peakH = SMCA[ (int)aPeak.center ];
-	aPeak.peakH0 = SMCA[ (int)aPeak.center ] - avr;
+	aPeak.peakH0 = SMCA[ (int)aPeak.center ];
 	aPeak.start = (( Xps[i] - w ) >= 0 ) ? ( Xps[i] - w ) : 0;
 	aPeak.end = (( Xps[i] + w ) < MCALen ) ? ( Xps[i] + w ) : MCALen - 1;
 	MCAPeaks << aPeak;
       }
     }
   }
+
+  // 上の方法だと見つからないピークがあるのが悔しいので 4階微分まで使ってみる。
+  {
+    int ooXp, oXp, Xp;
+    int ooSign, oSign, Sign;
+    ooXp = oXp = Xp = -1;
+    ooSign = oSign = Sign = 0;
+    for ( int i = 1; i < MCALen; i++ ) {
+      if (( i >= minI )&&( i <= maxI )) {
+	if ( ( DMCA4[i] == 0 ) || ( DMCA4[ i-1 ] * DMCA4[ i ] < 0 ) ) {
+	  // 4階微分が 0クロする点を発見 !
+	  if ( ( i - oXp ) >= 8 ) { // 前の点と十分離れてたら
+	    // 新しい交点だと認める
+	    Xp = i;
+	    Sign = ( DMCA3[i] < 0 ) ? -1 : 1;
+	    // 同じ点の 3階微分の符号が連続して同じなら間にピークがあるのではと疑う
+	    if (( oSign == Sign )&&( ooSign == oSign )) {
+	      if ( ( SMCA[ oXp ] - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2. )
+		   > sqrt( SMCA[oXp] ) * PSSens );
+	      aPeak.center = oXp;
+	      aPeak.centerE = k2p->p2E( MCACh, oXp );
+	      aPeak.peakH = SMCA[ oXp ];
+	      aPeak.peakH0 = aPeak.peakH - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2.;
+	      aPeak.start = ooXp;
+	      aPeak.end = Xp;
+	      MCAPeaks << aPeak;
+	    }
+	    ooXp = oXp;
+	    oXp = Xp;
+	    ooSign = oSign;
+	    oSign = Sign;
+	  }
+	}
+      }
+    }
+  }
+
+
   emit newPeakList( &MCAPeaks );
 }
 

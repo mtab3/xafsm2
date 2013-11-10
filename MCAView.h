@@ -25,9 +25,9 @@ private:
   int valid;
   //  QVecotot<int *> MCAs;
   quint32 *MCA;
-  double *SMCA;                   // スムージング結果
-  double *DMCA, *DMCA2, *DMCA3;   // 1〜3次微分
-  double *dMCA;                   // 統計変動
+  double *SMCA;                          // スムージング結果
+  double *DMCA, *DMCA2, *DMCA3, *DMCA4;  // 1〜3次微分
+  double *dMCA;                          // 統計変動
   double *E;
   int MCALen;
   int MCACh;

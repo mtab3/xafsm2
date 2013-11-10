@@ -118,13 +118,28 @@ void SDiff2( bool intf, void *y, double *y1, double *y2, int len, int sl,
 }
 
 void SDiff3( bool intf, void *y, double *y1, double *y2, double *y3, int len, int sl,
-	       WTYPE wtype1, WTYPE wtype2, WTYPE wtype3, 
-	       double *min1, double *max1,
-	       double *min2, double *max2,
-	       double *min3, double *max3,
-	       int minI, int maxI )
+	     WTYPE wtype1, WTYPE wtype2, WTYPE wtype3, 
+	     double *min1, double *max1,
+	     double *min2, double *max2,
+	     double *min3, double *max3,
+	     int minI, int maxI )
 {
   SDiff( intf, y, y1, len, sl, wtype1, min1, max1, minI, maxI );
   SDiff( false, y1, y2, len, sl, wtype2, min2, max2, minI, maxI );
   SDiff( false, y2, y3, len, sl, wtype3, min3, max3, minI, maxI );
+}
+
+void SDiff4( bool intf, void *y, double *y1, double *y2, double *y3, double *y4,
+	     int len, int sl,
+	     WTYPE wtype1, WTYPE wtype2, WTYPE wtype3, WTYPE wtype4, 
+	     double *min1, double *max1,
+	     double *min2, double *max2,
+	     double *min3, double *max3,
+	     double *min4, double *max4,
+	     int minI, int maxI )
+{
+  SDiff( intf, y, y1, len, sl, wtype1, min1, max1, minI, maxI );
+  SDiff( false, y1, y2, len, sl, wtype2, min2, max2, minI, maxI );
+  SDiff( false, y2, y3, len, sl, wtype3, min3, max3, minI, maxI );
+  SDiff( false, y3, y4, len, sl, wtype4, min4, max4, minI, maxI );
 }
