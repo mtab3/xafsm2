@@ -9,16 +9,9 @@
 #include "FluoDBase.h"
 #include "KeV2Pix.h"
 #include "PeakFit.h"
+#include "MCAPeak.h"
 
 enum MMODE { M_ROI, M_POINT, M_H_SHIFT, M_NO };
-
-struct MCAPeak {
-  int start;
-  int end;
-  double center;
-  double centerE;
-  int peakH0, peakH;
-};
 
 class MCAView : public QFrame, private Ui::MCAView
 {
@@ -58,6 +51,7 @@ private:
   double yRatio;           // 縦軸の拡大倍率
 
   bool ShowDiff;
+  bool DoPeakSearch;
   bool LimitPSEnergy;      // ピークサーチを I0 のエネルギーまででやめる。
   double I0Energy;         // その I0 のエネルギー保持
   double PSSens;           // ピークサーチの感度
@@ -70,7 +64,7 @@ private:
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
   QColor SMCAC, DMCAC, DMCAC2, DMCAC3;
-  QColor PEAKPOINTC;
+  QColor PEAKPOINTC, PFLINEC;
 
   void Draw( QPainter *p );
   void PeakSearch( double Es, double Ee );
@@ -100,6 +94,7 @@ public:
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
+  void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };

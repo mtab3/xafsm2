@@ -345,6 +345,8 @@ void XYView::Draw( QPainter *p )
       }
     }
   }
+  pen1.setStyle( Qt::SolidLine );
+  p->setPen( pen1 );
   // 見つけた点に線を引く
   //  p->drawLine( m.x(), m.y(), hx, hy );
 

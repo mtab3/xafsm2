@@ -6,7 +6,7 @@
 #define PEAKSEARCH
 
 // 横軸には 3つの単位がある。
-// MCA pixel, eV (実Energy), 描画 pixel
+// MCA pixel, eV/keV (実Energy), 描画 pixel
 // MCAView 内の横軸は基本的に keV
 // MCA pixel -> keV : k2p->p2E( MCA pixel ) = keV
 // keV -> MCA pixel : k2p->p2E( keV ) = MCA pixel
@@ -43,6 +43,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   yRatio = 1.0;
 
   ShowDiff = true;
+  DoPeakSearch = true;
   LimitPSEnergy = true;
   PSSens = 0.5; // ピークサーチの感度
   I0Energy = 10.0;   // keV
@@ -66,6 +67,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
   PEAKPOINTC  = QColor( 100, 100, 100 );  // 微分
+  PFLINEC     = QColor( 255, 220,   0 );  // ピーク合成ライン
 
   rROIsx = 0;
   rROIex = 20;
@@ -272,17 +274,29 @@ void MCAView::Draw( QPainter *p )
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
 
+  // 平滑化
   Smooth( true, (int *)MCA, SMCA, MCALen, 10 /* SMOOTHINGRANGE */, NULL /* SWeight */ );
+
+  // 微係数の計算
   double maxD, minD, maxD2, minD2, maxD3, minD3;
   maxD = minD = maxD2 = minD2 = maxD3 = minD3 = 0;
   int minI = k2p->E2p( MCACh, MinE );
   if ( minI < 0 ) minI = 0; if ( minI >= MCALen ) minI = MCALen - 1;
   int maxI = k2p->E2p( MCACh, MaxE );
   if ( maxI < 0 ) maxI = 0; if ( maxI >= MCALen ) maxI = MCALen - 1;
-  // 微係数
-  SDiff3( true, MCA, DMCA, DMCA2, DMCA3, MCALen, 10,
-	  WT3, WT2, WT2, 
-	  &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, minI, maxI );
+  if ( ShowDiff || DoPeakSearch ) {
+    // 3次の微係数まで一気に計算
+    //    SDiff3( true, MCA, DMCA, DMCA2, DMCA3, MCALen, 10,
+    SDiff3( false, SMCA, DMCA, DMCA2, DMCA3, MCALen, 10,
+	    WT3, WT3, WT3, 
+	    &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, minI, maxI );
+    minD = ( fabs( minD ) > fabs( maxD ) ) ? fabs( minD ) : fabs( maxD );
+    maxD = -minD;
+    minD2 = ( fabs( minD2 ) > fabs( maxD2 ) ) ? fabs( minD2 ) : fabs( maxD2 );
+    maxD2 = -minD2;
+    minD3 = ( fabs( minD3 ) > fabs( maxD3 ) ) ? fabs( minD3 ) : fabs( maxD3 );
+    maxD3 = -minD3;
+  }
 
   // 局所的な統計変動
   double maxd = 0;
@@ -297,7 +311,16 @@ void MCAView::Draw( QPainter *p )
     if ( d > maxd ) { maxd = d; }
   }
 
-  PeakSearch( wrROIsx, wrROIex );
+  int PFPeaks;
+  double **PFLines;
+  if ( DoPeakSearch ) {
+    PeakSearch( wrROIsx, wrROIex );
+    PF->init( &MCAPeaks, MCALen, NULL, SMCA );
+    PFLines = PF->fit( &PFPeaks );
+  }
+
+  /* ここまでデータの準備とか色々 */
+  /* ここから描画開始 */
 
   double lastE = 0;
   int sum = 0;
@@ -310,24 +333,51 @@ void MCAView::Draw( QPainter *p )
       p->setPen( ExROIRangeC );
     }
     if ( dispLog ) {  // Log 表示
-      if ( MCA[i] > 0 ) {
-	p->drawLine( cc.r2sx( E ), cc.r2sy( log10( MCA[i] ) ),
-		     cc.r2sx( E ), cc.r2sy( 0 ) );
-      }
-      if ( ( i > 0 ) && ( SMCA[i] > 0 ) && ( SMCA[i-1] > 0 ) ) {
-	p->setPen( SMCAC );
-	p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
-		     cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
-      }
-      if ( ShowDiff ) {
-	if ( ( i > 0 ) && ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
-	  p->setPen( DMCAC );
-	  p->drawLine( cc.r2sx( lastE ),
-		       cc.r2sy( log10( ( DMCA[i-1] - minD )
-				       * max * yRatio / ( maxD - minD ) ) ),
-		       cc.r2sx( E ),
-		       cc.r2sy( log10( ( DMCA[i] - minD )
-				       * max * yRatio / ( maxD - minD ) ) ) );
+      if ( i > 0 ) {
+	if ( MCA[i] > 0 ) {
+	  p->drawLine( cc.r2sx( E ), cc.r2sy( log10( MCA[i] ) ),
+		       cc.r2sx( E ), cc.r2sy( 0 ) );
+	}
+	if ( ( SMCA[i] > 0 ) && ( SMCA[i-1] > 0 ) ) {
+	  p->setPen( SMCAC );
+	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
+		       cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
+	}
+	if ( DoPeakSearch ) {
+	  if (( PFLines[0][i] > 0 )&&( PFLines[0][i-1] > 0 )) {
+	    p->setPen( PFLINEC );
+	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( PFLines[0][i-1] ) ),
+			 cc.r2sx( E ), cc.r2sy( log10( PFLines[0][i] ) ) );
+	  }
+	}
+	if ( ShowDiff ) {
+	  if ( ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
+	    p->setPen( DMCAC );
+	    p->drawLine( cc.r2sx( lastE ),
+			 cc.r2sy( log10( ( DMCA[i-1] - minD )
+					 * max * yRatio / ( maxD - minD ) ) ),
+			 cc.r2sx( E ),
+			 cc.r2sy( log10( ( DMCA[i] - minD )
+					 * max * yRatio / ( maxD - minD ) ) ) );
+	  }
+	  if ( ( DMCA2[i] > 0 ) && ( DMCA2[i-1] > 0 ) ) {
+	    p->setPen( DMCAC2 ); // 2階微分
+	    p->drawLine( cc.r2sx( lastE ),
+			 cc.r2sy( log10( ( DMCA2[i-1] - minD2 )
+					 * max * yRatio / ( maxD2 - minD2 ) ) ),
+			 cc.r2sx( E ),
+			 cc.r2sy( log10( ( DMCA2[i] - minD2 )
+					 * max * yRatio / ( maxD2 - minD2 ) ) ) );
+	  }
+	  if ( ( DMCA3[i] > 0 ) && ( DMCA3[i-1] > 0 ) ) {
+	    p->setPen( DMCAC3 ); // 3階微分
+	    p->drawLine( cc.r2sx( lastE ),
+			 cc.r2sy( log10( ( DMCA3[i-1] - minD3 )
+					 * max * yRatio / ( maxD3 - minD3 ) ) ),
+			 cc.r2sx( E ),
+			 cc.r2sy( log10( ( DMCA3[i] - minD3 )
+					 * max * yRatio / ( maxD3 - minD3 ) ) ) );
+	  }
 	}
       }
     } else {  // リニア表示
@@ -336,9 +386,12 @@ void MCAView::Draw( QPainter *p )
 	p->setPen( SMCAC );
 	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
 		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
-      }
-      if ( ShowDiff ) { // 微分表示
-	if ( i > 0 ) {
+	if ( DoPeakSearch ) {
+	  p->setPen( PFLINEC );
+	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( PFLines[0][i-1] ),
+		       cc.r2sx( E ), cc.r2sy( PFLines[0][i] ) );
+	}
+	if ( ShowDiff ) { // 微分表示
 	  p->setPen( DMCAC ); // 1階微分
 	  p->drawLine( cc.r2sx( lastE ),
 		       cc.r2sy( ( DMCA[i-1] - minD )
@@ -346,7 +399,7 @@ void MCAView::Draw( QPainter *p )
 		       cc.r2sx( E ),
 		       cc.r2sy( ( DMCA[i] - minD )
 				* max * yRatio / ( maxD - minD ) ) );
-
+	  
 	  p->setPen( DMCAC2 ); // 2階微分
 	  p->drawLine( cc.r2sx( lastE ),
 		       cc.r2sy( ( DMCA2[i-1] - minD2 )
@@ -354,7 +407,7 @@ void MCAView::Draw( QPainter *p )
 		       cc.r2sx( E ),
 		       cc.r2sy( ( DMCA2[i] - minD2 )
 				* max * yRatio / ( maxD2 - minD2 ) ) );
-
+	  
 	  p->setPen( DMCAC3 ); // 3階微分
 	  p->drawLine( cc.r2sx( lastE ),
 		       cc.r2sy( ( DMCA3[i-1] - minD3 )
@@ -368,27 +421,64 @@ void MCAView::Draw( QPainter *p )
     lastE = E;
   }
 
-  p->setPen( PEAKPOINTC );
+  if ( ShowDiff ) {
+    int y1, y2, y3;
+    y1 = cc.r2sy( ( DMCA[maxI] - minD ) * max * yRatio / ( maxD - minD ) );
+    y2 = cc.r2sy( ( DMCA2[maxI] - minD2 ) * max * yRatio / ( maxD2 - minD2 ) );
+    y3 = cc.r2sy( ( DMCA3[maxI] - minD3 ) * max * yRatio / ( maxD3 - minD3 ) );
+    if ( fabs( y2 - y1 ) < dVW )
+      y2 = y1 + ( ( y2 > y1 ) ? dVW : -dVW ); 
+    if ( fabs( y3 - y1 ) < dVW )
+      y3 = y1 + ( ( y3 > y1 ) ? dVW : -dVW );
+    if ( fabs( y3 - y2 ) < dVW ) {
+      if ( y2 > y1 ) {
+	if ( fabs( y3 - y2 ) > fabs( y3 - y1 ) )
+	  y3 = y1 - dVW;
+	else 
+	  y3 = y2 + dVW;
+      } else {
+	if ( fabs( y3 - y2 ) > fabs( y3 - y1 ) )
+	  y3 = y1 + dVW;
+	else
+	  y3 = y2 - dVW;
+      }
+    }
 
-  for ( int i = 0; i < MCAPeaks.count(); i++ ) {
-    // 発見したピーク位置に○印
-    p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3,
-		    cc.r2sy( MCAPeaks[i].peakH ) - 3,
-		    7, 7 );
-    // 丸の横にひげ線
-    p->drawLine( cc.r2sx( MCAPeaks[i].centerE ) + 2,
-		 cc.r2sy( MCAPeaks[i].peakH )
-		 + ( ( MCAPeaks[i].peakH > cc.Rmaxy() / 2 ) ? 2 : -2 ),
-		 cc.r2sx( MCAPeaks[i].centerE ) + 10,
-		 cc.r2sy( MCAPeaks[i].peakH )
-		 + ( ( MCAPeaks[i].peakH > cc.Rmaxy() / 2 ) ? 8 : -8 ) );
-    // ひげ線の先にピーク番号
-    rec.setRect( cc.r2sx( MCAPeaks[i].centerE ) + 10,
-		 cc.r2sy( MCAPeaks[i].peakH )
-		 + ( ( MCAPeaks[i].peakH > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
-		 dLM * 2, dVW );
+    p->setPen( DMCAC ); // 1階微分
+    rec.setRect( cc.r2sx( MaxE ) + dLM/2, y1, dLM * 4, dVW );
     cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		 QString::number( i ) );
+		 "1st" );
+
+    p->setPen( DMCAC2 ); // 1階微分
+    rec.setRect( cc.r2sx( MaxE ) + dLM/2, y2, dLM * 4, dVW );
+    cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		 "2nd" );
+
+    p->setPen( DMCAC3 ); // 1階微分
+    rec.setRect( cc.r2sx( MaxE ) + dLM/2, y3, dLM * 4, dVW );
+    cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		 "3rd" );
+  }
+
+  if ( DoPeakSearch ) {
+      for ( int i = 0; i < MCAPeaks.count(); i++ ) {
+      // 発見したピーク位置に○印
+	int Y = dispLog ? log10( MCAPeaks[i].peakH ) : MCAPeaks[i].peakH;
+	p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3, cc.r2sy( Y ) - 3,
+			7, 7 );
+      // 丸の横にひげ線
+      p->drawLine( cc.r2sx( MCAPeaks[i].centerE ) + 2,
+		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 2 : -2 ),
+		   cc.r2sx( MCAPeaks[i].centerE ) + 10,
+		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 ) );
+      // ひげ線の先にピーク番号
+      rec.setRect( cc.r2sx( MCAPeaks[i].centerE ) + 10,
+		   cc.r2sy( Y )
+		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
+		   dLM * 2, dVW );
+      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		   QString::number( i ) );
+    }
   }
 
   p->setPen( Black );                      // グラフ外枠の四角描画
@@ -671,7 +761,6 @@ void MCAView::PeakSearch( double Es, double Ee )
   MCAPeaks.clear();
   MCAPeak aPeak;
 
-#if 1
   QVector<int> Xps;
   QVector<int> Signs;
   int sXp = -1, Xp = -1;
@@ -745,47 +834,6 @@ void MCAView::PeakSearch( double Es, double Ee )
       }
     }
   }
-
-  
-#else  // 旧版
-  // ピークサーチ
-  int SearchMode = 0;                   // 0: before peak, 1:
-  for ( int i = 0; i < MCALen; i++ ) {
-    // ピークサーチのエネルギーを I0 のエネルギーで制限する (or しない)
-    if ( ( LimitPSEnergy ) && ( k2p->p2E( MCACh, i ) > I0Energy + 0.1 ) )
-      break;
-    switch( SearchMode ) {
-    case 0:
-      if ( DMCA[i] > ( dMCA[i] * PSSens ) ) {
-	aPeak.start = i;
-	//	PSChs << ( s = i );
-	SearchMode = 1;
-      }
-      break;
-    case 1:
-      if ( DMCA[i] < ( - dMCA[i] * PSSens ) ) {
-	int j;
-	for ( j = i; j > aPeak.start; j-- ) {
-	  if ( DMCA[j] > ( dMCA[j] * PSSens ) ) 
-	    break;
-	}
-	aPeak.center = ( i + j ) / 2.0;
-	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
-	aPeak.peakH = SMCA[ (int)aPeak.center ];
-	//	PCChs << ( c = ( i + j ) / 2.0 );
-	SearchMode = 2;
-      }
-      break;
-    case 2:
-      if ( fabs( DMCA[i] ) < dMCA[i] * PSSens ) {
-	aPeak.end = i;
-	MCAPeaks << aPeak;
-	//	PEChs << i;
-	SearchMode = 0;
-      }
-    }
-  }
-#endif
   emit newPeakList( &MCAPeaks );
 }
 

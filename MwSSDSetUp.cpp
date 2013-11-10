@@ -136,8 +136,6 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ),
 	   Qt::UniqueConnection );
-  //  connect( PeakFitB, SIGNAL( clicked() ), this, SLOT( doPeakFit() ),
-  //           Qt::UniqueConnection );
 
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
 	   this, SLOT( newPSSens() ),
@@ -146,6 +144,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
   connect( LimitPSEnergy, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelectedLimitPSEnergy( bool ) ),
+	   Qt::UniqueConnection );
+  connect( MCAPeakSearch, SIGNAL( toggled( bool ) ),
+	   this, SLOT( SelectedPeakSearch( bool ) ),
 	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ),
@@ -299,6 +300,16 @@ void MainWindow::SelectedShowDiff( bool f )
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
       view->setShowDiff( f );
+    }
+  }
+}
+
+void MainWindow::SelectedPeakSearch( bool f )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setPeakSearch( f );
     }
   }
 }

@@ -502,6 +502,11 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
     ((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
     ((MCAView *)newView)->setShowElementsEnergy( ShowElmEnergy->isChecked() );
+    ((MCAView *)newView)->setLimitPSEnergy( LimitPSEnergy->isChecked() );
+    ((MCAView *)newView)->setShowDiff( ShowDiff->isChecked() );
+    ((MCAView *)newView)->setPeakSearch( MCAPeakSearch->isChecked() );
+    ((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
+    ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
     break;
   default:
     return NULL;
