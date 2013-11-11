@@ -505,6 +505,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setLimitPSEnergy( LimitPSEnergy->isChecked() );
     ((MCAView *)newView)->setShowDiff( ShowDiff->isChecked() );
     ((MCAView *)newView)->setPeakSearch( MCAPeakSearch->isChecked() );
+    ((MCAView *)newView)->setPeakFit( MCAPeakFit->isChecked() );
     ((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
     ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
     break;

@@ -44,6 +44,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   ShowDiff = true;
   DoPeakSearch = true;
+  DoPeakFit = false;
   LimitPSEnergy = true;
   PSSens = 0.5; // ピークサーチの感度
   I0Energy = 10.0;   // keV
@@ -322,7 +323,7 @@ void MCAView::Draw( QPainter *p )
   if ( DoPeakSearch ) {
     PeakSearch( wrROIsx, wrROIex );
     PF->init( &MCAPeaks, MCALen, NULL, SMCA );
-    PFLines = PF->fit( &PFPeaks );
+    PFLines = PF->fit( &PFPeaks, DoPeakFit );
   }
 
   /* ここまでデータの準備とか色々 */
@@ -350,10 +351,13 @@ void MCAView::Draw( QPainter *p )
 		       cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
 	}
 	if ( DoPeakSearch ) {
-	  if (( PFLines[0][i] > 0 )&&( PFLines[0][i-1] > 0 )) {
-	    p->setPen( PFLINEC );
-	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( PFLines[0][i-1] ) ),
-			 cc.r2sx( E ), cc.r2sy( log10( PFLines[0][i] ) ) );
+	  p->setPen( PFLINEC );
+	  //	  for ( int j = 0; j < MCAPeaks.count() + 1; j++ ) {
+	  for ( int j = 0; j < 1; j++ ) {
+	    if (( PFLines[j][i] > 0 )&&( PFLines[j][i-1] > 0 )) {
+	      p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( PFLines[j][i-1] ) ),
+			   cc.r2sx( E ), cc.r2sy( log10( PFLines[j][i] ) ) );
+	    }
 	  }
 	}
 	if ( ShowDiff ) {
@@ -394,8 +398,11 @@ void MCAView::Draw( QPainter *p )
 		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
 	if ( DoPeakSearch ) {
 	  p->setPen( PFLINEC );
-	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( PFLines[0][i-1] ),
-		       cc.r2sx( E ), cc.r2sy( PFLines[0][i] ) );
+	  // for ( int j = 0; j < MCAPeaks.count() + 1; j++ ) {
+	  for ( int j = 0; j < 1; j++ ) {
+	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( PFLines[j][i-1] ),
+			 cc.r2sx( E ), cc.r2sy( PFLines[j][i] ) );
+	  }
 	}
 	if ( ShowDiff ) { // 微分表示
 	  p->setPen( DMCAC ); // 1階微分
@@ -774,7 +781,7 @@ void MCAView::PeakSearch( double Es, double Ee )
   int oSign = 0, Sign = 0;
 
   if ( LimitPSEnergy ) // ピークサーチを入射X線のエネルギーまでに制限する
-    if ( Ee > I0Energy + 0.1 )
+    if ( Ee > I0Energy + 2.0 )
       Ee = I0Energy + 0.1;
   int minI = k2p->E2p( MCACh, Es );
   int maxI = k2p->E2p( MCACh, Ee );
@@ -836,7 +843,10 @@ void MCAView::PeakSearch( double Es, double Ee )
       // 推定誤差( x 感度 )より大きなピークなら
       // ほんとにピークと認める
       if ( ph > sqrt( avr ) * PSSens ) {
-	w = ( w1 > w2 ) ? w1 : w2;   // 半値幅は大きな方を採用
+	if ( w1 == 0 ) w = w2;
+	else if ( w2 == 0 ) w = w1;
+	else w = ( w1 < w2 ) ? w1 : w2;   // 半値幅は小さい方を採用
+	w *= 0.7;
 	aPeak.center = Xps[i];
 	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
 	aPeak.peakH = SMCA[ (int)aPeak.center ];
@@ -865,14 +875,15 @@ void MCAView::PeakSearch( double Es, double Ee )
 	    // 同じ点の 3階微分の符号が連続して同じなら間にピークがあるのではと疑う
 	    if (( oSign == Sign )&&( ooSign == oSign )) {
 	      if ( ( SMCA[ oXp ] - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2. )
-		   > sqrt( SMCA[oXp] ) * PSSens );
-	      aPeak.center = oXp;
-	      aPeak.centerE = k2p->p2E( MCACh, oXp );
-	      aPeak.peakH = SMCA[ oXp ];
-	      aPeak.peakH0 = aPeak.peakH - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2.;
-	      aPeak.start = ooXp;
-	      aPeak.end = Xp;
-	      MCAPeaks << aPeak;
+		   > sqrt( SMCA[oXp] ) * PSSens ) {
+		aPeak.center = oXp;
+		aPeak.centerE = k2p->p2E( MCACh, oXp );
+		aPeak.peakH = SMCA[ oXp ];
+		aPeak.peakH0 = aPeak.peakH - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2.;
+		aPeak.start = ooXp;
+		aPeak.end = Xp;
+		MCAPeaks << aPeak;
+	      }
 	    }
 	    ooXp = oXp;
 	    oXp = Xp;

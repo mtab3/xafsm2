@@ -148,6 +148,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( MCAPeakSearch, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelectedPeakSearch( bool ) ),
 	   Qt::UniqueConnection );
+  connect( MCAPeakFit, SIGNAL( toggled( bool ) ),
+	   this, SLOT( SelectedPeakFit( bool ) ),
+	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ),
 	   Qt::UniqueConnection );
@@ -310,6 +313,16 @@ void MainWindow::SelectedPeakSearch( bool f )
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
       view->setPeakSearch( f );
+    }
+  }
+}
+
+void MainWindow::SelectedPeakFit( bool f )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setPeakFit( f );
     }
   }
 }

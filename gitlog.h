@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "readTab" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Nov 11 03:30:13 2013 +0900\n"\
+                "    Peak Search was a little bit improved.  The frame of Peak-Fit was written.\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Nov 10 20:59:17 2013 +0900\n"\
                 "    MCAView and Peak-Search were much improved and finally reached the point where we should start Peak-Fit from.\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Nov 8 20:43:58 2013 +0900\n"\
                 "    PeakFit is uncommened to use again\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Nov 8 19:43:44 2013 +0900\n"\
-                "    MCA data read is ready again\n"\
 		"\n"\
                 ""
 #endif

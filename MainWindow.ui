@@ -6975,7 +6975,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                      <bool>false</bool>
                     </property>
                    </widget>
-                   <widget class="QRadioButton" name="LimitPSEnergy">
+                   <widget class="QRadioButton" name="MCAPeakFit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -6983,13 +6983,18 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                      </sizepolicy>
                     </property>
                     <property name="text">
-                     <string>Limi at I0 Eng.</string>
+                     <string>Fit</string>
                     </property>
                     <property name="checked">
-                     <bool>true</bool>
+                     <bool>false</bool>
                     </property>
                     <property name="autoExclusive">
                      <bool>false</bool>
+                    </property>
+                   </widget>
+                   <widget class="QRadioButton" name="LimitPSEnergy">
+                    <property name="text">
+                     <string>Limit at I0 Eng.</string>
                     </property>
                    </widget>
                   </widget>

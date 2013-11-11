@@ -51,6 +51,7 @@ private:
   double yRatio;           // 縦軸の拡大倍率
 
   bool ShowDiff;
+  bool DoPeakFit;
   bool DoPeakSearch;
   bool LimitPSEnergy;      // ピークサーチを I0 のエネルギーまででやめる。
   double I0Energy;         // その I0 のエネルギー保持
@@ -95,6 +96,7 @@ public:
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
+  void setPeakFit( bool f ) { DoPeakFit = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
