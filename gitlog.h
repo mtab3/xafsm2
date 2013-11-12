@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "AutoSeq" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Nov 12 20:39:52 2013 +0900\n"\
+                "    SSDEngAuto.seq is ready\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Nov 12 18:35:00 2013 +0900\n"\
                 "    peak fit is once stoped\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Nov 10 20:59:17 2013 +0900\n"\
                 "    MCAView and Peak-Search were much improved and finally reached the point where we should start Peak-Fit from.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Nov 9 23:42:53 2013 +0900\n"\
-                "    the Peak-Search in MCAView was much improved\n"\
 		"\n"\
                 ""
 #endif

@@ -2036,7 +2036,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Limi at I0 Eng.</source>
-        <translation>I0エネルギーで制限</translation>
+        <translation type="obsolete">I0エネルギーで制限</translation>
     </message>
     <message>
         <source>Hide T.</source>
@@ -2583,6 +2583,26 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>um</source>
         <translation>μm</translation>
+    </message>
+    <message>
+        <source>Limit at I0 Eng.</source>
+        <translation>I0のエネルギーで制限</translation>
+    </message>
+    <message>
+        <source>Fit</source>
+        <translation>フィッティング</translation>
+    </message>
+    <message>
+        <source>mm  </source>
+        <translation>mm</translation>
+    </message>
+    <message>
+        <source>Some Sequence is running</source>
+        <translation>別の自動シーケンス実行中です</translation>
+    </message>
+    <message>
+        <source>Auto Calib.</source>
+        <translation>自動較正</translation>
     </message>
 </context>
 <context>

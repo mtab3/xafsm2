@@ -706,6 +706,7 @@ private slots:
   void ReadLowerLimitSetting( void );
   void DTAutoCalibStart( void );
   void SSDEngAutoCalibStart( void );
+  void MoveToNewCaribEnergy( void );
 
   void NewAttenCh( int i );
   void NewAttenPos( void );

@@ -188,9 +188,14 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
                                            // スクリプトがあれば動けるので false にしない
   }
   connect( EnergyMoveTo, SIGNAL( clicked() ),
-	   this, SLOT( MoveToNewCaribEnergy( int ) ), Qt::UniqueConnection );
+	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
+}
+
+void MainWindow::MoveToNewCaribEnergy( void )
+{
+  MoveCurThPosKeV( EnergySelect->currentText().toDouble() );
 }
 
 void MainWindow::NewAttenPos( void )
