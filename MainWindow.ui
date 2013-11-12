@@ -6975,26 +6975,23 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                      <bool>false</bool>
                     </property>
                    </widget>
-                   <widget class="QRadioButton" name="MCAPeakFit">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string>Fit</string>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
                    <widget class="QRadioButton" name="LimitPSEnergy">
                     <property name="text">
                      <string>Limit at I0 Eng.</string>
+                    </property>
+                   </widget>
+                   <widget class="QPushButton" name="MCAPeakFit">
+                    <property name="maximumSize">
+                     <size>
+                      <width>40</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                    </property>
+                    <property name="text">
+                     <string>Fit</string>
                     </property>
                    </widget>
                   </widget>

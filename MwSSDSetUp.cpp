@@ -3,6 +3,7 @@
 #include "SMsg.h"
 #include "MainWindow.h"
 #include "MCAView.h"
+#include "PeakFit.h"
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
@@ -148,8 +149,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( MCAPeakSearch, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelectedPeakSearch( bool ) ),
 	   Qt::UniqueConnection );
-  connect( MCAPeakFit, SIGNAL( toggled( bool ) ),
-	   this, SLOT( SelectedPeakFit( bool ) ),
+  connect( MCAPeakFit, SIGNAL( clicked() ), this, SLOT( PushedPeakFit() ),
 	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ),
@@ -317,12 +317,20 @@ void MainWindow::SelectedPeakSearch( bool f )
   }
 }
 
-void MainWindow::SelectedPeakFit( bool f )
+void MainWindow::PushedPeakFit( void )
 {
+  return;
+
   MCAView *view;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      view->setPeakFit( f );
+      PeakFit *PF = new PeakFit;
+      
+      PF->init( view->getMCAPeaks(), view->getMCALength(), NULL, view->getSMCA() );
+      PF->fit( true, view->getFLine() );
+      view->update();
+      
+      delete PF;
     }
   }
 }

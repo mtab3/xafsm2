@@ -29,6 +29,9 @@ private:
   double *DMCA, *DMCA2, *DMCA3, *DMCA4;  // 1〜3次微分
   double *dMCA;                          // 統計変動
   double *E;
+  double *FittedLine;
+  double *InitialLine;
+
   int MCALen;
   int MCACh;
   double realTime;
@@ -65,7 +68,8 @@ private:
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
   QColor SMCAC, DMCAC, DMCAC2, DMCAC3;
-  QColor PEAKPOINTC, PFLINEC;
+  QColor PEAKPOINTC;
+  QColor INITLINEC, FITTEDLINEC;
 
   void Draw( QPainter *p );
   void PeakSearch( double Es, double Ee );
@@ -102,6 +106,11 @@ public:
   double *getMCAEnergys( void ) { return E; };
   void print( QPrinter *p );
   KeV2Pix *keV2Pix( void ) { return k2p; };
+
+  QVector<MCAPeak> *getMCAPeaks( void ) { return &MCAPeaks; };
+  int getMCALength( void ) { return MCALen; };
+  double *getSMCA( void ) { return SMCA; };
+  double *getFLine( void ) { return FittedLine; };
 
 public slots:
   void setROI( int s, int e );   // MCA pixel

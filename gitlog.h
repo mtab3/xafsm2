@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "readTab" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Nov 11 19:31:42 2013 +0900\n"\
+                "    working on pf\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Nov 11 03:30:13 2013 +0900\n"\
                 "    Peak Search was a little bit improved.  The frame of Peak-Fit was written.\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Nov 9 00:56:28 2013 +0900\n"\
                 "    Merge branch 'readTab' of ssh://titan/git/Qt0/XAFS/XafsM2 into readTab\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Nov 8 20:43:58 2013 +0900\n"\
-                "    PeakFit is uncommened to use again\n"\
 		"\n"\
                 ""
 #endif

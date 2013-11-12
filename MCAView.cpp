@@ -29,6 +29,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   SMCA = NULL;  // スムージング
   DMCA = DMCA2 = DMCA3 = DMCA4 = NULL;  // 1〜4次微分
   dMCA = NULL;  // 統計変動
+  InitialLine = FittedLine = NULL;
 
   PF = new PeakFit;
 
@@ -68,7 +69,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
   PEAKPOINTC  = QColor( 100, 100, 100 );  // ピークポイント
-  PFLINEC     = QColor( 255, 220,   0 );  // ピーク合成ライン
+  INITLINEC   = QColor( 230, 200,   0 );  // ピーク合成ライン
+  FITTEDLINEC = QColor( 200,   0,   0 );  // ピーク合成ライン
 
   rROIsx = 0;
   rROIex = 20;
@@ -110,6 +112,12 @@ MCAView::~MCAView( void )
     delete dMCA;
   if ( E != NULL )
     delete E;
+
+  if ( InitialLine != NULL )
+    delete InitialLine;
+  if ( FittedLine != NULL )
+    delete FittedLine;
+
   disconnect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
@@ -129,6 +137,8 @@ quint32 *MCAView::setMCAdataPointer( int len )
   DMCA3 = new double[ MCALen ];
   DMCA4 = new double[ MCALen ];
   dMCA = new double[ MCALen ];
+  InitialLine = new double[ MCALen ];
+  FittedLine = new double[ MCALen ];
   return MCA;
 }
 
@@ -318,12 +328,10 @@ void MCAView::Draw( QPainter *p )
     if ( d > maxd ) { maxd = d; }
   }
 
-  int PFPeaks;
-  double **PFLines;
   if ( DoPeakSearch ) {
     PeakSearch( wrROIsx, wrROIex );
     PF->init( &MCAPeaks, MCALen, NULL, SMCA );
-    PFLines = PF->fit( &PFPeaks, DoPeakFit );
+    PF->fit( false, InitialLine );  // MCAView 内部では fitting はやらない
   }
 
   /* ここまでデータの準備とか色々 */
@@ -350,13 +358,20 @@ void MCAView::Draw( QPainter *p )
 	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
 		       cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
 	}
-	if ( DoPeakSearch ) {
-	  p->setPen( PFLINEC );
-	  //	  for ( int j = 0; j < MCAPeaks.count() + 1; j++ ) {
-	  for ( int j = 0; j < 1; j++ ) {
-	    if (( PFLines[j][i] > 0 )&&( PFLines[j][i-1] > 0 )) {
-	      p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( PFLines[j][i-1] ) ),
-			   cc.r2sx( E ), cc.r2sy( log10( PFLines[j][i] ) ) );
+	if ( DoPeakFit ) {
+	  if ( InitialLine != NULL ) {
+	    p->setPen( INITLINEC );
+	    //	  for ( int j = 0; j < MCAPeaks.count() + 1; j++ ) {
+	    if (( InitialLine[i] > 0 )&&( InitialLine[i-1] > 0 )) {
+	      p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( InitialLine[i-1] ) ),
+			   cc.r2sx( E ), cc.r2sy( log10( InitialLine[i] ) ) );
+	    }
+	  }
+	  if ( FittedLine != NULL ) {
+	    p->setPen( FITTEDLINEC );
+	    if (( FittedLine[i] > 0 )&&( FittedLine[i-1] > 0 )) {
+	      p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( FittedLine[i-1] ) ),
+			   cc.r2sx( E ), cc.r2sy( log10( FittedLine[i] ) ) );
 	    }
 	  }
 	}
@@ -397,11 +412,15 @@ void MCAView::Draw( QPainter *p )
 	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
 		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
 	if ( DoPeakSearch ) {
-	  p->setPen( PFLINEC );
-	  // for ( int j = 0; j < MCAPeaks.count() + 1; j++ ) {
-	  for ( int j = 0; j < 1; j++ ) {
-	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( PFLines[j][i-1] ),
-			 cc.r2sx( E ), cc.r2sy( PFLines[j][i] ) );
+	  if ( InitialLine != NULL ) {
+	    p->setPen( INITLINEC );
+	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( InitialLine[i-1] ),
+			 cc.r2sx( E ), cc.r2sy( InitialLine[i] ) );
+	  }
+	  if ( FittedLine != NULL ) {
+	    p->setPen( FITTEDLINEC );
+	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( FittedLine[i-1] ),
+			 cc.r2sx( E ), cc.r2sy( FittedLine[i] ) );
 	  }
 	}
 	if ( ShowDiff ) { // 微分表示

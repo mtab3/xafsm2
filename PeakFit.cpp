@@ -13,19 +13,13 @@ PeakFit::PeakFit( QObject *pp ) : QObject( pp )
   len = 0;
   Ps = Ps3 = 0;
   x = y = NULL;
-  lines = NULL;
+  line = NULL;
   p1 = p2 = NULL;
   dp = NULL;
 }
 
 void PeakFit::init( QVector<MCAPeak> *Peaks, int DLength, double *X, double *Y )
 {
-  if ( lines != NULL ) {
-    for ( int i = 0; i < Ps + 1; i++ )
-      delete [] lines[i];
-    delete [] lines;
-  }
-
   peaks = Peaks;
   Ps = peaks->count();
   Ps3 = Ps * 3;
@@ -34,28 +28,21 @@ void PeakFit::init( QVector<MCAPeak> *Peaks, int DLength, double *X, double *Y )
   x = X;
   y = Y;
 
-  lines = new double* [ Ps + 1 ];
-  for ( int i = 0; i < Ps + 1; i++ ) {
-    lines[i] = new double [ len ];
-  }
-
   dataValid = true;
 }
 
-double **PeakFit::fit( int *ps, bool f )
+void PeakFit::fit( bool f, double *l )
 {
-  *ps = Ps;
+  line = l;
 
   if ( f ) {
-    qDebug() << "in fitting";
-
     if ( p1 != NULL ) delete [] p1;
     p1 = new double [ Ps3 ];
     if ( p2 != NULL ) delete [] p2;
     p2 = new double [ Ps3 ];
     if ( dp != NULL ) delete [] dp;
     dp = new double [ Ps3 ];
-    
+
     double z, z0;
     double z1[ Ps3 ];
     double **z2 = new double *[ Ps3 ];
@@ -73,28 +60,37 @@ double **PeakFit::fit( int *ps, bool f )
     // 残差 z : これを最小(極小)にするのが目的
     // ホントは Zansa( p1 ) とするのが綺麗だけど、
     // Zansa の下請け関数に全部 p1 を配るのが面倒なので...
-    z = Zansa( p1 );
-    while( fabs( ( z - z0 ) / z ) > 0.01 ) {
+    z = Zansa();
+    while( fabs( ( z - z0 ) / z ) > 0.001 ) {
+      qDebug() << cnt++ << z;
       z0 = z;
-      genZ1( p1, z1 );  // z1 は z をパラメータ p(i) で微分したベクトル。(z極小) == (z1=0)
-      genZ2( p1, z2 );  // z2 は z1 をバラメータ p(j) で微分した行列
+      qDebug() << "a";
+      genZ1( z1 );  // z1 は z をパラメータ p(i) で微分したベクトル。(z極小) == (z1=0)
+      qDebug() << "b";
+      genZ2( z2 );  // z2 は z1 をバラメータ p(j) で微分した行列
+      qDebug() << "c";
       if ( ! invZ2( Ps3, z2, z22 ) ) // 逆行列が正常に計算できなかったら終了
 	break;           
       // 単純ニュートン法で p(i)n+1 = p(i)n - z1/z2 に準じるが
-      getdp( p1, dp, z1, z22 );  // そのままでは怖すぎるので制動をかける。
+      qDebug() << "d";
+      getdp( dp, z1, z22 );  // そのままでは怖すぎるので制動をかける。
+      qDebug() << "e";
       // 次のステップのパラメータ列
       double mul = 1.0; 
       do {
 	for ( int i = 0; i < Ps3; i++ ) {
 	  p2[i] = p1[i] - dp[i] * mul;
 	}
-	z = Zansa( p2 );
+	A = p2; B = p2 + Ps; C = p2 + Ps*2;
+	z = Zansa();
 	mul *= 0.9;
-      } while (( z > z0 )&&( mul > 0.01 ));
+      } while (( z > z0 )&&( mul > 0.001 ));
+      qDebug() << "f";
       for ( int i = 0; i < Ps3; i++ ) {
 	p1[i] = p2[i];
       }
-      qDebug() << "nc " << cnt++;
+      qDebug() << "g";
+      A = p1; B = p1 + Ps; C = p1 + Ps*2;
     }
     
     backPs( p1 );
@@ -107,21 +103,19 @@ double **PeakFit::fit( int *ps, bool f )
     delete [] z22;
   }
   GenPeaks();
-
-  return lines;
 }
 
-double PeakFit::Zansa( double *p )
+double PeakFit::Zansa( void )
 {
   double z0, z = 0;
   for ( int i = 0; i < len; i++ ) {
-    z0 = y[i] - Y(p,i);
+    z0 = y[i] - Y(i);
     z += z0 * z0;
   }
   return z;
 }
 
-void PeakFit::getdp( double *p1, double *dp, double *z1, double **z22 )
+void PeakFit::getdp( double *dp, double *z1, double **z22 )
 {
   // dp = -f/f'
   for ( int i = 0; i < Ps3; i++ ) {
@@ -200,59 +194,61 @@ bool PeakFit::invZ2( int d, double **z2, double **z22 )
   return true;
 }
 
-void PeakFit::genZ1( double *p, double *z1 )
+void PeakFit::genZ1( double *z1 )
 {
-  for ( int i = 0; i < Ps3; i++ ) {
-    z1[i] = 0;
-    for ( int x = 0; x < len; x++ ) {
-      z1[i] += dY0( p, x, i );
-    }
-  }
-}
-
-void PeakFit::genZ2( double *p, double **z2 )
-{
-  for ( int i = 0; i < Ps3; i++ ) {
-    for ( int j = 0; j < Ps3; j++ ) {
-      z2[i][j] = 0;
+  for ( int i = 0; i < Ps; i++ ) {
+    for ( int j = 0; j < 3; j++ ) {
+      z1[i] = 0;
       for ( int x = 0; x < len; x++ ) {
-	z2[i][j] += ddY0( p, x, i, j );
+	z1[i] += -( y[x] - Y( x ) ) * dY0( x, i, j );
       }
     }
   }
 }
 
-double PeakFit::A( double *p, int i0 )          { return p[i0*3]; }
-double PeakFit::B( double *p, int i0 )          { return p[i0*3+1]; }
-double PeakFit::C( double *p, int i0 )          { return p[i0*3+2]; }
-double PeakFit::x0( double *p, int x, int i0 )  { return ( x - B(p,i0) ); }
-double PeakFit::x2( double *p, int x, int i0 )  { return x0( p, x, i0 )*x0( p, x, i0 ); }
-double PeakFit::Y00( double *p, int x, int i0 ) { return exp(-x2( p,x,i0 )*C(p,i0)); }
-double PeakFit::Y0( double *p, int x, int i0 )  { return A(p,i0) * Y00( p, x, i0 ); }
+void PeakFit::genZ2( double **z2 )
+{
+  for ( int i = 0; i < Ps; i++ ) {
+    for ( int j = 0; j < Ps; j++ ) {
+      for ( int k = 0; k < 3; k++ ) {
+	for ( int l = 0; l < 3; l++ ) {
+	  z2[i][j] = 0;
+	  for ( int x = 0; x < len; x++ ) {
+	    z2[i][j] += dY0( x, i, k ) * dY0( x, j, l )
+	      - ( y[x] - Y( x ) )*ddY0( x, i, j );
+	  }
+	}
+      }
+    }
+  }
+}
 
-double PeakFit::Y( double *p, int x )
+double PeakFit::x0( int x, int i0 )  { return ( x - A[i0] ); }
+double PeakFit::x2( int x, int i0 )  { return x0( x, i0 )*x0( x, i0 ); }
+double PeakFit::Y00( int x, int i0 ) { return exp( -x2( x, i0 ) * C[i0] ); }
+double PeakFit::Y0( int x, int i0 )  { return A[i0] * Y00( x, i0 ); }
+
+double PeakFit::Y( int x )
 {
   double y = 0;
   for ( int i = 0; i < Ps; i++ )
-    y += Y0( p, x, i );
+    y += Y0( x, i );
   return y;
 }
 
-double PeakFit::dY0( double *p, int x, int i )
+double PeakFit::dY0( int x, int i, int j )
 {
   double y = 0;
-  int i0 = (int)( i / 3 );
-  int i1 = i % 3;
   
-  switch( i1 ) {
-  case 0: y = Y00( p, x, i0 ); break;
-  case 1: y = Y0( p, x, i0 ) * 2 * C(p,i0) * x0( p, x, i0 ); break;
-  case 2: y = -Y0( p, x, i0 ) * x2( p, x, i0 ); break;
+  switch( j ) {
+  case 0: y = Y00( x, i ); break;
+  case 1: y = Y0( x, i ) * 2 * C[i] * x0( x, i ); break;
+  case 2: y = -Y0( x, i ) * x2( x, i ); break;
   }
   return y;
 }
 
-double PeakFit::ddY0( double *p, int x, int i, int j ) 
+double PeakFit::ddY0( int x, int i, int j ) 
 {
   double y = 0;
   int i0 = ( int )( i / 3 );
@@ -266,20 +262,20 @@ double PeakFit::ddY0( double *p, int x, int i, int j )
   case 0:
     switch( j1 ) {
     case 0: y = 0; break;
-    case 1: y = Y00(p,x,i0)*2*C(p,i0)*x0(p,x,i0); break;
-    case 2: y = -Y00(p,x,i0)*x2(p,x,i0); break;
+    case 1: y = Y00( x, i0 ) * 2 * C[i0] * x0( x, i0 ); break;
+    case 2: y = -Y00( x, i0 )*x2( x, i0 ); break;
     } break;
   case 1:
     switch( j1 ) {
-    case 0: y = Y00(p,x,i0)*2*C(p,i0)*x0(p,x,i0); break;
-    case 1: y = dY0(p,x,i0*3+1)*2*C(p,i0)*x0(p,x,i0) - Y0(p,x,i0)*2*C(p,i0); break;
-    case 2: y = dY0(p,x,i0*3+2)*2*C(p,i0)*x0(p,x,i0) + Y0(p,x,i0)*2*x0(p,x,i0); break;
+    case 0: y = Y00( x, i0 )*2*C[i0] * x0( x, i0 ); break;
+    case 1: y = dY0( x, i0, 1 )*2*C[i0] * x0( x, i0 ) - Y0( x, i0 )*2*C[i0]; break;
+    case 2: y = dY0( x, i0, 2 )*2*C[i0] * x0( x, i0 ) + Y0( x, i0 )*2*x0( x, i0 ); break;
     } break;
   case 2:
     switch( j1 ) {
-    case 0: y = -Y00(p,x,i0)*x2(p,x,i0); break;
-    case 1: y = dY0(p,x,i0*3+2)*2*C(p,i0)*x0(p,x,i0) + Y0(p,x,i0)*2*x0(p,x,i0); break;
-    case 2: y = -dY0(p,x,i0*3+2)*x2(p,x,i0); break;
+    case 0: y = -Y00( x, i0 ) * x2( x, i0 ); break;
+    case 1: y = dY0( x, i0, 2 )*2*C[i0] * x0( x, i0 ) + Y0( x, i0 )*2*x0( x, i0 ); break;
+    case 2: y = -dY0( x, i0, 2 )*x2( x, i0 ); break;
     } break;
   }
 
@@ -288,21 +284,28 @@ double PeakFit::ddY0( double *p, int x, int i, int j )
 
 void PeakFit::initPs( double *p )
 {
+  A = p;
+  B = p + Ps;
+  C = p + Ps * 2;
   for ( int i = 0; i < Ps; i++ ) {
-    p[i*3]   = (*peaks)[i].peakH0;
-    p[i*3+1] = (*peaks)[i].center;
-    p[i*3+2] = 1. / ( (*peaks)[i].center - (*peaks)[i].start );
-    p[i*3+2] *= p[i*3+2];
+    A[i]   = (*peaks)[i].peakH0;
+    B[i] = (*peaks)[i].center;
+    C[i] = 1. / ( (*peaks)[i].center - (*peaks)[i].start );
+    C[i] *= C[i];
   }
 }
 
 void PeakFit::backPs( double *p )
 {
+  A = p;
+  B = p + Ps;
+  C = p + Ps * 2;
+
   double w;
   for ( int i = 0; i < Ps; i++ ) {
-    (*peaks)[i].peakH0 = p[i*3];
-    (*peaks)[i].center = p[i*3+1];
-    w = 1. / sqrt( p[i*3+2] );
+    (*peaks)[i].peakH0 = A[i];
+    (*peaks)[i].center = B[i];
+    w = 1. / sqrt( C[i] );
     (*peaks)[i].start = (*peaks)[i].center - w;
     (*peaks)[i].end = (*peaks)[i].center + w;
   }
@@ -311,13 +314,12 @@ void PeakFit::backPs( double *p )
 void PeakFit::GenPeaks( void )
 {
   for ( int j = 0; j < len; j++ ) {
-    lines[0][j] = 0;
+    line[j] = 0;
     for ( int i = 0; i < Ps; i++ ) {
       double x0 = (*peaks)[i].center;
       double w = (*peaks)[i].center - (*peaks)[i].start;
-      lines[i+1][j] = (*peaks)[i].peakH0
+      line[j] += (*peaks)[i].peakH0
 	* exp( - ( j - x0 ) * ( j - x0 ) / ( w * w ) );
-      lines[0][j] += lines[i+1][j];
     }
   }
 }
