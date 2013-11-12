@@ -10,5 +10,6 @@
     <file>Changer.png</file>
     <file>SSDLowLimits0.txt</file>
     <file>DTAutoCalib.seq</file>
+    <file>SSDEngAutoCalib.seq</file>  
   </qresource>
 </RCC>

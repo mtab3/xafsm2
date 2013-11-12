@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "readTab" )
+#define BRANCH_NAME ( "AutoSeq" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Nov 12 18:35:00 2013 +0900\n"\
+                "    peak fit is once stoped\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Nov 11 19:31:42 2013 +0900\n"\
                 "    working on pf\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Nov 9 23:42:53 2013 +0900\n"\
                 "    the Peak-Search in MCAView was much improved\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Nov 9 00:56:28 2013 +0900\n"\
-                "    Merge branch 'readTab' of ssh://titan/git/Qt0/XAFS/XafsM2 into readTab\n"\
 		"\n"\
                 ""
 #endif

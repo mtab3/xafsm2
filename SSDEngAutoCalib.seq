@@ -1,0 +1,32 @@
+# Data collect for Energy Calibration of SSD  ver.1
+
+ARRAY ENERGYS 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 19.0 0
+
+                               # Set up SSD for the measurement
+MEASURE  CLEAR                 # Preparation of I0 and I1 sensors
+MEASURE  SENS      S006        # add S006 (SSD)
+MEASURE  DTIME     300.000     # set dwell time 300
+MEASSSD  MODE REAL             # Measure SSD for 30s in real-time
+
+$I 0                                    # $I = 0
+LABEL MainLoop                          # --MaiLoop--
+ SHOW $ENERGYS:$I 0                     # while ( energy[i] != 0 ) {
+ IFEQ $ENERGYS:$I 0                     # while ( energy[i] != 0 ) {
+  GOTO LoopEnd
+
+   SHOW "Moving to " $ENERGYS:$I
+   MONOCH ENERGY $ENERGYS:$I            # Move To energy[i]
+
+   MEASURE MEASURE
+
+   $FNAME "SSDEngCalib-"$ENERGYS:$I     # $fname = "SSDEngCalib-" + $ENERGYS[$I] + ".dat"
+   SADD FNAME ".dat"
+   SHOW "fname " $FNAME            
+
+   MEASSSD  RECORD $FNAME               # save the SSD data
+
+   INC I                                # $I++
+ GOTO MainLoop                          # }
+LABEL LoopEnd
+
+END

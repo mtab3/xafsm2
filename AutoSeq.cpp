@@ -10,17 +10,24 @@
 void MainWindow::DTAutoCalibStart( void )
 {
   if ( ! inDTAutoCalib ) {
+    if ( inAutoSeq ) {
+      QString msg = tr( "Some Sequence is running" );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return;
+    }
     QString fname = DTAUTOSEQFNAME;
     
     QFileInfo F( fname );
     if ( ! F.exists() ) {
       fname = ":" DTAUTOSEQFNAME;
     }
-
+    
     inDTAutoCalib = true;
+    inAutoSeq = true;
     DTAutoCalib->setText( tr( "Stop" ) );
     DTAutoCalib->setStyleSheet( InActive );
-
+    
     connect( this, SIGNAL( AutoSequenceFinished() ), this, SLOT( DTAutoCalibFinished() ),
 	     Qt::UniqueConnection );
     AutoSequence( fname );
@@ -35,13 +42,59 @@ void MainWindow::DTAutoCalibFinished( void )
 	      this, SLOT( DTAutoCalibFinished() ) );
   DTAutoCalib->setText( tr( "Auto Calib." ) );
   DTAutoCalib->setStyleSheet( NormalB );
+  inDTAutoCalib = false;
+}
+
+/**********************************************************************/
+
+#define SSDENGAUTOSEQFNAME  "SSDEngAutoCalib.seq"
+
+void MainWindow::SSDEngAutoCalibStart( void )
+{
+  if ( ! inSSDEngAutoCalib ) {
+    if ( inAutoSeq ) {
+      QString msg = tr( "Some Sequence is running" );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return;
+    }
+    QString fname = SSDENGAUTOSEQFNAME;
+    
+    QFileInfo F( fname );
+    if ( ! F.exists() ) {
+      fname = ":" SSDENGAUTOSEQFNAME;
+    }
+
+    inSSDEngAutoCalib = true;
+    inAutoSeq = true;
+    SSDEngAutoCalib->setText( tr( "Stop" ) );
+    SSDEngAutoCalib->setStyleSheet( InActive );
+
+    connect( this, SIGNAL( AutoSequenceFinished() ),
+	     this, SLOT( SSDEngAutoCalibFinished() ),
+	     Qt::UniqueConnection );
+    AutoSequence( fname );
+  } else {
+    AutoSequenceEnd();
+  }
+}
+
+void MainWindow::SSDEngAutoCalibFinished( void )
+{
+  disconnect( this, SIGNAL( AutoSequenceFinished() ),
+	      this, SLOT( DTAutoCalibFinished() ) );
+  SSDEngAutoCalib->setText( tr( "Auto Calib." ) );
+  SSDEngAutoCalib->setStyleSheet( NormalB );
+  inSSDEngAutoCalib = false;
 }
 
 /*********************************************************************/
 
 void MainWindow::setupAutoSequence( void )
 {
+  inAutoSeq = false;
   inDTAutoCalib = false;
+  inSSDEngAutoCalib = false;
   ASSCDx = ASSCDy = 0;
   ASTimer = new QTimer;
   connect( ASTimer, SIGNAL( timeout() ), this, SLOT( AutoSequence0() ),
@@ -328,9 +381,8 @@ void MainWindow::AutoSequenceEnd( void )
 {
   ASTimer->stop();
 
+  inAutoSeq = false;
   emit AutoSequenceFinished();
-
-  inDTAutoCalib = false;
 }
 
 void MainWindow::ASReadSEQFile( QString fname )

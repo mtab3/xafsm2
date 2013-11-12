@@ -407,7 +407,7 @@ private:
   QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
-  bool inMeas, inPause, SinPause, inDTAutoCalib;
+  bool inMeas, inPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;
   bool FixedPositionMode;
   int cMeasTab;       // Tab No. on which the current measurement result is displayed
   int inMoveTh;
@@ -705,6 +705,7 @@ private slots:
   //  void doPeakFit( void );
   void ReadLowerLimitSetting( void );
   void DTAutoCalibStart( void );
+  void SSDEngAutoCalibStart( void );
 
   void NewAttenCh( int i );
   void NewAttenPos( void );
@@ -780,6 +781,7 @@ private slots:
   /* AutoSequence */
   void AutoSequence0( void );
   void DTAutoCalibFinished();
+  void SSDEngAutoCalibFinished();
 
  signals:
   void SelectedSSD( int i, bool f );

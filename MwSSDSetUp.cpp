@@ -184,8 +184,13 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   } else {
     EnergySelect->setEnabled( false );
     EnergyMoveTo->setEnabled( false );
-    SSDEngAutoCalib->setEnabled( false );
+    // SSDEngAutoCalib->setEnabled( false ); // energy 選択のコンボボックスに値がなくても
+                                           // スクリプトがあれば動けるので false にしない
   }
+  connect( EnergyMoveTo, SIGNAL( clicked() ),
+	   this, SLOT( MoveToNewCaribEnergy( int ) ), Qt::UniqueConnection );
+  connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::NewAttenPos( void )
