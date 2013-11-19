@@ -22,6 +22,7 @@
 # 2013/11/01 add 'POS_NAME'    line.  'position name'
 # 2013/11/03 a character '~' can be use to by replaced with ' ' after this file is read
 # 2013/11/03 add 'CALIB_ENGS'  line
+# 2013/11/19 add 'DEF_U_REAL'  line use to specify motors whose displayed unit should be 'real' not pulse as default.
 
 
 #
@@ -207,6 +208,19 @@ MOTOR PM "M025" "GENERAL" "Cap. Stg. Z"   "pm16c04-3" "ch13" "mm"  0.0005  INT 0
 MOTOR PM "M026" "GENERAL" "Cap. Stg. X"   "pm16c04-3" "ch15" "mm"  0.001   INT 0
 MOTOR PM "M027" "GENERAL" "Cap. Stg. Phi" "pm16c04-2" "ch13" "deg" 0.004   INT 0
 
+DEF_U_REAL M002 M003 M004           # Stage XYZ
+DEF_U_REAL M005 M006 M007 M008      # 4WS
+DEF_U_REAL M009 M010                # 3x3 changer XY
+DEF_U_REAL M011 M012 M013 M014      # 4ax sample stage X Y w phi
+DEF_U_REAL M018 M019                # NEA XZ
+DEF_U_REAL M020 M021 M022           # CEY XZw
+DEF_U_REAL M023                     # mini z
+DEF_U_REAL M024 M025 M026 M027      # Capilari XZ w phi
+# For these motors, default unit should be 'real' not pulse (when selectable).
+
+#DEF_U_REAL M001 M015 M016 M017     # Monochromator axis
+# Not for M001 M015 M016 M017 relating to monochromators
+
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
 #     "Dth1p"     : The name of the unit (only for display)
@@ -217,24 +231,6 @@ MOTOR PM "M027" "GENERAL" "Cap. Stg. Phi" "pm16c04-2" "ch13" "deg" 0.004   INT 0
 #     REAL        : The unit of the motion should be real ( or INT )
 #     -10         : Minimum Voltage
 #     120         : Maximum Voltage
-
-#MOTOR PM "M002" "STAGEZ" "Stage Z" "simmotor" "ch0" "mm" 0.001 INT 0
-#MOTOR PM "M003" "STAGEX" "Stage X" "simmotor" "ch1" "mm" 0.001 INT 0
-#MOTOR PM "M004" "STAGEY" "Stage Y" "simmotor" "ch2" "mm" 0.001 INT 0
-#MOTOR PM "M005" "4WSL"   "4WS-L"   "simmotor" "ch3" "mm" 0.001 INT 0
-#MOTOR PM "M006" "4WSR"   "4WS-R"   "simmotor" "ch4" "mm" 0.001 INT 0
-#MOTOR PM "M007" "4WSU"   "4WS-U"   "simmotor" "ch5" "mm" 0.001 INT 0
-#MOTOR PM "M008" "4WSD"   "4WS-D"   "simmotor" "ch6" "mm" 0.001 INT 0
-#MOTOR PM "M009" "GENERAL" "Sample Stage 1(Xs)"    "simmotor" "ch7"  "mm" 0.001 INT 0
-#MOTOR PM "M010" "GENERAL" "Sample Stage 1(Zs)"    "simmotor" "ch8"  "mm" 0.001 INT 0
-#MOTOR PM "M011" "GENERAL" "Sample Stage 2(Xc)"    "simmotor" "ch9"  "mm" 0.001 INT 0
-#MOTOR PM "M012" "GENERAL" "Sample Stage 2(Zc)"    "simmotor" "ch10" "mm" 0.001 INT 0
-#MOTOR PM "M013" "GENERAL" "Sample Stage 2(Phi)"   "simmotor" "ch11" "mm" 0.001 INT 0
-#MOTOR PM "M014" "GENERAL" "Sample Stage 2(Omg)"   "simmotor" "ch12" "mm" 0.001 INT 0
-
-#MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
-#MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
-#MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
 
 CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
 
