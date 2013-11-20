@@ -21,6 +21,7 @@
 # 2013/11/01 add 'POS_NAME'    line.  'position name'
 # 2013/11/03 a character '~' can be use to by replaced with ' ' after this file is read
 # 2013/11/03 add 'CALIB_ENGS'  line
+# 2013/11/19 add 'DEF_U_REAL'  line use to specify motors whose displayed unit should be 'real' not pulse as default.
 
 #
 # In this definition file,
@@ -172,6 +173,8 @@ MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
 #MOTOR PM "M016" "DTH2"  "Dth2"  "pm16c04-2" "ch0" "asec" 0.05 0
 #MOTOR PZ "M017" "DTH1P" "Dth1p" "e665" "" "um" 0.056 REAL -10 120 # Check the range !!!
 
+#DEF_U_REAL M002 M003 M004 M005 M006 M007 M008 M009 M010 M011 M012 M013 M014
+
 #   PZ      : Unit type   PZ : piezo actuator controlled via e665
 #     "DTH1P"     : Identifier that this is the dth1p
 #     "Dth1p"     : The name of the unit (only for display)
@@ -225,6 +228,13 @@ SPEEDS "M014" 3000 5000 100 24
 MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
 MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
 MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
+
+DEF_U_REAL M002 M003 M004       # Stage XYZ
+DEF_U_REAL M005 M006 M007 M008  # 4WS
+DEF_U_REAL M009 M010            # 3x3 changer XZ
+DEF_U_REAL M011 M012 M013 M014  # 4axis stage
+# For these motors, default unit should be 'real' not pulse (when selectable).
+# Not for M001 M015 M016 M017 relating to monochromators
 
 CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
 
