@@ -624,6 +624,7 @@ private slots:
   void PushedPeakFit( void );
   void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
+  void SaveS2DMCAs( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
