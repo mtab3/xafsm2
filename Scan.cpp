@@ -2,7 +2,7 @@
 
 void MainWindow::ScanSequence( void )
 {
-  AUnit *am = AMotors.value( MotorN->currentIndex() );
+  AUnit *am = SInfo.am;
 
   if ( am->isBusy() || am->isBusy2() || mUnits.isBusy() )
     return;
@@ -19,8 +19,8 @@ void MainWindow::ScanSequence( void )
     */
   case 0:
     statusbar->showMessage( tr( "Going to initial position." ), 1000 );
-    NowScanP = ScanSP;
-    am->SetValue( ScanSP );
+    NowScanP = SInfo.sx;
+    am->SetValue( SInfo.sx );
     SetScanViewWindow();
     mUnits.clearStage();
     ScanStage = 1;
@@ -53,7 +53,7 @@ void MainWindow::ScanSequence( void )
     break;
   case 5:
     mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
-    if ( ScanNormalize->isChecked() ) {
+    if ( SInfo.normalize ) {
       if ( MeasVals[1] != 0 )
 	ScanView->NewPoint( 0, NowScanP, MeasVals[0] / MeasVals[1] );
       else 
@@ -63,9 +63,9 @@ void MainWindow::ScanSequence( void )
     }
     ScanView->NewPoint( 1, NowScanP, MeasVals[1] );
     ScanView->update();
-    NowScanP += ScanSTP;
-    if ( ( ( ScanSTP > 0 )&&( NowScanP > ScanEP ) )
-	 ||( ( ScanSTP < 0 )&&( NowScanP < ScanEP ) ) ) {
+    NowScanP += SInfo.dx;
+    if ( ( ( SInfo.dx > 0 )&&( NowScanP > SInfo.ex ) )
+	 ||( ( SInfo.dx < 0 )&&( NowScanP < SInfo.ex ) ) ) {
       ScanStage = 10;
     } else {
       am->SetValue( NowScanP );
@@ -82,7 +82,7 @@ void MainWindow::ScanSequence( void )
     ScanStage = 11;
     break;
   case 11:
-    am->SetValue( ScanOrigin );
+    am->SetValue( SInfo.origin );
     ScanStage = 12;
     break;
   case 12:
@@ -98,9 +98,9 @@ void MainWindow::ScanSequence( void )
 
 void MainWindow::SetScanViewWindow( void )
 {
-  if ( ScanEP > ScanSP ) {
-    ScanView->SetWindow0( ScanSP, 0, ScanEP, 0 );
+  if ( SInfo.ex > SInfo.sx ) {
+    ScanView->SetWindow0( SInfo.sx, 0, SInfo.ex, 0 );
   } else {
-    ScanView->SetWindow0( ScanEP, 0, ScanSP, 0 );
+    ScanView->SetWindow0( SInfo.ex, 0, SInfo.sx, 0 );
   }
 }

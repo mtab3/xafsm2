@@ -2,7 +2,7 @@
 
 void MainWindow::MotorMove( void )
 {
-  AUnit *am = AMotors.value( MotorN->currentIndex() );
+  AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
   
   if ( !am->isBusy() ) {
     GoMStop0();

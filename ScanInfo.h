@@ -11,8 +11,18 @@ struct ScanInfo
  public:
 
   bool valid;
-  AUnit *unit;
-  double sx, ex, dx;
+  AUnit *am;
+  AUnit *as;
+  AUnit *as0;
+  RELABS relabs;
+  bool normalize;
+  int showUnit;
+  QString unitName;
+  double upp;
+  int speed;
+  double origin;
+  QString sx0, ex0, dx0, dwell0;
+  double sx, ex, dx, dwell;
 };
 
 #endif

@@ -250,14 +250,15 @@ private:
 
   bool inMMove;
   int MovingM;           // Moving motor ID
-  int MovingS;           // Moving motor Speed
+  //  int MovingS;           // Moving motor Speed
   //  RELABS GoMRelAbs, SPSRelAbs;
-  int SPSSelU;           // Selected SPS Unit
-  double SPSUPP;         // Unit per puls
+  //  int SPSSelU;           // Selected SPS Unit
+  //  double SPSUPP;         // Unit per puls
   bool inSPSing;
   int ScanStage;
-  int ScanMotor, ScanSensor;
-  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
+  //  int ScanMotor, ScanSensor;
+  //  AUnit *SPSMovingMotor;
+  //  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
   ScanInfo SInfo;
   int NowScanP;
   ViewCTRL *ScanViewC;
@@ -566,6 +567,7 @@ private slots:
   void SetGoMSpeedH( void );
   void SetGoMSpeedM( void );
   void SetGoMSpeedL( void );
+  void setSInfo( void );
   void ScanStart( void );
   void saveScanData( void );
   void SelectedAPointInScanArea( double x, double y );

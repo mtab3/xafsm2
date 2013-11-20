@@ -3993,7 +3993,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               <number>1</number>
              </property>
              <item row="8" column="9">
-              <widget class="QComboBox" name="SPSUnit">
+              <widget class="QComboBox" name="SPSUnitSelect">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -4009,7 +4009,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="10" column="5" colspan="5">
-              <widget class="QLineEdit" name="SPSeP">
+              <widget class="QLineEdit" name="SPSeP0">
                <property name="maximumSize">
                 <size>
                  <width>1000</width>
@@ -4028,7 +4028,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="11" column="5" colspan="5">
-              <widget class="QLineEdit" name="SPSdwell">
+              <widget class="QLineEdit" name="SPSdwell0">
                <property name="maximumSize">
                 <size>
                  <width>10000</width>
@@ -4194,7 +4194,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="8" column="2" colspan="7">
-              <widget class="QComboBox" name="SelectD1">
+              <widget class="QComboBox" name="SPSSelectD1">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -4207,7 +4207,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="10" column="2" colspan="2">
-              <widget class="QLineEdit" name="SPSsP">
+              <widget class="QLineEdit" name="SPSsP0">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -4252,7 +4252,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="13" column="2" colspan="8">
-              <widget class="QLineEdit" name="ScanRecFile">
+              <widget class="QLineEdit" name="ScanRecFileName">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -4310,7 +4310,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="11" column="2" colspan="2">
-              <widget class="QLineEdit" name="SPSstep">
+              <widget class="QLineEdit" name="SPSstep0">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -4444,7 +4444,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="8" column="10" colspan="2">
-              <widget class="QComboBox" name="SPSMotorS">
+              <widget class="QComboBox" name="SPSMotorSpeed">
                <property name="maximumSize">
                 <size>
                  <width>80</width>
@@ -4482,7 +4482,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <item row="9" column="0" colspan="10">
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
-                <widget class="QRadioButton" name="ScanNormalize">
+                <widget class="QRadioButton" name="SPSNormalize">
                  <property name="maximumSize">
                   <size>
                    <width>10000000</width>
@@ -4498,7 +4498,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="SelectD10">
+                <widget class="QComboBox" name="SPSSelectD10">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -4546,7 +4546,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                  <string>Scan/Move a Motor</string>
                 </property>
                </widget>
-               <widget class="QComboBox" name="MotorN">
+               <widget class="QComboBox" name="SPSMotorSelect">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -4576,7 +4576,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
               </widget>
              </item>
              <item row="10" column="10" colspan="2">
-              <widget class="RelAbs" name="SPSRelAbs">
+              <widget class="RelAbs" name="SPSRelAbsSelect">
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
