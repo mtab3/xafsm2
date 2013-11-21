@@ -258,11 +258,21 @@ void MainWindow::ReadDef( QString fname )
 	  qDebug() << tr( "Can not find a unit ID %1 for the SPEEDS line" ).
 	    arg( item );
 	}
+      } else if ( item == "DEF_U_REAL" ) {   // use real unit as default unit not pulse
+	next = nextItem( next, item );
+	while( item != "" ) {
+	  if ( item[0] == '#' )
+	    break;
+	  DefUReals << item;
+	  next = nextItem( next, item );
+	}
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
     }
   }
+
+  qDebug() << DefUReals;
 
   DriverList.removeDuplicates();
   f.close();

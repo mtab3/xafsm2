@@ -14,6 +14,10 @@ struct aCh {
 struct aMCASet {
   bool valid;
   aCh Ch[ SAVEMCACh ];
+  MCAHead Heads[ SAVEMCACh ];
+
+  double RINGCurrent;
+  double I0;
 
   aMCASet() { valid = false; };
   void setValid( bool f ) { valid = f; };

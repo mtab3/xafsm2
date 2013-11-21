@@ -152,6 +152,7 @@ private:
   AUnit *EncMainTh, *Enc2;
   //  AUnit *ChangerX, *ChangerZ;
 
+  QVector<QString> DefUReals;
   QVector<Changer*> Changers;
   AUnit *movingC1, *movingC2;
 
@@ -269,6 +270,7 @@ private:
   //  bool useFixedDelta;
   double SettingMainTh;
   void SetMainThCenter( void );
+  bool UseDefUReal( AUnit *am );
 
   //  bool MeasCntIs;
   //  int MeasCntNo;
@@ -626,6 +628,7 @@ private slots:
   void PushedPeakFit( void );
   void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
+  void SaveS2DMCAs( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
