@@ -74,6 +74,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
   SPSUnit->addItem( "Pulse" );
   SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
+  if ( UseDefUReal( AMotors.value( MotorN->currentIndex() ) ) ) {
+    SPSUnit->setCurrentIndex( 1 );
+  }
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SelectD1->addItem( ASensors.value(i)->getName() );
@@ -195,6 +198,21 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
 	   this, SLOT( ToggleGoToButtons( QString ) ),
 	   Qt::UniqueConnection );
+}
+
+
+bool MainWindow::UseDefUReal( AUnit *am )
+{
+  bool rv = false;
+
+  for ( int i = 0; i < DefUReals.count(); i++ ) {
+    if ( am->getUid() == DefUReals[i] ) {
+      rv = true;
+      break;
+    }
+  }
+
+  return rv;
 }
 
 void MainWindow::ToggleGoToButtons( QString )
@@ -571,6 +589,9 @@ void MainWindow::NewMotor( void )
   GoMotorUnit->setText( AMotors.value( MotorN->currentIndex() )->getUnit() );
   SPSUnit->removeItem( 1 );
   SPSUnit->addItem( AMotors.value( MotorN->currentIndex() )->getUnit() );
+  if ( UseDefUReal( AMotors.value( MotorN->currentIndex() ) ) ) {
+    SPSUnit->setCurrentIndex( 1 );
+  }
 }
 
 void MainWindow::GoMStop( void )
