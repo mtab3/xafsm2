@@ -42,6 +42,7 @@
 #include "ScanInfo.h"
 #include "BlockInfo.h"
 #include "CheckUnits.h"
+#include "ScanParamSet.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -250,6 +251,7 @@ private:
   QString DXMCenterFile;
 
   bool inMMove;
+  int SPSLastSelectedM;
   int MovingM;           // Moving motor ID
   //  int MovingS;           // Moving motor Speed
   //  RELABS GoMRelAbs, SPSRelAbs;
@@ -261,6 +263,7 @@ private:
   //  AUnit *SPSMovingMotor;
   //  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
   ScanInfo SInfo;
+  QVector<ScanPSet*> ScanPs;
   int NowScanP;
   ViewCTRL *ScanViewC;
   XYView *ScanView;
@@ -271,6 +274,8 @@ private:
   double SettingMainTh;
   void SetMainThCenter( void );
   bool UseDefUReal( AUnit *am );
+  void PutScanPSet( ScanPSet *set );
+  void GetScanPSet( ScanPSet *set );
 
   //  bool MeasCntIs;
   //  int MeasCntNo;

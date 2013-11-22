@@ -63,6 +63,10 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	     Qt::UniqueConnection );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ),
 	     Qt::UniqueConnection );
+
+    ScanPSet *aScanP = new ScanPSet;
+    aScanP->Unit = ( UseDefUReal( AMotors[i] ) ) ? 1 : 0;
+    ScanPs << aScanP;
   }
   for ( int i = 0; i < MSPEEDS; i++ ) {
     GoMotorS->addItem( MSpeeds[i].MSName );
@@ -70,14 +74,18 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
   GoMotorS->setCurrentIndex( 1 );
 
+  SPSLastSelectedM = SPSMotorSelect->currentIndex();
   SPSMotorSpeed->setCurrentIndex( 1 );
   AMotors.at( SPSMotorSelect->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
   SPSUnitSelect->addItem( "Pulse" );
   SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+#if 0
   if ( UseDefUReal( AMotors.value( SPSMotorSelect->currentIndex() ) ) ) {
     SPSUnitSelect->setCurrentIndex( 1 );
   }
+#endif
+  PutScanPSet( ScanPs[ SPSMotorSelect->currentIndex() ] );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SPSSelectD1->addItem( ASensors.value(i)->getName() );
@@ -201,6 +209,31 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   Qt::UniqueConnection );
 }
 
+void MainWindow::PutScanPSet( ScanPSet *set )
+{
+  SPSSelectD1->setCurrentIndex( set->Sensor );
+  SPSSelectD10->setCurrentIndex( set->Sensor0 );
+  SPSNormalize->setChecked( set->Sens0Selected );
+  SPSUnitSelect->setCurrentIndex( set->Unit );
+  SPSMotorSpeed->setCurrentIndex( set->Speed );
+  SPSsP0->setText( set->Start );
+  SPSeP0->setText( set->End );
+  SPSstep0->setText( set->Step );
+  SPSdwell0->setText( set->Dwell );
+}
+
+void MainWindow::GetScanPSet( ScanPSet *set )
+{
+  set->Sensor = SPSSelectD1->currentIndex();
+  set->Sensor0 = SPSSelectD10->currentIndex();
+  set->Sens0Selected = SPSNormalize->isChecked();
+  set->Unit = SPSUnitSelect->currentIndex();
+  set->Speed = SPSMotorSpeed->currentIndex();
+  set->Start = SPSsP0->text();
+  set->End = SPSeP0->text();
+  set->Step = SPSstep0->text();
+  set->Dwell = SPSdwell0->text();
+}
 
 bool MainWindow::UseDefUReal( AUnit *am )
 {
@@ -590,13 +623,18 @@ void MainWindow::GoMAtPuls( double Pos )
 void MainWindow::NewMotor( void )
 {
   setupMDispFirstTime = true;
+  GetScanPSet( ScanPs[ SPSLastSelectedM ] );
+  SPSLastSelectedM = SPSMotorSelect->currentIndex();
   AMotors.value( SPSMotorSelect->currentIndex() )->GetValue();
   GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
   SPSUnitSelect->removeItem( 1 );
   SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+  PutScanPSet( ScanPs[ SPSLastSelectedM ] );
+#if 0
   if ( UseDefUReal( AMotors.value( SPSMotorSelect->currentIndex() ) ) ) {
     SPSUnitSelect->setCurrentIndex( 1 );
   }
+#endif
 }
 
 void MainWindow::GoMStop( void )

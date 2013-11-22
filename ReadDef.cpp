@@ -272,7 +272,7 @@ void MainWindow::ReadDef( QString fname )
     }
   }
 
-  qDebug() << DefUReals;
+  //  qDebug() << DefUReals;
 
   DriverList.removeDuplicates();
   f.close();
