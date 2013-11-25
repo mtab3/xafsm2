@@ -476,11 +476,12 @@ void MainWindow::WriteMCAHead( QTextStream &out )
 {
   out << "# Ring Current : " << ( ( SLS == NULL ) ? "---" : SLS->value() ) << "\n";
   out << "# I0           : " << SI0->value() << "\n";
-  out << "# Channel Status Length RealTime LiveTime ICR\n";
+  out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
   for ( int i = 0; i < MaxSSDs; i++ ) {
     MCAHead head = SFluo->getAMCAHead( i );
     out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
-                << head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\n";
+	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
+	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
   }
   if ( cMCAView != NULL ) {
     if ( ShowAlwaysSelElm->isChecked() ) {

@@ -485,7 +485,7 @@ bool AUnit::GetValue( void )
     rv = false;
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2
-  if ( TypeCHK(  0,  0,  0,  1,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
+  if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   1 ) ) {
     IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, Driver, "Read" );
     rv = false;

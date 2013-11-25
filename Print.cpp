@@ -6,6 +6,8 @@ void MainWindow::Print( QPrinter *p )
   if ( nv == NULL )
     return;
 
+  p->setOrientation( QPrinter::Landscape );
+
   switch( ViewCtrls[ ViewTab->currentIndex() ]->getVType() ) {
   case XYVIEW:
     ((XYView*)nv)->print( p ); break;

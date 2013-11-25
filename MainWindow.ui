@@ -3103,7 +3103,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 <string>When the sensor can be used in auto-range mode, the check button is active.</string>
                </property>
                <property name="text">
-                <string>Auto Rang</string>
+                <string>Auto Range</string>
                </property>
               </widget>
              </item>

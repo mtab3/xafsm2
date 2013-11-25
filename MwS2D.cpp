@@ -887,12 +887,12 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
 
 void MainWindow::S2DReCalcMap( double s, double e )
 {
-  setAllROIs();
-
   if ( ( ! S2DI.valid )||( ! S2DReCalcWNewROI->isChecked() )
        || inMeas || inMCAMeas || inS2D ) {
     return;
   }
+
+  setAllROIs();
 
   QFileInfo mcaFile;
   double sum = 0;
