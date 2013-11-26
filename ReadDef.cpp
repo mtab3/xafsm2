@@ -297,9 +297,11 @@ void MainWindow::ReadDef( QString fname )
 		 << "the name is " << ASensors.at(i)->getPUid();
       }
     }
-    if ( ASensors.at(i)->getType() == "CNT2" ) {
+    if (( ASensors.at(i)->getType() == "CNT2" )
+	||( ASensors.at(i)->getType() == "OTC2" )) {
       for ( j = 0; j < ASensors.count(); j++ ) {
 	if ( ASensors.at(i)->get2ndUid() == ASensors.at(j)->getUid() ) {
+	  ASensors.at(i)->setThe2ndDriver( ASensors.at(j) );
 	  ASensors.at(i)->set2ndDriver( ASensors.at(j)->getDriver() );
 	  ASensors.at(i)->set2ndCh( ASensors.at(j)->getCh() );
 	  ASensors.at(i)->set2ndDevCh();

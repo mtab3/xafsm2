@@ -850,7 +850,7 @@ void AUnit::RcvAnsGetValueOfDriver( SMsg msg )  // driver 名だけで呼ばれ�
   if ( ( msg.From() == Driver ) && ( msg.Msgt() == READ ) ) {
     if ( Type == "PAM2" ) {
       Values = msg.Val().split( QChar( ',' ) );
-      Value = Values.at( Ch.toInt() );
+      Value = Values.at( Ch.toInt() ); // 親ドライバ宛の返答から自分用の答えを選り分ける
       emit newValue( Value );
       IsBusy2Off( Driver );
     }
@@ -964,7 +964,7 @@ double AUnit::SetTime( double dtime )   // in sec  // この関数は、複数�
     if ( Type == "PAM" )
       s->SendCMD2( Uid, DevCh, "SetNPLCycles", QString::number( time ) );
     else 
-      s->SendCMD2( Uid, Driver, "SetNPLCycles", QString::number( time ) );
+      s->SendCMD2( Uid, Driver, "SetNPLCycles " + Ch, QString::number( time ) );
     setTime = time / 60;    // これで「秒」単位の普通の時間に戻ってる
   }
   if (( Type == "CNT" )||( Type == "CNT2" )) {
@@ -1131,7 +1131,10 @@ bool AUnit::InitSensor( void )
       break;
     case 1:
       IsBusy2On( Driver, "InitSensor-c1" );
-      s->SendCMD2( "Scan", Dev, "SetAutoRangeEnable", "1" );
+      if ( Type == "PAM" ) 
+	s->SendCMD2( "Scan", Dev, "SetAutoRangeEnable", "1" );
+      if ( Type == "PAM2" ) 
+	s->SendCMD2( "Scan", Dev, "SetAutoRangeEnable " + Ch, "1" );
       LocalStage++;
       rv = true;
       break;
@@ -1196,6 +1199,7 @@ bool AUnit::InitSensor( void )
   if (( Type == "CNT2" )||( Type == "OTC2" )) {
     // CNT2, OTC2 のとき カウンタの向こうにつながるのは
     // keithley なのでそれ用の処理をしておく
+    QString Type2 = the2ndDriver->getType();
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver2, "InitSensor-c0" );
@@ -1206,19 +1210,33 @@ bool AUnit::InitSensor( void )
     case 1:
       IsBusy2On( Driver2, "InitSensor-c1" );
       if ( autoRange ) {
-	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "1" );
+	if ( Type2 == "PAM" )
+	  s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "1" );
+	if ( Type2 == "PAM2" )
+	  s->SendCMD2( "Scan", Driver2, "SetAutoRangeEnable " + Ch2, "1" );
 	LocalStage = 3;
       } else {
-	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "0" );
+	if ( Type2 == "PAM" )
+	  s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "0" );
+	if ( Type2 == "PAM2" )
+	  s->SendCMD2( "Scan", Driver2, "SetAutoRangeEnable " + Ch2, "0" );
 	LocalStage = 2;
       }
       rv = true;
       break;
     case 2:
       IsBusy2On( Driver2, "InitSensor-c2" );
-      s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
-      LocalStage++;
-      rv = true;
+      if ( Type2 == "PAM" ) {
+	s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
+	LocalStage++;
+	rv = true;
+      }
+      if ( Type2 == "PAM2" ) {
+	s->SendCMD2( "Scan", Driver2, "SetRange " + Ch2,
+		     QString( "2E%1" ).arg( SelectedRange ) );
+	LocalStage+=2;     // PAM2 の時は、LocalStage == 3 をとばす
+	rv = false;
+      }
       break;
     case 3:
       IsBusy2On( Driver2, "InitSensor-c3" );
@@ -1476,8 +1494,12 @@ bool AUnit::GetRange( void )
   bool rv = false;
 
   if (( Type == "CNT2" )||( Type == "OTC2" )) {
+    QString Type2 = the2ndDriver->getType();
     IsBusy2On( Driver2, "GetRange" );
-    s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
+    if ( Type2 == "PAM" )
+      s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
+    if ( Type2 == "PAM2" )
+      s->SendCMD2( Uid, Driver2, QString( "GetRange " ) + Ch2 );
     rv = false;
   }
 

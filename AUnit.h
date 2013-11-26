@@ -33,7 +33,7 @@ class AUnit : public QObject
   QString ID;           // MainTh, StageX, General, ...
   QString Name;         // Displayed name
   QString Driver;
-  QString Driver2;      // 2nd Driver
+  QString Driver2;      // 2nd Driver name
   QString Ch;
   QString Ch2;          // 2nd Ch;
   QString DevCh;        // Driver + "." + Ch
@@ -46,6 +46,7 @@ class AUnit : public QObject
   bool HasParent;       // if the unit have parent (group leader).
   QString PUid;         // the Uid of the parenet
   AUnit *theParent;     // the parent
+  AUnit *the2ndDriver;  // the 2nd Driver unit
   bool Has2ndDriver;    // if the unit has second driver or not.
   bool RangeSelectable; // if range is selectable for the unit
   int RangeU;           // Upper range limit
@@ -154,6 +155,7 @@ public:
   void setHasParent( bool hasParent ) { HasParent = hasParent; };
   void setParent( QString pUid ) { PUid = pUid; };
   void setTheParent( AUnit *p ) { theParent = p; };
+  void setThe2ndDriver( AUnit *p ) { the2ndDriver = p; };
   void setHas2ndDriver( bool has2ndDriver ) { Has2ndDriver = has2ndDriver; };
   void setSSDPresetType( QString type ) { SSDPresetType = type; };
   QString getSSDPresetType( void ) { return SSDPresetType; };

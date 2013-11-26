@@ -542,6 +542,10 @@ SENSOR ENC2 "S042" "ENCTH2" "Encoder Th" "simmotor" "SNSeib" "deg" NO "" 2.44140
 SENSOR PAM2 "S043" "Aux1" "Keithley 6482-1-1" "m6482drv" "0" "mA" YES "S043"
 SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
 
+SENSOR CNT2 "S045" "Aux1" "cnt (via 6482-1-1)" "simmotor" "SNScnt4" "count" YES "S045" "S043" -2 -9
+SENSOR CNT2 "S046" "Aux2" "cnt (via 6482-1-2)" "simmotor" "SNScnt5" "count" YES "S045" "S044" -2 -9
+
+
 # The parameters following the identifier 'SENSOR' are
 #   PAM2      : Unit type   PAM : Pico-am-mator keithley 6482
 #     "S004"            : Uniq identifire of the sensor. The identifier must be identical.

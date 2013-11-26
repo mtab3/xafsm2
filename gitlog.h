@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Nov 25 19:14:15 2013 +0900\n"\
+                "    very small change in GUI\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Nov 25 19:10:35 2013 +0900\n"\
                 "    ROI range is recorded in MCA-record-file\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Nov 21 20:04:41 2013 +0900\n"\
                 "    merged with master\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Nov 21 12:32:45 2013 +0900\n"\
-                "    DEF_U_REAL option is ready\n"\
 		"\n"\
                 ""
 #endif
