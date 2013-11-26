@@ -1121,7 +1121,7 @@ bool AUnit::InitSensor( void )
 
   if (( Type == "PAM" )||( Type == "PAM2" )) { // Keithley 6845
     QString Dev;
-    if ( Type == "PAM" ) { Dev = DevCh; } else { Dev = Driver; }
+    if ( Type == "PAM" ) { Dev = Driver; } else { Dev = Driver; } // !!
     switch( LocalStage ) {
     case 0:
       IsBusy2On( Driver, "InitSensor-c0" );
