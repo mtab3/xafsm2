@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Nov 27 11:56:03 2013 +0900\n"\
+                "    Corrected a minor bug on Set/Get range with PAM2.   LION\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Nov 26 20:48:43 2013 +0900\n"\
                 "    debugging on PAM and PAM2\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Nov 25 19:10:35 2013 +0900\n"\
                 "    ROI range is recorded in MCA-record-file\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Nov 22 16:44:29 2013 +0900\n"\
-                "    comment out a debug line from ReadDef.cpp\n"\
 		"\n"\
                 ""
 #endif

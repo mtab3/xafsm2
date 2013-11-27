@@ -395,6 +395,7 @@ void MainWindow::setEncNewTh( QString orig, QString newv )
   NewLogMsg( tr( "Encorder is set from %1 to %2" )
 	     .arg( orig ).arg( newv ) );
   EncMainTh->SetValue( newv.toDouble() );
+  EncMainTh->GetValue();
 }
 
 void MainWindow::RcvListNodes( SMsg msg )

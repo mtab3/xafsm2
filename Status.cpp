@@ -17,7 +17,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
     drivers << Ass->at(i);
   }
 
-  for ( int i = 0; i < drivers.count(); i++ ) {   // XAFSM.def にある全ドライバ名を集める
+  for ( int i = 0; i < drivers.count(); i++ ) { // XAFSM.def にある全ドライバ名を集める
     Drivers << drivers.at(i)->getDriver();
     connect( drivers.at(i), SIGNAL( Enabled( QString, bool ) ),
 	     this, SLOT( OnEnabled( QString, bool ) ),
