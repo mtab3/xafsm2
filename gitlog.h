@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Nov 26 20:48:43 2013 +0900\n"\
+                "    debugging on PAM and PAM2\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Nov 26 19:14:50 2013 +0900\n"\
                 "    Set and Get Range actions for PAM2 (keithley6482) might be ready\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Nov 22 16:44:29 2013 +0900\n"\
                 "    comment out a debug line from ReadDef.cpp\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Nov 21 20:05:51 2013 +0900\n"\
-                "    DEF_U_REAL and ScanParam were merged\n"\
 		"\n"\
                 ""
 #endif

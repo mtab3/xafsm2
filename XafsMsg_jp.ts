@@ -1252,7 +1252,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Auto Rang</source>
-        <translation>オートレンジ</translation>
+        <translation type="obsolete">オートレンジ</translation>
     </message>
     <message>
         <source>Move a motor or scan by moving a motor while monitoring a sensor.</source>
@@ -2590,7 +2590,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Fit</source>
-        <translation>フィッティング</translation>
+        <translation type="obsolete">フィッティング</translation>
     </message>
     <message>
         <source>mm  </source>
@@ -2603,6 +2603,26 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Auto Calib.</source>
         <translation>自動較正</translation>
+    </message>
+    <message>
+        <source>Auto Range</source>
+        <translation>オートレンジ</translation>
+    </message>
+    <message>
+        <source>Set Range</source>
+        <translation>レンジ設定</translation>
+    </message>
+    <message>
+        <source>Fitting</source>
+        <translation>フィッティング</translation>
+    </message>
+    <message>
+        <source>Can not save MCA spectra for 2D scan.</source>
+        <translation>2DスキャンしたMCAスペクトルをセーブできませんでした。</translation>
+    </message>
+    <message>
+        <source>No file name was selected</source>
+        <translation>ファイル名が選択されていません。</translation>
     </message>
 </context>
 <context>

@@ -639,6 +639,7 @@ private slots:
   void newRangeSelected( int );
   void askNowRange( void );
   void askNowRanges( void );
+  void askSetRange( void );
   void GotNowRange( int r );
   void SelAutoRange( bool Auto );
   void SetAutoRangeMode( int i );

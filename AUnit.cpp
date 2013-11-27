@@ -1285,6 +1285,33 @@ bool AUnit::InitSensor( void )
   return rv;
 }
 
+void AUnit::SetRange( int range )
+{
+  if (( Type == "CNT2" )||( Type == "OTC2" )||( Type == "PAM" )||( Type == "PAM2" )) {
+    IsBusy2On( Driver2, "SetRange" );
+    if (( Type == "CNT2" )||( Type == "OTC2" )) {
+      // CNT2, OTC2 のとき カウンタの向こうにつながるのは
+      // keithley なのでそれ用の処理をしておく
+      QString Type2 = the2ndDriver->getType();
+      if ( Type2 == "PAM" ) {
+	s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( range ) );
+      }
+      if ( Type2 == "PAM2" ) {
+	s->SendCMD2( "Scan", Driver2, "SetRange " + Ch2,
+		     QString( "2E%1" ).arg( range ) );
+      }
+    }
+    if ( Type == "PAM" ) {
+      s->SendCMD2( "Scan", DevCh, "SetRange", QString( "2E%1" ).arg( range ) );
+    }
+    if ( Type == "PAM2" ) {
+      s->SendCMD2( "Scan", Driver, "SetRange " + Ch,
+		   QString( "2E%1" ).arg( range ) );
+    }
+    SelectedRange = range;
+  }
+}
+
 /*** XMAP SSD ***/
 
 bool AUnit::GetStat( void )
@@ -1489,23 +1516,6 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
   }
 }
 
-bool AUnit::GetRange( void )
-{
-  bool rv = false;
-
-  if (( Type == "CNT2" )||( Type == "OTC2" )) {
-    QString Type2 = the2ndDriver->getType();
-    IsBusy2On( Driver2, "GetRange" );
-    if ( Type2 == "PAM" )
-      s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
-    if ( Type2 == "PAM2" )
-      s->SendCMD2( Uid, Driver2, QString( "GetRange " ) + Ch2 );
-    rv = false;
-  }
-
-  return rv;
-}
-
 bool AUnit::GetMCAs( void )
 {
   if ( Type == "SSD" ) {
@@ -1516,39 +1526,6 @@ bool AUnit::GetMCAs( void )
   }
 
   return false;
-}
-
-void AUnit::ReactGetRange( SMsg msg )
-{
-  if (( Type == "CNT2" )||( Type == "OTC2" )) {
-    if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) { // Check !!!!! DevCh/Drv
-      IsBusy2Off( Driver2 );
-      double range = log10( msg.Vals().at(0).toDouble() / 2.1 );
-      if ( range > RangeU ) range = RangeU;
-      if ( range < RangeL ) range = RangeL;
-      emit AskedNowRange( (int)range );
-    }
-  }
-}
-
-bool AUnit::isAutoRangeAvailable( void )  // PAM と CNT2, OCT2 は AutoRange を選択可
-{
-  if (( Type == "PAM" )||( Type == "PAM2" )||( Type == "CNT2" )||( Type == "OTC2" )) {
-    return true;
-  }
-  return false;
-}
-
-void AUnit::OnReportCurrent( SMsg msg )
-{
-  if ( Type == "LSR" ) {
-    if ( msg.From() == DevCh ) {
-      Values = msg.Val().simplified().split( QRegExp( "\\s" ) );
-      lastVal = Value;
-      Value = Values[ Values.count() - 1 ];
-      emit NewRingCurrent( Value, Values );
-    }
-  }
 }
 
 void AUnit::getMCALength( SMsg msg )
@@ -1700,3 +1677,67 @@ void AUnit::IsBusy2Off( QString drv )
   emit ChangedBusy2Count( drv );
 }
 
+
+bool AUnit::GetRange( void )
+{
+  bool rv = false;
+
+  if (( Type == "CNT2" )||( Type == "OTC2" )) {
+    QString Type2 = the2ndDriver->getType();
+    IsBusy2On( Driver2, "GetRange" );
+    if ( Type2 == "PAM" )
+      s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
+    if ( Type2 == "PAM2" )
+      s->SendCMD2( Uid, Driver2, QString( "GetRange " ) + Ch2 );
+    rv = false;
+  }
+
+  return rv;
+}
+
+void AUnit::ReactGetRange( SMsg msg )
+{
+  double range = RangeL;
+  if (( Type == "CNT2" )||( Type == "OTC2" )) {
+    if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) {
+      // Check !!!!! DevCh/Drv
+      QString Type2 = the2ndDriver->getType();
+
+      if ( Type2 == "PAM" ) {
+	range = log10( msg.Vals().at(0).toDouble() / 2.1 );
+      }
+      if ( Type2 == "PAM2" ) {
+	if ( msg.Vals().at(0).toInt() == Ch2.toInt() ) {
+	  range = log10( msg.Vals().at(1).toDouble() / 2.1 );
+	} else {
+	  return;
+	}
+      }
+
+      IsBusy2Off( Driver2 );
+      if ( range > RangeU ) range = RangeU;
+      if ( range < RangeL ) range = RangeL;
+      emit AskedNowRange( (int)range );
+    }
+  }
+}
+
+bool AUnit::isAutoRangeAvailable( void )  // PAM と CNT2, OCT2 は AutoRange を選択可
+{
+  if (( Type == "PAM" )||( Type == "PAM2" )||( Type == "CNT2" )||( Type == "OTC2" )) {
+    return true;
+  }
+  return false;
+}
+
+void AUnit::OnReportCurrent( SMsg msg )
+{
+  if ( Type == "LSR" ) {
+    if ( msg.From() == DevCh ) {
+      Values = msg.Val().simplified().split( QRegExp( "\\s" ) );
+      lastVal = Value;
+      Value = Values[ Values.count() - 1 ];
+      emit NewRingCurrent( Value, Values );
+    }
+  }
+}

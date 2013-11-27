@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>868</width>
-    <height>1112</height>
+    <height>1113</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -545,7 +545,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3039,7 +3039,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="1" column="5">
+             <item row="1" column="6">
               <widget class="QSpinBox" name="RangeSelect">
                <property name="maximumSize">
                 <size>
@@ -3055,7 +3055,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="1" column="0" colspan="5">
+             <item row="1" column="0" colspan="6">
               <widget class="QComboBox" name="SelSensToSetRange">
                <property name="styleSheet">
                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
@@ -3078,7 +3078,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="0" column="4" colspan="2">
+             <item row="0" column="5" colspan="2">
               <widget class="QPushButton" name="GetRange">
                <property name="maximumSize">
                 <size>
@@ -3097,7 +3097,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="0" column="3">
+             <item row="0" column="4">
               <widget class="QPushButton" name="GetAllRange">
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected ranges of all of the sensors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -3117,6 +3117,16 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
                <property name="text">
                 <string>Auto Range</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QPushButton" name="SetRange">
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               </property>
+               <property name="text">
+                <string>Set Range</string>
                </property>
               </widget>
              </item>

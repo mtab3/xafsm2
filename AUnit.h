@@ -344,6 +344,7 @@ public:
   bool GetRealTime( int ch );
   bool GetLiveTime( int ch );
   bool GetRange( void );
+  void SetRange( int range );
   double GetSetTime( void ) { return setTime; };   // actual set time
 
   void IsBusy2On( QString drv, QString name );

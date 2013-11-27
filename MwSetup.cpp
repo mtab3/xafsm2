@@ -127,6 +127,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   Qt::UniqueConnection );
   connect( GetAllRange, SIGNAL( clicked() ), this, SLOT( askNowRanges() ),
 	   Qt::UniqueConnection );
+  connect( SetRange, SIGNAL( clicked() ), this, SLOT( askSetRange() ),
+	   Qt::UniqueConnection );
 
   InputDark
     ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
@@ -346,6 +348,12 @@ void MainWindow::askNowRanges( void )
   for ( int i = 0; i < SensWithRange.count(); i++ ) {
     SensWithRange.at( i )->GetRange();
   }
+}
+
+void MainWindow::askSetRange( void )
+{
+  SensWithRange.at( SelSensToSetRange->currentIndex() )
+    ->SetRange( RangeSelect->text().toInt() );
 }
 
 void MainWindow::GotNowRange( int r ) // This function is pure SLOT as it used 'sender()'
