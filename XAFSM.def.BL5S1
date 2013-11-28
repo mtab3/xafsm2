@@ -23,6 +23,7 @@
 # 2013/11/03 a character '~' can be use to by replaced with ' ' after this file is read
 # 2013/11/03 add 'CALIB_ENGS'  line
 # 2013/11/19 add 'DEF_U_REAL'  line use to specify motors whose displayed unit should be 'real' not pulse as default.
+# 2013/11/28 add 'DATAROOT'    line to define data root
 
 
 #
@@ -527,3 +528,6 @@ SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
 #     "mA"              : Name of the metric unit (only for display)
 #     YES               : If the sensor has a parente (group leader) or not. YES or NO
 #     "S043"            : The identifier of the parent (group reader)
+
+DATAROOT "/home/tabuchi/Data"
+# The DATAROOT line define the default place where the measured data stored.

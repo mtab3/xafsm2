@@ -64,6 +64,11 @@ Data::~Data( void )
 {
 }
 
+void Data::setDataRoot( const QString &dataRoot )
+{
+  FSDialog->setDirectory( dataRoot );
+}
+
 void Data::callCSDialog( void )
 {
   SettingL = 0;

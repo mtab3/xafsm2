@@ -21,8 +21,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
+  DataRoot0 = "";
 
- 
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
   T->start();
@@ -201,6 +201,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   Qt::UniqueConnection );
   connect( conds, SIGNAL( NewDiff2( int ) ), this, SIGNAL( NewDiff2( int ) ),
 	   Qt::UniqueConnection );
+
+  setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
 
   s->AskStatus();
   s->MakeConnection();

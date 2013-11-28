@@ -81,6 +81,10 @@ private:
   QString XAFSKey;
   QString XAFSTitle;
 
+  QString DataRoot0;
+  QFileDialog *DataRootSelect;
+  void setupDataRoot( void );
+
   QPrintDialog *PrintD;
   QPrintDialog *S2DPrintD;
 
@@ -536,6 +540,7 @@ private:
 private slots:
   // Main Part
   void Print( QPrinter *p );
+  void newDataRoot( const QString &dataroot );
 
   // Auto mode
   bool ParseAutoMode( void );

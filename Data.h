@@ -56,6 +56,7 @@ class Data : public QFrame, private Ui::Data
   ~Data();
   void GotNewView( ViewCTRL *view );
   void GotCurrentView( void *view );
+  void setDataRoot( const QString &dataRoot );
 
  private slots:
   void ShowFName( const QString &fname );

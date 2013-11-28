@@ -266,6 +266,11 @@ void MainWindow::ReadDef( QString fname )
 	  DefUReals << item;
 	  next = nextItem( next, item );
 	}
+      } else if ( item == "DATAROOT" ) {    // define data-root
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  DataRoot0 = item;
+	}
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
