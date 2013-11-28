@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "data" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Nov 28 20:38:33 2013 +0900\n"\
+                "    it looks that the DataRoot works as intended\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Nov 27 21:31:45 2013 +0900\n"\
                 "    a very little change on setEnc\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Nov 26 19:14:50 2013 +0900\n"\
                 "    Set and Get Range actions for PAM2 (keithley6482) might be ready\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Nov 25 19:14:15 2013 +0900\n"\
-                "    very small change in GUI\n"\
 		"\n"\
                 ""
 #endif

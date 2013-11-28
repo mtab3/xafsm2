@@ -1420,7 +1420,7 @@ void MainWindow::StartMeasurement( void )
 
     if ( isSFluo && RecordMCASpectra->isChecked() ) {
       mcaDir = QDir( BaseFile.canonicalPath() );
-      mcaDir.mkdir( BaseFile.baseName() );
+      mcaDir.mkpath( BaseFile.baseName() );
       mcaDir.cd( BaseFile.baseName() );
     }
 
