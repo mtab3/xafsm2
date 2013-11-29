@@ -325,6 +325,7 @@ private:
   bool S2DInfoIsValid;
   S2DInfo S2DI;
   aMCAMap S2DMCAMap;
+  aMCAMap XafsMCAMap;
   bool S2DMCADataOnMemF;
 #if 0
   QVector<int> S2Dnow;
@@ -349,8 +350,9 @@ private:
   double S2DReCalcAMapPoint( QString fname, double s, double e );
   double S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
-  void S2DSaveMCADataOnMem( int ix, int iy, int iz );
   void S2DFileCheck( void );
+
+  void SaveMCADataOnMem( aMCASet *set );
 
   QVector<AUnit*> SensWithRange;
 

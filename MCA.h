@@ -40,9 +40,12 @@ struct aMCAMap {
     Points = new aMCASet[ iX * iY ];
     qDebug() << "IX IY " << iX << iY;
   };
-  aMCASet *aPoint( int ix, int iy ) { return &(Points[ iy * iX + ix ]); };
+  aMCASet *aPoint( int ix, int iy )
+  {
+    if (( ix < iX )&&( iy < iY ))
+      return &(Points[ iy * iX + ix ]);
+    return NULL;
+  };
 };
-
-
 
 #endif

@@ -779,7 +779,7 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
       return;
 
     if ( S2DMCADataOnMemF ) {  // 今はこのフラグが常に true 
-      S2DSaveMCADataOnMem( ix, iy, S2DI.i[2] );
+      SaveMCADataOnMem( S2DMCAMap.aPoint( ix, iy ) );        // iz は無視
     } else {
       // ファイル名の指定がなくてもとにかく名前を作る。
       QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
@@ -788,9 +788,16 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
   }
 }
 
+#if 0
 void MainWindow::S2DSaveMCADataOnMem( int ix, int iy, int /* iz */ )  // iz は当面無視
 {
   aMCASet *set = S2DMCAMap.aPoint( ix, iy );
+#endif
+
+void MainWindow::SaveMCADataOnMem( aMCASet *set )
+{
+  if ( set == NULL )
+    return;
 
   set->RINGCurrent = ( ( SLS != NULL) ? SLS->value().toDouble() : -1 );
   set->I0 = ( ( SI0 != NULL ) ? SI0->value().toDouble() : -1 );

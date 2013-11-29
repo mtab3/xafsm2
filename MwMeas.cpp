@@ -1135,6 +1135,11 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
+    int TotalPoints = 0;
+    for ( int i = 0; i < Blocks; i++ ) {
+      TotalPoints += BLKpoints[i]->text().toInt();
+    }
+
     if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
       if ( BLKpoints[0]->text().toInt() > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
         statusbar->showMessage( tr( "Measured points are too many.  "
@@ -1171,10 +1176,6 @@ void MainWindow::StartMeasurement( void )
 #endif
 
     } else {   // Normal モード時専用のチェック
-      int TotalPoints = 0;
-      for ( int i = 0; i < Blocks; i++ ) {
-        TotalPoints += BLKpoints[i]->text().toInt();
-      }
       if ( TotalPoints > 1999 ) {
         statusbar->showMessage( tr( "Measured points are too many.    "
                                 "It should be less than 2000 in normal XAFS mode." ) );
@@ -1418,10 +1419,13 @@ void MainWindow::StartMeasurement( void )
     else
       FixedPositionMode = false;
 
-    if ( isSFluo && RecordMCASpectra->isChecked() ) {
-      mcaDir = QDir( BaseFile.canonicalPath() );
-      mcaDir.mkpath( BaseFile.baseName() );
-      mcaDir.cd( BaseFile.baseName() );
+    if ( isSFluo ) {
+      XafsMCAMap.New( TotalPoints, SelRPT->value() );
+      if ( RecordMCASpectra->isChecked() ) {
+	mcaDir = QDir( BaseFile.canonicalPath() );
+	mcaDir.mkpath( BaseFile.baseName() );
+	mcaDir.cd( BaseFile.baseName() );
+      }
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
