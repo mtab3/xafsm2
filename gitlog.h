@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Nov 29 17:42:49 2013 +0900\n"\
+                "    a small and seldom happening but critical bug was fixed on removeItem for QComboBox\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Nov 29 14:07:48 2013 +0900\n"\
                 "    prepareing XafsMCAMap\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Nov 27 21:31:45 2013 +0900\n"\
                 "    a very little change on setEnc\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Nov 27 11:56:03 2013 +0900\n"\
-                "    Corrected a minor bug on Set/Get range with PAM2.   LION\n"\
 		"\n"\
                 ""
 #endif

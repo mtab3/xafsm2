@@ -42,6 +42,7 @@
 #include "ScanInfo.h"
 #include "BlockInfo.h"
 #include "CheckUnits.h"
+#include "MeasParamSet.h"
 #include "ScanParamSet.h"
 
 #define MEAS_ID "XAFS Measurement"
@@ -107,6 +108,9 @@ private:
   double MinEnergyInEV, MaxEnergyInEV;
   int DefaultUnit;
   QString LocalizedName( QString name );
+
+  MeasPSet MPSet;
+  void SetupMPSet( MeasPSet *aSet );
 
   /* cfg. */
   SelMC2 *selmc;
@@ -267,7 +271,7 @@ private:
   //  AUnit *SPSMovingMotor;
   //  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
   ScanInfo SInfo;
-  QVector<ScanPSet*> ScanPs;
+  QVector<ScanPSet*> ScanPs;    // 各モータ毎に状態を持つ
   int NowScanP;
   ViewCTRL *ScanViewC;
   XYView *ScanView;

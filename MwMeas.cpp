@@ -1406,6 +1406,9 @@ void MainWindow::StartMeasurement( void )
                .arg( SelectedCurPosDeg( XPM ) ) );
     InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
 
+    SetupMPSet( &MPSet );
+    MPSet.valid = true;
+
     inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
@@ -1470,6 +1473,18 @@ void MainWindow::StartMeasurement( void )
     MeasPause->setEnabled( false );
     MeasStart->setEnabled( false );
   }
+}
+
+void MainWindow::SetupMPSet( MeasPSet *aSet )
+{
+  int ttp = 0;
+
+  for ( int i = 0; i < Blocks; i++ ) {
+    ttp += BLKpoints[i]->text().toInt();
+  }
+  aSet->isSFluo = (( Use19chSSD->isChecked() )&&( SFluo != NULL ));
+  aSet->totalPoints = ttp;
+  aSet->rep = SelRPT->value();
 }
 
 // Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !
