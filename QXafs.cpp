@@ -76,7 +76,6 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SaveSelectedI0 = SelectI0->currentIndex();
     SaveSelectedI1 = SelectI1->currentIndex();
-    
     SetUpSensorComboBoxes();
 
     for ( int i = 0; i < I0Sensors.count(); i++ ) {
@@ -97,7 +96,6 @@ void MainWindow::ToggleQXafsMode( bool )
 	break;
       }
     }
-
     SaveNowBlocks = SelBLKs->value();
     NXAFSBInfo.Blocks = SaveNowBlocks;
     NXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());

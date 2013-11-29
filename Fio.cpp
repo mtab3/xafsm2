@@ -440,24 +440,27 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 // (dark 補正がかかっているのは Measurement で readValue するとき
 //  dark 補正のオプションを付けているから)
 {
-  if ( isSFluo && RecordMCASpectra->isChecked() ) {
-    QFileInfo mcaFile;
-    if ( AutoModeButton->isChecked() ) {
-      mcaFile = QFileInfo( mcaDir,
-			   QString( "%1-%2-%3-%4.dat" )
-			   .arg( BaseFile.baseName() )
-			   .arg( (int)MeasA, 4, 10, QChar( '0' ) )
-			   .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-			   .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
-    } else {
-      mcaFile = QFileInfo( mcaDir,
-			   QString( "%1-%2-%3.dat" )
-			   .arg( BaseFile.baseName() )
-			   .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-			   .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+  if ( isSFluo ) {
+    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, MeasR ) );  // MeasA は無視
+    if ( RecordMCASpectra->isChecked() ) {
+      QFileInfo mcaFile;
+      if ( AutoModeButton->isChecked() ) {
+	mcaFile = QFileInfo( mcaDir,
+			     QString( "%1-%2-%3-%4.dat" )
+			     .arg( BaseFile.baseName() )
+			     .arg( (int)MeasA, 4, 10, QChar( '0' ) )
+			     .arg( (int)MeasR, 3, 10, QChar( '0' ) )
+			     .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+      } else {
+	mcaFile = QFileInfo( mcaDir,
+			     QString( "%1-%2-%3.dat" )
+			     .arg( BaseFile.baseName() )
+			     .arg( (int)MeasR, 3, 10, QChar( '0' ) )
+			     .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
+      }
+      qDebug() << "Canonical File Path for MCA data" << mcaFile.canonicalFilePath();
+      saveMCAData0( mcaFile.canonicalFilePath() );
     }
-    qDebug() << "Canonical File Path for MCA data" << mcaFile.canonicalFilePath();
-    saveMCAData0( mcaFile.canonicalFilePath() );
   }
 
   SetDFName( MeasR );
@@ -478,21 +481,21 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       recTh = SelectedCurPosDeg( EncOrPM );
     }
     buf.sprintf( "%10.6f" " %9.6f" " %9.2f",
-                 u->keV2deg( GoToKeV ), recTh, NowDwell );
+		 u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
-
+    
     if ( MeasFileType != FLUO ) {    // FLUO の時は、I0 は SSD データの後ろ
       // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-        buf.sprintf( " %9d",                 // 整数 : %9d
-                     (int)MeasVals[ MC_I0 ] );
+	buf.sprintf( " %9d",                 // 整数 : %9d
+		     (int)MeasVals[ MC_I0 ] );
       } else {
-        buf.sprintf( " %9.6g",               // 実数 : %9.6g
-                     MeasVals[ MC_I0 ] );
+	buf.sprintf( " %9.6g",               // 実数 : %9.6g
+		     MeasVals[ MC_I0 ] );
       }
       out << buf;
     }
-
+    
     // その後に測定データの並び
     for ( int i = 1; i < mUnits.count(); i++ ) {
       if ( mUnits.at(i) != SFluo ) {

@@ -261,14 +261,21 @@ void MainWindow::SetUpSensorComboBoxes( void )
   bool findQXafsI0, findQXafsI1;
   findQXafsI0 = findQXafsI1 = false;
 
-  while ( I0Sensors.count() > 0 ) I0Sensors.remove( 0 );
-  while ( I1Sensors.count() > 0 ) I1Sensors.remove( 0 );
-  while ( A1Sensors.count() > 0 ) A1Sensors.remove( 0 );
-  while ( A2Sensors.count() > 0 ) A2Sensors.remove( 0 );
-  while ( SelectI0->count() > 0 ) SelectI0->removeItem( 0 );
-  while ( SelectI1->count() > 0 ) SelectI1->removeItem( 0 );
-  while ( SelectAux1->count() > 0 ) SelectAux1->removeItem( 0 );
-  while ( SelectAux2->count() > 0 ) SelectAux2->removeItem( 0 );
+  // 先に Index の方を 0 にしておかないと、removeItem して、存在しないアイテムを
+  // index が指す状態になると、まれに落ちる
+  SelectI0->setCurrentIndex( 0 );
+  SelectI1->setCurrentIndex( 0 );
+  SelectAux1->setCurrentIndex( 0 );
+  SelectAux2->setCurrentIndex( 0 );
+
+  I0Sensors.clear();
+  I1Sensors.clear();
+  A1Sensors.clear();
+  A2Sensors.clear();
+  SelectI0->clear();
+  SelectI1->clear();
+  SelectAux1->clear();
+  SelectAux2->clear();
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
@@ -277,6 +284,7 @@ void MainWindow::SetUpSensorComboBoxes( void )
     bool addOk = false;
     QStringList CheckList = ( QXafsMode->isChecked() ) ? QXafsOk : NXafsOk;
     QString type = ASensors[i]->getType();
+
     for ( int j = 0; j < CheckList.count(); j++ ) {
       if ( CheckList[j] == type ) {
 	addOk = true;
@@ -295,16 +303,17 @@ void MainWindow::SetUpSensorComboBoxes( void )
 	SelectAux2->addItem( name );   A2Sensors << ASensors[i];
       }
       
-      if ( ASensors.value(i)->getID() == "I0" )
-	SelectI0->setCurrentIndex( i );
-      if ( ASensors.value(i)->getID() == "I1" )
-	SelectI1->setCurrentIndex( i );
-      if ( ASensors.value(i)->getID() == "Aux1" )
-	SelectAux1->setCurrentIndex( i );
-      if ( ASensors.value(i)->getID() == "Aux2" )
-	SelectAux2->setCurrentIndex( i );
+      if ( ASensors[i]->getID() == "I0" )
+	SelectI0->setCurrentIndex( SelectI0->count() - 1 );
+      if ( ASensors[i]->getID() == "I1" )
+	SelectI1->setCurrentIndex( SelectI1->count() - 1 );
+      if ( ASensors[i]->getID() == "Aux1" )
+	SelectAux1->setCurrentIndex( SelectAux1->count() - 1 );
+      if ( ASensors[i]->getID() == "Aux2" )
+	SelectAux2->setCurrentIndex( SelectAux2->count() - 1 );
     }
   }
+
   UseI1->setChecked( true );
   if ( (!findQXafsI0)||(!findQXafsI1) ) {
     isQXafsModeAvailable = false;

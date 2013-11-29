@@ -158,10 +158,12 @@ void MainWindow::HideB( bool f )
 void MainWindow::NewSelA( int i )
 {
   if ( SelectTA->count() > ATOMS ) {       // 既存のリストにない元素名が入力されたら
+    // 先に Index の方を直しておかないと、removeItem して、存在しないアイテムを
+    // index が指す状態になると、まれに落ちる
+    SelectTA->setCurrentIndex( SelectedA ); // 選択元素は元に戻しておく
     while ( SelectTA->count() > ATOMS ) {  // そのゴミの名前を削って
       SelectTA->removeItem( ATOMS );
     }
-    SelectTA->setCurrentIndex( SelectedA ); // 選択元素は元に戻しておく
     return;
   }
 
