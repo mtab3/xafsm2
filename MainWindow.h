@@ -149,6 +149,8 @@ private:
   QStringList SSDCalibEnergys;
   //  double AttenDx, AttenDy;
   AUnit *movingSC1, *movingSC2;
+  QDialog *MCADialog;
+  bool PoppingMCADialog;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -729,6 +731,7 @@ private slots:
   void DTAutoCalibStart( void );
   void SSDEngAutoCalibStart( void );
   void MoveToNewCaribEnergy( void );
+  void MoveInMeasView( int ix, double x );
 
   void NewAttenCh( int i );
   void NewAttenPos( void );
@@ -759,6 +762,7 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
   void SetNewGases( void );
   //  void showMCAs( void );
+  void PopUpMCA( void );
 
   // QXafs
   void ToggleQXafsMode( bool f );

@@ -7,6 +7,14 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
+  MCADialog = new QDialog;
+  MCADialog->resize( 700, 400 );
+  QGridLayout *bl = new QGridLayout;
+  MCADialog->setLayout( bl );
+  PoppingMCADialog = false;
+  connect( MCAPopUp, SIGNAL( clicked() ), this, SLOT( PopUpMCA() ), 
+	   Qt::UniqueConnection );
+
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -191,6 +199,22 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
+}
+
+void MainWindow::PopUpMCA( void )
+{
+  if ( PoppingMCADialog ) {
+    if (( cMCAViewC == NULL )||( cMCAView == NULL ))
+      return;
+    cMCAViewC->setView( (QWidget*)cMCAView );
+    MCADialog->hide();
+  } else {
+    if ( cMCAView == NULL )
+      return;
+    MCADialog->layout()->addWidget( cMCAView );
+    MCADialog->show();
+  }
+  PoppingMCADialog = ! PoppingMCADialog;
 }
 
 void MainWindow::MoveToNewCaribEnergy( void )
@@ -734,6 +758,7 @@ void MainWindow::StartMCA( void )
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
     getNewMCAView();
+
 #if 0
     if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
 	 || ( StartResume == MCA_START ) ) {

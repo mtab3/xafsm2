@@ -566,6 +566,16 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
       break;
     }
   }
+
+  int i;
+  double rx = cc.s2rx( m.x() );
+  for ( i = 0; i < points[0] - 1; i++ ) {
+    if ( rx < ( x[0][i] + x[0][i+1] ) / 2.0 )
+      break;
+  }
+  if ( i < points[0] ) {
+    emit MovedToNewX( i, rx );
+  }
   
   update();
 }
@@ -691,6 +701,13 @@ void XYView::ChooseAG( int i, bool f )
   dispf[ getL( i ) ] = f;
   update();
 }
+
+
+// XYView はできたり消えたりするオブジェクトだが、
+// 消えたオブジェクトに対して、外部からコネクトしていると問題が発生する。
+// 外部で適切に disconnect すれば良いが、面倒なので、
+// 親(parent)のポインタをもらって、中から外につなぐ。
+// (すると、自分が消えれば登録されている connect の signal 源も消えるので問題ない)
 
 void XYView::setParent( QWidget *p )
 {

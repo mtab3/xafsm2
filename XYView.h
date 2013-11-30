@@ -220,6 +220,7 @@ public slots:
 
  signals:
   void SelectAPoint( double x, double y );
+  void MovedToNewX( int ix, double x );
 
 private:
   void paintEvent( QPaintEvent *event );

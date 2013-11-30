@@ -1387,6 +1387,11 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
+    disconnect( this, SLOT( MoveInMeasView( double ) ) );
+    connect( MeasView, SIGNAL( MovedToNewX( int, double ) ),
+	     this, SLOT( MoveInMeasView( int, double ) ),
+	     Qt::UniqueConnection );
+
     if ( AutoModeFirst ) {  // AutoMode: off か AutoMode の 1回目に true
       BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
       if ( BaseFile.exists() ) {
@@ -1432,6 +1437,8 @@ void MainWindow::StartMeasurement( void )
       FixedPositionMode = false;
 
     if ( isSFluo ) {
+      if ( cMCAView == NULL )
+	getNewMCAView();
       XafsMCAMap.New( TotalPoints, SelRPT->value() );
       if ( RecordMCASpectra->isChecked() ) {
 	mcaDir = QDir( BaseFile.canonicalPath() );
@@ -1723,4 +1730,28 @@ bool MainWindow::ParseAutoMode( void )
   }
 
   return true;
+}
+
+void MainWindow::MoveInMeasView( int ix, double x )
+{
+  if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo
+       ||( cMCAView == NULL )||( MCAData== NULL ) )
+    return;
+  
+  aMCASet *set;
+  quint32 *cnt;
+  int rpt = SelRPT->value() - 1;
+  if ( rpt < 0 )
+    rpt = 0;
+
+  set = XafsMCAMap.aPoint( ix, SelRPT->value() - 1 );
+  if ( ! set->isValid() )
+    return;
+  cnt = set->Ch[ cMCACh ].cnt;
+
+  for ( int i = 0; i < SAVEMCASize; i++ ) {
+    MCAData[i] = cnt[i];
+  }
+
+  cMCAView->update();
 }
