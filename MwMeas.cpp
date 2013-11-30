@@ -1732,7 +1732,7 @@ bool MainWindow::ParseAutoMode( void )
   return true;
 }
 
-void MainWindow::MoveInMeasView( int ix, double x )
+void MainWindow::MoveInMeasView( int ix, double )
 {
   if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo
        ||( cMCAView == NULL )||( MCAData== NULL ) )
@@ -1754,4 +1754,42 @@ void MainWindow::MoveInMeasView( int ix, double x )
   }
 
   cMCAView->update();
+}
+
+
+void MainWindow::ReCalcXAFSWithMCA( void )
+{
+  if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo 
+       ||( cMCAView == NULL )||( MCAData== NULL )||( MeasView == NULL ) )
+    return;
+
+  int ML = cMCAView->getMCALength();
+
+  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+    quint32 Sum = 0;
+    for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+      quint32 sum = 0;
+      if ( SSDbs2[ch]->isChecked() == PBTrue ) {
+	for ( int r = 0; r < MPSet.rep; r++ ) {
+	  aMCASet *set = XafsMCAMap.aPoint( i, r );
+	  if ( set->isValid() ) {
+	    quint32 *cnt = set->Ch[ cMCACh ].cnt;
+	    int ROIs = ROIStart[ ch ].toInt();
+	    int ROIe = ROIEnd[ ch ].toInt();
+	    if ( ROIs < 0 ) ROIs = 0;
+	    if ( ROIe < 0 ) ROIe = 0;
+	    if ( ROIs >= ML ) ROIs = ML - 1;
+	    if ( ROIe >= ML ) ROIe = ML - 1;
+	    for ( int p = ROIs; p < ROIe; p++ ) {
+	      sum += cnt[ p ];
+	    }
+	  }
+	}
+      }
+      //      MeasView->ReNew(... sum ...);   // どのラインに当たるか判断してリライト
+      Sum += sum;
+    }
+    //    MeasView->ReNew(... Sum ...);   // 総合計から計算した mu をリライト
+  }
+  MeasView->update();
 }

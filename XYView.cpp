@@ -146,6 +146,17 @@ void XYView::NewPoint( int l, double xx, double yy )
   }
 }
 
+void XYView::ReNewPoint( int l, int ix, double yy )
+{
+  if ( l >= maxLines )
+    return;
+
+  int L = getL( l );
+  if ( ix < points[l] )
+    y[L][ix] = yy;
+}
+
+
 int XYView::getL( int l )
 {
   int L;

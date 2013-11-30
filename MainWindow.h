@@ -359,6 +359,7 @@ private:
   void S2DFileCheck( void );
 
   void SaveMCADataOnMem( aMCASet *set );
+  void ReCalcXAFSWithMCA( void );
 
   QVector<AUnit*> SensWithRange;
 

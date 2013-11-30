@@ -12,6 +12,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   QGridLayout *bl = new QGridLayout;
   MCADialog->setLayout( bl );
   PoppingMCADialog = false;
+  connect( MCADialog, SIGNAL( finished(int) ), this, SLOT( PopUpMCA() ),
+	   Qt::UniqueConnection );
   connect( MCAPopUp, SIGNAL( clicked() ), this, SLOT( PopUpMCA() ), 
 	   Qt::UniqueConnection );
 
@@ -587,6 +589,7 @@ void MainWindow::SelSSDs20( void )
       }
     }
   }
+  ReCalcXAFSWithMCA();
 }
 
 void MainWindow::SelSSDs( int ch )
@@ -857,6 +860,7 @@ void MainWindow::setNewROI( int s, int e )
       statusbar
 	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     }
+    ReCalcXAFSWithMCA();
   }
 }
 
