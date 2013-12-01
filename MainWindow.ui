@@ -7170,6 +7170,19 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                   </property>
                  </widget>
                 </item>
+                <item row="5" column="4">
+                 <widget class="QRadioButton" name="AutoROIsetAll">
+                  <property name="text">
+                   <string>Auto Set All</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>

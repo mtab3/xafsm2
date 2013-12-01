@@ -1411,8 +1411,11 @@ void MainWindow::StartMeasurement( void )
                .arg( SelectedCurPosDeg( XPM ) ) );
     InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
 
-    SetupMPSet( &MPSet );
-    MPSet.valid = true;
+    /*************************************************************************/
+    /*************************************************************************/
+    /******************  これ以降に return してはいけない  *******************/
+    /*************************************************************************/
+    /*************************************************************************/
 
     inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
@@ -1429,7 +1432,9 @@ void MainWindow::StartMeasurement( void )
     }
 
     SetDispMeasModes();
-    CpBlock2SBlock();    // QXafs の時でも使う
+    CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
+    SetupMPSet( &MPSet ); // これ以降に return してはいけない
+    MPSet.valid = true;
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
@@ -1489,9 +1494,10 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   for ( int i = 0; i < Blocks; i++ ) {
     ttp += BLKpoints[i]->text().toInt();
   }
+  aSet->isI1 = UseI1->isChecked();
   aSet->isSFluo = (( Use19chSSD->isChecked() )&&( SFluo != NULL ));
   aSet->totalPoints = ttp;
-  aSet->rep = SelRPT->value();
+  aSet->rpt = SelRPT->value();
 }
 
 // Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !
@@ -1763,33 +1769,56 @@ void MainWindow::ReCalcXAFSWithMCA( void )
        ||( cMCAView == NULL )||( MCAData== NULL )||( MeasView == NULL ) )
     return;
 
+  QVector<double> darks = SFluo->getDarkCountsInROI();
+  double I0, Vch;
+  int DLC = ( MPSet.isI1 ) ? 3 : 1;   // display line count
   int ML = cMCAView->getMCALength();
 
+  QVector<double> dwells;
+  for ( int b = 0; b < SBlocks; b++ ) {
+    for ( int p = 0; p < SBlockPoints[ b ]; p++ ) {
+      dwells << SBlockDwell[ b ];
+    }
+  }
+  // ホントはこのループが回ったらなんかおかしい (ダウンさせないための用心)
+  if ( dwells.count() < MPSet.totalPoints ) {
+    qDebug() << "Total Points is not matched to calculated total points.";
+    for ( int p = dwells.count(); p < MPSet.totalPoints; p++ ) {
+      dwells << SBlockDwell[ SBlocks - 1 ];
+    }
+  }
+
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+    I0 = MeasView->GetY( 0, i );
+    if ( I0 < 1e-20 )
+      I0 = 1e-20;
+
     quint32 Sum = 0;
     for ( int ch = 0; ch < MaxSSDs; ch++ ) {
       quint32 sum = 0;
-      if ( SSDbs2[ch]->isChecked() == PBTrue ) {
-	for ( int r = 0; r < MPSet.rep; r++ ) {
-	  aMCASet *set = XafsMCAMap.aPoint( i, r );
-	  if ( set->isValid() ) {
-	    quint32 *cnt = set->Ch[ cMCACh ].cnt;
-	    int ROIs = ROIStart[ ch ].toInt();
-	    int ROIe = ROIEnd[ ch ].toInt();
-	    if ( ROIs < 0 ) ROIs = 0;
-	    if ( ROIe < 0 ) ROIe = 0;
-	    if ( ROIs >= ML ) ROIs = ML - 1;
-	    if ( ROIe >= ML ) ROIe = ML - 1;
-	    for ( int p = ROIs; p < ROIe; p++ ) {
-	      sum += cnt[ p ];
-	    }
+      for ( int r = 0; r < MPSet.rpt; r++ ) {
+	aMCASet *set = XafsMCAMap.aPoint( i, r );
+	if ( set->isValid() ) {
+	  quint32 *cnt = set->Ch[ cMCACh ].cnt;
+	  int ROIs = ROIStart[ ch ].toInt();
+	  int ROIe = ROIEnd[ ch ].toInt();
+	  qDebug() << "ROI " << ROIs << ROIe;
+	  if ( ROIs < 0 ) ROIs = 0;
+	  if ( ROIe < 0 ) ROIe = 0;
+	  if ( ROIs >= ML ) ROIs = ML - 1;
+	  if ( ROIe >= ML ) ROIe = ML - 1;
+	  for ( int p = ROIs; p < ROIe; p++ ) {
+	    sum += cnt[ p ];
 	  }
 	}
       }
-      //      MeasView->ReNew(... sum ...);   // どのラインに当たるか判断してリライト
-      Sum += sum;
+      Vch = ( ( sum / MPSet.rpt / dwells[i] ) - darks[ch] ) / I0;
+      MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
+      if ( SSDbs2[ch]->isChecked() == PBTrue ) {
+	Sum += Vch;
+      }
     }
-    //    MeasView->ReNew(... Sum ...);   // 総合計から計算した mu をリライト
+    MeasView->ReNewPoint( DLC, i, Sum );
   }
   MeasView->update();
 }

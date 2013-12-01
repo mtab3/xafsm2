@@ -4,9 +4,10 @@
 struct MeasPSet {
   bool valid;
 
+  bool isI1;
   bool isSFluo;
   int totalPoints;
-  int rep;
+  int rpt;
 
   MeasPSet() { valid = false; };
 };

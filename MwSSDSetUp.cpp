@@ -453,6 +453,7 @@ void MainWindow::setAllROIs( void )
     ROIStart[ i ] = QString::number( kev2pix->E2p( i, startE ) );
     ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
+  ReCalcXAFSWithMCA();
 }
 
 void MainWindow::saveMCAData( void )
@@ -647,6 +648,10 @@ void MainWindow::newROIStart( const QString &newv )
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       cMCAView->update();
     }
+    if ( AutoROIsetAll->isChecked() )
+      setAllROIs();
+    else 
+      ReCalcXAFSWithMCA();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
@@ -662,6 +667,10 @@ void MainWindow::newROIEnd( const QString &newv )
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       cMCAView->update();
     }
+    if ( AutoROIsetAll->isChecked() )
+      setAllROIs();
+    else 
+      ReCalcXAFSWithMCA();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
@@ -856,11 +865,14 @@ void MainWindow::setNewROI( int s, int e )
     if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
       ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
       ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+      if ( AutoROIsetAll->isChecked() )
+	setAllROIs();
+      else 
+	ReCalcXAFSWithMCA();
     } else {
       statusbar
 	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     }
-    ReCalcXAFSWithMCA();
   }
 }
 
