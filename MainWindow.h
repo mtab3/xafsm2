@@ -111,6 +111,7 @@ private:
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );
+  void SaveI0inMPSet( void );
 
   /* cfg. */
   SelMC2 *selmc;
@@ -359,7 +360,6 @@ private:
   void S2DFileCheck( void );
 
   void SaveMCADataOnMem( aMCASet *set );
-  void ReCalcXAFSWithMCA( void );
 
   QVector<AUnit*> SensWithRange;
 
@@ -608,7 +608,10 @@ private slots:
   void SetGSBFlags( QVector<bool> flgs );
   void SetGSBLabels( QStringList lbls );
   void ShowMB( void );
-  void CheckNewMeasFileName();
+  void CheckNewMeasFileName( void );
+  void ReCalcXAFSWithMCA( void );
+  void AfterSaveXafs( void );
+  void AfterSaveMCAs( void );
 
   void GetNewGos( void );
 #if 0

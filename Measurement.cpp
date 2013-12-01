@@ -135,6 +135,7 @@ void MainWindow::MeasSequence( void )
         NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
         ClearXViewScreenForMeas( MeasView );
         WriteHeader2( MeasR );
+	SaveI0inMPSet();
         PlayGoOnSound();
         WriteInfoFile2();
         MeasR++;
@@ -150,6 +151,7 @@ void MainWindow::MeasSequence( void )
         statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
         NewLogMsg( QString( tr( "Meas: Finished" ) ) );
         WriteHeader2( MeasR );
+	SaveI0inMPSet();
         PlayEndingSound();
         WriteInfoFile2();
         MeasTimer->stop();
@@ -492,4 +494,17 @@ void MainWindow::ReCalcSSDTotal( int, bool )
     y[i] = sum[i];
   }
   MeasView->update();
+}
+
+void MainWindow::SaveI0inMPSet( void )
+{
+  if ( ! MPSet.isSFluo )
+    return;
+
+  QVector<double> i0;
+
+  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+    i0 << MeasView->GetY( 0, i );
+  }
+  MPSet.i0s << i0;
 }

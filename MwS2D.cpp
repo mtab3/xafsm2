@@ -788,12 +788,6 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
   }
 }
 
-#if 0
-void MainWindow::S2DSaveMCADataOnMem( int ix, int iy, int /* iz */ )  // iz は当面無視
-{
-  aMCASet *set = S2DMCAMap.aPoint( ix, iy );
-#endif
-
 void MainWindow::SaveMCADataOnMem( aMCASet *set )
 {
   if ( set == NULL )

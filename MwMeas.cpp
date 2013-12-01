@@ -16,8 +16,12 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
 	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
 
-  if ( SFluo == NULL ) 
+  if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
+    AfterSaveType->setEnabled( false );
+    AfterSave->setEnabled( false );
+    RecordMCAs->setEnabled( false );
+  }
 
   BLKUnit = (UNIT)DefaultUnit;
   NXAFSBInfo.Unit = BLKUnit;
@@ -193,6 +197,14 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ),
 	   Qt::UniqueConnection );
   connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ),
+	   Qt::UniqueConnection );
+
+  connect( AfterSaveType, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( ReCalcXAFSWithMCA() ),
+	   Qt::UniqueConnection );
+  connect( AfterSave, SIGNAL( clicked() ), this, SLOT( AfterSaveXafs() ),
+	   Qt::UniqueConnection );
+  connect( RecordMCAs, SIGNAL( clicked() ), this, SLOT( AfterSaveMCAs() ),
 	   Qt::UniqueConnection );
 
   inMeasDark = false;
@@ -811,6 +823,7 @@ void MainWindow::ShowBLKs( void )
 void MainWindow::NewRpt( void )
 {
   ShowTotal();
+  ReCalcXAFSWithMCA();
 }
 
 void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数変更時に呼ばれる
@@ -1445,11 +1458,13 @@ void MainWindow::StartMeasurement( void )
       if ( cMCAView == NULL )
 	getNewMCAView();
       XafsMCAMap.New( TotalPoints, SelRPT->value() );
+#if 0
       if ( RecordMCASpectra->isChecked() ) {
 	mcaDir = QDir( BaseFile.canonicalPath() );
 	mcaDir.mkpath( BaseFile.baseName() );
 	mcaDir.cd( BaseFile.baseName() );
       }
+#endif
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -1491,6 +1506,8 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
 {
   int ttp = 0;
 
+  aSet->fname = EditDFName->text();
+  aSet->i0s.clear();
   for ( int i = 0; i < Blocks; i++ ) {
     ttp += BLKpoints[i]->text().toInt();
   }
@@ -1788,21 +1805,30 @@ void MainWindow::ReCalcXAFSWithMCA( void )
     }
   }
 
-  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
-    I0 = MeasView->GetY( 0, i );
-    if ( I0 < 1e-20 )
-      I0 = 1e-20;
+  int rs, re;
+  if ( AfterSaveType->currentIndex() == INSEPFILE ) {
+    rs = SelRPT->text().toInt() - 1;
+    re = rs + 1;
+    if ( rs >= MPSet.rpt )
+      return;
+  } else {    // == INONEFILE
+    rs = 0;
+    re = MPSet.rpt;
+  }
 
+  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
     quint32 Sum = 0;
     for ( int ch = 0; ch < MaxSSDs; ch++ ) {
       quint32 sum = 0;
-      for ( int r = 0; r < MPSet.rpt; r++ ) {
+      Vch = 0;
+      for ( int r = rs; r < re; r++ ) {
+	I0 = MPSet.i0s[r][i];
+	if ( I0 < 1e-20 ) I0 = 1e-20;
 	aMCASet *set = XafsMCAMap.aPoint( i, r );
 	if ( set->isValid() ) {
 	  quint32 *cnt = set->Ch[ cMCACh ].cnt;
 	  int ROIs = ROIStart[ ch ].toInt();
 	  int ROIe = ROIEnd[ ch ].toInt();
-	  qDebug() << "ROI " << ROIs << ROIe;
 	  if ( ROIs < 0 ) ROIs = 0;
 	  if ( ROIe < 0 ) ROIe = 0;
 	  if ( ROIs >= ML ) ROIs = ML - 1;
@@ -1810,9 +1836,9 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 	  for ( int p = ROIs; p < ROIe; p++ ) {
 	    sum += cnt[ p ];
 	  }
+	  Vch += ( ( sum / MPSet.rpt / dwells[i] ) - darks[ch] ) / I0;
 	}
       }
-      Vch = ( ( sum / MPSet.rpt / dwells[i] ) - darks[ch] ) / I0;
       MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
       if ( SSDbs2[ch]->isChecked() == PBTrue ) {
 	Sum += Vch;
@@ -1821,4 +1847,12 @@ void MainWindow::ReCalcXAFSWithMCA( void )
     MeasView->ReNewPoint( DLC, i, Sum );
   }
   MeasView->update();
+}
+
+void MainWindow::AfterSaveXafs()
+{
+}
+
+void MainWindow::AfterSaveMCAs()
+{
 }
