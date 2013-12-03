@@ -228,7 +228,7 @@ private:
   void Draw( QPainter *p );
   void UpDateYWindow( int g, SCALET s );
   void ShowAScaleButton( QPainter *p );
-  void CheckASPush( void );
+  void CheckASPush( QMouseEvent *e );
 };
 
 #endif

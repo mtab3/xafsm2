@@ -18,7 +18,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
-    AfterSaveType->setEnabled( false );
+    AfterShowType->setEnabled( false );
     AfterSave->setEnabled( false );
     RecordMCAs->setEnabled( false );
   }
@@ -199,7 +199,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ),
 	   Qt::UniqueConnection );
 
-  connect( AfterSaveType, SIGNAL( currentIndexChanged( int ) ),
+  connect( AfterShowType, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( ReCalcXAFSWithMCA() ),
 	   Qt::UniqueConnection );
   connect( AfterSave, SIGNAL( clicked() ), this, SLOT( AfterSaveXafs() ),
@@ -1141,7 +1141,8 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
-    if ( GetDFName0() == 0 ) {  // データファイルが選択されていなかったらダメ
+    // データファイルが選択されていなかったらダメ
+    if ( ! SetDFName0( EditDFName->text() ) ) {
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
     }
@@ -1506,7 +1507,12 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
 {
   int ttp = 0;
 
+  aSet->mUnits.clearUnits();
+  for ( int i = 0; i < mUnits.count(); i++ ) {
+    aSet->mUnits.addUnit( mUnits.at(i) );
+  }
   aSet->fname = EditDFName->text();
+  aSet->fname00 = DFName00;
   aSet->i0s.clear();
   for ( int i = 0; i < Blocks; i++ ) {
     ttp += BLKpoints[i]->text().toInt();
@@ -1806,37 +1812,32 @@ void MainWindow::ReCalcXAFSWithMCA( void )
   }
 
   int rs, re;
-  if ( AfterSaveType->currentIndex() == INSEPFILE ) {
-    rs = SelRPT->text().toInt() - 1;
-    re = rs + 1;
-    if ( rs >= MPSet.rpt )
-      return;
-  } else {    // == INONEFILE
-    rs = 0;
-    re = MPSet.rpt;
-  }
-
+  if ( ! setRsRe( rs, re ) )
+    return;
+  
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {
     quint32 Sum = 0;
     for ( int ch = 0; ch < MaxSSDs; ch++ ) {
       quint32 sum = 0;
       Vch = 0;
       for ( int r = rs; r < re; r++ ) {
-	I0 = MPSet.i0s[r][i];
-	if ( I0 < 1e-20 ) I0 = 1e-20;
-	aMCASet *set = XafsMCAMap.aPoint( i, r );
-	if ( set->isValid() ) {
-	  quint32 *cnt = set->Ch[ cMCACh ].cnt;
-	  int ROIs = ROIStart[ ch ].toInt();
-	  int ROIe = ROIEnd[ ch ].toInt();
-	  if ( ROIs < 0 ) ROIs = 0;
-	  if ( ROIe < 0 ) ROIe = 0;
-	  if ( ROIs >= ML ) ROIs = ML - 1;
-	  if ( ROIe >= ML ) ROIe = ML - 1;
-	  for ( int p = ROIs; p < ROIe; p++ ) {
-	    sum += cnt[ p ];
+	if ( ( r < MPSet.i0s.count() )&&( i < MPSet.i0s[r].count() ) ) {
+	  I0 = MPSet.i0s[r][i];
+	  if ( I0 < 1e-20 ) I0 = 1e-20;
+	  aMCASet *set = XafsMCAMap.aPoint( i, r );
+	  if ( set->isValid() ) {
+	    quint32 *cnt = set->Ch[ ch ].cnt;
+	    int ROIs = ROIStart[ ch ].toInt();
+	    int ROIe = ROIEnd[ ch ].toInt();
+	    if ( ROIs < 0 ) ROIs = 0;
+	    if ( ROIe < 0 ) ROIe = 0;
+	    if ( ROIs >= ML ) ROIs = ML - 1;
+	    if ( ROIe >= ML ) ROIe = ML - 1;
+	    for ( int p = ROIs; p < ROIe; p++ ) {
+	      sum += cnt[ p ];
+	    }
+	    Vch += ( ( sum / MPSet.rpt / dwells[i] ) - darks[ch] ) / I0;
 	  }
-	  Vch += ( ( sum / MPSet.rpt / dwells[i] ) - darks[ch] ) / I0;
 	}
       }
       MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
@@ -1849,8 +1850,110 @@ void MainWindow::ReCalcXAFSWithMCA( void )
   MeasView->update();
 }
 
+bool MainWindow::setRsRe( int &rs, int &re )
+{
+  if ( AfterShowType->currentIndex() == EACHSCAN ) {
+    rs = SelRPT->text().toInt() - 1;
+    re = rs + 1;
+    if ( rs >= MPSet.rpt )
+      return false;
+  } else {    // == SUMUPOFSCANS
+    rs = 0;
+    re = MPSet.rpt;
+  }
+
+  return true;
+}
+
 void MainWindow::AfterSaveXafs()
 {
+  QString buf;
+
+  int ML = cMCAView->getMCALength();
+  SetDFName0( MPSet.fname );
+
+  for ( int r = 0; r < MPSet.rpt; r++ ) {
+    SetDFName( r, MPSet.rpt );
+    QString baseFName = DFName;
+    SetDFName( r, MPSet.rpt, "-After" );
+    QString afterFName = DFName;
+    
+    QFile From( baseFName );
+    QFile To( afterFName );
+    if ( ! From.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+      statusbar->showMessage( tr( "can't open the file [%1] to read." )
+			      .arg( baseFName ) );
+    } else {
+      QTextStream in( &From );
+      
+      // 元ファイルのヘッダ部分を 'Offset' line までまとめて読み込み
+      QString aline;
+      QStringList inLines;
+      bool findOffsetLine = false;
+      QString modeLine = "";
+      int icrStart = 0;
+      
+      while( ! in.atEnd() ) {
+	aline = From.readLine();
+	inLines << aline;
+	if ( aline.contains( QRegExp( "^\\s*Mode\\s+" ) ) ) {
+	  modeLine = aline;
+	}
+	if ( aline.contains( QRegExp( "^\\s*Offset\\s+" ) ) ) {
+	  findOffsetLine = true;
+	  break;
+	}
+      }
+      if (( !findOffsetLine )||( modeLine == "" )) {
+	statusbar
+	  ->showMessage( tr( "In the file [%1], an Offset line was not be found." )
+			 .arg( baseFName ) );
+      } else {
+	icrStart = modeLine.indexOf( "       103" );
+	if (( ! To.open( QIODevice::WriteOnly | QIODevice::Text ) )
+	    ||( icrStart == 0 )) {
+	  statusbar->showMessage( tr( "can't open the file [%1] to write." )
+				  .arg( afterFName ) );
+	} else {
+	  QTextStream out( &To );
+	  
+	  // SCALE, Angle, Mode, Offset の 4行を除いたヘッダ部分をコピー
+	  for ( int i = 0; i < inLines.count() - 4; i++ ) {
+	    out << inLines[i];
+	  }
+	  // SCALE, Angle, Mode, Offset の 4行作成/書き出し
+	  QVector<double> darks = SFluo->getDarkCountsInROI();
+	  WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
+	  
+	  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+	    aline = in.readLine();
+	    out << aline.mid( 0, 40 );
+	    // データ部分の先頭 19文字をコピー (角度、角度、時間, I0)
+	    aMCASet *set = XafsMCAMap.aPoint( i, r );
+	    if ( set->isValid() ) {  // 二度手間だけどまた計算
+	      for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+		quint32 sum = 0;
+		quint32 *cnt = set->Ch[ ch ].cnt;
+		int ROIs = ROIStart[ ch ].toInt();
+		int ROIe = ROIEnd[ ch ].toInt();
+		if ( ROIs < 0 ) ROIs = 0;
+		if ( ROIe < 0 ) ROIe = 0;
+		if ( ROIs >= ML ) ROIs = ML - 1;
+		if ( ROIe >= ML ) ROIe = ML - 1;
+		for ( int p = ROIs; p < ROIe; p++ ) {
+		  sum += cnt[ p ];
+		}
+		buf.sprintf(" %9d", (int)( sum ) );  // dark ひかない
+		out << buf;
+	      }
+	      out << aline.mid( icrStart, 10 * ( MaxSSDs + 1 ) );  // ICR はコピー
+	      out << endl;
+	    }
+	  }
+	}
+      }
+    }
+  }
 }
 
 void MainWindow::AfterSaveMCAs()

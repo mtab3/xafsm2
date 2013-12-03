@@ -3412,7 +3412,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBox" name="AfterSaveType">
+                  <widget class="QComboBox" name="AfterShowType">
                    <property name="maximumSize">
                     <size>
                      <width>80</width>
@@ -3427,12 +3427,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                    </property>
                    <item>
                     <property name="text">
-                     <string>in sep. file for each scan</string>
+                     <string>Show each scan</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>in one file as summed up</string>
+                     <string>Show sum up of scans</string>
                     </property>
                    </item>
                   </widget>

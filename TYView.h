@@ -67,7 +67,7 @@ private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
   void UpDateYWindowRing( void );
-  void CheckASPush( void );
+  void CheckASPush( QMouseEvent *e );
 };
 
 #endif

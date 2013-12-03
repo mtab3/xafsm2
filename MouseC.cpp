@@ -45,6 +45,17 @@ void MouseC::DClicked( QMouseEvent *e )
   Mod = e->modifiers();
 }
 
+bool MouseC::CheckABPosition( QMouseEvent *e, int x0, int y0 )
+{
+  if ( ( e->x() > ( x0 + 5 ) )&&( e->x() < ( x0 + 19 ) )
+       &&( e->y() > ( y0 - 19 ) )&&( e->y() < ( y0 - 5 ) ) ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+#if 0
 bool MouseC::CheckABPush( int x0, int y0 )
 {
   if ( ( Ex > ( x0 + 5 ) )&&( Ex < ( x0 + 19 ) )
@@ -54,3 +65,4 @@ bool MouseC::CheckABPush( int x0, int y0 )
     return false;
   }
 }
+#endif

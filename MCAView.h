@@ -45,6 +45,8 @@ private:
   bool showElementsAlways;
   bool showElementsEnergy;
 
+  bool popDock;
+
   MMODE mMode;
   ChCoord cc;
   double rROIsx, rROIex;   // ROI の範囲
@@ -126,6 +128,7 @@ signals:
   void newROI( int ROIstart, int ROIend );
   void newROIinEng( double s, double e );
   void newPeakList( QVector<MCAPeak>* );
+  void popDockIsChanged( bool popDock );
 };
 
 #endif

@@ -496,9 +496,9 @@ void XYView::ScaleChange( int l )
   }
 }
 
-void XYView::CheckASPush( void )
+void XYView::CheckASPush( QMouseEvent *e )
 {
-  if ( m.CheckABPush( 0, height() ) ) {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
     if ( autoScale ) {
       autoScale = false;
     } else {
@@ -654,12 +654,12 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
     }
     break;
   }
-  CheckASPush();
-  if ( m.CheckABPush( 110, height() ) )
+  CheckASPush( e );
+  if ( m.CheckABPosition( e, 110, height() ) )
     singleScale = ! singleScale;
-  if ( m.CheckABPush( 220, height() ) )
+  if ( m.CheckABPosition( e, 220, height() ) )
     showDiff1 = ! showDiff1;
-  if ( m.CheckABPush( 330, height() ) )
+  if ( m.CheckABPosition( e, 330, height() ) )
     showDiff2 = ! showDiff2;
 
   update();

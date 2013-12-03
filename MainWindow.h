@@ -445,8 +445,8 @@ private:
   bool MakingSureOfRangeSelect;
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
-  int GetDFName0( void );
-  void SetDFName( int rpt );
+  bool SetDFName0( QString fname );
+  void SetDFName( int rpt, int rptMax, QString ext = "" );
   double MeasVals[ MCHANNELS ];
   double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
@@ -456,6 +456,7 @@ private:
   bool AskingShutterClose;
   bool AskingShutterOpen;
   int MeasDarkStage;
+  bool setRsRe( int &rs, int &re );
 
   void ShowMeasFileStatus( QString fname );
   void ShowTotal( void );
@@ -467,6 +468,7 @@ private:
   void WriteHeader2( int Rpt );
   void WriteHeaderCore( bool SnotN );
   void WriteHeaderCore2( void );
+  void WriteFLUOHeadSection( QTextStream &out, QVector<double>darks, double I0dark );
   void SetDispMeasModes( void );
   void DispMeasDatas( void );
   void RecordData( void );

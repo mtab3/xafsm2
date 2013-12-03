@@ -39,6 +39,7 @@ class MouseC : public QObject
   int dcx( void ) { return DCx; };
   int dcy( void ) { return DCy; };
   Qt::KeyboardModifiers getMod( void ) { return Mod; };
+  bool CheckABPosition( QMouseEvent *e, int x0, int y0 );
   bool CheckABPush( int x0, int y0 );
 
   Qt::MouseButton button( void ) { return Button; };

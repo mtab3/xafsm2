@@ -359,9 +359,9 @@ void S2DView::mousePressEvent( QMouseEvent * )
     emit AskMoveToPointedPosition( showIx, showIy );
 }
 
-void S2DView::CheckOnIntMCA( void )
+void S2DView::CheckOnIntMCA( QMouseEvent *e )
 {
-  if ( m.CheckABPush( 0, height() ) ) {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
     for ( int iy = maxiy-1; iy >= 0; iy-- ) {
       for ( int ix = maxix-1; ix >= 0; ix-- ) {
 	if ( valid[ix][iy] ) {
@@ -373,17 +373,17 @@ void S2DView::CheckOnIntMCA( void )
   }
 }
 
-void S2DView::CheckIXBPush( void )
+void S2DView::CheckIXBPush( QMouseEvent *e )
 {
-  if ( m.CheckABPush( 0, height() - 40 ) )
+  if ( m.CheckABPosition( e, 0, height() - 40 ) )
     invXf = !invXf;
   
   update();
 }
 
-void S2DView::CheckIYBPush( void )
+void S2DView::CheckIYBPush( QMouseEvent *e )
 {
-  if ( m.CheckABPush( 0, height() - 20 ) )
+  if ( m.CheckABPosition( e, 0, height() - 20 ) )
     invYf = !invYf;
 
   update();
@@ -394,9 +394,9 @@ void S2DView::mouseReleaseEvent( QMouseEvent *e )
 {
   m.Released( e );
 
-  CheckOnIntMCA();
-  CheckIXBPush();
-  CheckIYBPush();
+  CheckOnIntMCA( e );
+  CheckIXBPush( e );
+  CheckIYBPush( e );
 }
 
 void S2DView::mouseDoubleClickEvent( QMouseEvent * )

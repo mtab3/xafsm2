@@ -62,7 +62,7 @@ const QString FSTATCOLORS[2][2] =
 #define PBTrue    ( false )   // PushButton を Checkable にすると、押した時、暗いのに
 #define PBFalse   ( true  )   // true になるので、定数名で反転させて使う
 
-enum ASType { INSEPFILE, INONEFILE };   // after save type
+enum ASType { EACHSCAN, SUMUPOFSCANS };   // after save type
 
 extern QString DefFileName;
 extern bool newFluoMode;
