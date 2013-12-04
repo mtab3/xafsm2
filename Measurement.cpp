@@ -172,6 +172,9 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::onMeasFinishWorks( void )
 {
+  MPSet.finalRpt = MeasR + 1;
+  MPSet.finalPnt = MeasP;
+  qDebug() << "Final Rpt and Pnt " << MeasR << MeasP;
   SelRealTime->setChecked( SvSelRealTime );
   SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );

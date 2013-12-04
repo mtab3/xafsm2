@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "AfterXAFS" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 4 17:17:46 2013 +0900\n"\
+                "    another bug on display in AfterXAFS was fixed\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 4 16:25:07 2013 +0900\n"\
                 "    debugged at display\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Dec 1 12:44:04 2013 +0900\n"\
                 "    It looks the after XAFS with SSD works, thought bug check must be done\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Dec 1 01:03:19 2013 +0900\n"\
-                "    working on after XAFS with SSD.\n"\
 		"\n"\
                 ""
 #endif

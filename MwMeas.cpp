@@ -1966,4 +1966,12 @@ void MainWindow::AfterSaveXafs()
 
 void MainWindow::AfterSaveMCAs()
 {
+  for ( int r = 0; r < MPSet.finalRpt; r++ ) {
+    for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+      aMCASet *set = XafsMCAMap.aPoint( i, r );
+      if ( set.isValid() ) {
+	
+      }
+    }
+  }
 }
