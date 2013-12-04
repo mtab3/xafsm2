@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "AfterXAFS" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 4 16:25:07 2013 +0900\n"\
+                "    debugged at display\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 3 20:12:50 2013 +0900\n"\
                 "    Checking on after xafs with multi repeats and the save files\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Dec 1 01:03:19 2013 +0900\n"\
                 "    working on after XAFS with SSD.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Nov 30 19:08:17 2013 +0900\n"\
-                "    working on MCA pop up\n"\
 		"\n"\
                 ""
 #endif

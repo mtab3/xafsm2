@@ -11,7 +11,7 @@ struct MeasPSet {
   bool isSFluo;
   int totalPoints;
   int rpt;
-  QVector< QVector<double> > i0s;
+  QVector<double*> i0s;
 
   MeasPSet() { valid = false; };
 };

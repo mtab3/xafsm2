@@ -133,9 +133,9 @@ void MainWindow::MeasSequence( void )
         MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
         NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
-        ClearXViewScreenForMeas( MeasView );
         WriteHeader2( MeasR );
 	SaveI0inMPSet();
+        ClearXViewScreenForMeas( MeasView );
         PlayGoOnSound();
         WriteInfoFile2();
         MeasR++;
@@ -501,10 +501,10 @@ void MainWindow::SaveI0inMPSet( void )
   if ( ! MPSet.isSFluo )
     return;
 
-  QVector<double> i0;
+  double *i0 = new double [ MPSet.totalPoints ];
 
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {
-    i0 << MeasView->GetY( 0, i );
+    i0[i] = MeasView->GetY( 0, i );
   }
   MPSet.i0s << i0;
 }

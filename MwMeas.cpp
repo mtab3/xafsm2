@@ -1513,7 +1513,14 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   }
   aSet->fname = EditDFName->text();
   aSet->fname00 = DFName00;
+
+  for ( int i = 0; i < aSet->i0s.count(); i++ ) {
+    if ( aSet->i0s[i] != NULL ) {
+      delete [] aSet->i0s[i];
+    }
+  }
   aSet->i0s.clear();
+
   for ( int i = 0; i < Blocks; i++ ) {
     ttp += BLKpoints[i]->text().toInt();
   }
@@ -1821,7 +1828,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
       quint32 sum = 0;
       Vch = 0;
       for ( int r = rs; r < re; r++ ) {
-	if ( ( r < MPSet.i0s.count() )&&( i < MPSet.i0s[r].count() ) ) {
+	if ( r < MPSet.i0s.count() ) {
 	  I0 = MPSet.i0s[r][i];
 	  if ( I0 < 1e-20 ) I0 = 1e-20;
 	  aMCASet *set = XafsMCAMap.aPoint( i, r );
@@ -1836,7 +1843,8 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 	    for ( int p = ROIs; p < ROIe; p++ ) {
 	      sum += cnt[ p ];
 	    }
-	    Vch += ( ( sum / MPSet.rpt / dwells[i] ) - darks[ch] ) / I0;
+	    qDebug() << sum << dwells[i] << darks[ch] << I0;
+	    Vch += ( ( sum / dwells[i] ) - darks[ch] ) / I0;
 	  }
 	}
       }
