@@ -1816,7 +1816,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
     return;
   
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {
-    quint32 Sum = 0;
+    double Sum = 0;
     for ( int ch = 0; ch < MaxSSDs; ch++ ) {
       quint32 sum = 0;
       Vch = 0;
