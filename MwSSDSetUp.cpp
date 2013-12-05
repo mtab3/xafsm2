@@ -476,10 +476,13 @@ void MainWindow::saveMCAData( void )
 //    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
-  saveMCAData0( MCARecFile->text() );
+  aMCASet *set = new aMCASet;
+  SaveMCADataOnMem( set );
+  saveMCAData0( MCARecFile->text(), set );
+  delete set;
 }
 
-void MainWindow::saveMCAData0( QString fname )
+void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 {
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
@@ -491,51 +494,38 @@ void MainWindow::saveMCAData0( QString fname )
   QTextStream out( &f );
 
   out << "# XafsM2 MCA Data\n";
-  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  out << "# " << set->date << "\n";
 
-  WriteMCAHead( out );
-  WriteMCAData( out );
+  WriteMCAHead( out, set );
+  WriteMCAData( out, set );
 
   f.close();
 }
 
-void MainWindow::WriteMCAHead( QTextStream &out )
+void MainWindow::WriteMCAHead( QTextStream &out, aMCASet *set )
 {
-  out << "# Ring Current : " << ( ( SLS == NULL ) ? "---" : SLS->value() ) << "\n";
-  out << "# I0           : " << SI0->value() << "\n";
+  out << "# Ring Current : "
+      << ( ( SLS == NULL ) ? "---" : QString::number( set->RINGCurrent ) ) << "\n";
+  out << "# I0           : " << set->I0 << "\n";
   out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
   for ( int i = 0; i < MaxSSDs; i++ ) {
-    MCAHead head = SFluo->getAMCAHead( i );
+    MCAHead head = set->Heads[i];
     out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
 	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
-	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
+	<< set->ROIStart[i] << "\t" << set->ROIEnd[i] << "\n";
   }
-  if ( cMCAView != NULL ) {
-    if ( ShowAlwaysSelElm->isChecked() ) {
-      out << "# Selected elements list\n";
-      QStringList Elms = cMCAView->getSelectedElms();
-      for ( int i = 0; i < Elms.count(); i++ ) {
-	out << "# " << Elms[i] << "\n";
-      }
-    }
+  for ( int i = 0; i < set->Elms.count(); i++ ) {
+    out << "# " << set->Elms[i] << "\n";
   }
 }
 
-void MainWindow::WriteMCAData( QTextStream &out )
+void MainWindow::WriteMCAData( QTextStream &out, aMCASet *set )
 {
-#if 0
-  quint32 *mcaLines[ MaxSSDs ];
-
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    mcaLines[i] = SFluo->getAMCA( i );
-  }
-#endif
   for ( int i = 0; i < MCALength; i++ ) {
     out << i;
     for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << "\t" << kev2pix->p2E( j, i );
-      out << "\t" << SFluo->getAMCAdata( j, i );
-      //      out << "\t" << mcaLines[j][i];
+      out << "\t" << set->Ch[j].E[i];
+      out << "\t" << set->Ch[j].cnt[i];
     }
     out << "\n";
   }
@@ -738,10 +728,6 @@ void MainWindow::showPreAMPGain( SMsg msg )
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
-#if 0
-    if ( isAnyOtherProcess() )
-      return;
-#endif
     if ( ! SFluo->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
       statusbar->showMessage( msg, 2000 );
@@ -770,33 +756,6 @@ void MainWindow::StartMCA( void )
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
     getNewMCAView();
-
-#if 0
-    if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
-	 || ( StartResume == MCA_START ) ) {
-      if ( cMCAView != NULL ) {
-	cMCAViewC->setIsDeletable( true );
-      }
-      
-      if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
-	return;
-      ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
-      cMCAViewC->setNowDType( MCADATA );
-      cMCAView = (MCAView*)(cMCAViewC->getView());
-      cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
-      
-      MCAData = cMCAView->setMCAdataPointer( MCALength );
-      validMCAData = true;
-      cMCAViewTabNo = ViewTab->currentIndex();
-      cMCAView->setLog( SetDisplayLog->isChecked() );
-      cMCAView->SetMCACh( cMCACh );
-      cMCAView->makeValid( true );
-
-      cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-      if ( StartResume == MCA_START )
-	for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
-    }
-#endif
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );

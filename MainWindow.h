@@ -684,9 +684,9 @@ private slots:
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
   void saveMCAData( void );
-  void saveMCAData0( QString fname );
-  void WriteMCAHead( QTextStream &out );
-  void WriteMCAData( QTextStream &out );
+  void saveMCAData0( QString fname, aMCASet *set );
+  void WriteMCAHead( QTextStream &out, aMCASet *set );
+  void WriteMCAData( QTextStream &out, aMCASet *set );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );

@@ -447,27 +447,6 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 {
   if ( isSFluo ) {
     SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, MeasR ) );  // MeasA は無視
-#if 0
-    if ( RecordMCASpectra->isChecked() ) {
-      QFileInfo mcaFile;
-      if ( AutoModeButton->isChecked() ) {
-	mcaFile = QFileInfo( mcaDir,
-			     QString( "%1-%2-%3-%4.dat" )
-			     .arg( BaseFile.baseName() )
-			     .arg( (int)MeasA, 4, 10, QChar( '0' ) )
-			     .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-			     .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
-      } else {
-	mcaFile = QFileInfo( mcaDir,
-			     QString( "%1-%2-%3.dat" )
-			     .arg( BaseFile.baseName() )
-			     .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-			     .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
-      }
-      qDebug() << "Canonical File Path for MCA data" << mcaFile.canonicalFilePath();
-      saveMCAData0( mcaFile.canonicalFilePath() );
-    }
-#endif
   }
 
   SetDFName( MeasR, SelRPT->text().toInt() );

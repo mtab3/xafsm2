@@ -13,8 +13,15 @@ struct aCh {
 
 struct aMCASet {
   bool valid;
+  QString date;
+
   aCh Ch[ SAVEMCACh ];
   MCAHead Heads[ SAVEMCACh ];
+
+  QString ROIStart[ SAVEMCACh ];
+  QString ROIEnd[ SAVEMCACh ];
+
+  QStringList Elms;
 
   double RINGCurrent;
   double I0;

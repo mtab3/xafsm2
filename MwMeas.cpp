@@ -1781,7 +1781,7 @@ void MainWindow::MoveInMeasView( int ix, double )
     rpt = 0;
 
   set = XafsMCAMap.aPoint( ix, SelRPT->value() - 1 );
-  if ( ! set->isValid() )
+  if (( set != NULL ) && (! set->isValid() ))
     return;
   cnt = set->Ch[ cMCACh ].cnt;
 
@@ -1832,7 +1832,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 	  I0 = MPSet.i0s[r][i];
 	  if ( I0 < 1e-20 ) I0 = 1e-20;
 	  aMCASet *set = XafsMCAMap.aPoint( i, r );
-	  if ( set->isValid() ) {
+	  if ( ( set != NULL )&&( set->isValid() ) ) {
 	    quint32 *cnt = set->Ch[ ch ].cnt;
 	    int ROIs = ROIStart[ ch ].toInt();
 	    int ROIe = ROIEnd[ ch ].toInt();
@@ -1938,7 +1938,7 @@ void MainWindow::AfterSaveXafs()
 	    out << aline.mid( 0, 40 );
 	    // データ部分の先頭 19文字をコピー (角度、角度、時間, I0)
 	    aMCASet *set = XafsMCAMap.aPoint( i, r );
-	    if ( set->isValid() ) {  // 二度手間だけどまた計算
+	    if ( ( set != NULL ) && ( set->isValid() ) ) {  // 二度手間だけどまた計算
 	      for ( int ch = 0; ch < MaxSSDs; ch++ ) {
 		quint32 sum = 0;
 		quint32 *cnt = set->Ch[ ch ].cnt;
@@ -1966,11 +1966,19 @@ void MainWindow::AfterSaveXafs()
 
 void MainWindow::AfterSaveMCAs()
 {
-  for ( int r = 0; r < MPSet.finalRpt; r++ ) {
-    for ( int i = 0; i < MPSet.totalPoints; i++ ) {
-      aMCASet *set = XafsMCAMap.aPoint( i, r );
-      if ( set.isValid() ) {
-	
+  qDebug() << "here";
+
+  if ( MPSet.valid ) {
+    for ( int r = 0; r < MPSet.finalRpt; r++ ) {
+      for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+	aMCASet *set = XafsMCAMap.aPoint( i, r );
+	if ( ( set != NULL ) && ( set->isValid() ) ) {
+	  SetDFName0( MPSet.fname );
+	  DFName00 = MPSet.fname00;
+	  SetDFName( r, MPSet.finalRpt,
+		     QString( "-MCA-%1" ).arg( i, 4, 10, QChar( '0' ) ) );
+	  saveMCAData0( DFName, set );
+	}
       }
     }
   }

@@ -783,7 +783,10 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
     } else {
       // ファイル名の指定がなくてもとにかく名前を作る。
       QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
-      saveMCAData0( mcaFile.canonicalFilePath() ); // 通常のテキスト形式でのセーブ
+      aMCASet *set = new aMCASet;
+      SaveMCADataOnMem( set );
+      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
+      delete set;
     }
   }
 }
@@ -793,6 +796,7 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
   if ( set == NULL )
     return;
 
+  set->date = QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
   set->RINGCurrent = ( ( SLS != NULL) ? SLS->value().toDouble() : -1 );
   set->I0 = ( ( SI0 != NULL ) ? SI0->value().toDouble() : -1 );
 
@@ -804,6 +808,13 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
       cnt[i] = SFluo->getAMCAdata( ch, i );
     }
     set->Heads[ ch ] = SFluo->getAMCAHead( ch );
+    set->ROIStart[ ch ] = ROIStart[ ch ];
+    set->ROIEnd[ ch ] = ROIEnd[ ch ];
+  }
+  if ( cMCAView != NULL ) {
+    if ( ShowAlwaysSelElm->isChecked() ) {
+      set->Elms = cMCAView->getSelectedElms();
+    }
   }
   set->setValid( true );
 }
@@ -986,7 +997,7 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e )
   double sum = 0;
 
   aMCASet *set = S2DMCAMap.aPoint( ix, iy );
-  if ( set->isValid() ) {
+  if ( ( set != NULL )&&( set->isValid() ) ) {
     for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
       if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
 	double *E = set->Ch[ ch ].E;
@@ -1014,7 +1025,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
   quint32 *cnt1, *cnt2;
 
   set1 = S2DMCAMap.aPoint( ix, iy );
-  if ( ! set1->isValid() )
+  if ( ( set1 == NULL ) || ( ! set1->isValid() ) )
     return;
   cnt1 = set1->Ch[ cMCACh ].cnt;
 
@@ -1024,7 +1035,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
     }
   } else {
     set2 = S2DMCAMap.aPoint( ix+1, iy );
-    if ( ! set2->isValid() )
+    if ( ( set2 == NULL ) || ( ! set2->isValid() ) )
       return;
     cnt2 = set2->Ch[ cMCACh ].cnt;
 
@@ -1064,7 +1075,7 @@ void MainWindow::S2DShowIntMCA( int ix, int iy )
   quint32 *cnt;
 
   set = S2DMCAMap.aPoint( ix, iy );
-  if ( ! set->isValid() )
+  if ( ( set == NULL ) || ( ! set->isValid() ) )
     return;
   cnt = set->Ch[ cMCACh ].cnt;
 
@@ -1093,7 +1104,7 @@ void MainWindow::SaveS2DMCAs( void )
   for ( int y = 0; y < S2DI.ps[1]; y++ ) {
     for ( int x = 0; x < S2DI.ps[0]; x++ ) {
       aMCASet *set = S2DMCAMap.aPoint( x, y );
-      if ( set->isValid() ) {
+      if ( ( set != NULL ) && ( set->isValid() ) ) {
 	QString fname = QString( "%1-MCA-%2-%3.dat" )
 	  .arg( bfname )
 	  .arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );
