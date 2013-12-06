@@ -447,13 +447,14 @@ void MainWindow::setAllROIs( void )
 {
   int ch = MCACh->text().toInt();
   double startE = kev2pix->p2E( ch, ROIStart[ ch ].toDouble() );
-  double endE = kev2pix->p2E( ch, ROIEnd[ MCACh->text().toInt() ].toDouble() );
+  double endE = kev2pix->p2E( ch, ROIEnd[ ch ].toDouble() );
 
   for ( int i = 0; i < MaxSSDs; i++ ) {
     ROIStart[ i ] = QString::number( kev2pix->E2p( i, startE ) );
     ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
   ReCalcXAFSWithMCA();
+  S2DReCalcMap0();
 }
 
 void MainWindow::saveMCAData( void )
@@ -581,6 +582,7 @@ void MainWindow::SelSSDs20( void )
     }
   }
   ReCalcXAFSWithMCA();
+  S2DReCalcMap0();
 }
 
 void MainWindow::SelSSDs( int ch )
@@ -640,8 +642,8 @@ void MainWindow::newROIStart( const QString &newv )
     }
     if ( AutoROIsetAll->isChecked() )
       setAllROIs();
-    else 
-      ReCalcXAFSWithMCA();
+    ReCalcXAFSWithMCA();
+    S2DReCalcMap0();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
@@ -659,8 +661,8 @@ void MainWindow::newROIEnd( const QString &newv )
     }
     if ( AutoROIsetAll->isChecked() )
       setAllROIs();
-    else 
-      ReCalcXAFSWithMCA();
+    ReCalcXAFSWithMCA();
+    S2DReCalcMap0();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
@@ -826,8 +828,8 @@ void MainWindow::setNewROI( int s, int e )
       ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
       if ( AutoROIsetAll->isChecked() )
 	setAllROIs();
-      else 
-	ReCalcXAFSWithMCA();
+      ReCalcXAFSWithMCA();
+      S2DReCalcMap0();
     } else {
       statusbar
 	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );

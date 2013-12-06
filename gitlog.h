@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "AfterXAFS" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 5 14:17:50 2013 +0900\n"\
+                "    mca data save after a xafs measurement was implemented\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 4 18:26:21 2013 +0900\n"\
                 "    working\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 3 20:12:50 2013 +0900\n"\
                 "    Checking on after xafs with multi repeats and the save files\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Dec 2 01:50:52 2013 +0900\n"\
-                "    basically it was done except the file save routines of XAFS and MCAs.\n"\
 		"\n"\
                 ""
 #endif

@@ -311,6 +311,8 @@ private:
   QFileDialog *S2DFileSel;
   DIRECTION ReversedDir( DIRECTION d )
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
+  QDialog *S2DDialog;
+  bool PoppingS2DDialog;
 
   bool S2DFileCheckIsReady;
   QMessageBox *S2DAskOverWrite;
@@ -354,8 +356,8 @@ private:
   void S2DWriteBlankLine( void );
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
-  double S2DReCalcAMapPoint( QString fname, double s, double e );
-  double S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e );
+  double S2DReCalcAMapPoint( QString fname );
+  double S2DReCalcAMapPointOnMem( int ix, int iy );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DFileCheck( void );
 
@@ -789,6 +791,7 @@ private slots:
   void CheckS2DDwellTime( void );
   void SaveS2DResult0( void );
   void SaveS2DResult( void );
+  void PopUpS2D( void );
 
   void S2DOkOverWrite( void );
   void S2DOkOverWrite2( void );
@@ -809,7 +812,8 @@ private slots:
   void S2DShowInfoAtNewPosition( int x, int y );
   void S2DShowIntMCA( int x, int y );
   void S2DChangeMCACh( int dCh );
-  void S2DReCalcMap( double s, double e );
+  void S2DReCalcMap( void );
+  void S2DReCalcMap0( void );
 
   /* AutoSequence */
   void AutoSequence0( void );
