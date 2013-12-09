@@ -8730,7 +8730,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <item row="0" column="4">
             <widget class="QLabel" name="label_114">
              <property name="text">
-              <string>Start</string>
+              <string>Start Pnt.</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -8740,7 +8740,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
            <item row="0" column="5">
             <widget class="QLabel" name="label_118">
              <property name="text">
-              <string>End</string>
+              <string>End Pnt.</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>

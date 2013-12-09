@@ -351,6 +351,10 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>Dead Time : </source>
         <translation>デッドタイム: </translation>
     </message>
+    <message>
+        <source>Pop/Dock</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MUnits</name>
@@ -2068,7 +2072,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>End</source>
-        <translation>終点</translation>
+        <translation type="obsolete">終点</translation>
     </message>
     <message>
         <source>Current</source>
@@ -2641,11 +2645,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>in sep. file for each scan</source>
-        <translation>個別ファイル</translation>
+        <translation type="obsolete">個別ファイル</translation>
     </message>
     <message>
         <source>in one file as summed up</source>
-        <translation>総計ファイル</translation>
+        <translation type="obsolete">総計ファイル</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only for spectra measured with 19 ch SSD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2666,6 +2670,34 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Auto Set All</source>
         <translation>自動Set All</translation>
+    </message>
+    <message>
+        <source>Show each scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show sum up of scans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Pnt.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Pnt.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>can&apos;t open the file [%1] to read.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In the file [%1], an Offset line was not be found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>can&apos;t open the file [%1] to write.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
