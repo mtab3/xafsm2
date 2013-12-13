@@ -170,11 +170,11 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item ); LowSpeed = item.toInt();
 	next = nextItem( next, item ); RunUpRate = item.toDouble();
       } else if ( item == "QXAFSOK" ) {
-	QXafsOk = next.split( QRegExp( "\\s+" ) );
+	QXafsOk += next.split( QRegExp( "\\s+" ) );
       } else if ( item == "NORMALOK" ) {
-	NXafsOk = next.split( QRegExp( "\\s+" ) );
+	NXafsOk += next.split( QRegExp( "\\s+" ) );
       } else if ( item == "CONTOK" ) {
-	CScanOk = next.split( QRegExp( "\\s+" ) );
+	CScanOk += next.split( QRegExp( "\\s+" ) );
       } else if ( item == "MCAGAIN" ) {
 	MCAGain *mcaGain = new MCAGain;
 	next = nextItem( next, item ); mcaGain->ch = item.toInt();
