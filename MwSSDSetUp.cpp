@@ -136,16 +136,16 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
 
   connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	   this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ),
+	   this, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
 	   Qt::UniqueConnection );
   connect( DispElmNames, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewSetShowElements( bool ) ),
+	   this, SIGNAL( SignalMCAViewSetShowElements( bool ) ),
 	   Qt::UniqueConnection );
   connect( ShowAlwaysSelElm, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ),
+	   this, SIGNAL( SignalMCAViewShowAlwaysSelElm( bool ) ),
 	   Qt::UniqueConnection );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ),
+	   this, SIGNAL( SignalMCAViewShowElmEnergy( bool ) ),
 	   Qt::UniqueConnection );
 
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
@@ -403,6 +403,7 @@ void MainWindow::doPeakFit( void )
 }
 #endif
 
+#if 0
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {
   MCAView *view;
@@ -442,6 +443,7 @@ void MainWindow::NoticeMCAViewShowElmEnergy( bool f )
     }
   }
 }
+#endif
 
 void MainWindow::setAllROIs( void )
 {

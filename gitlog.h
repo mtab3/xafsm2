@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "AfterXAFS" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Dec 16 20:16:44 2013 +0900\n"\
+                "    small bug fix on MCASaveOnMem\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 16 19:28:38 2013 +0900\n"\
                 "    make small fix around MCASaveOnMem\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 9 18:35:09 2013 +0900\n"\
                 "    do nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 6 20:16:49 2013 +0900\n"\
-                "    now S2DView can also pop and dock\n"\
 		"\n"\
                 ""
 #endif

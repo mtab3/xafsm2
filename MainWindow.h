@@ -729,10 +729,12 @@ private slots:
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );
   void ReCalcSSDTotal( int i, bool f );
+#if 0
   void NoticeMCAViewSetDisplayLog( bool f );
   void NoticeMCAViewSetShowElements( bool f );
   void NoticeMCAViewShowAlwaysSelElm( bool f );
   void NoticeMCAViewShowElmEnergy( bool f );
+#endif
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
@@ -834,6 +836,11 @@ private slots:
 
   /* Auto Sequence */
   void AutoSequenceFinished( void );
+
+  void SignalMCAViewSetDisplayLog( bool f );
+  void SignalMCAViewSetShowElements( bool f );
+  void SignalMCAViewShowAlwaysSelElm( bool f );
+  void SignalMCAViewShowElmEnergy( bool f );
 };
 
 #endif

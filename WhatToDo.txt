@@ -10,9 +10,9 @@
    ○ 各点の測定時間を記録してない ---> OK
    ○ MCA を後からセーブ ---> できる
 
-   ○ RecordMCAs は無くして、MCA 使用時は常に全部セーブする
-   ○ AfterSave のボタンは、RecordMCAs の位置に移す
-   ○ AfterShowType はとりあえず先頭の画面からは消す
+   ○ RecordMCAs は無くして、MCA 使用時は常に全部セーブする --> OK
+   ○ AfterSave のボタンは、RecordMCAs の位置に移す  --> OK
+   ○ AfterShowType はとりあえず先頭の画面からは消す --> Windows の時に選択肢を無くした
 
 
 ○ S2D 作業中 !!!

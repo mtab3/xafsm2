@@ -95,6 +95,15 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   connect( this, SIGNAL( popDockIsChanged( bool ) ),
 	   Parent, SLOT( PopUpMCA() ),
 	   Qt::UniqueConnection );
+
+  connect( Parent, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
+	   this, SLOT( setLog( bool ) ) );
+  connect( Parent, SIGNAL( SignalMCAViewSetShowElements( bool ) ),
+	   this, SLOT( setShowElements( bool ) ) );
+  connect( Parent, SIGNAL( SignalMCAViewShowAlwaysSelElm( bool ) ),
+	   this, SLOT( setShowElementsAlways( bool ) ) );
+  connect( Parent, SIGNAL( SignalMCAViewShowElmEnergy( bool ) ),
+	   this, SLOT( setShowElementsEnergy( bool ) ) );
 }
 
 MCAView::~MCAView( void )
