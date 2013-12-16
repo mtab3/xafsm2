@@ -485,8 +485,6 @@ void MainWindow::saveMCAData( void )
 
 void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 {
-  qDebug() << "111";
-
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
     statusbar->showMessage( tr( "The file [%1] can not open to record the data" )
@@ -495,18 +493,13 @@ void MainWindow::saveMCAData0( QString fname, aMCASet *set )
     return;
   }
 
-  qDebug() << "112";
   QTextStream out( &f );
 
-  qDebug() << "113 " << ( set == NULL );
   out << "# XafsM2 MCA Data\n";
   out << "# " << set->date << "\n";
 
-  qDebug() << "114";
   WriteMCAHead( out, set );
-  qDebug() << "115";
   WriteMCAData( out, set );
-  qDebug() << "116";
 
   f.close();
 }

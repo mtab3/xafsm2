@@ -22,6 +22,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     AfterSave->setEnabled( false );
     //    RecordMCAs->setEnabled( false );
   }
+  if ( ! MCACanSaveAllOnMem )
+    AfterShowType->removeItem( 1 );
 
   BLKUnit = (UNIT)DefaultUnit;
   NXAFSBInfo.Unit = BLKUnit;
@@ -1459,7 +1461,10 @@ void MainWindow::StartMeasurement( void )
     if ( isSFluo ) {
       if ( cMCAView == NULL )
 	getNewMCAView();
-      XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
+      if ( MCACanSaveAllOnMem )
+        XafsMCAMap.New( TotalPoints, SelRPT->value() );
+      else
+        XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );

@@ -140,6 +140,7 @@ private:
   quint32 *MCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
+  bool MCACanSaveAllOnMem;
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;

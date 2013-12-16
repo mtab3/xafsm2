@@ -459,7 +459,6 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
     QFileInfo f = QFileInfo( DFName0 );
     QFileInfo mcaf = QFileInfo( newDir.absolutePath(),
 				f.baseName() + FnameExt );
-    qDebug() << "ccc " << mcaf.filePath();
     saveMCAData0( mcaf.filePath(), XafsMCAMap.aPoint( MeasP, 0 ) );
   }
 

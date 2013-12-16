@@ -23,7 +23,7 @@
 # 2013/11/03 add 'CALIB_ENGS'  line
 # 2013/11/19 add 'DEF_U_REAL'  line use to specify motors whose displayed unit should be 'real' not pulse as default.
 # 2013/11/28 add 'DATAROOT'    line to define data root
-
+# 2013/12/16 add 'MCA_CAN_SAVE_ALL' line
 
 #
 # In this definition file,
@@ -52,6 +52,13 @@ RW_DXMCENTER_CFG  1  DXMCenterTest.cfg    # read/write DXMCenterTest.cfg
 # MCAGAIN ch gain
 #
 #MCAGAIN 5 0.768
+
+# Can save all MCA datas on memory.
+# Default (without the line) is 0
+# It should be only when the XafsM2 run on UNIX not Windows
+#
+#MCA_CAN_SAVE_ALL 1
+MCA_CAN_SAVE_ALL 0
 
 #
 # Define if Quick-Xafs Mode is available or not

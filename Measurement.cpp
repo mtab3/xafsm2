@@ -144,6 +144,9 @@ void MainWindow::MeasSequence( void )
 	} else {
 	  CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	}
+	if ( MPSet.isSFluo ) 
+	  if ( ! MCACanSaveAllOnMem )
+	    XafsMCAMap.New( MPSet.totalPoints, 1 );   // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
 	UUnits.clear( MEAS_ID );

@@ -271,6 +271,11 @@ void MainWindow::ReadDef( QString fname )
 	if ( item != "" ) {
 	  DataRoot0 = item;
 	}
+      } else if ( item == "MCA_CAN_SAVE_ALL" ) {    // define data-root
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  MCACanSaveAllOnMem = ( item.toInt() != 0 );
+	}
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }
