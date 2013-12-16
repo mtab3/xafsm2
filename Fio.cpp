@@ -446,7 +446,21 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 //  dark 補正のオプションを付けているから)
 {
   if ( isSFluo ) {
-    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, MeasR ) );  // MeasA は無視
+    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, 0 ) );  // MeasA は無視
+
+    QDir newDir;
+    newDir.mkpath( DFName0 + "-MCA" );
+    newDir.cd( DFName0 + "-MCA" );
+    QString FnameExt;
+    if ( AutoModeButton->isChecked() )
+      FnameExt.sprintf( "-%03d-%02d-%04d.dat", MeasA+1, MeasR+1, MeasP );
+    else
+      FnameExt.sprintf( "-%02d-%04d.dat", MeasR+1, MeasP );
+    QFileInfo f = QFileInfo( DFName0 );
+    QFileInfo mcaf = QFileInfo( newDir.absolutePath(),
+				f.baseName() + FnameExt );
+    qDebug() << "ccc " << mcaf.filePath();
+    saveMCAData0( mcaf.filePath(), XafsMCAMap.aPoint( MeasP, 0 ) );
   }
 
   SetDFName( MeasR, SelRPT->text().toInt() );

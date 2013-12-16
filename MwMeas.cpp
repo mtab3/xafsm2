@@ -20,7 +20,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
     Use19chSSD->setEnabled( false );
     AfterShowType->setEnabled( false );
     AfterSave->setEnabled( false );
-    RecordMCAs->setEnabled( false );
+    //    RecordMCAs->setEnabled( false );
   }
 
   BLKUnit = (UNIT)DefaultUnit;
@@ -204,9 +204,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
   connect( AfterSave, SIGNAL( clicked() ), this, SLOT( AfterSaveXafs() ),
 	   Qt::UniqueConnection );
+#if 0
   connect( RecordMCAs, SIGNAL( clicked() ), this, SLOT( AfterSaveMCAs() ),
 	   Qt::UniqueConnection );
-
+#endif
   inMeasDark = false;
   MeasDarkStage = 0;
   AskingShutterClose = false;
@@ -1458,14 +1459,7 @@ void MainWindow::StartMeasurement( void )
     if ( isSFluo ) {
       if ( cMCAView == NULL )
 	getNewMCAView();
-      XafsMCAMap.New( TotalPoints, SelRPT->value() );
-#if 0
-      if ( RecordMCASpectra->isChecked() ) {
-	mcaDir = QDir( BaseFile.canonicalPath() );
-	mcaDir.mkpath( BaseFile.baseName() );
-	mcaDir.cd( BaseFile.baseName() );
-      }
-#endif
+      XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -1964,6 +1958,7 @@ void MainWindow::AfterSaveXafs()
   }
 }
 
+#if 0
 void MainWindow::AfterSaveMCAs()
 {
   qDebug() << "here";
@@ -1983,3 +1978,4 @@ void MainWindow::AfterSaveMCAs()
     }
   }
 }
+#endif

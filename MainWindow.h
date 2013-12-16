@@ -615,7 +615,7 @@ private slots:
   void CheckNewMeasFileName( void );
   void ReCalcXAFSWithMCA( void );
   void AfterSaveXafs( void );
-  void AfterSaveMCAs( void );
+  //  void AfterSaveMCAs( void );
 
   void GetNewGos( void );
 #if 0
