@@ -46,6 +46,7 @@ class ViewCTRL : public QObject
   bool getAGSBSStat( int n );
   QStringList getGSBLabels( void );
   QVector<bool> getGSBFlags( void );
+  void setView( QWidget *view );
 };
 
 

@@ -146,6 +146,17 @@ void XYView::NewPoint( int l, double xx, double yy )
   }
 }
 
+void XYView::ReNewPoint( int l, int ix, double yy )
+{
+  if ( l >= maxLines )
+    return;
+
+  int L = getL( l );
+  if ( ix < points[l] )
+    y[L][ix] = yy;
+}
+
+
 int XYView::getL( int l )
 {
   int L;
@@ -485,9 +496,9 @@ void XYView::ScaleChange( int l )
   }
 }
 
-void XYView::CheckASPush( void )
+void XYView::CheckASPush( QMouseEvent *e )
 {
-  if ( m.CheckABPush( 0, height() ) ) {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
     if ( autoScale ) {
       autoScale = false;
     } else {
@@ -566,6 +577,16 @@ void XYView::mouseMoveEvent( QMouseEvent *e )
       break;
     }
   }
+
+  int i;
+  double rx = cc.s2rx( m.x() );
+  for ( i = 0; i < points[0] - 1; i++ ) {
+    if ( rx < ( x[0][i] + x[0][i+1] ) / 2.0 )
+      break;
+  }
+  if ( i < points[0] ) {
+    emit MovedToNewX( i, rx );
+  }
   
   update();
 }
@@ -633,12 +654,12 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
     }
     break;
   }
-  CheckASPush();
-  if ( m.CheckABPush( 110, height() ) )
+  CheckASPush( e );
+  if ( m.CheckABPosition( e, 110, height() ) )
     singleScale = ! singleScale;
-  if ( m.CheckABPush( 220, height() ) )
+  if ( m.CheckABPosition( e, 220, height() ) )
     showDiff1 = ! showDiff1;
-  if ( m.CheckABPush( 330, height() ) )
+  if ( m.CheckABPosition( e, 330, height() ) )
     showDiff2 = ! showDiff2;
 
   update();
@@ -691,6 +712,13 @@ void XYView::ChooseAG( int i, bool f )
   dispf[ getL( i ) ] = f;
   update();
 }
+
+
+// XYView はできたり消えたりするオブジェクトだが、
+// 消えたオブジェクトに対して、外部からコネクトしていると問題が発生する。
+// 外部で適切に disconnect すれば良いが、面倒なので、
+// 親(parent)のポインタをもらって、中から外につなぐ。
+// (すると、自分が消えれば登録されている connect の signal 源も消えるので問題ない)
 
 void XYView::setParent( QWidget *p )
 {

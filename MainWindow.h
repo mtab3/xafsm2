@@ -111,6 +111,7 @@ private:
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );
+  void SaveI0inMPSet( void );
 
   /* cfg. */
   SelMC2 *selmc;
@@ -139,6 +140,7 @@ private:
   quint32 *MCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
+  bool MCACanSaveAllOnMem;
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;
@@ -149,6 +151,8 @@ private:
   QStringList SSDCalibEnergys;
   //  double AttenDx, AttenDy;
   AUnit *movingSC1, *movingSC2;
+  QDialog *MCADialog;
+  bool PoppingMCADialog;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -308,6 +312,8 @@ private:
   QFileDialog *S2DFileSel;
   DIRECTION ReversedDir( DIRECTION d )
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
+  QDialog *S2DDialog;
+  bool PoppingS2DDialog;
 
   bool S2DFileCheckIsReady;
   QMessageBox *S2DAskOverWrite;
@@ -351,8 +357,8 @@ private:
   void S2DWriteBlankLine( void );
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
-  double S2DReCalcAMapPoint( QString fname, double s, double e );
-  double S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e );
+  double S2DReCalcAMapPoint( QString fname );
+  double S2DReCalcAMapPointOnMem( int ix, int iy );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DFileCheck( void );
 
@@ -442,8 +448,8 @@ private:
   bool MakingSureOfRangeSelect;
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
-  int GetDFName0( void );
-  void SetDFName( int rpt );
+  bool SetDFName0( QString fname );
+  void SetDFName( int rpt, int rptMax, QString ext = "" );
   double MeasVals[ MCHANNELS ];
   double MeasCPSs[ MCHANNELS ];
   MEASMODE MeasDispMode[ MCHANNELS ];
@@ -453,6 +459,7 @@ private:
   bool AskingShutterClose;
   bool AskingShutterOpen;
   int MeasDarkStage;
+  bool setRsRe( int &rs, int &re );
 
   void ShowMeasFileStatus( QString fname );
   void ShowTotal( void );
@@ -464,6 +471,7 @@ private:
   void WriteHeader2( int Rpt );
   void WriteHeaderCore( bool SnotN );
   void WriteHeaderCore2( void );
+  void WriteFLUOHeadSection( QTextStream &out, QVector<double>darks, double I0dark );
   void SetDispMeasModes( void );
   void DispMeasDatas( void );
   void RecordData( void );
@@ -605,7 +613,10 @@ private slots:
   void SetGSBFlags( QVector<bool> flgs );
   void SetGSBLabels( QStringList lbls );
   void ShowMB( void );
-  void CheckNewMeasFileName();
+  void CheckNewMeasFileName( void );
+  void ReCalcXAFSWithMCA( void );
+  void AfterSaveXafs( void );
+  //  void AfterSaveMCAs( void );
 
   void GetNewGos( void );
 #if 0
@@ -676,9 +687,9 @@ private slots:
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
   void saveMCAData( void );
-  void saveMCAData0( QString fname );
-  void WriteMCAHead( QTextStream &out );
-  void WriteMCAData( QTextStream &out );
+  void saveMCAData0( QString fname, aMCASet *set );
+  void WriteMCAHead( QTextStream &out, aMCASet *set );
+  void WriteMCAData( QTextStream &out, aMCASet *set );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
@@ -718,10 +729,12 @@ private slots:
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );
   void ReCalcSSDTotal( int i, bool f );
+#if 0
   void NoticeMCAViewSetDisplayLog( bool f );
   void NoticeMCAViewSetShowElements( bool f );
   void NoticeMCAViewShowAlwaysSelElm( bool f );
   void NoticeMCAViewShowElmEnergy( bool f );
+#endif
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
@@ -729,6 +742,7 @@ private slots:
   void DTAutoCalibStart( void );
   void SSDEngAutoCalibStart( void );
   void MoveToNewCaribEnergy( void );
+  void MoveInMeasView( int ix, double x );
 
   void NewAttenCh( int i );
   void NewAttenPos( void );
@@ -759,6 +773,7 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
   void SetNewGases( void );
   //  void showMCAs( void );
+  void PopUpMCA( void );
 
   // QXafs
   void ToggleQXafsMode( bool f );
@@ -779,6 +794,7 @@ private slots:
   void CheckS2DDwellTime( void );
   void SaveS2DResult0( void );
   void SaveS2DResult( void );
+  void PopUpS2D( void );
 
   void S2DOkOverWrite( void );
   void S2DOkOverWrite2( void );
@@ -799,7 +815,8 @@ private slots:
   void S2DShowInfoAtNewPosition( int x, int y );
   void S2DShowIntMCA( int x, int y );
   void S2DChangeMCACh( int dCh );
-  void S2DReCalcMap( double s, double e );
+  void S2DReCalcMap( void );
+  void S2DReCalcMap0( void );
 
   /* AutoSequence */
   void AutoSequence0( void );
@@ -819,6 +836,11 @@ private slots:
 
   /* Auto Sequence */
   void AutoSequenceFinished( void );
+
+  void SignalMCAViewSetDisplayLog( bool f );
+  void SignalMCAViewSetShowElements( bool f );
+  void SignalMCAViewShowAlwaysSelElm( bool f );
+  void SignalMCAViewShowElmEnergy( bool f );
 };
 
 #endif

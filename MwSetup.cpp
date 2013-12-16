@@ -789,6 +789,9 @@ void MainWindow::ScanStart( void )
     ViewTab->setTabText( ViewTab->currentIndex(), "SCAN" );
     ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
+
+    // 古いコネクションがあったらとりあえず消しておく
+    disconnect( this, SLOT( SelectedAPointInScanArea( double, double ) ) );
     connect( ScanView, SIGNAL( SelectAPoint( double, double ) ),
 	     this, SLOT( SelectedAPointInScanArea( double, double ) ),
 	     Qt::UniqueConnection );

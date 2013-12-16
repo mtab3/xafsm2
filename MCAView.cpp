@@ -52,6 +52,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   valid = false;
   dispLog = false;
+  popDock = true;   // ボタンは年中光らせておく
 
   Black = QColor( 0, 0, 0 );
   White = QColor( 255, 255, 255 );
@@ -84,13 +85,25 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 	   Parent, SLOT( setNewROI( int, int ) ),
 	   Qt::UniqueConnection );
   connect( this, SIGNAL( newROIinEng( double, double ) ),
-	   Parent, SLOT( S2DReCalcMap( double, double ) ),
+	   Parent, SLOT( S2DReCalcMap( void ) ),
 	   Qt::UniqueConnection );
   connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ),
 	   Qt::UniqueConnection );
   connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
+  connect( this, SIGNAL( popDockIsChanged( bool ) ),
+	   Parent, SLOT( PopUpMCA() ),
+	   Qt::UniqueConnection );
+
+  connect( Parent, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
+	   this, SLOT( setLog( bool ) ) );
+  connect( Parent, SIGNAL( SignalMCAViewSetShowElements( bool ) ),
+	   this, SLOT( setShowElements( bool ) ) );
+  connect( Parent, SIGNAL( SignalMCAViewShowAlwaysSelElm( bool ) ),
+	   this, SLOT( setShowElementsAlways( bool ) ) );
+  connect( Parent, SIGNAL( SignalMCAViewShowElmEnergy( bool ) ),
+	   this, SLOT( setShowElementsEnergy( bool ) ) );
 }
 
 MCAView::~MCAView( void )
@@ -787,6 +800,8 @@ void MCAView::Draw( QPainter *p )
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( dt, 'f', 2 ) );
   LINE++;
+
+  cc.ShowAButton( p, popDock, tr( "Pop/Dock" ), 0, 100, height() );
 }
 
 void MCAView::PeakSearch( double Es, double Ee )
@@ -921,6 +936,10 @@ void MCAView::PeakSearch( double Es, double Ee )
 
 void MCAView::mouseMoveEvent( QMouseEvent *e )
 {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
+    return;
+  }
+
   m.Moved( e );
   nearf = false;
   if ( !m.inPress() ) {
@@ -953,6 +972,10 @@ void MCAView::mouseMoveEvent( QMouseEvent *e )
 
 void MCAView::mousePressEvent( QMouseEvent *e )
 {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
+    return;
+  }
+
   if ( e->modifiers() & Qt::ShiftModifier ) { // シフトキーを押しながら
     if ( e->button() == Qt::LeftButton ) {   // shift + 左ボタンで 並行移動モード
       mMode = M_H_SHIFT;
@@ -1005,6 +1028,12 @@ void MCAView::mousePressEvent( QMouseEvent *e )
 
 void MCAView::mouseReleaseEvent( QMouseEvent *e )
 {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
+    //    popDock = ! popDock;
+    emit popDockIsChanged( popDock );
+    return;
+  }
+
   if ( mMode == M_ROI ) {
     m.Released( e );
     rROIex = cc.s2rx( m.ex() );

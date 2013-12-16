@@ -16,8 +16,14 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
 	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
 
-  if ( SFluo == NULL ) 
+  if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
+    AfterShowType->setEnabled( false );
+    AfterSave->setEnabled( false );
+    //    RecordMCAs->setEnabled( false );
+  }
+  if ( ! MCACanSaveAllOnMem )
+    AfterShowType->removeItem( 1 );
 
   BLKUnit = (UNIT)DefaultUnit;
   NXAFSBInfo.Unit = BLKUnit;
@@ -195,6 +201,15 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ),
 	   Qt::UniqueConnection );
 
+  connect( AfterShowType, SIGNAL( currentIndexChanged( int ) ),
+	   this, SLOT( ReCalcXAFSWithMCA() ),
+	   Qt::UniqueConnection );
+  connect( AfterSave, SIGNAL( clicked() ), this, SLOT( AfterSaveXafs() ),
+	   Qt::UniqueConnection );
+#if 0
+  connect( RecordMCAs, SIGNAL( clicked() ), this, SLOT( AfterSaveMCAs() ),
+	   Qt::UniqueConnection );
+#endif
   inMeasDark = false;
   MeasDarkStage = 0;
   AskingShutterClose = false;
@@ -811,6 +826,7 @@ void MainWindow::ShowBLKs( void )
 void MainWindow::NewRpt( void )
 {
   ShowTotal();
+  ReCalcXAFSWithMCA();
 }
 
 void MainWindow::ShowTotal( void )  // ShowBlock の中からと、反復回数変更時に呼ばれる
@@ -1128,7 +1144,8 @@ void MainWindow::StartMeasurement( void )
       statusbar->showMessage( tr( "Invalid block data." ), 2000 );
       return;
     }
-    if ( GetDFName0() == 0 ) {  // データファイルが選択されていなかったらダメ
+    // データファイルが選択されていなかったらダメ
+    if ( ! SetDFName0( EditDFName->text() ) ) {
       statusbar->showMessage( tr( "Data File is not Selected!" ), 2000 );
       return;
     }
@@ -1387,6 +1404,11 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
+    disconnect( this, SLOT( MoveInMeasView( double ) ) );
+    connect( MeasView, SIGNAL( MovedToNewX( int, double ) ),
+	     this, SLOT( MoveInMeasView( int, double ) ),
+	     Qt::UniqueConnection );
+
     if ( AutoModeFirst ) {  // AutoMode: off か AutoMode の 1回目に true
       BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
       if ( BaseFile.exists() ) {
@@ -1406,8 +1428,11 @@ void MainWindow::StartMeasurement( void )
                .arg( SelectedCurPosDeg( XPM ) ) );
     InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
 
-    SetupMPSet( &MPSet );
-    MPSet.valid = true;
+    /*************************************************************************/
+    /*************************************************************************/
+    /******************  これ以降に return してはいけない  *******************/
+    /*************************************************************************/
+    /*************************************************************************/
 
     inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
@@ -1424,7 +1449,9 @@ void MainWindow::StartMeasurement( void )
     }
 
     SetDispMeasModes();
-    CpBlock2SBlock();    // QXafs の時でも使う
+    CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
+    SetupMPSet( &MPSet ); // これ以降に return してはいけない
+    MPSet.valid = true;
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
@@ -1432,12 +1459,12 @@ void MainWindow::StartMeasurement( void )
       FixedPositionMode = false;
 
     if ( isSFluo ) {
-      XafsMCAMap.New( TotalPoints, SelRPT->value() );
-      if ( RecordMCASpectra->isChecked() ) {
-	mcaDir = QDir( BaseFile.canonicalPath() );
-	mcaDir.mkpath( BaseFile.baseName() );
-	mcaDir.cd( BaseFile.baseName() );
-      }
+      if ( cMCAView == NULL )
+	getNewMCAView();
+      if ( MCACanSaveAllOnMem )
+        XafsMCAMap.New( TotalPoints, SelRPT->value() );
+      else
+        XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -1479,12 +1506,27 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
 {
   int ttp = 0;
 
+  aSet->mUnits.clearUnits();
+  for ( int i = 0; i < mUnits.count(); i++ ) {
+    aSet->mUnits.addUnit( mUnits.at(i) );
+  }
+  aSet->fname = EditDFName->text();
+  aSet->fname00 = DFName00;
+
+  for ( int i = 0; i < aSet->i0s.count(); i++ ) {
+    if ( aSet->i0s[i] != NULL ) {
+      delete [] aSet->i0s[i];
+    }
+  }
+  aSet->i0s.clear();
+
   for ( int i = 0; i < Blocks; i++ ) {
     ttp += BLKpoints[i]->text().toInt();
   }
+  aSet->isI1 = UseI1->isChecked();
   aSet->isSFluo = (( Use19chSSD->isChecked() )&&( SFluo != NULL ));
   aSet->totalPoints = ttp;
-  aSet->rep = SelRPT->value();
+  aSet->rpt = SelRPT->value();
 }
 
 // Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !
@@ -1724,3 +1766,221 @@ bool MainWindow::ParseAutoMode( void )
 
   return true;
 }
+
+void MainWindow::MoveInMeasView( int ix, double )
+{
+  if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo
+       ||( cMCAView == NULL )||( MCAData== NULL ) )
+    return;
+  
+  aMCASet *set;
+  quint32 *cnt;
+  int rpt = SelRPT->value() - 1;
+  if ( rpt < 0 )
+    rpt = 0;
+
+  set = XafsMCAMap.aPoint( ix, SelRPT->value() - 1 );
+  if (( set != NULL ) && (! set->isValid() ))
+    return;
+  cnt = set->Ch[ cMCACh ].cnt;
+
+  for ( int i = 0; i < SAVEMCASize; i++ ) {
+    MCAData[i] = cnt[i];
+  }
+
+  cMCAView->update();
+}
+
+
+void MainWindow::ReCalcXAFSWithMCA( void )
+{
+  if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo 
+       ||( cMCAView == NULL )||( MCAData== NULL )||( MeasView == NULL ) )
+    return;
+
+  QVector<double> darks = SFluo->getDarkCountsInROI();
+  double I0, Vch;
+  int DLC = ( MPSet.isI1 ) ? 3 : 1;   // display line count
+  int ML = cMCAView->getMCALength();
+
+  QVector<double> dwells;
+  for ( int b = 0; b < SBlocks; b++ ) {
+    for ( int p = 0; p < SBlockPoints[ b ]; p++ ) {
+      dwells << SBlockDwell[ b ];
+    }
+  }
+  // ホントはこのループが回ったらなんかおかしい (ダウンさせないための用心)
+  if ( dwells.count() < MPSet.totalPoints ) {
+    qDebug() << "Total Points is not matched to calculated total points.";
+    for ( int p = dwells.count(); p < MPSet.totalPoints; p++ ) {
+      dwells << SBlockDwell[ SBlocks - 1 ];
+    }
+  }
+
+  int rs, re;
+  if ( ! setRsRe( rs, re ) )
+    return;
+  
+  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+    double Sum = 0;
+    for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+      quint32 sum = 0;
+      Vch = 0;
+      for ( int r = rs; r < re; r++ ) {
+	if ( r < MPSet.i0s.count() ) {
+	  I0 = MPSet.i0s[r][i];
+	  if ( I0 < 1e-20 ) I0 = 1e-20;
+	  aMCASet *set = XafsMCAMap.aPoint( i, r );
+	  if ( ( set != NULL )&&( set->isValid() ) ) {
+	    quint32 *cnt = set->Ch[ ch ].cnt;
+	    int ROIs = ROIStart[ ch ].toInt();
+	    int ROIe = ROIEnd[ ch ].toInt();
+	    if ( ROIs < 0 ) ROIs = 0;
+	    if ( ROIe < 0 ) ROIe = 0;
+	    if ( ROIs >= ML ) ROIs = ML - 1;
+	    if ( ROIe >= ML ) ROIe = ML - 1;
+	    for ( int p = ROIs; p < ROIe; p++ ) {
+	      sum += cnt[ p ];
+	    }
+	    qDebug() << sum << dwells[i] << darks[ch] << I0;
+	    Vch += ( ( sum / dwells[i] ) - darks[ch] ) / I0;
+	  }
+	}
+      }
+      MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
+      if ( SSDbs2[ch]->isChecked() == PBTrue ) {
+	Sum += Vch;
+      }
+    }
+    MeasView->ReNewPoint( DLC, i, Sum );
+  }
+  MeasView->update();
+}
+
+bool MainWindow::setRsRe( int &rs, int &re )
+{
+  if ( AfterShowType->currentIndex() == EACHSCAN ) {
+    rs = SelRPT->text().toInt() - 1;
+    re = rs + 1;
+    if ( rs >= MPSet.rpt )
+      return false;
+  } else {    // == SUMUPOFSCANS
+    rs = 0;
+    re = MPSet.rpt;
+  }
+
+  return true;
+}
+
+void MainWindow::AfterSaveXafs()
+{
+  QString buf;
+
+  int ML = cMCAView->getMCALength();
+  SetDFName0( MPSet.fname );
+
+  for ( int r = 0; r < MPSet.rpt; r++ ) {
+    SetDFName( r, MPSet.rpt );
+    QString baseFName = DFName;
+    SetDFName( r, MPSet.rpt, "-After" );
+    QString afterFName = DFName;
+    
+    QFile From( baseFName );
+    QFile To( afterFName );
+    if ( ! From.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+      statusbar->showMessage( tr( "can't open the file [%1] to read." )
+			      .arg( baseFName ) );
+    } else {
+      QTextStream in( &From );
+      
+      // 元ファイルのヘッダ部分を 'Offset' line までまとめて読み込み
+      QString aline;
+      QStringList inLines;
+      bool findOffsetLine = false;
+      QString modeLine = "";
+      int icrStart = 0;
+      
+      while( ! in.atEnd() ) {
+	aline = From.readLine();
+	inLines << aline;
+	if ( aline.contains( QRegExp( "^\\s*Mode\\s+" ) ) ) {
+	  modeLine = aline;
+	}
+	if ( aline.contains( QRegExp( "^\\s*Offset\\s+" ) ) ) {
+	  findOffsetLine = true;
+	  break;
+	}
+      }
+      if (( !findOffsetLine )||( modeLine == "" )) {
+	statusbar
+	  ->showMessage( tr( "In the file [%1], an Offset line was not be found." )
+			 .arg( baseFName ) );
+      } else {
+	icrStart = modeLine.indexOf( "       103" );
+	if (( ! To.open( QIODevice::WriteOnly | QIODevice::Text ) )
+	    ||( icrStart == 0 )) {
+	  statusbar->showMessage( tr( "can't open the file [%1] to write." )
+				  .arg( afterFName ) );
+	} else {
+	  QTextStream out( &To );
+	  
+	  // SCALE, Angle, Mode, Offset の 4行を除いたヘッダ部分をコピー
+	  for ( int i = 0; i < inLines.count() - 4; i++ ) {
+	    out << inLines[i];
+	  }
+	  // SCALE, Angle, Mode, Offset の 4行作成/書き出し
+	  QVector<double> darks = SFluo->getDarkCountsInROI();
+	  WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
+	  
+	  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+	    aline = in.readLine();
+	    out << aline.mid( 0, 40 );
+	    // データ部分の先頭 19文字をコピー (角度、角度、時間, I0)
+	    aMCASet *set = XafsMCAMap.aPoint( i, r );
+	    if ( ( set != NULL ) && ( set->isValid() ) ) {  // 二度手間だけどまた計算
+	      for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+		quint32 sum = 0;
+		quint32 *cnt = set->Ch[ ch ].cnt;
+		int ROIs = ROIStart[ ch ].toInt();
+		int ROIe = ROIEnd[ ch ].toInt();
+		if ( ROIs < 0 ) ROIs = 0;
+		if ( ROIe < 0 ) ROIe = 0;
+		if ( ROIs >= ML ) ROIs = ML - 1;
+		if ( ROIe >= ML ) ROIe = ML - 1;
+		for ( int p = ROIs; p < ROIe; p++ ) {
+		  sum += cnt[ p ];
+		}
+		buf.sprintf(" %9d", (int)( sum ) );  // dark ひかない
+		out << buf;
+	      }
+	      out << aline.mid( icrStart, 10 * ( MaxSSDs + 1 ) );  // ICR はコピー
+	      out << endl;
+	    }
+	  }
+	}
+      }
+    }
+  }
+}
+
+#if 0
+void MainWindow::AfterSaveMCAs()
+{
+  qDebug() << "here";
+
+  if ( MPSet.valid ) {
+    for ( int r = 0; r < MPSet.finalRpt; r++ ) {
+      for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+	aMCASet *set = XafsMCAMap.aPoint( i, r );
+	if ( ( set != NULL ) && ( set->isValid() ) ) {
+	  SetDFName0( MPSet.fname );
+	  DFName00 = MPSet.fname00;
+	  SetDFName( r, MPSet.finalRpt,
+		     QString( "-MCA-%1" ).arg( i, 4, 10, QChar( '0' ) ) );
+	  saveMCAData0( DFName, set );
+	}
+      }
+    }
+  }
+}
+#endif

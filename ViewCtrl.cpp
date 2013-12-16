@@ -25,9 +25,14 @@ bool ViewCTRL::setView( void *view, VTYPE vtype )
   nowView = view;
   nowVType = vtype;
   deletable = true;
-  ViewBase->layout()->addWidget( (QWidget *)view );
+  setView( (QWidget *)view );
   gsbStat = new GSBStats;
   return true;                   // new view is set.
+}
+
+void ViewCTRL::setView( QWidget *view )
+{
+  ViewBase->layout()->addWidget( view );
 }
 
 bool ViewCTRL::deleteView( void )

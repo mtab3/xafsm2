@@ -14,6 +14,16 @@ void MainWindow::setupScan2DArea( void )
   S2DFileSel->setFilter( "*.dat" );
   S2DFileSel->setConfirmOverwrite( false );
 
+  S2DDialog = new QDialog;
+  S2DDialog->resize( 600, 400 );
+  QGridLayout *bl = new QGridLayout;
+  S2DDialog->setLayout( bl );
+  PoppingS2DDialog = false;
+  connect( S2DDialog, SIGNAL( finished(int) ), this, SLOT( PopUpS2D() ),
+	   Qt::UniqueConnection );
+  connect( S2DPopUp, SIGNAL( clicked() ), this, SLOT( PopUpS2D() ), 
+	   Qt::UniqueConnection );
+
   QPushButton *tmpB;
   S2DAskOverWrite = new QMessageBox;
   tmpB = S2DAskOverWrite->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
@@ -153,6 +163,18 @@ void MainWindow::setupScan2DArea( void )
 	   Qt::UniqueConnection );
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2DV, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
+}
+
+void MainWindow::PopUpS2D( void )
+{
+  if ( PoppingS2DDialog ) {
+    S2DVBase->layout()->addWidget( S2DV );
+    S2DDialog->hide();
+  } else {
+    S2DDialog->layout()->addWidget( S2DV );
+    S2DDialog->show();
+  }
+  PoppingS2DDialog = ! PoppingS2DDialog;
 }
 
 void MainWindow::S2DSetUseChangers( bool f )
@@ -783,22 +805,20 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
     } else {
       // ファイル名の指定がなくてもとにかく名前を作る。
       QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
-      saveMCAData0( mcaFile.canonicalFilePath() ); // 通常のテキスト形式でのセーブ
+      aMCASet *set = new aMCASet;
+      SaveMCADataOnMem( set );
+      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
+      delete set;
     }
   }
 }
-
-#if 0
-void MainWindow::S2DSaveMCADataOnMem( int ix, int iy, int /* iz */ )  // iz は当面無視
-{
-  aMCASet *set = S2DMCAMap.aPoint( ix, iy );
-#endif
 
 void MainWindow::SaveMCADataOnMem( aMCASet *set )
 {
   if ( set == NULL )
     return;
 
+  set->date = QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
   set->RINGCurrent = ( ( SLS != NULL) ? SLS->value().toDouble() : -1 );
   set->I0 = ( ( SI0 != NULL ) ? SI0->value().toDouble() : -1 );
 
@@ -810,6 +830,13 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
       cnt[i] = SFluo->getAMCAdata( ch, i );
     }
     set->Heads[ ch ] = SFluo->getAMCAHead( ch );
+    set->ROIStart[ ch ] = ROIStart[ ch ];
+    set->ROIEnd[ ch ] = ROIEnd[ ch ];
+  }
+  if ( cMCAView != NULL ) {
+    if ( ShowAlwaysSelElm->isChecked() ) {
+      set->Elms = cMCAView->getSelectedElms();
+    }
   }
   set->setValid( true );
 }
@@ -892,14 +919,17 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
  }
 
 
-void MainWindow::S2DReCalcMap( double s, double e )
+void MainWindow::S2DReCalcMap( void )
+{
+  setAllROIs();
+}
+
+void MainWindow::S2DReCalcMap0( void )
 {
   if ( ( ! S2DI.valid )||( ! S2DReCalcWNewROI->isChecked() )
        || inMeas || inMCAMeas || inS2D ) {
     return;
   }
-
-  setAllROIs();
 
   QFileInfo mcaFile;
   double sum = 0;
@@ -909,10 +939,10 @@ void MainWindow::S2DReCalcMap( double s, double e )
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       for ( int j = 0; j < S2DI.ps[0]; j++ ) {
 	if ( S2DMCADataOnMemF ) {
-	  sum = S2DReCalcAMapPointOnMem( j, i, s, e );
+	  sum = S2DReCalcAMapPointOnMem( j, i );
 	} else {
 	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e );
+	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
 	}
 	if ( sum > 0 ) {
 	  S2DV->setData( j, i, sum );
@@ -927,10 +957,10 @@ void MainWindow::S2DReCalcMap( double s, double e )
       if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
 	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
 	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i, s, e );
+	    sum = S2DReCalcAMapPointOnMem( j, i );
 	  } else {
 	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e );
+	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
 	  }
 	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
 	    S2DV->setData( j, i, sum - lastsum );
@@ -942,10 +972,10 @@ void MainWindow::S2DReCalcMap( double s, double e )
       } else {
 	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
 	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i, s, e );
+	    sum = S2DReCalcAMapPointOnMem( j, i );
 	  } else {
 	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath(), s, e );
+	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
 	  }
 	  if ( ( sum > 0 ) && ( j > 0 ) ) {
 	    S2DV->setData( j - 1, i, sum - lastsum );
@@ -959,7 +989,7 @@ void MainWindow::S2DReCalcMap( double s, double e )
   }
 }
 
-double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
+double MainWindow::S2DReCalcAMapPoint( QString fname )
 {
   QStringList vals;
   QFile f( fname );
@@ -969,14 +999,20 @@ double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
   QTextStream in( &f );
   double eng;
   double cnt, sum = 0;
+  QVector<double> ss;
+  QVector<double> es;
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
+    es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
+  }
   while( !in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
     if (( vals[0] != "#" )&&( vals.count() >= 36 )) {
-      for ( int i = 0; i < 19; i++ ) {
+      for ( int i = 0; i < MaxSSDs; i++ ) {
 	if ( SSDbs2[i]->isChecked() == PBTrue ) {
 	  eng = vals[i*2+1].toDouble();
 	  cnt = vals[i*2+2].toDouble();
-	  if (( eng >= s )&&( eng <= e )) {
+	  if (( eng >= ss[i] )&&( eng <= es[i] )) {
 	    sum += cnt;
 	  }
 	}
@@ -987,18 +1023,25 @@ double MainWindow::S2DReCalcAMapPoint( QString fname, double s, double e )
   return sum;
 }
 
-double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, double s, double e )
+double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
 {
   double sum = 0;
 
+  QVector<double> ss;
+  QVector<double> es;
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
+    es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
+  }
+
   aMCASet *set = S2DMCAMap.aPoint( ix, iy );
-  if ( set->isValid() ) {
+  if ( ( set != NULL )&&( set->isValid() ) ) {
     for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
       if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
 	double *E = set->Ch[ ch ].E;
 	quint32 *cnt = set->Ch[ ch ].cnt;
 	for ( int i = 0; i < SAVEMCASize; i++ ) {
-	  if (( E[i] >= s )&&( E[i] <= e )) {
+	  if (( E[i] >= ss[ch] )&&( E[i] <= es[ch] )) {
 	    sum += cnt[i];
 	  }
 	}
@@ -1020,7 +1063,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
   quint32 *cnt1, *cnt2;
 
   set1 = S2DMCAMap.aPoint( ix, iy );
-  if ( ! set1->isValid() )
+  if ( ( set1 == NULL ) || ( ! set1->isValid() ) )
     return;
   cnt1 = set1->Ch[ cMCACh ].cnt;
 
@@ -1030,7 +1073,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
     }
   } else {
     set2 = S2DMCAMap.aPoint( ix+1, iy );
-    if ( ! set2->isValid() )
+    if ( ( set2 == NULL ) || ( ! set2->isValid() ) )
       return;
     cnt2 = set2->Ch[ cMCACh ].cnt;
 
@@ -1070,7 +1113,7 @@ void MainWindow::S2DShowIntMCA( int ix, int iy )
   quint32 *cnt;
 
   set = S2DMCAMap.aPoint( ix, iy );
-  if ( ! set->isValid() )
+  if ( ( set == NULL ) || ( ! set->isValid() ) )
     return;
   cnt = set->Ch[ cMCACh ].cnt;
 
@@ -1099,7 +1142,7 @@ void MainWindow::SaveS2DMCAs( void )
   for ( int y = 0; y < S2DI.ps[1]; y++ ) {
     for ( int x = 0; x < S2DI.ps[0]; x++ ) {
       aMCASet *set = S2DMCAMap.aPoint( x, y );
-      if ( set->isValid() ) {
+      if ( ( set != NULL ) && ( set->isValid() ) ) {
 	QString fname = QString( "%1-MCA-%2-%3.dat" )
 	  .arg( bfname )
 	  .arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );

@@ -4,9 +4,16 @@
 struct MeasPSet {
   bool valid;
 
+  MUnits mUnits;
+  QString fname;
+  QString fname00;
+  bool isI1;
   bool isSFluo;
   int totalPoints;
-  int rep;
+  int rpt;
+  int finalRpt;
+  int finalPnt;
+  QVector<double*> i0s;
 
   MeasPSet() { valid = false; };
 };

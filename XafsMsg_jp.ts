@@ -351,6 +351,10 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>Dead Time : </source>
         <translation>デッドタイム: </translation>
     </message>
+    <message>
+        <source>Pop/Dock</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MUnits</name>
@@ -572,11 +576,11 @@ Q-XAFSモードでは１スキャンに必要な時間を表します。</transl
     </message>
     <message>
         <source>When 19ch SSD is used for the measurement, the MCA spectra for each channel is recorded at every measured points.</source>
-        <translation>19ch SSDを使用する際、測定の各ステップでの MCA スペクトルを全て(全チャンネル、全ステップ)記録する。</translation>
+        <translation type="obsolete">19ch SSDを使用する際、測定の各ステップでの MCA スペクトルを全て(全チャンネル、全ステップ)記録する。</translation>
     </message>
     <message>
         <source>Record MCA Spectra</source>
-        <translation>MCAスペクトル記録</translation>
+        <translation type="obsolete">MCAスペクトル記録</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To measure near edge region precisely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2068,7 +2072,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>End</source>
-        <translation>終点</translation>
+        <translation type="obsolete">終点</translation>
     </message>
     <message>
         <source>Current</source>
@@ -2623,6 +2627,77 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>No file name was selected</source>
         <translation>ファイル名が選択されていません。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Record MCA spectra obtained at each step of the XAFS measurement is saved in separated files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>SSD を使ったXAFS測定の各ステップで得られたMCAスペクトルをセーブします。</translation>
+    </message>
+    <message>
+        <source>Record MCAs</source>
+        <translation>MCA記録</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the spectra with several scans, when &apos;in sep. file...&apos; is selected, each spectrum is saved in each file.&lt;/p&gt;&lt;p&gt;When &apos;in one file...&apos; is selected, one spectrum made by summing up all the spectra is saved in one file.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>「個別ファイル」が選択されると、複数回のスキャンで
+得られたスペクトルを個々に別のファイルにセーブします。
+「総計ファイル」が選択されると、複数回のスキャンで
+得られたデータを足しあげた一つのスペクトルがセーブされます。</translation>
+    </message>
+    <message>
+        <source>in sep. file for each scan</source>
+        <translation type="obsolete">個別ファイル</translation>
+    </message>
+    <message>
+        <source>in one file as summed up</source>
+        <translation type="obsolete">総計ファイル</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only for spectra measured with 19 ch SSD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>19ch SSD を使って測定した場合だけ有効です。</translation>
+    </message>
+    <message>
+        <source>After Save</source>
+        <translation>事後セーブ</translation>
+    </message>
+    <message>
+        <source>Data Root</source>
+        <translation>データルート</translation>
+    </message>
+    <message>
+        <source>Pop Up</source>
+        <translation>独立</translation>
+    </message>
+    <message>
+        <source>Auto Set All</source>
+        <translation>自動Set All</translation>
+    </message>
+    <message>
+        <source>Show each scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show sum up of scans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Pnt.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Pnt.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>can&apos;t open the file [%1] to read.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In the file [%1], an Offset line was not be found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>can&apos;t open the file [%1] to write.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

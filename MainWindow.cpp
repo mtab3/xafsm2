@@ -22,6 +22,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
   DataRoot0 = "";
+  MCACanSaveAllOnMem = false;
 
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;

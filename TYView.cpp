@@ -281,9 +281,9 @@ void TYView::UpDateYWindowRing( void )
   }
 }
 
-void TYView::CheckASPush( void )
+void TYView::CheckASPush( QMouseEvent *e )
 {
-  if ( m.CheckABPush( 0, height() ) ) {
+  if ( m.CheckABPosition( e, 0, height() ) ) {
     if ( autoScale ) {
       autoScale = false;
     } else {
@@ -391,7 +391,7 @@ void TYView::mouseReleaseEvent( QMouseEvent *e )
     }
     break;
   }
-  CheckASPush();
+  CheckASPush( e );
 
   update();
 }

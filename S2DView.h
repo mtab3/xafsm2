@@ -45,9 +45,9 @@ class S2DView : public QFrame, private Ui::S2DView
   void mouseDoubleClickEvent( QMouseEvent *e );
   void wheelEvent( QWheelEvent *e );
 
-  void CheckOnIntMCA( void );
-  void CheckIXBPush( void );
-  void CheckIYBPush( void );
+  void CheckOnIntMCA( QMouseEvent *e );
+  void CheckIXBPush( QMouseEvent *e );
+  void CheckIYBPush( QMouseEvent *e );
 
  public:
   S2DView( QWidget *p );

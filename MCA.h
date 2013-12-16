@@ -13,8 +13,15 @@ struct aCh {
 
 struct aMCASet {
   bool valid;
+  QString date;
+
   aCh Ch[ SAVEMCACh ];
   MCAHead Heads[ SAVEMCACh ];
+
+  QString ROIStart[ SAVEMCACh ];
+  QString ROIEnd[ SAVEMCACh ];
+
+  QStringList Elms;
 
   double RINGCurrent;
   double I0;
@@ -38,7 +45,6 @@ struct aMCAMap {
     iX = ix;
     iY = iy;
     Points = new aMCASet[ iX * iY ];
-    qDebug() << "IX IY " << iX << iY;
   };
   aMCASet *aPoint( int ix, int iy )
   {

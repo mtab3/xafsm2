@@ -165,6 +165,7 @@ public:
 
   void enabledSingleScale( bool f ) { singleScale = f; };
   void NewPoint( int l, double xx, double yy );
+  void ReNewPoint( int l, int ix, double yy );
   void Clear( void );
   // XYView では、複数の線を同時に描ける。
   // 各線が左軸、右軸どちらに関係しているかを指定するのが SetLR(), LintLR[]
@@ -220,13 +221,14 @@ public slots:
 
  signals:
   void SelectAPoint( double x, double y );
+  void MovedToNewX( int ix, double x );
 
 private:
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
   void UpDateYWindow( int g, SCALET s );
   void ShowAScaleButton( QPainter *p );
-  void CheckASPush( void );
+  void CheckASPush( QMouseEvent *e );
 };
 
 #endif

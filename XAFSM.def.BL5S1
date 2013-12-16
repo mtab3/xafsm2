@@ -52,6 +52,13 @@ RW_DXMCENTER_CFG  0  NOFILE.cfg           # Do not read/write DXMCenter.cfg
 #
 #MCAGAIN 5 0.768
 
+# Can save all MCA datas on memory.
+# Default (without the line) is 0
+# It should be only when the XafsM2 run on UNIX not Windows
+#
+MCA_CAN_SAVE_ALL 1        # !!!!!!!!!!!!!!!! can be set 1 only on UNIX
+#MCA_CAN_SAVE_ALL 0
+
 #
 # Define if Quick-Xafs Mode is available or not
 #

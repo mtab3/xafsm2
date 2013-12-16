@@ -7,6 +7,16 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
+  MCADialog = new QDialog;
+  MCADialog->resize( 700, 400 );
+  QGridLayout *bl = new QGridLayout;
+  MCADialog->setLayout( bl );
+  PoppingMCADialog = false;
+  connect( MCADialog, SIGNAL( finished(int) ), this, SLOT( PopUpMCA() ),
+	   Qt::UniqueConnection );
+  connect( MCAPopUp, SIGNAL( clicked() ), this, SLOT( PopUpMCA() ), 
+	   Qt::UniqueConnection );
+
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
@@ -126,16 +136,16 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
 
   connect( SetDisplayLog, SIGNAL( clicked( bool ) ),
-	   this, SLOT( NoticeMCAViewSetDisplayLog( bool ) ),
+	   this, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
 	   Qt::UniqueConnection );
   connect( DispElmNames, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewSetShowElements( bool ) ),
+	   this, SIGNAL( SignalMCAViewSetShowElements( bool ) ),
 	   Qt::UniqueConnection );
   connect( ShowAlwaysSelElm, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewShowAlwaysSelElm( bool ) ),
+	   this, SIGNAL( SignalMCAViewShowAlwaysSelElm( bool ) ),
 	   Qt::UniqueConnection );
   connect( ShowElmEnergy, SIGNAL( toggled( bool ) ),
-	   this, SLOT( NoticeMCAViewShowElmEnergy( bool ) ),
+	   this, SIGNAL( SignalMCAViewShowElmEnergy( bool ) ),
 	   Qt::UniqueConnection );
 
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
@@ -191,6 +201,22 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
+}
+
+void MainWindow::PopUpMCA( void )
+{
+  if ( PoppingMCADialog ) {
+    if (( cMCAViewC == NULL )||( cMCAView == NULL ))
+      return;
+    cMCAViewC->setView( (QWidget*)cMCAView );
+    MCADialog->hide();
+  } else {
+    if ( cMCAView == NULL )
+      return;
+    MCADialog->layout()->addWidget( cMCAView );
+    MCADialog->show();
+  }
+  PoppingMCADialog = ! PoppingMCADialog;
 }
 
 void MainWindow::MoveToNewCaribEnergy( void )
@@ -377,6 +403,7 @@ void MainWindow::doPeakFit( void )
 }
 #endif
 
+#if 0
 void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
 {
   MCAView *view;
@@ -416,17 +443,20 @@ void MainWindow::NoticeMCAViewShowElmEnergy( bool f )
     }
   }
 }
+#endif
 
 void MainWindow::setAllROIs( void )
 {
   int ch = MCACh->text().toInt();
   double startE = kev2pix->p2E( ch, ROIStart[ ch ].toDouble() );
-  double endE = kev2pix->p2E( ch, ROIEnd[ MCACh->text().toInt() ].toDouble() );
+  double endE = kev2pix->p2E( ch, ROIEnd[ ch ].toDouble() );
 
   for ( int i = 0; i < MaxSSDs; i++ ) {
     ROIStart[ i ] = QString::number( kev2pix->E2p( i, startE ) );
     ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
+  ReCalcXAFSWithMCA();
+  S2DReCalcMap0();
 }
 
 void MainWindow::saveMCAData( void )
@@ -449,10 +479,13 @@ void MainWindow::saveMCAData( void )
 //    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
-  saveMCAData0( MCARecFile->text() );
+  aMCASet *set = new aMCASet;
+  SaveMCADataOnMem( set );
+  saveMCAData0( MCARecFile->text(), set );
+  delete set;
 }
 
-void MainWindow::saveMCAData0( QString fname )
+void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 {
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
@@ -461,54 +494,42 @@ void MainWindow::saveMCAData0( QString fname )
 			    2000 );
     return;
   }
+
   QTextStream out( &f );
 
   out << "# XafsM2 MCA Data\n";
-  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
+  out << "# " << set->date << "\n";
 
-  WriteMCAHead( out );
-  WriteMCAData( out );
+  WriteMCAHead( out, set );
+  WriteMCAData( out, set );
 
   f.close();
 }
 
-void MainWindow::WriteMCAHead( QTextStream &out )
+void MainWindow::WriteMCAHead( QTextStream &out, aMCASet *set )
 {
-  out << "# Ring Current : " << ( ( SLS == NULL ) ? "---" : SLS->value() ) << "\n";
-  out << "# I0           : " << SI0->value() << "\n";
+  out << "# Ring Current : "
+      << ( ( SLS == NULL ) ? "---" : QString::number( set->RINGCurrent ) ) << "\n";
+  out << "# I0           : " << set->I0 << "\n";
   out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
   for ( int i = 0; i < MaxSSDs; i++ ) {
-    MCAHead head = SFluo->getAMCAHead( i );
+    MCAHead head = set->Heads[i];
     out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
 	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
-	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
+	<< set->ROIStart[i] << "\t" << set->ROIEnd[i] << "\n";
   }
-  if ( cMCAView != NULL ) {
-    if ( ShowAlwaysSelElm->isChecked() ) {
-      out << "# Selected elements list\n";
-      QStringList Elms = cMCAView->getSelectedElms();
-      for ( int i = 0; i < Elms.count(); i++ ) {
-	out << "# " << Elms[i] << "\n";
-      }
-    }
+  for ( int i = 0; i < set->Elms.count(); i++ ) {
+    out << "# " << set->Elms[i] << "\n";
   }
 }
 
-void MainWindow::WriteMCAData( QTextStream &out )
+void MainWindow::WriteMCAData( QTextStream &out, aMCASet *set )
 {
-#if 0
-  quint32 *mcaLines[ MaxSSDs ];
-
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    mcaLines[i] = SFluo->getAMCA( i );
-  }
-#endif
   for ( int i = 0; i < MCALength; i++ ) {
     out << i;
     for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << "\t" << kev2pix->p2E( j, i );
-      out << "\t" << SFluo->getAMCAdata( j, i );
-      //      out << "\t" << mcaLines[j][i];
+      out << "\t" << set->Ch[j].E[i];
+      out << "\t" << set->Ch[j].cnt[i];
     }
     out << "\n";
   }
@@ -563,6 +584,8 @@ void MainWindow::SelSSDs20( void )
       }
     }
   }
+  ReCalcXAFSWithMCA();
+  S2DReCalcMap0();
 }
 
 void MainWindow::SelSSDs( int ch )
@@ -620,6 +643,10 @@ void MainWindow::newROIStart( const QString &newv )
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       cMCAView->update();
     }
+    if ( AutoROIsetAll->isChecked() )
+      setAllROIs();
+    ReCalcXAFSWithMCA();
+    S2DReCalcMap0();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
@@ -635,6 +662,10 @@ void MainWindow::newROIEnd( const QString &newv )
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       cMCAView->update();
     }
+    if ( AutoROIsetAll->isChecked() )
+      setAllROIs();
+    ReCalcXAFSWithMCA();
+    S2DReCalcMap0();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
@@ -702,10 +733,6 @@ void MainWindow::showPreAMPGain( SMsg msg )
 void MainWindow::StartMCA( void )
 {
   if ( !inMCAMeas ) {
-#if 0
-    if ( isAnyOtherProcess() )
-      return;
-#endif
     if ( ! SFluo->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
       statusbar->showMessage( msg, 2000 );
@@ -734,32 +761,6 @@ void MainWindow::StartMCA( void )
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
     getNewMCAView();
-#if 0
-    if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
-	 || ( StartResume == MCA_START ) ) {
-      if ( cMCAView != NULL ) {
-	cMCAViewC->setIsDeletable( true );
-      }
-      
-      if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
-	return;
-      ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
-      cMCAViewC->setNowDType( MCADATA );
-      cMCAView = (MCAView*)(cMCAViewC->getView());
-      cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
-      
-      MCAData = cMCAView->setMCAdataPointer( MCALength );
-      validMCAData = true;
-      cMCAViewTabNo = ViewTab->currentIndex();
-      cMCAView->setLog( SetDisplayLog->isChecked() );
-      cMCAView->SetMCACh( cMCACh );
-      cMCAView->makeValid( true );
-
-      cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-      if ( StartResume == MCA_START )
-	for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
-    }
-#endif
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
@@ -828,6 +829,10 @@ void MainWindow::setNewROI( int s, int e )
     if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
       ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
       ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
+      if ( AutoROIsetAll->isChecked() )
+	setAllROIs();
+      ReCalcXAFSWithMCA();
+      S2DReCalcMap0();
     } else {
       statusbar
 	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );

@@ -5,12 +5,12 @@
 
 #define BLNAME    ( "BL5S1" )
 
-int MainWindow::GetDFName0()
+bool MainWindow::SetDFName0( QString fname )
 {
-  DFName0 = EditDFName->text();
+  DFName0 = fname;          // EditDFName->text();
   
   if ( DFName0.isEmpty() ) {
-    return 0;
+    return false;
   }
   
   QFileInfo f = QFileInfo( DFName0 ); // path と basename 抽出に使う
@@ -19,23 +19,23 @@ int MainWindow::GetDFName0()
   //      (顕に path + "/" + basename と書きたくない. unix "/", win "\" 問題回避 )
   DFName0 = f2.filePath();
 
-  return 1;
+  return true;
 }
 
-void MainWindow::SetDFName( int i )
+void MainWindow::SetDFName( int i, int rptMax, QString ext )
 {
   QString buf;
 
-  if ( SvSelExtPattern || ( SelRPT->text().toInt() == 1 ) ) {
+  if ( SvSelExtPattern || ( rptMax == 1 ) ) {
     if ( i == 0 ) {
-      DFName = DFName0 + DFName00 + ".dat";
+      DFName = DFName0 + DFName00 + ext + ".dat";
     } else {
       buf.sprintf( ".%03d", i );
-      DFName = DFName0 + DFName00 + buf;
+      DFName = DFName0 + DFName00 + ext + buf;
     }
   } else {
-      buf.sprintf( "-%03d.dat", i );
-      DFName = DFName0 + DFName00 + buf;
+      buf.sprintf( "-%03d", i );
+      DFName = DFName0 + DFName00 + buf + ext + ".dat";
   }
 }
 
@@ -51,8 +51,8 @@ QString MainWindow::fixS( QString s, int l )
 
 void MainWindow::WriteHeader( int Rpt )
 {
-  SetDFName( Rpt );   // Generate a file name with repitation number
-
+  // Generate a file name with repitation number
+  SetDFName( Rpt, SelRPT->text().toInt() );
   WriteHeaderCore( true );
 }
 
@@ -181,45 +181,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     break;
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
-    out << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( 20, 2 ) << endl;
-    // I0 の位置を変えないといけないことが判明。なのでまた分離。
-    out << "  Angle(c)  Angle(o)    time/s";
-    // FLUO の時 mUnits の要素の並びは必ず I0, 19ch SSD になってるはず
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << QString( "%1" ).arg( j+1, 10 );  // 19ch SSD
-    }
-    out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // I0
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      // ICR  19ch SSD の番号とそろえる
-      out << QString( "%1" ).arg( j+1, 10 );
-    }
-    out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // resets
-    out << endl;
-
-    out << QString( "      Mode         0         0" );    // Modes Line
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
-    }
-    out << QString( "%1" ).arg( 1, 10 );       // I0 : I0 は決め打ちで 1
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << QString( "%1" ).arg( FLUO + 100, 10 );  // ICR
-    }
-    out << QString( "%1" ).arg( 101, 10 );     // resets
-    out << endl;
-
-    out << QString( "    Offset         0         0" ); //Offsets Line(per socond)
     darks = SFluo->getDarkCountsInROI();
-    for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
-      out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
-    }
-    out << QString( "%1" ).arg( mUnits.at(0)->getDark(), 10, 'f', 3 ); // I0
-    darks = SFluo->getDarkICRs();
-    for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
-      out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
-    }
-    out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
-    out << endl;
-
+    WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
     break;
 
     // EXTRA は面倒くさい。
@@ -306,6 +269,48 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   file.close();
 }
 
+void MainWindow::WriteFLUOHeadSection( QTextStream &out,
+				       QVector<double>darks, double I0dark )
+{
+  out << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( 20, 2 ) << endl;
+  // I0 の位置を変えないといけないことが判明。なのでまた分離。
+  out << "  Angle(c)  Angle(o)    time/s";
+  // FLUO の時 mUnits の要素の並びは必ず I0, 19ch SSD になってるはず
+  for ( int j = 0; j < MaxSSDs; j++ ) {
+    out << QString( "%1" ).arg( j+1, 10 );  // 19ch SSD
+  }
+  out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // I0
+  for ( int j = 0; j < MaxSSDs; j++ ) {
+    // ICR  19ch SSD の番号とそろえる
+    out << QString( "%1" ).arg( j+1, 10 );
+  }
+  out << QString( "%1" ).arg( MaxSSDs + 1, 10 );    // resets
+  out << endl;
+  
+  out << QString( "      Mode         0         0" );    // Modes Line
+  for ( int j = 0; j < MaxSSDs; j++ ) {
+    out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
+  }
+  out << QString( "%1" ).arg( 1, 10 );       // I0 : I0 は決め打ちで 1
+  for ( int j = 0; j < MaxSSDs; j++ ) {
+    out << QString( "%1" ).arg( FLUO + 100, 10 );  // ICR
+  }
+  out << QString( "%1" ).arg( 101, 10 );     // resets
+  out << endl;
+  
+  out << QString( "    Offset         0         0" ); //Offsets Line(per socond)
+  for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
+    out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+  }
+  out << QString( "%1" ).arg( I0dark, 10, 'f', 3 ); // I0
+  darks = SFluo->getDarkICRs();
+  for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
+    out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+  }
+  out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
+  out << endl;
+}
+
 void MainWindow::WriteInfoFile( void )
 {
   if ( ! conds->isMakeInfo() )
@@ -376,8 +381,8 @@ void MainWindow::WriteInfoFile2( void )
 void MainWindow::WriteHeader2( int Rpt )
 // スキャン終了時、終了時でないと決まらない情報をヘッダに書き加える。
 {
-  SetDFName( Rpt );   // Generate a file name with repitation number
-
+  // Generate a file name with repitation number
+  SetDFName( Rpt, SelRPT->text().toInt() );
   WriteHeaderCore2();
 }
 
@@ -441,29 +446,23 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 //  dark 補正のオプションを付けているから)
 {
   if ( isSFluo ) {
-    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, MeasR ) );  // MeasA は無視
-    if ( RecordMCASpectra->isChecked() ) {
-      QFileInfo mcaFile;
-      if ( AutoModeButton->isChecked() ) {
-	mcaFile = QFileInfo( mcaDir,
-			     QString( "%1-%2-%3-%4.dat" )
-			     .arg( BaseFile.baseName() )
-			     .arg( (int)MeasA, 4, 10, QChar( '0' ) )
-			     .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-			     .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
-      } else {
-	mcaFile = QFileInfo( mcaDir,
-			     QString( "%1-%2-%3.dat" )
-			     .arg( BaseFile.baseName() )
-			     .arg( (int)MeasR, 3, 10, QChar( '0' ) )
-			     .arg( (int)MeasP, 4, 10, QChar( '0' ) ) );
-      }
-      qDebug() << "Canonical File Path for MCA data" << mcaFile.canonicalFilePath();
-      saveMCAData0( mcaFile.canonicalFilePath() );
-    }
+    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, 0 ) );  // MeasA は無視
+
+    QDir newDir;
+    newDir.mkpath( DFName0 + "-MCA" );
+    newDir.cd( DFName0 + "-MCA" );
+    QString FnameExt;
+    if ( AutoModeButton->isChecked() )
+      FnameExt.sprintf( "-%03d-%02d-%04d.dat", MeasA+1, MeasR+1, MeasP );
+    else
+      FnameExt.sprintf( "-%02d-%04d.dat", MeasR+1, MeasP );
+    QFileInfo f = QFileInfo( DFName0 );
+    QFileInfo mcaf = QFileInfo( newDir.absolutePath(),
+				f.baseName() + FnameExt );
+    saveMCAData0( mcaf.filePath(), XafsMCAMap.aPoint( MeasP, 0 ) );
   }
 
-  SetDFName( MeasR );
+  SetDFName( MeasR, SelRPT->text().toInt() );
   QFile file( DFName );
   double recTh;
   double encTh, PMTh;

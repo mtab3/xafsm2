@@ -133,8 +133,9 @@ void MainWindow::MeasSequence( void )
         MeasStage = 3;
       } else if ( MeasR < SelRPT->value()-1 ) {
         NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
-        ClearXViewScreenForMeas( MeasView );
         WriteHeader2( MeasR );
+	SaveI0inMPSet();
+        ClearXViewScreenForMeas( MeasView );
         PlayGoOnSound();
         WriteInfoFile2();
         MeasR++;
@@ -143,6 +144,9 @@ void MainWindow::MeasSequence( void )
 	} else {
 	  CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	}
+	if ( MPSet.isSFluo ) 
+	  if ( ! MCACanSaveAllOnMem )
+	    XafsMCAMap.New( MPSet.totalPoints, 1 );   // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
 	UUnits.clear( MEAS_ID );
@@ -150,6 +154,7 @@ void MainWindow::MeasSequence( void )
         statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
         NewLogMsg( QString( tr( "Meas: Finished" ) ) );
         WriteHeader2( MeasR );
+	SaveI0inMPSet();
         PlayEndingSound();
         WriteInfoFile2();
         MeasTimer->stop();
@@ -170,6 +175,9 @@ void MainWindow::MeasSequence( void )
 
 void MainWindow::onMeasFinishWorks( void )
 {
+  MPSet.finalRpt = MeasR + 1;
+  MPSet.finalPnt = MeasP;
+  qDebug() << "Final Rpt and Pnt " << MeasR << MeasP;
   SelRealTime->setChecked( SvSelRealTime );
   SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );
@@ -492,4 +500,17 @@ void MainWindow::ReCalcSSDTotal( int, bool )
     y[i] = sum[i];
   }
   MeasView->update();
+}
+
+void MainWindow::SaveI0inMPSet( void )
+{
+  if ( ! MPSet.isSFluo )
+    return;
+
+  double *i0 = new double [ MPSet.totalPoints ];
+
+  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+    i0[i] = MeasView->GetY( 0, i );
+  }
+  MPSet.i0s << i0;
 }

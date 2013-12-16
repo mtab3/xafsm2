@@ -347,7 +347,10 @@ void MainWindow::AutoSequence0( void )
 	  CheckMUnits.add( SFluo, true, true );
 	} else if ( FUNC == "RECORD" ) {
 	  VAL.remove( QChar( '"' ) );
-	  saveMCAData0( VAL );
+	  aMCASet *set = new aMCASet;
+	  SaveMCADataOnMem( set );
+	  saveMCAData0( VAL, set );
+	  delete set;
 	}
       } else {
 	if ( SFluo == NULL ) qDebug() << "MEASSSD: SSD is not available";
