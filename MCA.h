@@ -44,10 +44,17 @@ struct aMCAMap {
     }
     iX = ix;
     iY = iy;
-    Points = new aMCASet[ iX * iY ];
+    try {
+      Points = new aMCASet[ iX * iY ];
+    }
+    catch(...) {
+      Points = NULL;
+    }
   };
   aMCASet *aPoint( int ix, int iy )
   {
+    if ( Points == NULL )
+      return NULL;
     if (( ix < iX )&&( iy < iY ))
       return &(Points[ iy * iX + ix ]);
     return NULL;

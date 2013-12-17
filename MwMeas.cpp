@@ -1780,8 +1780,9 @@ void MainWindow::MoveInMeasView( int ix, double )
     rpt = 0;
 
   set = XafsMCAMap.aPoint( ix, SelRPT->value() - 1 );
-  if (( set != NULL ) && (! set->isValid() ))
+  if (( set == NULL ) || (! set->isValid() ))
     return;
+
   cnt = set->Ch[ cMCACh ].cnt;
 
   for ( int i = 0; i < SAVEMCASize; i++ ) {

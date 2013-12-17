@@ -487,6 +487,9 @@ void MainWindow::saveMCAData( void )
 
 void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 {
+  if ( set == NULL )
+    return;
+
   QFile f( fname );
   if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
     statusbar->showMessage( tr( "The file [%1] can not open to record the data" )
