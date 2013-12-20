@@ -168,6 +168,7 @@ private:
   QVector<QString> DefUReals;
   QVector<Changer*> Changers;
   AUnit *movingC1, *movingC2;
+  bool connecteNewValue2ShowChangerPosition;
 
   QVector<SpecChanger*> SChangers;
 

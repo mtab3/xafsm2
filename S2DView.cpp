@@ -14,11 +14,13 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   data = NULL;
   rType = AS_SCREEN;
   invXf = invYf = false;
+  nowRx = nowRy = 0;
 
   setRange( -10., 10., -10., 10., 2., 2. );
   cc.SetRealCoord( minx, maxx, miny, maxy );
 
   Grey = QColor( 220, 220, 220 );
+  Pink = QColor( 255, 220, 220 );
   AutoScale = true;
   for ( int i = 0; i < 256 * 4; i++ )
     cbar[ i ] = QColor( 0, 0, 0 );
@@ -230,14 +232,18 @@ void S2DView::Draw( QPainter *p )
     }
   }
 
+  double rx1, rx2, ry1, ry2;
+  double ssx, ssy, sdx, sdy;
+  bool inRange = false;
+  ssx = ssy = sdx = sdy = 0;
   int x0, y0, xd, yd;
   int x1, x2, y1, y2;
   for ( int ix = 0; ix < maxix; ix++ ) {
     for ( int iy = 0; iy < maxiy; iy++ ) {
-      x1 = cc.r2sx( sx + dx * ix );
-      x2 = cc.r2sx( sx + dx * ix + dx );
-      y1 = cc.r2sy( sy + dy * iy );
-      y2 = cc.r2sy( sy + dy * iy + dy );
+      x1 = cc.r2sx( rx1 = ( sx + dx * ix ) );
+      x2 = cc.r2sx( rx2 = ( sx + dx * ix + dx ) );
+      y1 = cc.r2sy( ry1 = ( sy + dy * iy ) );
+      y2 = cc.r2sy( ry2 = ( sy + dy * iy + dy ) );
       x0 = ( x1 < x2 ) ? x1 : x2;
       y0 = ( y1 < y2 ) ? y1 : y2;
       xd = abs( x1 - x2 );
@@ -246,9 +252,13 @@ void S2DView::Draw( QPainter *p )
 	p->fillRect( x0, y0, xd, yd, cbar[ cNum( data[ix][iy] ) ] );
       else 
 	p->fillRect( x0, y0, xd, yd, Grey );
+      if ( cc.between( rx1, rx2, nowRx ) && cc.between( ry1, ry2, nowRy ) ) {
+	ssx = x0; ssy = y0; sdx = xd; sdy = yd;
+	inRange = true;
+      }
     }
   }
-
+  
   p->setPen( QColor( 0, 0, 0 ) );
   // 格子
   for ( int ix = 0; ix <= maxix; ix++ ) {
@@ -259,6 +269,17 @@ void S2DView::Draw( QPainter *p )
     p->drawLine( cc.r2sx( minx ), cc.r2sy( sy + dy * iy ),
 		 cc.r2sx( maxx ), cc.r2sy( sy + dy * iy ) );
   }
+
+  QPen p1;
+  if ( inRange ) {  // 現在地点をピンクの箱で
+    p1.setWidth( 2 );
+    p1.setColor( Pink );
+    p->setPen( p1 );
+    p->drawRect( ssx, ssy, sdx, sdy );
+  }
+  p1.setWidth( 1 );
+  p1.setColor( QColor( 0, 0, 0 ) );
+  p->setPen( p1 );
 
   // 軸反転した時のレイアウトの向きの補正用
   int xdir = ( invXf ) ? -1 : 1;
@@ -407,4 +428,13 @@ void S2DView::wheelEvent( QWheelEvent *e )
 {
   int step = ( e->delta() / 8. ) / 15.;    // deg := e->delta / 8.
   emit AskToChangeMCACh( step );
+}
+
+void S2DView::setNowPosition( int ax, double pos )
+{
+  switch( ax ) {
+  case 0: nowRx = pos; break;
+  case 1: nowRy = pos; break;
+  default: break;
+  }
 }

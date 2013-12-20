@@ -2,6 +2,8 @@
 
 void MainWindow::setupChangerArea( void )
 {
+  connecteNewValue2ShowChangerPosition = false;
+
   for ( int i = 0; i < Changers.count(); i++ ) {
     for ( int j = 0; j < AMotors.count(); j++ ) {
       if ( Changers[i]->unitID1() == AMotors[j]->getUid() ) {
@@ -218,8 +220,11 @@ void MainWindow::NewChangerSelected( int i )
   ChangerUnit1->setText( Changers[i]->unit1()->getUnit() );
   ChangerUnit2->setText( Changers[i]->unit2()->getUnit() );
 
-  disconnect( SIGNAL( newValue( QString ) ),
-	      this, SLOT( ShowChangerPosition( QString ) ) );
+  if ( connecteNewValue2ShowChangerPosition ) {
+    disconnect( SIGNAL( newValue( QString ) ),
+		this, SLOT( ShowChangerPosition( QString ) ) );
+  }
+  connecteNewValue2ShowChangerPosition = true;
   connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
 	   this, SLOT( ShowChangerPosition( QString ) ),
 	   Qt::UniqueConnection );

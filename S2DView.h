@@ -28,11 +28,12 @@ class S2DView : public QFrame, private Ui::S2DView
   bool invXf, invYf;
 
   bool AutoScale;
-  QColor Grey;
+  QColor Grey, Pink;
   QColor cbar[ 256 * 4 ];
   double minz, maxz;   // データの最大最小
   double vmin, vmax;   // 表示レンジの最大最小
   int cmin, cmax;      // 色番号の最大最小
+  double nowRx, nowRy;
 
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
@@ -59,6 +60,7 @@ class S2DView : public QFrame, private Ui::S2DView
   double getData( int ix, int iy );
   bool getInvXf( void ) { return invXf; };
   bool getInvYf( void ) { return invYf; };
+  void setNowPosition( int ax, double pos );
 
 public slots:
   void print( QPrinter *p );

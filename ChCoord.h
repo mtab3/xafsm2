@@ -62,11 +62,19 @@ class ChCoord : public QObject
   void calcScale( double div, double min, double max, double *s, double *d );
 
   /* ChCoord とは直接関係ないけど、グラフ関係の一般的な関数なのでここに置いとく */
-
   void DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
   void ShowAButton( QPainter *p, bool BState, QString BName,
 		    int x0, int w, int height );
+  bool between( double x1, double x2, double x ) {
+    if (( x1 >= x2 )&&( x >= x2 )&&( x1 > x ))
+      return true;
+    if (( x1 < x2 )&&( x <= x2 )&&( x1 < x ))
+      return true;
+    return false;
+  }
+
+
 #if 0
   void ShowAScaleButton( QPainter *p, bool autoScale, int height );
   void ShowSScaleButton( QPainter *p, bool singleScale, int height );

@@ -255,8 +255,12 @@ void MainWindow::newS2DSteps( void )
 
 void MainWindow::newAx0( int ax, int motor )
 {
+  double pos;
   S2DUnits[ax]->setText( S2DOkMotors[ motor ]->getUnit() );
-  S2DCurPos[ax]->setText( QString::number( S2DOkMotors[ motor ]->metricValue() ) );
+  S2DCurPos[ax]->setText( QString::number( pos = S2DOkMotors[ motor ]->metricValue() ) );
+  S2DV->setNowPosition( ax, pos );
+  qDebug() << "Here?";
+
   if ( S2DSelectedMotors[ax] != NULL ) {
     bool Uniq = true;
     for ( int i = 0; i < S2DSelectedMotors.count(); i++ ) {
