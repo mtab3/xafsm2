@@ -640,7 +640,7 @@ void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ば�
 
 void MainWindow::newROIStart( const QString &newv )
 {
-  if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+  if ( !inMeas ) {
     ROIStart[ MCACh->text().toInt() ] = newv;
     if ( cMCAView != NULL ) {
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
@@ -659,7 +659,7 @@ void MainWindow::newROIStart( const QString &newv )
 
 void MainWindow::newROIEnd( const QString &newv )
 {
-  if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+  if ( !inMeas ) {
     ROIEnd[ MCACh->text().toInt() ] = newv;
     if ( cMCAView != NULL ) {
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
@@ -829,7 +829,7 @@ void MainWindow::showCurrentValues( int atCur, int inROI )
 void MainWindow::setNewROI( int s, int e )
 {
   if ( sender() == cMCAView ) {
-    if ( !inMeas || ROIChangeableWhileXAFS->isChecked() ) {
+    if ( !inMeas ) {
       ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
       ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
       if ( AutoROIsetAll->isChecked() )

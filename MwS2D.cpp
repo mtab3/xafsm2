@@ -934,8 +934,7 @@ void MainWindow::S2DReCalcMap( void )
 
 void MainWindow::S2DReCalcMap0( void )
 {
-  if ( ( ! S2DI.valid )||( ! S2DReCalcWNewROI->isChecked() )
-       || inMeas || inMCAMeas || inS2D ) {
+  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
     return;
   }
 
