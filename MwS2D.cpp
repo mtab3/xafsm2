@@ -258,8 +258,8 @@ void MainWindow::newAx0( int ax, int motor )
   double pos;
   S2DUnits[ax]->setText( S2DOkMotors[ motor ]->getUnit() );
   S2DCurPos[ax]->setText( QString::number( pos = S2DOkMotors[ motor ]->metricValue() ) );
-  S2DV->setNowPosition( ax, pos );
-  qDebug() << "Here?";
+  if ( S2DV != NULL )
+    S2DV->setNowPosition( ax, pos );
 
   if ( S2DSelectedMotors[ax] != NULL ) {
     bool Uniq = true;
@@ -327,9 +327,13 @@ void MainWindow::newS2DFileSelected( const QString &fname )
 
 void MainWindow::showS2DNewAxValue( QString )
 {
+  double pos;
+
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
     if ( S2DSelectedMotors[i] == sender() ) {
-      S2DCurPos[i]->setText( QString::number( S2DSelectedMotors[i]->metricValue() ) );
+      S2DCurPos[i]->setText( QString::number( pos = S2DSelectedMotors[i]->metricValue() ) );
+      if ( S2DV != NULL )
+	S2DV->setNowPosition( i, pos );
     }
   }
 }
@@ -478,7 +482,7 @@ void MainWindow::S2DScanStart( void )
     } else {
       S2DV->setRatioType( AS_SCREEN );
     }
-    S2DV->setRange( S2DI.sx[0], S2DI.sx[1],
+    S2DV->setRange( S2DI.sx[0], S2DI.sx[1]-S2DI.dx[1]/2,
 		    S2DI.dx[0], S2DI.dx[1],
 		    S2DI.ps[0], S2DI.ps[1]+1 );
 

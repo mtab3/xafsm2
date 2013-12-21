@@ -234,7 +234,7 @@ void S2DView::Draw( QPainter *p )
 
   double rx1, rx2, ry1, ry2;
   double ssx, ssy, sdx, sdy;
-  bool inRange = false;
+  //  bool inRange = false;
   ssx = ssy = sdx = sdy = 0;
   int x0, y0, xd, yd;
   int x1, x2, y1, y2;
@@ -252,10 +252,13 @@ void S2DView::Draw( QPainter *p )
 	p->fillRect( x0, y0, xd, yd, cbar[ cNum( data[ix][iy] ) ] );
       else 
 	p->fillRect( x0, y0, xd, yd, Grey );
+#if 0
       if ( cc.between( rx1, rx2, nowRx ) && cc.between( ry1, ry2, nowRy ) ) {
 	ssx = x0; ssy = y0; sdx = xd; sdy = yd;
+	qDebug() << "between " << rx1 << rx2 << nowRx << ry1 << ry2 << nowRy;
 	inRange = true;
       }
+#endif
     }
   }
   
@@ -271,12 +274,20 @@ void S2DView::Draw( QPainter *p )
   }
 
   QPen p1;
+#if 0
   if ( inRange ) {  // 現在地点をピンクの箱で
     p1.setWidth( 2 );
     p1.setColor( Pink );
     p->setPen( p1 );
     p->drawRect( ssx, ssy, sdx, sdy );
   }
+#else
+  //  p1.setWidth( 2 );
+  p1.setColor( Pink );
+  p->setPen( p1 );
+  p->drawEllipse( cc.r2sx( nowRx ) - 3, cc.r2sy( nowRy ) - 3,
+		  7, 7 );
+#endif
   p1.setWidth( 1 );
   p1.setColor( QColor( 0, 0, 0 ) );
   p->setPen( p1 );
@@ -315,10 +326,10 @@ void S2DView::Draw( QPainter *p )
   // 縦軸
   rec = QRectF( xbase, cc.r2sy( sy+dx*0.5 )-dVW2/2, RM - 5, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       QString::number( sy ) );
+	       QString::number( sy + dy * 0.5 ) );
   rec = QRectF( xbase, cc.r2sy( sy+dx*(maxiy-0.5) )-dVW2/2, RM - 5, dVW );
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       QString::number( sy + dy * ( maxiy - 1 ) ) );
+	       QString::number( sy + dy * ( maxiy - 0.5 ) ) );
 
   // 情報表示
   int inf = 0;
