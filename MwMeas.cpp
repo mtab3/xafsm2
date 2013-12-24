@@ -1081,23 +1081,23 @@ bool MainWindow::CheckDetectorSelection( void )
   if ( UseAux1->isChecked() ) {
     if ( ( ModeA1->currentIndex() == 3 )||( ModeA1->currentIndex() == 4 ) )
       if ( ! UseI1->isChecked() ) {
-	statusbar->showMessage( tr( "I1 should be selected for the measurement." ),
-				2000 );
-	return false;
+        statusbar->showMessage( tr( "I1 should be selected for the measurement." ),
+                                2000 );
+        return false;
       }
   }
   if ( UseAux2->isChecked() ) {
     if ( ( ModeA2->currentIndex() == 3 )||( ModeA2->currentIndex() == 4 ) )
       if ( ! UseI1->isChecked() ) {
-	statusbar->showMessage( tr( "I1 should be selected for the measurement." ),
-				2000 );
-	return false;
+        statusbar->showMessage( tr( "I1 should be selected for the measurement." ),
+                                2000 );
+        return false;
       }
     if ( ( ModeA2->currentIndex() == 5 )||( ModeA2->currentIndex() == 6 ) )
       if ( ! UseAux1->isChecked() ) {
-	statusbar->showMessage( tr( "Aux1 should be selected for the measurement." ),
-				2000 );
-	return false;
+        statusbar->showMessage( tr( "Aux1 should be selected for the measurement." ),
+                                2000 );
+        return false;
       }
   }
 

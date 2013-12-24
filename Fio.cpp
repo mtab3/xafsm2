@@ -165,19 +165,26 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   }
 
   QVector<double> darks;
-  switch( MeasFileType ) {
+  switch( MeasFileType2 ) {
   case TRANS:
     out << " " << QString( "ORTEC( 0)     NDCH =%1" ).arg( 3, 2 ) << endl;
     out << "  Angle(c)  Angle(o)    time/s";
-    for ( int i = 0; i < MeasChNo; i++ )
+    for ( int i = 0; i < MeasChNo; i++ ) {
       out << QString( "%1" ).arg( i+1, 10 );
+    }
     out << endl;
-    out << QString( "      Mode         0         0"
-                           "%1%2" ).arg( 1, 10 ).arg( 2, 10 ) << endl;
 
-    out << QString( "    Offset         0         0"
-                           "%1%2" ).arg( mUnits.at(0)->getDark(), 10, 'f', 3 )
-           .arg( mUnits.at(1)->getDark(), 10, 'f', 3 ) << endl;
+    out << "      Mode         0         0";
+    for ( int i = 0; i < MeasChNo; i++ ) {
+      out << QString( "%1" ).arg( MeasDispMode[i], 10 );
+    }
+    out << endl;
+
+    out << "    Offset         0         0";
+    for ( int i = 0; i < MeasChNo; i++ ) {
+      out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+    }
+    out << endl;
     break;
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
