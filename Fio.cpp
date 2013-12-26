@@ -167,7 +167,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   QVector<double> darks;
   switch( MeasFileType2 ) {
   case TRANS:
-    out << QString( "ORTEC( 0)     NDCH =%1" ).arg( 1 + MeasChNo, 2 )
+    out << QString( " ORTEC( 0)     NDCH =%1" ).arg( 1 + MeasChNo, 2 )
         << endl;
     out << "  Angle(c)  Angle(o)    time/s";
     for ( int i = 0; i < MeasChNo; i++ ) {
