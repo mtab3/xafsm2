@@ -167,7 +167,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   QVector<double> darks;
   switch( MeasFileType2 ) {
   case TRANS:
-    out << " " << QString( "ORTEC( 0)     NDCH =%1" ).arg( 3, 2 ) << endl;
+    out << QString( "ORTEC( 0)     NDCH =%1" ).arg( 1 + MeasChNo, 2 )
+        << endl;
     out << "  Angle(c)  Angle(o)    time/s";
     for ( int i = 0; i < MeasChNo; i++ ) {
       out << QString( "%1" ).arg( i+1, 10 );
@@ -188,9 +189,34 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     break;
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
-    darks = SFluo->getDarkCountsInROI();
-    WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
-    break;
+    // SSD only
+    if ( Use19chSSD->isChecked() ) {
+      darks = SFluo->getDarkCountsInROI();
+      WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
+      break;
+    } else {
+    // 基本的には Lytle 検出器を想定している
+      out << QString( " ORTEC( 3)     NDCH =%1" ).arg( 1 + MeasChNo, 2 )
+          << endl;
+      out << "  Angle(c)  Angle(o)    time/s";
+      for ( int i = 0; i < MeasChNo; i++ ) {
+        out << QString( "%1" ).arg( i+1, 10 );
+      }
+      out << endl;
+
+      out << "      Mode         0         0";
+      for ( int i = 0; i < MeasChNo; i++ ) {
+        out << QString( "%1" ).arg( MeasDispMode[i], 10 );
+      }
+      out << endl;
+
+      out << "    Offset         0         0";
+      for ( int i = 0; i < MeasChNo; i++ ) {
+        out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+      }
+      out << endl;
+      break;
+    }
 
     // EXTRA は面倒くさい。
     // (特に MeasDispMode は描画の方でも使うので 19 ch 分拡張するわけにいかない)
@@ -208,65 +234,157 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     //     角度、角度、時間、I0、I1、19ch 分展開、19ch分 ICR、リセット回数、その他残り
     // になる。
 
+    // REX2000 のデータ変換で正しく変換できることを優先して、以下のように変更する
+    // PF や SPring-8 で「実際に」出力されている形式にできるだけ準拠している
+    // 具体的に考えてみると
+    // 19ch SSD : No.   簡単
+    //    MeasChNo 分 i ループを回して、
+    //    素直に MeasDispMode[i] とか Offsets[i] とかを書けばいい
+    // 19ch SSD : Yes.
+    //   I1 : No.
+    //     角度、角度、時間、19ch 分展開、I0、19ch分 ICR、リセット回数、その他残り
+    //   I1 : Yes.
+    //     角度、角度、時間、19ch 分展開、I0、19ch分 ICR、リセット回数、I1、その他残り
+    // になる。
+
   case EXTRA:
-    out << " " << QString( "SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
-    out << "  Angle(c)  Angle(o)    time/s";
-    cnt = 1;
-    for ( int i = 0; i < Munits; i++ ) {
-      if ( mUnits.at(i) != SFluo ) {
+    if ( Use19chSSD->isChecked() && UseI1->isChecked() ) {
+      out << QString( " CAMAC( 1)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
+      out << "  Angle(c)  Angle(o)    time/s";
+      cnt = 1;
+      // 19ch ROI
+      for ( int i = 0; i < MaxSSDs; i++ ) {
         out << QString( "%1" ).arg( cnt, 10 );
-      } else {
-        for ( int j = 0; j < MaxSSDs; j++ ) {
-          out << QString( "%1" ).arg( cnt, 10 );  // 19ch SSD
-          cnt++;
-        }
-        out << QString( "%1" ).arg( 0, 10 );    // resets
         cnt++;
-        for ( int j = 0; j < MaxSSDs; j++ ) {
-          out << QString( "%1" ).arg( cnt - MaxSSDs - 2, 10 );
-          // ICR  19ch SSD の番号とそろえる
+      }
+      // I0
+      out << QString( "%1" ).arg( cnt, 10 );
+      cnt++;
+      // 19ch ICR
+      for ( int i = 0; i < MaxSSDs; i++ ) {
+        out << QString( "%1" ).arg( cnt - MaxSSDs - 1, 10 );
+        cnt++;
+      }
+      // Reset
+      out << QString( "%1" ).arg( cnt - MaxSSDs - 1, 10 );
+      cnt++;
+      // Others
+      for ( int i = 0; i < Munits; i++ ) {
+        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
+          out << QString( "%1" ).arg( cnt - MaxSSDs - 1, 10 );
           cnt++;
         }
-        cnt--;
       }
-      cnt++;
-    }
-    out << endl;
+      out << endl;
 
-    out << QString( "      Mode         0         0" );    // Modes Line
-    for ( int i = 0; i < Munits; i++ ) {
-      if ( mUnits.at(i) != SFluo ) {
-        out << QString( "%1" ).arg( MeasDispMode[i], 10 );
-      } else {
-        for ( int j = 0; j < MaxSSDs; j++ ) {
-          out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
-        }
-        out << QString( "%1" ).arg( 5, 10 );    // resets
-        for ( int j = 0; j < MaxSSDs; j++ ) {
-          out << QString( "%1" ).arg( 5, 10 );  // ICR
+      // Modes Line
+      out << "      Mode         0         0";
+      // 19ch ROI
+      for ( int i = 0; i < MaxSSDs; i++ ) {
+        out << QString( "%1" ).arg( FLUO, 10 );
+      }
+      // I0
+      out << QString( "%1" ).arg( I0, 10 );
+      // 19ch ICR
+      for ( int i = 0; i < MaxSSDs; i++ ) {
+        out << QString( "%1" ).arg( 103, 10 );
+      }
+      // Reset
+      out << QString( "%1" ).arg( 101, 10 );
+      // Others
+      for ( int i = 0; i < Munits; i++ ) {
+        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
+          out << QString( "%1" ).arg( MeasDispMode[i], 10 );
         }
       }
-    }
-    out << endl;
+      out << endl;
 
-    out << QString( "    Offset         0         0" ); //Offsets Line(per socond)
-    for ( int i = 0; i < Munits; i++ ) {
-      if ( mUnits.at(i) != SFluo ) {
-        out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
-      } else {
-        QVector<double> darks;
-        darks = SFluo->getDarkCountsInROI();
-        for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
-          out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
-        }
-        out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
-        darks = SFluo->getDarkICRs();
-        for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
-          out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+      // Offsets Line (per second)
+      out << "    Offset         0         0";
+      // 19ch ROI
+      QVector<double> darks;
+      darks = SFluo->getDarkCountsInROI();
+      for ( int i = 0; i < MaxSSDs; i++ ) {
+        out << QString( "%1" ).arg( darks[i], 10, 'f', 3 );
+      }
+      // I0
+      out << QString( "%1" ).arg( SI0->getDark(), 10, 'f', 3 );
+      // 19ch ICR
+      darks = SFluo->getDarkICRs();
+      for ( int i = 0; i < MaxSSDs; i++ ) {
+        out << QString( "%1" ).arg( darks[i], 10, 'f', 3 );
+      }
+      // Reset
+      out << QString( "%1" ).arg( 0., 10, 'f', 3 );
+      // Others
+      for ( int i = 0; i < Munits; i++ ) {
+        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
+          out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
         }
       }
+      out << endl;
+
+    } else {
+      out << QString( " SCALE( 2)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
+      out << "  Angle(c)  Angle(o)    time/s";
+      cnt = 1;
+      for ( int i = 0; i < Munits; i++ ) {
+        if ( mUnits.at(i) != SFluo ) {
+          out << QString( "%1" ).arg( cnt, 10 );
+        } else {
+          for ( int j = 0; j < MaxSSDs; j++ ) {
+            out << QString( "%1" ).arg( cnt, 10 );  // 19ch SSD
+            cnt++;
+          }
+          out << QString( "%1" ).arg( 0, 10 );    // resets
+          cnt++;
+          for ( int j = 0; j < MaxSSDs; j++ ) {
+            out << QString( "%1" ).arg( cnt - MaxSSDs - 2, 10 );
+            // ICR  19ch SSD の番号とそろえる
+            cnt++;
+          }
+          cnt--;
+        }
+        cnt++;
+      }
+      out << endl;
+
+      // Modes Line
+      out << QString( "      Mode         0         0" );
+      for ( int i = 0; i < Munits; i++ ) {
+        if ( mUnits.at(i) != SFluo ) {
+          out << QString( "%1" ).arg( MeasDispMode[i], 10 );
+        } else {
+          for ( int j = 0; j < MaxSSDs; j++ ) {
+            out << QString( "%1" ).arg( FLUO, 10 );  // 19ch SSD
+          }
+          out << QString( "%1" ).arg( 5, 10 );    // resets
+          for ( int j = 0; j < MaxSSDs; j++ ) {
+            out << QString( "%1" ).arg( 5, 10 );  // ICR
+          }
+        }
+      }
+      out << endl;
+      // Offsets Line (per second)
+      out << QString( "    Offset         0         0" );
+      for ( int i = 0; i < Munits; i++ ) {
+        if ( mUnits.at(i) != SFluo ) {
+          out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+        } else {
+          QVector<double> darks;
+          darks = SFluo->getDarkCountsInROI();
+          for ( int j = 0; j < MaxSSDs; j++ ) {            // 19ch SSD -- in ROI
+            out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+          }
+          out << QString( "%1" ).arg( 0., 10, 'f', 3 );      // リセット回数 : 0 にしてる !!
+          darks = SFluo->getDarkICRs();
+          for ( int j = 0; j < MaxSSDs; j++ ) {             // 19ch SSD -- ICR
+            out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
+          }
+        }
+      }
+      out << endl;
     }
-    out << endl;
 
     break;
   default:
@@ -490,7 +608,10 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 		 u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
     
-    if ( MeasFileType != FLUO ) {    // FLUO の時は、I0 は SSD データの後ろ
+    // FLUO の時は、I0 は SSD データの後ろ
+    // if ( MeasFileType != FLUO ) {
+    // SSD をつかっていれば、I0 は ROI　の後ろ
+    if ( ! Use19chSSD->isChecked() ) {
       // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
 	buf.sprintf( " %9d",                 // 整数 : %9d
@@ -503,43 +624,91 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
     }
     
     // その後に測定データの並び
-    for ( int i = 1; i < mUnits.count(); i++ ) {
-      if ( mUnits.at(i) != SFluo ) {
-        double v = mUnits.at(i)->value().toDouble()
-	  - mUnits.at(i)->getDark() * mUnits.at(i)->GetSetTime();
-        if ( v < 1e-10 )
-          v = 0.0;
-        if ( (int)(v) == v ) {
-          buf.sprintf(" %9d", (int)v );
-        } else {
-          buf.sprintf(" %9.6g", v );
-        }
+    if ( Use19chSSD->isChecked() ) {
+      // vals は count
+      QVector<quint64> vals = SFluo->getCountsInROI();
+      // darks は cps
+      QVector<double> darks = SFluo->getDarkCountsInROI();
+      // 19ch ROI
+      for ( int j = 0; j < MaxSSDs; j++ ) {
+        buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
         out << buf;
+      }
+      // I0
+      // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
+      if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
+        // 整数 : %9d
+        buf.sprintf( " %9d", (int)MeasVals[ MC_I0 ] );
       } else {
-        QVector<quint64> vals = SFluo->getCountsInROI(); // vals は count
-        QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps 
-        for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
-          buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
-          out << buf;
-        }
-        if ( MeasFileType == FLUO ) {
-          // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
-          if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-            buf.sprintf( " %9d",                 // 整数 : %9d
-                         (int)MeasVals[ MC_I0 ] );
+        // 実数 : %9.6g
+        buf.sprintf( " %9.6g", MeasVals[ MC_I0 ] );
+      }
+      out << buf;
+      // 19ch ICR
+      QVector<double> icrs = SFluo->getICRs();
+      // 19ch SSD  ICR ( per second )
+      for ( int j = 0; j < MaxSSDs; j++ ) {
+        buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );
+        out << buf;
+      }
+      // Reset
+      buf.sprintf(" %9d", 0 );
+      out << buf;
+      // Others
+      for ( int i = 1; i < mUnits.count(); i++ ) {
+        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
+          double v = mUnits.at(i)->value().toDouble()
+              - mUnits.at(i)->getDark() * mUnits.at(i)->GetSetTime();
+          if ( v < 1e-10 )
+            v = 0.0;
+          if ( (int)(v) == v ) {
+            buf.sprintf(" %9d", (int)v );
           } else {
-            buf.sprintf( " %9.6g",               // 実数 : %9.6g
-                         MeasVals[ MC_I0 ] );
+            buf.sprintf(" %9.6g", v );
           }
           out << buf;
         }
-        QVector<double> icrs = SFluo->getICRs();
-        for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
-          buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );      // by H.A.
+      }
+    } else {
+      for ( int i = 1; i < mUnits.count(); i++ ) {
+        if ( mUnits.at(i) != SFluo ) {
+          double v = mUnits.at(i)->value().toDouble()
+              - mUnits.at(i)->getDark() * mUnits.at(i)->GetSetTime();
+          if ( v < 1e-10 )
+            v = 0.0;
+          if ( (int)(v) == v ) {
+            buf.sprintf(" %9d", (int)v );
+          } else {
+            buf.sprintf(" %9.6g", v );
+          }
+          out << buf;
+        } else {
+          // SSD の処理
+          QVector<quint64> vals = SFluo->getCountsInROI(); // vals は count
+          QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps
+          for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
+            buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
+            out << buf;
+          }
+          if ( MeasFileType == FLUO ) {
+            // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
+            if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
+              buf.sprintf( " %9d",                 // 整数 : %9d
+                           (int)MeasVals[ MC_I0 ] );
+            } else {
+              buf.sprintf( " %9.6g",               // 実数 : %9.6g
+                           MeasVals[ MC_I0 ] );
+            }
+            out << buf;
+          }
+          QVector<double> icrs = SFluo->getICRs();
+          for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
+            buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );
+            out << buf;
+          }
+          buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる
           out << buf;
         }
-        buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる
-        out << buf;
       }
     }
     // 末尾に情報追加。
