@@ -467,7 +467,7 @@ bool AUnit::GetValue( void )
   bool rv = false;
 
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG
-  if ( TypeCHK(  1,  1,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  1, 1,  1,   0,   0 ) ) {
+  if ( TypeCHK(  1,  1,  1,  0,  1,  0,  1,   1,  0,  1,  1,  0,  1, 1,  1,   0,   1 ) ) {
     IsBusy2On( Driver, "GetValue" );
     s->SendCMD2( Uid, DevCh, "GetValue" );
   }
@@ -871,6 +871,8 @@ void AUnit::SetCurPos( SMsg msg )
       } else {
 	Value = msg.Vals().at(1);
       }
+    } else if ( Type == "CCG" ) {
+      Value = msg.Vals().at(0);
     } else {
       Value = msg.Val();
 #if 0

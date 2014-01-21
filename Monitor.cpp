@@ -8,8 +8,6 @@ void MainWindow::MonSequence( void )
   if ( mUnits.isBusy() )
     return;
 
-//  qDebug() << "in Monitor " << MonStage;
-
   switch( MonStage ) {
     /* 
        0: 値の読み出しと表示
