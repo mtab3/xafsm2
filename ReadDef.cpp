@@ -111,6 +111,7 @@ void MainWindow::ReadDef( QString fname )
 	    next = nextItem( next, item );
 	    NewUnit->setMaxIntTime( item.toDouble() );
 	  } else if ( type == "DV2" ) {
+	  } else if ( type == "CCG" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }

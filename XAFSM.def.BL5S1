@@ -536,5 +536,8 @@ SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
 #     YES               : If the sensor has a parente (group leader) or not. YES or NO
 #     "S043"            : The identifier of the parent (group reader)
 
+SENSOR CCG "S045" "VacGauge" "CC-10" "CC-10" "" "Pa" NO ""
+
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
+
