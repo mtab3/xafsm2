@@ -130,7 +130,8 @@ void TYView::Draw( QPainter *p )
     pen1.setWidth( 2 );
     pen1.setColor( LC[ j ] );
     p->setPen( pen1 );
-
+    
+    double now1, now2;
     for ( int i = 0; i < datas - 1; i++ ) { // データプロット
       pp1 = ep - 1 - i;
       pp2 = ep - 1 - ( i + 1 );
@@ -140,8 +141,10 @@ void TYView::Draw( QPainter *p )
 	break;
       }
       if ( ( t0 - mont[ pp2 ] ) > timeShift ) {
-	p->drawLine( cc.r2sx( mont[pp1] - t0 + timeShift ), cc.r2sy( mony[j][pp1] ),
-		     cc.r2sx( mont[pp2] - t0 + timeShift ), cc.r2sy( mony[j][pp2] ) );
+	now1 = ( !logScale ) ? mony[j][pp1] : log10( fabs( mony[j][pp1] ) );
+	now2 = ( !logScale ) ? mony[j][pp2] : log10( fabs( mony[j][pp2] ) );
+	p->drawLine( cc.r2sx( mont[pp1] - t0 + timeShift ), cc.r2sy( now1 ),
+		     cc.r2sx( mont[pp2] - t0 + timeShift ), cc.r2sy( now2 ) );
       }
     }
   }
@@ -244,7 +247,8 @@ void TYView::Draw( QPainter *p )
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
   }
 
-  cc.ShowAButton( p, autoScale, tr( "A. Scale" ), 0, 100, height() );
+  cc.ShowAButton( p, autoScale, tr( "A. Scale" ),   0, 100, height() );
+  cc.ShowAButton( p, autoScale, tr( "L. Scale" ), 110, 100, height() );
 
   // マウスポインタの位置に縦線を引く
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
@@ -263,14 +267,17 @@ void TYView::UpDateYWindowRing( void )
   for ( int j = 0; j < lines; j++ ) {
     double nmaxy = -1e300;
     double nminy = 1e300;
+    double test;
     for ( int i = 0; i < datas; i++ ) {
       p = ep - 1 - i;
       if ( p < 0 ) p += RingMax;
-      if ( (  mont[ p ] - t0 ) > ( - dx * 6 * 1000 ) ) {
-	if ( mony[j][ p ] < nminy )
-	  nminy = mony[j][ p ];
-	if ( mony[j][ p ] > nmaxy ) 
-	  nmaxy = mony[j][ p ];
+      if ( ( (  mont[ p ] - t0 ) > ( - dx * 6 * 1000 - timeShift ) )
+	   &&( ( mont[ p ] - t0 ) < ( -timeShift ) ) ){
+	test = ( ( !logScale ) ? mony[j][p] : log10( fabs( mony[j][p] ) ) );
+	if ( test < nminy )
+	  nminy = test;
+	if ( test > nmaxy ) 
+	  nmaxy = test;
       }
     }
     double dy = nmaxy - nminy;
@@ -293,6 +300,13 @@ void TYView::CheckASPush( QMouseEvent *e )
 	YShift[i] = YShift0[i] = yshift[i] = 0;
       }
     }
+  }
+}
+
+void TYView::CheckLSPush( QMouseEvent *e )
+{
+  if ( m.CheckABPosition( e, 110, height() ) ) {
+    logScale = !logScale;
   }
 }
 
@@ -392,6 +406,7 @@ void TYView::mouseReleaseEvent( QMouseEvent *e )
     break;
   }
   CheckASPush( e );
+  CheckLSPush( e );
 
   update();
 }

@@ -24,6 +24,7 @@ private:
   int MonScale;
   QVector<QString> LNames;
   bool autoScale;
+  bool logScale;
   bool AreaSelecting;
 
   int lines;
@@ -68,6 +69,7 @@ private:
   void Draw( QPainter *p );
   void UpDateYWindowRing( void );
   void CheckASPush( QMouseEvent *e );
+  void CheckLSPush( QMouseEvent *e );
 };
 
 #endif
