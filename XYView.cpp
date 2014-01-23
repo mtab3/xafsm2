@@ -6,6 +6,7 @@
 XYView::XYView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
+  setParent( parent );
 
   setToolTip( tr( "By clicking the 'A. Scale' (Auto Scale) button at left-bottom corner, "
 		  "the auto-scale mode is toggled on and off." ) );
@@ -723,8 +724,10 @@ void XYView::ChooseAG( int i, bool f )
 void XYView::setParent( QWidget *p )
 {
   parent = p;
-  connect( parent, SIGNAL( NewDiff1( int ) ), this, SLOT( setDiffType1( int ) ),
-	   Qt::UniqueConnection );
-  connect( parent, SIGNAL( NewDiff2( int ) ), this, SLOT( setDiffType2( int ) ),
-	   Qt::UniqueConnection );
+  if ( parent != NULL ) {
+    connect( parent, SIGNAL( NewDiff1( int ) ), this, SLOT( setDiffType1( int ) ),
+	     Qt::UniqueConnection );
+    connect( parent, SIGNAL( NewDiff2( int ) ), this, SLOT( setDiffType2( int ) ),
+	     Qt::UniqueConnection );
+  }
 }

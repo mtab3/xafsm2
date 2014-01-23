@@ -6,6 +6,7 @@
 TYView::TYView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
+  setParent( parent );
 
   setToolTip( tr( "By clicking the 'A. Scale' (Auto Scale) button at left-bottom corner, "
 		  "the auto-scale mode is toggled on and off." ) );
@@ -42,6 +43,22 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
   tts = 0;
   for ( int i = 0; i < MaxMon; i++ ) {
     YShift[ i ] = YShift0[ i ] = yshift[ i ] = 0;
+  }
+
+  connect( this, SIGNAL( UpScale() ), parent, SLOT( TYVUpScale() ),
+	   Qt::UniqueConnection );
+  connect( this, SIGNAL( DownScale() ), parent, SLOT( TYVDownScale() ),
+	   Qt::UniqueConnection );
+}
+
+void TYView::setParent( QWidget *p )
+{
+  parent = p;
+  if ( parent != NULL ) {
+    connect( this, SIGNAL( UpScale() ), parent, SLOT( TYVUpScale() ),
+	     Qt::UniqueConnection );
+    connect( this, SIGNAL( DownScale() ), parent, SLOT( TYVDownScale() ),
+	     Qt::UniqueConnection );
   }
 }
 
@@ -202,26 +219,30 @@ void TYView::Draw( QPainter *p )
     // 最大値最小値(5%マージン)を探す (Rminy, Rmaxy に返す)
     UpDateYWindowRing();
 
+  int nearLine = 0;
+  double nearD = 10000000;
   for ( int j = 0; j < lines; j++ ) {
-    if ( autoScale )
-      cc.SetRealY( Rwminy[j], Rwmaxy[j] );
-    else
-      cc.SetRealY( Rwminy[j] - YShift[j], Rwmaxy[j] - YShift[j] );
-    cc.getSEDy( &sy, &ey, &dy, 5 );
-    pen1.setWidth( 1 );
-    pen1.setColor( LC[ j ] );
-    p->setPen( pen1 );
-
-    for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
-      rec = QRectF( LM * 0.1, ty = ( cc.r2sy( yy ) - VDiv * 0.5 + VDiv * 0.45 * j ),
-		    LM * 0.75, VDiv * 0.42 ); // メモリ数字
-      buf.sprintf( "%6.4g", yy );
-      cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
-      p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
+    if ( !logScale ) {   // 縦軸リニアスケールの時
+      if ( autoScale )
+	cc.SetRealY( Rwminy[j], Rwmaxy[j] );
+      else
+	cc.SetRealY( Rwminy[j] - YShift[j], Rwmaxy[j] - YShift[j] );
+      cc.getSEDy( &sy, &ey, &dy, 5 );
+      pen1.setWidth( 1 );
+      pen1.setColor( LC[ j ] );
+      p->setPen( pen1 );
+      
+      for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
+	rec = QRectF( LM * 0.1, ty = ( cc.r2sy( yy ) - VDiv * 0.5 + VDiv * 0.45 * j ),
+		      LM * 0.75, VDiv * 0.42 ); // メモリ数字
+	buf.sprintf( "%6.4g", yy );
+	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
+	p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
+      }
+      rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
+		    HDiv * 2, TM * 0.9 );  // 軸のラベル
     }
-    rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
-		  HDiv * 2, TM * 0.9 );  // 軸のラベル
-    
+
     int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // 最新時刻
     int nowt = cc.s2rx( m.x() ) + t0 - timeShift;
     int nowtp = 0;
@@ -243,8 +264,17 @@ void TYView::Draw( QPainter *p )
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
     }
+    if ( logScale ) {  // log スケールの罫線を引くための下準備
+      if ( fabs( cc.r2sy( mony[j][nowtp] ) - m.y() ) < nearD ) {
+	nearD = fabs( cc.r2sy( mony[j][nowtp] ) - m.y() );
+	nearLine = j;
+      }
+    }
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
+  }
+  if ( logScale ) {   // 縦軸が log スケールの時、log スケールの罫線を引く
+    
   }
 
   cc.ShowAButton( p, autoScale, tr( "A. Scale" ),   0, 100, height() );
@@ -420,29 +450,38 @@ void TYView::wheelEvent( QWheelEvent *e )
   double step = ( e->delta() / 8. ) / 15.;     // deg := e->delta / 8.
   double rx = cc.s2rx( e->x() );
   double drx = cc.Rmaxx() - cc.Rminx();
-  if ( step > 0 ) {
-    drx *= 0.9;
-  } else {
-    drx /= 0.9;
-  }
-  double nminx = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
-  double nmaxx = nminx + drx;
-  cc.SetRealX( nminx, nmaxx );
-  cc.SetRealX0( nminx, nmaxx );
 
-  for ( int i = 0; i < lines; i++ ) {
-    cc.SetRealY( Rwminy[i], Rwmaxy[i] );
-    double ry = cc.s2ry( e->y() );
-    double dry = cc.Rmaxy() - cc.Rminy();
+  if ( autoScale ) {
     if ( step > 0 ) {
-      dry *= 0.9;
+      emit UpScale();
     } else {
-      dry /= 0.9;
+      emit DownScale();
     }
-    double nmaxy = ry + ( e->y() - cc.Sminy() ) / ( cc.Smaxy() - cc.Sminy() ) * dry;
-    double nminy = nmaxy - dry;
-    Rwminy[i] = nminy;
-    Rwmaxy[i] = nmaxy;
+  } else {
+    if ( step > 0 ) {
+      drx *= 0.9;
+    } else {
+      drx /= 0.9;
+    }
+    double nminx = rx - ( e->x() - cc.Sminx() ) / ( cc.Smaxx() - cc.Sminx() ) * drx;
+    double nmaxx = nminx + drx;
+    cc.SetRealX( nminx, nmaxx );
+    cc.SetRealX0( nminx, nmaxx );
+    
+    for ( int i = 0; i < lines; i++ ) {
+      cc.SetRealY( Rwminy[i], Rwmaxy[i] );
+      double ry = cc.s2ry( e->y() );
+      double dry = cc.Rmaxy() - cc.Rminy();
+      if ( step > 0 ) {
+	dry *= 0.9;
+      } else {
+	dry /= 0.9;
+      }
+      double nmaxy = ry + ( e->y() - cc.Sminy() ) / ( cc.Smaxy() - cc.Sminy() ) * dry;
+      double nminy = nmaxy - dry;
+      Rwminy[i] = nminy;
+      Rwmaxy[i] = nmaxy;
+    }
   }
   update();
 }

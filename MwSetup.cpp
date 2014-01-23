@@ -1155,3 +1155,17 @@ void MainWindow::newVS2( QString v )
 {
   DevCurV22->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
 }
+
+void MainWindow::TYVUpScale( void )
+{
+  int i = SelectScale->currentIndex();
+  if ( i < MSCALES - 1 )
+    SelectScale->setCurrentIndex( i+1 );
+}
+
+void MainWindow::TYVDownScale( void )
+{
+  int i = SelectScale->currentIndex();
+  if ( i > 0 )
+    SelectScale->setCurrentIndex( i-1 );
+}

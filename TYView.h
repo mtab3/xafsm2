@@ -15,6 +15,8 @@ class TYView : public QFrame, private Ui::XView
   Q_OBJECT
 
 private:
+  QWidget *parent;
+
   ChCoord cc;
   QColor bgColor, BLACK, ASelC;
   QVector<QColor> LC;
@@ -61,6 +63,8 @@ public:
   double getY( int l, int i ) { return mony[l][ ep - datas + i ]; };
   void print( QPrinter *p );
 
+  void setParent( QWidget *p );
+
 public slots:
   void SetMonScale( int ms ) { MonScale = ms; };;
 
@@ -70,6 +74,10 @@ private:
   void UpDateYWindowRing( void );
   void CheckASPush( QMouseEvent *e );
   void CheckLSPush( QMouseEvent *e );
+
+signals:
+  void UpScale( void );
+  void DownScale( void );
 };
 
 #endif

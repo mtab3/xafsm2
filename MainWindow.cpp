@@ -498,7 +498,9 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((XYView*)newView)->setDiffType2( conds->Diff2Type() );
     break;
   case TYVIEW:
-    newView = (void *)(new TYView); break;
+    newView = (void *)(new TYView);
+    ((TYView*)newView)->setParent( this );
+    break;
   case MCAVIEW:
     newView = (void *)(new MCAView( this ));
     ((MCAView *)newView)->setKeV2Pix( kev2pix );

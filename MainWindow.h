@@ -824,6 +824,10 @@ private slots:
   void DTAutoCalibFinished();
   void SSDEngAutoCalibFinished();
 
+  /* AcceptTYView */
+  void TYVUpScale( void );
+  void TYVDownScale( void );
+
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
