@@ -225,7 +225,11 @@ void TYView::Draw( QPainter *p )
       for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
 	rec = QRectF( LM * 0.1, ty = ( cc.r2sy( yy ) - VDiv * 0.5 + VDiv * 0.45 * j ),
 		      LM * 0.75, VDiv * 0.42 ); // メモリ数字
-	buf.sprintf( "%6.4g", yy );
+	if ( !logScale ) {
+	  buf.sprintf( "%6.4g", yy );
+	} else {
+	  buf.sprintf( "%6.4e", yy );
+	}
 	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
 	p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
       }
@@ -276,35 +280,55 @@ void TYView::Draw( QPainter *p )
   } else {   // 縦軸が log スケールの時、軸メモリと罫線の描画
     double sy = Rwminy[ nearLine ];
     double ey = Rwmaxy[ nearLine ];
-    int isy = sy;    // 最小の数字のlog10に満たない最大の整数
-    int iey = ey;    // 最大の数字のlog10より大きい大小の整数
-    for ( double y = (double)isy; y <= (double)iey; y += 1. ) {
-      if (( y >= sy )&&( y <= ey )) {
-	rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y ) - VDiv ),
-		      LM * 0.75, VDiv * 0.9 ); // メモリ数字
-	buf.sprintf( "1.0x10^%d", (int)y );
-	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
-	pen1.setWidth( 2 );
-	p->setPen( pen1 );
-	p->drawLine( LM * 0.88, cc.r2sy( y ), width()-RM, cc.r2sy( y ) );
-      }
-      for ( double yy = 2.; yy < 10.; yy += 1. ) {
-	double lyy = log10( yy );
-	if (( ( y + lyy ) >= sy )&&( ( y + lyy ) <= ey )) {
-	  rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y + lyy ) - VDiv * 0.5 ),
+    int isy = floor( sy );    // 最小の数字のlog10に満たない最大の整数
+    int iey = ceil( sy );    // 最大の数字のlog10より大きい大小の整数
+    bool first = true;
+    double oldbottom = 0;
+    QRectF brec;
+    double scale = 1;
+    while ( first && ( scale > 1e-11 ) ) {
+      for ( double y = (double)iey; y >= (double)isy; y -= 1. ) {
+	for ( double yy = 9; yy > 1; yy -= scale ) {
+	  double lyy = log10( yy );
+	  if (( ( y + lyy ) >= sy )&&( ( y + lyy ) <= ey )) {
+	    rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y + lyy ) - VDiv * 0.5 ),
+			  LM * 0.75, VDiv ); // メモリ数字
+	    double ry = pow( 10, y + lyy );
+	    int y1 = floor( log10( ry ) );
+	    double y2 = ry / pow( 10, y1 );
+	    buf.sprintf( "%3.1fx10^%d", y2, y1 );
+	    if (( first )||( oldbottom < rec.top() )) {
+	      brec = cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter,
+				  SCALESIZE, buf );
+	      oldbottom = ( rec.bottom() + rec.top() ) / 2. + brec.height() / 2.;
+	      pen1.setWidth( 1 );
+	      p->setPen( pen1 );
+	      p->drawLine( LM * 0.88, cc.r2sy( y+lyy ), width()-RM, cc.r2sy( y+lyy ) );
+	      first = false;
+	    }
+	  }
+	}
+	if (( y >= sy )&&( y <= ey )) {
+	  rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y ) - VDiv * 0.5 ),
 			LM * 0.75, VDiv ); // メモリ数字
-	  buf.sprintf( "%d.0x10^%d", (int)yy, (int)y );
-	  cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
-	  pen1.setWidth( 1 );
-	  p->setPen( pen1 );
-	  p->drawLine( LM * 0.88, cc.r2sy( y+lyy ), width()-RM, cc.r2sy( y+lyy ) );
+	  buf.sprintf( "1.0x10^%d", (int)y );
+	  if (( first )||( oldbottom < rec.top() )) {
+	    brec = cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter,
+				SCALESIZE, buf );
+	    oldbottom = ( rec.bottom() + rec.top() ) / 2. + brec.height() / 2.;
+	    pen1.setWidth( 2 );
+	    p->setPen( pen1 );
+	    p->drawLine( LM * 0.88, cc.r2sy( y ), width()-RM, cc.r2sy( y ) );
+	    first = false;
+	  }
 	}
       }
+      scale *= 0.1;
     }
   }
 
   cc.ShowAButton( p, autoScale, tr( "A. Scale" ),   0, 100, height() );
-  cc.ShowAButton( p, autoScale, tr( "L. Scale" ), 110, 100, height() );
+  cc.ShowAButton( p, logScale,  tr( "L. Scale" ), 110, 100, height() );
 
   // マウスポインタの位置に縦線を引く
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {

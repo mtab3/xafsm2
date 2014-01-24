@@ -62,7 +62,7 @@ class ChCoord : public QObject
   void calcScale( double div, double min, double max, double *s, double *d );
 
   /* ChCoord とは直接関係ないけど、グラフ関係の一般的な関数なのでここに置いとく */
-  void DrawText( QPainter *p, 
+  QRectF DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
   void ShowAButton( QPainter *p, bool BState, QString BName,
 		    int x0, int w, int height );

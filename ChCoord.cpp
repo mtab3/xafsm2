@@ -243,7 +243,7 @@ void ChCoord::calcScale( double div, double min, double max, double *s, double *
 /*   But useful as common function for drawing applications.                         */
 /*************************************************************************************/
 
-void ChCoord::DrawText( QPainter *p, 
+QRectF ChCoord::DrawText( QPainter *p, 
 			QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg )
 /* Draw Text within a given rectangle, 'QRectF rec'. 
  *   When the 'DRAWTEXTF (draw text flag) f' is 
@@ -278,6 +278,8 @@ void ChCoord::DrawText( QPainter *p,
   p->drawText( rec, flags, msg );
   font.setPointSizeF( fSize );
   p->setFont( font );
+
+  return brec;
 }
 
 void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
@@ -296,40 +298,4 @@ void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
   QRectF rec = QRectF( x0 + 24, y0-17, w, 11 );
   DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, BName );
 }
-
-#if 0
-void ChCoord::ShowAScaleButton( QPainter *p, bool autoScale, int height )
-{
-  int x0 = 0;
-  QFont F1;
-
-  if ( autoScale )
-    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOnC );
-  else 
-    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOffC );
-  p->setPen( ASBBorderC );
-  p->drawRect( x0 + 5, height - 19, 14, 14 );
-
-  p->setPen( BLACK );
-  QRectF rec = QRectF( x0 + 24, height-17, 100, 11 );
-  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "A. Scale" );
-}
-
-void ChCoord::ShowSScaleButton( QPainter *p, bool singleScale, int height )
-{
-  int x0 = 110;
-  QFont F1;
-
-  if ( singleScale )
-    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOnC );
-  else 
-    p->fillRect( x0 + 5, height - 19, 14, 14, ASBOffC );
-  p->setPen( ASBBorderC );
-  p->drawRect( x0 + 5, height - 19, 14, 14 );
-
-  p->setPen( BLACK );
-  QRectF rec = QRectF( x0 + 24, height-17, 100, 11 );
-  DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, "S. Scale" );
-}
-#endif
 
