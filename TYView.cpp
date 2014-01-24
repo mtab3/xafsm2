@@ -44,11 +44,6 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
   for ( int i = 0; i < MaxMon; i++ ) {
     YShift[ i ] = YShift0[ i ] = yshift[ i ] = 0;
   }
-
-  connect( this, SIGNAL( UpScale() ), parent, SLOT( TYVUpScale() ),
-	   Qt::UniqueConnection );
-  connect( this, SIGNAL( DownScale() ), parent, SLOT( TYVDownScale() ),
-	   Qt::UniqueConnection );
 }
 
 void TYView::setParent( QWidget *p )
@@ -186,6 +181,9 @@ void TYView::Draw( QPainter *p )
   p->setFont( F1 );
   p->drawRect( LM, TM, width()-RM-LM, height()-BM-TM );  // グラフの枠線
 
+  pen1.setWidth( 1 );
+  pen1.setColor( BLACK );
+  p->setPen( pen1 );
   double sx, dx;
   if ( !autoScale ) {
     cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
@@ -205,14 +203,6 @@ void TYView::Draw( QPainter *p )
   rec = QRect( width()-VDiv, height()-BM*0.5, RM*0.9, BM*0.4 );  // 横軸のラベル
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       MScales[ MonScale ].unit );
-
-  pen1.setWidth( 1 );
-  pen1.setColor( BLACK );
-  p->setPen( pen1 );
-  cc.SetRealY( 0, 1 );
-  for ( double yy = 0; yy < 1; yy += 0.1 ) {
-    p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
-  }
 
   double sy, ey, dy, ty;
   if ( autoScale )
@@ -239,8 +229,6 @@ void TYView::Draw( QPainter *p )
 	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
 	p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
       }
-      rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
-		    HDiv * 2, TM * 0.9 );  // 軸のラベル
     }
 
     int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // 最新時刻
@@ -264,17 +252,55 @@ void TYView::Draw( QPainter *p )
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
     }
+    rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
+		  HDiv * 2, TM * 0.9 );  // 軸のラベル
+    cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
+
     if ( logScale ) {  // log スケールの罫線を引くための下準備
       if ( fabs( cc.r2sy( mony[j][nowtp] ) - m.y() ) < nearD ) {
 	nearD = fabs( cc.r2sy( mony[j][nowtp] ) - m.y() );
 	nearLine = j;
       }
     }
-    cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
   }
-  if ( logScale ) {   // 縦軸が log スケールの時、log スケールの罫線を引く
-    
+
+  pen1.setWidth( 1 );
+  pen1.setColor( BLACK );
+  p->setPen( pen1 );
+  if ( !logScale )  {   // 縦軸がリニアスケールの時、軸メモリは描画済み。罫線だけ
+    cc.SetRealY( 0, 1 );
+    for ( double yy = 0; yy < 1; yy += 0.1 ) {
+      p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
+    }
+  } else {   // 縦軸が log スケールの時、軸メモリと罫線の描画
+    double sy = Rwminy[ nearLine ];
+    double ey = Rwmaxy[ nearLine ];
+    int isy = sy;    // 最小の数字のlog10に満たない最大の整数
+    int iey = ey;    // 最大の数字のlog10より大きい大小の整数
+    for ( double y = (double)isy; y <= (double)iey; y += 1. ) {
+      if (( y >= sy )&&( y <= ey )) {
+	rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y ) - VDiv ),
+		      LM * 0.75, VDiv * 0.9 ); // メモリ数字
+	buf.sprintf( "1.0x10^%d", (int)y );
+	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
+	pen1.setWidth( 2 );
+	p->setPen( pen1 );
+	p->drawLine( LM * 0.88, cc.r2sy( y ), width()-RM, cc.r2sy( y ) );
+      }
+      for ( double yy = 2.; yy < 10.; yy += 1. ) {
+	double lyy = log10( yy );
+	if (( ( y + lyy ) >= sy )&&( ( y + lyy ) <= ey )) {
+	  rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y + lyy ) - VDiv * 0.5 ),
+			LM * 0.75, VDiv ); // メモリ数字
+	  buf.sprintf( "%d.0x10^%d", (int)yy, (int)y );
+	  cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
+	  pen1.setWidth( 1 );
+	  p->setPen( pen1 );
+	  p->drawLine( LM * 0.88, cc.r2sy( y+lyy ), width()-RM, cc.r2sy( y+lyy ) );
+	}
+      }
+    }
   }
 
   cc.ShowAButton( p, autoScale, tr( "A. Scale" ),   0, 100, height() );
@@ -453,9 +479,9 @@ void TYView::wheelEvent( QWheelEvent *e )
 
   if ( autoScale ) {
     if ( step > 0 ) {
-      emit UpScale();
-    } else {
       emit DownScale();
+    } else {
+      emit UpScale();
     }
   } else {
     if ( step > 0 ) {
