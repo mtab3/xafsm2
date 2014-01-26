@@ -81,7 +81,7 @@ QXAFSMODE 1 6000 15000 100 0.1
 # Detectors which can be used for Quasi Continuous Scan (in S2D) : CONTOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2 CCG
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -569,6 +569,9 @@ SENSOR CNT2 "S046" "Aux2" "cnt (via 6482-1-2)" "simmotor" "SNScnt5" "count" YES 
 #     "mA"              : Name of the metric unit (only for display)
 #     YES               : If the sensor has a parente (group leader) or not. YES or NO
 #     "S043"            : The identifier of the parent (group reader)
+
+#SENSOR CCG "S047" "VacGauge" "CC-10" "CC-10" "" "Pa" NO ""
+SENSOR CCG "S047" "VacGauge" "CC-10" "simmotor" "CC10" "Pa" NO ""
 
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
