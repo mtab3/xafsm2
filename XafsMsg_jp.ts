@@ -830,7 +830,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>ROI changeable even while the XAFS measurements</source>
-        <translation>XAFS測定中もROIの変更を可能にする</translation>
+        <translation type="obsolete">XAFS測定中もROIの変更を可能にする</translation>
     </message>
     <message>
         <source>21</source>
@@ -2418,11 +2418,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the map is obtaind by using SSD, the map can be re-calculated with new ROI after the measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>SSD を使って測定して得られたマップの場合、測定後に ROI を変更して新たなマップを得ることができます。</translation>
+        <translation type="obsolete">SSD を使って測定して得られたマップの場合、測定後に ROI を変更して新たなマップを得ることができます。</translation>
     </message>
     <message>
         <source>Recalc w. New ROI</source>
-        <translation>ROIの変更を許す</translation>
+        <translation type="obsolete">ROIの変更を許す</translation>
     </message>
     <message>
         <source>2D Scan Start (%1 %2 %3)</source>
@@ -2630,11 +2630,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Record MCA spectra obtained at each step of the XAFS measurement is saved in separated files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>SSD を使ったXAFS測定の各ステップで得られたMCAスペクトルをセーブします。</translation>
+        <translation type="obsolete">SSD を使ったXAFS測定の各ステップで得られたMCAスペクトルをセーブします。</translation>
     </message>
     <message>
         <source>Record MCAs</source>
-        <translation>MCA記録</translation>
+        <translation type="obsolete">MCA記録</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the spectra with several scans, when &apos;in sep. file...&apos; is selected, each spectrum is saved in each file.&lt;/p&gt;&lt;p&gt;When &apos;in one file...&apos; is selected, one spectrum made by summing up all the spectra is saved in one file.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2681,23 +2681,23 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Start Pnt.</source>
-        <translation type="unfinished"></translation>
+        <translation>始点</translation>
     </message>
     <message>
         <source>End Pnt.</source>
-        <translation type="unfinished"></translation>
+        <translation>終点</translation>
     </message>
     <message>
         <source>can&apos;t open the file [%1] to read.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル[%1]を読み込めません。</translation>
     </message>
     <message>
         <source>In the file [%1], an Offset line was not be found.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル[%1]に &apos;Offset&apos; 行がありません。</translation>
     </message>
     <message>
         <source>can&apos;t open the file [%1] to write.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル[%1]を書き込めません。</translation>
     </message>
 </context>
 <context>
@@ -3520,6 +3520,10 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>A. Scale</source>
         <translation>自動スケール</translation>
+    </message>
+    <message>
+        <source>L. Scale</source>
+        <translation>Log表示</translation>
     </message>
 </context>
 <context>
