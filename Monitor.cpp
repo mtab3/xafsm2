@@ -49,7 +49,7 @@ void MainWindow::MonSequence( void )
     int etime;
     mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
     MonitorView->NewPointR( etime = MonTime.elapsed(),
-			    MeasVals[0], MeasVals[1], MeasVals[2] );
+			    MeasVals, mUnits.count() );
     MonitorView->update();
 
     if ( conds->isRecordAllSSDChs() ) {

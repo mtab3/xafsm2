@@ -374,10 +374,16 @@ void Data::showMonData( QTextStream &in )
     line = line.simplified();
     vals = line.split( QRegExp( "\\s" ) );
     int Vals = vals.count();
-    for ( int i = 1; i < Vals - 3; i++ ) {
+    int i;
+    for ( i = 0; i < Vals; i++ ) {
+      if ( vals[i][0] == QChar( '#' ) ) break;
+    }
+    if ( i < Vals )
+      Vals = i;
+    for ( int i = 1; i < Vals; i++ ) {
       Values[i-1] = vals.at( i ).toDouble();
     }
-    theTYView->NewPointR( vals.at(0).toDouble()*1000, Values[0], Values[1], Values[2] );
+    theTYView->NewPointR( vals.at(0).toDouble()*1000, Values, Vals - 1 );
   }
   int L = theTYView->GetLines();
   for ( int i = 0; i < L; i++ ) {

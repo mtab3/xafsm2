@@ -4,9 +4,16 @@
 
 void MainWindow::setupSetupArea( void )   /* 設定エリア */
 {
+  // モニタの 0 番は常に on 
+  MonSel0->setEnabled( false );
+
   GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
   GoTos << GoTo1 << GoTo2 << GoTo3 << GoTo4;
+
+  MonSels << MonSel0 << MonSel1 << MonSel2 << MonSel3 << MonSel4;
+  MonDevs << MonDev0 << MonDev1 << MonDev2 << MonDev3 << MonDev4;
+  MonVals << MonV0 << MonV1 << MonV2 << MonV3 << MonV4;
 
   double Eg = ManTEkeV->text().toDouble();
 
@@ -90,9 +97,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SPSSelectD1->addItem( ASensors.value(i)->getName() );
     SPSSelectD10->addItem( ASensors.value(i)->getName() );
-    SelectD20->addItem( ASensors.value(i)->getName() );
-    SelectD21->addItem( ASensors.value(i)->getName() );
-    SelectD22->addItem( ASensors.value(i)->getName() );
+    for ( int j = 0; j < MonSels.count(); j++ ) {
+      MonDevs[j]->addItem( ASensors.value(i)->getName() );
+    }
     SelectD3->addItem( ASensors.value(i)->getName() );
     connect( ASensors.value(i), SIGNAL( newDark( double ) ),
 	     this, SLOT( ShowNewDark( double ) ),
@@ -922,18 +929,14 @@ void MainWindow::ScanStop0( void )
 
 void MainWindow::Monitor( void )
 {
-  AUnit *as0 = ASensors.value( SelectD20->currentIndex() );
-  AUnit *as1 = ASensors.value( SelectD21->currentIndex() );
-  AUnit *as2 = ASensors.value( SelectD22->currentIndex() );
+  QVector<AUnit*> ass;
+  for ( int i = 0; i < MonDevs.count(); i++ )
+    ass << ASensors.value( MonDevs[i]->currentIndex() );
 
   if ( !inMonitor ) {
-#if 0
-    if ( isAnyOtherProcess() )
-      return;
-#endif
-    if ( ! as0->isEnable() ) {
+    if ( ! ass[0]->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	.arg( as0->getName() );
+	.arg( ass[0]->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return;
@@ -973,10 +976,25 @@ void MainWindow::Monitor( void )
 
     MonitorViewC->setNowDType( MONDATA );
     MonitorView = (TYView*)(MonitorViewC->getView());
-    
 
     mUnits.clearUnits();
-    mUnits.addUnit( as0 );
+    for ( int i = 0; i < MonSels.count(); i++ ) {
+      if ( MonSels[i]->isChecked() ) {
+	if ( ! ass[i]->isEnable() ) {
+	  QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
+	    .arg( ass[i]->getName() );
+	  statusbar->showMessage( msg, 2000 );
+	  NewLogMsg( msg );
+	  return;
+	}
+	mUnits.addUnit( ass[i] );
+	// 注意 !!
+	// mUnits の unit 番号と、ass, MonSels, MonDevs, MonVals の番号はずれる。
+	// (選ばれていないものは、mUnits に登録されないため)
+      }
+    }
+#if 0    
+    mUnits.addUnit( ass[0] );
     MonSensF[0] = true;
     if ( SelectD21Sel->isChecked() ) {
       if ( ! as1->isEnable() ) {
@@ -1000,6 +1018,7 @@ void MainWindow::Monitor( void )
       mUnits.addUnit( as2 );
       MonSensF[2] = true;
     }
+#endif
     mUnits.setDwellTimes( DwellT20->text().toDouble() );
     mUnits.setDwellTime();
 
@@ -1042,14 +1061,12 @@ void MainWindow::Monitor( void )
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ),
 	     Qt::UniqueConnection );
-    connect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ),
+    for ( int i = 0; i < MonSels.count(); i++ ) {
+      if ( MonSels[i]->isChecked() ) {
+	connect( ass[i], SIGNAL( newValue( QString ) ), this, SLOT( newVs( QString ) ),
 	     Qt::UniqueConnection );
-    if ( MonSensF[1] )
-      connect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ),
-	       Qt::UniqueConnection );
-    if ( MonSensF[2] )
-      connect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ),
-	       Qt::UniqueConnection );
+      }
+    }
 		 
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( InActive );
@@ -1078,11 +1095,12 @@ void MainWindow::Monitor( void )
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ) );
-    disconnect( as0, SIGNAL( newValue( QString ) ), this, SLOT( newVI0( QString ) ) );
-    if ( MonSensF[1] )
-      disconnect( as1, SIGNAL( newValue( QString ) ), this, SLOT( newVS1( QString ) ) );
-    if ( MonSensF[2] )
-      disconnect( as2, SIGNAL( newValue( QString ) ), this, SLOT( newVS2( QString ) ) );
+    for ( int i = 0; i < MonSels.count(); i++ ) {
+      if ( MonSels[i]->isChecked() ) {
+	disconnect( ass[i], SIGNAL( newValue( QString ) ),
+		    this, SLOT( newVs( QString ) ) );
+      }
+    }
 
     UUnits.clear( MONITOR_ID );
     MonitorViewC->setIsDeletable( true );
@@ -1141,19 +1159,13 @@ void MainWindow::saveMonData( void )
 }
 
 
-void MainWindow::newVI0( QString v )
+void MainWindow::newVs( QString v )
 {
-  DevCurV20->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
-}
-
-void MainWindow::newVS1( QString v )
-{
-  DevCurV21->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
-}
-
-void MainWindow::newVS2( QString v )
-{
-  DevCurV22->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
+  for ( int i = 0; i < MonSels.count(); i++ ) {
+    if ( sender() == ASensors.value( MonDevs[i]->currentIndex() ) ) {
+      MonVals[i]->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
+    }
+  }
 }
 
 void MainWindow::TYVUpScale( void )

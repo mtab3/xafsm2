@@ -8,7 +8,7 @@
 #include "ChCoord.h"
 
 const int RingMax = 5 * 60 * 60 * 6;
-const int MaxMon = 3;
+const int MaxMon = 10;
 
 class TYView : public QFrame, private Ui::XView
 {
@@ -50,7 +50,7 @@ public:
   TYView( QWidget *parent = NULL );
 
   void ReDraw( void );
-  void NewPointR( int tt, double yy0, double yy1, double yy2 );
+  void NewPointR( int tt, double *yy, int n );
   void ClearDataR( void );
   void SetLines( int Lines ) { lines = Lines; };
   int GetLines( void ) { return lines; };

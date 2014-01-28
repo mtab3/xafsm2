@@ -70,12 +70,12 @@ void TYView::ClearDataR( void )
 }
 
 // リングバッファへのデータ追加
-void TYView::NewPointR( int tt, double yy0, double yy1, double yy2 )
+void TYView::NewPointR( int tt, double *yy, int n )
 {
   mont[ ep ] = tt;
-  mony[0][ ep ] = yy0;
-  mony[1][ ep ] = yy1;
-  mony[2][ ep ] = yy2;
+  for ( int i = 0; i < n; i++ ) {
+    mony[i][ ep ] = yy[i];
+  }
   ep++;
   if ( ep >= RingMax )
     ep = 0;
@@ -282,18 +282,21 @@ void TYView::Draw( QPainter *p )
     double ey = Rwmaxy[ nearLine ];
     int isy = floor( sy );    // 最小の数字のlog10に満たない最大の整数
     int iey = ceil( ey );    // 最大の数字のlog10より大きい大小の整数
-    bool first = true;
+    bool lineFirst = true;
+    bool numFirst = true;
     double oldbottom = 0;
     QRectF brec;
     double scale = 1;
-    while ( first && ( scale > 1e-11 ) ) {
+    while ( lineFirst && ( scale > 1e-5 ) ) { // 1e-5 にしてるけど、実際には -2 でも十分
       for ( double y = (double)iey; y >= (double)isy; y -= 1. ) {
 	for ( double yy = 10; yy >= 1; yy -= scale ) {
 	  double lyy = log10( yy );
 	  if (( ( y + lyy ) >= sy )&&( ( y + lyy ) <= ey )) {
+	    // メモリの数字を描く予定の箱
 	    rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y + lyy ) - VDiv * 0.5 ),
-			  LM * 0.75, VDiv ); // メモリ数字
-	    if (( first )||( oldbottom < rec.top() )) {
+			  LM * 0.75, VDiv );
+	    // この箱が前に書いた数字と重なっていなければ、メモリの数字を描く
+	    if (( numFirst )||( oldbottom < rec.top() )) {
 	      double ry = pow( 10, y + lyy );
 	      int y1 = floor( log10( ry ) );
 	      double y2 = ry / pow( 10, y1 );
@@ -301,27 +304,15 @@ void TYView::Draw( QPainter *p )
 	      brec = cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter,
 				  SCALESIZE, buf );
 	      oldbottom = ( rec.bottom() + rec.top() ) / 2. + brec.height() / 2.;
-	      p->drawLine( LM * 0.88, cc.r2sy( y+lyy ), width()-RM, cc.r2sy( y+lyy ) );
-	      first = false;
+	      numFirst = false;
+	      // メモリの数字を書いたところにはヒゲ線を入れる
+	      p->drawLine( LM * 0.9, cc.r2sy( y+lyy ), LM, cc.r2sy( y+lyy ) );
 	    }
+	    // 横の罫線
+	    p->drawLine( LM, cc.r2sy( y+lyy ), width()-RM, cc.r2sy( y+lyy ) );
+	    lineFirst = false;
 	  }
 	}
-#if 0
-	if (( y >= sy )&&( y <= ey )) {
-	  rec = QRectF( LM * 0.1, ty = ( cc.r2sy( y ) - VDiv * 0.5 ),
-			LM * 0.75, VDiv ); // メモリ数字
-	  if (( first )||( oldbottom < rec.top() )) {
-	    brec = cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter,
-				SCALESIZE, buf );
-	    oldbottom = ( rec.bottom() + rec.top() ) / 2. + brec.height() / 2.;
-	    pen1.setWidth( 2 );
-	    p->setPen( pen1 );
-	    buf.sprintf( "1.0x10^%d", (int)y );
-	    p->drawLine( LM * 0.88, cc.r2sy( y ), width()-RM, cc.r2sy( y ) );
-	    first = false;
-	  }
-	}
-#endif
       }
       scale *= 0.1;
     }
@@ -360,11 +351,20 @@ void TYView::UpDateYWindowRing( void )
 	  nmaxy = test;
       }
     }
-    double dy = nmaxy - nminy;
-    if ( dy == 0 )
-      dy = 1.;
-    Rwminy[j] = nminy - dy * 0.05;
-    Rwmaxy[j] = nmaxy + dy * 0.05;
+#if 0
+    if ( !logScale ) {  // リニアスケールの時の上下の余白
+#endif
+      double dy = nmaxy - nminy;
+      if ( dy == 0 )
+	dy = 1.;
+      Rwminy[j] = nminy - dy * 0.05;
+      Rwmaxy[j] = nmaxy + dy * 0.05;
+#if 0
+    } else {  //  log スケールの時の上下の余白
+      Rwminy[j] = nminy - log10( 0.15 );
+      Rwmaxy[j] = nmaxy + log10( 0.15 );
+    }
+#endif
   }
 }
 

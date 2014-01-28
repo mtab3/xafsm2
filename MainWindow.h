@@ -193,6 +193,10 @@ private:
   double oldDeg;             // ShowCurThPos での重複実行を避けるため。
   bool AllInited, MotorsInited, SensorsInited;
 
+  QVector<QRadioButton*> MonSels;
+  QVector<QComboBox*> MonDevs;
+  QVector<QLabel*> MonVals;
+
   void setupLogArea( void );
   void setupCommonArea( void );
   void setupSetupArea( void );
@@ -305,7 +309,6 @@ private:
   ViewCTRL *MonitorViewC;
   TYView *MonitorView;
   QFileDialog *monFSel;
-  bool MonSensF[ 3 ];
 
   // Scan 2D
   //  SCANMODE S2DScanMode0;
@@ -635,9 +638,7 @@ private slots:
   void GoMAtP( void );
   void GoMStop( void );
   void Monitor( void );
-  void newVI0( QString v );
-  void newVS1( QString v );
-  void newVS2( QString v );
+  void newVs( QString v );
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
