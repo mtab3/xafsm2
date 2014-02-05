@@ -16,6 +16,8 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   rType = AS_SCREEN;
   invXf = invYf = false;
   nowRx = nowRy = 0;
+  minx = miny = 0;
+  maxx = maxy = 1;
 
   setRange( -10., 10., -10., 10., 2., 2. );
   cc.SetRealCoord( minx, maxx, miny, maxy );
