@@ -12,6 +12,7 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   showIx = showIy = lastIx = lastIy = 0;
   showIx0 = showIy0 = -1;
   data = NULL;
+  valid = NULL;
   rType = AS_SCREEN;
   invXf = invYf = false;
   nowRx = nowRy = 0;
