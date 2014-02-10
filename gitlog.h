@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 28 19:49:07 2014 +0900\n"\
+                "    Up to 5 sensors can be selectable in MwSetup/Monitor.  Now, inside of the program, the number of the maximum sensors can be changed easily.\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 27 15:18:43 2014 +0900\n"\
                 "    LION\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 24 16:53:42 2014 +0900\n"\
                 "    log scale drawing in TYView is ready\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 23 20:22:35 2014 +0900\n"\
-                "    working on TYView\n"\
 		"\n"\
                 ""
 #endif

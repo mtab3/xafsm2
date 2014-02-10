@@ -703,6 +703,7 @@ private slots:
   void SelectedWBFN( const QString &fname );
   void SelectedRBFN( const QString &fname );
 
+  void setPreAMPGains( void );
   void SelSSDs0( void );
   void SelSSDs20( void );
   void SelectedNDFN( const QString &fname );

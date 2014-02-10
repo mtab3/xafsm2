@@ -322,6 +322,7 @@ void MainWindow::AutoSequence0( void )
 	    ASCMDii++;
 	    break;
 	  case 1:
+	    qDebug() << "set preset type";
 	    SFluo->setSSDPresetType( VAL );
 	    ASCMDii++;
 	    break;
@@ -330,6 +331,7 @@ void MainWindow::AutoSequence0( void )
 	    ASCMDii++;
 	    break;
 	  case 3:
+	    qDebug() << "try to init sensor and go";
 	    if ( SFluo->InitSensor() == false ) {  // true :: initializing
 	      SFluo->setIsBusy( true );
 	      SFluo->RunStart();

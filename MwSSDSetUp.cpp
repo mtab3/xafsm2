@@ -973,3 +973,32 @@ void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
     }
   }
 }
+
+void MainWindow::setPreAMPGains( void )
+{
+  if ( SFluo == NULL )
+    return;
+
+  QFile f( "SSDPreAMPGains.txt" );
+  if ( !f.exists() ) {
+    f.setFileName( ":/SSDPreAMPGains0.txt" );
+    if ( !f.exists() )
+      return;
+  }
+  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
+    qDebug() << tr( "Error cannot open [%1]." ).arg( "SSDPreAMPGains" );
+    return;
+  }
+
+  QTextStream in( &f );
+  while( !in.atEnd() ) {
+    QStringList items = in.readLine().split( QRegExp( "\\s+" ) );
+    if ( items.count() > 1 ) {
+      if ( items[0][0] != '#' ) {
+	SFluo->setGain( items[0].toInt(), items[1].toDouble() );
+      }
+    }
+  }
+
+  f.close();
+}
