@@ -72,6 +72,7 @@ class Data : public QFrame, private Ui::Data
   void AskToGetNewView( DATATYPE dtype );
   void showMessage( QString msg, int time );
   void GiveMeCurrentView( void );
+  void setMCACh( int i );
 };
 
 #endif

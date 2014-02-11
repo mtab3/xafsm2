@@ -402,6 +402,7 @@ void Data::showMCAData( QTextStream &in )
 
   KeV2Pix *k2p = theMCAView->keV2Pix();
   cMCACh = 0;
+  
 
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( MCADATA );
@@ -428,7 +429,7 @@ void Data::showMCAData( QTextStream &in )
 
   // 測定時のエネルギーとピクセルの関係は、
   // 今のエネルギーとピクセルの関係とは違っている可能性があるので
-  // 今のピクセルに対応するエネルギーでのカウント数を戦形補完で求めておく
+  // 今のピクセルに対応するエネルギーでのカウント数を線形補完で求めておく
   for ( int i = 0; i < MCALength; i++ ) {
     for ( int ch = 0; ch < MaxSSDs; ch++ ) {
       double nowE = k2p->p2E( ch, i );
@@ -448,6 +449,7 @@ void Data::showMCAData( QTextStream &in )
     cMCA[i] = MCAs[cMCACh][i];
   }
 
+  emit setMCACh( cMCACh );
   MCADataIsValid = true;
   theMCAView->update();
 }

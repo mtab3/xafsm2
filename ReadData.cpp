@@ -22,6 +22,8 @@ void MainWindow::setupReadDataArea( void )
     connect( Datas.at(i), SIGNAL( GiveMeCurrentView( void ) ),
 	     this, SLOT( TryToNoticeCurrentView( void ) ),
 	     Qt::UniqueConnection );
+    connect( Datas[i], SIGNAL( setMCACh( int ) ), this, SLOT( MCAChSelected( int ) ),
+	     Qt::UniqueConnection );
     connect( this, SIGNAL( NewMCACh( int ) ), Datas[i], SLOT( SelectedNewMCACh( int ) ),
 	     Qt::UniqueConnection );
   }
