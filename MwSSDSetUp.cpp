@@ -978,6 +978,10 @@ void MainWindow::setPreAMPGains( void )
 {
   if ( SFluo == NULL )
     return;
+  if ( MCAPreAMPGainHasSet )
+    return;
+
+  MCAPreAMPGainHasSet = true;
 
   QFile f( "SSDPreAMPGains.txt" );
   if ( !f.exists() ) {

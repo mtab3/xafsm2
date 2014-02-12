@@ -123,6 +123,7 @@ private:
   //  bool isAnyOtherProcess( void );
   
   /* MCA */
+  bool MCAPreAMPGainHasSet;
   KeV2Pix *kev2pix;
   FluoDBase *fdbase;
   double MCACorrect[ MaxSSDs ];
