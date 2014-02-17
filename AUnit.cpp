@@ -1252,7 +1252,6 @@ bool AUnit::InitSensor( void )
     }
   }
   if ( Type == "SSD" ) {
-    qDebug() << "SSD : init sensor" << LocalStage;
     QString ROIs = "";
     switch( LocalStage ) {
     case 0:
