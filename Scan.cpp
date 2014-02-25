@@ -69,6 +69,7 @@ void MainWindow::ScanSequence( void )
       ScanStage = 10;
     } else {
       am->SetValue( NowScanP );
+      qDebug() << "NowScanP " << NowScanP;
       ScanStage = 3;
     }
     break;
@@ -77,7 +78,6 @@ void MainWindow::ScanSequence( void )
     SPSScan->setStyleSheet( NormalB );
     statusbar->showMessage( tr( "The Scan has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Scan Finished" ) ) );
-    // sks->SetValue( Motors[ MovingM ].devName, p = ScanView->PeakSearch( 1 ) );
     am->Stop();
     ScanStage = 11;
     break;
