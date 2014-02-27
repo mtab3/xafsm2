@@ -848,8 +848,9 @@ void MainWindow::MCASequence( void )
   if ( MCAStage < 2 )         // MCA に RunStart をかけてしまうと、ずっと isBusy
     if ( SFluo->isBusy() || SFluo->isBusy2() )
       return;
-  if ( SFluo->isBusy2() )
+  if ( SFluo->isBusy2() ) {
     return;
+  }
 
   if ( MCAClearRequest == true ) {
     MCAClearRequest = false;
@@ -893,17 +894,8 @@ void MainWindow::MCASequence( void )
     }
     break;
   case 4:
-#if 0                    // new mcas
-    if ( SFluo->GetMCA( cMCACh ) == false ) {
-      SFluo->GetRealTime( cMCACh );
-      SFluo->GetLiveTime( cMCACh );
-      SFluo->InitLocalStage();
-      MCAStage = 4;
-    }
-#else
     SFluo->GetMCAs();
     MCAStage = 4;
-#endif
     break;
   }
 }
