@@ -410,6 +410,7 @@ private:
   bool SvSelExtPattern;
   bool SvSaveQDataAsStepScan;
   QString defaultFileName;
+  bool NBlockPisValid;
 
   bool NMeasInDeg;
   int NBlocks;

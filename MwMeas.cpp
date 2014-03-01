@@ -1177,6 +1177,13 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
         return;
       }
+      // QXafs でステップスキャン型のデータファイル生成を選択している時は
+      // ステップスキャンのブロックパラメータを正しく設定していないとダメ
+      if ( SaveQDataAsStepScan->isChecked() && ( ! NBlockPisValid ) ) {
+        statusbar->showMessage( tr( "Block parameters for step scan "
+				    "has not been set normally" ), 2000 );
+        return;
+      }
     } else {   // Normal モード時専用のチェック
       if ( TotalPoints > 1999 ) {
         statusbar->showMessage( tr( "Measured points are too many.    "
