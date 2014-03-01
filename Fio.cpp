@@ -160,7 +160,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   }
 
   int Munits = mUnits.count();
-  if ( QXafsMode->isChecked() && ( Enc2 != NULL ) ) {
+  if ( MPSet.qXafsMode && ( Enc2 != NULL ) ) {
     Munits -= 1;
   }
 
@@ -322,7 +322,7 @@ void MainWindow::WriteInfoFile( void )
   QTextStream out( &f );
 
   int Munits = mUnits.count();
-  if ( QXafsMode->isChecked() && ( Enc2 != NULL ) )
+  if ( MPSet.qXafsMode && ( Enc2 != NULL ) )
     Munits -= 1;
 
   out << "Version :" << " 1303" << endl;

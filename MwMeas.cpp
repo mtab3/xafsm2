@@ -1177,26 +1177,6 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
         return;
       }
-#if 0
-      if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
-        // 今 QXafs で AUX は使えない
-        statusbar
-            ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
-      }
-      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
-      if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
-        statusbar
-            ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
-        return;
-      }
-      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
-      if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
-        statusbar
-            ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
-        return;
-      }
-#endif
-
     } else {   // Normal モード時専用のチェック
       if ( TotalPoints > 1999 ) {
         statusbar->showMessage( tr( "Measured points are too many.    "
@@ -1447,8 +1427,6 @@ void MainWindow::StartMeasurement( void )
     SetDispMeasModes();
     CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
     SetupMPSet( &MPSet ); // これ以降に return してはいけない
-    MPSet.valid = true;
-    MPSet.normallyFinished = false;
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
@@ -1502,6 +1480,10 @@ void MainWindow::StartMeasurement( void )
 void MainWindow::SetupMPSet( MeasPSet *aSet )
 {
   int ttp = 0;
+
+  aSet->valid = true;
+  aSet->normallyFinished = false;
+  aSet->qXafsMode = QXafsMode->isChecked();
 
   aSet->mUnits.clearUnits();
   for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -1580,7 +1562,7 @@ void MainWindow::SurelyStop( void )
   inPause = false;
   MeasPause->setText( tr( "Pause" ) );
   MeasPause->setStyleSheet( NormalB );
-  if ( QXafsMode->isChecked() )
+  if ( MPSet.qXafsMode )
     QXafsFinish0();
   onMeasFinishWorks();
 }
