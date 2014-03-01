@@ -7,7 +7,7 @@ $I 0                                      # $I = 0
 LABEL FNameInit                           # --FNameInit--
  $FNAME "DTCorrectSSD-"$ATTENS:$I
  SADD FNAME ".dat"
- SHOW "fname " $FNAME
+ # SHOW "fname " $FNAME
  $FNAMES:$I $FNAME                        # $FNAMS[$I] = "DTCorrectSSD-" + $ATTENS[$I]
  INC I                                    # $I++
 IFNEQ $I 15                               # if ( $I != 15 )
@@ -29,8 +29,8 @@ MEASURE  CLEAR                 # Preparation of I0 and I1 sensors
 MEASURE  SENS      S000        # add S000 (Counter 0) to be monitored
 MEASURE  SENS      S001        # add S001 (Counter 1) to be monitored
 MEASURE  SENS      S006        # add S006 (SSD)
+MEASSSD  MODE	   REAL        # Measure SSD for 30s in real-time
 MEASURE  DTIME     30.000      # set dwell time 1.0 s
-MEASSSD  MODE REAL             # Measure SSD for 30s in real-time
 
 LABEL LoopPoint
 

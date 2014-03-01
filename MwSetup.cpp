@@ -850,26 +850,12 @@ void MainWindow::ScanStart( void )
 	return;
       }
     }
-    //    MovingS = SPSMotorS->currentIndex();  // motor speed;
-    //    SPSSelU = SPSUnit->currentIndex();
-    //    SPSUPP = ( SPSSelU == 0 ) ? 1 : am->getUPP();
-    //    ScanOrigin = am->value().toDouble();
-    //    SInfo.sx = ScanSP
-    //      = am->any2p( SPSsP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
-    //    SInfo.ex = ScanEP
-    //      = am->any2p( SPSeP->text().toDouble(), SPSSelU, SPSRelAbs->stat() );
-    //    ScanSTP = SPSstep->text().toDouble() / SPSUPP;
-    //    if ( ScanEP > ScanSP ) {
-    //      ScanSTP = fabs( ScanSTP );
-    //    } else {
-    //      ScanSTP = - fabs( ScanSTP );
-    //    }
-    //    SInfo.dx = ScanSTP;
-    SInfo.valid = true;
     if ( SInfo.dx == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
     }
+
+    SInfo.valid = true;
     inSPSing = true;
 
     NewLogMsg( QString( tr( "Scan Start (%1 %2)" ) )
@@ -894,7 +880,10 @@ void MainWindow::ScanStart( void )
     ScanView->SetXName( SInfo.am->getName() );
     ScanView->SetXUnitName( SInfo.unitName );
     ScanView->SetUpp( SInfo.upp );
-    ScanView->SetCenter( SInfo.origin );
+    if ( SInfo.relabs == REL )
+      ScanView->SetCenter( SInfo.origin );
+    else 
+      ScanView->SetCenter( 0 );
     ScanView->SetAutoScale( true );
     ScanView->makeValid( true );
 

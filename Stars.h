@@ -7,7 +7,7 @@
 
 #include "SMsg.h"
 
-#define ERROR   "Error!!"        // string を返す関数のエラー通知用
+//#define ERROR   "Error!!"        // string を返す関数のエラー通知用
 
 // デバイス名の定義
 //#define MYNAME      "BLC"       // 自分が名乗る名前 config で変えられる様にするべき

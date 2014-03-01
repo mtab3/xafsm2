@@ -20,7 +20,7 @@ void MainWindow::DTAutoCalibStart( void )
     
     QFileInfo F( fname );
     if ( ! F.exists() ) {
-      fname = ":" DTAUTOSEQFNAME;
+      fname = ":" + fname;
     }
     
     inDTAutoCalib = true;
@@ -62,7 +62,7 @@ void MainWindow::SSDEngAutoCalibStart( void )
     
     QFileInfo F( fname );
     if ( ! F.exists() ) {
-      fname = ":" SSDENGAUTOSEQFNAME;
+      fname = ":" + fname;
     }
 
     inSSDEngAutoCalib = true;
@@ -254,12 +254,18 @@ void MainWindow::AutoSequence0( void )
 	    ASCMDii++;
 	    break;
 	case 1:
-	  if (( !ASMUnits.isParent() )||( ! ASMUnits.getValue0() )) {
+	  if ( !ASMUnits.init() ) {
 	    ASMUnits.clearStage();
 	    ASCMDii++;
 	  }
 	  break;
 	case 2:
+	  if (( !ASMUnits.isParent() )||( ! ASMUnits.getValue0() )) {
+	    ASMUnits.clearStage();
+	    ASCMDii++;
+	  }
+	  break;
+	case 3:
 	  if ( ! ASMUnits.getValue() ) {
 	    ASCMDii = 0;     // ASCMDii で回るサブループの最後では必ず ASCMDii = 0;
 	    ASMUnits.clearStage(); // これは不要のはずだけど念の為

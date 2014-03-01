@@ -929,7 +929,8 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
 
 void MainWindow::S2DReCalcMap( void )
 {
-  setAllROIs();
+  if ( AutoROIsetAll->isChecked() )
+    setAllROIs();
 }
 
 void MainWindow::S2DReCalcMap0( void )
