@@ -159,6 +159,7 @@ void MainWindow::MeasSequence( void )
         WriteInfoFile2();
         MeasTimer->stop();
         inMeas = false;
+	MPSet.normallyFinished = true;
         MeasStart->setText( tr( "Start" ) );
         MeasStart->setStyleSheet( NormalB );
         MeasPause->setEnabled( false );

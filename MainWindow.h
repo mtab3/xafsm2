@@ -621,15 +621,8 @@ private slots:
   void CheckNewMeasFileName( void );
   void ReCalcXAFSWithMCA( void );
   void AfterSaveXafs( void );
-  //  void AfterSaveMCAs( void );
 
   void GetNewGos( void );
-#if 0
-  void GoToPosKeV1( void ) { MoveCurThPosKeV( GoPosKeV[0] ); }
-  void GoToPosKeV2( void ) { MoveCurThPosKeV( GoPosKeV[1] ); }
-  void GoToPosKeV3( void ) { MoveCurThPosKeV( GoPosKeV[2] ); }
-  void GoToPosKeV4( void ) { MoveCurThPosKeV( GoPosKeV[3] ); }
-#endif
   void GoToPosKeV( void );
   void ToggleGoToButtons( QString );
 
@@ -644,9 +637,7 @@ private slots:
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
   void newGain( void );
-#if 0      // new mcas
-  void ShowNewMCAStat( void );
-#endif
+
   void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );

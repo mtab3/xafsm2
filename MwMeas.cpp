@@ -206,10 +206,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
   connect( AfterSave, SIGNAL( clicked() ), this, SLOT( AfterSaveXafs() ),
 	   Qt::UniqueConnection );
-#if 0
-  connect( RecordMCAs, SIGNAL( clicked() ), this, SLOT( AfterSaveMCAs() ),
-	   Qt::UniqueConnection );
-#endif
   inMeasDark = false;
   MeasDarkStage = 0;
   AskingShutterClose = false;
@@ -1452,6 +1448,7 @@ void MainWindow::StartMeasurement( void )
     CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
     SetupMPSet( &MPSet ); // これ以降に return してはいけない
     MPSet.valid = true;
+    MPSet.normallyFinished = false;
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
@@ -1877,6 +1874,14 @@ void MainWindow::AfterSaveXafs()
 {
   QString buf;
 
+  if ( cMCAView == NULL ) {
+    statusbar->showMessage( tr( "No valid measured data." ) );
+    return;
+  }
+  if ( ! MPSet.valid ) {
+    statusbar->showMessage( tr( "No measurement has been done." ) );
+    return;
+  }
   int ML = cMCAView->getMCALength();
   SetDFName0( MPSet.fname );
 
@@ -1963,25 +1968,3 @@ void MainWindow::AfterSaveXafs()
     }
   }
 }
-
-#if 0
-void MainWindow::AfterSaveMCAs()
-{
-  qDebug() << "here";
-
-  if ( MPSet.valid ) {
-    for ( int r = 0; r < MPSet.finalRpt; r++ ) {
-      for ( int i = 0; i < MPSet.totalPoints; i++ ) {
-	aMCASet *set = XafsMCAMap.aPoint( i, r );
-	if ( ( set != NULL ) && ( set->isValid() ) ) {
-	  SetDFName0( MPSet.fname );
-	  DFName00 = MPSet.fname00;
-	  SetDFName( r, MPSet.finalRpt,
-		     QString( "-MCA-%1" ).arg( i, 4, 10, QChar( '0' ) ) );
-	  saveMCAData0( DFName, set );
-	}
-      }
-    }
-  }
-}
-#endif

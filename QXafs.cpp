@@ -612,6 +612,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 99:
+    MPSet.normallyFinished = true;
     PlayEndingSound();
     QXafsFinish();
     break;

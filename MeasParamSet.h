@@ -3,6 +3,7 @@
 
 struct MeasPSet {
   bool valid;
+  bool normallyFinished;
 
   MUnits mUnits;
   QString fname;
@@ -15,7 +16,7 @@ struct MeasPSet {
   int finalPnt;
   QVector<double*> i0s;
 
-  MeasPSet() { valid = false; };
+  MeasPSet() { valid = false; normallyFinished = false; };
 };
 
 #endif
