@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QFileDialog>
+#include <QPrintDialog>
 
 #include <math.h>
 

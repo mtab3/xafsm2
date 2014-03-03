@@ -16,7 +16,10 @@ const QString CMode[ MEASMODES + 1 ] = {
 
 MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
+  qDebug() << "-0";
   setupUi( this );
+
+  qDebug() << "00";
 
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
@@ -84,6 +87,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   TTable = new TuningTable;
 
+  qDebug() << "aa";
+
   Initialize();
   setupView();
   setupCommonArea();
@@ -100,6 +105,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupScan2DArea();
   setupWebView();
   setupAutoSequence();
+
+  qDebug() << "bb";
 
   conds = new Conditions;
   conds->setVersionInfo( VERSION, __DATE__, __TIME__ );
