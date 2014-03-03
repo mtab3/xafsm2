@@ -1,5 +1,6 @@
 
 #include <QtGui>
+#include <QStylePainter>
 
 #include "cBar.h"
 

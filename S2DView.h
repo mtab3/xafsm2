@@ -2,6 +2,7 @@
 #define S2DVIEW_H
 
 #include <QFrame>
+#include <QPrinter>
 
 #include "ui_S2DView.h"
 #include "MouseC.h"

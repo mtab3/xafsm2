@@ -2,6 +2,8 @@
 #define XYVIEW_H
 
 #include <QWidget>
+#include <QPrinter>
+
 #include "ui_XView.h"
 
 #include "Diff.h"

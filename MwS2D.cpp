@@ -11,7 +11,7 @@ void MainWindow::setupScan2DArea( void )
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
   S2DFileSel->setDirectory( QDir::currentPath() );
-  S2DFileSel->setFilter( "*.dat" );
+  S2DFileSel->setNameFilter( "*.dat" );
   S2DFileSel->setConfirmOverwrite( false );
 
   S2DDialog = new QDialog;

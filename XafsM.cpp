@@ -52,10 +52,11 @@ int main( int argc, char *argv[] )
     break;
   }
 
-  QTextCodec::setCodecForTr( QTextCodec::codecForName( "Shift-JIS" ) );
+  //QTextCodec::setCodecForTr( QTextCodec::codecForName( "Shift-JIS" ) );
   // tr() マクロ中の文字列のコーディング指定
-  QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "Shift-JIS" ) );
+  //QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "Shift-JIS" ) );
   // const char * "" を暗黙に QString に変換する時のコーディング指定
+  QTextCodec::setCodecForLocale( QTextCodec::codecForName( "Shift-JIS" ) );
 
   app.setStyle( "Cleanlooks" );
 

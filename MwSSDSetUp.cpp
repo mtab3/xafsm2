@@ -78,7 +78,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   MCAFSel = new QFileDialog;
   MCAFSel->setAcceptMode( QFileDialog::AcceptSave );
   MCAFSel->setDirectory( QDir::currentPath() );
-  MCAFSel->setFilter( "*.dat" );
+  MCAFSel->setNameFilter( "*.dat" );
 
   connect( GainInput, SIGNAL( editingFinished() ), 
 	   this, SLOT( newGain() ),

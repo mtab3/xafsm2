@@ -153,12 +153,12 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   scanFSel = new QFileDialog;
   scanFSel->setAcceptMode( QFileDialog::AcceptSave );
   scanFSel->setDirectory( QDir::currentPath() );
-  scanFSel->setFilter( "*.dat" );
+  scanFSel->setNameFilter( "*.dat" );
 
   monFSel = new QFileDialog;
   monFSel->setAcceptMode( QFileDialog::AcceptSave );
   monFSel->setDirectory( QDir::currentPath() );
-  monFSel->setFilter( "*.dat" );
+  monFSel->setNameFilter( "*.dat" );
 
   connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ),
 	   Qt::UniqueConnection );

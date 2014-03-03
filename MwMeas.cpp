@@ -44,9 +44,9 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   SelDFND->setDirectory( QDir::currentPath() );
   SelWBFND->setDirectory( QDir::currentPath() );
   SelRBFND->setDirectory( QDir::currentPath() );
-  SelDFND->setFilter( "*.dat" );
-  SelWBFND->setFilter( "*.prm" );
-  SelRBFND->setFilter( "*.prm" );
+  SelDFND->setNameFilter( "*.dat" );
+  SelWBFND->setNameFilter( "*.prm" );
+  SelRBFND->setNameFilter( "*.prm" );
   SelectedOrgName.clear();
   DFName00.clear();
   AutoModeFirst = true;
@@ -469,7 +469,7 @@ void MainWindow::SetNewGases( void )
 {
   I0Recommend->clear();
   double trans1, trans2;
-  double near = 100;
+  double nearBy = 100;
   int Rec = 0;
   for ( int i = 0; i < Gases.count(); i++ ) {
     double mut1 = calcMuT( I0ChSelect->currentIndex(), i,     // 1次
@@ -484,13 +484,13 @@ void MainWindow::SetNewGases( void )
 		 .arg( trans1, 5, 'f', 3 )
 		 .arg( trans2, 5, 'f', 3 )
 		 .arg( (1. - trans2 ) / ( 1. - trans1 ), 4, 'e', 2 ) );
-    if ( fabs( trans1 - 0.9 ) < near ) {
-      near = fabs( trans1 - 0.9 );
+    if ( fabs( trans1 - 0.9 ) < nearBy ) {
+      nearBy = fabs( trans1 - 0.9 );
       Rec = i;
     }
   }
   I0Recommend->setCurrentIndex( Rec );
-  near = 100;
+  nearBy = 100;
   Rec = 0;
   I1Recommend->clear();
   for ( int i = 0; i < Gases.count(); i++ ) {
@@ -506,8 +506,8 @@ void MainWindow::SetNewGases( void )
 		 .arg( trans1, 5, 'f', 3 )
 		 .arg( trans2, 5, 'f', 3 )
 		 .arg( (1. - trans2 ) / ( 1. - trans1 ), 4, 'e', 2 ) );
-    if ( fabs( trans1 - 0.1 ) < near ) {
-      near = fabs( trans1 - 0.1 );
+    if ( fabs( trans1 - 0.1 ) < nearBy ) {
+      nearBy = fabs( trans1 - 0.1 );
       Rec = i;
     }
   }

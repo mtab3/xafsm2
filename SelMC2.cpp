@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QMessageBox>
 
 #include "SelMC2.h"
 #include "Mccd.h"

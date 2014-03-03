@@ -170,7 +170,7 @@ void Stars::ReceiveMessageFromStars( void )
     RBuf = RBuf.simplified();
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;
-    ss->write( WBuf.toAscii() );
+    ss->write( WBuf.toLatin1() );
     break;
   case CSTAGE1:
     OkF = false;
@@ -407,7 +407,7 @@ bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
   Cmd += "\n";
 
   emit AskRecord( tr( "Sending a message [%1] to Stars" ).arg( Cmd ) );
-  ss->write( Cmd.toAscii() );
+  ss->write( Cmd.toLatin1() );
 
   return true;
 }

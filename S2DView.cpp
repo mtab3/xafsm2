@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QRectF>
+#include <QStylePainter>
 
 #include "S2DView.h"
 

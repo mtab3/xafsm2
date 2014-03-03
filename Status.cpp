@@ -1,6 +1,8 @@
 #include "Status.h"
 #include "StarsSV2.h"
 
+#include <QLineEdit>
+
 Status::Status( QWidget *p ) : QScrollArea( p )
 {
   setupUi( this );

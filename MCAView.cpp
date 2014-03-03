@@ -1,3 +1,5 @@
+#include <QStylePainter>
+
 #include "XafsM.h"
 #include "MCAView.h"
 #include "PeakFit.h"
@@ -13,7 +15,7 @@
 //    k2p は keV-to-Pixel のつもり。ネーミングがまずいか...
 // 描画 pixel との換算は一度 keV を通って cc.r2sx, cc.s2rx,...
 
-#define NEAR ( 10 )     // ROI のエッジに近いと判断する距離(画面 pixel)
+#define NEAR1 ( 10 )     // ROI のエッジに近いと判断する距離(画面 pixel)
 #define NEAR2 ( 10 )    // 据え置きカーソルに近いと判断する距離
 #define NEAR3 ( 3 )     // 蛍光ピーク位置が近いと判断する距離
 
@@ -334,7 +336,7 @@ void MCAView::Draw( QPainter *p )
     double d = 1;
     if ( ( ( i + DELOFFSET ) >= 0 ) && ( ( i - DELOFFSET ) < MCALen ) ) {
       for ( int j = 0; j < DIFFRANGE; j++ ) {
-	d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
+        d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
       }
     }
     dMCA[i] = d = sqrt( d ) / 2;
@@ -946,7 +948,7 @@ void MCAView::mouseMoveEvent( QMouseEvent *e )
     int dsx = fabs( e->x() - m.sx() );
     int dex = fabs( e->x() - m.ex() );
 
-    if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {
+    if ( ( dsx < NEAR1 ) || ( dex < NEAR1 ) ) {
       if ( dsx < dex ) {
 	nearX = m.sx();
       } else {
@@ -988,7 +990,7 @@ void MCAView::mousePressEvent( QMouseEvent *e )
       int dsx = fabs( e->x() - m.sx() );
       int dex = fabs( e->x() - m.ex() );
       int setX;
-      if ( ( dsx < NEAR ) || ( dex < NEAR ) ) {   // 近くに既設の ROI の端点があるか
+      if ( ( dsx < NEAR1 ) || ( dex < NEAR1 ) ) {   // 近くに既設の ROI の端点があるか
 	if ( dsx < dex ) {                        // あれば ROI 変更
 	  setX = m.ex();
 	} else {

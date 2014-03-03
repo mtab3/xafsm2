@@ -2,6 +2,7 @@
 #define MCAVIEW_H
 
 #include <QWidget>
+#include <QPrinter>
 
 #include "ui_MCAView.h"
 #include "MouseC.h"

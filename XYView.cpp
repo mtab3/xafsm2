@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QStylePainter>
 
 #include "XafsM.h"
 #include "XYView.h"
