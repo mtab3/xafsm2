@@ -1,4 +1,4 @@
-//#include <QSound>
+#include <QSound>
 
 #include "MainWindow.h"
 
@@ -14,7 +14,7 @@ void MainWindow::PlayGoOnSound( void )
 
 void MainWindow::PlaySound( QString name, int times )
 {
-#if 0
+#if 1
   QSound sound( name );
   // ここで QSound *sound = new QSound; すると
   // 最後に(or どこかで) delete sound; がペアで必要。
