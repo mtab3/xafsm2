@@ -62,16 +62,6 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   }
 }
 
-#if 0
-void XYView::PostInit( void )
-{
-  for ( int i = 0; i < MAXLINES; i++ ) {
-    SetLR( i, LEFT_AX );
-    SetScaleType( i, FULLSCALE );
-  }
-}
-#endif
-
 void XYView::Clear( void )
 {
   for ( int i = 0; i < MAXLINES; i++ ) {

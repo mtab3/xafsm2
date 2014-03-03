@@ -8,7 +8,7 @@ void MainWindow::MeasSequence( void )
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
 
-  if ( QXafsMode->isChecked() ) {
+  if ( MPSet.qXafsMode ) {
     ShowQXafsProgress();
   }
 
@@ -24,7 +24,7 @@ void MainWindow::MeasSequence( void )
 
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
 
-  if ( QXafsMode->isChecked() ) {
+  if ( MPSet.qXafsMode ) {
     QXafsMeasSequence();
     return;
   }
@@ -159,6 +159,7 @@ void MainWindow::MeasSequence( void )
         WriteInfoFile2();
         MeasTimer->stop();
         inMeas = false;
+	MPSet.normallyFinished = true;
         MeasStart->setText( tr( "Start" ) );
         MeasStart->setStyleSheet( NormalB );
         MeasPause->setEnabled( false );

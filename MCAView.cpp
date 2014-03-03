@@ -252,6 +252,7 @@ void MCAView::Draw( QPainter *p )
 
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
+  qDebug() << "00" << p << ExROIRangeC;
 
   double min, max;
   double min0 = 1e300, max0 = 0;
@@ -301,7 +302,6 @@ void MCAView::Draw( QPainter *p )
   if ( m.inPress() && ( mMode == M_ROI ) ) {
     emit newROI( k2p->E2p( MCACh, wrROIsx ), k2p->E2p( MCACh, wrROIex ) );
   }
-
   // 平滑化
   Smooth( true, (int *)MCA, SMCA, MCALen, 10 /* SMOOTHINGRANGE */, NULL /* SWeight */ );
 
@@ -358,7 +358,9 @@ void MCAView::Draw( QPainter *p )
       p->setPen( ROIRangeC );
       sum += MCA[i];
     } else {
-      p->setPen( ExROIRangeC );
+      qDebug() << "aa" << p << ExROIRangeC;
+      //      p->setPen( ExROIRangeC );
+      qDebug() << "bb";
     }
     if ( dispLog ) {  // Log 表示
       if ( i > 0 ) {
@@ -928,8 +930,6 @@ void MCAView::PeakSearch( double Es, double Ee )
       }
     }
   }
-
-
   emit newPeakList( &MCAPeaks );
 }
 
@@ -982,6 +982,7 @@ void MCAView::mousePressEvent( QMouseEvent *e )
       m.Pressed( e );
     }
   } else {                                    // シフトキー無し
+    qDebug() << "m-press 4";
     if ( e->button() == Qt::LeftButton ) {   // 左ボタンで ROI 設定モード
       mMode = M_ROI;
       int dsx = fabs( e->x() - m.sx() );

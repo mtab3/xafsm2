@@ -206,10 +206,6 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
   connect( AfterSave, SIGNAL( clicked() ), this, SLOT( AfterSaveXafs() ),
 	   Qt::UniqueConnection );
-#if 0
-  connect( RecordMCAs, SIGNAL( clicked() ), this, SLOT( AfterSaveMCAs() ),
-	   Qt::UniqueConnection );
-#endif
   inMeasDark = false;
   MeasDarkStage = 0;
   AskingShutterClose = false;
@@ -1181,26 +1177,13 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
         return;
       }
-#if 0
-      if ( UseAux1->isChecked() || UseAux2->isChecked() ) {
-        // 今 QXafs で AUX は使えない
-        statusbar
-            ->showMessage( tr( "Aux1 and 2 can not be used for QXAFS" ), 2000 );
-      }
-      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
-      if ( I0Sensors[ SelectI0->currentIndex() ]->getID() != "QXAFS-I0" ) {
-        statusbar
-            ->showMessage( tr( "Selected I0 Sensor can not be used for QXAFS" ), 2000 );
+      // QXafs でステップスキャン型のデータファイル生成を選択している時は
+      // ステップスキャンのブロックパラメータを正しく設定していないとダメ
+      if ( SaveQDataAsStepScan->isChecked() && ( ! NBlockPisValid ) ) {
+        statusbar->showMessage( tr( "Block parameters for step scan "
+				    "has not been set normally" ), 2000 );
         return;
       }
-      // これは将来変える 「Q mode 可能」というフラグが立ってれば OKにする
-      if ( I1Sensors[ SelectI1->currentIndex() ]->getID() != "QXAFS-I1" ) {
-        statusbar
-            ->showMessage( tr( "Selected I1 Sensor can not be used for QXAFS" ), 2000 );
-        return;
-      }
-#endif
-
     } else {   // Normal モード時専用のチェック
       if ( TotalPoints > 1999 ) {
         statusbar->showMessage( tr( "Measured points are too many.    "
@@ -1451,7 +1434,6 @@ void MainWindow::StartMeasurement( void )
     SetDispMeasModes();
     CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
     SetupMPSet( &MPSet ); // これ以降に return してはいけない
-    MPSet.valid = true;
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
@@ -1505,6 +1487,10 @@ void MainWindow::StartMeasurement( void )
 void MainWindow::SetupMPSet( MeasPSet *aSet )
 {
   int ttp = 0;
+
+  aSet->valid = true;
+  aSet->normallyFinished = false;
+  aSet->qXafsMode = QXafsMode->isChecked();
 
   aSet->mUnits.clearUnits();
   for ( int i = 0; i < mUnits.count(); i++ ) {
@@ -1583,7 +1569,7 @@ void MainWindow::SurelyStop( void )
   inPause = false;
   MeasPause->setText( tr( "Pause" ) );
   MeasPause->setStyleSheet( NormalB );
-  if ( QXafsMode->isChecked() )
+  if ( MPSet.qXafsMode )
     QXafsFinish0();
   onMeasFinishWorks();
 }
@@ -1877,6 +1863,14 @@ void MainWindow::AfterSaveXafs()
 {
   QString buf;
 
+  if ( cMCAView == NULL ) {
+    statusbar->showMessage( tr( "No valid measured data." ) );
+    return;
+  }
+  if ( ! MPSet.valid ) {
+    statusbar->showMessage( tr( "No measurement has been done." ) );
+    return;
+  }
   int ML = cMCAView->getMCALength();
   SetDFName0( MPSet.fname );
 
@@ -1963,25 +1957,3 @@ void MainWindow::AfterSaveXafs()
     }
   }
 }
-
-#if 0
-void MainWindow::AfterSaveMCAs()
-{
-  qDebug() << "here";
-
-  if ( MPSet.valid ) {
-    for ( int r = 0; r < MPSet.finalRpt; r++ ) {
-      for ( int i = 0; i < MPSet.totalPoints; i++ ) {
-	aMCASet *set = XafsMCAMap.aPoint( i, r );
-	if ( ( set != NULL ) && ( set->isValid() ) ) {
-	  SetDFName0( MPSet.fname );
-	  DFName00 = MPSet.fname00;
-	  SetDFName( r, MPSet.finalRpt,
-		     QString( "-MCA-%1" ).arg( i, 4, 10, QChar( '0' ) ) );
-	  saveMCAData0( DFName, set );
-	}
-      }
-    }
-  }
-}
-#endif

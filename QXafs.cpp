@@ -96,6 +96,11 @@ void MainWindow::ToggleQXafsMode( bool )
 	break;
       }
     }
+    // ブロックパラメータのセーブを行う前に、
+    // 現在のパラメータの妥当性を確認しておく
+    NBlockPisValid = ( CheckBlockRange() && ( ( TP > 0 ) && ( TT0 > 0 ) ) );
+
+    // ノーマルのブロックパラメータのセーブ
     SaveNowBlocks = SelBLKs->value();
     NXAFSBInfo.Blocks = SaveNowBlocks;
     NXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
@@ -612,6 +617,7 @@ void MainWindow::QXafsMeasSequence( void )
     break;
 
   case 99:
+    MPSet.normallyFinished = true;
     PlayEndingSound();
     QXafsFinish();
     break;
