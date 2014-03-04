@@ -353,7 +353,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>Pop/Dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Pop/Dock</translation>
     </message>
 </context>
 <context>
@@ -1540,15 +1540,15 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Aux1 and 2 can not be used for QXAFS</source>
-        <translation>Q-XAFS では Aux1 および 2 は使用できません。</translation>
+        <translation type="obsolete">Q-XAFS では Aux1 および 2 は使用できません。</translation>
     </message>
     <message>
         <source>Selected I0 Sensor can not be used for QXAFS</source>
-        <translation>I0としえて選択した検出器は Q-XAFS には使用できません。</translation>
+        <translation type="obsolete">I0としえて選択した検出器は Q-XAFS には使用できません。</translation>
     </message>
     <message>
         <source>Selected I1 Sensor can not be used for QXAFS</source>
-        <translation>I1としえて選択した検出器は Q-XAFS には使用できません。</translation>
+        <translation type="obsolete">I1としえて選択した検出器は Q-XAFS には使用できません。</translation>
     </message>
     <message>
         <source>Measured points are too many.    It should be less than 2000 in normal XAFS mode.</source>
@@ -2673,11 +2673,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Show each scan</source>
-        <translation type="unfinished"></translation>
+        <translation>各スキャンの表示</translation>
     </message>
     <message>
         <source>Show sum up of scans</source>
-        <translation type="unfinished"></translation>
+        <translation>全スキャンの合計表示</translation>
     </message>
     <message>
         <source>Start Pnt.</source>
@@ -2698,6 +2698,22 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>can&apos;t open the file [%1] to write.</source>
         <translation>ファイル[%1]を書き込めません。</translation>
+    </message>
+    <message>
+        <source>Clr.</source>
+        <translation>クリア</translation>
+    </message>
+    <message>
+        <source>Block parameters for step scan has not been set normally</source>
+        <translation>ステップスキャンのブロックパラメータが正しく設定されていません</translation>
+    </message>
+    <message>
+        <source>No valid measured data.</source>
+        <translation>意味のある測定データがありません</translation>
+    </message>
+    <message>
+        <source>No measurement has been done.</source>
+        <translation>測定が結果がありません</translation>
     </message>
 </context>
 <context>
