@@ -28,6 +28,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MCACanSaveAllOnMem = false;
   MCAPreAMPGainHasSet = false;
 
+  MCAFSel = scanFSel = monFSel = S2DFileSel
+    = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;
+
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
   T->start();
