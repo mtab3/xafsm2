@@ -17,8 +17,6 @@ int main( int argc, char *argv[] )
   DefFileName = "XAFSM.def";
   newFluoMode = false;
 
-  qDebug() << "aaa";
-
   QString myname = QString( argv[0] )
     .section( "/", -1 )  // "/" を区切りに切り出したトークンの右から数えて1つめ
     .section( "\\", -1 ) // "\\" (エン記号)を区切りに、同上

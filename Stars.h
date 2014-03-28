@@ -120,7 +120,7 @@ signals:
   void AnsSetPeakingTime( SMsg msg );
   void AnsSetDynamicRange( SMsg msg );
   void AnsGetCalibration( SMsg msg );
-  void AnsGetThreshold2( SMsg msg );
+  void AnsGetThreshold( SMsg msg );
   void AnsGetPeakingTime( SMsg msg );
   void AnsGetDynamicRange( SMsg msg );
   void AnsGetPreAMPGain( SMsg msg );
