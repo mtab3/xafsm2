@@ -28,4 +28,5 @@ void RelAbs::Show( void )
 {
   Rel->setStyleSheet( ( Stat == REL )? RadioBOn : RadioBOff );
   Abs->setStyleSheet( ( Stat == ABS )? RadioBOn : RadioBOff );
+  emit statChanged( Stat );
 }

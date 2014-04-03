@@ -29,6 +29,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   setupMDispFirstTime = true;
   monRecF = false;
+  LastInIsPulsV = true;
 
   GoPosKeV[0] = Eg - 0.50;
   GoPosKeV[1] = Eg - 0.05;
@@ -80,6 +81,10 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     SPSMotorSpeed->addItem( MSpeeds[i].MSName );
   }
   GoMotorS->setCurrentIndex( 1 );
+
+  connect( MMRelAbs, SIGNAL( statChanged( RELABS ) ),
+	   this, SLOT( NewMMRelAbs( RELABS ) ),
+	   Qt::UniqueConnection );
 
   SPSLastSelectedM = SPSMotorSelect->currentIndex();
   SPSMotorSpeed->setCurrentIndex( 1 );
@@ -217,7 +222,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( ToggleGoToButtons( QString ) ),
 	   Qt::UniqueConnection );
 }
-
 
 void MainWindow::setupDataRoot( void )
 {
@@ -618,10 +622,20 @@ void MainWindow::SetAllGoUnits( int i )
   ShowAllGos();
 }
 
+void MainWindow::NewMMRelAbs( RELABS /* stat */ )
+{
+  if ( LastInIsPulsV ) {
+    NewGoMotorPosPuls( GoMotorPosPuls->text() );
+  } else {
+    NewGoMotorPosUnit( GoMotorPosUnit->text() );
+  }
+}
+
 void MainWindow::NewGoMotorPosPuls( const QString &val )
 {
   AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
 
+  LastInIsPulsV = true;
   if ( MMRelAbs->stat() == ABS ) {
     GoMotorPosUnit
       ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() ) );
@@ -634,6 +648,7 @@ void MainWindow::NewGoMotorPosUnit( const QString &val )
 {
   AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
 
+  LastInIsPulsV = false;
   if ( MMRelAbs->stat() == ABS ) {
     GoMotorPosPuls
       ->setText( QString::number( val.toDouble() / am->getUPP() + am->getCenter() ) );

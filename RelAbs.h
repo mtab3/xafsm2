@@ -21,7 +21,8 @@ class RelAbs : public QFrame, private Ui::RelAbs
   RelAbs( QWidget *p = NULL );
   RELABS stat( void ) { return Stat; };
 
-
+ signals:
+  void statChanged( RELABS stat );
 };
 
 #endif

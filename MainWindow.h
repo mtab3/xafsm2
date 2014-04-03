@@ -295,6 +295,7 @@ private:
   bool UseDefUReal( AUnit *am );
   void PutScanPSet( ScanPSet *set );
   void GetScanPSet( ScanPSet *set );
+  bool LastInIsPulsV;
 
   //  bool MeasCntIs;
   //  int MeasCntNo;
@@ -631,6 +632,7 @@ private slots:
   void NewMotor( void );
   void NewGoMotorPosPuls( const QString &val );
   void NewGoMotorPosUnit( const QString &val );
+  void NewMMRelAbs( RELABS stat );
   void GoMAtP( void );
   void GoMStop( void );
   void Monitor( void );
