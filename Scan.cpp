@@ -69,7 +69,6 @@ void MainWindow::ScanSequence( void )
       ScanStage = 10;
     } else {
       am->SetValue( NowScanP );
-      qDebug() << "NowScanP " << NowScanP;
       ScanStage = 3;
     }
     break;

@@ -125,6 +125,8 @@ private:
   double center;
   bool AreaSelecting;
   int SelLR[2];
+  int unitType;
+  double offset;
 
   double origMinx, origMaxx;
   double XShift, XShift0, xshift;
@@ -191,6 +193,8 @@ public:
   void SetRightName( QString Name ) { RightName = Name; };
   void SetXName( QString Name ) { XName = Name; };
   void SetXUnitName( QString name ) { XUnitName = name; };
+  void SetUnitType( int ut ) { unitType = ut; };
+  void SetOffset( double off ) { offset = off; };
   void makeValid( bool v = true ) { valid = v; };
   int GetPoints( int l );
   void SetPoints( int l, int p ) { points[ getL( l ) ] = p; };

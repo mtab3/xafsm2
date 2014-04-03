@@ -766,6 +766,7 @@ void MainWindow::setSInfo( void )
   SInfo.speed = SPSMotorSpeed->currentIndex();
   SInfo.relabs = SPSRelAbsSelect->stat();
   SInfo.origin = SInfo.am->value().toDouble();
+  SInfo.offset = SInfo.am->getCenter();
   SInfo.sx0 = SPSsP0->text();
   SInfo.ex0 = SPSeP0->text();
   SInfo.dx0 = SPSstep0->text();
@@ -880,10 +881,25 @@ void MainWindow::ScanStart( void )
     ScanView->SetXName( SInfo.am->getName() );
     ScanView->SetXUnitName( SInfo.unitName );
     ScanView->SetUpp( SInfo.upp );
-    if ( SInfo.relabs == REL )
-      ScanView->SetCenter( SInfo.origin );
-    else 
-      ScanView->SetCenter( 0 );
+    if ( SInfo.relabs == REL ) {
+      if ( SInfo.showUnit == 0 ) {
+	qDebug() << "pulse rel";
+	ScanView->SetCenter( SInfo.origin ); // パルス, 相対
+      } else {
+	qDebug() << "unit  rel";
+	ScanView->SetCenter( SInfo.origin ); // 実単位, 相対
+      }
+    } else {
+      if ( SInfo.showUnit == 0 ) {
+	qDebug() << "pulse  abs";
+	ScanView->SetCenter( 0 );             // パルス, 絶対
+      } else {
+	qDebug() << "unit   abs";
+	ScanView->SetCenter( SInfo.offset );  // 実単位, 絶対
+      }
+    }
+    ScanView->SetUnitType( SInfo.showUnit );
+    ScanView->SetOffset( SInfo.offset );
     ScanView->SetAutoScale( true );
     ScanView->makeValid( true );
 

@@ -21,6 +21,7 @@ struct ScanInfo
   double upp;
   int speed;
   double origin;
+  double offset;
   QString sx0, ex0, dx0, dwell0;
   double sx, ex, dx, dwell;
 };

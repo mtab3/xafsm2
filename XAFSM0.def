@@ -158,7 +158,7 @@ AGROUP 2 "Cs" "U"  "rgb(255,170,255)"    # "255,170,255"  is bright-pink
 #     -11406      : Center position in puls
 
 #MOTOR PM "M001" "DTH1"  "Dth1"  "pm16c04-2" "ch2" "asec" 0.05 INT 0
-MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT 0
+MOTOR PM "M001" "DTH1"  "Dth1"  "simmotor" "ch2" "asec" 0.05 INT -2000
 
 #
 # Following definitions are temporal (not real)
