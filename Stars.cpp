@@ -306,8 +306,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetDynamicRange( smsg ); break;
 	case GETCALIBRATION:
 	  emit AnsGetCalibration( smsg ); break;
-	case GETTHRESHOLD2:
-	  emit AnsGetThreshold2( smsg ); break;
+	case GETTHRESHOLD:
+	  emit AnsGetThreshold( smsg ); break;
 	case GETPEAKINGTIME:
 	  emit AnsGetPeakingTime( smsg ); break;
 	case GETDYNAMICRANGE:

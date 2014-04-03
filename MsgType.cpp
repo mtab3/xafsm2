@@ -68,7 +68,7 @@ const MsgTyp MsgT[] = {
   { "@SetPeakingTime", SETPEAKINGTIME },
   { "@SetDynamicRange", SETDYNAMICRANGE },
   { "@GetCalibration", GETCALIBRATION },
-  { "@GetThreshold2", GETTHRESHOLD2 },
+  { "@GetThreshold", GETTHRESHOLD },
   { "@GetPeakingTime", GETPEAKINGTIME },
   { "@GetDynamicRange", GETDYNAMICRANGE },
   { "@GetPreAMPGain", GETPREAMPGAIN },

@@ -44,7 +44,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
 	   this, SLOT( showPeakingTime( SMsg ) ),
 	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGetThreshold2( SMsg ) ), this, SLOT( showThreshold( SMsg ) ),
+  connect( s, SIGNAL( AnsGetThreshold( SMsg ) ), this, SLOT( showThreshold( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsGetCalibration( SMsg ) ),
 	   this, SLOT( showCalibration( SMsg ) ),
@@ -611,7 +611,7 @@ void MainWindow::SelSSDs( int ch )
 void MainWindow::getMCASettings( int ch )
 {
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold2", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
@@ -708,7 +708,7 @@ void MainWindow::showPeakingTime( SMsg msg )
 void MainWindow::showThreshold( SMsg msg )
 {
   if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
-    ThresholdInput->setText( msg.Vals().at(1) );
+    ThresholdInput->setText( msg.Val() );
   }
 }
 
