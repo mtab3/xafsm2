@@ -837,8 +837,10 @@ void MainWindow::setNewROI( int s, int e )
       ReCalcXAFSWithMCA();
       S2DReCalcMap0();
     } else {
+#if 0
       statusbar
 	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
+#endif
     }
   }
 }

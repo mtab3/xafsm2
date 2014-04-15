@@ -254,7 +254,6 @@ void MCAView::Draw( QPainter *p )
 
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
-  qDebug() << "00" << p << ExROIRangeC;
 
   double min, max;
   double min0 = 1e300, max0 = 0;
@@ -360,9 +359,7 @@ void MCAView::Draw( QPainter *p )
       p->setPen( ROIRangeC );
       sum += MCA[i];
     } else {
-      qDebug() << "aa" << p << ExROIRangeC;
-      //      p->setPen( ExROIRangeC );
-      qDebug() << "bb";
+      p->setPen( ExROIRangeC );
     }
     if ( dispLog ) {  // Log 表示
       if ( i > 0 ) {
@@ -984,7 +981,6 @@ void MCAView::mousePressEvent( QMouseEvent *e )
       m.Pressed( e );
     }
   } else {                                    // シフトキー無し
-    qDebug() << "m-press 4";
     if ( e->button() == Qt::LeftButton ) {   // 左ボタンで ROI 設定モード
       mMode = M_ROI;
       int dsx = fabs( e->x() - m.sx() );
@@ -1002,7 +998,6 @@ void MCAView::mousePressEvent( QMouseEvent *e )
       m.Pressed( e );
       m.setSx( setX );
       rROIsx = cc.s2rx( m.sx() );
-      update();
     }
     if ( e->button() == Qt::RightButton ) {  // 右ボタンで カーソル設置/削除
       double checkp = cc.s2rx( e->x() );
