@@ -443,7 +443,7 @@ void MainWindow::QXafsMeasSequence( void )
     MMainTh->SetValue( QXafsSP );   // 助走距離を含めたスタート地点へ
     statusbar->showMessage( tr( "Moving DXM to the start point" ) );
     MeasStage++;
-    break;     // break 必要。分光器が止まっていないとトリガの設定画できない
+    break;     // break 必要。分光器が止まっていないとトリガの設定ができない
   case 4:      // Repeat Point 1
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99
