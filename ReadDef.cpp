@@ -272,10 +272,16 @@ void MainWindow::ReadDef( QString fname )
 	if ( item != "" ) {
 	  DataRoot0 = item;
 	}
-      } else if ( item == "MCA_CAN_SAVE_ALL" ) {    // define data-root
+      } else if ( item == "MCA_CAN_SAVE_ALL" ) {
+	// define if the MCA data can save on memory or not.
 	next = nextItem( next, item );
 	if ( item != "" ) {
 	  MCACanSaveAllOnMem = ( item.toInt() != 0 );
+	}
+      } else if ( item == "MAX_MCA_ENERGY" ) {  // define the maximum MCA display energy
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  MaxMCAEnergy = item.toDouble();
 	}
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );

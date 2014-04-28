@@ -33,6 +33,7 @@ private:
   double *FittedLine;
   double *InitialLine;
 
+  double MaxEnergy;
   int MCALen;
   int MCACh;
   double realTime;
@@ -105,6 +106,7 @@ public:
   void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
   void setPeakFit( bool f ) { DoPeakFit = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
+  void setMaxEnergy( double e ) { MaxEnergy = e; };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
   void print( QPrinter *p );

@@ -143,6 +143,7 @@ private:
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
   bool MCACanSaveAllOnMem;
+  double MaxMCAEnergy;
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;

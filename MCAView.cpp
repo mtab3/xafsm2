@@ -44,6 +44,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   MinE = 0.;
   mMode = M_NO;
   yRatio = 1.0;
+  MaxEnergy = 20;
 
   ShowDiff = true;
   DoPeakSearch = true;
@@ -1083,7 +1084,7 @@ void MCAView::wheelEvent( QWheelEvent *e )
 
     if ( step < 0 ) {
       if ( MinE < 0 ) MinE = 0;
-      if ( MaxE > 20 ) MaxE = 20;
+      if ( MaxE > MaxEnergy ) MaxE = MaxEnergy;
     }
   }
   update();
