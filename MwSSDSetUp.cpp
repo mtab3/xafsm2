@@ -12,10 +12,15 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   QGridLayout *bl = new QGridLayout;
   MCADialog->setLayout( bl );
   PoppingMCADialog = false;
+
   connect( MCADialog, SIGNAL( finished(int) ), this, SLOT( PopUpMCA() ),
 	   Qt::UniqueConnection );
   connect( MCAPopUp, SIGNAL( clicked() ), this, SLOT( PopUpMCA() ), 
 	   Qt::UniqueConnection );
+
+  MaxMCAEnergyInput->setText( QString::number( MaxMCAEnergy ) );
+  connect( MaxMCAEnergyInput, SIGNAL( editingFinished() ),
+	   this, SLOT( newMaxMCAEnergy() ), Qt::UniqueConnection );
 
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
@@ -201,6 +206,23 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
+}
+
+void MainWindow::newMaxMCAEnergy( void )
+{
+  MaxMCAEnergy = MaxMCAEnergyInput->text().toDouble();
+  if ( MaxMCAEnergy < 20 ) {
+    MaxMCAEnergy = 20;
+    MaxMCAEnergyInput->setText( QString::number( MaxMCAEnergy ) );
+  }
+
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setMaxEnergy( MaxMCAEnergy );
+      view->update();
+    }
+  }
 }
 
 void MainWindow::PopUpMCA( void )
