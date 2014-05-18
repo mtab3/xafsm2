@@ -94,6 +94,28 @@ void MainWindow::MeasSequence( void )
       MoveCurThPosKeV( GoToKeV );     // 軸の移動
     }
     mUnits.clearStage();
+    if ( MStabOk && MPSet.TuneAtEachStep ) {
+      MeasStage = 41;
+    } else {
+      if ( mUnits.isParent() )
+	MeasStage = 5;
+      else
+	MeasStage = 6;
+    }
+    break;
+  case 41:
+
+
+
+
+
+    s->SendCMD2( "TuneAtEP", MStabDrv, "GetValue" );
+
+
+
+
+
+
     if ( mUnits.isParent() )
       MeasStage = 5;
     else
