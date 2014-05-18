@@ -26,6 +26,9 @@
 # 2013/11/28 add 'DATAROOT'    line to define data root
 # 2013/12/16 add 'MCA_CAN_SAVE_ALL' line
 # 2014/04/28 add 'MAX_MCA_ENERGY' line
+# 2014/05/18 add New SENSOR 'AIOi' via Aio64 driver 
+# 2014/05/18 add New MOTOR  'AIOo' via Aio64 driver
+# 2014/05/18 add 'MSTAB'       line to control delta-theta-1
 
 #
 # In this definition file,
@@ -220,6 +223,11 @@ MOTOR PM "M024" "GENERAL" "Cap. Stg. Omg"   "pm16c04-3" "ch14" "deg" 0.00096 INT
 MOTOR PM "M025" "GENERAL" "Cap. Stg. Z"   "pm16c04-3" "ch13" "mm"  0.0005  INT 0  # CEY-Z
 MOTOR PM "M026" "GENERAL" "Cap. Stg. X"   "pm16c04-3" "ch15" "mm"  0.001   INT 0
 MOTOR PM "M027" "GENERAL" "Cap. Stg. Phi" "pm16c04-2" "ch13" "deg" 0.004   INT 0
+
+MOTOR AIOo "M028" "GENERAL" "A out 0" "Aio64" "o0" "mV" 1 REAL -10 10
+MOTOR AIOo "M029" "GENERAL" "A out 1" "Aio64" "o1" "mV" 1 REAL -10 10
+MOTOR AIOo "M030" "GENERAL" "A out 2: wave out to PEZ controlling delta-theta-1" "Aio64" "o2" "mV" 1 REAL -10 10
+MOTOR AIOo "M031" "GENERAL" "A out 3: DC out to PEZ controlling delta-theta-1" "Aio64" "o3" "mV" 1 REAL -10 10
 
 DEF_U_REAL M002 M003 M004           # Stage XYZ
 DEF_U_REAL M005 M006 M007 M008      # 4WS
@@ -543,6 +551,16 @@ SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
 
 SENSOR CCG "S045" "VacGauge" "CC-10" "CC-10" "" "Pa" NO ""
 
+# AIO is a D/A converter
+SENSOR AIOi "S046" "GENERAL" "A in 0" "Aio64" "i0" "mV" NO ""
+SENSOR AIOi "S047" "GENERAL" "A in 1" "Aio64" "i1" "mV" NO ""
+SENSOR AIOi "S048" "GENERAL" "A in 2" "Aio64" "i2" "mV" NO ""
+SENSOR AIOi "S049" "GENERAL" "A in 3" "Aio64" "i3" "mV" NO ""
+SENSOR AIOi "S050" "GENERAL" "A in 4: Wave monitor to controll delta-theta-1" "Aio64" "i4" "mV" NO ""
+SENSOR AIOi "S051" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "Aio64" "i5" "mV" NO ""
+
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
 
+# Special Monochro control
+MSTAB "Aio64"

@@ -76,7 +76,7 @@ void MainWindow::ReadDef( QString fname )
 	  // 各 motor 個別
 	  if (( type == "PM" )||( type == "SC" )) {
 	    next = nextItem( next, item ); NewUnit->setCenter( item );
-	  } else if ( type == "PZ" ) {
+	  } else if (( type == "PZ" )||( type == "AIO" )) {
 	    next = nextItem( next, item ); NewUnit->setMinV( item );
 	    next = nextItem( next, item ); NewUnit->setMaxV( item );
 	  } else {
@@ -112,6 +112,7 @@ void MainWindow::ReadDef( QString fname )
 	    NewUnit->setMaxIntTime( item.toDouble() );
 	  } else if ( type == "DV2" ) {
 	  } else if ( type == "CCG" ) {
+	  } else if ( type == "AIO" ) {
 	  } else {
 	    qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
 	  }

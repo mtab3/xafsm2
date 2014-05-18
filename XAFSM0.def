@@ -25,8 +25,10 @@
 # 2013/11/28 add 'DATAROOT'    line to define data root
 # 2013/12/16 add 'MCA_CAN_SAVE_ALL' line
 # 2014/04/28 add 'MAX_MCA_ENERGY' line
+# 2014/05/18 add New SENSOR 'AIOi' via Aio64 driver 
+# 2014/05/18 add New MOTOR  'AIOo' via Aio64 driver
+# 2014/05/18 add 'MSTAB'       line to control delta-theta-1
 
-#
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
 # though, it cause no difference use or not use the "" basically.
@@ -242,6 +244,11 @@ SPEEDS "M014" 3000 5000 100 24
 MOTOR PM "M015" "THETA" "Theta" "simmotor" "ch3" "deg" 0.0000277777777777 INT -11776
 MOTOR PM "M016" "DTH2"  "Dth2"  "simmotor" "ch0" "asec" 0.05 INT 0
 MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check the range !!
+
+MOTOR AIOo "M018" "GENERAL" "A out 0" "simmotor" "Aio64o0" "mV" 1 REAL -10 10
+MOTOR AIOo "M019" "GENERAL" "A out 1" "simmotor" "Aio64o1" "mV" 1 REAL -10 10
+MOTOR AIOo "M020" "GENERAL" "A out 2: wave out to PEZ controlling delta-theta-1" "simmotor" "Aio64o2" "mV" 1 REAL -10 10
+MOTOR AIOo "M021" "GENERAL" "A out 3: DC out to PEZ controlling delta-theta-1" "simmotor" "Aio64o3" "mV" 1 REAL -10 10
 
 DEF_U_REAL M002 M003 M004       # Stage XYZ
 DEF_U_REAL M005 M006 M007 M008  # 4WS
@@ -559,7 +566,6 @@ SENSOR PAM2 "S044" "Aux2" "Keithley 6482-1-2" "m6482drv" "1" "mA" YES "S043"
 SENSOR CNT2 "S045" "Aux1" "cnt (via 6482-1-1)" "simmotor" "SNScnt4" "count" YES "S045" "S043" -2 -9
 SENSOR CNT2 "S046" "Aux2" "cnt (via 6482-1-2)" "simmotor" "SNScnt5" "count" YES "S045" "S044" -2 -9
 
-
 # The parameters following the identifier 'SENSOR' are
 #   PAM2      : Unit type   PAM : Pico-am-mator keithley 6482
 #     "S004"            : Uniq identifire of the sensor. The identifier must be identical.
@@ -578,5 +584,16 @@ SENSOR CNT2 "S046" "Aux2" "cnt (via 6482-1-2)" "simmotor" "SNScnt5" "count" YES 
 #SENSOR CCG "S047" "VacGauge" "CC-10" "CC-10" "" "Pa" NO ""
 SENSOR CCG "S047" "VacGauge" "CC-10" "simmotor" "CC10" "Pa" NO ""
 
+# AIO is a D/A converter
+SENSOR AIOi "S048" "GENERAL" "A in 0" "simmotor" "Aio64i0" "mV" NO ""
+SENSOR AIOi "S049" "GENERAL" "A in 1" "simmotor" "Aio64i1" "mV" NO ""
+SENSOR AIOi "S050" "GENERAL" "A in 2" "simmotor" "Aio64i2" "mV" NO ""
+SENSOR AIOi "S051" "GENERAL" "A in 3" "simmotor" "Aio64i3" "mV" NO ""
+SENSOR AIOi "S052" "GENERAL" "A in 4: Wave monitor to controll delta-theta-1" "simmotor" "Aio64i4" "mV" NO ""
+SENSOR AIOi "S053" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "simmotor" "AIo64i5" "mV" NO ""
+
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
+
+# Special Monochro control
+MSTAB "Aio64"
