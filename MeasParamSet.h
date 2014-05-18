@@ -5,6 +5,7 @@ struct MeasPSet {
   bool valid;
   bool normallyFinished;
   bool qXafsMode;
+  bool TuneAtEachStep;
 
   MUnits mUnits;
   QString fname;
@@ -17,7 +18,7 @@ struct MeasPSet {
   int finalPnt;
   QVector<double*> i0s;
 
-  MeasPSet() { valid = false; normallyFinished = false; qXafsMode = false; };
+  MeasPSet() { valid = false; normallyFinished = false; qXafsMode = false; TuneAtEachStep = false; };
 };
 
 #endif

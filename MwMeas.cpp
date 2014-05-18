@@ -24,6 +24,9 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   }
   if ( ! MCACanSaveAllOnMem )
     AfterShowType->removeItem( 1 );
+  if ( ! MStabOk ) {
+    TuneAtEachStp->setEnabled( false );
+  }
 
   BLKUnit = (UNIT)DefaultUnit;
   NXAFSBInfo.Unit = BLKUnit;
@@ -1491,6 +1494,7 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   aSet->valid = true;
   aSet->normallyFinished = false;
   aSet->qXafsMode = QXafsMode->isChecked();
+  aSet->TuneAtEachStep = TuneAtEachStp->isChecked();
 
   aSet->mUnits.clearUnits();
   for ( int i = 0; i < mUnits.count(); i++ ) {

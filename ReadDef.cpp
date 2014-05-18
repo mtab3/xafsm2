@@ -286,6 +286,7 @@ void MainWindow::ReadDef( QString fname )
 	}
       } else if ( item == "MSTAB" ) {  // define driver for monochromator controller via PEZ
 	next = nextItem( next, item );
+	MStabOk = true;
 	MStabDrv = item;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );

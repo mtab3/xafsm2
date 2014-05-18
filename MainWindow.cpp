@@ -25,6 +25,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MCACanSaveAllOnMem = false;
   MCAPreAMPGainHasSet = false;
   MaxMCAEnergy = 20;
+  MStabOk = false;
 
   MCAFSel = scanFSel = monFSel = S2DFileSel
     = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;

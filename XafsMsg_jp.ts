@@ -2715,6 +2715,35 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>No measurement has been done.</source>
         <translation>測定が結果がありません</translation>
     </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,... When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;このボタンがチェックされていると、繰り返し測定の2回目以降のファイル名は拡張子が .001, .002, .003,... の様になります。&lt;/p&gt;
+&lt;p&gt;チェックが外れていると、拡張子は常に .dat になり、基幹ファイル名の末尾に -001, -002, 等が追加され、例えば test-001.dat, test-002.dat,... の様になります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>F. Ext. Type :</source>
+        <translation>拡張子タイプ :</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Valid only when Step-Scan mode not Q-XAFS mode.&lt;/p&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ステップスキャンの場合のみ有効(QXAFSでは使用不可)&lt;/p&gt;&lt;p&gt;XAFS測定の1ステップ毎にΔθ1をチューニングします&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Tune at Each Stp.</source>
+        <translation>毎ステップチューニング</translation>
+    </message>
+    <message>
+        <source>Display Type</source>
+        <translation>表示形式</translation>
+    </message>
+    <message>
+        <source>Set Max MCA Energy</source>
+        <translation>MCA最大エネルギー設定</translation>
+    </message>
+    <message>
+        <source>Max MCA Energy </source>
+        <translation>MCA最大エネルギー</translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>

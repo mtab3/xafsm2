@@ -167,6 +167,7 @@ private:
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
   //  AUnit *ChangerX, *ChangerZ;
+  bool MStabOk;
   QString MStabDrv;
 
   QVector<QString> DefUReals;
