@@ -1,3 +1,4 @@
+#include <QStyleFactory>
 #include <QApplication>
 #include <QtGui>
 
@@ -13,6 +14,9 @@ bool newFluoMode;
 
 int main( int argc, char *argv[] )
 {
+  qDebug() << "QSF keys:: " << QStyleFactory::keys();
+  QApplication::setStyle( "Fusion" );
+
   LANG Lang = Japanese;
   DefFileName = "XAFSM.def";
   newFluoMode = false;
@@ -49,14 +53,11 @@ int main( int argc, char *argv[] )
     app.installTranslator( &appTr );
     break;
   }
-
   //QTextCodec::setCodecForTr( QTextCodec::codecForName( "Shift-JIS" ) );
   // tr() マクロ中の文字列のコーディング指定
   //QTextCodec::setCodecForCStrings( QTextCodec::codecForName( "Shift-JIS" ) );
   // const char * "" を暗黙に QString に変換する時のコーディング指定
   QTextCodec::setCodecForLocale( QTextCodec::codecForName( "Shift-JIS" ) );
-
-  app.setStyle( "Cleanlooks" );
 
   ReadVicF();
 
