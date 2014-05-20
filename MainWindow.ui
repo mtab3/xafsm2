@@ -47,16 +47,7 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <property name="leftMargin">
-          <number>5</number>
-         </property>
-         <property name="topMargin">
-          <number>5</number>
-         </property>
-         <property name="rightMargin">
-          <number>5</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>5</number>
          </property>
          <property name="spacing">
@@ -77,8 +68,7 @@
             <string>Select a Target Atom</string>
            </property>
            <property name="styleSheet">
-            <string notr="true">
-</string>
+            <string notr="true">background-color: rgb(245, 245, 245);</string>
            </property>
            <property name="editable">
             <bool>true</bool>
@@ -142,7 +132,7 @@
             <string>Select an absorption edge</string>
            </property>
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">background-color: rgb(235, 235, 235);</string>
            </property>
           </widget>
          </item>
@@ -227,16 +217,7 @@
          <number>1</number>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <property name="leftMargin">
-          <number>5</number>
-         </property>
-         <property name="topMargin">
-          <number>5</number>
-         </property>
-         <property name="rightMargin">
-          <number>5</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>5</number>
          </property>
          <property name="spacing">
@@ -350,16 +331,7 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_45">
-         <property name="leftMargin">
-          <number>5</number>
-         </property>
-         <property name="topMargin">
-          <number>5</number>
-         </property>
-         <property name="rightMargin">
-          <number>5</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>5</number>
          </property>
          <property name="spacing">
@@ -477,16 +449,7 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_74">
-         <property name="leftMargin">
-          <number>5</number>
-         </property>
-         <property name="topMargin">
-          <number>5</number>
-         </property>
-         <property name="rightMargin">
-          <number>5</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>5</number>
          </property>
          <property name="spacing">
@@ -570,16 +533,7 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_44">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <property name="spacing">
@@ -1284,16 +1238,7 @@
         <string>Measurement</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_43">
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>3</number>
         </property>
         <property name="spacing">
@@ -1317,16 +1262,7 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_46">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -1452,16 +1388,7 @@
            <property name="sizeConstraint">
             <enum>QLayout::SetMinimumSize</enum>
            </property>
-           <property name="leftMargin">
-            <number>5</number>
-           </property>
-           <property name="topMargin">
-            <number>5</number>
-           </property>
-           <property name="rightMargin">
-            <number>5</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>5</number>
            </property>
            <item>
@@ -1507,7 +1434,7 @@
                <item row="0" column="4">
                 <widget class="QComboBox" name="SelBLKUnit">
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">background-color: rgb(235, 235, 235);</string>
                  </property>
                 </widget>
                </item>
@@ -2180,16 +2107,7 @@
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_52">
-                <property name="leftMargin">
-                 <number>1</number>
-                </property>
-                <property name="topMargin">
-                 <number>1</number>
-                </property>
-                <property name="rightMargin">
-                 <number>1</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>1</number>
                 </property>
                 <property name="spacing">
@@ -2258,16 +2176,7 @@
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_55">
-                   <property name="leftMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="bottomMargin">
+                   <property name="margin">
                     <number>1</number>
                    </property>
                    <property name="spacing">
@@ -2396,16 +2305,7 @@
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_53">
-                   <property name="leftMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="bottomMargin">
+                   <property name="margin">
                     <number>1</number>
                    </property>
                    <property name="spacing">
@@ -2512,16 +2412,7 @@
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_54">
-                   <property name="leftMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>1</number>
-                   </property>
-                   <property name="bottomMargin">
+                   <property name="margin">
                     <number>1</number>
                    </property>
                    <property name="spacing">
@@ -2629,16 +2520,7 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_42">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -2717,16 +2599,7 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_47">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -2836,16 +2709,7 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_30">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -2973,7 +2837,7 @@
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -3040,7 +2904,7 @@
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -3069,8 +2933,7 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">
-</string>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -3083,7 +2946,7 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -3096,7 +2959,7 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -3147,7 +3010,7 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -3182,16 +3045,7 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -3371,16 +3225,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_29">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -3496,16 +3341,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_49">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -3607,16 +3443,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_40">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -3730,7 +3557,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QComboBox" name="OnFinishP">
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">background-color: rgb(235, 235, 235);</string>
                  </property>
                 </widget>
                </item>
@@ -3838,16 +3665,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_81">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -3892,7 +3710,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For the spectra with several scans, when 'in sep. file...' is selected, each spectrum is saved in each file.&lt;/p&gt;&lt;p&gt;When 'in one file...' is selected, one spectrum made by summing up all the spectra is saved in one file.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
                <item>
                 <property name="text">
@@ -3977,16 +3795,7 @@ Though, other parameters are fixed at the value on starting.</string>
         <string>Set up Conditions</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_10">
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>3</number>
         </property>
         <property name="spacing">
@@ -4012,16 +3821,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_38">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -4068,7 +3868,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="1" column="0" colspan="6">
               <widget class="QComboBox" name="SelSensToSetRange">
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
                <property name="sizeAdjustPolicy">
                 <enum>QComboBox::AdjustToContents</enum>
@@ -4161,16 +3961,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -4238,7 +4029,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -4293,16 +4084,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_59">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -4337,7 +4119,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -4599,16 +4381,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_32">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -4623,7 +4396,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -4652,7 +4425,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -4695,7 +4468,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -4738,7 +4511,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -4775,16 +4548,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="0" column="0" colspan="4">
               <widget class="QWidget" name="widget" native="true">
                <layout class="QGridLayout" name="gridLayout_33">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>0</number>
                 </property>
                 <property name="spacing">
@@ -4857,7 +4621,7 @@ Though, other parameters are fixed at the value on starting.</string>
                       <string>Select an unit for all.</string>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true"/>
+                      <string notr="true">background-color: rgb(235, 235, 235);</string>
                      </property>
                     </widget>
                    </item>
@@ -5056,20 +4820,11 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_56">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
              <property name="horizontalSpacing">
               <number>1</number>
+             </property>
+             <property name="margin">
+              <number>3</number>
              </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label_129">
@@ -5168,7 +4923,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
                <property name="minimumContentsLength">
                 <number>0</number>
@@ -5255,7 +5010,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -5369,7 +5124,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -5528,16 +5283,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_24">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>0</number>
                 </property>
                 <property name="spacing">
@@ -5574,16 +5320,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_25">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>0</number>
                 </property>
                 <property name="spacing">
@@ -5637,7 +5374,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
                <property name="minimumContentsLength">
                 <number>0</number>
@@ -5694,7 +5431,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The value of the selected detecter is always (with or without check the 'Normalize') recorded with the value of the detecter selected as 'Monitor' for the scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">background-color: rgb(235, 235, 235);</string>
                  </property>
                 </widget>
                </item>
@@ -5745,7 +5482,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true"/>
+                 <string notr="true">background-color: rgb(235, 235, 235);</string>
                 </property>
                </widget>
               </widget>
@@ -5791,16 +5528,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_69">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -5809,8 +5537,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="4" column="3">
               <widget class="QComboBox" name="MonDev3">
                <property name="styleSheet">
-                <string notr="true">
-</string>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -5964,15 +5691,14 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="2" column="6" colspan="2">
               <widget class="QComboBox" name="SelectScale">
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
              <item row="3" column="3">
               <widget class="QComboBox" name="MonDev2">
                <property name="styleSheet">
-                <string notr="true">
-</string>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -5985,14 +5711,14 @@ Though, other parameters are fixed at the value on starting.</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
              <item row="1" column="3">
               <widget class="QComboBox" name="MonDev0">
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -6121,7 +5847,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="5" column="3">
               <widget class="QComboBox" name="MonDev4">
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
                </property>
               </widget>
              </item>
@@ -6207,16 +5933,7 @@ Though, other parameters are fixed at the value on starting.</string>
         <string>Set up SSD</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_35">
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>3</number>
         </property>
         <property name="spacing">
@@ -6248,16 +5965,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_13">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -6794,16 +6502,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_41">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>3</number>
              </property>
              <property name="spacing">
@@ -7250,16 +6949,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_57">
-             <property name="leftMargin">
-              <number>1</number>
-             </property>
-             <property name="topMargin">
-              <number>1</number>
-             </property>
-             <property name="rightMargin">
-              <number>1</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>1</number>
              </property>
              <property name="spacing">
@@ -7274,16 +6964,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_75">
-                <property name="leftMargin">
-                 <number>1</number>
-                </property>
-                <property name="topMargin">
-                 <number>1</number>
-                </property>
-                <property name="rightMargin">
-                 <number>1</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>1</number>
                 </property>
                 <property name="spacing">
@@ -7401,16 +7082,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_77">
-                <property name="leftMargin">
-                 <number>1</number>
-                </property>
-                <property name="topMargin">
-                 <number>1</number>
-                </property>
-                <property name="rightMargin">
-                 <number>1</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>1</number>
                 </property>
                 <property name="spacing">
@@ -7848,16 +7520,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_78">
-                <property name="leftMargin">
-                 <number>1</number>
-                </property>
-                <property name="topMargin">
-                 <number>1</number>
-                </property>
-                <property name="rightMargin">
-                 <number>1</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>1</number>
                 </property>
                 <property name="spacing">
@@ -7989,16 +7652,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_76">
-                <property name="leftMargin">
-                 <number>1</number>
-                </property>
-                <property name="topMargin">
-                 <number>1</number>
-                </property>
-                <property name="rightMargin">
-                 <number>1</number>
-                </property>
-                <property name="bottomMargin">
+                <property name="margin">
                  <number>1</number>
                 </property>
                 <property name="spacing">
@@ -8181,16 +7835,7 @@ Though, other parameters are fixed at the value on starting.</string>
               <string>Peak Search</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_34">
-              <property name="leftMargin">
-               <number>3</number>
-              </property>
-              <property name="topMargin">
-               <number>3</number>
-              </property>
-              <property name="rightMargin">
-               <number>3</number>
-              </property>
-              <property name="bottomMargin">
+              <property name="margin">
                <number>3</number>
               </property>
               <property name="spacing">
@@ -8208,16 +7853,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_79">
-                 <property name="leftMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="bottomMargin">
+                 <property name="margin">
                   <number>1</number>
                  </property>
                  <property name="spacing">
@@ -8239,7 +7875,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true"/>
+                    <string notr="true">background-color: rgb(235, 235, 235);</string>
                    </property>
                   </widget>
                  </item>
@@ -8413,16 +8049,7 @@ Though, other parameters are fixed at the value on starting.</string>
               <string>SSD Calibration</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_48">
-              <property name="leftMargin">
-               <number>3</number>
-              </property>
-              <property name="topMargin">
-               <number>3</number>
-              </property>
-              <property name="rightMargin">
-               <number>3</number>
-              </property>
-              <property name="bottomMargin">
+              <property name="margin">
                <number>3</number>
               </property>
               <property name="spacing">
@@ -8446,16 +8073,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_80">
-                 <property name="leftMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="bottomMargin">
+                 <property name="margin">
                   <number>1</number>
                  </property>
                  <property name="spacing">
@@ -8471,7 +8089,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  <item row="0" column="1">
                   <widget class="QComboBox" name="AttChSelect">
                    <property name="styleSheet">
-                    <string notr="true"/>
+                    <string notr="true">background-color: rgb(235, 235, 235);</string>
                    </property>
                   </widget>
                  </item>
@@ -8518,7 +8136,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  <item row="3" column="1">
                   <widget class="QComboBox" name="EnergySelect">
                    <property name="styleSheet">
-                    <string notr="true"/>
+                    <string notr="true">background-color: rgb(235, 235, 235);</string>
                    </property>
                   </widget>
                  </item>
@@ -8578,7 +8196,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  <item row="0" column="2" colspan="3">
                   <widget class="QComboBox" name="AttenSelect">
                    <property name="styleSheet">
-                    <string notr="true"/>
+                    <string notr="true">background-color: rgb(235, 235, 235);</string>
                    </property>
                   </widget>
                  </item>
@@ -8723,16 +8341,7 @@ Though, other parameters are fixed at the value on starting.</string>
               <string>Set Max MCA Energy</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_66">
-              <property name="leftMargin">
-               <number>3</number>
-              </property>
-              <property name="topMargin">
-               <number>3</number>
-              </property>
-              <property name="rightMargin">
-               <number>3</number>
-              </property>
-              <property name="bottomMargin">
+              <property name="margin">
                <number>3</number>
               </property>
               <property name="spacing">
@@ -8750,16 +8359,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_73">
-                 <property name="leftMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>1</number>
-                 </property>
-                 <property name="bottomMargin">
+                 <property name="margin">
                   <number>1</number>
                  </property>
                  <property name="spacing">
@@ -8857,16 +8457,7 @@ Though, other parameters are fixed at the value on starting.</string>
         <string>２D scan</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_37">
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>3</number>
         </property>
         <property name="spacing">
@@ -8881,16 +8472,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_50">
-           <property name="leftMargin">
-            <number>1</number>
-           </property>
-           <property name="topMargin">
-            <number>1</number>
-           </property>
-           <property name="rightMargin">
-            <number>1</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>1</number>
            </property>
            <property name="spacing">
@@ -8968,16 +8550,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_71">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -9002,7 +8575,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">background-color: rgb(235, 235, 235);</string>
              </property>
             </widget>
            </item>
@@ -9043,16 +8616,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_67">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -9164,16 +8728,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_65">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -9210,7 +8765,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">background-color: rgb(235, 235, 235);</string>
              </property>
             </widget>
            </item>
@@ -9257,16 +8812,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_72">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -9307,16 +8853,7 @@ Though, other parameters are fixed at the value on starting.</string>
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QGridLayout" name="gridLayout_62">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
+              <property name="margin">
                <number>0</number>
               </property>
               <property name="spacing">
@@ -9393,16 +8930,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_70">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -9458,16 +8986,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_64">
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <property name="spacing">
@@ -9617,6 +9136,9 @@ Though, other parameters are fixed at the value on starting.</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(235, 235, 235);</string>
+             </property>
             </widget>
            </item>
            <item row="1" column="2">
@@ -9741,6 +9263,9 @@ Though, other parameters are fixed at the value on starting.</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(235, 235, 235);</string>
+             </property>
             </widget>
            </item>
            <item row="2" column="2">
@@ -9864,6 +9389,9 @@ Though, other parameters are fixed at the value on starting.</string>
                <horstretch>1</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(235, 235, 235);</string>
              </property>
             </widget>
            </item>
@@ -10000,16 +9528,7 @@ Though, other parameters are fixed at the value on starting.</string>
         <string>Stat/Config</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_36">
-        <property name="leftMargin">
-         <number>6</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>6</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>6</number>
         </property>
         <property name="spacing">
@@ -10044,16 +9563,7 @@ Though, other parameters are fixed at the value on starting.</string>
         <string>Log / Record</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_19">
-        <property name="leftMargin">
-         <number>6</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>6</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>6</number>
         </property>
         <property name="spacing">
@@ -10153,16 +9663,7 @@ Though, other parameters are fixed at the value on starting.</string>
         <string>Read Data</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>3</number>
         </property>
         <property name="spacing">
@@ -10373,7 +9874,7 @@ Though, other parameters are fixed at the value on starting.</string>
   <customwidget>
    <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>QtWebKit/QWebView</header>
   </customwidget>
   <customwidget>
    <class>Data</class>
