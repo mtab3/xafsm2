@@ -1088,7 +1088,7 @@ void MCAView::wheelEvent( QWheelEvent *e )
 
     if ( step < 0 ) {
       if ( MinE < 0 ) MinE = 0;
-      if ( MaxE > 20 ) MaxE = 20;
+      if ( MaxE > 40 ) MaxE = 40;
     }
   }
   update();

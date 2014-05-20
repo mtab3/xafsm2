@@ -4,25 +4,25 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Mar 16 22:41:57 2014 +0900\n"\
-                "    only update WhatToDo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Mar 15 01:37:03 2014 +0900\n"\
-                "    Fix a bug: XafsM2 crashes running on an environment without SSD\n"\
+                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 3 16:52:21 2014 +0900\n"\
+                "    New keV2MCApix from 2014-03-03 data\n"\
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Mar 4 20:56:09 2014 +0900\n"\
-                "    L10N\n"\
+                "Date        : Thu Apr 3 16:32:09 2014 +0900\n"\
+                "    a problem that sometimes 'MoveTo' in MwSetup does not work correctly was fixed\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Mar 3 20:09:26 2014 +0900\n"\
-                "    QSound is ok\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 3 15:48:14 2014 +0900\n"\
+                "    bug fix: x-axis value was wrong in some cases selecting rel/abs and unit/puls\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Mar 3 20:03:41 2014 +0900\n"\
-                "    qt5 available\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 3 11:14:21 2014 +0900\n"\
+                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 3 11:14:18 2014 +0900\n"\
+                "    a little clean up of codes\n"\
 		"\n"\
                 ""
 #endif
