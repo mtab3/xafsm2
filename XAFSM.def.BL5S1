@@ -563,4 +563,5 @@ DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
 
 # Special Monochro control
-MSTAB "Aio64"
+# MSTAB "DriverName" "delegate output name"
+MSTAB "Aio64" "M031" 

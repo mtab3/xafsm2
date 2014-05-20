@@ -26,6 +26,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MCAPreAMPGainHasSet = false;
   MaxMCAEnergy = 20;
   MStabOk = false;
+  MStabDelegate = "";
 
   MCAFSel = scanFSel = monFSel = S2DFileSel
     = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;
@@ -61,7 +62,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   MMainTh = MDTh1 = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;
-  //  ChangerX = ChangerZ = NULL;
+  MMStab = NULL;
+
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
   EncOrPM = XENC;
@@ -310,9 +312,18 @@ void MainWindow::InitAndIdentifyMotors( void )
       connect( MDTh1, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurDTh1() ),
 	       Qt::UniqueConnection );
     }
+
+    if ( MStabOk && ( MStabDelegate != "" ) && ( am->getUid() == MStabDelegate ) ) {
+      MMStab = am;
+    }
   }
+
   if ( MMainTh != NULL ) {
     SetMainThCenter();
+  }
+  if ( MMStab == NULL ) {
+    MStabOk = false;
+    TuneAtEachStp->setEnabled( false );
   }
 }
 

@@ -166,9 +166,11 @@ private:
   AUnit *MDTh1;                   // Delta Theta 1 ax
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
-  //  AUnit *ChangerX, *ChangerZ;
+  AUnit *MMStab;
+
   bool MStabOk;
   QString MStabDrv;
+  QString MStabDelegate;
 
   QVector<QString> DefUReals;
   QVector<Changer*> Changers;

@@ -288,6 +288,8 @@ void MainWindow::ReadDef( QString fname )
 	next = nextItem( next, item );
 	MStabOk = true;
 	MStabDrv = item;
+	next = nextItem( next, item );
+	MStabDelegate = item;
       } else {
 	qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

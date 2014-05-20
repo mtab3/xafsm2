@@ -12,6 +12,9 @@ void MainWindow::MeasSequence( void )
     ShowQXafsProgress();
   }
 
+  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) {
+    
+  }
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
     return;
   }
@@ -104,18 +107,7 @@ void MainWindow::MeasSequence( void )
     }
     break;
   case 41:
-
-
-
-
-
     s->SendCMD2( "TuneAtEP", MStabDrv, "GetValue" );
-
-
-
-
-
-
     if ( mUnits.isParent() )
       MeasStage = 5;
     else
