@@ -24,6 +24,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   DataRoot0 = "";
   MCACanSaveAllOnMem = false;
   MCAPreAMPGainHasSet = false;
+  MaxMCAEnergy = 20;
 
   MCAFSel = scanFSel = monFSel = S2DFileSel
     = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;
@@ -519,6 +520,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setPeakFit( MCAPeakFit->isChecked() );
     ((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
     ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
+    ((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
     break;
   default:
     return NULL;

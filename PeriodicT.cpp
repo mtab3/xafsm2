@@ -158,10 +158,10 @@ void PeriodicTable::SetPTMask( int i, int mask )
   if ( ( i >= 1 )&&( i <= PBs ) ) {
     PTMask[i] = mask;     // mask 番号は 1 始まり
     if ( mask == 0 ) {
-      PB[i-1]->setEnabled( FALSE );
+      PB[i-1]->setEnabled( false );
       //      printf( "disable %d", i );
     } else {
-      PB[i-1]->setEnabled( TRUE );
+      PB[i-1]->setEnabled( true );
       //      printf( "enable %d", i );
     }
   }
@@ -173,10 +173,10 @@ void PeriodicTable::SetPTMasks( int s, int e, int mask )
     if ( ( i >= 1 )&&( i <= PBs ) ) {
       PTMask[i] = mask;     // mask 番号は 1 始まり
       if ( mask == 0 ) {
-	PB[i-1]->setEnabled( FALSE );
+	PB[i-1]->setEnabled( false );
 	//	printf( "disable %d", i );
       } else {
-	PB[i-1]->setEnabled( TRUE );
+	PB[i-1]->setEnabled( true );
 	//	printf( "enable %d", i );
       }
     }

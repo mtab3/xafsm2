@@ -143,6 +143,7 @@ private:
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
   bool MCACanSaveAllOnMem;
+  double MaxMCAEnergy;
   QFileDialog *MCAFSel;
   PeriodicTable *PT2;
   QString NonSelC, SelectC;
@@ -705,6 +706,7 @@ private slots:
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   void setAllROIs( void );
+  void newMaxMCAEnergy( void );
 
   void newSensSelectedForI0( int index );
   void newSensSelectedForI1( int index );
