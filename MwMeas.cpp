@@ -1390,7 +1390,7 @@ void MainWindow::StartMeasurement( void )
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
 
-    disconnect( this, SLOT( MoveInMeasView( double ) ) );
+    //    disconnect( this, SLOT( MoveInMeasView( double ) ) );
     connect( MeasView, SIGNAL( MovedToNewX( int, double ) ),
 	     this, SLOT( MoveInMeasView( int, double ) ),
 	     Qt::UniqueConnection );
@@ -1517,6 +1517,10 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   aSet->isSFluo = (( Use19chSSD->isChecked() )&&( SFluo != NULL ));
   aSet->totalPoints = ttp;
   aSet->rpt = SelRPT->value();
+
+  aSet->TuneESStart = conds->tuneESStart();
+  aSet->TuneESEnd = conds->tuneESStart();
+  aSet->TuneESSteps = conds->tuneESSteps();
 }
 
 // Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !

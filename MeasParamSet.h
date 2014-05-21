@@ -18,6 +18,10 @@ struct MeasPSet {
   int finalPnt;
   QVector<double*> i0s;
 
+  double TuneESStart;
+  double TuneESEnd;
+  int TuneESSteps;
+
   MeasPSet() { valid = false; normallyFinished = false; qXafsMode = false; TuneAtEachStep = false; };
 };
 

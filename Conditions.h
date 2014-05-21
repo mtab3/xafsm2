@@ -24,6 +24,9 @@ public:
   bool isUseDTh1TTable( void );
   int Diff1Type( void );
   int Diff2Type( void );
+  double tuneESStart( void );
+  double tuneESEnd( void );
+  int tuneESSteps( void );
 
  signals:
   void SetDXMPMC( void );

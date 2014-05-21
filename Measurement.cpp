@@ -107,7 +107,11 @@ void MainWindow::MeasSequence( void )
     }
     break;
   case 41:
-    s->SendCMD2( "TuneAtEP", MStabDrv, "GetValue" );
+    s->SendCMD2( "TuneAtEP", MStabDrv,
+		 QString( "GoMax %1 %2 %3" )
+		 .arg( MPSet.TuneESStart )
+		 .arg( MPSet.TuneESEnd )
+		 .arg( MPSet.TuneESSteps ) );
     if ( mUnits.isParent() )
       MeasStage = 5;
     else

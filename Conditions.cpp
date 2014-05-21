@@ -72,3 +72,18 @@ int Conditions::Diff2Type( void )
 {
   return SelectDiffType2->currentIndex();
 }
+
+double Conditions::tuneESStart( void )
+{
+  return TuneESStart->text().toDouble();
+}
+
+double Conditions::tuneESEnd( void )
+{
+  return TuneESEnd->text().toDouble();
+}
+
+int Conditions::tuneESSteps( void )
+{
+  return TuneESSteps->text().toInt();
+}

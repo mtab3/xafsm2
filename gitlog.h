@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "UseAio64" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue May 20 17:27:54 2014 +0900\n"\
+                "    no change\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue May 20 17:25:59 2014 +0900\n"\
+                "    merged\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue May 20 17:24:17 2014 +0900\n"\
                 "    hope the tune-at-each-step mode works\n"\
 		"\n"\
@@ -13,16 +21,8 @@
                 "    style is modified again\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 20 16:15:03 2014 +0900\n"\
-                "    the style sheet is modified\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun May 18 23:17:04 2014 +0900\n"\
-                "    working on TuneAtEachStep in Measurement.cpp\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun May 18 22:39:38 2014 +0900\n"\
-                "    LION\n"\
+                "Date        : Tue May 20 16:35:29 2014 +0900\n"\
+                "    some change\n"\
 		"\n"\
                 ""
 #endif
