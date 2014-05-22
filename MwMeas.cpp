@@ -1518,6 +1518,7 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   aSet->totalPoints = ttp;
   aSet->rpt = SelRPT->value();
 
+  aSet->TuneESAbs = conds->tuneESAbs();
   aSet->TuneESStart = conds->tuneESStart();
   aSet->TuneESEnd = conds->tuneESStart();
   aSet->TuneESSteps = conds->tuneESSteps();

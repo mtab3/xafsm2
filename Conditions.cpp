@@ -73,6 +73,11 @@ int Conditions::Diff2Type( void )
   return SelectDiffType2->currentIndex();
 }
 
+bool Conditions::tuneESAbs( void )
+{
+  return TuneESAbs->isChecked();
+}
+
 double Conditions::tuneESStart( void )
 {
   return TuneESStart->text().toDouble();

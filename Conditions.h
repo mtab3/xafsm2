@@ -24,6 +24,8 @@ public:
   bool isUseDTh1TTable( void );
   int Diff1Type( void );
   int Diff2Type( void );
+
+  bool tuneESAbs( void );
   double tuneESStart( void );
   double tuneESEnd( void );
   int tuneESSteps( void );

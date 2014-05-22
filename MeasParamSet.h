@@ -18,6 +18,7 @@ struct MeasPSet {
   int finalPnt;
   QVector<double*> i0s;
 
+  bool TuneESAbs;
   double TuneESStart;
   double TuneESEnd;
   int TuneESSteps;
