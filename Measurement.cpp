@@ -8,13 +8,14 @@ void MainWindow::MeasSequence( void )
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
 
+  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) {
+    return;
+  }
+
   if ( MPSet.qXafsMode ) {
     ShowQXafsProgress();
   }
 
-  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) {
-    
-  }
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
     return;
   }

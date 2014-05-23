@@ -457,8 +457,30 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     }
     mUnits.clearStage();  
-    MeasStage++;
-    // break しない
+    if ( MStabOk && MPSet.TuneAtEachStep ) {
+      MeasStage = 41;
+    } else {
+      MeasStage = 5;
+    }
+    break;
+  case 41:
+    qDebug() << "Big Tune";
+    if ( MPSet.TuneESAbs ) {
+      s->SendCMD2( "TuneAtEP", MStabDrv,
+		   QString( "GoMaxAbs %1 %2 %3" )
+		   .arg( MPSet.TuneESStart )
+		   .arg( MPSet.TuneESEnd )
+		   .arg( MPSet.TuneESSteps ) );
+      qDebug() << "GoMaxAbs";
+    } else {
+      s->SendCMD2( "TuneAtEP", MStabDrv,
+		   QString( "GoMaxRel %1 %2" )
+		   .arg( MPSet.TuneESStart )
+		   .arg( MPSet.TuneESSteps ) );
+      qDebug() << "GoMaxRel";
+    }
+    MeasStage = 5;
+    break;
   case 5:
     // 計測器を計測開始(Trigger待ち)状態にする(「待ち状態」ready になるまでループ)
     // 計測器類の内部ループカウンタクリア

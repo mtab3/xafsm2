@@ -1520,7 +1520,7 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
 
   aSet->TuneESAbs = conds->tuneESAbs();
   aSet->TuneESStart = conds->tuneESStart();
-  aSet->TuneESEnd = conds->tuneESStart();
+  aSet->TuneESEnd = conds->tuneESEnd();
   aSet->TuneESSteps = conds->tuneESSteps();
 }
 
