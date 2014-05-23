@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "UseAio64" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri May 23 14:09:55 2014 +0900\n"\
+                "    it was made sure that the program works with Aio64, tune at each step\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 22 23:44:17 2014 +0900\n"\
                 "    GoMax --> GoMaxAbs/GoMaxRel\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue May 20 17:25:59 2014 +0900\n"\
                 "    merged\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 20 17:24:17 2014 +0900\n"\
-                "    hope the tune-at-each-step mode works\n"\
 		"\n"\
                 ""
 #endif
