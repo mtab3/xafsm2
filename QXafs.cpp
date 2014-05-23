@@ -413,7 +413,7 @@ void MainWindow::QXafsMeasSequence( void )
 			  u->deg2keV( SBlockStartInDeg[ SBlocks ] ), 0 );
     MMainTh->SetSpeed( HIGH );
     MMainTh->SetHighSpeed( OrigHSpeed );
-    EncMainTh->GetValue();
+    //    EncMainTh->GetValue();
     MeasStage++;
     break;
   case 1:
@@ -431,8 +431,8 @@ void MainWindow::QXafsMeasSequence( void )
     // EIB741 が使えるなら、その現在値も取得
     // 1点の計測時間の設定
     // 計測器類の内部ループカウンタクリア
-    EncValue0 = EncMainTh->value();
-    if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
+    //    EncValue0 = EncMainTh->value();
+    //    if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
     mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
     mUnits.clearStage();
@@ -457,30 +457,35 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     }
     mUnits.clearStage();  
-    if ( MStabOk && MPSet.TuneAtEachStep ) {
-      MeasStage = 41;
-    } else {
-      MeasStage = 5;
-    }
+    MeasStage = 41;
     break;
   case 41:
     qDebug() << "Big Tune";
-    if ( MPSet.TuneESAbs ) {
-      s->SendCMD2( "TuneAtEP", MStabDrv,
-		   QString( "GoMaxAbs %1 %2 %3" )
-		   .arg( MPSet.TuneESStart )
-		   .arg( MPSet.TuneESEnd )
-		   .arg( MPSet.TuneESSteps ) );
-      qDebug() << "GoMaxAbs";
-    } else {
-      s->SendCMD2( "TuneAtEP", MStabDrv,
-		   QString( "GoMaxRel %1 %2" )
-		   .arg( MPSet.TuneESStart )
-		   .arg( MPSet.TuneESSteps ) );
-      qDebug() << "GoMaxRel";
+    if ( MStabOk && MPSet.TuneAtEachStep ) {
+      if ( MPSet.TuneESAbs ) {
+	s->SendCMD2( "TuneAtEP", MStabDrv,
+		     QString( "GoMaxAbs %1 %2 %3" )
+		     .arg( MPSet.TuneESStart )
+		     .arg( MPSet.TuneESEnd )
+		     .arg( MPSet.TuneESSteps ) );
+	qDebug() << "GoMaxAbs";
+      } else {
+	s->SendCMD2( "TuneAtEP", MStabDrv,
+		     QString( "GoMaxRel %1 %2" )
+		     .arg( MPSet.TuneESStart )
+		     .arg( MPSet.TuneESSteps ) );
+	qDebug() << "GoMaxRel";
+      }
     }
-    MeasStage = 5;
+    EncMainTh->GetValue();
+    if ( Enc2 != NULL ) Enc2->GetValue();
+    MeasStage = 42;
     break;
+  case 42:
+    EncValue0 = EncMainTh->value();
+    if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
+    MeasStage = 5;
+    // break; // しない
   case 5:
     // 計測器を計測開始(Trigger待ち)状態にする(「待ち状態」ready になるまでループ)
     // 計測器類の内部ループカウンタクリア
@@ -579,6 +584,12 @@ void MainWindow::QXafsMeasSequence( void )
     MeasView->ShowProgressBar( true );
     mUnits.clearStage();  
     MeasStage++;
+#if 0
+  case 101:
+    // この辺に Tuning と ENC, ENC2 の読み出しがあってもいいかもしれないが
+    // かえりのばっくらっしゅがどうせあるので、ほっておく
+    break;
+#endif
   case 11:
     // 計測器に計測開始命令発行(完了するまでループ)
     if ( mUnits.QStart() )
