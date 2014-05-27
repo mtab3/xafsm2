@@ -20,7 +20,7 @@
     </message>
     <message>
         <source>Selected Encorder or &apos;calc from PM&apos; is used</source>
-        <translation>エンコーダかパルスモータの換算値かを選択する</translation>
+        <translation type="obsolete">エンコーダかパルスモータの換算値かを選択する</translation>
     </message>
     <message>
         <source>No normalization</source>
@@ -170,6 +170,68 @@ The original point will be changed as the angle calculated from the pulse will b
     <message>
         <source>Type of 2nd order Differential</source>
         <translation>2階微分のタイプ</translation>
+    </message>
+    <message>
+        <source>Encorder or &apos;calc from PM&apos; is used as selected</source>
+        <translation>選択に応じて「エンコーダ読み値」か「パルス値からの計算値」のどちらかが使われます。</translation>
+    </message>
+    <message>
+        <source>in an Absolute range</source>
+        <translation>固定範囲</translation>
+    </message>
+    <message>
+        <source>Range Start / Width [V]</source>
+        <translation>固定範囲の始点/幅 [V]</translation>
+    </message>
+    <message>
+        <source>Tune at Each Step</source>
+        <translation>各点でΔθ1のチューニング</translation>
+    </message>
+    <message>
+        <source>4.0</source>
+        <translation>4.0</translation>
+    </message>
+    <message>
+        <source>Steps / Steps</source>
+        <translation>ステップ数/ステップ数</translation>
+    </message>
+    <message>
+        <source>in an Relative range</source>
+        <translation>相対範囲</translation>
+    </message>
+    <message>
+        <source>6.0</source>
+        <translation>6.0</translation>
+    </message>
+    <message>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <source>Range End / No Use [V]</source>
+        <translation>固定範囲終点/未使用 [V]</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked,&lt;/p&gt;&lt;p&gt;the step XAFS measurement stays at a energy while the I0 intensity is less than the given threshold.&lt;/p&gt;&lt;p&gt;The conditions, if the button is checked or not and the value of the threshold, can be changed&lt;/p&gt;&lt;p&gt;while a XAFS measurement.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>このボタンがチェックされていると、I0強度が指定した値より小さい間は、
+ステップXAFSスキャンが進みません。
+この項目は測定中も変更可能です。</translation>
+    </message>
+    <message>
+        <source>The Threshold I0 intensity if go on or not. : </source>
+        <translation>下限I0強度</translation>
+    </message>
+    <message>
+        <source>1000</source>
+        <translation>1000</translation>
+    </message>
+    <message>
+        <source>cps</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Check I0 intensity before move to the next step (Step XAFS) </source>
+        <translation>ステップXAFSの際、次のエネルギー点に移る前にI0強度をチェックする</translation>
     </message>
 </context>
 <context>
@@ -2726,7 +2788,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Valid only when Step-Scan mode not Q-XAFS mode.&lt;/p&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ステップスキャンの場合のみ有効(QXAFSでは使用不可)&lt;/p&gt;&lt;p&gt;XAFS測定の1ステップ毎にΔθ1をチューニングします&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ステップスキャンの場合のみ有効(QXAFSでは使用不可)&lt;/p&gt;&lt;p&gt;XAFS測定の1ステップ毎にΔθ1をチューニングします&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Tune at Each Stp.</source>
@@ -2743,6 +2805,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     <message>
         <source>Max MCA Energy </source>
         <translation>MCA最大エネルギー</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>XAFS測定の各点でピエゾを使ってΔθ1をチューニングします。
+Aio64が連続チューニングモードになっている場合機能しません(不具合が起こります)。</translation>
     </message>
 </context>
 <context>
