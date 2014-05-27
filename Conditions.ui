@@ -677,6 +677,9 @@ The original point will be changed as the angle calculated from the pulse will b
           <property name="text">
            <string>Check I0 intensity before move to the next step (Step XAFS) </string>
           </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
        </layout>
