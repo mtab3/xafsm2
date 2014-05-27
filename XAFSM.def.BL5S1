@@ -130,7 +130,7 @@ ICLENGTH "I2 ch (28cm)" ""   28 "cm"
 # To check the range where the monochromator can go.
 # It should be written in the unit 'eV'.
 #
-ENERGYRANGE 3500 25000
+ENERGYRANGE 3500 30000
 
 #
 # Define default unit to control monochromator
