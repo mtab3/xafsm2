@@ -23,7 +23,12 @@ struct MeasPSet {
   double TuneESEnd;
   int TuneESSteps;
 
-  MeasPSet() { valid = false; normallyFinished = false; qXafsMode = false; TuneAtEachStep = false; };
+  MeasPSet() {
+    valid = false;
+    normallyFinished = false;
+    qXafsMode = false;
+    TuneAtEachStep = false;
+  };
 };
 
 #endif

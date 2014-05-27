@@ -92,3 +92,13 @@ int Conditions::tuneESSteps( void )
 {
   return TuneESSteps->text().toInt();
 }
+
+bool Conditions::I0ShouldBeChecked( void )
+{
+  return CheckI0BeforeMove->isChecked();
+}
+
+double Conditions::I0Threshold( void )
+{
+  return I0ThresholdInput->text().toDouble();
+}

@@ -30,6 +30,9 @@ public:
   double tuneESEnd( void );
   int tuneESSteps( void );
 
+  bool I0ShouldBeChecked( void );
+  double I0Threshold( void );
+
  signals:
   void SetDXMPMC( void );
   void AskToSaveDTh1TTable( void );

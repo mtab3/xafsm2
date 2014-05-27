@@ -150,6 +150,8 @@ void MainWindow::MeasSequence( void )
     // don't break
   case 10:                     // This label is resume point from pausing
     MeasView->update();
+    if ( conds->I0ShouldBeChecked() && ( MeasCPSs[0] < conds->I0Threshold() ) )
+      MeasS--;
     MeasS++;
     if ( !inPause ) {
       if ( MeasS < SBlockPoints[ MeasB ] ) {

@@ -1225,7 +1225,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3638,7 +3638,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QRadioButton" name="TuneAtEachStp">
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Valid only when Step-Scan mode not Q-XAFS mode.&lt;/p&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
                   <string>Tune at Each Stp.</string>
@@ -9515,7 +9515,7 @@ Though, other parameters are fixed at the value on starting.</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="SpacerTab">
        <attribute name="title">
         <string/>
        </attribute>
@@ -9536,7 +9536,7 @@ Though, other parameters are fixed at the value on starting.</string>
         </property>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="RingStatTab">
        <attribute name="title">
         <string>Ring Stat.</string>
        </attribute>
@@ -9653,7 +9653,7 @@ Though, other parameters are fixed at the value on starting.</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_5">
+      <widget class="QWidget" name="SpacerTab2">
        <attribute name="title">
         <string/>
        </attribute>
