@@ -14,7 +14,6 @@ bool newFluoMode;
 
 int main( int argc, char *argv[] )
 {
-  qDebug() << "QSF keys:: " << QStyleFactory::keys();
   QApplication::setStyle( "Fusion" );
 
   LANG Lang = Japanese;
