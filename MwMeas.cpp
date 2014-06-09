@@ -588,7 +588,7 @@ void MainWindow::SetStdEXAFSBLKs( void )
 
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
     BLKstart[0]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.20 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.10 ) );
     BLKstart[1]->setText( buf );
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 2; i < MaxBLKs+1; i++ )
@@ -608,13 +608,13 @@ void MainWindow::SetStdEXAFSBLKs( void )
   } else {
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
     BLKstart[0]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.05 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.04 ) );
     BLKstart[1]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.10 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.05 ) );
     BLKstart[2]->setText( buf );
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.50 ) );
     BLKstart[3]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.20 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.10 ) );
     BLKstart[4]->setText( buf );
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 5; i < MaxBLKs+1; i++ )
@@ -624,9 +624,9 @@ void MainWindow::SetStdEXAFSBLKs( void )
     for ( int i = 0; i < MaxBLKs; i++ )
       BLKstep[i]->setText( buf );
 
-    buf.sprintf( "% 4d",  70 ); BLKpoints[0]->setText( buf );
-    buf.sprintf( "% 4d", 150 ); BLKpoints[1]->setText( buf );
-    buf.sprintf( "% 4d", 160 ); BLKpoints[2]->setText( buf );
+    buf.sprintf( "% 4d",  40 ); BLKpoints[0]->setText( buf );
+    buf.sprintf( "% 4d",  90 ); BLKpoints[1]->setText( buf );
+    buf.sprintf( "% 4d", 180 ); BLKpoints[2]->setText( buf );
     buf.sprintf( "% 4d", 100 ); BLKpoints[3]->setText( buf );
     buf.sprintf( "% 4d",   0 ); 
     for ( int i = 4; i < MaxBLKs; i++ )
