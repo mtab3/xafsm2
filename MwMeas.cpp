@@ -662,7 +662,7 @@ void MainWindow::SetStdXAFSBLKs( void )
     BLKstart[0]->setText( buf );
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 1.10 ) );
     BLKstart[1]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 2; i < MaxBLKs+1; i++ )
       BLKstart[i]->setText( buf );
 
@@ -704,7 +704,7 @@ void MainWindow::SetStdXAFSBLKs( void )
     buf.sprintf( "% 4d", 300 ); BLKpoints[1]->setText( buf );
     buf.sprintf( "% 4d", 180 ); BLKpoints[2]->setText( buf );
     buf.sprintf( "% 4d", 100 ); BLKpoints[3]->setText( buf );
-    buf.sprintf( "% 4d", 0 );
+    buf.sprintf( "% 4d",   0 );
     for ( int i = 4; i < MaxBLKs; i++ )
       BLKpoints[i]->setText( buf );
 
