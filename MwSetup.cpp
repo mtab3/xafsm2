@@ -607,10 +607,10 @@ void MainWindow::SetNewGos( void )
 {
   //  double newv = Vic[SelectedA].AE[SelectedE];
   double newv = ManTEkeV->text().toDouble();
-  GoPosKeV[0] = newv - 0.5;
-  GoPosKeV[1] = newv - 0.1;
-  GoPosKeV[2] = newv + 0.1;
-  GoPosKeV[3] = newv + 1.0;
+  GoPosKeV[0] = newv - 0.30;
+  GoPosKeV[1] = newv - 0.04;
+  GoPosKeV[2] = newv + 0.05;
+  GoPosKeV[3] = newv + 1.10;
   ShowAllGos();
 }
 
