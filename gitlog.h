@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jun 11 19:27:43 2014 +0900\n"\
+                "    DXM-reset is added in the sequence changing the mode from NORMAL to QXAFS\n"\
+		"\n"\
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 26 15:09:14 2013 +0900\n"\
                 "    Fix typo\n"\
@@ -19,10 +23,6 @@
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jun 9 17:45:10 2014 +0900\n"\
                 "    Remove tmp file\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jun 9 17:25:38 2014 +0900\n"\
-                "    Standard XAFS parameters\n"\
 		"\n"\
                 ""
 #endif

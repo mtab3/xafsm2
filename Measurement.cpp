@@ -109,6 +109,14 @@ void MainWindow::MeasSequence( void )
     break;
   case 41:
     if ( MPSet.TuneESAbs ) {
+      qDebug() << "GoMaxAbs " << QString( "GoMaxAbs %1 %2 %3 %4 %5" )
+		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
+		   .arg( MPSet.TuneESStart )
+		   .arg( MPSet.TuneESEnd )
+		   .arg( MPSet.TuneESSteps )
+		   .arg( ( MPSet.TuneESQuick )
+			 ? QString::number( MPSet.TuneESQuickTime ) : "" );
+
       s->SendCMD2( "TuneAtEP", MStabDrv,
 		   QString( "GoMaxAbs %1 %2 %3 %4 %5" )
 		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
@@ -117,7 +125,14 @@ void MainWindow::MeasSequence( void )
 		   .arg( MPSet.TuneESSteps )
 		   .arg( ( MPSet.TuneESQuick )
 			 ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
+      
     } else {
+      qDebug() << "GoMaxRel " << QString( "GoMaxRel %1 %2 %3 %4" )
+	.arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
+	.arg( MPSet.TuneESStart )
+	.arg( MPSet.TuneESSteps )
+	.arg( ( MPSet.TuneESQuick )
+	      ? QString::number( MPSet.TuneESQuickTime ) : "" );
       s->SendCMD2( "TuneAtEP", MStabDrv,
 		   QString( "GoMaxRel %1 %2 %3 %4" )
 		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
