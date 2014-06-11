@@ -74,6 +74,8 @@ void MainWindow::ToggleQXafsMode( bool )
 
     // QXAFS モード
 
+    SetDXMPMC();   // 分光器リセット
+
     SaveSelectedI0 = SelectI0->currentIndex();
     SaveSelectedI1 = SelectI1->currentIndex();
     SetUpSensorComboBoxes();
@@ -464,17 +466,21 @@ void MainWindow::QXafsMeasSequence( void )
     if ( MStabOk && MPSet.TuneAtEachStep ) {
       if ( MPSet.TuneESAbs ) {
 	s->SendCMD2( "TuneAtEP", MStabDrv,
-		     QString( "GoMaxAbs %1 %2 %3" )
+		     QString( "GoMaxAbs %1 %2 %3 %4 %5" )
+		     .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
 		     .arg( MPSet.TuneESStart )
 		     .arg( MPSet.TuneESEnd )
-		     .arg( MPSet.TuneESSteps ) );
-	qDebug() << "GoMaxAbs";
+		     .arg( MPSet.TuneESSteps )
+		     .arg( ( MPSet.TuneESQuick )
+			   ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
       } else {
 	s->SendCMD2( "TuneAtEP", MStabDrv,
-		     QString( "GoMaxRel %1 %2" )
+		     QString( "GoMaxRel %1 %2 %3 %4" )
+		     .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
 		     .arg( MPSet.TuneESStart )
-		     .arg( MPSet.TuneESSteps ) );
-	qDebug() << "GoMaxRel";
+		     .arg( MPSet.TuneESSteps )
+		     .arg( ( MPSet.TuneESQuick )
+			   ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
       }
     }
     EncMainTh->GetValue();

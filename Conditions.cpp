@@ -93,6 +93,16 @@ int Conditions::tuneESSteps( void )
   return TuneESSteps->text().toInt();
 }
 
+bool Conditions::tuneESQuick( void )
+{
+  return QuickScanToGoMax->isChecked();
+}
+
+double Conditions::tuneESQuickTime( void )
+{
+  return QuickScanTimeToGoMax->text().toDouble();
+}
+
 bool Conditions::I0ShouldBeChecked( void )
 {
   return CheckI0BeforeMove->isChecked();

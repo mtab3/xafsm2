@@ -1533,6 +1533,8 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   aSet->TuneESStart = conds->tuneESStart();
   aSet->TuneESEnd = conds->tuneESEnd();
   aSet->TuneESSteps = conds->tuneESSteps();
+  aSet->TuneESQuick = conds->tuneESQuick();
+  aSet->TuneESQuickTime = conds->tuneESQuickTime();
 }
 
 // Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !

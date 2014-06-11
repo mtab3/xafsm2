@@ -29,6 +29,8 @@ public:
   double tuneESStart( void );
   double tuneESEnd( void );
   int tuneESSteps( void );
+  bool tuneESQuick( void );
+  double tuneESQuickTime( void );
 
   bool I0ShouldBeChecked( void );
   double I0Threshold( void );

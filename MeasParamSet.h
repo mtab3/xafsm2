@@ -22,12 +22,15 @@ struct MeasPSet {
   double TuneESStart;
   double TuneESEnd;
   int TuneESSteps;
+  bool TuneESQuick;
+  double TuneESQuickTime;
 
   MeasPSet() {
     valid = false;
     normallyFinished = false;
     qXafsMode = false;
     TuneAtEachStep = false;
+    TuneESQuick = false;
   };
 };
 

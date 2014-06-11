@@ -110,15 +110,21 @@ void MainWindow::MeasSequence( void )
   case 41:
     if ( MPSet.TuneESAbs ) {
       s->SendCMD2( "TuneAtEP", MStabDrv,
-		   QString( "GoMaxAbs %1 %2 %3" )
+		   QString( "GoMaxAbs %1 %2 %3 %4 %5" )
+		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
 		   .arg( MPSet.TuneESStart )
 		   .arg( MPSet.TuneESEnd )
-		   .arg( MPSet.TuneESSteps ) );
+		   .arg( MPSet.TuneESSteps )
+		   .arg( ( MPSet.TuneESQuick )
+			 ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
     } else {
       s->SendCMD2( "TuneAtEP", MStabDrv,
-		   QString( "GoMaxRel %1 %2" )
+		   QString( "GoMaxRel %1 %2 %3 %4" )
+		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
 		   .arg( MPSet.TuneESStart )
-		   .arg( MPSet.TuneESSteps ) );
+		   .arg( MPSet.TuneESSteps )
+		   .arg( ( MPSet.TuneESQuick )
+			 ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
     }
     if ( mUnits.isParent() )
       MeasStage = 5;
