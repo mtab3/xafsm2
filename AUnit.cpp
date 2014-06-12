@@ -329,6 +329,8 @@ void AUnit::Initialize( Stars *S )
   if ( TypeCHK(  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  1,  0, 0,  0,   0,   0,   0,   0 ) ) {
     connect( s, SIGNAL(EvReportCurrent( SMsg )), this, SLOT(OnReportCurrent( SMsg )),
 	     Qt::UniqueConnection );
+    connect( s, SIGNAL(EvReportInjection( SMsg )), this, SLOT(OnReportInjection( SMsg )),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", Driver, "flgon", Ch );
     s->SendCMD2( "Init", "System", "flgon", Driver );
   }
@@ -1744,6 +1746,18 @@ void AUnit::OnReportCurrent( SMsg msg )
       lastVal = Value;
       Value = Values[ Values.count() - 1 ];
       emit NewRingCurrent( Value, Values );
+    }
+  }
+}
+
+void AUnit::OnReportInjection( SMsg msg )
+{
+  if ( Type == "LSR" ) {
+    if ( msg.From() == DevCh ) {
+      Values = msg.Val().simplified().split( QRegExp( "\\s" ) );
+      lastVal = Value;
+      Value = Values[ Values.count() - 1 ];
+      emit NewInjectionReport( Value, Values );
     }
   }
 }

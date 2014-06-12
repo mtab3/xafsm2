@@ -381,6 +381,8 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit EvDisconnected( smsg ); break;
 	case EvREPORTCURRENT: 
 	  emit EvReportCurrent( smsg ); break;
+	case EvREPORTINJECTION: 
+	  emit EvReportInjection( smsg ); break;
 	default: 
 	  break;
 	}

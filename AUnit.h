@@ -369,6 +369,7 @@ public slots:
   void ReactGetLiveTime( SMsg msg );
   void ReactGetRange( SMsg msg );
   void OnReportCurrent( SMsg msg );
+  void OnReportInjection( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
 
   //  void RcvDataPoints( SMsg msg );
@@ -403,6 +404,7 @@ signals:
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );
+  void NewInjectionReport( QString val, QStringList vals );
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
 

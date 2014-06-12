@@ -28,6 +28,7 @@
 # 2014/05/18 add New SENSOR 'AIOi' via Aio64 driver 
 # 2014/05/18 add New MOTOR  'AIOo' via Aio64 driver
 # 2014/05/18 add 'MSTAB'       line to control delta-theta-1
+# 2014/06/12 add new node 'Injection' to LSR to observe injection of beam
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -591,6 +592,12 @@ SENSOR AIOi "S050" "GENERAL" "A in 2" "simmotor" "Aio64i2" "mV" NO ""
 SENSOR AIOi "S051" "GENERAL" "A in 3" "simmotor" "Aio64i3" "mV" NO ""
 SENSOR AIOi "S052" "GENERAL" "A in 4: Wave monitor to controll delta-theta-1" "simmotor" "Aio64i4" "mV" NO ""
 SENSOR AIOi "S053" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "simmotor" "AIo64i5" "mV" NO ""
+
+#
+# new node injection is available
+#
+SENSOR LSR "S054" "LS" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
+#SENSOR LSR "S054" "LS" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
 
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
