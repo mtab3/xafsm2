@@ -88,7 +88,7 @@ QXAFSMODE 1 1000 3000 100 1.0
 # Detectors which can be used for Normal Xafs : NORMALOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG FP23
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -558,6 +558,8 @@ SENSOR AIOi "S048" "GENERAL" "A in 2" "Aio64" "i2" "mV" NO ""
 SENSOR AIOi "S049" "GENERAL" "A in 3" "Aio64" "i3" "mV" NO ""
 SENSOR AIOi "S050" "GENERAL" "A in 4: Wave monitor to controll delta-theta-1" "Aio64" "i4" "mV" NO ""
 SENSOR AIOi "S051" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "Aio64" "i5" "mV" NO ""
+
+SENSOR FP23 "S052" "FP23" "FP23" "FP23" "" "degree C" NO ""
 
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
