@@ -381,10 +381,12 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit EvDisconnected( smsg ); break;
 	case EvREPORTCURRENT: 
 	  emit EvReportCurrent( smsg ); break;
+  case EvREPORTVALUE:
+    emit EvReportValue( smsg ); break;
 	default: 
 	  break;
 	}
-	break;
+  break;
       default:
 	emit AskRecord( tr( "Receive an unricognized message from Stars [%1]" )
 			.arg( RBuf.data() ) );
