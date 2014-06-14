@@ -227,8 +227,8 @@ MOTOR PM "M027" "GENERAL" "Cap. Stg. Phi" "pm16c04-2" "ch13" "deg" 0.004   INT 0
 
 MOTOR AIOo "M028" "GENERAL" "A out 0" "Aio64" "o0" "mV" 1 REAL -10 10
 MOTOR AIOo "M029" "GENERAL" "A out 1" "Aio64" "o1" "mV" 1 REAL -10 10
-MOTOR AIOo "M030" "GENERAL" "A out 2: wave out to PEZ controlling delta-theta-1" "Aio64" "o2" "mV" 1 REAL -10 10
-MOTOR AIOo "M031" "GENERAL" "A out 3: DC out to PEZ controlling delta-theta-1" "Aio64" "o3" "mV" 1 REAL -10 10
+MOTOR AIOo "M030" "GENERAL" "A out 2: wave out to ctrl. dTh1 via PEZ" "Aio64" "o2" "mV" 1 REAL -10 10
+MOTOR AIOo "M031" "PEZCTRL" "A out 3: DC out to ctrl. dTh1 via PEZ" "Aio64" "o3" "mV" 1 REAL -10 10
 
 DEF_U_REAL M002 M003 M004           # Stage XYZ
 DEF_U_REAL M005 M006 M007 M008      # 4WS
@@ -557,8 +557,8 @@ SENSOR AIOi "S046" "GENERAL" "A in 0" "Aio64" "i0" "mV" NO ""
 SENSOR AIOi "S047" "GENERAL" "A in 1" "Aio64" "i1" "mV" NO ""
 SENSOR AIOi "S048" "GENERAL" "A in 2" "Aio64" "i2" "mV" NO ""
 SENSOR AIOi "S049" "GENERAL" "A in 3" "Aio64" "i3" "mV" NO ""
-SENSOR AIOi "S050" "GENERAL" "A in 4: Wave monitor to controll delta-theta-1" "Aio64" "i4" "mV" NO ""
-SENSOR AIOi "S051" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "Aio64" "i5" "mV" NO ""
+SENSOR AIOi "S050" "GENERAL" "A in 4: Wave mon. to ctrl. dTh1" "Aio64" "i4" "mV" NO ""
+SENSOR AIOi "S051" "GENERAL" "A in 5: I0 mon. to ctrl. dTh1" "Aio64" "i5" "mV" NO ""
 
 #
 # new node injection is available

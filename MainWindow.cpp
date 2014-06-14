@@ -28,6 +28,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MStabOk = false;
   MStabDelegate = "";
 
+  AutoShutter->setChecked( false );  // 自動シャッターのボタンはデフォルトでは
+  AutoShutter->setEnabled( false );  // 使えなくしておく
+
   MCAFSel = scanFSel = monFSel = S2DFileSel
     = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;
 

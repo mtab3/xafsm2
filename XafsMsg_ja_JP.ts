@@ -233,6 +233,18 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>Check I0 intensity before move to the next step (Step XAFS) </source>
         <translation>ステップXAFSの際、次のエネルギー点に移る前にI0強度をチェックする</translation>
     </message>
+    <message>
+        <source>Quick Scan</source>
+        <translation>クイックスキャン</translation>
+    </message>
+    <message>
+        <source>Time [s]</source>
+        <translation>時間[秒]</translation>
+    </message>
+    <message>
+        <source>0.1</source>
+        <translation>0.1</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>
@@ -1953,7 +1965,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Background</source>
-        <translation>バックグランド</translation>
+        <translation>バックグラウンド</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a sample holder of which center is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2276,7 +2288,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Meas. Background Time.[s] </source>
-        <translation>バックグラウンド測定時間[秒]</translation>
+        <translation>計測時間[秒]</translation>
     </message>
     <message>
         <source>Move Monochromator</source>
@@ -2344,7 +2356,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Meas. before each Scan</source>
-        <translation>毎測定前にバックグラウンド計測</translation>
+        <translation type="obsolete">毎測定前にバックグラウンド計測</translation>
     </message>
     <message>
         <source>Intervals:   Cycle</source>
@@ -2810,6 +2822,14 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>XAFS測定の各点でピエゾを使ってΔθ1をチューニングします。
 Aio64が連続チューニングモードになっている場合機能しません(不具合が起こります)。</translation>
+    </message>
+    <message>
+        <source>AutoShutter</source>
+        <translation>自動シャッター</translation>
+    </message>
+    <message>
+        <source>Meas. Everytime</source>
+        <translation>毎測定前に計測</translation>
     </message>
 </context>
 <context>
