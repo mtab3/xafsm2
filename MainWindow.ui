@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>911</width>
+    <width>902</width>
     <height>1113</height>
    </rect>
   </property>
@@ -1225,7 +1225,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3076,19 +3076,6 @@
              <item row="0" column="1">
               <layout class="QHBoxLayout" name="horizontalLayout_15">
                <item>
-                <spacer name="horizontalSpacer_12">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
                 <widget class="QLabel" name="label_7">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -3141,6 +3128,19 @@
              <item row="1" column="0" colspan="2">
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <item>
+                <widget class="QRadioButton" name="AutoShutter">
+                 <property name="text">
+                  <string>AutoShutter</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <spacer name="horizontalSpacer_11">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -3162,7 +3162,7 @@
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Meas. before each Scan</string>
+                  <string>Meas. Everytime</string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>
@@ -3313,6 +3313,29 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                    </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgb(255, 255, 255);</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_55">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,... When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>F. Ext. Type :</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QRadioButton" name="SelExtPattern">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,...   When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>.dat/.num</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -3475,29 +3498,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                  <property name="spacing">
                   <number>2</number>
                  </property>
-                 <item>
-                  <widget class="QLabel" name="label_55">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,... When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>F. Ext. Type :</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="SelExtPattern">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the button is checked, the file extentions will be numbers for 2nd and later files, like as, .001, .002, .003,...   When the button is not checked, the series number will be add at the end of file-name-body and the file extentions will be always .dat, like as, test-001.dat, test-002.dat,...&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>.dat/.num</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </item>
               </layout>
