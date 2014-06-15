@@ -103,6 +103,8 @@ const MsgTyp MsgT[] = {
   { "@GetStat", GETSTAT },
   { "@Trigger", TRIGGER },
 
+  { "@GoMaxAbs", GOMAXABS },
+  { "@GoMaxRel", GOMAXREL },
   { "@ShutterOff", SHUTTEROFF },
 
   { "_Connected", EvCONNECTED },

@@ -150,6 +150,9 @@ signals:
   void AnsGetData( SMsg msg );
   void AnsGetStat( SMsg msg );
   void AnsTrigger( SMsg msg );
+  void AnsGoMaxRel( SMsg msg );
+  void AnsGoMaxAbs( SMsg msg );
+  void AnsShutterOff( SMsg msg );
 
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

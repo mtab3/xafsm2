@@ -375,6 +375,18 @@ void AUnit::Initialize( Stars *S )
     s->SendCMD2( "Init", DevCh, "Init" );
   }
 
+  //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo
+  //                                                                             PZだけ
+  if ( TypeCHK(  0,  1,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   0,   0,  0,   1 ) ) {
+    connect( s, SIGNAL( AnsGoMaxAbl( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsGoMaxRel( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL( AnsShutterOff( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	     Qt::UniqueConnection );
+    s->SendCMD2( "Init", DevCh, "Init" );
+  }
+
   // 以下 Unit タイプではなくて、特定のユニットに固有の処理
   // MMainTh   : "THETA"
   // SI0       : "I0"
@@ -1759,5 +1771,41 @@ void AUnit::OnReportInjection( SMsg msg )
       Value = Values[ Values.count() - 1 ];
       emit NewInjectionReport( Value, Values );
     }
+  }
+}
+
+void AUnit::GoMaxAbs( double start, double end, int steps )
+{
+  if ( Type == "AIOo" ) {
+    IsBusy2On( Driver, "GoMaxAbs" );
+    s->SendCMD2( Uid, Driver,
+		 QString( "GoMaxAbs 0 %1 %2 %3" ).arg( start ).arg( end ).arg( steps ) );
+  }
+}
+
+void AUnit::GoMaxAbsQ( double start, double end, int steps, double time )
+{
+  if ( Type == "AIOo" ) {
+    IsBusy2On( Driver, "GoMaxAbsQ" );
+    s->SendCMD2( Uid, Driver,
+		 QString( "GoMaxAbs 1 %1 %2 %3 %4" ).arg( start ).arg( end ).arg( steps ).arg( time ) );
+  }
+}
+
+void AUnit::GoMaxRel( double width, int steps )
+{
+  if ( Type == "AIOo" ) {
+    IsBusy2On( Driver, "GoMaxRel" );
+    s->SendCMD2( Uid, Driver,
+		 QString( "GoMaxRel 0 %1 %2" ).arg( width ).arg( steps ) );
+  }
+}
+
+void AUnit::GoMaxRelQ( double width, int steps, double time )
+{
+  if ( Type == "AIOo" ) {
+    IsBusy2On( Driver, "GoMaxRelQ" );
+    s->SendCMD2( Uid, Driver,
+		 QString( "GoMaxAbs 1 %1 %2 %3" ).arg( width ).arg( steps ).arg( time ) );
   }
 }

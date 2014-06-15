@@ -364,6 +364,12 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGetStat( smsg ); break;
 	case TRIGGER:
 	  emit AnsTrigger( smsg ); break;
+	case GOMAXABS:
+	  emit AnsGoMaxAbs( smsg ); break;
+	case GOMAXREL:
+	  emit AnsGoMaxRel( smsg ); break;
+	case SHUTTEROFF:
+	  emit AnsShutterOff( smsg ); break;
 	default:
 	  break;
 	}

@@ -331,6 +331,10 @@ public:
   void GetDataPoints( void );
   void ReadDataPoints( int points );
   void Abort( void );
+  void GoMaxAbs( double Start, double End, int Steps );
+  void GoMaxAbsQ( double Start, double End, int Steps, double Time );
+  void GoMaxRel( double Width, int Steps );
+  void GoMaxRelQ( double Width, int Steps, double Time );
 
 #if 0                   // new mcas
   bool GetMCA( int ch );

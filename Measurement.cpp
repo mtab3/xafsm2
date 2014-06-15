@@ -108,38 +108,18 @@ void MainWindow::MeasSequence( void )
     }
     break;
   case 41:
-    if ( MPSet.TuneESAbs ) {
-      qDebug() << "GoMaxAbs " << QString( "GoMaxAbs %1 %2 %3 %4 %5" )
-		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
-		   .arg( MPSet.TuneESStart )
-		   .arg( MPSet.TuneESEnd )
-		   .arg( MPSet.TuneESSteps )
-		   .arg( ( MPSet.TuneESQuick )
-			 ? QString::number( MPSet.TuneESQuickTime ) : "" );
-
-      s->SendCMD2( "TuneAtEP", MStabDrv,
-		   QString( "GoMaxAbs %1 %2 %3 %4 %5" )
-		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
-		   .arg( MPSet.TuneESStart )
-		   .arg( MPSet.TuneESEnd )
-		   .arg( MPSet.TuneESSteps )
-		   .arg( ( MPSet.TuneESQuick )
-			 ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
-      
-    } else {
-      qDebug() << "GoMaxRel " << QString( "GoMaxRel %1 %2 %3 %4" )
-	.arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
-	.arg( MPSet.TuneESStart )
-	.arg( MPSet.TuneESSteps )
-	.arg( ( MPSet.TuneESQuick )
-	      ? QString::number( MPSet.TuneESQuickTime ) : "" );
-      s->SendCMD2( "TuneAtEP", MStabDrv,
-		   QString( "GoMaxRel %1 %2 %3 %4" )
-		   .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
-		   .arg( MPSet.TuneESStart )
-		   .arg( MPSet.TuneESSteps )
-		   .arg( ( MPSet.TuneESQuick )
-			 ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
+    if ( MMStab != NULL ) {
+      if ( MPSet.TuneESAbs ) {
+	if ( MPSet.TuneESQuick )
+	  MMStab->GoMaxAbsQ( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
+	else
+	  MMStab->GoMaxAbs( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps );
+      } else {
+	if ( MPSet.TuneESQuick )
+	  MMStab->GoMaxRelQ( MPSet.TuneESStart, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
+	else
+	  MMStab->GoMaxRel( MPSet.TuneESStart, MPSet.TuneESSteps );
+      }
     }
     if ( mUnits.isParent() )
       MeasStage = 5;
