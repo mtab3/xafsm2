@@ -103,6 +103,8 @@ const MsgTyp MsgT[] = {
   { "@GetStat", GETSTAT },
   { "@Trigger", TRIGGER },
 
+  { "@ShutterOff", SHUTTEROFF },
+
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },
