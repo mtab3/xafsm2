@@ -89,7 +89,7 @@ QXAFSMODE 1 1000 3000 100 1.0
 # Detectors which can be used for Normal Xafs : NORMALOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG LSR
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -563,8 +563,8 @@ SENSOR AIOi "S051" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "Aio
 #
 # new node injection is available
 #
-SENSOR LSR "S052" "LS" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
-#SENSOR LSR "S052" "LS" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
+#SENSOR LSR "S052" "GENERAL" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
+SENSOR LSR "S052" "GENERAL" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
 
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.

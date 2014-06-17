@@ -74,6 +74,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   LastFunc = "";
   LastFunc2 = "";
   IsBusy = false;         // 相手に尋ねる isBusy
+  IsBusy2 = false;
   IsBusy2Off( "" );   // その他のコマンドを投げて返答が返ってくるまで isBusy2
   Value = "";
 
@@ -1758,6 +1759,7 @@ void AUnit::OnReportInjection( SMsg msg )
       lastVal = Value;
       Value = Values[ Values.count() - 1 ];
       emit NewInjectionReport( Value, Values );
+      emit newValue( Value );
     }
   }
 }
