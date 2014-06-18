@@ -2,27 +2,27 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "AutoShutter" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jun 11 19:27:43 2014 +0900\n"\
-                "    DXM-reset is added in the sequence changing the mode from NORMAL to QXAFS\n"\
+                "Date        : Sun Jun 15 23:33:14 2014 +0900\n"\
+                "    GoMax[Abs/Rel][Q/] is coded in AUnit\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 26 15:09:14 2013 +0900\n"\
-                "    Fix typo\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jun 15 22:31:57 2014 +0900\n"\
+                "    working\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 26 14:23:07 2013 +0900\n"\
-                "    Change WriteHeaderCore and RecordData\n"\"    \n"\"    For REX2000, and other compatible softwares, the order of recorded data\n"\"    are changed.\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jun 14 21:49:52 2014 +0900\n"\
+                "    modify GUI\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 24 18:44:38 2013 +0900\n"\
-                "    Use MeasFiletype2 in WriteHeaderCore\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jun 14 14:42:56 2014 +0900\n"\
+                "    modify layout of mainwindow\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jun 9 17:45:10 2014 +0900\n"\
-                "    Remove tmp file\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jun 12 16:35:01 2014 +0900\n"\
+                "    Injection monitor was inplemented\n"\
 		"\n"\
                 ""
 #endif
