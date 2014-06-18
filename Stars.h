@@ -157,6 +157,7 @@ signals:
   void EvIsBusy( SMsg msg );
   void EvReportCurrent( SMsg msg );
   void EvReportInjection( SMsg msg );
+  void EvReportValue( SMsg msg );
 };
 
 #endif

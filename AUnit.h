@@ -112,7 +112,7 @@ class AUnit : public QObject
  private:
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
 		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2, int enc2,
-		int pam2, int ccg, int aioi, int aioo );
+    int pam2, int ccg, int aioi, int aioo, int fp23 );
   void ConnectToDataLinkServer( QString host, qint16 port );
 
  private slots:
@@ -370,6 +370,7 @@ public slots:
   void ReactGetRange( SMsg msg );
   void OnReportCurrent( SMsg msg );
   void OnReportInjection( SMsg msg );
+  void OnReportValue( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
 
   //  void RcvDataPoints( SMsg msg );
@@ -405,6 +406,7 @@ signals:
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );
   void NewInjectionReport( QString val, QStringList vals );
+  void NewFP23Temperature( QString val );
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
 

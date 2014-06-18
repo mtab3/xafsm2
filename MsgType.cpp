@@ -111,6 +111,6 @@ const MsgTyp MsgT[] = {
   { "_ReportCurrent", EvREPORTCURRENT },
   { "_IsBusy", EvREPORTINJECTION },
   // IsBusy という名前のイベントだけど、実際にはこれを発行するのは LS.Injector 
-
+  { "_ReportValue", EvREPORTVALUE },
   { "", NOTMSG },
 };
