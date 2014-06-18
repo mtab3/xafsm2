@@ -30,6 +30,7 @@
 # 2014/05/18 add New MOTOR  'AIOo' via Aio64 driver
 # 2014/05/18 add 'MSTAB'       line to control delta-theta-1
 # 2014/06/12 add new node 'Injection' to LSR to observe injection of beam
+# 2014/06/18 a sensor FP23 is supported
 
 #
 # In this definition file,
@@ -89,7 +90,7 @@ QXAFSMODE 1 1000 3000 100 1.0
 # Detectors which can be used for Normal Xafs : NORMALOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG FP23
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG FP23 LSR
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -574,3 +575,4 @@ DATAROOT "/home/tabuchi/Data"
 # Special Monochro control
 # MSTAB "DriverName" "delegate output name"
 MSTAB "Aio64" "M031" 
+

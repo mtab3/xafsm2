@@ -29,6 +29,7 @@
 # 2014/05/18 add New MOTOR  'AIOo' via Aio64 driver
 # 2014/05/18 add 'MSTAB'       line to control delta-theta-1
 # 2014/06/12 add new node 'Injection' to LSR to observe injection of beam
+# 2014/06/18 a sensor FP23 is supported
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -89,7 +90,7 @@ QXAFSMODE 1 6000 15000 100 0.1
 # Detectors which can be used for Quasi Continuous Scan (in S2D) : CONTOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2 CCG
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2 CCG FP23 LSR
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -598,6 +599,8 @@ SENSOR AIOi "S053" "GENERAL" "A in 5: I0 mon. to ctrl. dTh1" "simmotor" "AIo64i5
 #
 SENSOR LSR "S054" "LS" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
 #SENSOR LSR "S054" "LS" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
+
+SENSOR FP23 "S055" "FP23" "FP23" "FP23" "" "degree C" NO ""
 
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.
