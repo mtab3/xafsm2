@@ -4,36 +4,25 @@
 
 #define BRANCH_NAME ( "AutoShutter" )
 #define GITLOGS ""\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jun 12 16:35:01 2014 +0900\n"\
-                "    Injection monitor was inplemented\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jun 18 18:16:56 2014 +0900\n"\
+                "    XAFSM0.def and XAFSM.def.BL5S1 were fixed\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jun 11 20:04:23 2014 +0900\n"\
-                "    working on each-step-quick-tuning\n"\
+                "Date        : Wed Jun 18 18:10:13 2014 +0900\n"\
+                "    merged with FP23\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jun 15 23:33:14 2014 +0900\n"\
-                "    GoMax[Abs/Rel][Q/] is coded in AUnit\n"\
+                "Date        : Wed Jun 18 18:08:05 2014 +0900\n"\
+                "    merged with PF23\n"\
+		"\n"\
+                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jun 18 15:22:27 2014 +0900\n"\
+                "    Merge branch 'FP23'\n"\"    \n"\"    Conflicts:\n"\"    	AUnit.cpp\n"\"    	AUnit.h\n"\"    	MsgType.cpp\n"\"    	MsgType.h\n"\"    	Stars.cpp\n"\"    	Stars.h\n"\"    	XAFSM.def.BL5S1\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jun 15 22:31:57 2014 +0900\n"\
-                "    working\n"\
+                "Date        : Tue Jun 17 20:10:49 2014 +0900\n"\
+                "    small change\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Jun 14 21:49:52 2014 +0900\n"\
-                "    modify GUI\n"\
-		"\n"\
-<<<<<<< HEAD
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Jun 14 14:42:56 2014 +0900\n"\
-                "    modify layout of mainwindow\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jun 12 16:35:01 2014 +0900\n"\
-                "    Injection monitor was inplemented\n"\
-		"\n"\
-=======
->>>>>>> master
                 ""
 #endif
