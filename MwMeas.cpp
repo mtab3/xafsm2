@@ -767,9 +767,9 @@ void MainWindow::SetStdXANESBLKs( void )
     buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 3; i < MaxBLKs; i++ )
       BLKdwell[i]->setText( buf );
+    ChangeBLKs( 3 );
   }
 
-  ChangeBLKs( 3 );
   ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
