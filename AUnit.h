@@ -386,6 +386,8 @@ public slots:
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
 
+  void CloseShutter( bool close );
+
 signals:
   //  void CountFinished( void );
   void newValue( QString value );

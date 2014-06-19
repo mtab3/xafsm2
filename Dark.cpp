@@ -77,14 +77,23 @@ bool MainWindow::MeasureDark( void )
     }
   }
 
+  if ( MMStab != NULL )
+    UseAutoShutter = AutoShutter->isChecked();
+  else 
+    UseAutoShutter = false;
+
   inMeasDark = true;
-  AskingShutterClose = true;
-  AskingShutterOpen = false;
-  MeasBackGround->setText( tr( "Close Shutter!!" ) );
-  MeasBackGround->setStyleSheet( AlartRed );
+  if ( !UseAutoShutter ) {
+    AskingShutterClose = true;
+    AskingShutterOpen = false;
+    MeasBackGround->setText( tr( "Close Shutter!!" ) );
+    MeasBackGround->setStyleSheet( AlartRed );
+    statusbar->showMessage( tr( "Make sure that shutte is closed."
+				"  Then push the 'red' button." ), 0 );
+  } else {
+    MMStab->CloseShutter( true );
+  }
   MeasDarkStage = 0;
-  statusbar->showMessage( tr( "Make sure that shutte is closed."
-			      "  Then push the 'red' button." ), 0 );
   MeasDarkTimer->start( 100 );
 
   return true;
@@ -148,11 +157,15 @@ void MainWindow::MeasDarkSequence( void )
 	SFluo->setDark();      // 19ch 分のダークを内部空間に保存
       }
     }
-    AskingShutterOpen = true;
-    MeasBackGround->setText( tr( "Open Shutter!!" ) );
-    MeasBackGround->setStyleSheet( AlartRed );
-    statusbar->showMessage( tr( "Make sure that shutte is opened."
-				"  Then push the 'red' button." ), 0 );
+    if ( !UseAutoShutter ) {
+      AskingShutterOpen = true;
+      MeasBackGround->setText( tr( "Open Shutter!!" ) );
+      MeasBackGround->setStyleSheet( AlartRed );
+      statusbar->showMessage( tr( "Make sure that shutte is opened."
+				  "  Then push the 'red' button." ), 0 );
+    } else {
+      MMStab->CloseShutter( false );
+    }
     MeasDarkStage = 6;
     break;
   case 6:

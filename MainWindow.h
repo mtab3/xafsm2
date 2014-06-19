@@ -468,6 +468,7 @@ private:
   MEASMODE MeasDispMode[ MCHANNELS ];
   int MeasDispPol[ MCHANNELS ];   // polarity
   double NowDwell;
+  bool UseAutoShutter;
   bool inMeasDark;
   bool AskingShutterClose;
   bool AskingShutterOpen;

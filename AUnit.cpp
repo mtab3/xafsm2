@@ -1821,6 +1821,17 @@ void AUnit::GoMaxRelQ( double width, int steps, double time )
   }
 }
 
+void AUnit::CloseShutter( bool close )
+{
+  if ( Type == "AIOo" ) {
+    if ( close ) {
+      s->SendCMD2( Uid, Driver, "ShutterOff 1" );
+    } else {
+      s->SendCMD2( Uid, Driver, "ShutterOff 0" );
+    }
+  }
+}
+
 void AUnit::OnReportValue( SMsg msg )
 {
   if ( Type == "FP23" ) {
@@ -1832,3 +1843,4 @@ void AUnit::OnReportValue( SMsg msg )
     }
   }
 }
+
