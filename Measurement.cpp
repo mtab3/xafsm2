@@ -109,16 +109,24 @@ void MainWindow::MeasSequence( void )
     break;
   case 41:
     if ( MMStab != NULL ) {
+      qDebug() << "Tune Abs " << MPSet.TuneESAbs << "Tune Quick " << MPSet.TuneESQuick;
       if ( MPSet.TuneESAbs ) {
-	if ( MPSet.TuneESQuick )
-	  MMStab->GoMaxAbsQ( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
-	else
+	if ( MPSet.TuneESQuick ) {
+	  qDebug() << "Abs Quick";
+	  MMStab->GoMaxAbsQ( MPSet.TuneESStart, MPSet.TuneESEnd,
+			     MPSet.TuneESSteps, MPSet.TuneESQuickTime );
+	} else {
+	  qDebug() << "Abs Normal";
 	  MMStab->GoMaxAbs( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps );
+	}
       } else {
-	if ( MPSet.TuneESQuick )
+	if ( MPSet.TuneESQuick ) {
+	  qDebug() << "Rel Quick";
 	  MMStab->GoMaxRelQ( MPSet.TuneESStart, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
-	else
+	} else {
+	  qDebug() << "Rel Normal";
 	  MMStab->GoMaxRel( MPSet.TuneESStart, MPSet.TuneESSteps );
+	}
       }
     }
     if ( mUnits.isParent() )

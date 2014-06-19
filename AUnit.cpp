@@ -380,7 +380,7 @@ void AUnit::Initialize( Stars *S )
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo FP23
   //                                                                             PZだけ
   if ( TypeCHK(  0,  1,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0,  0, 0,  0,   0,   0,  0,   1,   0 ) ) {
-    connect( s, SIGNAL( AnsGoMaxAbl( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+    connect( s, SIGNAL( AnsGoMaxAbs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	     Qt::UniqueConnection );
     connect( s, SIGNAL( AnsGoMaxRel( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	     Qt::UniqueConnection );
@@ -1817,7 +1817,7 @@ void AUnit::GoMaxRelQ( double width, int steps, double time )
   if ( Type == "AIOo" ) {
     IsBusy2On( Driver, "GoMaxRelQ" );
     s->SendCMD2( Uid, Driver,
-		 QString( "GoMaxAbs 1 %1 %2 %3" ).arg( width ).arg( steps ).arg( time ) );
+		 QString( "GoMaxRel 1 %1 %2 %3" ).arg( width ).arg( steps ).arg( time ) );
   }
 }
 

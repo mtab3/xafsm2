@@ -564,8 +564,8 @@ SENSOR AIOi "S051" "GENERAL" "A in 5: I0 mon. to ctrl. dTh1" "Aio64" "i5" "mV" N
 #
 # new node injection is available
 #
-SENSOR LSR "S052" "LS" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
-#SENSOR LSR "S052" "LS" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
+#SENSOR LSR "S052" "LS" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
+SENSOR LSR "S052" "GENTERAL" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
 
 SENSOR FP23 "S053" "FP23" "FP23" "FP23" "" "degree C" NO ""
 
