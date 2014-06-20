@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "ASAgain" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jun 20 19:52:53 2014 +0900\n"\
+                "    It looks the Auto Shutter works\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jun 20 00:43:40 2014 +0900\n"\
                 "    Auto shutter might work while measureing dark, but not before a XAFS measurement\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jun 19 19:06:28 2014 +0900\n"\
                 "    nothing\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jun 19 18:59:15 2014 +0900\n"\
-                "    Fix stdXANES in QXAFS mode\n"\
 		"\n"\
                 ""
 #endif
