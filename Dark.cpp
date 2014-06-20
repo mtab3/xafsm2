@@ -92,6 +92,8 @@ bool MainWindow::MeasureDark( void )
 				"  Then push the 'red' button." ), 0 );
   } else {
     MMStab->CloseShutter( true );
+    MeasBackGround->setText( tr( "BG Measuring" ) );
+    MeasBackGround->setStyleSheet( InActive );
   }
   MeasDarkStage = 0;
   MeasDarkTimer->start( 100 );
