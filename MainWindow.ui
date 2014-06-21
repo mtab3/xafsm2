@@ -3154,6 +3154,9 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically shut I0 by strongly detuning of PEZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="text">
                   <string>AutoShutter</string>
                  </property>
@@ -3462,13 +3465,6 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </property>
               </widget>
              </item>
-             <item row="0" column="5">
-              <widget class="QLabel" name="label_87">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
           </item>
@@ -3589,14 +3585,14 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QPushButton" name="MeasStart">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
+                   <width>1000000</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -3611,14 +3607,14 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QPushButton" name="MeasPause">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
+                   <width>100000</width>
                    <height>16777215</height>
                   </size>
                  </property>
