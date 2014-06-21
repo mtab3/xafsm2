@@ -189,7 +189,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>4.0</source>
-        <translation>4.0</translation>
+        <translation type="obsolete">4.0</translation>
     </message>
     <message>
         <source>Steps / Steps</source>
@@ -205,7 +205,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>20</source>
-        <translation>20</translation>
+        <translation type="obsolete">20</translation>
     </message>
     <message>
         <source>Range End / No Use [V]</source>
@@ -243,7 +243,19 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>0.1</source>
-        <translation>0.1</translation>
+        <translation type="obsolete">0.1</translation>
+    </message>
+    <message>
+        <source>0.2</source>
+        <translation>0.2</translation>
+    </message>
+    <message>
+        <source>50</source>
+        <translation>50</translation>
+    </message>
+    <message>
+        <source>2.0</source>
+        <translation>2.0</translation>
     </message>
 </context>
 <context>
@@ -2830,6 +2842,18 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Meas. Everytime</source>
         <translation>毎測定前に計測</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically shut I0 by strongly detuning of PEZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ピエゾを使って大きくでチューニングすることでI0光を自動的に遮断します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Other Options</source>
+        <translation>詳細設定</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Advanced options cntrolling the XAFS measurement.&lt;/p&gt;&lt;p&gt;Ordinaly, the options found here do not have to be changed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;測定時の動作を制御する拡張的なオプションがあります。&lt;/p&gt;&lt;p&gt;通常、ここにあるオプションを変更する必要はありません。&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
