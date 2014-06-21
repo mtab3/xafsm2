@@ -390,3 +390,9 @@ void Status::setEnc( void )
 {
   emit setEncNewTh( OrigV, EncV->text() );
 }
+
+void Status::showOptionBox( void )
+{
+  QScrollBar *vsb = verticalScrollBar();
+  vsb->setValue( vsb->maximum() );
+}

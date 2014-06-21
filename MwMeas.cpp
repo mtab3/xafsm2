@@ -253,6 +253,15 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( AutoMode, SIGNAL( editingFinished() ),
 	   this, SLOT( ShowItemsForAutoMode() ),
 	   Qt::UniqueConnection );
+
+  connect( OtherOptions, SIGNAL( clicked() ), this, SLOT( ShowOtherOptions() ),
+	   Qt::UniqueConnection );
+}
+
+void MainWindow::ShowOtherOptions( void )
+{
+  MainTab->setCurrentIndex( MainTab->indexOf( StatTab ) );
+  StatDisp->showOptionBox();
 }
 
 void MainWindow::CheckNewMeasFileName( void )

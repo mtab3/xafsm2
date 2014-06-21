@@ -613,6 +613,7 @@ private slots:
   void SelectedAPointInScanArea( double x, double y );
 
   void SetDXMPMC( void );
+  void ShowOtherOptions( void );
 
   void NewSelA( int i );
   void OpenPT( void );
