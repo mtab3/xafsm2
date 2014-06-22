@@ -2853,7 +2853,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Advanced options cntrolling the XAFS measurement.&lt;/p&gt;&lt;p&gt;Ordinaly, the options found here do not have to be changed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;測定時の動作を制御する拡張的なオプションがあります。&lt;/p&gt;&lt;p&gt;通常、ここにあるオプションを変更する必要はありません。&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;測定時の動作を制御する拡張的なオプションがあります。&lt;/p&gt;&lt;p&gt;通常、ここにあるオプションを変更する必要はありません。&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -3394,6 +3394,14 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Intensity : %1</source>
         <translation>測定強度 : %1</translation>
+    </message>
+    <message>
+        <source>Max Int. : %1</source>
+        <translation>最大値 : %1</translation>
+    </message>
+    <message>
+        <source>Min Int. : %1</source>
+        <translation>最小値 : %1</translation>
     </message>
 </context>
 <context>
