@@ -233,6 +233,18 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>Check I0 intensity before move to the next step (Step XAFS) </source>
         <translation>ステップXAFSの際、次のエネルギー点に移る前にI0強度をチェックする</translation>
     </message>
+    <message>
+        <source>Quick Scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time [s]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.1</source>
+        <translation type="unfinished">0.1</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>
@@ -2810,6 +2822,10 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>XAFS測定の各点でピエゾを使ってΔθ1をチューニングします。
 Aio64が連続チューニングモードになっている場合機能しません(不具合が起こります)。</translation>
+    </message>
+    <message>
+        <source>The folder for data files [%1] not exist.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

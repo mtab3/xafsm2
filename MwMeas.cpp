@@ -1366,6 +1366,25 @@ void MainWindow::StartMeasurement( void )
       }
     }
 
+    if ( AutoModeFirst ) {  // AutoMode: off か AutoMode の 1回目に true
+      BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
+      if ( ! BaseFile.dir().exists() ) {
+	QString msg = tr( "The folder for data files [%1] not exist." )
+	  .arg( BaseFile.dir().path() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return;
+      }
+      if ( BaseFile.exists() ) {
+        AskOverWrite->setText( tr( "File [%1] Over Write ?" )
+                               .arg( DFName0 + ".dat" ) );
+        AskOverWrite->show();
+        AskingOverwrite = true;  // ここで出した確認ダイアログをクローズするときにクリア
+      } else {
+        AskingOverwrite = false;
+      }
+    }
+
     MakingSureOfRangeSelect = false;
 
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
@@ -1405,18 +1424,6 @@ void MainWindow::StartMeasurement( void )
     connect( MeasView, SIGNAL( MovedToNewX( int, double ) ),
 	     this, SLOT( MoveInMeasView( int, double ) ),
 	     Qt::UniqueConnection );
-
-    if ( AutoModeFirst ) {  // AutoMode: off か AutoMode の 1回目に true
-      BaseFile = QFileInfo( DFName0 + ".dat" );  // 必要なら測定ファイルの上書き確認
-      if ( BaseFile.exists() ) {
-        AskOverWrite->setText( tr( "File [%1] Over Write ?" )
-                               .arg( DFName0 + ".dat" ) );
-        AskOverWrite->show();
-        AskingOverwrite = true;  // ここで出した確認ダイアログをクローズするときにクリア
-      } else {
-        AskingOverwrite = false;
-      }
-    }
 
     NewLogMsg( tr( "Meas: Start %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
                .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )
