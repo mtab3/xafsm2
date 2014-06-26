@@ -5,24 +5,24 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jun 11 19:27:43 2014 +0900\n"\
-                "    DXM-reset is added in the sequence changing the mode from NORMAL to QXAFS\n"\
+                "Date        : Sun Jun 22 23:24:43 2014 +0900\n"\
+                "    min/max values are displayed in S2DView\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 26 15:09:14 2013 +0900\n"\
-                "    Fix typo\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jun 22 00:28:57 2014 +0900\n"\
+                "    L10N\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 26 14:23:07 2013 +0900\n"\
-                "    Change WriteHeaderCore and RecordData\n"\"    \n"\"    For REX2000, and other compatible softwares, the order of recorded data\n"\"    are changed.\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jun 22 00:19:27 2014 +0900\n"\
+                "    Jump from MwMeas to Setup\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 24 18:44:38 2013 +0900\n"\
-                "    Use MeasFiletype2 in WriteHeaderCore\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jun 21 23:27:28 2014 +0900\n"\
+                "    modify mainwindow.ui\n"\
 		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jun 9 17:45:10 2014 +0900\n"\
-                "    Remove tmp file\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jun 20 19:54:29 2014 +0900\n"\
+                "    merged with ASAgain\n"\
 		"\n"\
                 ""
 #endif

@@ -168,7 +168,11 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mUnits.at(i)->values();
-    dark << mUnits.at(i)->getDark() * QXafsDwellTime;
+
+    dark << mUnits.at(i)->getDark();          //  * QXafsDwellTime;  // 即席
+    /* q34410a だけならこれでいいけど、他の計測器を使うようになったらダメ */
+
+    qDebug() << "dark " << mUnits.at(i)->getDark() << QXafsDwellTime;
     if ( num > vals[i][0].toInt() )
       num = vals[i][0].toInt();
   }
@@ -242,6 +246,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   for ( int i = 0; i < Us; i++ ) {
     vals << mUnits.at(i)->values();
     dark << mUnits.at(i)->getDark() * QXafsDwellTime;
+    qDebug() << "dark " << mUnits.at(i)->getDark() << QXafsDwellTime;
     if ( num > vals[i][0].toInt() )
       num = vals[i][0].toInt();
   }

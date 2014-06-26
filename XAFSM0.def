@@ -29,6 +29,7 @@
 # 2014/05/18 add New MOTOR  'AIOo' via Aio64 driver
 # 2014/05/18 add 'MSTAB'       line to control delta-theta-1
 # 2014/06/12 add new node 'Injection' to LSR to observe injection of beam
+# 2014/06/18 a sensor FP23 is supported
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -89,7 +90,7 @@ QXAFSMODE 1 6000 15000 100 0.1
 # Detectors which can be used for Quasi Continuous Scan (in S2D) : CONTOK
 #
 QXAFSOK DV ENC2
-NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2 CCG
+NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC PAM2 CCG FP23 LSR
 CONTOK SSD CNT
 
 # now the keyword STARSDRIVER is obsolete
@@ -248,8 +249,8 @@ MOTOR PZ "M017" "DTH1P" "Dth1p" "simmotor" "" "um" 0.056 REAL -10 120 # Check th
 
 MOTOR AIOo "M018" "GENERAL" "A out 0" "simmotor" "Aio64o0" "mV" 1 REAL -10 10
 MOTOR AIOo "M019" "GENERAL" "A out 1" "simmotor" "Aio64o1" "mV" 1 REAL -10 10
-MOTOR AIOo "M020" "GENERAL" "A out 2: wave out to PEZ controlling delta-theta-1" "simmotor" "Aio64o2" "mV" 1 REAL -10 10
-MOTOR AIOo "M021" "GENERAL" "A out 3: DC out to PEZ controlling delta-theta-1" "simmotor" "Aio64o3" "mV" 1 REAL -10 10
+MOTOR AIOo "M020" "GENERAL" "A out 2: wave out to ctrl. dTh1 via PEZ" "simmotor" "Aio64o2" "mV" 1 REAL -10 10
+MOTOR AIOo "M021" "GENERAL" "A out 3: DC out to ctrl. dTh1 via PEZ" "simmotor" "Aio64o3" "mV" 1 REAL -10 10
 
 DEF_U_REAL M002 M003 M004       # Stage XYZ
 DEF_U_REAL M005 M006 M007 M008  # 4WS
@@ -590,14 +591,16 @@ SENSOR AIOi "S048" "GENERAL" "A in 0" "simmotor" "Aio64i0" "mV" NO ""
 SENSOR AIOi "S049" "GENERAL" "A in 1" "simmotor" "Aio64i1" "mV" NO ""
 SENSOR AIOi "S050" "GENERAL" "A in 2" "simmotor" "Aio64i2" "mV" NO ""
 SENSOR AIOi "S051" "GENERAL" "A in 3" "simmotor" "Aio64i3" "mV" NO ""
-SENSOR AIOi "S052" "GENERAL" "A in 4: Wave monitor to controll delta-theta-1" "simmotor" "Aio64i4" "mV" NO ""
-SENSOR AIOi "S053" "GENERAL" "A in 5: I0 monitor to controll delta-theta-1" "simmotor" "AIo64i5" "mV" NO ""
+SENSOR AIOi "S052" "GENERAL" "A in 4: Wave mon. to ctrl. dTh1" "simmotor" "Aio64i4" "mV" NO ""
+SENSOR AIOi "S053" "GENERAL" "A in 5: I0 mon. to ctrl. dTh1" "simmotor" "AIo64i5" "mV" NO ""
 
 #
 # new node injection is available
 #
 SENSOR LSR "S054" "LS" "Injection Monitor" "simmotor" "Ring" "mA" NO ""
 #SENSOR LSR "S054" "LS" "Injection Monitor" "LS" "Injection" "On/Off" NO ""
+
+SENSOR FP23 "S055" "FP23" "FP23" "FP23" "" "degree C" NO ""
 
 DATAROOT "/home/tabuchi/Data"
 # The DATAROOT line define the default place where the measured data stored.

@@ -189,7 +189,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>4.0</source>
-        <translation>4.0</translation>
+        <translation type="obsolete">4.0</translation>
     </message>
     <message>
         <source>Steps / Steps</source>
@@ -205,7 +205,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>20</source>
-        <translation>20</translation>
+        <translation type="obsolete">20</translation>
     </message>
     <message>
         <source>Range End / No Use [V]</source>
@@ -235,15 +235,27 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>Quick Scan</source>
-        <translation type="unfinished"></translation>
+        <translation>クイックスキャン</translation>
     </message>
     <message>
         <source>Time [s]</source>
-        <translation type="unfinished"></translation>
+        <translation>時間[秒]</translation>
     </message>
     <message>
         <source>0.1</source>
-        <translation type="unfinished">0.1</translation>
+        <translation type="obsolete">0.1</translation>
+    </message>
+    <message>
+        <source>0.2</source>
+        <translation>0.2</translation>
+    </message>
+    <message>
+        <source>50</source>
+        <translation>50</translation>
+    </message>
+    <message>
+        <source>2.0</source>
+        <translation>2.0</translation>
     </message>
 </context>
 <context>
@@ -1965,7 +1977,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Background</source>
-        <translation>バックグランド</translation>
+        <translation>バックグラウンド</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a sample holder of which center is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2288,7 +2300,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Meas. Background Time.[s] </source>
-        <translation>バックグラウンド測定時間[秒]</translation>
+        <translation>計測時間[秒]</translation>
     </message>
     <message>
         <source>Move Monochromator</source>
@@ -2356,7 +2368,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Meas. before each Scan</source>
-        <translation>毎測定前にバックグラウンド計測</translation>
+        <translation type="obsolete">毎測定前にバックグラウンド計測</translation>
     </message>
     <message>
         <source>Intervals:   Cycle</source>
@@ -2824,8 +2836,28 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
 Aio64が連続チューニングモードになっている場合機能しません(不具合が起こります)。</translation>
     </message>
     <message>
+        <source>AutoShutter</source>
+        <translation>自動シャッター</translation>
+    </message>
+    <message>
+        <source>Meas. Everytime</source>
+        <translation>毎測定前に計測</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically shut I0 by strongly detuning of PEZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ピエゾを使って大きくでチューニングすることでI0光を自動的に遮断します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Other Options</source>
+        <translation>詳細設定</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Advanced options cntrolling the XAFS measurement.&lt;/p&gt;&lt;p&gt;Ordinaly, the options found here do not have to be changed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;測定時の動作を制御する拡張的なオプションがあります。&lt;/p&gt;&lt;p&gt;通常、ここにあるオプションを変更する必要はありません。&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>The folder for data files [%1] not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>測定データを保存するフォルダ [%1] が存在しません。</translation>
     </message>
 </context>
 <context>
@@ -3366,6 +3398,14 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Intensity : %1</source>
         <translation>測定強度 : %1</translation>
+    </message>
+    <message>
+        <source>Max Int. : %1</source>
+        <translation>最大値 : %1</translation>
+    </message>
+    <message>
+        <source>Min Int. : %1</source>
+        <translation>最小値 : %1</translation>
     </message>
 </context>
 <context>

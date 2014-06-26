@@ -468,6 +468,7 @@ private:
   MEASMODE MeasDispMode[ MCHANNELS ];
   int MeasDispPol[ MCHANNELS ];   // polarity
   double NowDwell;
+  bool UseAutoShutter;
   bool inMeasDark;
   bool AskingShutterClose;
   bool AskingShutterOpen;
@@ -612,6 +613,7 @@ private slots:
   void SelectedAPointInScanArea( double x, double y );
 
   void SetDXMPMC( void );
+  void ShowOtherOptions( void );
 
   void NewSelA( int i );
   void OpenPT( void );

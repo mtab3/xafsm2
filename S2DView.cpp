@@ -223,7 +223,7 @@ void S2DView::Draw( QPainter *p )
   cc.ShowAButton( p, invXf, tr( "Inv. X" ), 0, 100, height() - 40 );
   cc.ShowAButton( p, invYf, tr( "Inv. Y" ), 0, 100, height() - 20 );
   
-  if ( AutoScale ) {
+  if ( AutoScale ) {  // 表示色の範囲をオートで決めるための最大、最小値検索
     minz = 1e300;
     maxz = -1e300;
     for ( int ix = 0; ix < maxix; ix++ ) {
@@ -337,27 +337,37 @@ void S2DView::Draw( QPainter *p )
 
   // 情報表示
   int inf = 0;
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 現在の測定位置表示
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       tr( "Measured : (%1, %2)" )
 	       .arg( sx + dx * ( lastIx + 0.5 ) ).arg( sy + dy * lastIy ) );
 
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 現在の測定値表示
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       tr( "Intensity : %1" )
 	       .arg( valid[lastIx][lastIy] ? QString::number( data[lastIx][lastIy] )
 		     : QString( "--" ) ) );
 
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // カーソルがある位置の表示
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       tr( "Pinted : (%1, %2)" )
 	       .arg( sx + dx * ( showIx + 0.5 ) ).arg( sy + dy * showIy ) );
 
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // カーソルがある位置の測定値
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       tr( "Intensity : %1" )
 	       .arg( valid[showIx][showIy] ? QString::number( data[showIx][showIy] )
 		     : QString( "--" ) ) );
+
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 最大値
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       tr( "Max Int. : %1" ).arg( ( maxz > -0.9e300 ) ? QString::number( maxz )
+					  : QString( "--" ) ) );
+
+  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 最小値
+  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
+	       tr( "Min Int. : %1" ).arg( ( minz < 0.9e300 ) ? QString::number( minz )
+					  : QString( "--" ) ) );
 }
 
 void S2DView::mouseMoveEvent( QMouseEvent *e )

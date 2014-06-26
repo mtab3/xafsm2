@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>706</width>
-    <height>339</height>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -229,6 +229,9 @@ with usual 9809 format datas.</string>
           <property name="text">
            <string>Quick Scan</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <property name="autoExclusive">
            <bool>false</bool>
           </property>
@@ -256,7 +259,7 @@ with usual 9809 format datas.</string>
            <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>0.1</string>
+           <string>0.2</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -275,7 +278,7 @@ with usual 9809 format datas.</string>
            <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>20</string>
+           <string>50</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -313,7 +316,7 @@ with usual 9809 format datas.</string>
            <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
-           <string>4.0</string>
+           <string>2.0</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -722,6 +725,9 @@ The original point will be changed as the angle calculated from the pulse will b
          <widget class="QRadioButton" name="CheckI0BeforeMove">
           <property name="text">
            <string>Check I0 intensity before move to the next step (Step XAFS) </string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="autoExclusive">
            <bool>false</bool>

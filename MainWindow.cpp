@@ -28,6 +28,11 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MStabOk = false;
   MStabDelegate = "";
 
+#if 0
+  AutoShutter->setChecked( false );  // 自動シャッターのボタンはデフォルトでは
+  AutoShutter->setEnabled( false );  // 使えなくしておく
+#endif
+
   MCAFSel = scanFSel = monFSel = S2DFileSel
     = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;
 
@@ -324,6 +329,9 @@ void MainWindow::InitAndIdentifyMotors( void )
   if ( MMStab == NULL ) {
     MStabOk = false;
     TuneAtEachStp->setEnabled( false );
+    TuneAtEachStp->setChecked( false );
+    AutoShutter->setEnabled( false );
+    AutoShutter->setEnabled( false );
   }
 }
 

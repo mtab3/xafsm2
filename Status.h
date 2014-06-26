@@ -57,6 +57,8 @@ public slots:
   void newEncTh( QString th );
   void setEnc( void );
 
+  void showOptionBox( void );
+
 signals:
   void NeedListNodes( void );
   void setEncNewTh( QString Orig, QString newv );
