@@ -42,8 +42,8 @@ void MainWindow::ReadDef( QString fname )
     aline = in.readLine();
     line++;
     if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
-      //      next = aline.simplified();
-      next = nextItem( aline.simplified(), item );
+//    next = nextItem( aline.simplified(), item );
+      next = nextItem( aline, item );            // stop using 'simplified'
       NewUnit = new AUnit;
       if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
         if ( item == "MOTOR" ) { // Motor か
@@ -390,13 +390,20 @@ void MainWindow::ExitByDuplicateUID( AUnit *a1, AUnit *a2 )
 QString MainWindow::nextItem( QString start, QString &item )
 {
   QString rs;
+  int s;
   int i;
 
-  start = start.simplified();
-  if ( start.isEmpty() ) {
+//  start = start.simplified();   // stop using 'simplified'
+  if ( start.simplified().isEmpty() ) {
     item = "";
     return "";
   }
+
+  // simplified が null でないことは確認してあるので、必ず何か not-space がある
+  s = 0;
+  while( ( start[s].isSpace() ) && ( i < start.length() - 1 ) ) s++;
+  start = start.mid( s );
+  // そこまでを切り落としてしまえば OK
 
   if ( start.at(0) == '"') {
     if ( ( i = start.indexOf( '"', 1 ) ) < 0 ) {
