@@ -12,5 +12,6 @@
     <file>SSDPreAMPGains0.txt</file>  
     <file>DTAutoCalib.seq</file>
     <file>SSDEngAutoCalib.seq</file>  
+    <file>XafsM2.png</file>
   </qresource>
 </RCC>

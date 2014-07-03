@@ -43,6 +43,16 @@ int main( int argc, char *argv[] )
   }
 
   QApplication app( argc, argv );
+
+  QPixmap pixmap( ":XafsM2.png" ); //Insert your splash page image here
+  QSplashScreen splash( pixmap );
+  splash.show();
+  // This line represents the alignment of text, color and position
+  splash.showMessage( QObject::tr( "Starting XafsM2..." ),
+		      Qt::AlignHCenter | Qt::AlignVCenter, QColor( 0, 0, 255 ) );
+  // This is used to accept a click on the screen so that user can cancel the screen
+  qApp->processEvents();
+
   QTranslator appTr;
   switch( (int)Lang ) {
   case English:
@@ -64,5 +74,6 @@ int main( int argc, char *argv[] )
   mw->show();
   mw->InitSize();
 
+  splash.finish( mw );
   return app.exec();
 }
