@@ -3355,6 +3355,13 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <source>Starting XafsM2...</source>
+        <translation>起動中...</translation>
+    </message>
+</context>
+<context>
     <name>RelAbs</name>
     <message>
         <source>Form</source>
