@@ -1,3 +1,4 @@
+#include <QSplashScreen>
 #include <QStyleFactory>
 #include <QApplication>
 #include <QtGui>

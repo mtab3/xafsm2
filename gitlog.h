@@ -4,25 +4,25 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jun 22 23:24:43 2014 +0900\n"\
-                "    min/max values are displayed in S2DView\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jul 3 15:55:06 2014 +0900\n"\
+                "    working on sound but not finished\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jun 22 00:28:57 2014 +0900\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jul 3 15:34:36 2014 +0900\n"\
                 "    L10N\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jun 22 00:19:27 2014 +0900\n"\
-                "    Jump from MwMeas to Setup\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jul 3 15:32:09 2014 +0900\n"\
+                "    add a splash-screen\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Jun 21 23:27:28 2014 +0900\n"\
-                "    modify mainwindow.ui\n"\
+                "Date        : Sun Jun 29 22:18:38 2014 +0900\n"\
+                "    small hack, to accept multi spaces in XAFSM.def when they are quoted by double-quotation\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jun 20 19:54:29 2014 +0900\n"\
-                "    merged with ASAgain\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jun 26 17:13:11 2014 +0900\n"\
+                "    L10N\n"\
 		"\n"\
                 ""
 #endif

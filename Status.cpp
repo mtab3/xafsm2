@@ -2,6 +2,7 @@
 #include "StarsSV2.h"
 
 #include <QLineEdit>
+#include <QScrollBar>
 
 Status::Status( QWidget *p ) : QScrollArea( p )
 {

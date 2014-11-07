@@ -287,11 +287,12 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   double Deg[ TotalPoints ];
   double Deg2[ TotalPoints ];
   double DTime[ TotalPoints ];
-  QVector<double> boxes[ TotalPoints ];
+  QVector<double> *boxes[ TotalPoints ];
   double pinbox[ TotalPoints ];
   for ( int i = 0; i < TotalPoints; i++ ) {
+    boxes[i] = new QVector<double>;
     for ( int j = 0; j < Us; j++ ) {
-      boxes[i] << 0;
+      *boxes[i] << 0;
     }
     DTime[i] = 0;
     pinbox[i] = 0;
@@ -378,7 +379,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   for ( int i = 0; i <= maxii; i++ ) {
     buf.sprintf( "%10.5f" "%10.5f" "%10.4f", Deg[i], Deg2[i], DTime[i] );
     for ( int j = 0; j < Us; j++ ) {
-      buf2.sprintf( " %9.6f", boxes[i][j] );  // 8.7 --> 9.6
+      buf2.sprintf( " %9.6f", (*boxes[i])[j] );  // 8.7 --> 9.6
       buf += buf2;
     }
     out << buf << endl;

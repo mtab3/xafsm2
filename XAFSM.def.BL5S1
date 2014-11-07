@@ -576,3 +576,6 @@ DATAROOT "/home/tabuchi/Data"
 # MSTAB "DriverName" "delegate output name"
 MSTAB "Aio64" "M031" 
 
+SENSOR CNT "S054" "GENERAL" "Counter 0 (I0) 2nd" "nct0802" "ch0" "count" YES "S054"
+SENSOR CNT "S055" "GENERAL" "Counter 1 (I1) 2nd" "nct0802" "ch1" "count" YES "S054"
+SENSOR CNT "S056" "GENERAL" "Counter 2 (I2) 2nd" "nct0802" "ch2" "count" YES "S054"
