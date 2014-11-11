@@ -435,6 +435,37 @@ with usual 9809 format datas.</string>
       </widget>
      </item>
      <item>
+      <widget class="QFrame" name="frame_12">
+       <property name="styleSheet">
+        <string notr="true">background-color: #eeffee</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_12">
+        <property name="margin">
+         <number>3</number>
+        </property>
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="RecordEachMCASpectrum">
+          <property name="text">
+           <string>Record Each MCA Spectrum when XAFS measurement</string>
+          </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QFrame" name="frame_4">
        <property name="styleSheet">
         <string notr="true">background-color: #eeffee</string>

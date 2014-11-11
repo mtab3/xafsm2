@@ -291,6 +291,11 @@ void MainWindow::ReadDef( QString fname )
         MStabDrv = item;
         next = nextItem( next, item );
         MStabDelegate = item;
+      } else if ( item == "SAVE_EACH_MCA_SPECTRUM" ) {
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  conds->RecordEachMCASpectrumEnabled( item.toInt() == 1 );
+	}
       } else {
         qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

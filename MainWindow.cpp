@@ -85,6 +85,13 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   starsSV = new StarsSV2;
 
+  conds = new Conditions;
+  conds->setVersionInfo( VERSION, __DATE__, __TIME__ );
+#if 0
+  conds->setEncAsTh( true );
+  conds->setAddInfos( true );
+#endif
+
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
   ReadDef( DefFileName );
   selmc = new SelMC2( mccd );
@@ -113,12 +120,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupWebView();
   setupAutoSequence();
 
-  conds = new Conditions;
-  conds->setVersionInfo( VERSION, __DATE__, __TIME__ );
-#if 0
-  conds->setEncAsTh( true );
-  conds->setAddInfos( true );
-#endif
   //  useFixedDelta = false;
   connect( conds, SIGNAL( SetDXMPMC() ), this, SLOT( SetDXMPMC() ),
 	   Qt::UniqueConnection );

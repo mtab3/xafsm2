@@ -1473,9 +1473,9 @@ void MainWindow::StartMeasurement( void )
     if ( isSFluo ) {
       if ( cMCAView == NULL )
 	getNewMCAView();
-      if ( MCACanSaveAllOnMem )
+      if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
         XafsMCAMap.New( TotalPoints, SelRPT->value() );
-      else
+      else                        // そうでなければ 1スキャン分だけメモリ上に
         XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
     }
 

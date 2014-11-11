@@ -48,6 +48,16 @@ bool Conditions::isRecordAllSSDChs( void )
   return RecordAllSSDChs->isChecked();
 }
 
+bool Conditions::isRecordEachMCASpectrum( void ) 
+{
+  return RecordEachMCASpectrum->isChecked();
+}
+
+void Conditions::RecordEachMCASpectrumEnabled( bool f ) 
+{
+  return RecordEachMCASpectrum->setChecked( f );
+}
+
 bool Conditions::isMakeInfo( void ) 
 {
   return MakeInfoFile->isChecked();
