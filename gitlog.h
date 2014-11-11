@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Nov 7 20:13:46 2014 +0900\n"\
+                "    it was checked that QFio works with no problem\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Nov 7 18:26:51 2014 +0900\n"\
                 "    another solution of QFio.  I only know both of them can be compiled, but I do not know either way works\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 3 15:34:36 2014 +0900\n"\
                 "    L10N\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jul 3 15:32:09 2014 +0900\n"\
-                "    add a splash-screen\n"\
 		"\n"\
                 ""
 #endif

@@ -120,7 +120,8 @@ void MainWindow::ToggleQXafsMode( bool )
     }
     NXAFSBInfo.Block[ i ].start = BLKstart[ i ]->text();
     BLKstart[ i ]->setText( QXAFSBInfo.Block[ i ].start );
-    
+    ShowTotal();    // ブロックパラメータを変えた後に、合計点数の再計算と表示
+
     CheckQXafsParams();
     ChangeBLKs( 1 );
     SelBLKs->setEnabled( false );
@@ -161,6 +162,7 @@ void MainWindow::ToggleQXafsMode( bool )
     }
     QXAFSBInfo.Block[ i ].start = BLKstart[ i ]->text();
     BLKstart[ i ]->setText( NXAFSBInfo.Block[ i ].start );
+    ShowTotal();    // ブロックパラメータを変えた後に、合計点数の再計算と表示
 
     HideBLKs( false );
     QConditionBox->setHidden( true );
