@@ -37,6 +37,7 @@ struct aMCAMap {
 
   aMCAMap() { iX = iY = 0; Points = NULL; };
   ~aMCAMap() { if ( Points != NULL ) delete [] Points; };
+
   void New( int ix, int iy )
   {
     if ( Points != NULL ) {
@@ -51,6 +52,7 @@ struct aMCAMap {
       Points = NULL;
     }
   };
+
   aMCASet *aPoint( int ix, int iy )
   {
     if ( Points == NULL )

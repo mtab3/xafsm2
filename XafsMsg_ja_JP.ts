@@ -257,6 +257,10 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>2.0</source>
         <translation>2.0</translation>
     </message>
+    <message>
+        <source>Record Each MCA Spectrum when XAFS measurement</source>
+        <translation>XAFS測定時、各点での MCA スペクトルをファイルに記録する</translation>
+    </message>
 </context>
 <context>
     <name>DarkTable</name>

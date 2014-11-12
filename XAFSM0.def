@@ -30,6 +30,7 @@
 # 2014/05/18 add 'MSTAB'       line to control delta-theta-1
 # 2014/06/12 add new node 'Injection' to LSR to observe injection of beam
 # 2014/06/18 a sensor FP23 is supported
+# 2014/11/11 add 'SAVE_EACH_MCA_SPECTRUM' line
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -64,6 +65,13 @@ RW_DXMCENTER_CFG  1  DXMCenterTest.cfg    # read/write DXMCenterTest.cfg
 #
 #MCA_CAN_SAVE_ALL 1
 MCA_CAN_SAVE_ALL 0
+
+# On the XAFS measurement, each MCA spectrum measured at each step
+# will be saved in separate files.
+# Default (without the line) is 0
+#
+SAVE_EACH_MCA_SPECTRUM 1
+#SAVE_EACH_MCA_SPECTRUM 0
 
 # Set maximum energy [keV] in MCAView (MCA display)
 # Default (without the line) is 20 [keV]

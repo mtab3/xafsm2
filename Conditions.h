@@ -19,6 +19,8 @@ public:
   bool isEncAsTh( void );
   bool isAddInfos( void );
   bool isRecordAllSSDChs( void );
+  bool isRecordEachMCASpectrum( void );
+  void RecordEachMCASpectrumEnabled( bool f );
   bool isMakeInfo( void );
   bool isMeasInDeg( void );
   bool isUseDTh1TTable( void );
