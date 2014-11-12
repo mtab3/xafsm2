@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Nov 11 16:11:51 2014 +0900\n"\
+                "    the problem that 'data points' was wrong when switching between QXAFS and NAXAFS modes is solved\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Nov 7 20:13:46 2014 +0900\n"\
                 "    it was checked that QFio works with no problem\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 3 15:55:06 2014 +0900\n"\
                 "    working on sound but not finished\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jul 3 15:34:36 2014 +0900\n"\
-                "    L10N\n"\
 		"\n"\
                 ""
 #endif

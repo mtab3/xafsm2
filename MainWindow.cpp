@@ -55,15 +55,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   kev2pix = new KeV2Pix;
   fdbase = new FluoDBase;
   u = new Units;
-#if 0
-  int dim = kev2pix->getDim();
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    const QVector<double>& ab = kev2pix->getAB( i );
-    for ( int j = 0; j < dim + 1; j++ ) {
-      qDebug() << "ab[i][j] = " << ab[j];
-    }
-  }
-#endif
 
   MMainTh = MDTh1 = EncMainTh = Enc2 = NULL;
   SLS = SI0 = SI1 = SFluo = NULL;

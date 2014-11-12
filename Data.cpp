@@ -169,9 +169,11 @@ void Data::GotNewView( ViewCTRL *view )
   QTextStream in( &f );
 
   switch( dataType ) {
+#if 0
   case MEASDATA: showMeasData( in ); break;
   case SCANDATA: showScanData( in ); break;
   case MONDATA:  showMonData( in );  break;
+#endif
   case MCADATA:  showMCAData( in );  break;
   default: break;
   }
@@ -426,7 +428,6 @@ void Data::showMCAData( QTextStream &in )
       }
     }
   }
-
   // 測定時のエネルギーとピクセルの関係は、
   // 今のエネルギーとピクセルの関係とは違っている可能性があるので
   // 今のピクセルに対応するエネルギーでのカウント数を線形補完で求めておく
@@ -450,6 +451,7 @@ void Data::showMCAData( QTextStream &in )
   }
 
   emit setMCACh( cMCACh );
+  theMCAView->SetMCACh( cMCACh );
   MCADataIsValid = true;
   theMCAView->update();
 }
@@ -492,6 +494,6 @@ void Data::SelectedNewMCACh( int ch )
   for ( int i = 0; i < MCALength; i++ ) {
     cMCA[i] = MCAs[ cMCACh ][i];
   }
-
+  theMCAView->SetMCACh( cMCACh );
   theMCAView->update();
 }
