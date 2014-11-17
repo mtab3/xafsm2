@@ -1,4 +1,5 @@
-#include <QtGui>
+
+#include "math.h"
 
 #include "AUnit.h"
 

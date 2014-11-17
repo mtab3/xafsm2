@@ -1,7 +1,8 @@
 #include <QSplashScreen>
 #include <QStyleFactory>
 #include <QApplication>
-#include <QtGui>
+#include <QTranslator>
+#include <QTextCodec>
 
 #include <stdio.h>
 

@@ -1,4 +1,6 @@
-#include <QtGui>
+
+#include <QDebug>
+#include <QFile>
 
 #include "PeriodicT.h"
 

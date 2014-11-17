@@ -1,4 +1,3 @@
-#include <QtGui>
 
 #include "SMsg.h"
 #include "MainWindow.h"

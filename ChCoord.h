@@ -1,8 +1,8 @@
 #ifndef CHCOORD_H
 #define CHCOORD_H
 
-#include <QtGui>
 #include <QObject>
+#include <QPainter>
 
 enum DRAWTXTF { FIXSIZE, SCALESIZE };
 

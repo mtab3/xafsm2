@@ -1,5 +1,7 @@
-#include <QtGui>
+
 #include <QStylePainter>
+
+#include <math.h>
 
 #include "XafsM.h"
 #include "TYView.h"

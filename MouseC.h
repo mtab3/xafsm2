@@ -1,7 +1,8 @@
 #ifndef MOUSEC_H
 #define MOUSEC_H
 
-#include <QtGui>
+#include <QObject>
+#include <QMouseEvent>
 
 class MouseC : public QObject
 {

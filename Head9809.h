@@ -1,7 +1,6 @@
 #ifndef HEAD9809_H
 #define HEAD9809_H
 
-#include <QtGui>
 #include <QObject>
 #include <QString>
 #include <QStringList>

@@ -2,6 +2,8 @@
 #define CBAR_H
 
 #include <QFrame>
+#include <QPainter>
+
 #include "ui_cBar.h"
 #include "ChCoord.h"
 

@@ -1,4 +1,4 @@
-#include <QtGui>
+
 #include <QRectF>
 #include <QStylePainter>
 

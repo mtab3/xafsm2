@@ -1,9 +1,7 @@
-#include <QtGui>
+
 #include <math.h>
 
 #include "MainWindow.h"
-
-#define BLNAME    ( "BL5S1" )
 
 void MainWindow::SetDFName2( int rpt, DIRECTION dir, int type )
 {

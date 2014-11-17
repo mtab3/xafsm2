@@ -2,6 +2,8 @@
 #ifndef ATOMS_H
 #define ATOMS_H
 
+#include <QString>
+
 
 enum TYPEF { ENAME, ENUM, BOPEN, BCLOSE, BBOPEN, BBCLOSE };
 

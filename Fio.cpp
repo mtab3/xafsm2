@@ -1,4 +1,4 @@
-#include <QtGui>
+
 #include <math.h>
 
 #include "MainWindow.h"

@@ -1,4 +1,3 @@
-#include <QtGui>
 
 #include <stdio.h>
 #include <string.h>

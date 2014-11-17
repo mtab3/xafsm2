@@ -1,4 +1,6 @@
-#include <QtGui>
+
+#include <QFile>
+#include <QTextStream>
 
 #include "StarsSV2.h"
 

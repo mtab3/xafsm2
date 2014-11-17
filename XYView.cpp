@@ -1,4 +1,5 @@
-#include <QtGui>
+
+#include <QDebug>
 #include <QStylePainter>
 
 #include "XafsM.h"

@@ -1,4 +1,6 @@
 
+#include <math.h>
+
 #include "Head9809.h"
 
 Head9809::Head9809( void )

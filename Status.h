@@ -1,7 +1,6 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include <QtGui>
 
 #include "ui_ScrollWGrid.h"
 #include "AUnit.h"
