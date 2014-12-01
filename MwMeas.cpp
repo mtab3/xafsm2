@@ -1201,7 +1201,7 @@ void MainWindow::StartMeasurement( void )
       }
       // Check dwell time per point
       // Limitation of Agilent 34410A?
-      if ( BLKdwell[0]->text().toFloat() / BLKpoints[0]->text().toFloat() > 0.12 ) {
+      if ( BLKdwell[0]->text().toFloat() / BLKpoints[0]->text().toFloat() > 0.13 ) {
         statusbar->showMessage( tr( "Too long acquisition time per point. "
                                     "Decrease acquisition time or Increase data points." ),
                                 2000 );
