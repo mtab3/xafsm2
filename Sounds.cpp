@@ -15,14 +15,15 @@ void MainWindow::PlayGoOnSound( void )
 void MainWindow::PlaySound( QString name, int times )
 {
 #if 1
-  QSound sound( name );
+  // QSound sound( name );
   // ここで QSound *sound = new QSound; すると
   // 最後に(or どこかで) delete sound; がペアで必要。
   // この関数内でしか使わない実体なら、
   // local 変数にして new, delete 無しにした方がいい。
 
-  sound.setLoops( times );
-  sound.play();
+  // sound.setLoops( times );
+  // sound.play();
+  QSound::play( name );
 #else
   // QSound ではなく QtMultimedia を使ってみようかな...
   // 面倒くさそうなのでまだ使えない
