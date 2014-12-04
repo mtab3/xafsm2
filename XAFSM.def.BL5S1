@@ -591,4 +591,7 @@ SENSOR CNT "S056" "GENERAL" "Counter 2 (I2) 2nd" "nct0802" "ch2" "count" YES "S0
 
 SENSOR EPIC "S057" "GENERAL" "R. Cur." "epicsbridge_caget" "NUSR_S_DCM_MON" "mA" NO ""
 SENSOR EPIC "S058" "GENERAL" "U. Gap"  "epicsbridge_caget" "WS_S_UND_GAP_MON" "mm" NO ""
-SENSOR EPIC "S059" "GENERAL" "BPM H12" "epicsbridge_caget" "S_BPM:H_12_AVG_MON" "mm" NO ""
+SENSOR EPIC "S059" "GENERAL" "BPM H12" "epicsbridge_caget" "S_BPM_H_12_AVG_MON" "mm" NO ""
+SENSOR EPIC "S060" "GENERAL" "BPM V12" "epicsbridge_caget" "S_BPM_V_12_AVG_MON" "mm" NO ""
+SENSOR EPIC "S061" "GENERAL" "BPM H12" "epicsbridge_caget" "S_BPM_H_13_AVG_MON" "mm" NO ""
+SENSOR EPIC "S062" "GENERAL" "BPM V12" "epicsbridge_caget" "S_BPM_V_13_AVG_MON" "mm" NO ""
