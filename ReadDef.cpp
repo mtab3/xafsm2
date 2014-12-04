@@ -114,6 +114,7 @@ void MainWindow::ReadDef( QString fname )
           } else if ( type == "CCG" ) {
           } else if ( type == "AIOi" ) {
           } else if ( type == "FP23" ) {
+	  } else if ( type == "EPIC" ) {
           } else {
             qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
           }
