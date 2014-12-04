@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Nov 17 19:20:39 2014 +0900\n"\
+                "    clear all QtGui\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Nov 12 14:42:11 2014 +0900\n"\
                 "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Nov 11 16:11:51 2014 +0900\n"\
                 "    the problem that 'data points' was wrong when switching between QXAFS and NAXAFS modes is solved\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Nov 7 20:13:46 2014 +0900\n"\
-                "    it was checked that QFio works with no problem\n"\
 		"\n"\
                 ""
 #endif

@@ -1,3 +1,4 @@
 QT += widgets network webkit printsupport multimedia webkitwidgets
 # TRANSLATIONS = XafsMsg_ja_JP.ts
 RC_FILE = XafsM2.rc
+

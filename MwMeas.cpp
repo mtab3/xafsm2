@@ -1199,6 +1199,15 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
         return;
       }
+      // Check dwell time per point
+      // Limitation of Agilent 34410A?
+      if ( BLKdwell[0]->text().toFloat() / BLKpoints[0]->text().toFloat() > 0.13 ) {
+        statusbar->showMessage( tr( "Too long acquisition time per point. "
+                                    "Decrease acquisition time or Increase data points." ),
+                                2000 );
+        return;
+      }
+
       // QXafs でステップスキャン型のデータファイル生成を選択している時は
       // ステップスキャンのブロックパラメータを正しく設定していないとダメ
       if ( SaveQDataAsStepScan->isChecked() && ( ! NBlockPisValid ) ) {
