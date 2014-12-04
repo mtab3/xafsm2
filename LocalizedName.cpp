@@ -25,5 +25,9 @@ QString MainWindow::LocalizedName( QString name )
   name.replace( QString( "pin hole" ),  tr( "pin hole" ) );
   name.replace( QString( "um" ),        tr( "um" ) );
 
+  name.replace( QString( "R. Cur." ),   tr( "R. Cur." ) );
+  name.replace( QString( "U. Gap" ),    tr( "U. Gap" ) );
+  name.replace( QString( "BPM H12" ),   tr( "BPM H12" ) );
+  
   return name;
 }

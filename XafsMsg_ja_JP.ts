@@ -2144,7 +2144,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Datum</source>
         <translation>データム</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>２D scan</source>
         <translation>2次元スキャン</translation>
     </message>
@@ -2862,6 +2862,22 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>The folder for data files [%1] not exist.</source>
         <translation>測定データを保存するフォルダ [%1] が存在しません。</translation>
+    </message>
+    <message>
+        <source>R. Cur.</source>
+        <translation>リング電流</translation>
+    </message>
+    <message>
+        <source>U. Gap</source>
+        <translation>アンジュレータギャップ</translation>
+    </message>
+    <message>
+        <source>BPM H12</source>
+        <translation>BPM H12</translation>
+    </message>
+    <message>
+        <source>Too long acquisition time per point. Decrease acquisition time or Increase data points.</source>
+        <translation>一点あたりの計測時間が長過ぎます。計測時間を短くするか測定点数を増やして下さい。</translation>
     </message>
 </context>
 <context>

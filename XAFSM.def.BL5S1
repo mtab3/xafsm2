@@ -32,6 +32,7 @@
 # 2014/06/12 add new node 'Injection' to LSR to observe injection of beam
 # 2014/06/18 a sensor FP23 is supported
 # 2014/11/11 add 'SAVE_EACH_MCA_SPECTRUM' line
+# 2014/12/04 a sensor EPIC is supported
 
 #
 # In this definition file,
@@ -587,3 +588,7 @@ MSTAB "Aio64" "M031"
 SENSOR CNT "S054" "GENERAL" "Counter 0 (I0) 2nd" "nct0802" "ch0" "count" YES "S054"
 SENSOR CNT "S055" "GENERAL" "Counter 1 (I1) 2nd" "nct0802" "ch1" "count" YES "S054"
 SENSOR CNT "S056" "GENERAL" "Counter 2 (I2) 2nd" "nct0802" "ch2" "count" YES "S054"
+
+SENSOR EPIC "S057" "GENERAL" "R. Cur." "epicsbridge_caget" "NUSR_S_DCM_MON" "mA" NO ""
+SENSOR EPIC "S058" "GENERAL" "U. Gap"  "epicsbridge_caget" "WS_S_UND_GAP_MON" "mm" NO ""
+SENSOR EPIC "S059" "GENERAL" "BPM H12" "epicsbridge_caget" "S_BPM:H_12_AVG_MON" "mm" NO ""
