@@ -103,9 +103,9 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
       S2DWriteBody( S2DVals[0] - S2DLastV );
       // иа╡Х
       if ( S2DScanDir == FORWARD ) {
-	S2DV->setData( S2DI.i[0] - 1, S2DI.i[1], S2DVals[0] - S2DLastV );
+	S2Dview->setData( S2DI.i[0] - 1, S2DI.i[1], S2DVals[0] - S2DLastV );
       } else {
-	S2DV->setData( S2DI.ps[0] - S2DI.i[0], S2DI.i[1], S2DVals[0] - S2DLastV );
+	S2Dview->setData( S2DI.ps[0] - S2DI.i[0], S2DI.i[1], S2DVals[0] - S2DLastV );
       }
     }
     S2DLastV = S2DVals[0];

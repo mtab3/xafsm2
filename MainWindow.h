@@ -26,6 +26,7 @@
 #include "XYView.h"
 #include "TYView.h"
 #include "MCAView.h"
+#include "S2DB.h"
 #include "S2DView.h"
 #include "Status.h"
 #include "AtomGroup.h"
@@ -326,7 +327,7 @@ private:
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
   QDialog *S2DDialog;
   bool PoppingS2DDialog;
-  S2DView *S2DV;
+  S2DView *S2Dview;
 
   bool S2DFileCheckIsReady;
   QMessageBox *S2DAskOverWrite;

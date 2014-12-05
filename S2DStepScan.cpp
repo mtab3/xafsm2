@@ -95,7 +95,7 @@ void MainWindow::S2DStepScanSequence( void )
     // ファイル記録
     S2DWriteBody( S2DVals[0] );
     S2DWriteBody2( S2DI.i[0], S2DI.i[1] );
-    S2DV->setData( S2DI.i[0], S2DI.i[1], S2DVals[0] ); // 描画
+    S2Dview->setData( S2DI.i[0], S2DI.i[1], S2DVals[0] ); // 描画
     // ステップコントロール変数更新
     S2DI.i[0]++;
     if ( S2DI.i[0] < S2DI.ps[0] ) { // 1st ax の端点でなければ

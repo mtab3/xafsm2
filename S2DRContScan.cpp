@@ -180,9 +180,9 @@ void MainWindow::S2DNewScanValue( QString v )
     S2DWriteBody( V - S2DLastV );
     // иа╡Х
     if ( S2DScanDir == FORWARD ) {
-      S2DV->setData( S2DI.i[0], S2DI.i[1], V - S2DLastV );
+      S2Dview->setData( S2DI.i[0], S2DI.i[1], V - S2DLastV );
     } else {
-      S2DV->setData( S2DI.ps[0] - S2DI.i[0] - 1, S2DI.i[1], V - S2DLastV );
+      S2Dview->setData( S2DI.ps[0] - S2DI.i[0] - 1, S2DI.i[1], V - S2DLastV );
     }
   } else {
     qDebug() << QString( "measured points (%1) are out of range (%2-%3)" )

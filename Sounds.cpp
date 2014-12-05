@@ -12,7 +12,7 @@ void MainWindow::PlayGoOnSound( void )
   PlaySound( "finished.wav", 3 );
 }
 
-void MainWindow::PlaySound( QString name, int times )
+void MainWindow::PlaySound( QString name, int /* times */ )
 {
 #if 1
   // QSound sound( name );

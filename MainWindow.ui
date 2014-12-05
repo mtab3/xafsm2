@@ -8529,24 +8529,6 @@ Though, other parameters are fixed at the value on starting.</string>
           </property>
          </spacer>
         </item>
-        <item row="3" column="1" rowspan="5" colspan="2">
-         <widget class="S2DBase" name="S2DBaseFrame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_50">
-           <property name="margin">
-            <number>1</number>
-           </property>
-           <property name="spacing">
-            <number>1</number>
-           </property>
-          </layout>
-         </widget>
-        </item>
         <item row="1" column="0" colspan="2">
          <widget class="QFrame" name="frame_31">
           <property name="sizePolicy">
@@ -9534,6 +9516,34 @@ Though, other parameters are fixed at the value on starting.</string>
           </property>
          </widget>
         </item>
+        <item row="3" column="1" rowspan="5" colspan="2">
+         <widget class="QFrame" name="S2DVFrame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_39">
+           <property name="margin">
+            <number>1</number>
+           </property>
+           <property name="spacing">
+            <number>1</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="S2DB" name="S2DBase">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="SpacerTab">
@@ -9910,9 +9920,9 @@ Though, other parameters are fixed at the value on starting.</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>S2DBase</class>
+   <class>S2DB</class>
    <extends>QFrame</extends>
-   <header>S2DBase.h</header>
+   <header>S2DB.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

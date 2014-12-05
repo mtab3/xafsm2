@@ -8,7 +8,7 @@
 
 void MainWindow::setupScan2DArea( void )
 {
-  S2DV = S2DBaseFrame->getView();
+  S2Dview = S2DBase->getView();
   
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
@@ -70,7 +70,7 @@ void MainWindow::setupScan2DArea( void )
   S2DI.ScanMode = STEP;
 
   S2DI.valid = false;
-  S2DV->setParent( this );
+  S2Dview->setParent( this );
   S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
   S2DFileCheckIsReady = false;
 
@@ -164,16 +164,16 @@ void MainWindow::setupScan2DArea( void )
   connect( S2DPrintB, SIGNAL( clicked() ), S2DPrintD, SLOT( show() ),
 	   Qt::UniqueConnection );
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
-	   S2DV, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
+	   S2Dview, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
 }
 
 void MainWindow::PopUpS2D( void )
 {
   if ( PoppingS2DDialog ) {
-    S2DVBase->layout()->addWidget( S2DV );
+    S2DVFrame->layout()->addWidget( S2DBase );
     S2DDialog->hide();
   } else {
-    S2DDialog->layout()->addWidget( S2DV );
+    S2DDialog->layout()->addWidget( S2DBase );
     S2DDialog->show();
   }
   PoppingS2DDialog = ! PoppingS2DDialog;
@@ -260,8 +260,8 @@ void MainWindow::newAx0( int ax, int motor )
   double pos;
   S2DUnits[ax]->setText( S2DOkMotors[ motor ]->getUnit() );
   S2DCurPos[ax]->setText( QString::number( pos = S2DOkMotors[ motor ]->metricValue() ) );
-  if ( S2DV != NULL )
-    S2DV->setNowPosition( ax, pos );
+  if ( S2Dview != NULL )
+    S2Dview->setNowPosition( ax, pos );
 
   if ( S2DSelectedMotors[ax] != NULL ) {
     bool Uniq = true;
@@ -334,8 +334,8 @@ void MainWindow::showS2DNewAxValue( QString )
   for ( int i = 0; i < S2DAxis.count(); i++ ) {
     if ( S2DSelectedMotors[i] == sender() ) {
       S2DCurPos[i]->setText( QString::number( pos = S2DSelectedMotors[i]->metricValue() ) );
-      if ( S2DV != NULL )
-	S2DV->setNowPosition( i, pos );
+      if ( S2Dview != NULL )
+	S2Dview->setNowPosition( i, pos );
     }
   }
 }
@@ -480,11 +480,11 @@ void MainWindow::S2DScanStart( void )
     // 縦横比に合わせるように努力する。
     // そうでなければ、画面いっぱいを使う。
     if ( S2DI.unit[0]->getUnit() == S2DI.unit[1]->getUnit() ) {
-      S2DV->setRatioType( REAL_RATIO );
+      S2Dview->setRatioType( REAL_RATIO );
     } else {
-      S2DV->setRatioType( AS_SCREEN );
+      S2Dview->setRatioType( AS_SCREEN );
     }
-    S2DV->setRange( S2DI.sx[0], S2DI.sx[1]-S2DI.dx[1]/2,
+    S2Dview->setRange( S2DI.sx[0], S2DI.sx[1]-S2DI.dx[1]/2,
 		    S2DI.dx[0], S2DI.dx[1],
 		    S2DI.ps[0], S2DI.ps[1]+1 );
 
@@ -696,7 +696,7 @@ void MainWindow::SaveS2DResult( void )
 	for ( int ix = 0; ix < S2DI.ps[0]; ix++ ) {
 	  out << QString( " %1" ).arg( S2DI.sx[0] + ( ix + 0.5 ) * S2DI.dx[0], 10 )
 	      << QString( " %1" ).arg( S2DI.sx[1] + ( iy ) * S2DI.dx[1], 10 )
-	      << QString( " %1" ).arg( S2DV->getData( ix, iy ), 10 )
+	      << QString( " %1" ).arg( S2Dview->getData( ix, iy ), 10 )
 	      << endl;
 	}
 	out << endl;
@@ -955,7 +955,7 @@ void MainWindow::S2DReCalcMap0( void )
 	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
 	}
 	if ( sum > 0 ) {
-	  S2DV->setData( j, i, sum );
+	  S2Dview->setData( j, i, sum );
 	} else {
 	  return;
 	}
@@ -973,7 +973,7 @@ void MainWindow::S2DReCalcMap0( void )
 	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
 	  }
 	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
-	    S2DV->setData( j, i, sum - lastsum );
+	    S2Dview->setData( j, i, sum - lastsum );
 	  }
 	  if ( sum < 0 )
 	    return;
@@ -988,7 +988,7 @@ void MainWindow::S2DReCalcMap0( void )
 	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
 	  }
 	  if ( ( sum > 0 ) && ( j > 0 ) ) {
-	    S2DV->setData( j - 1, i, sum - lastsum );
+	    S2Dview->setData( j - 1, i, sum - lastsum );
 	  }
 	  if ( sum < 0 )
 	    return;
