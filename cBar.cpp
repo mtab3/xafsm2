@@ -52,3 +52,27 @@ void cBar::Draw( QPainter *p )
 	       w, cc.r2sy( cmax ) - cc.r2sy( colors ), White );
   
 }
+
+void cBar::mouseMoveEvent( QMouseEvent *e )
+{
+  m.Moved( e );
+
+  if ( m.inPress() ) {
+  }
+  
+  update();
+}
+
+void cBar::mousePressEvent( QMouseEvent *e )
+{
+  m.Pressed( e );
+
+  update();
+}
+
+void cBar::mouseReleaseEvent( QMouseEvent *e )
+{
+  m.Released( e );
+
+  update();
+}

@@ -11,6 +11,7 @@ class cBar : public QFrame, private Ui::cBar
 {
   Q_OBJECT
 
+  MouseC m;
   ChCoord cc;
   QVector<QColor*> cbar;
   QColor White, Black;
@@ -24,6 +25,10 @@ class cBar : public QFrame, private Ui::cBar
   void initColor( void );
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
+
+  void mouseMoveEvent( QMouseEvent *e );
+  void mousePressEvent( QMouseEvent *e );
+  void mouseReleaseEvent( QMouseEvent *e );
 };
 
 #endif
