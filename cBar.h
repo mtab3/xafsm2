@@ -14,6 +14,7 @@ class cBar : public QFrame, private Ui::cBar
   ChCoord cc;
   QVector<QColor*> cbar;
   QColor White, Black;
+  int colors;
   int cmin, cmax;
 
  public:

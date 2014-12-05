@@ -21,8 +21,9 @@ void cBar::initColor( void )
   for ( int i = 0; i < 256; i++ )
     cbar << new QColor( 255, 255, i );
 
+  colors = cbar.count();
   cmin = 0;
-  cmax = cbar.count();
+  cmax = colors;
 }
 
 void cBar::paintEvent( QPaintEvent * )
@@ -43,11 +44,11 @@ void cBar::Draw( QPainter *p )
 
   int ph = cc.r2sdy( 1 )+1;
   if ( ph < 1 ) ph = 1;
-  //  p->fillRect( 0, 0, w, cc.r2sy( 0 ), Black );
-  for ( int i = 0; i < cbar.count(); i++ ) {
+  p->fillRect( 0, cc.r2sy( cmin ), w, cc.r2sy( 0 ) - cc.r2sy( cmin ), Black );
+  for ( int i = 0; i < colors; i++ ) {
     p->fillRect( 0, cc.r2sy( i ), w, ph, *cbar[i] );
   }
-  //  p->fillRect( 0, cc.r2sy( cbar.count()-1 ),
-  //	       w, cc.r2sy( cc.s2ry( h ) - cbar.count() + 1 ), White );
+  p->fillRect( 0, cc.r2sy( colors ),
+	       w, cc.r2sy( cmax ) - cc.r2sy( colors ), White );
   
 }
