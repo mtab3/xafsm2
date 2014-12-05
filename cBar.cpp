@@ -15,6 +15,7 @@ void cBar::paintEvent( QPaintEvent * )
   Draw( &painter );
 }
 
-void cBar::Draw( QPainter * )
+void cBar::Draw( QPainter *p )
 {
+  p->fillRect( 0, 0, width(), height(), QColor( 255, 0, 0 ) );
 }

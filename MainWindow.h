@@ -326,6 +326,7 @@ private:
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
   QDialog *S2DDialog;
   bool PoppingS2DDialog;
+  S2DView *S2DV;
 
   bool S2DFileCheckIsReady;
   QMessageBox *S2DAskOverWrite;

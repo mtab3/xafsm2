@@ -1225,7 +1225,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -8503,8 +8503,34 @@ Though, other parameters are fixed at the value on starting.</string>
         <property name="spacing">
          <number>3</number>
         </property>
+        <item row="7" column="3">
+         <widget class="QPushButton" name="S2DPrintB">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Print</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <spacer name="verticalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="3" column="1" rowspan="5" colspan="2">
-         <widget class="QFrame" name="S2DVBase">
+         <widget class="S2DBase" name="S2DBaseFrame">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -8518,52 +8544,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <property name="spacing">
             <number>1</number>
            </property>
-           <item row="0" column="0">
-            <widget class="S2DView" name="S2DV">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>3</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(255, 255, 255);</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-            </widget>
-           </item>
           </layout>
-         </widget>
-        </item>
-        <item row="6" column="3">
-         <widget class="QPushButton" name="S2DPopUp">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Pop Up</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="3">
-         <widget class="QPushButton" name="S2DPrintB">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Print</string>
-          </property>
          </widget>
         </item>
         <item row="1" column="0" colspan="2">
@@ -8621,19 +8602,6 @@ Though, other parameters are fixed at the value on starting.</string>
            </item>
           </layout>
          </widget>
-        </item>
-        <item row="4" column="0">
-         <spacer name="verticalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="2" column="0" colspan="2">
          <widget class="QFrame" name="frame_30">
@@ -9553,6 +9521,19 @@ Though, other parameters are fixed at the value on starting.</string>
           </layout>
          </widget>
         </item>
+        <item row="6" column="3">
+         <widget class="QPushButton" name="S2DPopUp">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Pop Up</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="SpacerTab">
@@ -9582,11 +9563,11 @@ Though, other parameters are fixed at the value on starting.</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_61">
         <item row="0" column="0">
-         <widget class="QWebView" name="webView">
+         <widget class="QWebView" name="webView" native="true">
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
-          <property name="url">
+          <property name="url" stdset="0">
            <url>
             <string>about:blank</string>
            </url>
@@ -9929,9 +9910,9 @@ Though, other parameters are fixed at the value on starting.</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>S2DView</class>
+   <class>S2DBase</class>
    <extends>QFrame</extends>
-   <header location="global">S2DView.h</header>
+   <header>S2DBase.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

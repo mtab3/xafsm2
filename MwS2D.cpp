@@ -8,12 +8,14 @@
 
 void MainWindow::setupScan2DArea( void )
 {
+  S2DV = S2DBaseFrame->getView();
+  
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
   S2DFileSel->setDirectory( QDir::currentPath() );
   S2DFileSel->setNameFilter( "*.dat" );
   S2DFileSel->setConfirmOverwrite( false );
-
+  
   S2DDialog = new QDialog;
   S2DDialog->resize( 600, 400 );
   QGridLayout *bl = new QGridLayout;
