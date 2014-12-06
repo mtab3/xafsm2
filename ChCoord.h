@@ -64,6 +64,7 @@ class ChCoord : public QObject
   /* ChCoord とは直接関係ないけど、グラフ関係の一般的な関数なのでここに置いとく */
   QRectF DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
+  double getFontSize( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
   void ShowAButton( QPainter *p, bool BState, QString BName,
 		    int x0, int w, int height );
   bool between( double x1, double x2, double x ) {

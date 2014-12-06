@@ -23,7 +23,7 @@ void MainWindow::setupScan2DArea( void )
   PoppingS2DDialog = false;
   connect( S2DDialog, SIGNAL( finished(int) ), this, SLOT( PopUpS2D() ),
 	   Qt::UniqueConnection );
-  connect( S2DPopUp, SIGNAL( clicked() ), this, SLOT( PopUpS2D() ), 
+  connect( S2DBase, SIGNAL( popup() ), this, SLOT( PopUpS2D() ), 
 	   Qt::UniqueConnection );
 
   QPushButton *tmpB;
@@ -161,7 +161,7 @@ void MainWindow::setupScan2DArea( void )
 	   Qt::UniqueConnection );
 
   S2DPrintD = new QPrintDialog;
-  connect( S2DPrintB, SIGNAL( clicked() ), S2DPrintD, SLOT( show() ),
+  connect( S2DBase, SIGNAL( print() ), S2DPrintD, SLOT( show() ),
 	   Qt::UniqueConnection );
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2Dview, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );

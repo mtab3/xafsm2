@@ -335,39 +335,37 @@ void S2DView::Draw( QPainter *p )
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       QString::number( sy + dy * ( maxiy - 0.5 ) ) );
 
-  // 情報表示
-  int inf = 0;
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 現在の測定位置表示
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       tr( "Measured : (%1, %2)" )
-	       .arg( sx + dx * ( lastIx + 0.5 ) ).arg( sy + dy * lastIy ) );
+  QStringList Infos;
+  Infos << tr( "Measured : (%1, %2)" )    // 現在の測定位置表示
+    .arg( sx + dx * ( lastIx + 0.5 ) ).arg( sy + dy * lastIy );
+  Infos << tr( "Intensity : %1" )         // 現在の測定値表示
+    .arg( valid[lastIx][lastIy] ?
+	  QString::number( data[lastIx][lastIy] ) : QString( "--" ) );
+  Infos << tr( "Pinted : (%1, %2)" )      // カーソルがある位置の表示
+    .arg( sx + dx * ( showIx + 0.5 ) ).arg( sy + dy * showIy );
+  Infos << tr( "Intensity : %1" )         // カーソルがある位置の測定値
+    .arg( valid[showIx][showIy] ?
+	  QString::number( data[showIx][showIy] ) : QString( "--" ) );
+  Infos << tr( "Max Int. : %1" )          // 最大値
+    .arg( ( maxz > -0.9e300 ) ?
+	  QString::number( maxz ) : QString( "--" ) );
+  Infos << tr( "Min Int. : %1" )          // 最小値
+    .arg( ( minz < 0.9e300 ) ?
+	  QString::number( minz ) : QString( "--" ) );
 
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 現在の測定値表示
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       tr( "Intensity : %1" )
-	       .arg( valid[lastIx][lastIy] ? QString::number( data[lastIx][lastIy] )
-		     : QString( "--" ) ) );
+  double minFs = 100000;    // 必要な最小フォントサイズを確認
+  rec = QRectF( 0, 0, LM-20, dVW );
+  for ( int i = 0; i < Infos.count(); i++ ) {
+    double fs = cc.getFontSize( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, Infos[i] );
+    if ( fs < minFs )
+      minFs = fs;
+  }
+  F1.setPointSize( minFs );
 
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // カーソルがある位置の表示
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       tr( "Pinted : (%1, %2)" )
-	       .arg( sx + dx * ( showIx + 0.5 ) ).arg( sy + dy * showIy ) );
-
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // カーソルがある位置の測定値
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       tr( "Intensity : %1" )
-	       .arg( valid[showIx][showIy] ? QString::number( data[showIx][showIy] )
-		     : QString( "--" ) ) );
-
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 最大値
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       tr( "Max Int. : %1" ).arg( ( maxz > -0.9e300 ) ? QString::number( maxz )
-					  : QString( "--" ) ) );
-
-  rec = QRectF( 10, 10 + dVW2 * (inf++), LM-20, dVW );    // 最小値
-  cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
-	       tr( "Min Int. : %1" ).arg( ( minz < 0.9e300 ) ? QString::number( minz )
-					  : QString( "--" ) ) );
+  for ( int inf = 0; inf < Infos.count(); inf++ ) {
+    rec = QRectF( 10, 10 + dVW2 * inf, LM-20, dVW );
+    cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, Infos[inf] );
+  }
 }
 
 void S2DView::mouseMoveEvent( QMouseEvent *e )

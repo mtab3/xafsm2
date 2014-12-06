@@ -14,6 +14,11 @@ class S2DB : public QFrame, private Ui::S2DB
 
   S2DView *getView( void ) { return S2DV; };
  private:
+
+
+signals:
+  void print( void );
+  void popup( void );
 };
 
 #endif

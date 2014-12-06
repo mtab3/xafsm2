@@ -282,6 +282,27 @@ QRectF ChCoord::DrawText( QPainter *p,
   return brec;
 }
 
+double ChCoord::getFontSize( QPainter *p, QRectF rec, QFont font, int flags, QString msg )
+{
+  double xr, yr;
+  QRectF brec, dummyrec = QRectF( 0, 0, 1000, 1000 );
+  double fSize = font.pointSizeF();
+
+  brec = p->boundingRect( dummyrec, flags, msg );
+  if ( rec.width() == 0 ) 
+    xr = 1;
+  else 
+    xr = brec.width() / rec.width();
+  if ( rec.height() == 0 )
+    yr = 1;
+  else 
+    yr = brec.height() / rec.height();
+  if (( xr == 0 )&&( yr == 0 ))
+    xr = yr = 1;
+
+  return fSize / ( ( xr > yr ) ? xr : yr );
+}
+
 void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
 			   int x0, int w, int y0 )
 {

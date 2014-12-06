@@ -6,6 +6,7 @@
 
 #include "ui_cBar.h"
 #include "ChCoord.h"
+#include "MouseC.h"
 
 class cBar : public QFrame, private Ui::cBar
 {
