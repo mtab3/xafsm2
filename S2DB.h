@@ -13,8 +13,17 @@ class S2DB : public QFrame, private Ui::S2DB
   S2DB( QWidget *p );
 
   S2DView *getView( void ) { return S2DV; };
- private:
 
+public slots:
+  void newZZ( QString max, QString min )
+  {
+    zmax->setText( max );
+    zmin->setText( min );
+  }
+
+private slots:
+  void newInputZmax( void ) { CBar->newInputZmax( zmax->text().toDouble() ); };
+  void newInputZmin( void ) { CBar->newInputZmin( zmin->text().toDouble() ); };
 
 signals:
   void print( void );

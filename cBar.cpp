@@ -7,6 +7,9 @@ cBar::cBar( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
   initColor();
+  zmax = 1;
+  zmin = 0;
+  autoScale = true;
 }
 
 void cBar::initColor( void )

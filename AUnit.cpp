@@ -187,7 +187,7 @@ void AUnit::Initialize( Stars *S )
   //
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo FP23 EPIC
   //                                                     カウンタ(nct08)だけ
-  if ( Type == "PM" ) {
+  if (( Type == "CNT" )||( Type == "CNT2" )) {
     connect( s, SIGNAL( AnsSetStopMode( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	     Qt::UniqueConnection );
     connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),

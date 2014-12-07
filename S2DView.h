@@ -73,6 +73,8 @@ public slots:
   void PointerMovedToNewPosition( int x, int y );
   void AskToChangeMCACh( int dCh );
   void PointerMovedOnIntMCA( int x, int y );
+  void newAutoZmax( double max );
+  void newAutoZmin( double min );
 };
 
 #endif

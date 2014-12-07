@@ -159,7 +159,7 @@ void S2DView::Draw( QPainter *p )
   int h = height();
 
   int LM = w * 0.25;        // 画面を描くときの基準になる定数を幾つか決めておく
-  if ( LM > 180 ) LM = 180;
+  if ( LM > 180 ) LM = 250;
   int RM = w * 0.05;
   if ( RM > 80 ) RM = 80;
   int HW = w - LM - RM;
@@ -235,6 +235,8 @@ void S2DView::Draw( QPainter *p )
       }
     }
   }
+  emit newAutoZmax( maxz );
+  emit newAutoZmin( minz );
 
   double rx1, rx2, ry1, ry2;
   double ssx, ssy, sdx, sdy;
