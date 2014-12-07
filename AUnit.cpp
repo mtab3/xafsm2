@@ -363,7 +363,7 @@ void AUnit::Initialize( Stars *S )
   }
   //            PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo FP23 EPIC
   //                                                                  ENC2 だけ
-  if ( Type == "NEC2" ) {
+  if ( Type == "ENC2" ) {
     connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ),
 	     Qt::UniqueConnection );
     connect( s, SIGNAL(AnsTrigger( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
