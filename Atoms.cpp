@@ -1,8 +1,10 @@
 
+#include <ctype.h>
+
+#include <QStringList>
 #include <QTextStream>
 #include <QDebug>
 #include <QFile>
-#include <ctype.h>
 
 #include "Atoms.h"
 

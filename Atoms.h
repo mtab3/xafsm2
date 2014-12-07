@@ -4,7 +4,6 @@
 
 #include <QString>
 
-
 enum TYPEF { ENAME, ENUM, BOPEN, BCLOSE, BBOPEN, BBCLOSE };
 
 struct Element {
