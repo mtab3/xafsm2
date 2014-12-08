@@ -24,6 +24,7 @@ class cBar : public QFrame, private Ui::cBar
 
 public:
   cBar( QWidget *p );
+  QColor *c( double z );
 
 private:
   void initColor( void );
@@ -34,19 +35,18 @@ private:
   void mousePressEvent( QMouseEvent *e );
   void mouseReleaseEvent( QMouseEvent *e );
 
-  void showZZ( void ) {
-    emit newZZ( QString::number( zmax ), QString::number( zmin ) );
-  }
+  void showZZ( void );
 
 public slots:
-  void setAutoScale( bool f ) { autoScale = f; };
-  void newAutoZmax( double max ) { if ( autoScale ) zmax = max; showZZ(); };
-  void newAutoZmin( double min ) { if ( autoScale ) zmin = min; showZZ(); };
-  void newInputZmax( double max ) { if ( ! autoScale ) zmax = max; showZZ(); };
-  void newInputZmin( double min ) { if ( ! autoScale ) zmin = min; showZZ(); };
+  void setAutoScale( bool f ) { autoScale = f; newScale(); };
+  void newAutoZmax( double max );
+  void newAutoZmin( double min );
+  void newInputZmax( double max );
+  void newInputZmin( double min );
 
 signals:
   void newZZ( QString max, QString min );
+  void newScale( void );
 };
 
 #endif

@@ -79,3 +79,68 @@ void cBar::mouseReleaseEvent( QMouseEvent *e )
 
   update();
 }
+
+QColor *cBar::c( double z )
+{
+  int cnum = ( cmax - 1 - cmin ) / ( zmax - zmin ) * ( z - zmin );
+  if ( cnum < 0 ) cnum = 0;
+  if ( cnum >= colors ) cnum = colors - 1;
+  return cbar[ cnum ];
+}
+
+void cBar::newAutoZmax( double max )
+{
+  if ( autoScale ) {
+    if ( zmax != max ) {
+      zmax = max;
+      showZZ();
+      emit newScale();
+    }
+  }
+}
+
+void cBar::newAutoZmin( double min )
+{
+  if ( autoScale ) {
+    if ( zmin != min ) {
+      zmin = min;
+      showZZ();
+      emit newScale();
+    }
+  }
+}
+
+void cBar::newInputZmax( double max ) {
+  if ( ! autoScale ) {
+    if ( zmax != max ) {
+      zmax = max;
+      showZZ();
+      emit newScale();
+    }
+  } else {
+    showZZ();
+  }
+}
+
+void cBar::newInputZmin( double min ) {
+  if ( ! autoScale ) {
+    if ( zmin != min ) {
+      zmin = min;
+      showZZ();
+      emit newScale();
+    }
+  } else {
+    showZZ();
+  }
+}
+
+void cBar::showZZ( void )
+{
+  if ( zmax < zmin ) {
+    double tmp = zmax;
+    zmax = zmin;
+    zmin = tmp;
+    emit newScale();
+  }
+  emit newZZ( QString::number( zmax ), QString::number( zmin ) );
+}

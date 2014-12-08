@@ -2516,7 +2516,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>2D Scan Start (%1 %2 %3)</source>
-        <translation>2D スキャン開始 (%1 %2 %3)</translation>
+        <translation>2次元スキャン開始 (%1 %2 %3)</translation>
     </message>
     <message>
         <source>Can not find a unit ID %1 for the SPEEDS line</source>

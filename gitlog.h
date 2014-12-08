@@ -2,27 +2,27 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "newS2D" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 4 17:56:42 2014 +0900\n"\
-                "    new XAFSM.def.BL5S1 adding BPM H/V 12/13\n"\
+                "Date        : Sun Dec 7 23:39:23 2014 +0900\n"\
+                "    solved cnfilicts with master\n"\
 		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 4 16:25:37 2014 +0900\n"\
-                "    small bug fix for EPIC\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Dec 7 23:35:49 2014 +0900\n"\
+                "    bug fix in AUnit\n"\
 		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 4 16:23:06 2014 +0900\n"\
-                "    new XAFSM.def.BL5S1 for EPIC, and LION\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Dec 7 23:34:46 2014 +0900\n"\
+                "    fix a critical bug in AUnit\n"\
 		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 4 14:23:26 2014 +0900\n"\
-                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Dec 7 23:27:04 2014 +0900\n"\
+                "    working on S2DBase and cBar\n"\
 		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 4 14:22:59 2014 +0900\n"\
-                "    new AUnit for EPIC\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Dec 7 00:44:19 2014 +0900\n"\
+                "    working on S2D base\n"\
 		"\n"\
                 ""
 #endif

@@ -6,6 +6,7 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   setupUi( this );
 
   CBar->setAutoScale( AutoScaleB->isChecked() );
+  S2DV->setCBar( CBar );
   
   connect( S2DPopUp, SIGNAL( clicked() ), this, SIGNAL( popup() ), Qt::UniqueConnection );
   connect( S2DPrintB, SIGNAL( clicked() ), this, SIGNAL( print() ), Qt::UniqueConnection );
@@ -15,4 +16,5 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   connect( S2DV, SIGNAL( newAutoZmax( double ) ), CBar, SLOT( newAutoZmax( double ) ), Qt::UniqueConnection );
   connect( S2DV, SIGNAL( newAutoZmin( double ) ), CBar, SLOT( newAutoZmin( double ) ), Qt::UniqueConnection );
   connect( CBar, SIGNAL( newZZ( QString, QString ) ), this, SLOT( newZZ( QString, QString ) ), Qt::UniqueConnection );
+  connect( CBar, SIGNAL( newScale() ), S2DV, SLOT( update() ), Qt::UniqueConnection );
 }

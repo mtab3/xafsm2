@@ -26,6 +26,7 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   Grey = QColor( 220, 220, 220 );
   Pink = QColor( 255, 220, 220 );
   AutoScale = true;
+#if 0
   for ( int i = 0; i < 256 * 4; i++ )
     cbar[ i ] = QColor( 0, 0, 0 );
   for ( int r = 0; r < 256; r++ )
@@ -36,7 +37,7 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
     cbar[ 512 + b ] = QColor( 255, 255, b );
   cmax = 767;
   cmin = 0;
-
+#endif
   setMouseTracking( true );
 }
 
@@ -53,6 +54,7 @@ void S2DView::setParent( QWidget *p )
 	   Parent, SLOT( S2DShowIntMCA( int, int ) ), Qt::UniqueConnection );
 }
 
+#if 0 // cNum 
 int S2DView::cNum( double v )
 {
   int cnum;
@@ -75,6 +77,7 @@ int S2DView::cNum( double v )
 
   return cnum;
 }
+#endif // cNum
 
 void S2DView::setRange( double Sx, double Sy, double Dx, double Dy, int ix, int iy )
 {
@@ -255,7 +258,7 @@ void S2DView::Draw( QPainter *p )
       xd = abs( x1 - x2 );
       yd = abs( y1 - y2 );
       if ( valid[ix][iy] ) 
-	p->fillRect( x0, y0, xd, yd, cbar[ cNum( data[ix][iy] ) ] );
+	p->fillRect( x0, y0, xd, yd, *(CBar->c( data[ix][iy] )) );  // cbar[ cNum( data[ix][iy] ) ] );
       else 
 	p->fillRect( x0, y0, xd, yd, Grey );
 #if 0

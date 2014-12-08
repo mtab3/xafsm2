@@ -7,6 +7,7 @@
 #include "ui_S2DView.h"
 #include "MouseC.h"
 #include "ChCoord.h"
+#include "cBar.h"
 
 enum RATIO_TYPE { REAL_RATIO, AS_SCREEN };
 
@@ -16,6 +17,7 @@ class S2DView : public QFrame, private Ui::S2DView
 
   QWidget *Parent;
   ChCoord cc;
+  cBar *CBar;
   RATIO_TYPE rType;
   double minx, maxx, miny, maxy;
   double sx, sy, dx, dy;
@@ -30,15 +32,15 @@ class S2DView : public QFrame, private Ui::S2DView
 
   bool AutoScale;
   QColor Grey, Pink;
-  QColor cbar[ 256 * 4 ];
+  //  QColor cbar[ 256 * 4 ];
   double minz, maxz;   // データの最大最小
-  double vmin, vmax;   // 表示レンジの最大最小
-  int cmin, cmax;      // 色番号の最大最小
+  //  double vmin, vmax;   // 表示レンジの最大最小
+  //  int cmin, cmax;      // 色番号の最大最小
   double nowRx, nowRy;
 
   void paintEvent( QPaintEvent *event );
   void Draw( QPainter *p );
-  int cNum( double v );
+  //  int cNum( double v );
 
   MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
@@ -62,6 +64,7 @@ class S2DView : public QFrame, private Ui::S2DView
   bool getInvXf( void ) { return invXf; };
   bool getInvYf( void ) { return invYf; };
   void setNowPosition( int ax, double pos );
+  void setCBar( cBar *cbar ) { CBar = cbar; };
 
 public slots:
   void print( QPrinter *p );
