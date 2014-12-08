@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Dec 8 15:50:15 2014 +0900\n"\
+                "    merged newS2D at a stagi (still working)\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 8 15:48:36 2014 +0900\n"\
                 "    cBar in S2D is ready\n"\
 		"\n"\
@@ -19,10 +23,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Dec 7 23:34:46 2014 +0900\n"\
                 "    fix a critical bug in AUnit\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Dec 7 23:27:04 2014 +0900\n"\
-                "    working on S2DBase and cBar\n"\
 		"\n"\
                 ""
 #endif

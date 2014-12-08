@@ -26,8 +26,10 @@ private slots:
   void newInputZmin( void ) { CBar->newInputZmin( zmin->text().toDouble() ); };
 
 signals:
+#if 0
   void print( void );
   void popup( void );
+#endif
 };
 
 #endif

@@ -29,22 +29,6 @@
    <property name="spacing">
     <number>3</number>
    </property>
-   <item row="3" column="3">
-    <widget class="QPushButton" name="S2DPopUp">
-     <property name="maximumSize">
-      <size>
-       <width>50</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-     </property>
-     <property name="text">
-      <string>Pop Up</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1" colspan="2">
     <widget class="cBar" name="CBar">
      <property name="minimumSize">
@@ -95,6 +79,16 @@
    <item row="0" column="3">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>zmax</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="zmax">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -120,16 +114,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>zmax</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -148,7 +132,7 @@
         <string>zmin</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -179,22 +163,6 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="1" colspan="2">
-    <widget class="QPushButton" name="S2DPrintB">
-     <property name="maximumSize">
-      <size>
-       <width>50</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-     </property>
-     <property name="text">
-      <string>Print</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="1" colspan="3">
     <widget class="QRadioButton" name="AutoScaleB">
      <property name="text">
@@ -221,6 +189,11 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>zmax</tabstop>
+  <tabstop>zmin</tabstop>
+  <tabstop>AutoScaleB</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
