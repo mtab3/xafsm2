@@ -12,7 +12,7 @@ class XYView;
 class TYView;
 class MCAView;
 
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, NONDATA };
+enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, S2DDATA, NONDATA };
 
 class Data : public QFrame, private Ui::Data
 {

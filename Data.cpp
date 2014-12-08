@@ -131,9 +131,10 @@ void Data::CheckFileType( const QString &fname )
 
   QStringList Checks;
   Checks << "  9809     AichiSR"
-    << "# XafsM2 Scan Data"
-    << "# XafsM2 Monitor Data"
-    << "# XafsM2 MCA Data";
+	 << "# XafsM2 Scan Data"
+	 << "# XafsM2 Monitor Data"
+	 << "# XafsM2 MCA Data"
+	 << "# 1306 Aichi SR 2D Scan";
 
   
   if ( aline.left( Checks[ MEASDATA ].length() ) == Checks[ MEASDATA ] ) {
@@ -144,6 +145,8 @@ void Data::CheckFileType( const QString &fname )
     DataType->setText( DataTypeNames[ dataType = MONDATA ] );
   } else if ( aline.left( Checks[ MCADATA ].length() ) == Checks[ MCADATA ] ) {
     DataType->setText( DataTypeNames[ dataType = MCADATA ] );
+  } else if ( aline.left( Checks[ S2DDATA ].length() ) == Checks[ S2DDATA ] ) {
+    DataType->setText( DataTypeNames[ dataType = S2DDATA ] );
   } else {
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
     emit showMessage( tr( "The file %1 is not avaliable to show." ).arg( fname ), 2000 );
@@ -171,8 +174,8 @@ void Data::GotNewView( ViewCTRL *view )
   switch( dataType ) {
 #if 0
   case MEASDATA: showMeasData( in ); break;
-  case SCANDATA: showScanData( in ); break;
   case MONDATA:  showMonData( in );  break;
+  case SCANDATA: showScanData( in ); break;
 #endif
   case MCADATA:  showMCAData( in );  break;
   default: break;
