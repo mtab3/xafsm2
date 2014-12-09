@@ -54,7 +54,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     view = ViewCtrls[ ViewTab->currentIndex() ];
     if ( view->getNowDType() != dtype ) {
       view = SetUpNewView( XYVIEW );
-      ViewTab->setTabText( ViewTab->currentIndex(), "D-XAFS" );
+      ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-XAFS" ) );
       ClearXViewScreenForMeas( (XYView*)(view->getView()) );
     }
     break;
@@ -62,18 +62,22 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     view = ViewCtrls[ ViewTab->currentIndex() ];
     if ( view->getNowDType() != dtype ) {
       view = SetUpNewView( XYVIEW );
-      ViewTab->setTabText( ViewTab->currentIndex(), "D-SCAN" );
+      ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
       ClearXViewScreenForScan( (XYView*)(view->getView()) );
     }
     break;
   case MONDATA:   // MONDATA と MCADATA は重ね書きは諦める。
     view = SetUpNewView( TYVIEW );
-    ViewTab->setTabText( ViewTab->currentIndex(), "D-MON." );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
 #endif
   case MCADATA:
     view = SetUpNewView( MCAVIEW );
-    ViewTab->setTabText( ViewTab->currentIndex(), "D-MCA" );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
+    break;
+  case S2DDATA:
+    view = SetUpNewView( S2DVIEW );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "S2D" ) );
     break;
   default:
     view = NULL;

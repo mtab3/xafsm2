@@ -178,6 +178,7 @@ void Data::GotNewView( ViewCTRL *view )
   case SCANDATA: showScanData( in ); break;
 #endif
   case MCADATA:  showMCAData( in );  break;
+  case S2DDATA:  showS2DData( in );  break;
   default: break;
   }
 
@@ -499,4 +500,56 @@ void Data::SelectedNewMCACh( int ch )
   }
   theMCAView->SetMCACh( cMCACh );
   theMCAView->update();
+}
+
+void Data::showS2DData( QTextStream &in )
+{
+  QStringList HeadLine1, HeadLine2, vals;
+  QString line;
+
+  qDebug() << "readint s2d data";
+
+  theS2DView = (S2DView*)(((S2DB*)(theViewC->getView()))->getView());
+  if ( theViewC->getNowDType() == NONDATA ) {
+    theViewC->setNowDType( S2DDATA );
+    theViewC->setNowVType( S2DVIEW );
+    // theS2DView->SetWindow0( 1e300, 0, -1e300, 0 );
+  }
+  theS2DView->setRatioType( AS_SCREEN );
+
+  // 5行空読み
+  for ( int i = 0; ( i < 5 ) && ( ! in.atEnd() ); i++ )
+    line = in.readLine();
+
+  if ( ! in.atEnd() ) HeadLine1 = in.readLine().split( QRegExp( "\\s+" ) );
+  if ( ! in.atEnd() ) HeadLine2 = in.readLine().split( QRegExp( "\\s+" ) );
+
+  double sx1 = 0, sx2 = 0, dx1 = 1, dx2 = 1;
+  int ps1 = 1, ps2 = 1;
+  if ( HeadLine1.count() >= 8 ) {
+    sx1 = HeadLine1[4].toDouble();
+    dx1 = HeadLine1[6].toDouble();
+    ps1 = HeadLine1[7].toInt();
+  }
+  if ( HeadLine2.count() >= 8 ) {
+    sx2 = HeadLine2[4].toDouble();
+    dx2 = HeadLine2[6].toDouble();
+    ps2 = HeadLine2[7].toInt();
+  }
+  theS2DView->setRange( sx1, sx2 - dx2/2,
+			dx1, dx2,
+			ps1, ps2+1 );
+  int ix = 0, iy = 0;
+  while ( ! in.atEnd() ) {
+    vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
+    if ( vals[0][0] != '#' ) {
+      if ( vals.count() >= 3 ) {
+	theS2DView->setData( ix, iy, vals[2].toDouble() );
+	ix++;
+      } else {
+	ix = 0;
+	iy++;
+      }
+    }
+  }
 }

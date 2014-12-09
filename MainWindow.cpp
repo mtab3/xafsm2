@@ -534,6 +534,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
     ((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
     break;
+  case S2DVIEW:
+    newView = (void *)(new S2DB( this ) );
+    //    ((S2DB*)newView)->setParent( this );
+    break;
   default:
     return NULL;
   }

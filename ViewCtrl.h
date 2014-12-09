@@ -9,9 +9,11 @@
 #include "XYView.h"
 #include "TYView.h"
 #include "MCAView.h"
+#include "S2DB.h"
+#include "S2DView.h"
 #include "GSBStats.h"
 
-enum VTYPE { XYVIEW, TYVIEW, MCAVIEW, NONVIEW };
+enum VTYPE { XYVIEW, TYVIEW, MCAVIEW, S2DVIEW, NONVIEW };
 
 class ViewCTRL : public QObject
 {

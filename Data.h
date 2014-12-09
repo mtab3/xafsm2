@@ -11,6 +11,7 @@ class ViewCTRL;
 class XYView;
 class TYView;
 class MCAView;
+class S2DView;
 
 enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, S2DDATA, NONDATA };
 
@@ -36,6 +37,7 @@ class Data : public QFrame, private Ui::Data
   XYView *theXYView;
   TYView *theTYView;
   MCAView *theMCAView;
+  S2DView *theS2DView;
   int XYLine0, XYLines; 
 
   int MCALength;
@@ -50,6 +52,7 @@ class Data : public QFrame, private Ui::Data
   void showMonData( QTextStream &in );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );
+  void showS2DData( QTextStream &in );
 
  public:
   Data( QWidget *p = NULL );
