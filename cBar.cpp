@@ -16,6 +16,7 @@ void cBar::initColor( void )
 {
   White = QColor( 255, 255, 255 );
   Black = QColor( 0, 0, 0 );
+  LimitC = QColor( 150, 255, 150 );
   
   for ( int i = 0; i < 256; i++ )
     cbar << new QColor( i, 0, 0 );
@@ -27,6 +28,8 @@ void cBar::initColor( void )
   colors = cbar.count();
   cmin = 0;
   cmax = colors;
+  rmin = cmin;
+  rmax = cmax;
 }
 
 void cBar::paintEvent( QPaintEvent * )
@@ -42,7 +45,7 @@ void cBar::Draw( QPainter *p )
   int w = width();
   
   cc.SetScreenCoord( 0, 0, w, h );
-  cc.SetRealCoord( 0, cmin, 1, cmax );
+  cc.SetRealCoord( 0, rmin, 1, rmax );
   //  p->fillRect( 0, 0, w, h, QColor( 255, 255, 255 ) );
 
   int ph = cc.r2sdy( 1 )+1;
@@ -53,7 +56,15 @@ void cBar::Draw( QPainter *p )
   }
   p->fillRect( 0, cc.r2sy( colors ),
 	       w, cc.r2sy( cmax ) - cc.r2sy( colors ), White );
-  
+  p->setPen( LimitC );
+  cmaxShowP = cc.r2sy( cmax );
+  cminShowP = cc.r2sy( cmin );
+  if ( cmaxShowP >= h ) cmaxShowP = h - 1;
+  if ( cmaxShowP < 0 ) cmaxShowP = 0;
+  if ( cminShowP >= h ) cminShowP = h - 1;
+  if ( cminShowP < 0 ) cminShowP = 0;
+  p->drawLine( 0, cmaxShowP, w, cmaxShowP );
+  p->drawLine( 0, cminShowP, w, cminShowP );
 }
 
 void cBar::mouseMoveEvent( QMouseEvent *e )
@@ -69,20 +80,18 @@ void cBar::mouseMoveEvent( QMouseEvent *e )
 void cBar::mousePressEvent( QMouseEvent *e )
 {
   m.Pressed( e );
-
   update();
 }
 
 void cBar::mouseReleaseEvent( QMouseEvent *e )
 {
   m.Released( e );
-
   update();
 }
 
 QColor *cBar::c( double z )
 {
-  int cnum = ( cmax - 1 - cmin ) / ( zmax - zmin ) * ( z - zmin );
+  int cnum = ( rmax - 1 - rmin ) / ( zmax - zmin ) * ( z - zmin );
   if ( cnum < 0 ) cnum = 0;
   if ( cnum >= colors ) cnum = colors - 1;
   return cbar[ cnum ];
@@ -144,3 +153,4 @@ void cBar::showZZ( void )
   }
   emit newZZ( QString::number( zmax ), QString::number( zmin ) );
 }
+

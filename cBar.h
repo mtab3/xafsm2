@@ -16,10 +16,12 @@ class cBar : public QFrame, private Ui::cBar
   MouseC m;
   ChCoord cc;
   QVector<QColor*> cbar;
-  QColor White, Black;
+  QColor White, Black, LimitC;
   int colors;
-  int cmin, cmax;
+  int cmax, cmin;
+  int cmaxShowP, cminShowP;
   double zmax, zmin;
+  double rmax, rmin;
   bool autoScale;
 
 public:
