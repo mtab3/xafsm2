@@ -10,6 +10,7 @@ cBar::cBar( QWidget *p ) : QFrame( p )
   zmax = 1;
   zmin = 0;
   autoScale = true;
+  catching = CNONE;
 }
 
 void cBar::initColor( void )
@@ -50,12 +51,12 @@ void cBar::Draw( QPainter *p )
 
   int ph = cc.r2sdy( 1 )+1;
   if ( ph < 1 ) ph = 1;
-  p->fillRect( 0, cc.r2sy( cmin ), w, cc.r2sy( 0 ) - cc.r2sy( cmin ), Black );
+  p->fillRect( 0, cc.r2sy( cmin ), w, cc.r2sy( rmin ) - cc.r2sy( cmin ), Black );
   for ( int i = 0; i < colors; i++ ) {
     p->fillRect( 0, cc.r2sy( i ), w, ph, *cbar[i] );
   }
-  p->fillRect( 0, cc.r2sy( colors ),
-	       w, cc.r2sy( cmax ) - cc.r2sy( colors ), White );
+  p->fillRect( 0, cc.r2sy( rmax ),
+	       w, cc.r2sy( cmax ) - cc.r2sy( rmax ), White );
   p->setPen( LimitC );
   cmaxShowP = cc.r2sy( cmax );
   cminShowP = cc.r2sy( cmin );
@@ -72,6 +73,24 @@ void cBar::mouseMoveEvent( QMouseEvent *e )
   m.Moved( e );
 
   if ( m.inPress() ) {
+    int h = height();
+    int ncmaxs = cc.r2sy( cmax );
+    int ncmins = cc.r2sy( cmin );
+    switch ( catching ) {
+    case CMAX:
+      ncmaxs = m.y();
+      break;
+    case CMIN:
+      ncmins = m.y();
+      break;
+    default:
+      break;
+    }
+    if ( ncmaxs != ncmins ) {
+      rmax = (double)( cmax - cmin ) / ( ncmaxs - ncmins ) * ( 0 - ncmins ) + cmin;
+      rmin = (double)( cmax - cmin ) / ( ncmaxs - ncmins ) * ( h - ncmins ) + cmin;
+      emit newScale();
+    }
   }
   
   update();
@@ -80,6 +99,12 @@ void cBar::mouseMoveEvent( QMouseEvent *e )
 void cBar::mousePressEvent( QMouseEvent *e )
 {
   m.Pressed( e );
+  
+  if ( abs( m.sy() - cc.r2sy( cmax ) ) < 10 )
+    catching = CMAX;
+  if ( abs( m.sy() - cc.r2sy( cmin ) ) < 10 )
+    catching = CMIN;
+
   update();
 }
 
@@ -91,7 +116,7 @@ void cBar::mouseReleaseEvent( QMouseEvent *e )
 
 QColor *cBar::c( double z )
 {
-  int cnum = ( rmax - 1 - rmin ) / ( zmax - zmin ) * ( z - zmin );
+  int cnum = ( rmax - rmin ) / ( zmax - zmin ) * ( z - zmin ) + rmin;
   if ( cnum < 0 ) cnum = 0;
   if ( cnum >= colors ) cnum = colors - 1;
   return cbar[ cnum ];

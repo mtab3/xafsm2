@@ -9,6 +9,8 @@
 #include "ChCoord.h"
 #include "MouseC.h"
 
+enum CATCHING { CMAX, CMIN, CNONE };
+
 class cBar : public QFrame, private Ui::cBar
 {
   Q_OBJECT
@@ -23,6 +25,7 @@ class cBar : public QFrame, private Ui::cBar
   double zmax, zmin;
   double rmax, rmin;
   bool autoScale;
+  CATCHING catching;
 
 public:
   cBar( QWidget *p );
