@@ -431,15 +431,16 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;
   case 2:
-    // 読み取り命令を発行しておいたエンコーダ(nd287)の現在値の取得
-    // EIB741 が使えるなら、その現在値も取得
     // 1点の計測時間の設定
     // 計測器類の内部ループカウンタクリア
-    //    EncValue0 = EncMainTh->value();
-    //    if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
     mUnits.setDwellTimes( QXafsDwellTime );  
     mUnits.setDwellTime();
     mUnits.clearStage();
+    // 読み取り命令を発行しておいたエンコーダ(nd287)の現在値の取得
+    // EIB741 が使えるなら、その現在値も取得
+    //          --> ここだと初回だけになるので毎回になるように case 41 に移した
+    //    EncValue0 = EncMainTh->value();
+    //    if ( Enc2 != NULL ) Enc2Value0 = Enc2->value();
     MeasStage++;
     break;
   case 3:
