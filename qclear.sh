@@ -1,4 +1,4 @@
 #!/bin/sh
 
-/home/tabuchi/bin/qclear.pl
+qclear.pl
 rm Log-*.dat
