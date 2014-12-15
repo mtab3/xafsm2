@@ -82,7 +82,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   conds->setEncAsTh( true );
   conds->setAddInfos( true );
 #endif
-
+  pmConds = new PMConditions;
+  
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
   ReadDef( DefFileName );
   selmc = new SelMC2( mccd );
@@ -115,7 +116,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( conds, SIGNAL( SetDXMPMC() ), this, SLOT( SetDXMPMC() ),
 	   Qt::UniqueConnection );
 
-  StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds );
+  StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds, pmConds );
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ),
 	   Qt::UniqueConnection );
   //  QString msg = "XafsMsg_" + QLocale::system().name();

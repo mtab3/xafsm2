@@ -31,6 +31,7 @@
 #include "Status.h"
 #include "AtomGroup.h"
 #include "Conditions.h"
+#include "PMConditions.h"
 #include "KeV2Pix.h"
 #include "FluoDBase.h"
 #include "DarkTable.h"
@@ -118,6 +119,7 @@ private:
   SelMC2 *selmc;
   StarsSV2 *starsSV;
   Conditions *conds;
+  PMConditions *pmConds;
   Units *u;
   /* cfg. */
 

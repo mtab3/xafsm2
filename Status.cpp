@@ -10,7 +10,8 @@ Status::Status( QWidget *p ) : QScrollArea( p )
 }
 
 void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
-			    StarsSV2 *StarsSV, SelMC2 *SelMC, Conditions *Conds )
+			    StarsSV2 *StarsSV, SelMC2 *SelMC,
+			    Conditions *Conds, PMConditions *pmConds )
 {
   setWidgetResizable( true );
   for ( int i = 0; i < Ams->count(); i++ ) {
@@ -208,6 +209,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
 	   Qt::UniqueConnection );
 
   MainGrid->addWidget( conds, VItems++, 0, 1, 8 );
+  MainGrid->addWidget( pmConds->getWidget(), VItems++, 0, 1, 8 );
 
   QSizePolicy *HSP, *VSP;
   QLabel *HS, *VS;

@@ -7,6 +7,7 @@
 #include "StarsSV2.h"
 #include "SelMC2.h"
 #include "Conditions.h"
+#include "PMConditions.h"
 
 class Status : public QScrollArea, private Ui::ScrollWGrid
 {
@@ -39,7 +40,8 @@ public:
   Status( QWidget *parent = 0 );
 
   void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass,
-		      StarsSV2 *starsSV, SelMC2 *selMC, Conditions *conds );
+		      StarsSV2 *starsSV, SelMC2 *selMC,
+		      Conditions *conds, PMConditions *pmConds );
 
 public slots:
   //  void SetSSVA( QString Server );
