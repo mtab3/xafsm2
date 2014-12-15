@@ -1,8 +1,10 @@
+#include <QtGlobal>
 #include <QSplashScreen>
 #include <QStyleFactory>
 #include <QApplication>
 #include <QTranslator>
 #include <QTextCodec>
+#include <QDebug>
 
 #include <stdio.h>
 
@@ -13,11 +15,17 @@
 enum LANG { English, Japanese, LANGS };
 QString DefFileName;
 bool newFluoMode;
+int qMainVer, qSubVer, qSubSubVer;
 
 int main( int argc, char *argv[] )
 {
-  QApplication::setStyle( "Fusion" );
-
+  getQVersion();
+  if ( qMainVer >= 5 )
+    QApplication::setStyle( "Fusion" );
+  else if ( qMainVer >= 4 ) {
+    QApplication::setStyle( "Cleanlooks" );
+  }
+  
   LANG Lang = Japanese;
   DefFileName = "XAFSM.def";
   newFluoMode = false;
@@ -78,4 +86,17 @@ int main( int argc, char *argv[] )
 
   splash.finish( mw );
   return app.exec();
+}
+
+void getQVersion( void )
+{
+  qMainVer = qSubVer = qSubSubVer = 0;
+  QString ver = QString( qVersion() );
+  QStringList vers = ver.split( "." );
+  if ( vers.count() >= 1 )
+    qMainVer = vers[0].toInt();
+  if ( vers.count() >= 2 )
+    qSubVer = vers[1].toInt();
+  if ( vers.count() >= 3 )
+    qSubSubVer = vers[2].toInt();
 }

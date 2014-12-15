@@ -73,7 +73,6 @@ public:
   void InitSize( void );
 
 private:
-
   QTime *T;
   Status* StatDisp;
 

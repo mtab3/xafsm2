@@ -7,6 +7,11 @@
 #include <QString>
 #include <QVector>
 
+void getQVersion( void );
+extern int qMainVer;
+extern int qSubVer;
+extern int qSubSubVer;
+
 enum SCANMODE { STEP, QCONT, RCONT };
 enum DIRECTION { FORWARD, BACKWARD };
 enum MCASTARTRESUME { MCA_START, MCA_RESUME };
