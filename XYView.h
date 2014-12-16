@@ -107,7 +107,7 @@ private:
   bool singleScale;
   bool QXafsMode;
   bool dispRelAbsSw;
-  bool dispAbs;
+  bool dispRel;
 
   QColor bgColor, BLACK;
   QVector<QColor> LC;
@@ -171,7 +171,7 @@ public:
   XYView( QWidget *parent = NULL );
 
   void setDispRelAbsSw( bool f ) { dispRelAbsSw = f; };
-  void setDispAbs( bool f ) { dispAbs = f; };
+  void setDispRel( bool f ) { dispRel = f; };
   void enabledSingleScale( bool f ) { singleScale = f; };
   void NewPoint( int l, double xx, double yy );
   void ReNewPoint( int l, int ix, double yy );

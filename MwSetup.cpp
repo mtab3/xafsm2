@@ -896,7 +896,7 @@ void MainWindow::ScanStart( void )
     ScanView->SetXUnitName( SInfo.unitName );
 
     ScanView->setDispRelAbsSw( true );            // Rel/Abs SW を表示するかどうか
-    ScanView->setDispAbs( SInfo.relabs == ABS );  // 初期の表示の仕方(スキャン条件自体の Rel/Abs に合わせる)
+    ScanView->setDispRel( SInfo.relabs == REL );  // 初期の表示の仕方(スキャン条件自体の Rel/Abs に合わせる)
     // 以下の 4 つの情報があれば、XYView(ScanView) の内部で正しく表示できるはず
     ScanView->SetUnitType( SInfo.showUnit );      // 表示単位 pulse/実単位
     ScanView->SetUpp( SInfo.upp );                // Unit per pulse

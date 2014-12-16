@@ -77,7 +77,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     break;
   case S2DDATA:
     view = SetUpNewView( S2DVIEW );
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "S2D" ) );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:
     view = NULL;

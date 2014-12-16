@@ -2144,8 +2144,8 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
         <source>Datum</source>
         <translation>データム</translation>
     </message>
-    <message utf8="true">
-        <source>２D scan</source>
+    <message>
+        <source>2D scan</source>
         <translation>2次元スキャン</translation>
     </message>
     <message>
@@ -2879,6 +2879,61 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>Too long acquisition time per point. Decrease acquisition time or Increase data points.</source>
         <translation>一点あたりの計測時間が長過ぎます。計測時間を短くするか測定点数を増やして下さい。</translation>
     </message>
+    <message>
+        <source>D-XAFS</source>
+        <translation>XAFS表示</translation>
+    </message>
+    <message>
+        <source>D-SCAN</source>
+        <translation>スキャン表示</translation>
+    </message>
+    <message>
+        <source>D-MON.</source>
+        <translation>モニタ表示</translation>
+    </message>
+    <message>
+        <source>D-MCA</source>
+        <translation>MCA表示</translation>
+    </message>
+    <message>
+        <source>D-S2D</source>
+        <translation>2次元スキャン表示</translation>
+    </message>
+    <message>
+        <source>２D scan</source>
+        <translation>2次元スキャン</translation>
+    </message>
+</context>
+<context>
+    <name>PMLine</name>
+    <message>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>a PM No</source>
+        <translation>PM モータ番号</translation>
+    </message>
+    <message>
+        <source> H</source>
+        <translation>H</translation>
+    </message>
+    <message>
+        <source>Center</source>
+        <translation>原点</translation>
+    </message>
+    <message>
+        <source>a PM Name</source>
+        <translation>PM 名</translation>
+    </message>
+    <message>
+        <source> M</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source> L</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>PeriodicT</name>
@@ -3404,7 +3459,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Pop Up</source>
-        <translation>独立</translation>
+        <translation type="obsolete">独立</translation>
     </message>
     <message>
         <source>1</source>
@@ -3424,7 +3479,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Print</source>
-        <translation>印刷</translation>
+        <translation type="obsolete">印刷</translation>
     </message>
     <message>
         <source>Auto Scale</source>
@@ -3815,6 +3870,14 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Diff2</source>
         <translation>2階微分</translation>
+    </message>
+    <message>
+        <source>Disp Abs.</source>
+        <translation>相対値表示(横軸)</translation>
+    </message>
+    <message>
+        <source>Disp Rel.</source>
+        <translation>相対表示(横軸)</translation>
     </message>
 </context>
 <context>

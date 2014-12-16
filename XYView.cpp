@@ -19,7 +19,7 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   SelLR[ LEFT_AX ] = 0;
   SelLR[ RIGHT_AX ] = 1;
   dispRelAbsSw = false;
-  dispAbs = true;
+  dispRel = false;
 
   ShowProgressB = false;
   ProgressScale = 1.0;
@@ -374,7 +374,7 @@ void XYView::Draw( QPainter *p )
   int BPos = 0;
   cc.ShowAButton( p, autoScale, tr( "A. Scale" ), BPos, 100, height() ); BPos += 110;
   if ( dispRelAbsSw ) {
-    cc.ShowAButton( p, dispAbs, tr( "Disp Abs." ), BPos, 100, height() ); BPos += 110;
+    cc.ShowAButton( p, dispRel, tr( "Disp Rel." ), BPos, 100, height() ); BPos += 110;
   }
   cc.ShowAButton( p, singleScale, tr( "S. Scale" ), BPos, 100, height() ); BPos += 110;
   cc.ShowAButton( p, showDiff1, tr( "Diff1" ), BPos, 100, height() ); BPos += 110;
@@ -389,7 +389,7 @@ void XYView::Draw( QPainter *p )
     p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦の罫線
     rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
     if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
-      if ( dispAbs ) {
+      if ( !dispRel ) {
 	if ( unitType == 0 ) {
 	  dispX = xx;                      // パルス, 絶対
 	} else {
@@ -678,7 +678,7 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
   CheckASPush( e ); BPos += 110;
   if ( dispRelAbsSw ) {
     if ( m.CheckABPosition( e, BPos, height() ) )
-      dispAbs = ! dispAbs;
+      dispRel = ! dispRel;
     BPos += 110;
   }
   if ( m.CheckABPosition( e, BPos, height() ) )
