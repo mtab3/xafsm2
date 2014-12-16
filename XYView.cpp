@@ -18,6 +18,8 @@ XYView::XYView( QWidget *parent ) : QFrame( parent )
   AreaSelecting = false;
   SelLR[ LEFT_AX ] = 0;
   SelLR[ RIGHT_AX ] = 1;
+  dispRelAbsSw = false;
+  dispAbs = true;
 
   ShowProgressB = false;
   ProgressScale = 1.0;
@@ -369,21 +371,45 @@ void XYView::Draw( QPainter *p )
   p->fillRect( 0, height()-BM, width(), BM, bgColor );
   // お笑いクリッピング ^^;;;
 
-  cc.ShowAButton( p, autoScale, tr( "A. Scale" ), 0, 100, height() );
-  cc.ShowAButton( p, singleScale, tr( "S. Scale" ), 110, 100, height() );
-  cc.ShowAButton( p, showDiff1, tr( "Diff1" ), 220, 100, height() );
-  cc.ShowAButton( p, showDiff2, tr( "Diff2" ), 330, 100, height() );
+  int BPos = 0;
+  cc.ShowAButton( p, autoScale, tr( "A. Scale" ), BPos, 100, height() ); BPos += 110;
+  if ( dispRelAbsSw ) {
+    cc.ShowAButton( p, dispAbs, tr( "Disp Abs." ), BPos, 100, height() ); BPos += 110;
+  }
+  cc.ShowAButton( p, singleScale, tr( "S. Scale" ), BPos, 100, height() ); BPos += 110;
+  cc.ShowAButton( p, showDiff1, tr( "Diff1" ), BPos, 100, height() ); BPos += 110;
+  cc.ShowAButton( p, showDiff2, tr( "Diff2" ), BPos, 100, height() ); BPos += 110;
 
   double sx, dx;
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
 
+  double dispX;
   for ( double xx = sx; xx < cc.Rmaxx(); xx += dx ) {
     p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦の罫線
     rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
     if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
+      if ( dispAbs ) {
+	if ( unitType == 0 ) {
+	  dispX = xx;                      // パルス, 絶対
+	} else {
+	  dispX = ( xx - offset ) * upp;   // 実単位, 絶対
+	}
+      } else {
+	if ( unitType == 0 ) {
+	  dispX = xx - center;             // パルス, 相対
+	} else {
+	  dispX = ( xx - center ) * upp;   // 実単位, 相対
+	}
+      }
+#if 0
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
 		   QString::number( ( xx - center ) * upp ) );
+      qDebug() << QString( "Pos: %1, UType: %2, UPP: %3, Center: %4, Offset: %5" )
+	.arg( xx ).arg( unitType ).arg( upp ).arg( center ).arg( offset );
+#endif
+      cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
+		   QString::number( dispX ) );
     }
     memc++;
   }
@@ -647,13 +673,23 @@ void XYView::mouseReleaseEvent( QMouseEvent *e )
     }
     break;
   }
-  CheckASPush( e );
-  if ( m.CheckABPosition( e, 110, height() ) )
+
+  int BPos = 0;
+  CheckASPush( e ); BPos += 110;
+  if ( dispRelAbsSw ) {
+    if ( m.CheckABPosition( e, BPos, height() ) )
+      dispAbs = ! dispAbs;
+    BPos += 110;
+  }
+  if ( m.CheckABPosition( e, BPos, height() ) )
     singleScale = ! singleScale;
-  if ( m.CheckABPosition( e, 220, height() ) )
+  BPos += 110;
+  if ( m.CheckABPosition( e, BPos, height() ) )
     showDiff1 = ! showDiff1;
-  if ( m.CheckABPosition( e, 330, height() ) )
+  BPos += 110;
+  if ( m.CheckABPosition( e, BPos, height() ) )
     showDiff2 = ! showDiff2;
+  BPos += 110;
 
   update();
 }

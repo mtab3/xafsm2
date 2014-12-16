@@ -1,6 +1,7 @@
 #ifndef XYVIEW_H
 #define XYVIEW_H
 
+#include <QDebug>
 #include <QWidget>
 #include <QPrinter>
 
@@ -105,6 +106,8 @@ private:
   bool autoScale;
   bool singleScale;
   bool QXafsMode;
+  bool dispRelAbsSw;
+  bool dispAbs;
 
   QColor bgColor, BLACK;
   QVector<QColor> LC;
@@ -167,6 +170,8 @@ private:
 public:
   XYView( QWidget *parent = NULL );
 
+  void setDispRelAbsSw( bool f ) { dispRelAbsSw = f; };
+  void setDispAbs( bool f ) { dispAbs = f; };
   void enabledSingleScale( bool f ) { singleScale = f; };
   void NewPoint( int l, double xx, double yy );
   void ReNewPoint( int l, int ix, double yy );
