@@ -35,6 +35,8 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   }
   Drivers.removeDuplicates();
 
+  pmConds->setMotors( Ams );
+  
   OKcolor = "background-color: #aaffaa";
   NGcolor = "background-color: #ffaaaa";
   QString WBack = "background-color: #ffffff";
@@ -209,7 +211,7 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
 	   Qt::UniqueConnection );
 
   MainGrid->addWidget( conds, VItems++, 0, 1, 8 );
-  MainGrid->addWidget( pmConds->getWidget(), VItems++, 0, 1, 8 );
+  MainGrid->addWidget( pmConds->getWidget(), VItems++, 0, 1, 6 );
 
   QSizePolicy *HSP, *VSP;
   QLabel *HS, *VS;
