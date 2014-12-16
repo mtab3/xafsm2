@@ -32,7 +32,8 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   ConnectedToSSDServer = false;
   HasMaxIntTime = false;
   MaxIntTime = 1000000;   // 十分大きい
-
+  HaveSetMaxS = false;
+  
   Center = 0;        // only for PM
 
   MaxV = 0;          // only for PZ
@@ -356,6 +357,10 @@ void AUnit::Initialize( Stars *S )
   if ( Type == "PM" ) {
     connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )),
 	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetMiddleSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsSetLowSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )),
+	     Qt::UniqueConnection );
     connect( s, SIGNAL(AnsSetTimingOutMode( SMsg )), this, SLOT(ClrBusy( SMsg )),
 	     Qt::UniqueConnection );
     connect( s, SIGNAL(AnsSetTimingOutStart( SMsg )), this, SLOT(ClrBusy( SMsg )),
@@ -370,7 +375,13 @@ void AUnit::Initialize( Stars *S )
 	     Qt::UniqueConnection );
     connect( s, SIGNAL(AnsGetHighSpeed( SMsg )), this, SLOT(RcvHighSpeed( SMsg )),
 	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsGetMiddleSpeed( SMsg )), this, SLOT(RcvMiddleSpeed( SMsg )),
+	     Qt::UniqueConnection );
+    connect( s, SIGNAL(AnsGetLowSpeed( SMsg )), this, SLOT(RcvLowSpeed( SMsg )),
+	     Qt::UniqueConnection );
     s->SendCMD2( "Init", DevCh, "GetHighSpeed" );
+    s->SendCMD2( "Init", DevCh, "GetMiddleSpeed" );
+    s->SendCMD2( "Init", DevCh, "GetLowSpeed" );
   }
   //              PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo FP23 EPIC
   //                                                                  ENC2 だけ
@@ -1171,8 +1182,37 @@ void AUnit::RcvHighSpeed( SMsg msg )
   if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETHIGHSPEED ) ) ) {
     if ( Type == "PM" ) {
-      MaxS = msg.Val().toInt();
+      HighS = msg.Val().toInt();
+      if ( ! HaveSetMaxS ) {
+	MaxS = HighS;
+	HaveSetMaxS = true;
+      }
       IsBusy2Off( Driver );
+      emit gotHighS( HighS );
+    }
+  }
+}
+
+void AUnit::RcvMiddleSpeed( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )  // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == GETMIDDLESPEED ) ) ) {
+    if ( Type == "PM" ) {
+      MiddleS = msg.Val().toInt();
+      IsBusy2Off( Driver );
+      emit gotMiddleS( MiddleS );
+    }
+  }
+}
+
+void AUnit::RcvLowSpeed( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Driver ) )  // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == GETLOWSPEED ) ) ) {
+    if ( Type == "PM" ) {
+      LowS = msg.Val().toInt();
+      IsBusy2Off( Driver );
+      emit gotLowS( LowS );
     }
   }
 }

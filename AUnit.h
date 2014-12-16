@@ -65,10 +65,14 @@ class AUnit : public QObject
   double MinV;          // only for PZ
 
   bool HasSpeedsLine;
+  bool HaveSetMaxS;
   int MaxS;      // max speed (pps) 最初に設定されていたオリジナルのスピード
   int MaxMaxS;   // 許される最高のスピード
   int AccRate;   // 加減速レート ( AccRage ms/1000pps )
   int AccRateNo; // 対応する加減速レートの PM16C のテーブル番号
+  int HighS;
+  int MiddleS;
+  int LowS;
 
   bool hasConnected;
   QTcpSocket *dLink;
@@ -205,6 +209,7 @@ public:
   void setUPP( QString upp ) { UPP = upp.toDouble(); };
   void setCenter( QString center ) { Center = center.toDouble(); };
   void setCenter( double center ) { Center = center; };
+  double getCeter( void ) { return Center; };
 
   // only for PZ
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
@@ -286,6 +291,9 @@ public:
   void setAccRateNo( int n ) { AccRateNo = n; };
   bool hasSpeedsLine( void ) { return HasSpeedsLine; };
   void setHasSpeedsLine( bool f ) { HasSpeedsLine = f; };
+  int getHighS( void ) { return HighS; };
+  int getMiddleS( void ) { return MiddleS; };
+  int getLowS( void ) { return LowS; };
 
   // only for DV
   bool hasMaxIntTime( void ) { return HasMaxIntTime; };
@@ -382,6 +390,8 @@ public slots:
   void RcvStat( SMsg msg );
   void RcvQGetData( SMsg msg );
   void RcvHighSpeed( SMsg msg );
+  void RcvMiddleSpeed( SMsg msg );
+  void RcvLowSpeed( SMsg msg );
 
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
@@ -416,6 +426,10 @@ signals:
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
 
+  void gotHighS( int s );
+  void gotMiddleS( int s );
+  void gotLowS( int s );
+  
   void LogMsg( QString msg );
 };
 

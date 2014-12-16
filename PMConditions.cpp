@@ -2,7 +2,6 @@
 #include <QLabel>
 
 #include "PMConditions.h"
-#include "PMLine.h"
 
 PMConditions::PMConditions( void )
 {
@@ -13,6 +12,7 @@ PMConditions::PMConditions( void )
 
 void PMConditions::setMotors( QVector<AUnit *> *ams )
 {
+  aMs = ams;
   int row = 0;
   AUnit *am;
 
@@ -37,24 +37,44 @@ void PMConditions::setMotors( QVector<AUnit *> *ams )
   for ( int i = 0; i < ams->count(); i++ ) {
     am = ams->at(i);
     if ( am->getType() == "PM" ) {
-      QLabel *PMNo = new QLabel;
-      QLabel *PMName = new QLabel;
-      QLineEdit *Origin = new QLineEdit;
-      QLineEdit *HSpeed = new QLineEdit;
-      QLineEdit *MSpeed = new QLineEdit;
-      QLineEdit *LSpeed = new QLineEdit;
+      PMLine *p = new PMLine;
+      pmls << p;
+      p->am = am;
 
       int c = 0;
-      L->addWidget( PMNo,    row, c++ );
-      L->addWidget( PMName,  row, c++ );
-      L->addWidget( Origin,  row, c++ );
-      L->addWidget( HSpeed,  row, c++ );
-      L->addWidget( MSpeed,  row, c++ );
-      L->addWidget( LSpeed,  row, c++ );
+      L->addWidget( p->PMNo,    row, c++ );
+      L->addWidget( p->PMName,  row, c++ );
+      L->addWidget( p->Origin,  row, c++ );
+      L->addWidget( p->HSpeed,  row, c++ );
+      L->addWidget( p->MSpeed,  row, c++ );
+      L->addWidget( p->LSpeed,  row, c++ );
       row++;
 
-      PMNo->setText( am->getUid() );
-      PMName->setText( am->getName() );
+      p->PMNo->setText( am->getUid() );
+      p->PMName->setText( am->getName() );
+      p->Origin->setText( QString::number( am->getCenter() ) );
+      p->HSpeed->setText( QString::number( am->getHighS() ) );
+      p->MSpeed->setText( QString::number( am->getMiddleS() ) );
+      p->LSpeed->setText( QString::number( am->getLowS() ) );
+
+      connect( p->Origin, SIGNAL( editingFinished() ), this, SLOT( newOrigin() ) );
+      connect( p->HSpeed, SIGNAL( editingFinished() ), this, SLOT( newHSpeed() ) );
+      connect( p->MSpeed, SIGNAL( editingFinished() ), this, SLOT( newMSpeed() ) );
+      connect( p->LSpeed, SIGNAL( editingFinished() ), this, SLOT( newLSpeed() ) );
     }
   }
 }
+
+void PMConditions::newOrigin( void )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->Origin ) {
+      qDebug() << "New Origin " << pmls[i]->am->getName();
+    }
+  }
+}
+
+void PMConditions::newHSpeed( void ) {}
+void PMConditions::newMSpeed( void ) {}
+void PMConditions::newLSpeed( void ) {}
+

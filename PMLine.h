@@ -1,19 +1,25 @@
 #ifndef PMLINE_H
 #define PMLINE_H
 
-#include<QFrame>
+#include <QLabel>
+#include <QLineEdit>
 
-#include"ui_PMLine.h"
+#include "AUnit.h"
 
-class PMLine : public QFrame, private Ui::PMLine
+class PMLine
 {
-  Q_OBJECT
-
+ public:
+  AUnit *am;
+  
+  QLabel *PMNo;
+  QLabel *PMName;
+  QLineEdit *Origin;
+  QLineEdit *HSpeed;
+  QLineEdit *MSpeed;
+  QLineEdit *LSpeed;
+  
  public:
   PMLine( void );
-
-  void setPMNo( QString pmNo ) { PMNo->setText( pmNo ); };
-  void setPMName( QString pmName ) { PMName->setText( pmName ); };
 };
 
 

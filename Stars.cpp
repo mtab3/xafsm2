@@ -214,6 +214,14 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsSetHighSpeed( smsg ); break;
 	case GETHIGHSPEED:
 	  emit AnsGetHighSpeed( smsg ); break;
+	case SETMIDDLESPEED:
+	  emit AnsSetMiddleSpeed( smsg ); break;
+	case GETMIDDLESPEED:
+	  emit AnsGetMiddleSpeed( smsg ); break;
+	case SETLOWSPEED:
+	  emit AnsSetLowSpeed( smsg ); break;
+	case GETLOWSPEED:
+	  emit AnsGetLowSpeed( smsg ); break;
 	case SETTIMINGOUTMODE:
 	  emit AnsSetTimingOutMode( smsg ); break;
 	case SETTIMINGOUTSTART:
