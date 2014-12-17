@@ -13,7 +13,6 @@ class PMConditions : public QObject
 {
   Q_OBJECT
 
-  QVector<AUnit *> *aMs;
   QVector<PMLine *> pmls;
   QFrame *mainFrame;
     
@@ -25,6 +24,12 @@ class PMConditions : public QObject
   void setMotors( QVector<AUnit*> *ams );
 
  public slots:
+   void Initialize( void );
+   
+   void recHighS( int s );
+   void recMiddleS( int s );
+   void recLowS( int s );
+
    void newOrigin( void );
    void newHSpeed( void );
    void newMSpeed( void );

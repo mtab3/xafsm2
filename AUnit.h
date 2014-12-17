@@ -318,6 +318,8 @@ public:
   bool QEnd( void );                  // QXAFS
   void SetSpeed( MSPEED speed );
   void SetHighSpeed( int speed );
+  void SetMiddleSpeed( int speed );
+  void SetLowSpeed( int speed );
   void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
   void SetTimingOutMode( int mode );
   // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
@@ -330,6 +332,10 @@ public:
   double SetTime( double dtime );   // in sec
   void Stop( void );
 
+  void AskHighSpeed( void );
+  void AskMiddleSpeed( void );
+  void AskLowSpeed( void );
+  
   // 3440
   void SetTriggerDelay( double time );
   void SetSamplingSource( QString source );

@@ -82,7 +82,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   conds->setEncAsTh( true );
   conds->setAddInfos( true );
 #endif
-  pmConds = new PMConditions;
   
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
   ReadDef( DefFileName );
@@ -94,6 +93,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->SetNewSVPort( starsSV->SSVPort() );
 
   TTable = new TuningTable;
+  pmConds = new PMConditions;
 
   Initialize();
   setupView();
@@ -117,6 +117,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 	   Qt::UniqueConnection );
 
   StatDisp->setupStatArea( &AMotors, &ASensors, starsSV, selmc, conds, pmConds );
+
   connect( StatDisp, SIGNAL( NeedListNodes() ), this, SLOT( SendListNodes() ),
 	   Qt::UniqueConnection );
   //  QString msg = "XafsMsg_" + QLocale::system().name();
@@ -268,6 +269,7 @@ void MainWindow::Initialize( void )
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
   }
+  pmConds->Initialize();
 }
 
 void MainWindow::SendListNodes( void )

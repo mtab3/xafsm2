@@ -379,9 +379,6 @@ void AUnit::Initialize( Stars *S )
 	     Qt::UniqueConnection );
     connect( s, SIGNAL(AnsGetLowSpeed( SMsg )), this, SLOT(RcvLowSpeed( SMsg )),
 	     Qt::UniqueConnection );
-    s->SendCMD2( "Init", DevCh, "GetHighSpeed" );
-    s->SendCMD2( "Init", DevCh, "GetMiddleSpeed" );
-    s->SendCMD2( "Init", DevCh, "GetLowSpeed" );
   }
   //              PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo FP23 EPIC
   //                                                                  ENC2 だけ
@@ -813,6 +810,24 @@ void AUnit::SetHighSpeed( int speed )
   }
 }
 
+void AUnit::SetMiddleSpeed( int speed )
+{
+  if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetMiddleSpeed" );
+    QString cmd = QString( "SetMiddleSpeed %1" ).arg( speed );
+    s->SendCMD2( Uid, DevCh, cmd );
+  }
+}
+
+void AUnit::SetLowSpeed( int speed )
+{
+  if ( Type == "PM" ) {
+    IsBusy2On( Driver, "SetLowSpeed" );
+    QString cmd = QString( "SetLowSpeed %1" ).arg( speed );
+    s->SendCMD2( Uid, DevCh, cmd );
+  }
+}
+
 void AUnit::AssignDispCh( int ch )
 {
   if ( Type == "PM" ) {
@@ -1174,6 +1189,27 @@ void AUnit::RcvStat( SMsg msg )
       //      emit newQData();
       IsBusy2Off( Driver );
     }
+  }
+}
+
+void AUnit::AskHighSpeed( void )
+{
+  if ( Type == "PM" ) {
+    s->SendCMD2( "Init", DevCh, "GetHighSpeed" );
+  }
+}
+
+void AUnit::AskMiddleSpeed( void )
+{
+  if ( Type == "PM" ) {
+    s->SendCMD2( "Init", DevCh, "GetMiddleSpeed" );
+  }
+}
+
+void AUnit::AskLowSpeed( void )
+{
+  if ( Type == "PM" ) {
+    s->SendCMD2( "Init", DevCh, "GetLowSpeed" );
   }
 }
 

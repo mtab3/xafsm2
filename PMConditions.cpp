@@ -12,9 +12,8 @@ PMConditions::PMConditions( void )
 
 void PMConditions::setMotors( QVector<AUnit *> *ams )
 {
-  aMs = ams;
   int row = 0;
-  AUnit *am;
+  AUnit *am = NULL;
 
   QGridLayout *L = new QGridLayout;
   mainFrame->setLayout( L );
@@ -61,6 +60,49 @@ void PMConditions::setMotors( QVector<AUnit *> *ams )
       connect( p->HSpeed, SIGNAL( editingFinished() ), this, SLOT( newHSpeed() ) );
       connect( p->MSpeed, SIGNAL( editingFinished() ), this, SLOT( newMSpeed() ) );
       connect( p->LSpeed, SIGNAL( editingFinished() ), this, SLOT( newLSpeed() ) );
+
+      connect( am, SIGNAL( gotHighS( int ) ), this, SLOT( recHighS( int ) ) );
+      connect( am, SIGNAL( gotMiddleS( int ) ), this, SLOT( recMiddleS( int ) ) );
+      connect( am, SIGNAL( gotLowS( int ) ), this, SLOT( recLowS( int ) ) );
+    }
+  }
+}
+
+void PMConditions::Initialize( void )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    AUnit *am = pmls[i]->am;
+    if ( am != NULL ) {
+      am->AskHighSpeed();
+      am->AskMiddleSpeed();
+      am->AskLowSpeed();
+    }
+  }
+}
+
+void PMConditions::recHighS( int s )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->am ) {
+      pmls[i]->HSpeed->setText( QString::number( s ) );
+    }
+  }
+}
+
+void PMConditions::recMiddleS( int s )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->am ) {
+      pmls[i]->MSpeed->setText( QString::number( s ) );
+    }
+  }
+}
+
+void PMConditions::recLowS( int s )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->am ) {
+      pmls[i]->LSpeed->setText( QString::number( s ) );
     }
   }
 }
@@ -69,12 +111,41 @@ void PMConditions::newOrigin( void )
 {
   for ( int i = 0; i < pmls.count(); i++ ) {
     if ( sender() == pmls[i]->Origin ) {
-      qDebug() << "New Origin " << pmls[i]->am->getName();
+      AUnit *am = pmls[i]->am;
+      am->setCenter( pmls[i]->Origin->text().toDouble() );
     }
   }
 }
 
-void PMConditions::newHSpeed( void ) {}
-void PMConditions::newMSpeed( void ) {}
-void PMConditions::newLSpeed( void ) {}
+void PMConditions::newHSpeed( void )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->HSpeed ) {
+      AUnit *am = pmls[i]->am;
+      am->SetHighSpeed( pmls[i]->HSpeed->text().toInt() );
+    }
+  }
+}
+
+void PMConditions::newMSpeed( void )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->MSpeed ) {
+      AUnit *am = pmls[i]->am;
+      am->SetMiddleSpeed( pmls[i]->MSpeed->text().toInt() );
+    }
+  }
+}
+
+void PMConditions::newLSpeed( void )
+{
+  for ( int i = 0; i < pmls.count(); i++ ) {
+    if ( sender() == pmls[i]->LSpeed ) {
+      AUnit *am = pmls[i]->am;
+      am->SetLowSpeed( pmls[i]->LSpeed->text().toInt() );
+    }
+  }
+}
+
+
 
