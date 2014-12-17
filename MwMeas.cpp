@@ -1047,16 +1047,7 @@ bool MainWindow::CheckDetectorSelection( void )
 
   if ( NoOfSelectedSens == 1 ) {  // 選ばれたのが一個だけの場合、モードが決まる
     if ( UseI1->isChecked() ) {
-#if 0
-      AUnit *as = I1Sensors[ SelectI1->currentIndex() ];
-      if (( as->getType() == "CNT" )||( as->getType() == "CNT2" )
-          ||( as->getType() == "OTC" )||( as->getType() == "OTC2" )
-          ||( as->getType() == "DV" )||( as->getType() == "DV2" )) {
-        MeasFileType = TRANS;
-      }  // その他は EXTRA
-#else
-      MeasFileType = TRANS;  // I0 を使ってれば常に Trans にしてしまう。
-#endif
+      MeasFileType = TRANS;  // I1 を使ってれば常に Trans にしてしまう。
     }
     if ( Use19chSSD->isChecked() ) {
       MeasFileType = FLUO;

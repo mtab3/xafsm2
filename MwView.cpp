@@ -45,11 +45,6 @@ void MainWindow::ShowButtonsForATab( int i )   // manage graph-select-button
     saveGSBs( oldCurrentView );
   clearGSBs();
   loadGSBs( i );
-#if 0
-  lbls = ViewCtrls[i]->getGSBLabels();
-  SetGSBLabels( lbls );
-  SetGSBFlags( ViewCtrls[i]->getGSBFlags() );
-#endif
   oldCurrentView = i;
 }
 

@@ -326,11 +326,6 @@ void MainWindow::newCalibration( void )
       if ( oldE <= 0 ) return;
       // 新旧の エネルギー比
       double ratio = PeakCalibrate->text().toDouble() / oldE;
-#if 0
-      qDebug() << "oldE and ratio "
-	       << oldE << PeakCalibrate->text().toDouble() << ratio
-	       << "new gain " << GainInput->text().toDouble() / ratio;
-#endif
       if ( ratio <= 0 ) return;
       // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
       // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
@@ -419,48 +414,6 @@ void MainWindow::doPeakFit( void )
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
       view->doPeakFit();
-    }
-  }
-}
-#endif
-
-#if 0
-void MainWindow::NoticeMCAViewSetDisplayLog( bool f )
-{
-  MCAView *view;
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
-    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      view->setLog( f );
-    }
-  }
-}
-
-void MainWindow::NoticeMCAViewSetShowElements( bool f )
-{
-  MCAView *view;
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
-    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      view->setShowElements( f );
-    }
-  }
-}
-
-void MainWindow::NoticeMCAViewShowAlwaysSelElm( bool f )
-{
-  MCAView *view;
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
-    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      view->setShowElementsAlways( f );
-    }
-  }
-}
-
-void MainWindow::NoticeMCAViewShowElmEnergy( bool f )
-{
-  MCAView *view;
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
-    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      view->setShowElementsEnergy( f );
     }
   }
 }
@@ -636,11 +589,8 @@ void MainWindow::getMCASettings( int ch )
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
   s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
-#if 0                            // new mcas
-  SFluo->GetMCA( ch );
-#else
+
   SFluo->GetMCAs();
-#endif
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
@@ -857,12 +807,6 @@ void MainWindow::setNewROI( int s, int e )
 	setAllROIs();
       ReCalcXAFSWithMCA();
       S2DReCalcMap0();
-    } else {
-      qDebug() << statusbar;
-#if 0
-      statusbar
-	->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
-#endif
     }
   }
 }

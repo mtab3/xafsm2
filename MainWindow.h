@@ -352,12 +352,6 @@ private:
   aMCAMap S2DMCAMap;
   aMCAMap XafsMCAMap;
   bool S2DMCADataOnMemF;
-#if 0
-  QVector<int> S2Dnow;
-  QVector<int> S2Di, S2Dps;
-  QVector<double> S2Dsx, S2Dex, S2Ddx;
-  double S2DDwell;
-#endif
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   double S2DLastV;
 
@@ -739,12 +733,6 @@ private slots:
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );
   void ReCalcSSDTotal( int i, bool f );
-#if 0
-  void NoticeMCAViewSetDisplayLog( bool f );
-  void NoticeMCAViewSetShowElements( bool f );
-  void NoticeMCAViewShowAlwaysSelElm( bool f );
-  void NoticeMCAViewShowElmEnergy( bool f );
-#endif
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );

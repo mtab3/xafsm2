@@ -57,17 +57,6 @@ void ReadVicF( void )
       Vic[ Vics ].AE[ 4 ] = ltz( cols[18].toDouble() );
       Vic[ Vics ].C[ 4 ] = ltz( cols[19].toDouble() );
       Vic[ Vics ].D[ 4 ] = ltz( cols[20].toDouble() );
-
-#if 0
-      printf( "%d : %g %g %g : %g %g %g : %g %g %g : %g %g %g : %g %g %g \n",
-	      Vic[Vics].AN,
-	      Vic[Vics].AE[0], Vic[Vics].C[0], Vic[Vics].D[0],
-	      Vic[Vics].AE[1], Vic[Vics].C[1], Vic[Vics].D[1],
-	      Vic[Vics].AE[2], Vic[Vics].C[2], Vic[Vics].D[2],
-	      Vic[Vics].AE[3], Vic[Vics].C[3], Vic[Vics].D[3],
-	      Vic[Vics].AE[4], Vic[Vics].C[4], Vic[Vics].D[4] );
-#endif
-
       Vics++;
     }
   }

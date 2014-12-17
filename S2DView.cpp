@@ -26,18 +26,6 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   Grey = QColor( 220, 220, 220 );
   Pink = QColor( 255, 220, 220 );
   AutoScale = true;
-#if 0
-  for ( int i = 0; i < 256 * 4; i++ )
-    cbar[ i ] = QColor( 0, 0, 0 );
-  for ( int r = 0; r < 256; r++ )
-    cbar[ r ] = QColor( r, 0, 0 );
-  for ( int g = 0; g < 256; g++ )
-    cbar[ 256 + g ] = QColor( 255, g, 0 );
-  for ( int b = 0; b < 256; b++ )
-    cbar[ 512 + b ] = QColor( 255, 255, b );
-  cmax = 767;
-  cmin = 0;
-#endif
   setMouseTracking( true );
 }
 
@@ -53,31 +41,6 @@ void S2DView::setParent( QWidget *p )
   connect( this, SIGNAL( PointerMovedOnIntMCA( int, int ) ),
 	   Parent, SLOT( S2DShowIntMCA( int, int ) ), Qt::UniqueConnection );
 }
-
-#if 0 // cNum 
-int S2DView::cNum( double v )
-{
-  int cnum;
-#if 0
-  int vvmin, vvmax;
-
-  if ( vmin < vmax ) {
-    vvmin = vmin;
-    vvmax = vmax;
-  } else {
-    vvmin = vmax;
-    vvmax = vmin;
-  }
-#endif
-  //  cnum = (int)((double)( v - vvmin )/( vvmax - vvmin )*( cmax - cmin ) + cmin );
-  cnum = (int)((double)( v - minz )/( maxz - minz )*( cmax - cmin ) + cmin );
-
-  if ( cnum < cmin ) cnum = cmin;
-  if ( cnum > cmax ) cnum = cmax;
-
-  return cnum;
-}
-#endif // cNum
 
 void S2DView::setRange( double Sx, double Sy, double Dx, double Dy, int ix, int iy )
 {
@@ -258,16 +221,9 @@ void S2DView::Draw( QPainter *p )
       xd = abs( x1 - x2 );
       yd = abs( y1 - y2 );
       if ( valid[ix][iy] ) 
-	p->fillRect( x0, y0, xd, yd, *(CBar->c( data[ix][iy] )) );  // cbar[ cNum( data[ix][iy] ) ] );
+	p->fillRect( x0, y0, xd, yd, *(CBar->c( data[ix][iy] )) );
       else 
 	p->fillRect( x0, y0, xd, yd, Grey );
-#if 0
-      if ( cc.between( rx1, rx2, nowRx ) && cc.between( ry1, ry2, nowRy ) ) {
-	ssx = x0; ssy = y0; sdx = xd; sdy = yd;
-	qDebug() << "between " << rx1 << rx2 << nowRx << ry1 << ry2 << nowRy;
-	inRange = true;
-      }
-#endif
     }
   }
   
@@ -283,20 +239,11 @@ void S2DView::Draw( QPainter *p )
   }
 
   QPen p1;
-#if 0
-  if ( inRange ) {  // 現在地点をピンクの箱で
-    p1.setWidth( 2 );
-    p1.setColor( Pink );
-    p->setPen( p1 );
-    p->drawRect( ssx, ssy, sdx, sdy );
-  }
-#else
   //  p1.setWidth( 2 );
   p1.setColor( Pink );
   p->setPen( p1 );
   p->drawEllipse( cc.r2sx( nowRx ) - 3, cc.r2sy( nowRy ) - 3,
 		  7, 7 );
-#endif
   p1.setWidth( 1 );
   p1.setColor( QColor( 0, 0, 0 ) );
   p->setPen( p1 );

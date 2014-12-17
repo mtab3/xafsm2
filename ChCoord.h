@@ -74,12 +74,6 @@ class ChCoord : public QObject
       return true;
     return false;
   }
-
-
-#if 0
-  void ShowAScaleButton( QPainter *p, bool autoScale, int height );
-  void ShowSScaleButton( QPainter *p, bool singleScale, int height );
-#endif
 };
 
 #endif

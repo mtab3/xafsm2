@@ -55,14 +55,3 @@ bool MouseC::CheckABPosition( QMouseEvent *e, int x0, int y0 )
   }
 }
 
-#if 0
-bool MouseC::CheckABPush( int x0, int y0 )
-{
-  if ( ( Ex > ( x0 + 5 ) )&&( Ex < ( x0 + 19 ) )
-       &&( Ey > ( y0 - 19 ) )&&( Ey < ( y0 - 5 ) ) ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-#endif

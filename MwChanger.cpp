@@ -129,11 +129,6 @@ void MainWindow::SetNewChangerCenter( void )
 
 void MainWindow::moveToTarget( Changer *changer, int target, double dx, double dz )
 {
-#if 0
-  if ( Changers.count() <= 0 )
-    return;
-#endif
-
   //  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
   AUnit *c1 = changer->unit1();
   AUnit *c2 = changer->unit2();

@@ -10,11 +10,6 @@ class Conditions : public QFrame, private Ui::Conditions
 public:
   Conditions();
 
-#if 0
-  void setEncAsTh( bool encAsTh );
-  void setAddInfos( bool addInfos );
-#endif
-
   void setVersionInfo( QString ver, QString date, QString time );
   bool isEncAsTh( void );
   bool isAddInfos( void );

@@ -51,9 +51,6 @@ class MUnits : public QObject
   bool QRead( void );
   bool QEnd( void );
 
-#if 0
-  bool getMCA( int ch );
-#endif
   void clearDoneF( void );
 
 private slots:

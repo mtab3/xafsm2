@@ -402,12 +402,6 @@ void XYView::Draw( QPainter *p )
 	  dispX = ( xx - center ) * upp;   // 実単位, 相対
 	}
       }
-#if 0
-      cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
-		   QString::number( ( xx - center ) * upp ) );
-      qDebug() << QString( "Pos: %1, UType: %2, UPP: %3, Center: %4, Offset: %5" )
-	.arg( xx ).arg( unitType ).arg( upp ).arg( center ).arg( offset );
-#endif
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
 		   QString::number( dispX ) );
     }
@@ -422,16 +416,6 @@ void XYView::Draw( QPainter *p )
   for ( int i = 0; i < 2; i++ ) {
     int l = SelLR[i];
     ScaleChange( l );
-#if 0
-    if ( !singleScale ) {
-      if ( autoScale ) {
-	UpDateYWindow( l, scaleType[ l ] );
-	cc.SetRealY( miny[l], maxy[l] );
-      } else {
-	cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
-      }
-    }
-#endif
     sy = dy = 0;
     cc.calcScale( 5, cc.Rminy(), cc.Rmaxy(), &sy, &dy );
     pen1.setWidth( 1 );
@@ -494,24 +478,9 @@ void XYView::ScaleChange( int l )
 {
   if ( !singleScale ) {
     cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
-#if 0
-    if ( autoScale ) {
-      cc.SetRealY( miny[l], maxy[l] );
-    } else {
-      cc.SetRealY( miny[l] - YShift[l], maxy[l] - YShift[l] );
-    }
-#endif
   } else {
     cc.SetRealY( minGy[ DispGroup[l] ] - YShift[l],
 		 maxGy[ DispGroup[l] ] - YShift[l] );
-#if 0
-    if ( autoScale ) {
-      cc.SetRealY( minGy[ DispGroup[l] ], maxGy[ DispGroup[l] ] );
-    } else {
-      cc.SetRealY( minGy[ DispGroup[l] ] - YShift[l],
-		   maxGy[ DispGroup[l] ] - YShift[l] );
-    }
-#endif
   }
 }
 

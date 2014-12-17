@@ -354,20 +354,11 @@ void TYView::UpDateYWindowRing( void )
 	  nmaxy = test;
       }
     }
-#if 0
-    if ( !logScale ) {  // リニアスケールの時の上下の余白
-#endif
-      double dy = nmaxy - nminy;
-      if ( dy == 0 )
-	dy = 1.;
-      Rwminy[j] = nminy - dy * 0.05;
-      Rwmaxy[j] = nmaxy + dy * 0.05;
-#if 0
-    } else {  //  log スケールの時の上下の余白
-      Rwminy[j] = nminy - log10( 0.15 );
-      Rwmaxy[j] = nmaxy + log10( 0.15 );
-    }
-#endif
+    double dy = nmaxy - nminy;
+    if ( dy == 0 )
+      dy = 1.;
+    Rwminy[j] = nminy - dy * 0.05;
+    Rwmaxy[j] = nmaxy + dy * 0.05;
   }
 }
 

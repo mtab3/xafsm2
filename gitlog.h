@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 17 13:44:16 2014 +0900\n"\
+                "    new WhatToDo\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 17 13:23:01 2014 +0900\n"\
+                "    add Git Logs in Contitions window\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 17 12:06:38 2014 +0900\n"\
                 "    the PMC is ready\n"\
 		"\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 15 17:33:03 2014 +0900\n"\
                 "    add codes on version of Qt and setStyle at the top of XafsM.cpp\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Dec 14 15:46:01 2014 +0900\n"\
-                "    working\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 12 16:31:58 2014 +0900\n"\
-                "    saving\n"\
 		"\n"\
                 ""
 #endif

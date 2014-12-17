@@ -78,10 +78,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   conds = new Conditions;
   conds->setVersionInfo( VERSION, __DATE__, __TIME__ );
-#if 0
-  conds->setEncAsTh( true );
-  conds->setAddInfos( true );
-#endif
   
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
   ReadDef( DefFileName );
@@ -580,16 +576,4 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
 {
   RingCurrent->setText( Val );
 }
-
-#if 0
-bool MainWindow::isAnyOtherProcess( void )
-{
-  if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas || inS2D ) {
-    statusbar
-      ->showMessage( tr( "Can't start. Othre Process is going on." ), 2000 );
-    return true;
-  }
-  return false;
-}
-#endif
 

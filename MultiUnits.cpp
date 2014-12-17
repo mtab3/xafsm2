@@ -260,37 +260,9 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
   AUnit *as, *ap;
   for ( int i = 0; i < Units.count(); i++ ) {
     as = Units.at(i)->au;
-#if 0
-    if ( as->getType() == "PAM2" ) {
-      ap = as->getTheParent();
-      if ( as->getCh().toInt() >= ap->values().count() )  // 異常事態
-	rvs[i] = 0;
-      else 
-	rvs[i] = ap->values().at( as->getCh().toInt() ).toDouble();
-//      qDebug() << "readVal" << as->getCh().toInt()
-//	       << ap->values().count() << ap->values() << rvs[i];
-    } else {
-#endif
-      rvs[i] = as->value().toDouble();
-#if 0
-    }
-#endif
+    rvs[i] = as->value().toDouble();
     if ( correctBack )
       rvs[i] -= as->getDark() * as->GetSetTime();
     cps[i] = rvs[i] / as->GetSetTime();
   }
 }
-
-#if 0            // new mcas
-bool MUnits::getMCA( int ch )
-{
-  bool ff = false;
-
-  for ( int i = 0; i < Units.count(); i++ ) {
-    ff |= Units.at(i)->au->GetMCA( ch );
-  }
-  
-  return ff;
-}
-#endif
-

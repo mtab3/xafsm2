@@ -91,11 +91,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
   SPSUnitSelect->addItem( "Pulse" );
   SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
-#if 0
-  if ( UseDefUReal( AMotors.value( SPSMotorSelect->currentIndex() ) ) ) {
-    SPSUnitSelect->setCurrentIndex( 1 );
-  }
-#endif
   PutScanPSet( ScanPs[ SPSMotorSelect->currentIndex() ] );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
@@ -171,16 +166,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( GoMSpeedL, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedL() ),
 	   Qt::UniqueConnection );
 
-#if 0
-  connect( GoTo1, SIGNAL( clicked() ), this, SLOT( GoToPosKeV1() ),
-	   Qt::UniqueConnection );
-  connect( GoTo2, SIGNAL( clicked() ), this, SLOT( GoToPosKeV2() ),
-	   Qt::UniqueConnection );
-  connect( GoTo3, SIGNAL( clicked() ), this, SLOT( GoToPosKeV3() ),
-	   Qt::UniqueConnection );
-  connect( GoTo4, SIGNAL( clicked() ), this, SLOT( GoToPosKeV4() ),
-	   Qt::UniqueConnection );
-#endif
   for ( int i = 0; i < GoTos.count(); i++ ) {
     connect( GoTos[i], SIGNAL( clicked() ), this, SLOT( GoToPosKeV() ),
 	     Qt::UniqueConnection );
@@ -723,11 +708,6 @@ void MainWindow::NewMotor( void )
   SPSUnitSelect->removeItem( 1 );
   SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
   PutScanPSet( ScanPs[ SPSLastSelectedM ] );
-#if 0
-  if ( UseDefUReal( AMotors.value( SPSMotorSelect->currentIndex() ) ) ) {
-    SPSUnitSelect->setCurrentIndex( 1 );
-  }
-#endif
 }
 
 void MainWindow::GoMStop( void )
@@ -798,10 +778,6 @@ void MainWindow::ScanStart( void )
   //  AUnit *am, *as, *as0 = NULL;
 
   if ( !inSPSing ) {
-#if 0
-    if ( isAnyOtherProcess() )
-      return;
-#endif
     if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
@@ -903,25 +879,6 @@ void MainWindow::ScanStart( void )
     ScanView->SetOffset( SInfo.offset );          // PM の 0 点
     ScanView->SetCenter( SInfo.origin );          // 開始時点での PM 位置
     // 以上の 4 つの情報があれば、XYView(ScanView) の内部で正しく表示できるはず
-#if 0
-    if ( SInfo.relabs == REL ) {
-      if ( SInfo.showUnit == 0 ) {
-	qDebug() << "pulse rel";
-	ScanView->SetCenter( SInfo.origin ); // パルス, 相対
-      } else {
-	qDebug() << "unit  rel";
-	ScanView->SetCenter( SInfo.origin ); // 実単位, 相対
-      }
-    } else {
-      if ( SInfo.showUnit == 0 ) {
-	qDebug() << "pulse  abs";
-	ScanView->SetCenter( 0 );             // パルス, 絶対
-      } else {
-	qDebug() << "unit   abs";
-	ScanView->SetCenter( SInfo.offset );  // 実単位, 絶対
-      }
-    }
-#endif
     ScanView->SetAutoScale( true );
     ScanView->makeValid( true );
 
@@ -1020,32 +977,6 @@ void MainWindow::Monitor( void )
 	// (選ばれていないものは、mUnits に登録されないため)
       }
     }
-#if 0    
-    mUnits.addUnit( ass[0] );
-    MonSensF[0] = true;
-    if ( SelectD21Sel->isChecked() ) {
-      if ( ! as1->isEnable() ) {
-	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as1->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
-      mUnits.addUnit( as1 );
-      MonSensF[1] = true;
-    }
-    if ( SelectD22Sel->isChecked() ) {
-      if ( ! as2->isEnable() ) {
-	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as2->getName() );
-	statusbar->showMessage( msg, 2000 );
-	NewLogMsg( msg );
-	return;
-      }
-      mUnits.addUnit( as2 );
-      MonSensF[2] = true;
-    }
-#endif
     mUnits.setDwellTimes( DwellT20->text().toDouble() );
     mUnits.setDwellTime();
 

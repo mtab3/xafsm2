@@ -334,42 +334,6 @@ void MainWindow::SetDispMeasModes( void )
       MUC++;
     }
   }
-
-#if 0
-  int i;
-  for ( i = 1; i < mUnits.count(); i++ ) {
-    if ( MeasDispMode[i] == TRANS ) { // 透過の時は一つの I1 の出力で 2本の線
-      if (( i == 1 )&&( isSI1 )) {
-	MeasView->SetLLine( DLC );
-        MeasView->SetLR( DLC, LEFT_AX );                   // I1
-	MeasView->SetScaleType( DLC, FULLSCALE );
-	MeasView->SetLineName( DLC, mUnits.at(i)->getName() );
-	MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
-        DLC++;
-      }
-      MeasView->SetLR( DLC, LEFT_AX );                     // mu
-      MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, tr( "mu" ) );
-      MeasView->SetDG( DLC, DG++ );     // mu も独立スケール
-      DLC++;
-    } else {
-      MeasView->SetLR( DLC, LEFT_AX );
-      MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mUnits.at(i)->getName() );
-      MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
-      DLC++;
-      if ( ( isSFluo )&&( ( DLC - 1 ) == SFluoLine ) ) {
-	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  MeasView->SetLR( DLC, LEFT_AX );
-	  MeasView->SetScaleType( DLC, FULLSCALE );
-	  MeasView->SetLineName( DLC, QString( "SSD %1" ).arg( j ) );
-	  MeasView->SetDG( DLC, DG );    // SSD の各チャンネルだけ同一スケールグループ
-	  DLC++;
-	}
-      }
-    }
-  }
-#endif
 }
 
 void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダーク補正済み

@@ -9,13 +9,6 @@ double MainWindow::calcMuT( int ch, int gas, double keV )
   double mut0, mut;
   double compAll = 1.0;
 
-#if 0        // ガス組成を合計で規格化しない
-             //  --> 合計が 1 にならない場合は加圧 or 減圧を表す
-  for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
-    compAll += Gases[gas]->GasComps[i]->comp;
-  }
-#endif
-
   mut = 0;
   for ( int i = 0; i < Gases[gas]->GasComps.count(); i++ ) {
     list = ParseCompString( Gases[gas]->GasComps[i]->GasForm );

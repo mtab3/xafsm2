@@ -350,9 +350,6 @@ public:
   void GoMaxRel( double Width, int Steps );
   void GoMaxRelQ( double Width, int Steps, double Time );
 
-#if 0                   // new mcas
-  bool GetMCA( int ch );
-#endif
   bool GetMCAs( void );
   bool GetStat( void );
   bool SetRealTime( double val );
@@ -379,9 +376,6 @@ public slots:
   void getMCALength( SMsg msg );
   void RcvAnsGetValueOfDriver( SMsg msg );
 
-#if 0           // new mcas
-  void ReactGetMCA( SMsg msg );
-#endif
   void ReactGetStat( SMsg msg );
   void ReactGetRealTime( SMsg msg );
   void ReactGetLiveTime( SMsg msg );
@@ -421,9 +415,7 @@ signals:
   void ChangedIsBusy2( QString Drv );
   void ChangedBusy2Count( QString Drv );
   void AskedNowRange( int r );
-#if 0           // new mcas
-  void ReceivedNewMCAValue( void );
-#endif
+
   void ReceivedNewMCARealTime( int i );
   void ReceivedNewMCALiveTime( int i );
   void NewRingCurrent( QString val, QStringList vals );

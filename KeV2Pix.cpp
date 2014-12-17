@@ -76,13 +76,6 @@ void KeV2Pix::MakeUpAB( int Dim )
       }
     }
   }
-
-#if 0
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    qDebug() << "ab " << ab[i][0] << ab[i][1] << "ba " << ba[i][0] << ba[i][1];
-  }
-#endif
-
 }
 
 double KeV2Pix::p2E( int i, int p )

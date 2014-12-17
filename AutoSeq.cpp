@@ -241,11 +241,6 @@ void MainWindow::AutoSequence0( void )
       } else if ( FUNC == "DTIME" ) {
 	ASMUnits.setDwellTimes( VAL.toDouble() );
 	ASMUnits.setDwellTime();
-#if 0
-      } else if ( FUNC == "CLEAR_LOCAL_STAGE" ) {
-	ASMUnits.clearStage();
-	ASCMDii = 0;
-#endif
       } else if ( FUNC == "MEASURE" ) {
 	progress = false;
 	switch( ASCMDii ) {
