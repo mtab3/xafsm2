@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 17 17:01:33 2014 +0900\n"\
+                "    Clean up codes by erasing '#if 0 -- #endif' blocks\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 17 13:44:16 2014 +0900\n"\
                 "    new WhatToDo\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 15 19:07:42 2014 +0900\n"\
                 "    working on PMConditions\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Dec 15 17:33:03 2014 +0900\n"\
-                "    add codes on version of Qt and setStyle at the top of XafsM.cpp\n"\
 		"\n"\
                 ""
 #endif
