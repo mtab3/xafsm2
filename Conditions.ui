@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>706</width>
-    <height>343</height>
+    <height>396</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -387,16 +387,6 @@ with usual 9809 format datas.</string>
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="VersionInfo">
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 170, 127);</string>
-     </property>
-     <property name="text">
-      <string>Infos</string>
-     </property>
-    </widget>
    </item>
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -795,6 +785,32 @@ The original point will be changed as the angle calculated from the pulse will b
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="VersionInfo">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 220, 200);</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="text">
+      <string>Infos</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QTextEdit" name="ShowGitLogs">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>80</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(245, 245, 210);</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

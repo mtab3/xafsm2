@@ -18,4 +18,9 @@ PMLine::PMLine( void )
   HSpeed->setStyleSheet( "background-color: rgb(255, 255, 255);" );
   MSpeed->setStyleSheet( "background-color: rgb(255, 255, 255);" );
   LSpeed->setStyleSheet( "background-color: rgb(255, 255, 255);" );
+
+  Origin->setAlignment( Qt::AlignRight );
+  HSpeed->setAlignment( Qt::AlignRight );
+  MSpeed->setAlignment( Qt::AlignRight );
+  LSpeed->setAlignment( Qt::AlignRight );
 }

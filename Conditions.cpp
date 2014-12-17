@@ -1,4 +1,6 @@
 
+#include <QDebug>
+
 #include "XafsM.h"
 #include "Conditions.h"
 #include "gitlog.h"
@@ -26,11 +28,21 @@ Conditions::Conditions( void ) : QFrame()
 
 void Conditions::setVersionInfo( QString ver, QString date, QString time )
 {
-  VersionInfo->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3, Branch : %4" )
-			.arg( ver )
-			.arg( date )
-			.arg( time )
-			.arg( BRANCH_NAME ) );
+  QStringList GitLogs = QString( GITLOGS ).split( "\n" );
+  
+  VersionInfo
+    ->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3, Branch : %4\n" )
+	       .arg( ver )
+	       .arg( date )
+	       .arg( time )
+	       .arg( BRANCH_NAME )
+	       );
+  for ( int i = 0; i < GitLogs.count(); i++ ) {
+    ShowGitLogs->append( GitLogs[i].simplified() );
+  }
+  QTextCursor qtc = ShowGitLogs->textCursor();
+  qtc.movePosition( QTextCursor::Start );
+  ShowGitLogs->setTextCursor( qtc );
 }
 
 bool Conditions::isEncAsTh( void )
