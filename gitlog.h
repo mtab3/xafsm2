@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 18 11:38:05 2014 +0900\n"\
+                "    the display of X value at cursor point is fixed in XYView.cpp\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 18 02:39:15 2014 +0900\n"\
                 "    new WhatToDo\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 16 17:12:52 2014 +0900\n"\
                 "    LION\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 16 16:19:46 2014 +0900\n"\
-                "    Merge branch 'RelAbsInScan'\n"\
 		"\n"\
                 ""
 #endif
