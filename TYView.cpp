@@ -6,6 +6,8 @@
 #include "XafsM.h"
 #include "TYView.h"
 
+#define TLMAXINLINE    ( 3 )
+
 TYView::TYView( QWidget *parent ) : QFrame( parent )
 {
   setupUi( this );
@@ -126,10 +128,10 @@ void TYView::Draw( QPainter *p )
 
   p->fillRect( 0, 0, width(), height(), bgColor ); // 背景全体の塗りつぶし
 
-  int topLines = ((int)(( lines - 1 )/ 5 )) + 1;
+  int topLines = ((int)(( lines - 1 )/ TLMAXINLINE )) + 1;
   int topClms = lines;
-  if ( topClms > 5 )
-    topClms = 5;
+  if ( topClms > TLMAXINLINE )
+    topClms = TLMAXINLINE;
   
   RM = width() * 0.03;    // 描画領域の中でのグラフの右マージン
   LM = width() * 0.12;    // 描画領域の中でのグラフの左マージン
@@ -275,9 +277,11 @@ void TYView::Draw( QPainter *p )
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
     }
-    int TL = j % 5;
-    rec = QRectF( LM + HDiv * 0.05 + topLW * j, TM * 0.05 + TL, 
-		  topLW, TM * 0.9 );  // 軸のラベル
+    int Lx = j % TLMAXINLINE;
+    int Ly = (int)( j / TLMAXINLINE );
+    rec = QRectF( LM + HDiv * 0.05 + topLW * Lx,
+		  topLH * ( Ly + 0.05 ),
+		  topLW, topLH * 0.9 );  // 軸のラベル
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
 
