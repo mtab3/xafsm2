@@ -10,7 +10,7 @@
 #include "ChCoord.h"
 
 const int RingMax = 5 * 60 * 60 * 6;
-const int MaxMon = 10;
+const int MaxMon = 20;
 
 class TYView : public QFrame, private Ui::XView
 {
@@ -51,6 +51,7 @@ private:
 public:
   TYView( QWidget *parent = NULL );
 
+  static int maxMon( void ) { return MaxMon; };
   void ReDraw( void );
   void NewPointR( int tt, double *yy, int n );
   void ClearDataR( void );

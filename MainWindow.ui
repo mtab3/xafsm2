@@ -5533,6 +5533,9 @@ Though, other parameters are fixed at the value on starting.</string>
           </item>
           <item row="1" column="0">
            <widget class="QFrame" name="frame_10">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(215, 225, 210);</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -5579,7 +5582,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents">
+               <widget class="QWidget" name="MonLineBase">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
@@ -5623,6 +5626,9 @@ Though, other parameters are fixed at the value on starting.</string>
                    <property name="text">
                     <string>0.000</string>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
                   </widget>
                  </item>
                  <item row="1" column="0">
@@ -5664,6 +5670,9 @@ Though, other parameters are fixed at the value on starting.</string>
                    </property>
                    <property name="text">
                     <string>0.000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -5713,6 +5722,9 @@ Though, other parameters are fixed at the value on starting.</string>
                    <property name="text">
                     <string>0.000</string>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
                   </widget>
                  </item>
                  <item row="3" column="0">
@@ -5743,6 +5755,9 @@ Though, other parameters are fixed at the value on starting.</string>
                    <property name="text">
                     <string>0.000</string>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
                   </widget>
                  </item>
                  <item row="4" column="0">
@@ -5772,6 +5787,9 @@ Though, other parameters are fixed at the value on starting.</string>
                    </property>
                    <property name="text">
                     <string>0.000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>

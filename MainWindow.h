@@ -47,6 +47,7 @@
 #include "CheckUnits.h"
 #include "MeasParamSet.h"
 #include "ScanParamSet.h"
+#include "MonLine.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -202,9 +203,10 @@ private:
   double oldDeg;             // ShowCurThPos での重複実行を避けるため。
   bool AllInited, MotorsInited, SensorsInited;
 
-  QVector<QRadioButton*> MonSels;
-  QVector<QComboBox*> MonDevs;
-  QVector<QLabel*> MonVals;
+  QVector<MonLine*> monLines;
+  QVector<QRadioButton*> monSels;
+  QVector<QComboBox*> monDevs;
+  QVector<QLabel*> monVals;
 
   void setupLogArea( void );
   void setupCommonArea( void );

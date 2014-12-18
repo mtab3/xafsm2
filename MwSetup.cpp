@@ -10,10 +10,26 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
   GoTos << GoTo1 << GoTo2 << GoTo3 << GoTo4;
 
-  MonSels << MonSel0 << MonSel1 << MonSel2 << MonSel3 << MonSel4;
-  MonDevs << MonDev0 << MonDev1 << MonDev2 << MonDev3 << MonDev4;
-  MonVals << MonV0 << MonV1 << MonV2 << MonV3 << MonV4;
+  monSels << MonSel0 << MonSel1 << MonSel2 << MonSel3 << MonSel4;
+  monDevs << MonDev0 << MonDev1 << MonDev2 << MonDev3 << MonDev4;
+  monVals << MonV0 << MonV1 << MonV2 << MonV3 << MonV4;
 
+  for ( int i = 0; i < monSels.count(); i++ ) {
+    MonLine *aml = new MonLine( monSels[i], monDevs[i], monVals[i] );
+    monLines << aml;
+  }
+  QGridLayout *L = (QGridLayout*)MonLineBase->layout();
+  if ( monLines.count() < TYView::maxMon() ) {
+    for ( int i = monLines.count(); i < TYView::maxMon(); i++ ) {
+      MonLine *aml = new MonLine;
+      monLines << aml;
+      L->addWidget( aml->sel(), i+1, 0 );
+      L->addWidget( aml->dev(), i+1, 1 );
+      L->addWidget( aml->val(), i+1, 2 );
+      aml->copyStyles( *monLines[0] );
+    }
+  }
+  
   double Eg = ManTEkeV->text().toDouble();
 
   //  inMove = 0;
@@ -96,8 +112,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SPSSelectD1->addItem( ASensors.value(i)->getName() );
     SPSSelectD10->addItem( ASensors.value(i)->getName() );
-    for ( int j = 0; j < MonSels.count(); j++ ) {
-      MonDevs[j]->addItem( ASensors.value(i)->getName() );
+    for ( int j = 0; j < monLines.count(); j++ ) {
+      monLines[j]->addItem( ASensors.value(i)->getName() );
     }
     SelectD3->addItem( ASensors.value(i)->getName() );
     connect( ASensors.value(i), SIGNAL( newDark( double ) ),
@@ -914,8 +930,8 @@ void MainWindow::ScanStop0( void )
 void MainWindow::Monitor( void )
 {
   QVector<AUnit*> ass;
-  for ( int i = 0; i < MonDevs.count(); i++ )
-    ass << ASensors.value( MonDevs[i]->currentIndex() );
+  for ( int i = 0; i < monLines.count(); i++ )
+    ass << ASensors.value( monLines[i]->currentIndex() );
 
   if ( !inMonitor ) {
     if ( ! ass[0]->isEnable() ) {
@@ -962,8 +978,8 @@ void MainWindow::Monitor( void )
     MonitorView = (TYView*)(MonitorViewC->getView());
 
     mUnits.clearUnits();
-    for ( int i = 0; i < MonSels.count(); i++ ) {
-      if ( MonSels[i]->isChecked() ) {
+    for ( int i = 0; i < monLines.count(); i++ ) {
+      if ( monLines[i]->isChecked() ) {
 	if ( ! ass[i]->isEnable() ) {
 	  QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	    .arg( ass[i]->getName() );
@@ -1019,8 +1035,8 @@ void MainWindow::Monitor( void )
     connect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ),
 	     Qt::UniqueConnection );
-    for ( int i = 0; i < MonSels.count(); i++ ) {
-      if ( MonSels[i]->isChecked() ) {
+    for ( int i = 0; i < monLines.count(); i++ ) {
+      if ( monLines[i]->isChecked() ) {
 	connect( ass[i], SIGNAL( newValue( QString ) ), this, SLOT( newVs( QString ) ),
 	     Qt::UniqueConnection );
       }
@@ -1053,8 +1069,8 @@ void MainWindow::Monitor( void )
 
     disconnect( SelectScale, SIGNAL( currentIndexChanged( int ) ),
 	     MonitorView, SLOT( SetMonScale( int ) ) );
-    for ( int i = 0; i < MonSels.count(); i++ ) {
-      if ( MonSels[i]->isChecked() ) {
+    for ( int i = 0; i < monLines.count(); i++ ) {
+      if ( monLines[i]->isChecked() ) {
 	disconnect( ass[i], SIGNAL( newValue( QString ) ),
 		    this, SLOT( newVs( QString ) ) );
       }
@@ -1119,9 +1135,9 @@ void MainWindow::saveMonData( void )
 
 void MainWindow::newVs( QString v )
 {
-  for ( int i = 0; i < MonSels.count(); i++ ) {
-    if ( sender() == ASensors.value( MonDevs[i]->currentIndex() ) ) {
-      MonVals[i]->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
+  for ( int i = 0; i < monLines.count(); i++ ) {
+    if ( sender() == ASensors.value( monLines[i]->currentIndex() ) ) {
+      monLines[i]->setText( QString("%1").arg( v.toDouble(), 8, 'g' ) );
     }
   }
 }
