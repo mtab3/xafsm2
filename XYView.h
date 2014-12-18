@@ -224,6 +224,7 @@ public:
   void print( QPrinter *p );
 
   void setParent( QWidget *p );
+  double dispX( double x );
 
 public slots:
   void ChooseAG( int i, bool f );

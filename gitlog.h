@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 18 02:39:15 2014 +0900\n"\
+                "    new WhatToDo\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 17 18:25:22 2014 +0900\n"\
+                "    new layout of SetUp-Tab\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 17 17:01:33 2014 +0900\n"\
                 "    Clean up codes by erasing '#if 0 -- #endif' blocks\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 16 16:19:46 2014 +0900\n"\
                 "    Merge branch 'RelAbsInScan'\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 16 16:19:03 2014 +0900\n"\
-                "    Rel/Abs display select button is available in XYView\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Dec 15 19:07:42 2014 +0900\n"\
-                "    working on PMConditions\n"\
 		"\n"\
                 ""
 #endif

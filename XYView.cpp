@@ -384,26 +384,14 @@ void XYView::Draw( QPainter *p )
   cc.calcScale( 10, cc.Rminx(), cc.Rmaxx(), &sx, &dx );
   int memc = 0;
 
-  double dispX;
+  double X;
   for ( double xx = sx; xx < cc.Rmaxx(); xx += dx ) {
     p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦の罫線
     rec = QRectF( cc.r2sx( xx )-40, height()-BM+5, 80, BM*0.3 ); // メモリ数字
     if ( memc % (int)( 80 / cc.r2sdx( dx ) + 1 ) == 0 ) {
-      if ( !dispRel ) {
-	if ( unitType == 0 ) {
-	  dispX = xx;                      // パルス, 絶対
-	} else {
-	  dispX = ( xx - offset ) * upp;   // 実単位, 絶対
-	}
-      } else {
-	if ( unitType == 0 ) {
-	  dispX = xx - center;             // パルス, 相対
-	} else {
-	  dispX = ( xx - center ) * upp;   // 実単位, 相対
-	}
-      }
+      X = dispX( xx );
       cc.DrawText( p, rec, F1, Qt::AlignHCenter | Qt::AlignVCenter, SCALESIZE,
-		   QString::number( dispX ) );
+		   QString::number( X ) );
     }
     memc++;
   }
@@ -461,7 +449,8 @@ void XYView::Draw( QPainter *p )
     p->setPen( BLACK );
     rec = QRectF( LM + HW, TM + VH + BM * 0.5, LM * 0.9, BM * 0.45 );
     cc.DrawText( p, rec, F1, AlLC, SCALESIZE,
-		 QString( "%1" ).arg( ( cc.s2rx( m.x() ) - center ) * upp ) );
+		 QString( "%1" ).arg( dispX( cc.s2rx( m.x() ) ) ) );
+//		 QString( "%1" ).arg( ( cc.s2rx( m.x() ) - center ) * upp ) );
   }
 
   if ( ShowProgressB ) {
@@ -473,6 +462,28 @@ void XYView::Draw( QPainter *p )
     p->drawRect( LM + HW * 0.1, height() - TM - VH * 0.4, PBWidth, PBHeight );
   }
 }
+
+double XYView::dispX( double x )
+{
+  double X;
+  
+  if ( !dispRel ) {
+    if ( unitType == 0 ) {
+      X = x;                      // パルス, 絶対
+    } else {
+      X = ( x - offset ) * upp;   // 実単位, 絶対
+    }
+  } else {
+    if ( unitType == 0 ) {
+      X = x - center;             // パルス, 相対
+    } else {
+      X = ( x - center ) * upp;   // 実単位, 相対
+    }
+  }
+
+  return X;
+}
+
 
 void XYView::ScaleChange( int l )
 {
