@@ -77,6 +77,7 @@ private:
   void UpDateYWindowRing( void );
   void CheckASPush( QMouseEvent *e );
   void CheckLSPush( QMouseEvent *e );
+  void drawYLabel( QPainter *p, int i, double LM, double VDiv, bool manyLs );
 
 signals:
   void UpScale( void );

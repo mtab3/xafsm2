@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 18 17:16:52 2014 +0900\n"\
+                "    working on TYView for many lines (LNames)\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 18 16:39:31 2014 +0900\n"\
                 "    working on TYView LNames\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 17 13:23:01 2014 +0900\n"\
                 "    add Git Logs in Contitions window\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 17 12:06:38 2014 +0900\n"\
-                "    the PMC is ready\n"\
 		"\n"\
                 ""
 #endif

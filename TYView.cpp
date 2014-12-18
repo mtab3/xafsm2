@@ -1,4 +1,5 @@
 
+#include <QDebug>
 #include <QStylePainter>
 
 #include <math.h>
@@ -6,7 +7,7 @@
 #include "XafsM.h"
 #include "TYView.h"
 
-#define TLMAXINLINE    ( 3 )
+#define TLMAXINLINE    ( 3 )    // (number of) top lavels max in line
 
 TYView::TYView( QWidget *parent ) : QFrame( parent )
 {
@@ -212,7 +213,7 @@ void TYView::Draw( QPainter *p )
     sx = cc.Rminx();
     dx = ms;
   }
-  for ( double xx = sx; xx <= cc.Rmaxx(); xx += dx ) {   // 横方向方向
+  for ( double xx = sx; xx <= cc.Rmaxx(); xx += dx ) {   // 横方向
     p->drawLine( cc.r2sx( xx ), TM, cc.r2sx( xx ), height()-BM );  // 縦罫線
                                                                    // 横軸のメモリ数字
     rec = QRect( cc.r2sx( xx )-HDiv/2, height()-BM*0.95, HDiv, BM*0.4 );
@@ -230,8 +231,13 @@ void TYView::Draw( QPainter *p )
     // 最大値最小値(5%マージン)を探す (Rminy, Rmaxy に返す)
     UpDateYWindowRing();
 
-  int nearLine = 0;
-  double nearD = 10000000;
+  
+  int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // 最新時刻
+  int nowt = cc.s2rx( m.x() ) + t0 - timeShift;
+  int nowtp = 0;
+
+  //  int nearLine = 0;
+  //  double nearD = 10000000;
   for ( int j = 0; j < lines; j++ ) {
     if ( !logScale ) {   // 縦軸リニアスケールの時
       if ( autoScale )
@@ -242,23 +248,7 @@ void TYView::Draw( QPainter *p )
       pen1.setWidth( 1 );
       pen1.setColor( LC[ j ] );
       p->setPen( pen1 );
-      
-      for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
-	rec = QRectF( LM * 0.1, ty = ( cc.r2sy( yy ) - VDiv * 0.5 + VDiv * 0.45 * j ),
-		      LM * 0.75, VDiv * 0.42 ); // メモリ数字
-	if ( !logScale ) {
-	  buf.sprintf( "%6.4g", yy );
-	} else {
-	  buf.sprintf( "%6.4e", yy );
-	}
-	cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
-	p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
-      }
     }
-
-    int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // 最新時刻
-    int nowt = cc.s2rx( m.x() ) + t0 - timeShift;
-    int nowtp = 0;
 
     int pp1, pp2;
     pen1.setWidth( 2 );
@@ -284,12 +274,23 @@ void TYView::Draw( QPainter *p )
 		  topLW, topLH * 0.9 );  // 軸のラベル
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
-
+#if 0
     if ( logScale ) {  // log スケールの罫線を引くための下準備
       if ( fabs( cc.r2sy( mony[j][nowtp] ) - m.y() ) < nearD ) {
-	nearD = fabs( cc.r2sy( mony[j][nowtp] ) - m.y() );
+	nearD = fabs( cc.r2sy( mony[j][nowtp] ) - m.y() );   // これはダメなはず
 	nearLine = j;
       }
+    }
+#endif
+  }
+
+  int NearL = 0;
+  double distance = abs( mony[0][nowtp] - cc.s2ry( m.y() ) );
+  for ( int i = 1; i < lines; i++ ) {
+    double d = abs( mony[i][nowtp] - cc.s2ry( m.y() ) );
+    if ( d < distance ) {
+      distance = d;
+      NearL = i;
     }
   }
 
@@ -301,9 +302,16 @@ void TYView::Draw( QPainter *p )
     for ( double yy = 0; yy < 1; yy += 0.1 ) {
       p->drawLine( LM, cc.r2sy( yy ), width()-RM, cc.r2sy( yy ) );   // 横の罫線
     }
+    if ( lines <= TLMAXINLINE ) {
+      for ( int j = 0; j < lines; j++ ) {
+	drawYLabel( p, j, LM, VDiv, true );
+      }
+    } else {
+      drawYLabel( p, NearL, LM, VDiv, false );
+    }
   } else {   // 縦軸が log スケールの時、軸メモリと罫線の描画
-    double sy = Rwminy[ nearLine ];
-    double ey = Rwmaxy[ nearLine ];
+    double sy = Rwminy[ NearL ];
+    double ey = Rwmaxy[ NearL ];
     int isy = floor( sy );    // 最小の数字のlog10に満たない最大の整数
     int iey = ceil( ey );    // 最大の数字のlog10より大きい大小の整数
     bool lineFirst = true;
@@ -349,6 +357,36 @@ void TYView::Draw( QPainter *p )
   if ( ( m.x() > LM ) && ( m.x() < width()-RM ) ) {
     p->setPen( MCLineC );
     p->drawLine( m.x(), TM, m.x(), height()-BM );
+  }
+}
+
+void TYView::drawYLabel( QPainter *p, int j, double LM, double VDiv, bool manyLs )
+{
+  double sy, ey, dy, ty;
+  QRectF rec;
+  QString buf;
+  QFont F1;
+
+  p->setPen( LC[ j ] );
+  if ( autoScale )
+    cc.SetRealY( Rwminy[j], Rwmaxy[j] );
+  else
+    cc.SetRealY( Rwminy[j] - YShift[j], Rwmaxy[j] - YShift[j] );
+  cc.getSEDy( &sy, &ey, &dy, 5 );
+  for ( double yy = sy + dy * 0.5; yy <= cc.Rmaxy(); yy += dy ) {
+    rec = QRectF( LM * 0.1,
+		  ty = cc.r2sy( yy )
+		       - ( manyLs ?  VDiv * 0.5 + VDiv * 0.45 * j  : VDiv * 0.21 ),
+		  LM * 0.75,
+		  VDiv * 0.42 ); // メモリ数字
+    if ( !logScale ) {
+      buf.sprintf( "%6.4g", yy );
+    } else {
+      buf.sprintf( "%6.4e", yy );
+    }
+    cc.DrawText( p, rec, F1, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, buf );
+    if ( manyLs )
+      p->drawLine( LM * 0.88, ty + VDiv * 0.21, LM * 0.98, cc.r2sy( yy ) );
   }
 }
 
