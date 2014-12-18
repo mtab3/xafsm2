@@ -57,7 +57,7 @@ public:
   void ClearDataR( void );
   void SetLines( int Lines ) { lines = Lines; };
   int GetLines( void ) { return lines; };
-  void SetLName( int i, QString Name ) { LNames.value( i ) = Name; };
+  void SetLName( int i, QString Name );
   void makeValid( bool v = true ) { valid = v; };
   int getMonScale( void ) { return MonScale; };
   QColor getColor( int i ) { return LC[i]; };

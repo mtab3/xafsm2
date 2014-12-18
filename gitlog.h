@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "newMon" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 18 14:18:20 2014 +0900\n"\
+                "    Done Extension of Monitor selection\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 18 11:48:58 2014 +0900\n"\
                 "    modified UI\n"\
@@ -38,10 +42,6 @@
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 16 18:58:19 2014 +0900\n"\
-                "    working on PMConditions\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 16 18:04:09 2014 +0900\n"\
                 "    working on PMConditions\n"\
 		"\n"\
                 ""

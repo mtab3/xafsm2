@@ -49,6 +49,13 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
   }
 }
 
+void TYView::SetLName( int i, QString Name )
+{
+  if ( i < LNames.count() )
+    LNames[i] = Name;
+}
+
+
 void TYView::setParent( QWidget *p )
 {
   parent = p;
@@ -104,7 +111,7 @@ void TYView::Draw( QPainter *p )
   if ( valid != true ) return;
 
   QString buf, buf2;
-  double RM, LM, TM, BM, HDiv, VDiv;
+  double RM, LM, TM, TW, BM, HDiv, VDiv;
   QPen pen0, pen1;
   QFont F1;
   QRectF rec;
@@ -119,13 +126,22 @@ void TYView::Draw( QPainter *p )
 
   p->fillRect( 0, 0, width(), height(), bgColor ); // 背景全体の塗りつぶし
 
+  int topLines = ((int)(( lines - 1 )/ 5 )) + 1;
+  int topClms = lines;
+  if ( topClms > 5 )
+    topClms = 5;
+  
   RM = width() * 0.03;    // 描画領域の中でのグラフの右マージン
   LM = width() * 0.12;    // 描画領域の中でのグラフの左マージン
-  TM = height() * 0.05;   // 描画領域の中でのグラフの上(top)マージン
+  TM = height() * 0.05 * ( topLines + 0.1 );   // 描画領域の中でのグラフの上(top)マージン
   BM = height() * 0.10;   // 描画領域の中でのグラフの下(bottom)マージン
-  HDiv = ( width() - RM - LM ) / HDNum;     // グリッド幅
+  TW = width() - RM - LM;
+  HDiv = TW / HDNum;     // グリッド幅
   VDiv = ( height() - TM - BM ) / VDNum;    // グリッド高さ
 
+  int topLW = TW / topClms;
+  int topLH = ( TM * 0.9 ) / topLines;
+  
   cc.SetScreenCoord( LM, TM, width()-RM, height()-BM );
   // screen 座標の指定。左上、右下の座標指定
   // (ここで上下裏がえった座標を指定することで real 座標で普通に左下が 0,0 の座標になる)
@@ -259,8 +275,9 @@ void TYView::Draw( QPainter *p )
       if (( mont[pp1] >= nowt )&&( mont[pp2] < nowt ))
 	nowtp = pp1;
     }
-    rec = QRectF( LM + HDiv * 0.1 + HDiv * 2 * j, TM * 0.05, 
-		  HDiv * 2, TM * 0.9 );  // 軸のラベル
+    int TL = j % 5;
+    rec = QRectF( LM + HDiv * 0.05 + topLW * j, TM * 0.05 + TL, 
+		  topLW, TM * 0.9 );  // 軸のラベル
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
 
