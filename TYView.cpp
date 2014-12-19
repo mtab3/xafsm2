@@ -29,18 +29,8 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
   AreaSelecting = false;
   ASelC = QColor( 0, 255, 120 );      // Area Select Color
 
-  LC << QColor(   0,   0,   0 )
-     << QColor( 255,   0,   0 ) << QColor(   0,   0, 255 ) << QColor(   0, 255,   0 )
-     << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
-     << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 )
-     << QColor(   0,   0,   0 )
-     << QColor( 255,   0,   0 ) << QColor(   0, 255,   0 ) << QColor(   0,   0, 255 )
-     << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
-     << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 )
-     << QColor(   0,   0,   0 )
-     << QColor( 255,   0,   0 ) << QColor(   0, 255,   0 ) << QColor(   0,   0, 255 )
-     << QColor( 255, 255,   0 ) << QColor( 255,   0, 255 ) << QColor(   0, 255, 255 )
-     << QColor( 127,   0,   0 ) << QColor(   0, 127,   0 ) << QColor(   0,   0, 127 );
+  LCs = new CColors( MaxMon );
+  
   MonScale = 0;
   ep = 0;
   datas = 0;
@@ -51,6 +41,14 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
     YShift[ i ] = YShift0[ i ] = yshift[ i ] = 0;
   }
 }
+
+void TYView::SetLines( int Lines )
+{
+  delete LCs;
+
+  lines = Lines;
+  LCs = new CColors( lines );
+};
 
 void TYView::SetLName( int i, QString Name )
 {
@@ -162,7 +160,7 @@ void TYView::Draw( QPainter *p )
     int t0 = mont[ ( ep == 0 ) ? RingMax - 1 : ep - 1 ];  // 最新時刻
     int pp1, pp2;
     pen1.setWidth( 2 );
-    pen1.setColor( LC[ j ] );
+    pen1.setColor( LCs->at( j ) );
     p->setPen( pen1 );
     
     double now1, now2;
@@ -246,13 +244,13 @@ void TYView::Draw( QPainter *p )
 	cc.SetRealY( Rwminy[j] - YShift[j], Rwmaxy[j] - YShift[j] );
       cc.getSEDy( &sy, &ey, &dy, 5 );
       pen1.setWidth( 1 );
-      pen1.setColor( LC[ j ] );
+      pen1.setColor( LCs->at( j ) );
       p->setPen( pen1 );
     }
 
     int pp1, pp2;
     pen1.setWidth( 2 );
-    pen1.setColor( LC[ j ] );
+    pen1.setColor( LCs->at( j ) );
     p->setPen( pen1 );
 
     for ( int i = 0; i < datas - 1; i++ ) { // データプロット
@@ -271,7 +269,7 @@ void TYView::Draw( QPainter *p )
     int Ly = (int)( j / TLMAXINLINE );
     rec = QRectF( LM + HDiv * 0.05 + topLW * Lx,
 		  topLH * ( Ly + 0.05 ),
-		  topLW, topLH * 0.9 );  // 軸のラベル
+		  topLW * 0.9, topLH * 0.9 );  // 軸のラベル
     cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
 		 LNames[j] + " : " + QString::number(mony[j][nowtp]) );
 #if 0
@@ -309,6 +307,11 @@ void TYView::Draw( QPainter *p )
     } else {
       drawYLabel( p, NearL, LM, VDiv, false );
     }
+    p->setPen( LCs->at( NearL ) );   // カーソル位置に近い線のラベル
+    rec = QRectF( LM * 0.1, TM * 0.1, LM * 0.8, TM * 0.8 );
+    cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		 LNames[NearL] );
+    
   } else {   // 縦軸が log スケールの時、軸メモリと罫線の描画
     double sy = Rwminy[ NearL ];
     double ey = Rwmaxy[ NearL ];
@@ -367,7 +370,7 @@ void TYView::drawYLabel( QPainter *p, int j, double LM, double VDiv, bool manyLs
   QString buf;
   QFont F1;
 
-  p->setPen( LC[ j ] );
+  p->setPen( LCs->at( j ) );
   if ( autoScale )
     cc.SetRealY( Rwminy[j], Rwmaxy[j] );
   else

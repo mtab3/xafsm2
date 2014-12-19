@@ -6,6 +6,7 @@
 
 #include "ui_XView.h"
 
+#include "CColors.h"
 #include "MouseC.h"
 #include "ChCoord.h"
 
@@ -21,8 +22,9 @@ private:
 
   ChCoord cc;
   QColor bgColor, BLACK, ASelC;
-  QVector<QColor> LC;
+  //  QVector<QColor> LC;
   QColor MCLineC;          // mouse cursor line color
+  CColors *LCs;
 
   bool valid;
   int MonScale;
@@ -55,12 +57,12 @@ public:
   void ReDraw( void );
   void NewPointR( int tt, double *yy, int n );
   void ClearDataR( void );
-  void SetLines( int Lines ) { lines = Lines; };
+  void SetLines( int Lines );
   int GetLines( void ) { return lines; };
   void SetLName( int i, QString Name );
   void makeValid( bool v = true ) { valid = v; };
   int getMonScale( void ) { return MonScale; };
-  QColor getColor( int i ) { return LC[i]; };
+  QColor getColor( int i ) { return LCs->at(i); };
   int getDatas( void ) { return datas; };
   int getT( int i ) { return mont[ ep - datas + i ]; };
   double getY( int l, int i ) { return mony[l][ ep - datas + i ]; };

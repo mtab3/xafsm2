@@ -207,6 +207,7 @@ private:
   QVector<QRadioButton*> monSels;
   QVector<QComboBox*> monDevs;
   QVector<QLabel*> monVals;
+  QDialog *MonLinesDialog;
 
   void setupLogArea( void );
   void setupCommonArea( void );
@@ -462,10 +463,10 @@ private:
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
   void SetDFName( int rpt, int rptMax, QString ext = "" );
-  double MeasVals[ MCHANNELS ];
-  double MeasCPSs[ MCHANNELS ];
-  MEASMODE MeasDispMode[ MCHANNELS ];
-  int MeasDispPol[ MCHANNELS ];   // polarity
+  double MeasVals[ 100 ];
+  double MeasCPSs[ 100 ];
+  MEASMODE MeasDispMode[ 100 ];
+  int MeasDispPol[ 100 ];   // polarity
   double NowDwell;
   bool UseAutoShutter;
   bool inMeasDark;
@@ -647,6 +648,8 @@ private slots:
   void setSelectedScanFName( const QString &fname );
   void setSelectedMCAFName( const QString &fname );
   void newGain( void );
+  void PopChangeMonLines( bool f );
+  void PopDownMonLines( void );
 
   void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );

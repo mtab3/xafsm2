@@ -18,7 +18,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     MonLine *aml = new MonLine( monSels[i], monDevs[i], monVals[i] );
     monLines << aml;
   }
-  QGridLayout *L = (QGridLayout*)MonLineBase->layout();
+  QGridLayout *L = (QGridLayout*)MonLinesGrid->layout();
   if ( monLines.count() < TYView::maxMon() ) {
     for ( int i = monLines.count(); i < TYView::maxMon(); i++ ) {
       MonLine *aml = new MonLine;
@@ -29,7 +29,16 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       aml->copyStyles( *monLines[0] );
     }
   }
-  
+
+  MonLinesDialog = new QDialog;
+  MonLinesDialog->resize( 350, 510 );
+  QGridLayout *bl = new QGridLayout;
+  MonLinesDialog->setLayout( bl );
+  connect( MonLinesDialog, SIGNAL( finished(int) ), this, SLOT( PopDownMonLines() ),
+	   Qt::UniqueConnection );
+  connect( MonLinesPop, SIGNAL( toggled( bool ) ), this, SLOT( PopChangeMonLines( bool ) ), 
+	   Qt::UniqueConnection );
+
   double Eg = ManTEkeV->text().toDouble();
 
   //  inMove = 0;
@@ -1155,3 +1164,20 @@ void MainWindow::TYVDownScale( void )
   if ( i > 0 )
     SelectScale->setCurrentIndex( i-1 );
 }
+
+void MainWindow::PopDownMonLines( void )
+{
+  MonLinesPop->setChecked( false );
+}
+
+void MainWindow::PopChangeMonLines( bool f )
+{
+  if ( f ) {
+    MonLinesDialog->layout()->addWidget( MonLinesBase );
+    MonLinesDialog->show();
+  } else {
+    MonLinesFrame->layout()->addWidget( MonLinesBase );
+    MonLinesDialog->hide();
+  }
+}
+

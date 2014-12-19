@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "colors" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Dec 19 01:55:49 2014 +0900\n"\
+                "    working on CColors\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 18 19:56:03 2014 +0900\n"\
+                "    new TYView is ready\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 18 17:16:52 2014 +0900\n"\
                 "    working on TYView for many lines (LNames)\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 17 17:01:33 2014 +0900\n"\
                 "    Clean up codes by erasing '#if 0 -- #endif' blocks\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 17 13:44:16 2014 +0900\n"\
-                "    new WhatToDo\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 17 13:23:01 2014 +0900\n"\
-                "    add Git Logs in Contitions window\n"\
 		"\n"\
                 ""
 #endif
