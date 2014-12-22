@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "colors" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Dec 22 02:41:33 2014 +0900\n"\
+                "    changing Monitor Clear to Pause\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Dec 19 14:55:48 2014 +0900\n"\
+                "    auto colors in TYView is ready\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 19 01:55:49 2014 +0900\n"\
                 "    working on CColors\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 18 02:39:15 2014 +0900\n"\
                 "    new WhatToDo\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 17 18:25:22 2014 +0900\n"\
-                "    new layout of SetUp-Tab\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 17 17:01:33 2014 +0900\n"\
-                "    Clean up codes by erasing '#if 0 -- #endif' blocks\n"\
 		"\n"\
                 ""
 #endif

@@ -5710,28 +5710,6 @@ Though, other parameters are fixed at the value on starting.</string>
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="MClear">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-                 </property>
-                 <property name="text">
-                  <string>Clr.</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="MStart">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -5750,6 +5728,28 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                  <property name="text">
                   <string>Start</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="MPause">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 </property>
+                 <property name="text">
+                  <string>Pause</string>
                  </property>
                 </widget>
                </item>
@@ -5786,8 +5786,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>261</width>
-                     <height>129</height>
+                     <width>267</width>
+                     <height>127</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">

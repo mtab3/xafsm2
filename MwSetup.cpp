@@ -44,6 +44,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   //  inMove = 0;
   inMMove = false;
   inMonitor = false;
+  MinPause = false;
   inSPSing = false;
 
   ScanView = NULL;
@@ -184,6 +185,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   monFSel->setDirectory( QDir::currentPath() );
   monFSel->setNameFilter( "*.dat" );
 
+  MPause->setEnabled( false );
+
   connect( GoMSpeedH, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedH() ),
 	   Qt::UniqueConnection );
   connect( GoMSpeedM, SIGNAL( clicked() ), this, SLOT( SetGoMSpeedM() ),
@@ -210,6 +213,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( SPSScan, SIGNAL( clicked() ), this, SLOT( ScanStart() ),
 	   Qt::UniqueConnection );
   connect( MStart, SIGNAL( clicked() ), this, SLOT( Monitor() ),
+	   Qt::UniqueConnection );
+  connect( MPause, SIGNAL( clicked() ), this, SLOT( PauseMonitor() ),
 	   Qt::UniqueConnection );
 
   connect( SelMonRecFile, SIGNAL( clicked() ), monFSel, SLOT( show() ),
@@ -1065,8 +1070,10 @@ void MainWindow::Monitor( void )
     }
 
     inMonitor = true;
+    MinPause = false;
     MonStage = 0;   // 計測のサイクル
     MonitorViewC->setIsDeletable( false );
+    MPause->setEnabled( true );
     MonTime.restart();
     MonTimer->start( 100 );
   } else {
@@ -1087,8 +1094,24 @@ void MainWindow::Monitor( void )
 
     UUnits.clear( MONITOR_ID );
     MonitorViewC->setIsDeletable( true );
+    MPause->setEnabled( false );
+    MPause->setText( tr( "Pause" ) );
+    MPause->setStyleSheet( NormalB );
     MStart->setText( tr( "Mon. Start" ) );
     MStart->setStyleSheet( NormalB );
+  }
+}
+
+void MainWindow::PauseMonitor( void )
+{
+  if ( MinPause ) {
+    MinPause = false;
+    MPause->setText( tr( "Pause" ) );
+    MPause->setStyleSheet( NormalB );
+  } else {
+    MinPause = true;
+    MPause->setText( tr( "Resume" ) );
+    MPause->setStyleSheet( InActive );
   }
 }
 

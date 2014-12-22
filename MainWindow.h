@@ -444,7 +444,7 @@ private:
   QString DFName00, DFName0, DFName;
   int TP;
   double TT0;
-  bool inMeas, inPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;
   bool FixedPositionMode;
   int cMeasTab;       // Tab No. on which the current measurement result is displayed
   int inMoveTh;
@@ -643,6 +643,7 @@ private slots:
   void GoMAtP( void );
   void GoMStop( void );
   void Monitor( void );
+  void PauseMonitor( void );
   void newVs( QString v );
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
