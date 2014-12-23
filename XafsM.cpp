@@ -54,15 +54,22 @@ int main( int argc, char *argv[] )
 
   QApplication app( argc, argv );
 
-  QPixmap pixmap( ":XafsM2.png" ); //Insert your splash page image here
-  QSplashScreen splash( pixmap );
+  // Show Splash Screen depending on month of a year
+  QPixmap SSPixmap; //Insert your splash page image here
+  switch( QDate::currentDate().month() ) {
+  case 1:  SSPixmap.load( ":Month01.gif" ); break;
+  default: SSPixmap.load( ":XafsM2.png" ); break;
+  }
+  QSplashScreen splash( SSPixmap );
   splash.show();
   // This line represents the alignment of text, color and position
   splash.showMessage( QObject::tr( "Starting XafsM2..." ),
 		      Qt::AlignHCenter | Qt::AlignVCenter, QColor( 0, 0, 255 ) );
   // This is used to accept a click on the screen so that user can cancel the screen
   qApp->processEvents();
+  // Show Splash Screen depending on month of a year
 
+  
   QTranslator appTr;
   switch( (int)Lang ) {
   case English:
