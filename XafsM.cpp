@@ -56,9 +56,13 @@ int main( int argc, char *argv[] )
 
   // Show Splash Screen depending on month of a year
   QPixmap SSPixmap; //Insert your splash page image here
+  SSPixmap.load( ":XafsM2.png" );
   switch( QDate::currentDate().month() ) {
-  case 1:  SSPixmap.load( ":Month01.gif" ); break;
-  default: SSPixmap.load( ":XafsM2.png" ); break;
+  case 1:
+    if ( QDate::currentDate().day() < 16 )
+      SSPixmap.load( ":Month01.gif" );
+    break;
+  default: break;
   }
   QSplashScreen splash( SSPixmap );
   splash.show();
