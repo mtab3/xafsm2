@@ -179,9 +179,9 @@ void Data::GotNewView( ViewCTRL *view )
   switch( dataType ) {
 #if 0
   case MEASDATA: showMeasData( in ); break;
+#endif
   case MONDATA:  showMonData( in );  break;
   case SCANDATA: showScanData( in ); break;
-#endif
   case MCADATA:  showMCAData( in );  break;
   case S2DDATA:  showS2DData( in );  break;
   default: break;
@@ -413,7 +413,6 @@ void Data::showMCAData( QTextStream &in )
 
   KeV2Pix *k2p = theMCAView->keV2Pix();
   cMCACh = 0;
-  
 
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( MCADATA );

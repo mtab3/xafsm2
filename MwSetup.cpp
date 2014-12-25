@@ -1177,15 +1177,23 @@ void MainWindow::newVs( QString v )
 void MainWindow::TYVUpScale( void )
 {
   int i = SelectScale->currentIndex();
-  if ( i < MSCALES - 1 )
+  if ( i < MSCALES - 1 ) {
     SelectScale->setCurrentIndex( i+1 );
+    if ( sender() != NULL ) {
+      ((TYView*)sender())->SetMonScale( i+1 );
+    }
+  }
 }
 
 void MainWindow::TYVDownScale( void )
 {
   int i = SelectScale->currentIndex();
-  if ( i > 0 )
+  if ( i > 0 ) {
     SelectScale->setCurrentIndex( i-1 );
+    if ( sender() != NULL ) {
+      ((TYView*)sender())->SetMonScale( i-1 );
+    }
+  }
 }
 
 void MainWindow::PopDownMonLines( void )

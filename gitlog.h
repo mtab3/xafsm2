@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 25 13:54:57 2014 +0900\n"\
+                "    slight bug in Data.cpp was fixed\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 24 12:10:19 2014 +0900\n"\
                 "    auto by GitAll\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 18 19:56:03 2014 +0900\n"\
                 "    new TYView is ready\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 18 17:16:52 2014 +0900\n"\
-                "    working on TYView for many lines (LNames)\n"\
 		"\n"\
                 ""
 #endif
