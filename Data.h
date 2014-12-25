@@ -31,6 +31,7 @@ class Data : public QFrame, private Ui::Data
   void CheckFileType( const QString &fname );
   DATATYPE dataType;
   QStringList DataTypeNames;
+  QStringList Checks;
   QString FName;
 
   ViewCTRL *theViewC;

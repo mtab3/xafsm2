@@ -41,8 +41,18 @@ Data::Data( QWidget *p ) : QFrame( p )
   DColors << DColor21 << DColor22 << DColor23 << DColor24 << DColor25
 	  << DColor26 << DColor27 << DColor28 << DColor29 << DColor30;
 
-  DataTypeNames << tr( "Measured" ) << tr( "Scaned" )
-		<< tr( "Monitored" ) << tr( "MCA" ) << "";
+  DataTypeNames << tr( "Measured" )
+		<< tr( "Scaned" )
+		<< tr( "Monitored" )
+		<< tr( "MCA" )
+		<< tr( "S2D" )
+		<< "";
+  Checks << "  9809     AichiSR"
+	 << "# XafsM2 Scan Data"
+	 << "# XafsM2 Monitor Data"
+	 << "# XafsM2 MCA Data"
+	 << "# 1306 Aichi SR 2D Scan"
+	 << "";
 
   connect( FileSelect, SIGNAL( clicked() ), FSDialog, SLOT( show() ),
 	   Qt::UniqueConnection );
@@ -62,6 +72,9 @@ Data::Data( QWidget *p ) : QFrame( p )
 
 Data::~Data( void )
 {
+  delete u;
+  delete FSDialog;
+  delete CSDialog;
 }
 
 void Data::setDataRoot( const QString &dataRoot )
@@ -111,7 +124,7 @@ void Data::ShowFName( const QString &fname )
 void Data::CheckFileType( const QString &fname )
 {
   QFile f( fname );
-
+  
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
     emit showMessage( tr( "Can not open the file %1." ).arg( fname ), 2000 );
@@ -125,18 +138,10 @@ void Data::CheckFileType( const QString &fname )
     emit showMessage( tr( "The file %1 is empty." ).arg( fname ), 2000 );
     return;
   }
-
+  
   QString aline = in.readLine();
   f.close();
 
-  QStringList Checks;
-  Checks << "  9809     AichiSR"
-	 << "# XafsM2 Scan Data"
-	 << "# XafsM2 Monitor Data"
-	 << "# XafsM2 MCA Data"
-	 << "# 1306 Aichi SR 2D Scan";
-
-  
   if ( aline.left( Checks[ MEASDATA ].length() ) == Checks[ MEASDATA ] ) {
     DataType->setText( DataTypeNames[ dataType = MEASDATA ] );
   } else if ( aline.left( Checks[ SCANDATA ].length() ) == Checks[ SCANDATA ] ) {
