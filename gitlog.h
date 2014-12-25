@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 25 14:21:32 2014 +0900\n"\
+                "    Data read functions are revivaled excepting the XAFS data\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 25 13:54:57 2014 +0900\n"\
                 "    slight bug in Data.cpp was fixed\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 19 01:55:49 2014 +0900\n"\
                 "    working on CColors\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 18 19:56:03 2014 +0900\n"\
-                "    new TYView is ready\n"\
 		"\n"\
                 ""
 #endif

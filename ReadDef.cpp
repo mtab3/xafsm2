@@ -12,10 +12,10 @@ void MainWindow::ReadDef( QString fname )
   if ( ! fname.isEmpty() ) {
     fname0 = fname;
   }
-  qDebug() << tr( "File [%1] is selected as XafsM2 definition file." ).arg( fname0 );
+  qDebug() << QString( "File [%1] is selected as XafsM2 definition file." ).arg( fname0 );
 
   QFileInfo ff( fname0 );
-  qDebug() << tr( "FilePath = [%1]" ).arg( ff.absoluteFilePath() );
+  qDebug() << QString( "FilePath = [%1]" ).arg( ff.absoluteFilePath() );
   
   QFile f( fname0 );
   if ( !f.exists() ) {

@@ -340,8 +340,6 @@ void MainWindow::SetMainThCenter( void )
   while( !in.atEnd() ) {
     QString buf = in.readLine().simplified().split( QRegExp( "\\s+" )  )[0];
     MMainTh->setCenter( buf.toInt() );
-    qDebug() << "internal DXM center is set to " << buf;
-    
     MMainTh->GetValue();
     f.close();
   }

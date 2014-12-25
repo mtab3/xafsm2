@@ -331,6 +331,10 @@ The original point will be changed as the angle calculated from the pulse will b
         <source>No View is available.</source>
         <translation type="obsolete">使用可能な表示領域がありません。</translation>
     </message>
+    <message>
+        <source>S2D</source>
+        <translation>二次元スキャン</translation>
+    </message>
 </context>
 <context>
     <name>FrameWGrid</name>
@@ -1871,11 +1875,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>File [%1] is selected as XafsM2 definition file.</source>
-        <translation>ファイル[%1]が XafsM2 の定義ファイルに選択されました。</translation>
+        <translation type="obsolete">ファイル[%1]が XafsM2 の定義ファイルに選択されました。</translation>
     </message>
     <message>
         <source>FilePath = [%1]</source>
-        <translation>FilePath = [%1]</translation>
+        <translation type="obsolete">FilePath = [%1]</translation>
     </message>
     <message>
         <source>The file [%1] is not. Use default parameters.</source>
@@ -2146,7 +2150,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>2D scan</source>
-        <translation>2次元スキャン</translation>
+        <translation type="obsolete">2次元スキャン</translation>
     </message>
     <message>
         <source>Contimuous</source>
@@ -2224,7 +2228,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Can&apos;t start. Othre Process is going on.</source>
-        <translation>他の作業が行われているため開始できません。</translation>
+        <translation type="obsolete">他の作業が行われているため開始できません。</translation>
     </message>
     <message>
         <source>Can&apos;t start 2D Scan. Othre Process is going on.</source>
@@ -2791,7 +2795,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Clr.</source>
-        <translation>クリア</translation>
+        <translation type="obsolete">クリア</translation>
     </message>
     <message>
         <source>Block parameters for step scan has not been set normally</source>
@@ -2899,40 +2903,55 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>D-S2D</source>
         <translation>2次元スキャン表示</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>２D scan</source>
         <translation>2次元スキャン</translation>
+    </message>
+    <message>
+        <source>Pop</source>
+        <translation>独立</translation>
+    </message>
+    <message>
+        <source>ï¼D scan</source>
+        <translation>2次元スキャン</translation>
+    </message>
+</context>
+<context>
+    <name>PMConditions</name>
+    <message>
+        <source>Origin(pulse)</source>
+        <translation>原点(pulse)</translation>
+    </message>
+    <message>
+        <source>H(pps)</source>
+        <translation>H(pps)</translation>
+    </message>
+    <message>
+        <source>M(pps)</source>
+        <translation>M(pps)</translation>
+    </message>
+    <message>
+        <source>L(pps)</source>
+        <translation>L(pps)</translation>
     </message>
 </context>
 <context>
     <name>PMLine</name>
     <message>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>a PM No</source>
-        <translation>PM モータ番号</translation>
+        <translation type="obsolete">PM モータ番号</translation>
     </message>
     <message>
         <source> H</source>
-        <translation>H</translation>
+        <translation type="obsolete">H</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation>原点</translation>
+        <translation type="obsolete">原点</translation>
     </message>
     <message>
         <source>a PM Name</source>
-        <translation>PM 名</translation>
-    </message>
-    <message>
-        <source> M</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source> L</source>
-        <translation></translation>
+        <translation type="obsolete">PM 名</translation>
     </message>
 </context>
 <context>
@@ -3873,7 +3892,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Disp Abs.</source>
-        <translation>相対値表示(横軸)</translation>
+        <translation type="obsolete">相対値表示(横軸)</translation>
     </message>
     <message>
         <source>Disp Rel.</source>
