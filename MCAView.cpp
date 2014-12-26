@@ -1148,16 +1148,22 @@ void MCAView::doPeakFit( void )
   for ( int i = 0; i < peaks; i++ ) {
     p[i*3]   = MCAPeaks[i].peakH;
     p[i*3+1] = MCAPeaks[i].center;
-    p[i*3+2] = MCAPeaks[i].end - MCAPeaks[i].start;
+    p[i*3+2] = 1/(MCAPeaks[i].end - MCAPeaks[i].start);
     printf( "%f %f %f\n", p[i*3], p[i*3+1], p[i*3+2] );
   }
   printf( "\n" );
-  
-  Fit->fit( MCALen, E, rMCA, p, 1 );
+
+  Gs gs0( peaks ), gs1( peaks );
+  gs0.setABC( p );
+  gs1.fit( MCALen, E, rMCA, p, 20 );
 
 #if 0
+  Fit->fit( MCALen, E, rMCA, p, 50 );
+#endif
+  
+#if 1
   for ( int i = 0; i < MCALen; i++ ) {
-    printf( "%f %f %f\n", E[i], rMCA[i], Fit->f( E[i] ) );
+    printf( "%f %f %f %f\n", E[i], rMCA[i], gs0.f( E[i] ), gs1.f( E[i] ) );
   }
 #endif
 }

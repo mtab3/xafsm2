@@ -3,6 +3,30 @@
 
 #include "Gs.h"
 
+void showM( const char *name, int n, double **M )
+{
+  printf( "# %s = \n# ", name );
+  
+  for ( int i = 0; i < n; i++ ) {
+    for ( int j = 0; j < n; j++ ) {
+      printf( "%g ", M[i][j] );
+    }
+    printf( "\n# " );
+  }
+  printf( "\n" );
+}
+
+void showV( const char *name, int n, double *V )
+{
+  printf( "# %s = \n# ", name );
+  
+  for ( int i = 0; i < n; i++ ) {
+    printf( "%g ", V[i] );
+  }
+  printf( "\n# " );
+  printf( "\n" );
+}
+
 void Gs::fit( int points, double *x, double *e, double *p, int Loop )
 {
   int GS = n;
@@ -39,34 +63,6 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
       }
     }
 
-    printf( "MCALen = %d\n", points );
-    printf( "E = \n" );
-    for ( int i = 0; i < points; i++ ) {
-      printf( "%f ", e[i] );
-    }
-
-    printf( "P = \n" );
-    for ( int i = 0; i < PS && i < 60; i++ ) {
-      printf( "%f\t", p[i] );
-    }
-    printf( "\n" );
-    printf( "M = \n" );
-    for ( int i = 0; i < PS; i++ ) {
-      for ( int j = 0; j < PS; j++ ) {
-	printf( "%g\t", M[i][j] );
-      }
-      printf( "\n" );
-    }
-    printf( "\n" );
-    printf( "V = \n" );
-    for ( int i = 0; i < PS; i++ ) {
-      printf( "%g\t", V[i] );
-    }
-    printf( "\n" );
-
-
-    
-    
     for ( int i = 0; i < PS; i++ ) {
       double a = M[i][i];
       for ( int j = 0; j < PS; j++ ) {
@@ -93,25 +89,8 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
       }
     }
 
-    
-    printf( "dP = \n" );
     for ( int i = 0; i < PS; i++ ) {
-      printf( "%f\t", dp[i] );
-    }
-    printf( "\n" );
-    printf( "I = \n" );
-    for ( int i = 0; i < PS; i++ ) {
-      for ( int j = 0; j < PS; j++ ) {
-	printf( "%f\t", I[i][j] );
-      }
-      printf( "\n" );
-    }
-    printf( "\n" );
-
-    
-    
-    for ( int i = 0; i < PS; i++ ) {
-      p[i] += dp[i];
+      p[i] += dp[i] / 10;
     }
     delete [] dp;
 
