@@ -1,3 +1,4 @@
+○ Wada Fit を使ってみる。従来の PF は消すべき PeakFit *PF, PeakFit.cpp, PeakFit.h...
 ○ エネルギー/角度　軸単位の切り替え一元化
 
 ○ MwSetUp で、「相対選択」「パルス値入力」「絶対選択」等した時、

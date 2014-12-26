@@ -1,4 +1,6 @@
 
+#if 0
+
 #ifndef PEAKFIT_H
 #define PEAKFIT_H
 
@@ -47,5 +49,6 @@ class PeakFit : public QObject
 
 #endif
 
+#endif
 
 

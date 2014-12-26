@@ -1,4 +1,6 @@
 
+#if 0
+
 #include <math.h>
 #include <stdio.h>
 
@@ -323,3 +325,5 @@ void PeakFit::GenPeaks( void )
     }
   }
 }
+
+#endif

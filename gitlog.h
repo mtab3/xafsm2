@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Dec 26 13:56:13 2014 +0900\n"\
+                "    nothing\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 25 15:04:10 2014 +0900\n"\
                 "    L10N\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 22 02:41:33 2014 +0900\n"\
                 "    changing Monitor Clear to Pause\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 19 14:55:48 2014 +0900\n"\
-                "    auto colors in TYView is ready\n"\
 		"\n"\
                 ""
 #endif

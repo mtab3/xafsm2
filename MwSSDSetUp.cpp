@@ -371,18 +371,14 @@ void MainWindow::SelectedPeakSearch( bool f )
 
 void MainWindow::PushedPeakFit( void )
 {
-  return;
-
   MCAView *view;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      PeakFit *PF = new PeakFit;
-      
-      PF->init( view->getMCAPeaks(), view->getMCALength(), NULL, view->getSMCA() );
-      PF->fit( true, view->getFLine() );
-      view->update();
-      
-      delete PF;
+      //      PeakFit *PF = new PeakFit;
+      //      PF->init( view->getMCAPeaks(), view->getMCALength(), NULL, view->getSMCA() );
+      //      PF->fit( true, view->getFLine() );
+      view->doPeakFit();
+      //      delete PF;
     }
   }
 }

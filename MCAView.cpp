@@ -1,6 +1,8 @@
 
 #include <math.h>
+
 #include <QStylePainter>
+#include <QDebug>
 
 #include "XafsM.h"
 #include "MCAView.h"
@@ -30,12 +32,15 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   k2p = NULL;
   MCA = NULL;
+  rMCA = NULL;
   SMCA = NULL;  // スムージング
   DMCA = DMCA2 = DMCA3 = DMCA4 = NULL;  // 1〜4次微分
   dMCA = NULL;  // 統計変動
   InitialLine = FittedLine = NULL;
+  E = NULL;
 
-  PF = new PeakFit;
+  //  PF = new PeakFit;
+  Fit = NULL;
 
   MCALen = 0;
   MCACh = -1;
@@ -50,7 +55,6 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   ShowDiff = true;
   DoPeakSearch = true;
-  DoPeakFit = false;
   LimitPSEnergy = true;
   PSSens = 0.5; // ピークサーチの感度
   I0Energy = 10.0;   // keV
@@ -114,27 +118,29 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 MCAView::~MCAView( void )
 {
   if ( MCA != NULL )
-    delete MCA;
+    delete [] MCA;
+  if ( rMCA != NULL )
+    delete [] rMCA;
   if ( SMCA != NULL )
-    delete SMCA;
+    delete [] SMCA;
   if ( DMCA != NULL )
-    delete DMCA;
+    delete [] DMCA;
   if ( DMCA2 != NULL )
-    delete DMCA2;
+    delete [] DMCA2;
   if ( DMCA3 != NULL )
-    delete DMCA3;
+    delete [] DMCA3;
   if ( DMCA4 != NULL )
-    delete DMCA4;
+    delete [] DMCA4;
 
   if ( dMCA != NULL )
-    delete dMCA;
+    delete [] dMCA;
   if ( E != NULL )
-    delete E;
+    delete [] E;
 
   if ( InitialLine != NULL )
-    delete InitialLine;
+    delete [] InitialLine;
   if ( FittedLine != NULL )
-    delete FittedLine;
+    delete [] FittedLine;
 
   disconnect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
@@ -148,6 +154,7 @@ MCAView::~MCAView( void )
 quint32 *MCAView::setMCAdataPointer( int len )
 {
   MCA = new quint32[ MCALen = len ];
+  rMCA = new double[ MCALen ];
   E = new double[ MCALen ];
   SMCA = new double[ MCALen ];
   DMCA = new double[ MCALen ];
@@ -262,6 +269,7 @@ void MCAView::Draw( QPainter *p )
   double min0 = 1e300, max0 = 0;
   // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
   for ( int i = 0; i < MCALen; i++ ) {
+    rMCA[i] = (double)MCA[i];
     double E = k2p->p2E( MCACh, i );
     if (( E > MinE )&&( E < MaxE )) {
       if ( MCA[i] > max0 ) {
@@ -347,8 +355,8 @@ void MCAView::Draw( QPainter *p )
 
   if ( DoPeakSearch ) {
     PeakSearch( wrROIsx, wrROIex );
-    PF->init( &MCAPeaks, MCALen, NULL, SMCA );
-    PF->fit( false, InitialLine );  // MCAView 内部では fitting はやらない
+    //    PF->init( &MCAPeaks, MCALen, NULL, SMCA );
+    //    PF->fit( false, InitialLine );  // MCAView 内部では fitting はやらない
   }
 
   /* ここまでデータの準備とか色々 */
@@ -375,6 +383,7 @@ void MCAView::Draw( QPainter *p )
 	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
 		       cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
 	}
+#if 0
 	if ( DoPeakFit ) {
 	  if ( InitialLine != NULL ) {
 	    p->setPen( INITLINEC );
@@ -392,6 +401,7 @@ void MCAView::Draw( QPainter *p )
 	    }
 	  }
 	}
+#endif
 	if ( ShowDiff ) {
 	  if ( ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
 	    p->setPen( DMCAC );
@@ -828,7 +838,7 @@ void MCAView::PeakSearch( double Es, double Ee )
   for ( int i = 1; i < MCALen; i++ ) {
     if (( i >= minI )&&( i <= maxI )) {
       if ( ( DMCA3[i] == 0 ) || ( DMCA3[ i-1 ] * DMCA3[ i ] < 0 ) ) {
-	// 3階微分が 0クロする点を発見 !
+	// 3階微分が 0クロスする点を発見 !
 	// 同じ点の 2階微分の符号
 	// (これが負ならピーク、これが正なら裾野の果て)
 	Sign = ( DMCA2[i] < 0 ) ? -1 : 1;
@@ -1116,4 +1126,38 @@ QStringList MCAView::getSelectedElms( void )
   }    
 
   return ret;
+}
+
+void MCAView::doPeakFit( void )
+{
+  qDebug() << "aaa";
+  
+  int peaks = MCAPeaks.count();
+  double *E = new double [ MCALen ];
+  double *p = new double [ peaks * 3 ];
+
+  qDebug() << "Peaks " << peaks;
+  
+  if ( Fit != NULL )
+    delete Fit;
+  Fit = new Gs( peaks );
+
+  for ( int i = 0; i < MCALen; i++ ) {
+    E[i] = k2p->p2E( MCACh, i );
+  }
+  for ( int i = 0; i < peaks; i++ ) {
+    p[i*3]   = MCAPeaks[i].peakH;
+    p[i*3+1] = MCAPeaks[i].center;
+    p[i*3+2] = MCAPeaks[i].end - MCAPeaks[i].start;
+    printf( "%f %f %f\n", p[i*3], p[i*3+1], p[i*3+2] );
+  }
+  printf( "\n" );
+  
+  Fit->fit( MCALen, E, rMCA, p, 1 );
+
+#if 0
+  for ( int i = 0; i < MCALen; i++ ) {
+    printf( "%f %f %f\n", E[i], rMCA[i], Fit->f( E[i] ) );
+  }
+#endif
 }

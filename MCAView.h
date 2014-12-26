@@ -9,8 +9,9 @@
 #include "ChCoord.h"
 #include "FluoDBase.h"
 #include "KeV2Pix.h"
-#include "PeakFit.h"
+//#include "PeakFit.h"
 #include "MCAPeak.h"
+#include "Gs.h"
 
 enum MMODE { M_ROI, M_POINT, M_H_SHIFT, M_NO };
 
@@ -21,17 +22,19 @@ class MCAView : public QFrame, private Ui::MCAView
 private:
   QWidget *Parent;
 
-  PeakFit *PF;
+  //  PeakFit *PF;
+  Gs *Fit;
 
   int valid;
   //  QVecotot<int *> MCAs;
   quint32 *MCA;
+  double *rMCA;
   double *SMCA;                          // スムージング結果
   double *DMCA, *DMCA2, *DMCA3, *DMCA4;  // 1〜3次微分
   double *dMCA;                          // 統計変動
-  double *E;
   double *FittedLine;
   double *InitialLine;
+  double *E;
 
   double MaxEnergy;
   int MCALen;
@@ -58,7 +61,6 @@ private:
   double yRatio;           // 縦軸の拡大倍率
 
   bool ShowDiff;
-  bool DoPeakFit;
   bool DoPeakSearch;
   bool LimitPSEnergy;      // ピークサーチを I0 のエネルギーまででやめる。
   double I0Energy;         // その I0 のエネルギー保持
@@ -104,7 +106,6 @@ public:
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
-  void setPeakFit( bool f ) { DoPeakFit = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   void setMaxEnergy( double e ) { MaxEnergy = e; };
   QStringList getSelectedElms( void );
@@ -116,6 +117,7 @@ public:
   int getMCALength( void ) { return MCALen; };
   double *getSMCA( void ) { return SMCA; };
   double *getFLine( void ) { return FittedLine; };
+  void doPeakFit( void );
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
