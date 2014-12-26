@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Dec 26 18:22:31 2014 +0900\n"\
+                "    studying MCAView. now the code is broken\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 26 17:10:04 2014 +0900\n"\
                 "    working\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 23 23:52:06 2014 +0900\n"\
                 "    new WhatToDo\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Dec 22 17:14:39 2014 +0900\n"\
-                "    Pause in Monitor mode is enabled\n"\
 		"\n"\
                 ""
 #endif

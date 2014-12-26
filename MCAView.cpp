@@ -524,15 +524,15 @@ void MCAView::Draw( QPainter *p )
     for ( int i = 0; i < MCAPeaks.count(); i++ ) {
       // 発見したピーク位置に○印
       int Y = dispLog ? log10( MCAPeaks[i].peakH ) : MCAPeaks[i].peakH;
-      p->drawEllipse( cc.r2sx( MCAPeaks[i].centerE ) - 3, cc.r2sy( Y ) - 3,
+      p->drawEllipse( cc.r2sx( MCAPeaks[i].cE ) - 3, cc.r2sy( Y ) - 3,
 		      7, 7 );
       // 丸の横にひげ線
-      p->drawLine( cc.r2sx( MCAPeaks[i].centerE ) + 2,
+      p->drawLine( cc.r2sx( MCAPeaks[i].cE ) + 2,
 		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 2 : -2 ),
-		   cc.r2sx( MCAPeaks[i].centerE ) + 10,
+		   cc.r2sx( MCAPeaks[i].cE ) + 10,
 		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 ) );
       // ひげ線の先にピーク番号
-      rec.setRect( cc.r2sx( MCAPeaks[i].centerE ) + 10,
+      rec.setRect( cc.r2sx( MCAPeaks[i].cE ) + 10,
 		   cc.r2sy( Y )
 		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
 		   dLM * 2, dVW );
@@ -895,12 +895,15 @@ void MCAView::PeakSearch( double Es, double Ee )
 	else if ( w2 == 0 ) w = w1;
 	else w = ( w1 < w2 ) ? w1 : w2;   // 半値幅は小さい方を採用
 	w *= 0.7;
-	aPeak.center = Xps[i];
-	aPeak.centerE = k2p->p2E( MCACh, (int)aPeak.center );
-	aPeak.peakH = SMCA[ (int)aPeak.center ];
-	aPeak.peakH0 = SMCA[ (int)aPeak.center ];
-	aPeak.start = (( Xps[i] - w ) >= 0 ) ? ( Xps[i] - w ) : 0;
-	aPeak.end = (( Xps[i] + w ) < MCALen ) ? ( Xps[i] + w ) : MCALen - 1;
+	aPeak.cp = Xps[i];
+	aPeak.cE = k2p->p2E( MCACh, aPeak.cp );
+	aPeak.peakH = SMCA[ aPeak.cp ];
+	aPeak.peakH0 = SMCA[ aPeak.cp ];
+	aPeak.sp = (( Xps[i] - w ) >= 0 ) ? ( Xps[i] - w ) : 0;
+	aPeak.ep = (( Xps[i] + w ) < MCALen ) ? ( Xps[i] + w ) : MCALen - 1;
+	aPeak.sE = k2p->p2E( MCACh, aPeak.sp );
+	aPeak.eE = k2p->p2E( MCACh, aPeak.ep );
+	aPeak.C = 3 / ( ( aPeak.eE - aPeak.sE ) * ( aPeak.eE - aPeak.sE ) );
 	MCAPeaks << aPeak;
       }
     }
@@ -924,12 +927,15 @@ void MCAView::PeakSearch( double Es, double Ee )
 	    if (( oSign == Sign )&&( ooSign == oSign )) {
 	      if ( ( SMCA[ oXp ] - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2. )
 		   > sqrt( SMCA[oXp] ) * PSSens ) {
-		aPeak.center = oXp;
-		aPeak.centerE = k2p->p2E( MCACh, oXp );
+		aPeak.cp = oXp;
+		aPeak.cE = k2p->p2E( MCACh, oXp );
 		aPeak.peakH = SMCA[ oXp ];
 		aPeak.peakH0 = aPeak.peakH - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2.;
-		aPeak.start = ooXp;
-		aPeak.end = Xp;
+		aPeak.sp = ooXp;
+		aPeak.ep = Xp;
+		aPeak.sE = k2p->p2E( MCACh, aPeak.sp );
+		aPeak.eE = k2p->p2E( MCACh, aPeak.ep );
+		aPeak.C = 3 / ( ( aPeak.eE - aPeak.sE ) * ( aPeak.eE - aPeak.sE ) );
 		MCAPeaks << aPeak;
 	      }
 	    }
@@ -1147,8 +1153,8 @@ void MCAView::doPeakFit( void )
   }
   for ( int i = 0; i < peaks; i++ ) {
     p[i*3]   = MCAPeaks[i].peakH;
-    p[i*3+1] = MCAPeaks[i].center;
-    p[i*3+2] = 1/(MCAPeaks[i].end - MCAPeaks[i].start);
+    p[i*3+1] = MCAPeaks[i].cE;
+    p[i*3+2] = MCAPeaks[i].C;
     printf( "%f %f %f\n", p[i*3], p[i*3+1], p[i*3+2] );
   }
   printf( "\n" );
