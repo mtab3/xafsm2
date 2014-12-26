@@ -63,6 +63,9 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
       }
     }
 
+    showM( "M ", PS, M );
+    showV( "V ", PS, V );
+    
     for ( int i = 0; i < PS; i++ ) {
       double a = M[i][i];
       for ( int j = 0; j < PS; j++ ) {
@@ -79,6 +82,8 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
 	}
       }
     }
+
+    showM( "I ", PS, I );
     
     double *dp;
     dp = new double [ PS ];
@@ -89,10 +94,13 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
       }
     }
 
+    showV( "dp ", PS, dp );
+    showV( "p ", PS, p );
     for ( int i = 0; i < PS; i++ ) {
       p[i] += dp[i] / 10;
     }
     delete [] dp;
+    showV( "p ", PS, p );
 
     setABW( p );
   }
