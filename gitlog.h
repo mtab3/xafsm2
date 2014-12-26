@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Dec 25 15:04:10 2014 +0900\n"\
+                "    L10N\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 25 14:21:32 2014 +0900\n"\
                 "    Data read functions are revivaled excepting the XAFS data\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 19 14:55:48 2014 +0900\n"\
                 "    auto colors in TYView is ready\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 19 01:55:49 2014 +0900\n"\
-                "    working on CColors\n"\
 		"\n"\
                 ""
 #endif
