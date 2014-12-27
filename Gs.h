@@ -49,7 +49,7 @@ class Gs
   ~Gs( void ) {};
 
   void fit( int points, double *x, double *e,
-	    double *p, int Loop, double damp );
+	    double *p, int Loop, double damp, double prec );
   // Gs はガウスピークの数, パラメータも一緒に渡す
   
   void setABC( double *p )   // パラメータ設定 : A*exp( -C*(x-B)^2 )
@@ -76,7 +76,6 @@ class Gs
       gs[i].setHw( p[ i * 3 + 2 ] );
     }
   }
-  int peaks( void ) { return n; }
   double f( double x )
   {
     double rv = 0;
@@ -87,8 +86,9 @@ class Gs
   }
   double f( int i, double x )
   {
-    if ( i < n ) 
+    if ( i < n ) {
       return gs[i].f( x );
+    }
     return 0;
   }
   double dp( int p, double x )

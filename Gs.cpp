@@ -27,7 +27,8 @@ void showV( const char *name, int n, double *V )
   printf( "\n" );
 }
 
-void Gs::fit( int points, double *x, double *e, double *p, int Loop, double damp )
+void Gs::fit( int points, double *x, double *e, double *p,
+	      int Loop, double damp, double prec )
 {
   int GS = n;
   int PS = GS * 3;
@@ -46,8 +47,9 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop, double damp
   ff = new bool [ PS ];
 
   setABC( p );
-  for( int loop = 0; loop < Loop; loop++ ) {
-    printf( "loop = %d\n", loop );
+  bool endf = false;
+  int loop = 0;
+  while ( ! endf ) {
     for ( int i = 0; i < PS; i++ ) {
       for ( int j = 0; j < PS; j++ ) {
 	M[i][j] = 0;
@@ -118,13 +120,21 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop, double damp
     }
     //    showV( "dp", PS, dp );
     
+    double adp = 0, ap = 0;
     for ( int i = 0; i < PS; i++ ) {
       p[i] += dp[i] * damp;
+      adp += dp[i] * dp[i];
+      ap += p[i] * p[i];
     }
     delete [] dp;
-
-    //    showV( "p", PS, p );
     setABC( p );
+    //    showV( "p", PS, p );
+
+    printf( "# %d %g\n", loop, adp / ap );
+    loop++;
+    if ( ( loop > Loop ) || ( ( adp / ap ) < prec ) ) {
+      endf = true;
+    }
   }
 
   for ( int i = 0; i < PS; i++ ) {
@@ -135,6 +145,4 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop, double damp
   delete [] I;
   delete [] V;
   delete [] ff;
-
-  printf( "i\n" );
 }

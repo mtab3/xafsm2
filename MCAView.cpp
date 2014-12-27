@@ -1108,7 +1108,7 @@ QStringList MCAView::getSelectedElms( void )
 
 void MCAView::doPeakFit( void )
 {
-#if 0
+#if 1
   QFile f( "fit.dat" );
   f.open( QIODevice::WriteOnly | QIODevice::Text );
   QTextStream out( &f );
@@ -1134,9 +1134,11 @@ void MCAView::doPeakFit( void )
   for ( int i = 0; i < peaks; i++ ) {
     p[i*3]   = MCAPeaks[i].peakH;
     p[i*3+1] = MCAPeaks[i].cE;
-    p[i*3+2] = MCAPeaks[i].C;
+    //    p[i*3+2] = MCAPeaks[i].C;
+    p[i*3+2] = 5.5;
+    qDebug() << QString( "#P %1 %2 %3" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
   }
-#if 0
+#if 1
   out << "#p(before)\n";
   for ( int i = 0; i < peaks; i++ ) {
     out << QString( "#P %1 %2 %3\n" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
@@ -1152,7 +1154,7 @@ void MCAView::doPeakFit( void )
 #if 1
   Fit->fit( ROIe - ROIs + 1, E,
 	    ( DoPeakFitToRaw ) ? ( rMCA + ROIs ) : ( SMCA + ROIs ),
-	    p, 20, 0.1 );
+	    p, 100, 0.2, 1e-6 );
 #else
   Fit->fit( MCALen, E, ( DoPeakFitToRaw ) ? ( rMCA ) : ( SMCA ), p, 20, 0.1 );
 #endif
@@ -1177,7 +1179,7 @@ void MCAView::doPeakFit( void )
     FittedLine[i] = sum;
   }
   
-#if 0
+#if 1
   out << "#p(after)\n";
   for ( int i = 0; i < peaks; i++ ) {
     out << QString( "# %1 %2 %3\n" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
@@ -1185,7 +1187,7 @@ void MCAView::doPeakFit( void )
   
   
   QString buf;
-  for ( int i = 0; i < MCALen; i++ ) {
+  for ( int i = ROIs; i <= ROIe; i++ ) {
     buf.sprintf( "%f %f %f %f\n", E[i], ( DoPeakFitToRaw ) ? rMCA[i] : SMCA[i],
 		 gs0.f( E[i] ), Fit->f( E[i] ) );
     out << buf;
