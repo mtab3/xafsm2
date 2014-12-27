@@ -17,14 +17,14 @@ class aG
   double a( void ) { return A; };
   double b( void ) { return B; };
   double c( void ) { return C; };
-  double w( void ) { return 2. * sqrt( log(2.) / C ); }
-  double hw( void ) { return sqrt( log(2.) / C ); }
+  double w( void ) { return 2. * sqrt( log(2.) / fabs( C ) ); }
+  double hw( void ) { return sqrt( log(2.) / fabs( C ) ); }
   double x2( double x ) { return ( x - B ) * ( x - B ); }
-  double core( double x ) { return exp( -C * x2( x ) ); }
+  double core( double x ) { return exp( -fabs( C ) * x2( x ) ); }
 
   double f( double x ) { return A * core( x ); }
   double da( double x ) { return core( x ); }
-  double db( double x ) { return 2 * C * ( x - B ) * A * core( x ); }
+  double db( double x ) { return 2 * fabs( C ) * ( x - B ) * A * core( x ); }
   double dc( double x ) { return -A * x2( x ) * core( x ); }
 
   double di( int i, double x ) {
@@ -49,7 +49,7 @@ class Gs
   ~Gs( void ) {};
 
   void fit( int points, double *x, double *e,
-	    double *p, int Loop );
+	    double *p, int Loop, double damp );
   // Gs はガウスピークの数, パラメータも一緒に渡す
   
   void setABC( double *p )   // パラメータ設定 : A*exp( -C*(x-B)^2 )
@@ -76,7 +76,7 @@ class Gs
       gs[i].setHw( p[ i * 3 + 2 ] );
     }
   }
-
+  int peaks( void ) { return n; }
   double f( double x )
   {
     double rv = 0;
@@ -85,42 +85,17 @@ class Gs
     }
     return rv;
   }
+  double f( int i, double x )
+  {
+    if ( i < n ) 
+      return gs[i].f( x );
+    return 0;
+  }
   double dp( int p, double x )
   {
     int n = (int)( p / 3 );
     int i = p % 3;
     return gs[n].di( i, x );
-  }
-
-  double a( int i ) {
-    if ( i < n ) {
-      return gs[i].a();
-    }
-    return 0;
-  }
-  double b( int i ) {
-    if ( i < n ) {
-      return gs[i].b();
-    }
-    return 0;
-  }
-  double c( int i ) {
-    if ( i < n ) {
-      return gs[i].c();
-    }
-    return 0;
-  }
-  double w( int i ) {
-    if ( i < n ) {
-      return gs[i].w();
-    }
-    return 0;
-  }
-  double hw( int i ) {
-    if ( i < n ) {
-      return gs[i].hw();
-    }
-    return 0;
   }
 };
 

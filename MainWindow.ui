@@ -1225,7 +1225,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -5786,8 +5786,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>267</width>
-                     <height>127</height>
+                     <width>261</width>
+                     <height>129</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -7929,7 +7929,7 @@ Though, other parameters are fixed at the value on starting.</string>
           <item>
            <widget class="QTabWidget" name="tabWidget">
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab_3">
              <attribute name="title">
@@ -8100,7 +8100,7 @@ Though, other parameters are fixed at the value on starting.</string>
                      <string>Peak Search</string>
                     </property>
                     <property name="checked">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
                     <property name="autoExclusive">
                      <bool>false</bool>
@@ -8123,6 +8123,17 @@ Though, other parameters are fixed at the value on starting.</string>
                     </property>
                     <property name="text">
                      <string>Fitting</string>
+                    </property>
+                   </widget>
+                   <widget class="QRadioButton" name="FitToRaw">
+                    <property name="text">
+                     <string>Fit to raw</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>false</bool>
                     </property>
                    </widget>
                   </widget>

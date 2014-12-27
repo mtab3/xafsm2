@@ -36,7 +36,6 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   SMCA = NULL;  // スムージング
   DMCA = DMCA2 = DMCA3 = DMCA4 = NULL;  // 1〜4次微分
   dMCA = NULL;  // 統計変動
-  InitialLine = FittedLine = NULL;
   E = NULL;
 
   //  PF = new PeakFit;
@@ -55,6 +54,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   ShowDiff = true;
   DoPeakSearch = true;
+  DoPeakSearch = false;
   LimitPSEnergy = true;
   PSSens = 0.5; // ピークサーチの感度
   I0Energy = 10.0;   // keV
@@ -79,8 +79,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
   PEAKPOINTC  = QColor( 100, 100, 100 );  // ピークポイント
-  INITLINEC   = QColor( 230, 200,   0 );  // ピーク合成ライン
-  FITTEDLINEC = QColor( 200,   0,   0 );  // ピーク合成ライン
+  FLC         = QColor( 200,   0,   0 );  // ピーク合成ライン
+  ELC         = QColor(   0, 200,   0 );  // ピーク個別ライン
 
   rROIsx = 0;
   rROIex = 20;
@@ -137,11 +137,6 @@ MCAView::~MCAView( void )
   if ( E != NULL )
     delete [] E;
 
-  if ( InitialLine != NULL )
-    delete [] InitialLine;
-  if ( FittedLine != NULL )
-    delete [] FittedLine;
-
   disconnect( this, SIGNAL( CurrentValues( int, int ) ),
 	   Parent, SLOT( showCurrentValues( int, int ) ) );
   disconnect( this, SIGNAL( newROI( int, int ) ),
@@ -162,8 +157,6 @@ quint32 *MCAView::setMCAdataPointer( int len )
   DMCA3 = new double[ MCALen ];
   DMCA4 = new double[ MCALen ];
   dMCA = new double[ MCALen ];
-  InitialLine = new double[ MCALen ];
-  FittedLine = new double[ MCALen ];
   return MCA;
 }
 
@@ -355,8 +348,6 @@ void MCAView::Draw( QPainter *p )
 
   if ( DoPeakSearch ) {
     PeakSearch( wrROIsx, wrROIex );
-    //    PF->init( &MCAPeaks, MCALen, NULL, SMCA );
-    //    PF->fit( false, InitialLine );  // MCAView 内部では fitting はやらない
   }
 
   /* ここまでデータの準備とか色々 */
@@ -383,25 +374,13 @@ void MCAView::Draw( QPainter *p )
 	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( SMCA[i-1] ) ),
 		       cc.r2sx( E ), cc.r2sy( log10( SMCA[i] ) ) );
 	}
-#if 0
-	if ( DoPeakFit ) {
-	  if ( InitialLine != NULL ) {
-	    p->setPen( INITLINEC );
-	    //	  for ( int j = 0; j < MCAPeaks.count() + 1; j++ ) {
-	    if (( InitialLine[i] > 0 )&&( InitialLine[i-1] > 0 )) {
-	      p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( InitialLine[i-1] ) ),
-			   cc.r2sx( E ), cc.r2sy( log10( InitialLine[i] ) ) );
-	    }
-	  }
-	  if ( FittedLine != NULL ) {
-	    p->setPen( FITTEDLINEC );
-	    if (( FittedLine[i] > 0 )&&( FittedLine[i-1] > 0 )) {
-	      p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( FittedLine[i-1] ) ),
-			   cc.r2sx( E ), cc.r2sy( log10( FittedLine[i] ) ) );
-	    }
+	if ( Fit != NULL ) {
+	  p->setPen( FLC );
+	  if (( FittedLine[i] > 0 )&&( FittedLine[i-1] > 0 )) {
+	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( FittedLine[i-1] ) ),
+			 cc.r2sx( E ), cc.r2sy( log10( FittedLine[i] ) ) );
 	  }
 	}
-#endif
 	if ( ShowDiff ) {
 	  if ( ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
 	    p->setPen( DMCAC );
@@ -438,17 +417,10 @@ void MCAView::Draw( QPainter *p )
 	p->setPen( SMCAC );
 	p->drawLine( cc.r2sx( lastE ), cc.r2sy( SMCA[i-1] ),
 		     cc.r2sx( E ), cc.r2sy( SMCA[i] ) );
-	if ( DoPeakSearch ) {
-	  if ( InitialLine != NULL ) {
-	    p->setPen( INITLINEC );
-	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( InitialLine[i-1] ),
-			 cc.r2sx( E ), cc.r2sy( InitialLine[i] ) );
-	  }
-	  if ( FittedLine != NULL ) {
-	    p->setPen( FITTEDLINEC );
-	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( FittedLine[i-1] ),
+	if ( Fit != NULL ) {
+	  p->setPen( FLC );
+	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( FittedLine[i-1] ),
 			 cc.r2sx( E ), cc.r2sy( FittedLine[i] ) );
-	  }
 	}
 	if ( ShowDiff ) { // 微分表示
 	  p->setPen( DMCAC ); // 1階微分
@@ -1136,14 +1108,22 @@ QStringList MCAView::getSelectedElms( void )
 
 void MCAView::doPeakFit( void )
 {
-  qDebug() << "aaa";
+#if 0
+  QFile f( "fit.dat" );
+  f.open( QIODevice::WriteOnly | QIODevice::Text );
+  QTextStream out( &f );
+#endif
+  int ROIs = k2p->E2p( MCACh, rROIsx );
+  int ROIe = k2p->E2p( MCACh, rROIex );
+  if ( ROIs < 0 )
+    ROIs = 0;
+  if ( ROIe >= MCALen )
+    ROIe = MCALen - 1;
   
   int peaks = MCAPeaks.count();
   double *E = new double [ MCALen ];
   double *p = new double [ peaks * 3 ];
 
-  qDebug() << "Peaks " << peaks;
-  
   if ( Fit != NULL )
     delete Fit;
   Fit = new Gs( peaks );
@@ -1155,26 +1135,62 @@ void MCAView::doPeakFit( void )
     p[i*3]   = MCAPeaks[i].peakH;
     p[i*3+1] = MCAPeaks[i].cE;
     p[i*3+2] = MCAPeaks[i].C;
-    printf( "%f %f %f\n", p[i*3], p[i*3+1], p[i*3+2] );
   }
-  printf( "\n" );
+#if 0
+  out << "#p(before)\n";
+  for ( int i = 0; i < peaks; i++ ) {
+    out << QString( "#P %1 %2 %3\n" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
+  }
+#endif
 
+  qDebug() << "ROI" << ROIs << ROIe;
   Gs gs0( peaks ), gs1( peaks );
   gs0.setABC( p );
-  gs1.fit( MCALen, E, rMCA, p, 1 );
 
-  for ( int i = 0; i < peaks; i++ ) {
-    printf( "%f %f %f\n", p[i*3], p[i*3+1], p[i*3+2] );
-  }
-  printf( "\n" );
+  qDebug() << "fit start";
 
-#if 0
-  Fit->fit( MCALen, E, rMCA, p, 50 );
-#endif
-  
 #if 1
+  Fit->fit( ROIe - ROIs + 1, E,
+	    ( DoPeakFitToRaw ) ? ( rMCA + ROIs ) : ( SMCA + ROIs ),
+	    p, 20, 0.1 );
+#else
+  Fit->fit( MCALen, E, ( DoPeakFitToRaw ) ? ( rMCA ) : ( SMCA ), p, 20, 0.1 );
+#endif
+
+  qDebug() << "fit end";
+  
+  FittedLine.clear();
+  for ( int i = 0; i < EachLine.count(); i++ )
+    EachLine[i].clear();
+  EachLine.clear();
+  FittedLine.resize( MCALen );
+  EachLine.resize( peaks );
+  for ( int i = 0; i < EachLine.count(); i++ )
+    EachLine[i].resize( MCALen );
+  
   for ( int i = 0; i < MCALen; i++ ) {
-    printf( "%f %f %f %f\n", E[i], rMCA[i], gs0.f( E[i] ), gs1.f( E[i] ) );
+    double e = E[i];
+    double sum = 0;
+    for ( int j = 0; j < peaks; j++ ) {
+      sum += EachLine[j][i] = Fit->f( j, e );
+    }
+    FittedLine[i] = sum;
   }
+  
+#if 0
+  out << "#p(after)\n";
+  for ( int i = 0; i < peaks; i++ ) {
+    out << QString( "# %1 %2 %3\n" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
+  }
+  
+  
+  QString buf;
+  for ( int i = 0; i < MCALen; i++ ) {
+    buf.sprintf( "%f %f %f %f\n", E[i], ( DoPeakFitToRaw ) ? rMCA[i] : SMCA[i],
+		 gs0.f( E[i] ), Fit->f( E[i] ) );
+    out << buf;
+  }
+
+  f.close();
 #endif
 }

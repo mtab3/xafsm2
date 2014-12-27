@@ -32,9 +32,9 @@ private:
   double *SMCA;                          // スムージング結果
   double *DMCA, *DMCA2, *DMCA3, *DMCA4;  // 1〜3次微分
   double *dMCA;                          // 統計変動
-  double *FittedLine;
-  double *InitialLine;
   double *E;
+  QVector<double> FittedLine;
+  QVector< QVector<double> > EachLine;
 
   double MaxEnergy;
   int MCALen;
@@ -62,6 +62,7 @@ private:
 
   bool ShowDiff;
   bool DoPeakSearch;
+  bool DoPeakFitToRaw;
   bool LimitPSEnergy;      // ピークサーチを I0 のエネルギーまででやめる。
   double I0Energy;         // その I0 のエネルギー保持
   double PSSens;           // ピークサーチの感度
@@ -75,7 +76,7 @@ private:
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
   QColor SMCAC, DMCAC, DMCAC2, DMCAC3;
   QColor PEAKPOINTC;
-  QColor INITLINEC, FITTEDLINEC;
+  QColor FLC, ELC;
 
   void Draw( QPainter *p );
   void PeakSearch( double Es, double Ee );
@@ -106,6 +107,7 @@ public:
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
+  void setFitToRaw( bool f ) { DoPeakFitToRaw = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   void setMaxEnergy( double e ) { MaxEnergy = e; };
   QStringList getSelectedElms( void );
@@ -116,7 +118,6 @@ public:
   QVector<MCAPeak> *getMCAPeaks( void ) { return &MCAPeaks; };
   int getMCALength( void ) { return MCALen; };
   double *getSMCA( void ) { return SMCA; };
-  double *getFLine( void ) { return FittedLine; };
   void doPeakFit( void );
 
 public slots:

@@ -1,5 +1,5 @@
 
-#include "stdio.h"
+#include <stdio.h>
 
 #include "Gs.h"
 
@@ -27,13 +27,14 @@ void showV( const char *name, int n, double *V )
   printf( "\n" );
 }
 
-void Gs::fit( int points, double *x, double *e, double *p, int Loop )
+void Gs::fit( int points, double *x, double *e, double *p, int Loop, double damp )
 {
   int GS = n;
   int PS = GS * 3;
 
   double **M, **I;
   double *V;
+  bool *ff;
 
   M = new double * [ PS ];
   I = new double * [ PS ];
@@ -42,9 +43,11 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
     M[i] = new double [ PS ];
     I[i] = new double [ PS ];
   }
-  
-  setABW( p );
+  ff = new bool [ PS ];
+
+  setABC( p );
   for( int loop = 0; loop < Loop; loop++ ) {
+    printf( "loop = %d\n", loop );
     for ( int i = 0; i < PS; i++ ) {
       for ( int j = 0; j < PS; j++ ) {
 	M[i][j] = 0;
@@ -52,6 +55,7 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
       }
       V[i] = 0;
       I[i][i] = 1;
+      ff[i] = true;
     }
     
     for ( int i = 0; i < points; i++ ) {
@@ -62,28 +66,47 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
 	V[j] += ( e[i] - f( x[i] ) ) * dp( j, x[i] );
       }
     }
-
-    showM( "M ", PS, M );
-    showV( "V ", PS, V );
+    //    showM( "M", PS, M );
+    //    showV( "V", PS, V );
     
     for ( int i = 0; i < PS; i++ ) {
-      double a = M[i][i];
+      double max = -1e300;
+      int ii = -1;
       for ( int j = 0; j < PS; j++ ) {
-	M[i][j] /= a;
-	I[i][j] /= a;
+	if ( ff[j] ) {
+	  if ( M[j][j] > max ) {
+	    max = M[j][j];
+	    ii = j;
+	  }
+	}
       }
-      for ( int j = 0; j < PS; j++ ) {
-	if ( j != i ) {
-	  double b = M[j][i];
-	  for ( int k = 0; k < PS; k++ ) {
-	    M[j][k] -= M[i][k] * b;
-	    I[j][k] -= I[i][k] * b;
+      if ( ii < 0 ) {
+	for ( ii = 0; ii < PS; ii++ ) {
+	  if ( ff[ii] )
+	    break;
+	}
+      }
+      ff[ii] = false;
+
+      double a = M[ii][ii];
+      if ( a != 0 ) {
+	for ( int j = 0; j < PS; j++ ) {
+	  M[ii][j] /= a;
+	  I[ii][j] /= a;
+	}
+	for ( int j = 0; j < PS; j++ ) {
+	  if ( ff[j] ) {
+	    double b = M[j][ii];
+	    for ( int k = 0; k < PS; k++ ) {
+	      M[j][k] -= M[ii][k] * b;
+	      I[j][k] -= I[ii][k] * b;
+	    }
 	  }
 	}
       }
     }
-
-    showM( "I ", PS, I );
+    //    showM( "M", PS, M );
+    //    showM( "I", PS, I );
     
     double *dp;
     dp = new double [ PS ];
@@ -93,16 +116,15 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
 	dp[i] += I[i][j] * V[j];
       }
     }
-
-    showV( "dp ", PS, dp );
-    showV( "p ", PS, p );
+    //    showV( "dp", PS, dp );
+    
     for ( int i = 0; i < PS; i++ ) {
-      p[i] += dp[i] / 10;
+      p[i] += dp[i] * damp;
     }
     delete [] dp;
-    showV( "p ", PS, p );
 
-    setABW( p );
+    //    showV( "p", PS, p );
+    setABC( p );
   }
 
   for ( int i = 0; i < PS; i++ ) {
@@ -112,4 +134,7 @@ void Gs::fit( int points, double *x, double *e, double *p, int Loop )
   delete [] M;
   delete [] I;
   delete [] V;
+  delete [] ff;
+
+  printf( "i\n" );
 }

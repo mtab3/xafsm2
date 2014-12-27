@@ -660,6 +660,7 @@ private slots:
   void newPSSens( void );
   void SelectedShowDiff( bool f );
   void SelectedPeakSearch( bool f );
+  void SelectedFitToRaw( bool f);
   void PushedPeakFit( void );
   void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
