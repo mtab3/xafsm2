@@ -7942,6 +7942,19 @@ Though, other parameters are fixed at the value on starting.</string>
               <property name="spacing">
                <number>1</number>
               </property>
+              <item row="2" column="0">
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item row="0" column="0">
                <widget class="QFrame" name="frame_41">
                 <property name="styleSheet">
@@ -7960,199 +7973,301 @@ Though, other parameters are fixed at the value on starting.</string>
                  <property name="spacing">
                   <number>1</number>
                  </property>
+                 <item row="2" column="0" colspan="2">
+                  <widget class="QFrame" name="frame_12">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_83">
+                    <property name="margin">
+                     <number>3</number>
+                    </property>
+                    <property name="spacing">
+                     <number>1</number>
+                    </property>
+                    <item row="0" column="2">
+                     <widget class="QLineEdit" name="PeakSearchSensitivity">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>50</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(255, 255, 255);</string>
+                      </property>
+                      <property name="text">
+                       <string>0.5</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QRadioButton" name="MCAPeakSearch">
+                      <property name="text">
+                       <string>Peak Search</string>
+                      </property>
+                      <property name="checked">
+                       <bool>false</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="4">
+                     <widget class="QPushButton" name="MCAPeakFit">
+                      <property name="maximumSize">
+                       <size>
+                        <width>60</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                      </property>
+                      <property name="text">
+                       <string>Fitting</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="label_160">
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
+                      <property name="text">
+                       <string>Sensitivity: </string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="3">
+                     <widget class="QRadioButton" name="LimitPSEnergy">
+                      <property name="text">
+                       <string>Limit at I0 Eng.</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" colspan="2">
+                  <widget class="QFrame" name="frame_22">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_84">
+                    <property name="margin">
+                     <number>3</number>
+                    </property>
+                    <property name="spacing">
+                     <number>1</number>
+                    </property>
+                    <item row="1" column="1">
+                     <widget class="QRadioButton" name="ShowSmoothed">
+                      <property name="text">
+                       <string>Show Smoothed</string>
+                      </property>
+                      <property name="checked">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QRadioButton" name="ShowDiff">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
+                      <property name="text">
+                       <string>Show Diff.</string>
+                      </property>
+                      <property name="checked">
+                       <bool>false</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="3">
+                     <widget class="QRadioButton" name="FitToRaw">
+                      <property name="text">
+                       <string>Fit to raw</string>
+                      </property>
+                      <property name="checked">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="2">
+                     <spacer name="horizontalSpacer_11">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
                  <item row="0" column="0">
-                  <widget class="QLabel" name="label_156">
-                   <property name="text">
-                    <string>  Peak List: </string>
+                  <widget class="QFrame" name="frame_24">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="MCAPeakList">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(235, 235, 235);</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="3">
-                  <widget class="QLabel" name="label_157">
-                   <property name="text">
-                    <string>Calibrate as: </string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="4">
-                  <widget class="QLineEdit" name="PeakCalibrate">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 255);</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="5">
-                  <widget class="QLabel" name="label_158">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>[keV] </string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_160">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>Sensitivity: </string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QLineEdit" name="PeakSearchSensitivity">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>50</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 255);</string>
-                   </property>
-                   <property name="text">
-                    <string>0.5</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2">
-                  <spacer name="horizontalSpacer_4">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="1" column="2" colspan="4">
-                  <widget class="QSplitter" name="splitter_2">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <widget class="QRadioButton" name="ShowDiff">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
+                   <layout class="QGridLayout" name="gridLayout_85">
+                    <property name="margin">
+                     <number>3</number>
                     </property>
-                    <property name="toolTip">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <property name="spacing">
+                     <number>1</number>
                     </property>
-                    <property name="text">
-                     <string>Show Diff.</string>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                   <widget class="QRadioButton" name="MCAPeakSearch">
-                    <property name="text">
-                     <string>Peak Search</string>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                   <widget class="QRadioButton" name="LimitPSEnergy">
-                    <property name="text">
-                     <string>Limit at I0 Eng.</string>
-                    </property>
-                   </widget>
-                   <widget class="QPushButton" name="MCAPeakFit">
-                    <property name="maximumSize">
-                     <size>
-                      <width>60</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
-                    </property>
-                    <property name="text">
-                     <string>Fitting</string>
-                    </property>
-                   </widget>
-                   <widget class="QRadioButton" name="FitToRaw">
-                    <property name="text">
-                     <string>Fit to raw</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
+                    <item row="0" column="2">
+                     <widget class="QPushButton" name="ClearMCAPeaks">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                      </property>
+                      <property name="text">
+                       <string>Clr. Peaks</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_156">
+                      <property name="text">
+                       <string>  Peak List: </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="4">
+                     <widget class="QLabel" name="label_157">
+                      <property name="text">
+                       <string>Calibrate as: </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="5">
+                     <widget class="QLineEdit" name="PeakCalibrate">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>120</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(255, 255, 255);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="6">
+                     <widget class="QLabel" name="label_158">
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
+                      <property name="text">
+                       <string>[keV] </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QComboBox" name="MCAPeakList">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="3">
+                     <spacer name="horizontalSpacer_4">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                 </layout>
                </widget>
               </item>
               <item row="1" column="0">
-               <spacer name="verticalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
+               <widget class="QTextEdit" name="ShowFittingStat">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
-                <property name="sizeHint" stdset="0">
+                <property name="maximumSize">
                  <size>
-                  <width>20</width>
-                  <height>40</height>
+                  <width>16777215</width>
+                  <height>24</height>
                  </size>
                 </property>
-               </spacer>
+                <property name="undoRedoEnabled">
+                 <bool>false</bool>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>

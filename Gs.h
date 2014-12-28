@@ -1,6 +1,9 @@
 #ifndef GS_H
 #define GS_H
 
+#include <QObject>
+#include <QString>
+
 #include "math.h"
 
 class aG
@@ -39,10 +42,14 @@ class aG
 };
 
 
-class Gs
+class Gs : public QObject
 {
+  Q_OBJECT
+  
   int n;   // number of gaussians
   aG *gs;
+
+  QString stat;
   
  public:
   Gs( int N ) { n = N; gs = new aG[ n ]; }
@@ -51,7 +58,8 @@ class Gs
   void fit( int points, double *x, double *e,
 	    double *p, int Loop, double damp, double prec );
   // Gs はガウスピークの数, パラメータも一緒に渡す
-  
+
+  int peaks( void ) { return n; };
   void setABC( double *p )   // パラメータ設定 : A*exp( -C*(x-B)^2 )
   {
     for ( int i = 0; i < n; i++ ) {
@@ -97,6 +105,15 @@ class Gs
     int i = p % 3;
     return gs[n].di( i, x );
   }
+  aG *ag( int i )
+  {
+    if ( i < n )
+      return &(gs[i]);
+    return NULL;
+  }
+
+ signals:
+  void nowStat( QString &msg );
 };
 
 #endif

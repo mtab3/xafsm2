@@ -163,7 +163,12 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( MCAPeakSearch, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelectedPeakSearch( bool ) ),
 	   Qt::UniqueConnection );
+  connect( ShowSmoothed, SIGNAL( toggled( bool ) ),
+	   this, SLOT( SelectedShowSmoothed( bool ) ),
+	   Qt::UniqueConnection );
   connect( MCAPeakFit, SIGNAL( clicked() ), this, SLOT( PushedPeakFit() ),
+	   Qt::UniqueConnection );
+  connect( ClearMCAPeaks, SIGNAL( clicked() ), this, SLOT( PushedClearMCAPeaks() ),
 	   Qt::UniqueConnection );
   connect( FitToRaw, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelectedFitToRaw( bool ) ),
@@ -372,6 +377,16 @@ void MainWindow::SelectedPeakSearch( bool f )
   }
 }
 
+void MainWindow::SelectedShowSmoothed( bool f )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setShowSmoothed( f );
+    }
+  }
+}
+
 void MainWindow::SelectedFitToRaw( bool f )
 {
   MCAView *view;
@@ -392,6 +407,16 @@ void MainWindow::PushedPeakFit( void )
       //      PF->fit( true, view->getFLine() );
       view->doPeakFit();
       //      delete PF;
+    }
+  }
+}
+
+void MainWindow::PushedClearMCAPeaks( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->clearMCAPeaks();
     }
   }
 }
@@ -928,12 +953,11 @@ void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
 {
   MCAPeaks = peaks;
   for ( int i = 0; i < peaks->count(); i++ ) {
-    QString aPeak = QString( "%1: %2 [keV] (%3 pix) [%4, %5]" )
+    QString aPeak = QString( "%1: %2 [keV] (%3 pix) Area %4" )
       .arg( i )
       .arg( (*peaks)[i].cE )
       .arg( (*peaks)[i].cp  )
-      .arg( (*peaks)[i].sp )
-      .arg( (*peaks)[i].ep );
+      .arg( (*peaks)[i].peakH * sqrt( PI / (*peaks)[i].C ) );
     
     if ( i >= MCAPeakList->count() ) {
       MCAPeakList->addItem( aPeak );
@@ -974,4 +998,9 @@ void MainWindow::setPreAMPGains( void )
   }
 
   f.close();
+}
+
+void MainWindow::nowFitStat( QString &stat )
+{
+  ShowFittingStat->setText( stat );
 }

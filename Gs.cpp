@@ -130,7 +130,8 @@ void Gs::fit( int points, double *x, double *e, double *p,
     setABC( p );
     //    showV( "p", PS, p );
 
-    printf( "# %d %g\n", loop, adp / ap );
+    stat.sprintf( "# %d %g\n", loop, adp / ap );
+    emit nowStat( stat );
     loop++;
     if ( ( loop > Loop ) || ( ( adp / ap ) < prec ) ) {
       endf = true;

@@ -660,8 +660,10 @@ private slots:
   void newPSSens( void );
   void SelectedShowDiff( bool f );
   void SelectedPeakSearch( bool f );
+  void SelectedShowSmoothed( bool f );
   void SelectedFitToRaw( bool f);
   void PushedPeakFit( void );
+  void PushedClearMCAPeaks( void );
   void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
   void SaveS2DMCAs( void );
@@ -779,6 +781,7 @@ private slots:
   void SetNewGases( void );
   //  void showMCAs( void );
   void PopUpMCA( void );
+  void nowFitStat( QString &stat );
 
   // QXafs
   void ToggleQXafsMode( bool f );

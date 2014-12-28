@@ -61,6 +61,7 @@ private:
   double yRatio;           // 縦軸の拡大倍率
 
   bool ShowDiff;
+  bool ShowSmoothed;
   bool DoPeakSearch;
   bool DoPeakFitToRaw;
   bool LimitPSEnergy;      // ピークサーチを I0 のエネルギーまででやめる。
@@ -107,6 +108,7 @@ public:
   void setNewPSSens( QString newSens );
   void setShowDiff( bool f ) { ShowDiff = f; update(); };
   void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
+  void setShowSmoothed( bool f ) { ShowSmoothed = f; update(); };
   void setFitToRaw( bool f ) { DoPeakFitToRaw = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   void setMaxEnergy( double e ) { MaxEnergy = e; };
@@ -119,6 +121,10 @@ public:
   int getMCALength( void ) { return MCALen; };
   double *getSMCA( void ) { return SMCA; };
   void doPeakFit( void );
+  void doPeakFitWCPoints( void );
+  void newFit( int peaks );
+  void setFittedLines( int peaks, double *E );
+  void setMCAPeaksByFit( void );
 
 public slots:
   void setROI( int s, int e );   // MCA pixel
@@ -128,6 +134,7 @@ public slots:
   void setShowElementsEnergy( bool show ) { showElementsEnergy = show; update(); };
   //  void doPeakFit( void );
   void NewEnergy( double e ) { I0Energy = e; };
+  void clearMCAPeaks( void );
 
 signals:
   void CurrentValues( int atCur, int inROI );
