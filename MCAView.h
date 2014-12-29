@@ -77,7 +77,7 @@ private:
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
   QColor SMCAC, DMCAC, DMCAC2, DMCAC3;
   QColor PEAKPOINTC;
-  QColor FLC, ELC;
+  QColor FLC, ELC, RLC;
 
   void Draw( QPainter *p );
   void PeakSearch( double Es, double Ee );

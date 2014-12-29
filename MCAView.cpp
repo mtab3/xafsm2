@@ -68,7 +68,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   White = QColor( 255, 255, 255 );
 
   MCursorC    = QColor( 255,   0,   0 );  // マウスカーソル色
-  MCursorC2   = QColor(   0, 200, 245 );  // 据え置きカーソル色
+  MCursorC2   = QColor(   0, 180, 220 );  // 据え置きカーソル色
   MCursorC3   = QColor( 250, 180,   0 );  // マウスが近い時の据え置きカーソル色
   ROIRangeC   = QColor( 170, 210,   0 );  // ROI 内のスペクトル色
   ExROIRangeC = QColor(   0, 100, 230 );  // ROI 外のスペクトル色
@@ -80,8 +80,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
   PEAKPOINTC  = QColor( 100, 100, 100 );  // ピークポイント
-  FLC         = QColor(   0, 200, 200 );  // ピーク合成ライン
-  ELC         = QColor(   0, 100, 100 );  // ピーク個別ライン
+  FLC         = QColor(   0, 180,   0 );  // ピーク合成ライン
+  ELC         = QColor( 100, 100, 200 );  // ピーク個別ライン
+  RLC         = QColor( 200, 100, 100 );  // 残差ライン
 
   rROIsx = 0;
   rROIex = 20;
@@ -395,6 +396,13 @@ void MCAView::Draw( QPainter *p )
 			   cc.r2sx( E ), cc.r2sy( log10( EachLine[j][i] ) ) );
 	    }
 	  }
+	  p->setPen( RLC );
+	  double r1 = ( DoPeakFitToRaw ? MCA[i-1] : SMCA[i-1] ) - FittedLine[i-1];
+	  double r2 = ( DoPeakFitToRaw ? MCA[i] : SMCA[i] ) - FittedLine[i];
+	  if ( ( r1 > 0 ) && ( r2 > 0 ) ) {
+	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( log10( r1 ) ),
+			 cc.r2sx( E ), cc.r2sy( log10( r2 ) ) );
+	  }
 	}
 	if ( ShowDiff ) {
 	  if ( ( DMCA[i] > 0 ) && ( DMCA[i-1] > 0 ) ) {
@@ -438,11 +446,16 @@ void MCAView::Draw( QPainter *p )
 	  p->setPen( FLC );
 	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( FittedLine[i-1] ),
 			 cc.r2sx( E ), cc.r2sy( FittedLine[i] ) );
-	  	  p->setPen( ELC );
+	  p->setPen( ELC );
 	  for ( int j = 0; j < EachLine.count(); j++ ) {
 	    p->drawLine( cc.r2sx( lastE ), cc.r2sy( EachLine[j][i-1] ),
 			 cc.r2sx( E ), cc.r2sy( EachLine[j][i] ) );
 	  }
+	  p->setPen( RLC );
+	  double r1 = ( DoPeakFitToRaw ? MCA[i-1] : SMCA[i-1] ) - FittedLine[i-1];
+	  double r2 = ( DoPeakFitToRaw ? MCA[i] : SMCA[i] ) - FittedLine[i];
+	  p->drawLine( cc.r2sx( lastE ), cc.r2sy( r1 ),
+		       cc.r2sx( E ), cc.r2sy( r2 ) );
 	}
 	if ( ShowDiff ) { // 微分表示
 	  p->setPen( DMCAC ); // 1階微分
