@@ -2939,6 +2939,14 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>Peak Search (obsolete)</source>
         <translation>ピークサーチ(非推奨)</translation>
     </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them in the ROI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとROIの範囲内でピークフィットが行われます。</translation>
+    </message>
+    <message>
+        <source>%1: %2 [keV] (%3 pix), Height %4 Width %5[keV](%6 pix), Area %7</source>
+        <translation>%1: %2[keV] (%3 pix), 高さ %4, 幅 %5[keV] (%6 pix), 面積 %7</translation>
+    </message>
 </context>
 <context>
     <name>PMConditions</name>

@@ -330,7 +330,7 @@ void MainWindow::newCalibration( void )
   MCAView *view;   // ここでは view は直接使わないが、MCAPeaks は view 内部へのポインタ
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      double oldE = (*MCAPeaks)[ MCAPeakList->currentIndex() ].cE;
+      double oldE = (*MCAPeaks)[ MCAPeakList->currentIndex() ].BinE;
       if ( oldE <= 0 ) return;
       // 新旧の エネルギー比
       double ratio = PeakCalibrate->text().toDouble() / oldE;
@@ -952,12 +952,16 @@ void MainWindow::clearMCA( void )
 void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
 {
   MCAPeaks = peaks;
+  MCAPeakList->clear();
   for ( int i = 0; i < peaks->count(); i++ ) {
-    QString aPeak = QString( "%1: %2 [keV] (%3 pix) Area %4" )
+    QString aPeak = tr( "%1: %2 [keV] (%3 pix), Height %4 Width %5[keV](%6 pix), Area %7" )
       .arg( i )
-      .arg( (*peaks)[i].cE )
-      .arg( (*peaks)[i].cp  )
-      .arg( (*peaks)[i].peakH * sqrt( PI / (*peaks)[i].C ) );
+      .arg( ((int)( (*peaks)[i].BinE * 1000. ))/1000. )
+      .arg( (*peaks)[i].BinP  )
+      .arg( (int)((*peaks)[i].A) )
+      .arg( ((int)((*peaks)[i].WinE * 1000. ))/1000. )
+      .arg( (int)((*peaks)[i].WinP) )
+      .arg( ((int)((*peaks)[i].A * sqrt( PI / (*peaks)[i].CinP )*10.))/10. );
     
     if ( i >= MCAPeakList->count() ) {
       MCAPeakList->addItem( aPeak );

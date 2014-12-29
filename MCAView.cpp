@@ -517,16 +517,16 @@ void MCAView::Draw( QPainter *p )
     p->setPen( PEAKPOINTC );
     for ( int i = 0; i < MCAPeaks.count(); i++ ) {
       // 発見したピーク位置に○印
-      int Y = dispLog ? log10( MCAPeaks[i].peakH ) : MCAPeaks[i].peakH;
-      p->drawEllipse( cc.r2sx( MCAPeaks[i].cE ) - 3, cc.r2sy( Y ) - 3,
+      int Y = dispLog ? log10( MCAPeaks[i].A ) : MCAPeaks[i].A;
+      p->drawEllipse( cc.r2sx( MCAPeaks[i].BinE ) - 3, cc.r2sy( Y ) - 3,
 		      7, 7 );
       // 丸の横にひげ線
-      p->drawLine( cc.r2sx( MCAPeaks[i].cE ) + 2,
+      p->drawLine( cc.r2sx( MCAPeaks[i].BinE ) + 2,
 		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 2 : -2 ),
-		   cc.r2sx( MCAPeaks[i].cE ) + 10,
+		   cc.r2sx( MCAPeaks[i].BinE ) + 10,
 		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 ) );
       // ひげ線の先にピーク番号
-      rec.setRect( cc.r2sx( MCAPeaks[i].cE ) + 10,
+      rec.setRect( cc.r2sx( MCAPeaks[i].BinE ) + 10,
 		   cc.r2sy( Y )
 		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
 		   dLM * 2, dVW );
@@ -889,15 +889,17 @@ void MCAView::PeakSearch( double Es, double Ee )
 	else if ( w2 == 0 ) w = w1;
 	else w = ( w1 < w2 ) ? w1 : w2;   // 半値幅は小さい方を採用
 	w *= 0.7;
-	aPeak.cp = Xps[i];
-	aPeak.cE = k2p->p2E( MCACh, aPeak.cp );
-	aPeak.peakH = SMCA[ aPeak.cp ];
-	aPeak.peakH0 = SMCA[ aPeak.cp ];
-	aPeak.sp = (( Xps[i] - w ) >= 0 ) ? ( Xps[i] - w ) : 0;
-	aPeak.ep = (( Xps[i] + w ) < MCALen ) ? ( Xps[i] + w ) : MCALen - 1;
-	aPeak.sE = k2p->p2E( MCACh, aPeak.sp );
-	aPeak.eE = k2p->p2E( MCACh, aPeak.ep );
-	aPeak.C = 4. * log( 2. ) / ( ( aPeak.eE - aPeak.sE ) * ( aPeak.eE - aPeak.sE ) );
+	aPeak.A = SMCA[ Xps[i] ];
+	aPeak.BinP = Xps[i];
+	aPeak.BinE = k2p->p2E( MCACh, aPeak.BinP );
+	int sp = (( Xps[i] - w ) >= 0 ) ? ( Xps[i] - w ) : 0;
+	int ep = (( Xps[i] + w ) < MCALen ) ? ( Xps[i] + w ) : MCALen - 1;
+	aPeak.WinP = ep - sp;
+	double sE = k2p->p2E( MCACh, sp );
+	double eE = k2p->p2E( MCACh, ep );
+	aPeak.WinE = eE - sE;
+	aPeak.CinE = 4. * log( 2. ) / ( aPeak.WinE * aPeak.WinE );
+	aPeak.CinP = 4. * log( 2. ) / ( aPeak.WinP * aPeak.WinP );
 	MCAPeaks << aPeak;
       }
     }
@@ -921,15 +923,17 @@ void MCAView::PeakSearch( double Es, double Ee )
 	    if (( oSign == Sign )&&( ooSign == oSign )) {
 	      if ( ( SMCA[ oXp ] - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2. )
 		   > sqrt( SMCA[oXp] ) * PSSens ) {
-		aPeak.cp = oXp;
-		aPeak.cE = k2p->p2E( MCACh, oXp );
-		aPeak.peakH = SMCA[ oXp ];
-		aPeak.peakH0 = aPeak.peakH - ( SMCA[ ooXp ] + SMCA[ Xp ] ) / 2.;
-		aPeak.sp = ooXp;
-		aPeak.ep = Xp;
-		aPeak.sE = k2p->p2E( MCACh, aPeak.sp );
-		aPeak.eE = k2p->p2E( MCACh, aPeak.ep );
-		aPeak.C = 4. * log( 2. ) / ( ( aPeak.eE - aPeak.sE ) * ( aPeak.eE - aPeak.sE ) );
+		aPeak.A = SMCA[ oXp ];
+		aPeak.BinP = oXp;
+		aPeak.BinE = k2p->p2E( MCACh, oXp );
+		int sp = ooXp;
+		int ep = Xp;
+		aPeak.WinP = ep - sp;
+		double sE = k2p->p2E( MCACh, sp );
+		double eE = k2p->p2E( MCACh, ep );
+		aPeak.WinE = eE - sE;
+		aPeak.CinE = 4. * log( 2. ) / ( aPeak.WinE * aPeak.WinE );
+		aPeak.CinP = 4. * log( 2. ) / ( aPeak.WinP * aPeak.WinP );
 		MCAPeaks << aPeak;
 	      }
 	    }
@@ -1157,8 +1161,8 @@ void MCAView::doPeakFit( void )
     E[i] = k2p->p2E( MCACh, i );
   }
   for ( int i = 0; i < peaks; i++ ) {
-    p[i*3]   = MCAPeaks[i].peakH;
-    p[i*3+1] = MCAPeaks[i].cE;
+    p[i*3]   = MCAPeaks[i].A;
+    p[i*3+1] = MCAPeaks[i].BinE;
     //    p[i*3+2] = MCAPeaks[i].C;
     p[i*3+2] = 5.5;
     qDebug() << QString( "#P %1 %2 %3" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
@@ -1293,10 +1297,15 @@ void MCAView::setMCAPeaksByFit( void )
   MCAPeaks.clear();
   for ( int i = 0; i < peaks; i++ ) {
     MCAPeak ap;
-    ap.cE = Fit->ag( i )->b();
-    ap.cp = k2p->E2p( MCACh, ap.cE );
-    ap.C = Fit->ag( i )->c();
-    ap.peakH = Fit->ag( i )->a();
+    ap.A = Fit->ag( i )->a();
+    ap.BinE = Fit->ag(i)->b();     // エネルギー単位のピーク位置
+    ap.BinP = k2p->E2p( MCACh, ap.BinE );
+    ap.CinE = Fit->ag(i)->c();
+    ap.WinE = Fit->ag(i)->w();     // エネルギー単位の半値全幅
+    double sp = k2p->E2p( MCACh, ap.BinE - ap.WinE / 2. );
+    double ep = k2p->E2p( MCACh, ap.BinE + ap.WinE / 2. );
+    ap.WinP = ( ep - sp );        // pixel単位の半値全幅
+    ap.CinP = 4. * log( 2 ) / ( ap.WinP * ap.WinP );
     MCAPeaks << ap;
   }
   emit newPeakList( &MCAPeaks );

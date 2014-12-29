@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Dec 30 02:51:48 2014 +0900\n"\
+                "    LION\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 29 02:19:12 2014 +0900\n"\
                 "    fit with cPoint in MCAView is ready\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Dec 25 15:04:10 2014 +0900\n"\
                 "    L10N\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Dec 25 14:21:32 2014 +0900\n"\
-                "    Data read functions are revivaled excepting the XAFS data\n"\
 		"\n"\
                 ""
 #endif
