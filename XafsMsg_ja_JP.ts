@@ -2903,7 +2903,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>D-S2D</source>
         <translation>2次元スキャン表示</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>２D scan</source>
         <translation>2次元スキャン</translation>
     </message>
@@ -2914,6 +2914,30 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>ï¼D scan</source>
         <translation>2次元スキャン</translation>
+    </message>
+    <message>
+        <source>Peak Fit</source>
+        <translation>ピークフィット</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとピークフィットが行われます。</translation>
+    </message>
+    <message>
+        <source>Clr. Peaks</source>
+        <translation>ピーククリア</translation>
+    </message>
+    <message>
+        <source>Show Smoothed</source>
+        <translation>平滑化表示</translation>
+    </message>
+    <message>
+        <source>Fit to raw</source>
+        <translation>生データにフィット</translation>
+    </message>
+    <message>
+        <source>Peak Search (obsolete)</source>
+        <translation>ピークサーチ(非推奨)</translation>
     </message>
 </context>
 <context>
