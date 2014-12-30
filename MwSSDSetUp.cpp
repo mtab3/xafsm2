@@ -956,12 +956,12 @@ void MainWindow::gotNewPeakList( QVector<MCAPeak> *peaks )
   for ( int i = 0; i < peaks->count(); i++ ) {
     QString aPeak = tr( "%1: %2 [keV] (%3 pix), Height %4 Width %5[keV](%6 pix), Area %7" )
       .arg( i )
-      .arg( ((int)( (*peaks)[i].BinE * 1000. ))/1000. )
+      .arg( prec( (*peaks)[i].BinE, 3 ) )
       .arg( (*peaks)[i].BinP  )
       .arg( (int)((*peaks)[i].A) )
-      .arg( ((int)((*peaks)[i].WinE * 1000. ))/1000. )
+      .arg( prec( (*peaks)[i].WinE, 3 ) )
       .arg( (int)((*peaks)[i].WinP) )
-      .arg( ((int)((*peaks)[i].A * sqrt( PI / (*peaks)[i].CinP )*10.))/10. );
+      .arg( prec( (*peaks)[i].Area(), 1 ) );
     
     if ( i >= MCAPeakList->count() ) {
       MCAPeakList->addItem( aPeak );

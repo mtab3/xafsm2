@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Dec 30 18:19:18 2014 +0900\n"\
+                "    change all the style-sheets of Push-Buttons\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 30 08:05:40 2014 +0900\n"\
                 "    new line colors in MCAView\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 26 18:22:31 2014 +0900\n"\
                 "    studying MCAView. now the code is broken\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 26 17:10:04 2014 +0900\n"\
-                "    working\n"\
 		"\n"\
                 ""
 #endif

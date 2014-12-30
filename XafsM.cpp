@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #include <stdio.h>
+#include <math.h>
 
 #include "XafsM.h"
 #include "MainWindow.h"
@@ -110,4 +111,10 @@ void getQVersion( void )
     qSubVer = vers[1].toInt();
   if ( vers.count() >= 3 )
     qSubSubVer = vers[2].toInt();
+}
+
+double prec( double x, int n )
+{
+  double p = pow( 10, n );
+  return ((int)( x * p ))/p;
 }

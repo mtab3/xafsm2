@@ -139,4 +139,6 @@ struct MCAGain {
   double gain;
 };
 
+extern double prec( double x, int n );
+
 #endif

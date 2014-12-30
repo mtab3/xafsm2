@@ -542,9 +542,15 @@ void MCAView::Draw( QPainter *p )
       rec.setRect( cc.r2sx( MCAPeaks[i].BinE ) + 10,
 		   cc.r2sy( Y )
 		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
-		   dLM * 2, dVW );
+		   dLM * 10, dVW * 0.7 );
       cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		   QString::number( i ) );
+		   QString( "%1 : %2[keV]" )
+		   .arg( i ).arg( prec( MCAPeaks[i].BinE, 3 ) ) );
+      rec.translate( 0, dVW * 0.7 );
+      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+		   QString( "W %1[keV], A %2" )
+		   .arg( prec( MCAPeaks[i].WinE, 3 ) )
+		   .arg( prec( MCAPeaks[i].Area(), 1 ) ) );
     }
   }
   
