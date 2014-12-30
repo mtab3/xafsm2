@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "gFit" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 31 02:52:42 2014 +0900\n"\
+                "    disp peak info in MCAView\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 30 18:19:18 2014 +0900\n"\
                 "    change all the style-sheets of Push-Buttons\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 26 18:44:33 2014 +0900\n"\
                 "    working\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 26 18:22:31 2014 +0900\n"\
-                "    studying MCAView. now the code is broken\n"\
 		"\n"\
                 ""
 #endif
