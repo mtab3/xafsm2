@@ -93,7 +93,7 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(225, 215, 215, 255), stop:1 rgba(255, 255, 255, 255));</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Periodic Table</string>
@@ -2052,7 +2052,7 @@
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To measure near edge region precisely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Std. XANES</string>
@@ -2065,7 +2065,7 @@
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Both EXAFS and XAFNES regions are measured precisely at once.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Std. XAFS</string>
@@ -2090,7 +2090,7 @@
                   <string>Save the block definitions.</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Save</string>
@@ -2115,7 +2115,7 @@
                   <string>Load the saved block definitions.</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Load</string>
@@ -2134,7 +2134,7 @@
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To measure focusing on the 'EXAFS' region. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Std. EXAFS</string>
@@ -3266,7 +3266,7 @@
                   </sizepolicy>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Show BGs</string>
@@ -3354,7 +3354,7 @@
 When it is displayed as &quot;Shutter Open!, check the shutter is opend and push the button.</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Meas. Background</string>
@@ -3450,7 +3450,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>...</string>
@@ -3774,7 +3774,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Start</string>
@@ -3796,7 +3796,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Pause</string>
@@ -3877,7 +3877,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Advanced options cntrolling the XAFS measurement.&lt;/p&gt;&lt;p&gt;Ordinaly, the options found here do not have to be changed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Other Options</string>
@@ -3904,7 +3904,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only for spectra measured with 19 ch SSD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>After Save</string>
@@ -4125,7 +4125,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Get Range</string>
@@ -4138,7 +4138,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected ranges of all of the sensors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Get All Range</string>
@@ -4158,7 +4158,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="0" column="3">
               <widget class="QPushButton" name="SetRange">
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Set Range</string>
@@ -4219,7 +4219,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Set Offset</string>
@@ -4435,7 +4435,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>MoveTo</string>
@@ -4563,7 +4563,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item row="0" column="4">
                 <widget class="QPushButton" name="DatumChanger">
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Datum</string>
@@ -4588,7 +4588,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Let the center of the selected No. of the sample holder is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Set C.C.</string>
@@ -4661,7 +4661,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Go</string>
@@ -4690,7 +4690,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Go</string>
@@ -4733,7 +4733,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Go</string>
@@ -4776,7 +4776,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Go</string>
@@ -5140,7 +5140,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="0" column="2">
               <widget class="QPushButton" name="SelDataRoot">
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Select</string>
@@ -5250,7 +5250,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Go</string>
@@ -5439,7 +5439,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Save</string>
@@ -5480,7 +5480,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Select</string>
@@ -5642,7 +5642,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Scan</string>
@@ -5891,7 +5891,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </sizepolicy>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Select</string>
@@ -5916,7 +5916,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   <string>Save the monitored data after the monitoring.</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Save</string>
@@ -6003,7 +6003,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Start</string>
@@ -6025,7 +6025,7 @@ Though, other parameters are fixed at the value on starting.</string>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Pause</string>
@@ -6074,7 +6074,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>170</width>
+                     <width>263</width>
                      <height>137</height>
                     </rect>
                    </property>
@@ -7809,7 +7809,7 @@ Though, other parameters are fixed at the value on starting.</string>
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string>Set All</string>
@@ -7927,7 +7927,7 @@ Though, other parameters are fixed at the value on starting.</string>
              <item row="1" column="2">
               <widget class="QPushButton" name="MCAPopUp">
                <property name="styleSheet">
-                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Pop Up</string>
@@ -8073,7 +8073,7 @@ Though, other parameters are fixed at the value on starting.</string>
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>Start</string>
@@ -8104,7 +8104,7 @@ Though, other parameters are fixed at the value on starting.</string>
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>Clear</string>
@@ -8174,7 +8174,7 @@ Though, other parameters are fixed at the value on starting.</string>
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string>Select Elms.</string>
@@ -8294,7 +8294,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 <string notr="true"/>
                 </property>
                 <property name="text">
                  <string>Select</string>
@@ -8314,7 +8314,7 @@ Though, other parameters are fixed at the value on starting.</string>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                 <string notr="true"/>
                 </property>
                 <property name="text">
                  <string>Save</string>
@@ -8419,7 +8419,7 @@ Though, other parameters are fixed at the value on starting.</string>
                        </sizepolicy>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                       <string notr="true"/>
                       </property>
                       <property name="text">
                        <string>Clr. Peaks</string>
@@ -8572,6 +8572,13 @@ Though, other parameters are fixed at the value on starting.</string>
                        </size>
                       </property>
                      </spacer>
+                    </item>
+                    <item row="1" column="3">
+                     <widget class="QPushButton" name="pushButton">
+                      <property name="text">
+                       <string>Find Max</string>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </widget>
@@ -8765,7 +8772,7 @@ Though, other parameters are fixed at the value on starting.</string>
                        </size>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                       <string notr="true"/>
                       </property>
                       <property name="text">
                        <string>Fitting</string>
@@ -8923,7 +8930,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>GoThere</string>
@@ -8939,7 +8946,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Auto Carib.</string>
@@ -8975,7 +8982,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>GoThere</string>
@@ -8991,7 +8998,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Auto Carib.</string>
@@ -10098,7 +10105,7 @@ Though, other parameters are fixed at the value on starting.</string>
               <string>When a file name is selected, measured 2D/3D map is automatically saved to the file on a measurement.     Using the 'Save' button, the 2D/3D map can be saved after a measurement at any time.</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Select</string>
@@ -10123,7 +10130,7 @@ Though, other parameters are fixed at the value on starting.</string>
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save current map which are shown.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Save</string>
@@ -10166,7 +10173,7 @@ Though, other parameters are fixed at the value on starting.</string>
            <item row="1" column="0">
             <widget class="QPushButton" name="S2DSaveMCAs">
              <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Save MCAs</string>
@@ -10336,7 +10343,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>Start Scan</string>
@@ -10444,7 +10451,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>Print</string>
@@ -10460,7 +10467,7 @@ Though, other parameters are fixed at the value on starting.</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>Pop Up</string>
@@ -10568,7 +10575,7 @@ Though, other parameters are fixed at the value on starting.</string>
           <item>
            <widget class="QToolButton" name="LogFileSelect">
             <property name="styleSheet">
-             <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>New</string>
@@ -10813,7 +10820,7 @@ Though, other parameters are fixed at the value on starting.</string>
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(225, 235, 225, 255), stop:1 rgba(255, 255, 255, 255));</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>Close View</string>
