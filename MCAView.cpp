@@ -701,6 +701,7 @@ void MCAView::Draw( QPainter *p )
 
   p->setPen( Black );
 
+#if 0  
   int LINE = 1;
   if ( MCACh >= 0 ) {   // MCA ch 番号
     rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
@@ -827,7 +828,83 @@ void MCAView::Draw( QPainter *p )
   cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
 	       QString::number( dt, 'f', 2 ) );
   LINE++;
+#endif
 
+  QStringList titles, vals;
+  if ( MCACh >= 0 ) {   // MCA ch 番号
+    titles << tr( "MCA Ch. : " );
+    vals << QString::number( MCACh );
+  }
+  // カーソル(タイトル)
+  titles << tr( "Cursor" );
+  vals << "";
+
+  // カーソル位置( 実エネルギー換算 )
+  titles << tr( " Pos. [keV] : " );
+  vals << QString::number( cc.s2rxLimit( m.x() ), 'f', 3 );
+
+  // カーソル位置( MCA pixel )
+  titles << tr( " Pos. [ch] : " );
+  vals << QString::number( k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) ) );
+
+  // カーソル位置の MCA 値
+  titles << tr( " Val. : " );
+  vals << QString::number( MCA[ curp ] );
+
+  // ROI タイトル
+  titles << tr( "ROI " );
+  vals << "";
+
+  // ROI のスタート位置 ( MCA pixel )
+  titles << tr( " Start [keV] : " );
+  vals << QString::number( wrROIsx, 'g', 3 );
+
+  // ROI の終了位置 ( MCA pixel )
+  titles << tr( " End [keV] : " );
+  vals << QString::number( wrROIex , 'g', 3 );
+
+  // ROI 内の積分値
+  titles << tr( " Count : " );
+  vals  << QString::number( sum );
+
+  // ROI 内の積分値を LiveTime で割った cps
+  titles << tr( "   CPS : " );
+  vals << QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'f', 2 );
+
+  // Real Time
+  titles << tr( "Real Time : " );
+  vals << QString::number( realTime, 'f', 2 );
+
+  // Live Time
+  titles << tr( "Live Time : " );
+  vals << QString::number( liveTime, 'f', 2 );
+
+  // デッドタイム
+  titles << tr( "Dead Time : " );
+
+  rec.setRect( dLM,   TM+dVW, dLM * 4, dVW );
+  cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignLeft | Qt::AlignVCenter, titles );
+  rec.setRect( dLM*5, TM+dVW, dLM * 4, dVW );
+  cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignRight | Qt::AlignVCenter, vals );
+  
+  double dt = ( realTime != 0 ) ? ( realTime - liveTime )/realTime * 100: 0;
+  //　　 青   ->  緑   ->  黄   -> オレンジ -> 赤　　にするとしたら？
+  //    0 0 1 -> 0 1 0 -> 1 1 0 ->    ->      1 0 0
+  //     0 %      10%      20%        ->       100%
+  int r, g, b;
+  r = g = b = 0;
+  if ( dt < 10 ) { r = 0; g = (int)( dt / 10 * 255 ); b = 255 - g; };
+  if (( 10 <= dt )&&( dt < 20 )) { r = (int)( ( dt - 10 ) / 10 * 255 ); g = 255; b = 0; };
+  if ( dt >= 20 ) { r = 255; g = 255 - (int)( ( dt - 20 ) / 80 * 255 ); b = 0; };
+  if ( r < 0 ) r = 0;
+  if ( g < 0 ) g = 0;
+  if ( b < 0 ) b = 0;
+  QColor DTC = QColor( r, g, b );
+  p->setPen( DTC );
+  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, FIXSIZE,
+	       QString::number( dt, 'f', 2 ) );
+
+  
   cc.ShowAButton( p, popDock, tr( "Pop/Dock" ), 0, 100, height() );
 }
 

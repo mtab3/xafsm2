@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 31 05:12:47 2014 +0900\n"\
+                "    newest\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 31 02:52:42 2014 +0900\n"\
                 "    disp peak info in MCAView\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Dec 26 20:23:41 2014 +0900\n"\
                 "    checking\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Dec 26 18:44:33 2014 +0900\n"\
-                "    working\n"\
 		"\n"\
                 ""
 #endif

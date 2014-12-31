@@ -243,6 +243,24 @@ void ChCoord::calcScale( double div, double min, double max, double *s, double *
 /*   But useful as common function for drawing applications.                         */
 /*************************************************************************************/
 
+void ChCoord::DrawTexts( QPainter *p, QRectF &rec, double dx, double dy,
+			 QFont &font, int flags, QStringList texts )
+// rec と font は内部で変更する(参照で変更を返す)
+{
+  double minFs = 100000;    // 必要な最小フォントサイズを確認
+  for ( int i = 0; i < texts.count(); i++ ) {
+    double fs = getFontSize( p, rec, font, Qt::AlignLeft | Qt::AlignVCenter, texts[i] );
+    if ( fs < minFs )
+      minFs = fs;
+  }
+  font.setPointSize( minFs );
+
+  for ( int i = 0; i < texts.count(); i++ ) {
+    DrawText( p, rec, font, flags, FIXSIZE, texts[i] );
+    rec.translate( dx, dy );
+  }
+}
+
 QRectF ChCoord::DrawText( QPainter *p, 
 			QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg )
 /* Draw Text within a given rectangle, 'QRectF rec'. 
