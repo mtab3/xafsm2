@@ -82,7 +82,8 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC       = QColor( 225, 180, 100 );  // 微分
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
-  PEAKPOINTC  = QColor( 100, 100, 100 );  // ピークポイント
+  PEAKPOINTC   = QColor( 100, 100, 100 );  // ピークポイント情報
+  PEAKPOINTLC  = QColor( 200, 200,   0 );  // ピークポイントライン
   FLC         = QColor(   0, 180,   0 );  // ピーク合成ライン
   ELC         = QColor( 100, 100, 200 );  // ピーク個別ライン
   RLC         = QColor( 200, 100, 100 );  // 残差ライン
@@ -264,6 +265,7 @@ void MCAView::Draw( QPainter *p )
   double dVW = VW / 20;     // 1行の高さ(文字の高さ)
   double dVW2 = dVW * 1.2;  // 行間
 
+  cc.ClearRecs();
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
 
@@ -530,30 +532,53 @@ void MCAView::Draw( QPainter *p )
   }
 
   if ( DoPeakSearch || ( Fit != NULL )) {
-    p->setPen( PEAKPOINTC );
     for ( int i = 0; i < MCAPeaks.count(); i++ ) {
-      // 発見したピーク位置に○印
+#if 1
       int Y = dispLog ? log10( MCAPeaks[i].A ) : MCAPeaks[i].A;
+
+      // ひげ線の先にピーク情報を書く箱を準備
+      QString msg = QString( "%1 : %2[keV]\nW %3[keV], A %4" )
+	.arg( i )
+	.arg( prec( MCAPeaks[i].BinE, 3 ) )
+	.arg( prec( MCAPeaks[i].WinE, 3 ) )
+	.arg( prec( MCAPeaks[i].Area(), 1 ) );
+      rec.setRect( cc.r2sx( MCAPeaks[i].BinE ) + 10,
+		   cc.r2sy( Y )
+		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
+		   dLM * 10, dVW * 1.4 );
+      QRectF sr = cc.UnDrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
+				 msg );
+      bool ok = false;
+      for ( int dx = 0; dx < w; dx += dLM ) {
+	for ( int dy = 0; dy < h; dy += dVW * 0.7 ) {
+	  QRectF cr = sr.translated( dx, -dy );
+	  if ( ! cc.IntersectRecs( cr ) ) {
+	    rec = cr;
+	    ok = true;
+	    break;
+	  }
+	}
+	if ( ok )
+	  break;
+      }
+      cc.AddARec( rec );
+
+      p->setPen( PEAKPOINTLC );
+      // 発見したピーク位置に○印
       p->drawEllipse( cc.r2sx( MCAPeaks[i].BinE ) - 3, cc.r2sy( Y ) - 3,
 		      7, 7 );
       // 丸の横にひげ線
       p->drawLine( cc.r2sx( MCAPeaks[i].BinE ) + 2,
-		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 2 : -2 ),
-		   cc.r2sx( MCAPeaks[i].BinE ) + 10,
-		   cc.r2sy( Y ) + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 ) );
-      // ひげ線の先にピーク番号
-      rec.setRect( cc.r2sx( MCAPeaks[i].BinE ) + 10,
-		   cc.r2sy( Y )
-		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
-		   dLM * 10, dVW * 0.7 );
+		   cc.r2sy( Y ) + 2,
+		   rec.left(), rec.bottom() );
+
+      p->setPen( PEAKPOINTC );
+      // ピーク情報
       cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		   QString( "%1 : %2[keV]" )
-		   .arg( i ).arg( prec( MCAPeaks[i].BinE, 3 ) ) );
-      rec.translate( 0, dVW * 0.7 );
-      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		   QString( "W %1[keV], A %2" )
-		   .arg( prec( MCAPeaks[i].WinE, 3 ) )
-		   .arg( prec( MCAPeaks[i].Area(), 1 ) ) );
+				 msg );
+#else
+      
+#endif
     }
   }
   
@@ -703,135 +728,6 @@ void MCAView::Draw( QPainter *p )
   }
 
   p->setPen( Black );
-
-#if 0  
-  int LINE = 1;
-  if ( MCACh >= 0 ) {   // MCA ch 番号
-    rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
-    cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-		 tr( "MCA Ch. : " ) );
-    rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
-    cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-		 QString::number( MCACh ) );
-    LINE++;
-  }
-
-  // カーソル(タイトル)
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 6, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Cursor" ) );
-  LINE++;
-
-  // カーソル位置( 実エネルギー換算 )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( " Pos. [keV] : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( cc.s2rxLimit( m.x() ), 'f', 3 ) );
-  LINE++;
-
-  // カーソル位置( MCA pixel )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( " Pos. [ch] : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( k2p->E2p( MCACh, cc.s2rxLimit( m.x() ) ) ) );
-  LINE++;
-
-  // カーソル位置の MCA 値
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( " Val. : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( MCA[ curp ] ) );
-  LINE++;
-
-  // ROI タイトル
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "ROI " ) );
-  LINE++;
-
-  // ROI のスタート位置 ( MCA pixel )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( " Start [keV] : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( wrROIsx, 'g', 3 ) );
-  LINE++;
-
-  // ROI の終了位置 ( MCA pixel )
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( " End [keV] : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( wrROIex , 'g', 3 ) );
-  LINE++;
-
-  // ROI 内の積分値
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( " Count : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( sum ) );
-  LINE++;
-
-  // ROI 内の積分値を LiveTime で割った cps
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 4, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "   CPS : " ) );
-  rec.setRect( dLM*5, TM + dVW2 * LINE, dLM * 4, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'f', 2 ) );
-  LINE++;
-
-  // Real Time
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Real Time : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( realTime, 'f', 2 ) );
-  LINE++;
-
-  // Live Time
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Live Time : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( liveTime, 'f', 2 ) );
-  LINE++;
-
-  // デッドタイム
-  double dt = ( realTime != 0 ) ? ( realTime - liveTime )/realTime * 100: 0;
-  //　　 青   ->  緑   ->  黄   -> オレンジ -> 赤　　にするとしたら？
-  //    0 0 1 -> 0 1 0 -> 1 1 0 ->    ->      1 0 0
-  //     0 %      10%      20%        ->       100%
-  int r, g, b;
-  r = g = b = 0;
-  if ( dt < 10 ) { r = 0; g = (int)( dt / 10 * 255 ); b = 255 - g; };
-  if (( 10 <= dt )&&( dt < 20 )) { r = (int)( ( dt - 10 ) / 10 * 255 ); g = 255; b = 0; };
-  if ( dt >= 20 ) { r = 255; g = 255 - (int)( ( dt - 20 ) / 80 * 255 ); b = 0; };
-  if ( r < 0 ) r = 0;
-  if ( g < 0 ) g = 0;
-  if ( b < 0 ) b = 0;
-  QColor DTC = QColor( r, g, b );
-  rec.setRect( dLM, TM + dVW2 * LINE, dLM * 5, dVW );
-  cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-	       tr( "Dead Time : " ) );
-  rec.setRect( dLM*6, TM + dVW2 * LINE, dLM * 3, dVW );
-  p->setPen( DTC );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, 
-	       QString::number( dt, 'f', 2 ) );
-  LINE++;
-#endif
 
   QStringList titles, vals;
   if ( MCACh >= 0 ) {   // MCA ch 番号

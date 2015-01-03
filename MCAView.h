@@ -79,7 +79,7 @@ private:
   QColor ROIRangeC, ExROIRangeC, ROIEdgeC;
   QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;
   QColor SMCAC, DMCAC, DMCAC2, DMCAC3;
-  QColor PEAKPOINTC;
+  QColor PEAKPOINTC, PEAKPOINTLC;
   QColor FLC, ELC, RLC;
 
   void Draw( QPainter *p );

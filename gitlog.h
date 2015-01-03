@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jan 4 01:45:15 2015 +0900\n"\
+                "    gFit is improved. c -> c*c, a -> a*a.  Some parameters can be controlled via GUI\n"\
+		"\n"\
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Jan 3 20:11:52 2015 +0900\n"\
                 "    working on QPokygon in ChCoord\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 30 02:51:48 2014 +0900\n"\
                 "    LION\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Dec 29 02:19:12 2014 +0900\n"\
-                "    fit with cPoint in MCAView is ready\n"\
 		"\n"\
                 ""
 #endif

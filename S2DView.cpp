@@ -305,21 +305,6 @@ void S2DView::Draw( QPainter *p )
     .arg( ( minz < 0.9e300 ) ?
 	  QString::number( minz ) : QString( "--" ) );
 
-#if 0
-  double minFs = 100000;    // 必要な最小フォントサイズを確認
-  rec = QRectF( 0, 0, LM-20, dVW );
-  for ( int i = 0; i < Infos.count(); i++ ) {
-    double fs = cc.getFontSize( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, Infos[i] );
-    if ( fs < minFs )
-      minFs = fs;
-  }
-  F1.setPointSize( minFs );
-
-  for ( int inf = 0; inf < Infos.count(); inf++ ) {
-    rec = QRectF( 10, 10 + dVW2 * inf, LM-20, dVW );
-    cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, Infos[inf] );
-  }
-#endif
   rec = QRectF( 10, 10, LM-20, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, F1, Qt::AlignLeft | Qt::AlignVCenter, Infos );
 }

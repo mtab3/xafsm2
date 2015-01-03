@@ -270,11 +270,11 @@ QRectF ChCoord::DrawText( QPainter *p,
  */
 {
   double xr, yr;
-  QRectF brec, dummyrec = QRectF( 0, 0, 1000, 1000 );
+  QRectF brec, dummyrec = QRectF( rec.left(), rec.bottom(), 1000, 1000 );
   double fSize = font.pointSizeF();
 
+  brec = p->boundingRect( dummyrec, flags, msg );
   if ( f == SCALESIZE ) {
-    brec = p->boundingRect( dummyrec, flags, msg );
     // There 'was' a bug, that call the boundingRect with given 'rec'
     // Then it returns limitted by the size of rec when the 
     //   drawn text size should bigger than the rectange,
@@ -300,10 +300,50 @@ QRectF ChCoord::DrawText( QPainter *p,
   return brec;
 }
 
+QRectF ChCoord::UnDrawText( QPainter *p, 
+			QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg )
+/* Draw Text within a given rectangle, 'QRectF rec'. 
+ *   When the 'DRAWTEXTF (draw text flag) f' is 
+ *   FIXSIZE   : the text will draw with preparantially set font size via 'QFont font'
+ *   SCALESIZE : the text will be automatically scaled to match within the rectange. 
+ */
+{
+  double xr, yr;
+  QRectF brec, dummyrec = QRectF( rec.left(), rec.bottom(), 1000, 1000 );
+  double fSize = font.pointSizeF();
+
+  brec = p->boundingRect( dummyrec, flags, msg );
+  if ( f == SCALESIZE ) {
+    // There 'was' a bug, that call the boundingRect with given 'rec'
+    // Then it returns limitted by the size of rec when the 
+    //   drawn text size should bigger than the rectange,
+    //   and the results of the resize were wrong. 
+    if ( rec.width() == 0 ) 
+      xr = 1;
+    else 
+      xr = brec.width() / rec.width();
+    if ( rec.height() == 0 )
+      yr = 1;
+    else 
+      yr = brec.height() / rec.height();
+    if (( xr == 0 )&&( yr == 0 ))
+      xr = yr = 1;
+
+    font.setPointSize( fSize / ( ( xr > yr ) ? xr : yr ) );
+  }
+  p->setFont( font );
+  brec = p->boundingRect( rec, flags, msg );
+  font.setPointSizeF( fSize );
+  p->setFont( font );
+
+  return brec;
+}
+
+
 double ChCoord::getFontSize( QPainter *p, QRectF rec, QFont font, int flags, QString msg )
 {
   double xr, yr;
-  QRectF brec, dummyrec = QRectF( 0, 0, 1000, 1000 );
+  QRectF brec, dummyrec = QRectF( rec.left(), rec.bottom(), 1000, 1000 );
   double fSize = font.pointSizeF();
 
   brec = p->boundingRect( dummyrec, flags, msg );
@@ -340,28 +380,16 @@ void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
 
 // 既存の QRectF の集合で出来た Polygon と与えられた rec の重なりを調べ、
 // 上または右にどれだけずれると重なりを解消できる「可能性」があるかを返す
-QPointF ChCoord::CheckRecs( QRectF rec )
+bool ChCoord::IntersectRecs( QRectF rec )
 {
-  double dx = 0;
-  double dy = 0;
-  QPolygonF cp( rec );
-
-  QPolygonF irec = recs.intersected( rec );
-  if ( irec.count() > 0 ) {
-    QRectF br = irec.boundingRect();
-    dy = br.height();
-    dx = br.width();
-    if ( br.top() == rec.top() )
-      dy = - dy;
-    if ( br.right() == rec.right() )
-      dx = - dx;
+  for ( int i = 0; i < recs.count(); i++ ) {
+    if ( recs[i].intersects( rec ) )
+      return true;
   }
-
-  return QPoint( dx, dy );
+  return false;
 }
 
 void ChCoord::AddARec( QRectF rec )
 {
-  QPolygonF ap( rec );
-  recs = recs.united( ap );
+  recs << rec;
 }

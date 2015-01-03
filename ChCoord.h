@@ -1,6 +1,8 @@
 #ifndef CHCOORD_H
 #define CHCOORD_H
 
+#include <QDebug>
+
 #include <QObject>
 #include <QPainter>
 
@@ -17,7 +19,7 @@ class ChCoord : public QObject
   double rminx, rmaxx, rminy, rmaxy;
   double rminx0, rmaxx0, rminy0, rmaxy0;
 
-  QPolygonF recs;
+  QVector<QRectF> recs;
 
  public:
   ChCoord();
@@ -68,6 +70,8 @@ class ChCoord : public QObject
 		  QFont &font, int flags, QStringList texts );
   QRectF DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
+  QRectF UnDrawText( QPainter *p, 
+		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
   double getFontSize( QPainter *p, QRectF rec, QFont font, int flags, QString msg );
   void ShowAButton( QPainter *p, bool BState, QString BName,
 		    int x0, int w, int height );
@@ -80,7 +84,7 @@ class ChCoord : public QObject
   }
   
   void ClearRecs( void ) { recs.clear(); };
-  QPointF CheckRecs( QRectF rec );
+  bool IntersectRecs( QRectF rec );
   void AddARec( QRectF rec );
 };
 
