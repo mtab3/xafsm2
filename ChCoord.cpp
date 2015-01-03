@@ -338,3 +338,23 @@ void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
   DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, BName );
 }
 
+QPointF ChCoord::CheckRecs( QRectF rec )
+{
+  double dx = 0;
+  double dy = 0;
+  QPolygonF cp( rec );
+
+  QPolygonF irec = recs.intersected( rec );
+  if ( irec.count() > 0 ) {
+    QRectF br = irec.boundingRect();
+    dy = br.height();
+    dx = br.width();
+    if ( br.top() == rec.top() )
+      dy = - dy;
+    if ( br.right() == rec.right() )
+      dx = - dx;
+  }
+
+  return QPoint( dx, dy );
+}
+

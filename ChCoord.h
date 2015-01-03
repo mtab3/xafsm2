@@ -17,6 +17,8 @@ class ChCoord : public QObject
   double rminx, rmaxx, rminy, rmaxy;
   double rminx0, rmaxx0, rminy0, rmaxy0;
 
+  QPolygonF recs;
+
  public:
   ChCoord();
 
@@ -76,6 +78,8 @@ class ChCoord : public QObject
       return true;
     return false;
   }
+  void ClearRecs( void ) { recs.clear(); };
+  QPointF CheckRecs( QRectF rec );
 };
 
 #endif
