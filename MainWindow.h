@@ -666,6 +666,9 @@ private slots:
   void PushedClearMCAPeaks( void );
   void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
+  void newMaxLoop( void );
+  void newDampFact( void );
+  void newBestPrec( void );
   void SaveS2DMCAs( void );
 
   void newSensSelected( int );

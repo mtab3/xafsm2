@@ -40,6 +40,9 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   //  PF = new PeakFit;
   Fit = NULL;
+  fitMaxLoop = 40;
+  fitDampFact = 0.5;
+  fitBestPrec = 1e-6;
 
   MCALen = 0;
   MCACh = -1;
@@ -1364,7 +1367,7 @@ void MCAView::doPeakFitWCPoints( void )
   newFit( peaks );
   Fit->fit( ROIe - ROIs + 1, E + ROIs,
 	    ( DoPeakFitToRaw ) ? ( rMCA + ROIs ) : ( SMCA + ROIs ),
-	    p, 100, 0.2, 1e-6 );
+	    p, fitMaxLoop, fitDampFact, fitBestPrec );
 
   setMCAPeaksByFit();
   setFittedLines( peaks, E );

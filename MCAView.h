@@ -24,6 +24,9 @@ private:
 
   //  PeakFit *PF;
   Gs *Fit;
+  int fitMaxLoop;
+  double fitDampFact;
+  double fitBestPrec;
 
   int valid;
   //  QVecotot<int *> MCAs;
@@ -112,6 +115,9 @@ public:
   void setFitToRaw( bool f ) { DoPeakFitToRaw = f; update(); };
   void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
   void setMaxEnergy( double e ) { MaxEnergy = e; };
+  void setMaxLoop( int L ) { fitMaxLoop = L; };
+  void setDampFact( double damp ) { fitDampFact = damp; };
+  void setBestPrec( double prec ) { fitBestPrec = prec; };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
   void print( QPrinter *p );

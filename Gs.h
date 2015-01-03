@@ -6,6 +6,8 @@
 
 #include "math.h"
 
+#if 0
+// f = A exp -C ( x-B )^2
 class aG
 {
   double A, B, C;
@@ -40,6 +42,44 @@ class aG
     return rv;
   }
 };
+#else
+// f = A*A exp -C*C ( x-B )^2
+// ピーク高さ (A*A) と、ピーク幅(C*C) が必ず正であることを自動的に保証した形
+class aG
+{
+  double A, B, C;
+
+ public:
+  aG( void ) { A = B = C = 0; };
+  void setA( double a2 ) { A = sqrt( a2 ); };
+  void setB( double b ) { B = b; };
+  void setC( double c2 ) { C = sqrt( c2 ); };
+  void setW( double w ) { C = sqrt( 4.*log(2.)/(w*w) ); }
+  void setHw( double hw ) { C = sqrt( log(2.)/(hw*hw) ); }
+  double a( void ) { return A * A; };
+  double b( void ) { return B; };
+  double c( void ) { return C * C; };
+  double w( void ) { return 2. * sqrt( log(2.) / ( C * C ) ); }
+  double hw( void ) { return sqrt( log(2.) / ( C * C ) ); }
+  double x2( double x ) { return ( x - B ) * ( x - B ); }
+  double core( double x ) { return exp( - C * C * x2( x ) ); }
+
+  double f( double x ) { return A * A * core( x ); }
+  double da( double x ) { return 2 * A * core( x ); }
+  double db( double x ) { return 2 * C * C * ( x - B ) * A * A * core( x ); }
+  double dc( double x ) { return -2 * C * A * A * x2( x ) * core( x ); }
+
+  double di( int i, double x ) {
+    double rv = 0;
+    switch( i ) {
+    case 0: rv = da( x ); break;
+    case 1: rv = db( x ); break;
+    case 2: rv = dc( x ); break;
+    }
+    return rv;
+  }
+};
+#endif
 
 
 class Gs : public QObject

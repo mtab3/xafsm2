@@ -2947,6 +2947,32 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>%1: %2 [keV] (%3 pix), Height %4 Width %5[keV](%6 pix), Area %7</source>
         <translation>%1: %2[keV] (%3 pix), 高さ %4, 幅 %5[keV] (%6 pix), 面積 %7</translation>
     </message>
+    <message>
+        <source>Find Max</source>
+        <translation>ピーク探索</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change.  Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
+フィッティングが不安定な場合、「制動係数」を小さくすると良いかもしれません。
+これを非常に小さくする(例えば0.1以下にする)時はは「最大ループ」値を大きくして下さい。
+「最大ループ=10/制動係数」が目安です。</translation>
+    </message>
+    <message>
+        <source>Max Loop</source>
+        <translation>最大ループ</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
+フィッティングが不安定な場合、「制動係数」を小さくすると良いかもしれません。
+これを非常に小さくする(例えば0.1以下にする)時はは「最大ループ」値を大きくして下さい。
+「最大ループ=10/制動係数」が目安です。</translation>
+    </message>
+    <message>
+        <source>Damp. Fact.</source>
+        <translation>制動係数</translation>
+    </message>
 </context>
 <context>
     <name>PMConditions</name>

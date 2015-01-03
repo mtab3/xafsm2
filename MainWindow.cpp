@@ -531,6 +531,9 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
     ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
     ((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
+    ((MCAView *)newView)->setMaxLoop( MaxLoop->text().toInt() );
+    ((MCAView *)newView)->setDampFact( DampFact->text().toDouble() );
+    ((MCAView *)newView)->setBestPrec( BestPrec->text().toDouble() );
     break;
   case S2DVIEW:
     newView = (void *)(new S2DB( this ) );

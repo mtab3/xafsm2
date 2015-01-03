@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jan 3 20:11:52 2015 +0900\n"\
+                "    working on QPokygon in ChCoord\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Dec 31 12:24:29 2014 +0900\n"\
+                "    nothing\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 31 10:50:33 2014 +0900\n"\
                 "    display informations in MCAView was improved\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Dec 29 02:19:12 2014 +0900\n"\
                 "    fit with cPoint in MCAView is ready\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Dec 28 02:26:02 2014 +0900\n"\
-                "    working on Fit in MCAView.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Dec 28 00:58:10 2014 +0900\n"\
-                "    working\n"\
 		"\n"\
                 ""
 #endif

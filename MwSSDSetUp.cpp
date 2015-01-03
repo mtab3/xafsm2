@@ -176,7 +176,13 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ),
 	   Qt::UniqueConnection );
-
+  connect( MaxLoop, SIGNAL( editingFinished() ), this, SLOT( newMaxLoop() ),
+	   Qt::UniqueConnection );
+  connect( DampFact, SIGNAL( editingFinished() ), this, SLOT( newDampFact() ),
+	   Qt::UniqueConnection );
+  connect( BestPrec, SIGNAL( editingFinished() ), this, SLOT( newBestPrec() ),
+	   Qt::UniqueConnection );
+  
   // Calibration Tab
   // D.T. Calib.
   if ( SChangers.count() > 0 ) {
@@ -227,6 +233,45 @@ void MainWindow::newMaxMCAEnergy( void )
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
       view->setMaxEnergy( MaxMCAEnergy );
+      view->update();
+    }
+  }
+}
+
+void MainWindow::newMaxLoop( void )
+{
+  int maxLoop = MaxLoop->text().toInt();
+  if ( maxLoop < 1 ) {
+    maxLoop = 1;
+    MaxLoop->setText( QString::number( maxLoop ) );
+  }
+
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setMaxLoop( maxLoop );
+      view->update();
+    }
+  }
+}
+
+void MainWindow::newDampFact( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setDampFact( DampFact->text().toDouble() );
+      view->update();
+    }
+  }
+}
+
+void MainWindow::newBestPrec( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setBestPrec( BestPrec->text().toDouble() );
       view->update();
     }
   }

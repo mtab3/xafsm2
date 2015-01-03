@@ -78,8 +78,10 @@ class ChCoord : public QObject
       return true;
     return false;
   }
+  
   void ClearRecs( void ) { recs.clear(); };
   QPointF CheckRecs( QRectF rec );
+  void AddARec( QRectF rec );
 };
 
 #endif

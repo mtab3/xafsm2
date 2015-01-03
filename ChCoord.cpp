@@ -338,6 +338,8 @@ void ChCoord::ShowAButton( QPainter *p, bool BState, QString BName,
   DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, BName );
 }
 
+// 既存の QRectF の集合で出来た Polygon と与えられた rec の重なりを調べ、
+// 上または右にどれだけずれると重なりを解消できる「可能性」があるかを返す
 QPointF ChCoord::CheckRecs( QRectF rec )
 {
   double dx = 0;
@@ -358,3 +360,8 @@ QPointF ChCoord::CheckRecs( QRectF rec )
   return QPoint( dx, dy );
 }
 
+void ChCoord::AddARec( QRectF rec )
+{
+  QPolygonF ap( rec );
+  recs = recs.united( ap );
+}
