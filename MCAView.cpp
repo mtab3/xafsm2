@@ -71,7 +71,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   White = QColor( 255, 255, 255 );
 
   MCursorC    = QColor( 255,   0,   0 );  // マウスカーソル色
-  MCursorC2   = QColor(   0, 180, 220 );  // 据え置きカーソル色
+  MCursorC2   = QColor(   0, 150, 250 );  // 据え置きカーソル色
   MCursorC3   = QColor( 250, 180,   0 );  // マウスが近い時の据え置きカーソル色
   ROIRangeC   = QColor( 170, 210,   0 );  // ROI 内のスペクトル色
   ExROIRangeC = QColor(   0, 100, 230 );  // ROI 外のスペクトル色
@@ -83,7 +83,7 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   DMCAC2      = QColor( 100, 225, 180 );  // 2階微分
   DMCAC3      = QColor( 180, 100, 225 );  // 3階微分
   PEAKPOINTC   = QColor( 100, 100, 100 );  // ピークポイント情報
-  PEAKPOINTLC  = QColor( 200, 200,   0 );  // ピークポイントライン
+  PEAKPOINTLC  = QColor( 255, 150,   0 );  // ピークポイントライン
   FLC         = QColor(   0, 180,   0 );  // ピーク合成ライン
   ELC         = QColor( 100, 100, 200 );  // ピーク個別ライン
   RLC         = QColor( 200, 100, 100 );  // 残差ライン
@@ -531,9 +531,9 @@ void MCAView::Draw( QPainter *p )
 		 "3rd" );
   }
 
+  // MCAPeaks に登録されたピークの情報表示
   if ( DoPeakSearch || ( Fit != NULL )) {
     for ( int i = 0; i < MCAPeaks.count(); i++ ) {
-#if 1
       int Y = dispLog ? log10( MCAPeaks[i].A ) : MCAPeaks[i].A;
 
       // ひげ線の先にピーク情報を書く箱を準備
@@ -542,12 +542,13 @@ void MCAView::Draw( QPainter *p )
 	.arg( prec( MCAPeaks[i].BinE, 3 ) )
 	.arg( prec( MCAPeaks[i].WinE, 3 ) )
 	.arg( prec( MCAPeaks[i].Area(), 1 ) );
-      rec.setRect( cc.r2sx( MCAPeaks[i].BinE ) + 10,
-		   cc.r2sy( Y )
-		   + ( ( Y > cc.Rmaxy() / 2 ) ? 8 : -8 -dVW ),
+      rec.setRect( cc.r2sx( MCAPeaks[i].BinE ) + 10, cc.r2sy( Y ) - dVW * 1.4 - 8,
 		   dLM * 10, dVW * 1.4 );
-      QRectF sr = cc.UnDrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-				 msg );
+      // 描画予定の文字のバウンディングボックスだけ取得
+      QRectF sr = cc.UnDrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter,
+				 SCALESIZE, msg );
+      // 得られたバウンディングボックスを少しずつずらして
+      // 既存の表示と重ならない位置を探す
       bool ok = false;
       for ( int dx = 0; dx < w; dx += dLM ) {
 	for ( int dy = 0; dy < h; dy += dVW * 0.7 ) {
@@ -561,24 +562,20 @@ void MCAView::Draw( QPainter *p )
 	if ( ok )
 	  break;
       }
+      // 重ならない位置が見つかったら(見つかってなくても)その場所を登録
       cc.AddARec( rec );
 
+      // ピーク情報表示
+      p->setPen( PEAKPOINTC );
+      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, msg );
+
+      // 表示したピーク情報とピークを結ぶ線の表示
       p->setPen( PEAKPOINTLC );
-      // 発見したピーク位置に○印
-      p->drawEllipse( cc.r2sx( MCAPeaks[i].BinE ) - 3, cc.r2sy( Y ) - 3,
-		      7, 7 );
-      // 丸の横にひげ線
-      p->drawLine( cc.r2sx( MCAPeaks[i].BinE ) + 2,
-		   cc.r2sy( Y ) + 2,
+      p->drawLine( cc.r2sx( MCAPeaks[i].BinE ), cc.r2sy( Y ),
+		   cc.r2sx( MCAPeaks[i].BinE ), rec.bottom() + 4 );
+      p->drawLine( cc.r2sx( MCAPeaks[i].BinE ), rec.bottom() + 4,
 		   rec.left(), rec.bottom() );
 
-      p->setPen( PEAKPOINTC );
-      // ピーク情報
-      cc.DrawText( p, rec, f, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE, 
-				 msg );
-#else
-      
-#endif
     }
   }
   

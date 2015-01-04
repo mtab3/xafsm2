@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "gFit" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jan 4 04:30:06 2015 +0900\n"\
+                "    peak information display in gFit is improved\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 4 01:45:15 2015 +0900\n"\
                 "    gFit is improved. c -> c*c, a -> a*a.  Some parameters can be controlled via GUI\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Dec 30 04:36:10 2014 +0900\n"\
                 "    improved gFit\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 30 02:51:48 2014 +0900\n"\
-                "    LION\n"\
 		"\n"\
                 ""
 #endif
