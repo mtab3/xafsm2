@@ -166,7 +166,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( ShowSmoothed, SIGNAL( toggled( bool ) ),
 	   this, SLOT( SelectedShowSmoothed( bool ) ),
 	   Qt::UniqueConnection );
-  connect( MCAPeakFit, SIGNAL( clicked() ), this, SLOT( PushedPeakFit() ),
+  connect( MCAReFit, SIGNAL( clicked() ), this, SLOT( PushedReFit() ),
 	   Qt::UniqueConnection );
   connect( ClearMCAPeaks, SIGNAL( clicked() ), this, SLOT( PushedClearMCAPeaks() ),
 	   Qt::UniqueConnection );
@@ -180,7 +180,9 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
   connect( DampFact, SIGNAL( editingFinished() ), this, SLOT( newDampFact() ),
 	   Qt::UniqueConnection );
-  connect( BestPrec, SIGNAL( editingFinished() ), this, SLOT( newBestPrec() ),
+  connect( Prec1, SIGNAL( editingFinished() ), this, SLOT( newPrec1() ),
+	   Qt::UniqueConnection );
+  connect( Prec2, SIGNAL( editingFinished() ), this, SLOT( newPrec2() ),
 	   Qt::UniqueConnection );
   
   // Calibration Tab
@@ -266,12 +268,23 @@ void MainWindow::newDampFact( void )
   }
 }
 
-void MainWindow::newBestPrec( void )
+void MainWindow::newPrec1( void )
 {
   MCAView *view;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
     if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      view->setBestPrec( BestPrec->text().toDouble() );
+      view->setPrec1( Prec1->text().toDouble() );
+      view->update();
+    }
+  }
+}
+
+void MainWindow::newPrec2( void )
+{
+  MCAView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
+    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setPrec2( Prec2->text().toDouble() );
       view->update();
     }
   }
@@ -442,7 +455,7 @@ void MainWindow::SelectedFitToRaw( bool f )
   }
 }
 
-void MainWindow::PushedPeakFit( void )
+void MainWindow::PushedReFit( void )
 {
   MCAView *view;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
@@ -450,7 +463,7 @@ void MainWindow::PushedPeakFit( void )
       //      PeakFit *PF = new PeakFit;
       //      PF->init( view->getMCAPeaks(), view->getMCALength(), NULL, view->getSMCA() );
       //      PF->fit( true, view->getFLine() );
-      view->doPeakFit();
+      view->doPeakFitWCPoints();
       //      delete PF;
     }
   }
@@ -1052,4 +1065,11 @@ void MainWindow::setPreAMPGains( void )
 void MainWindow::nowFitStat( QString &stat )
 {
   ShowFittingStat->setText( stat );
+#if 0
+  QFile f( "MCAPeakFitStat.dat" );
+  f.open( QIODevice::Text | QIODevice::Append );
+  QTextStream out( &f );
+  out << stat << "\n";
+  f.close();
+#endif
 }

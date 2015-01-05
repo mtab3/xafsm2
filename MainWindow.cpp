@@ -533,7 +533,8 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     ((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
     ((MCAView *)newView)->setMaxLoop( MaxLoop->text().toInt() );
     ((MCAView *)newView)->setDampFact( DampFact->text().toDouble() );
-    ((MCAView *)newView)->setBestPrec( BestPrec->text().toDouble() );
+    ((MCAView *)newView)->setPrec1( Prec1->text().toDouble() );
+    ((MCAView *)newView)->setPrec2( Prec2->text().toDouble() );
     break;
   case S2DVIEW:
     newView = (void *)(new S2DB( this ) );

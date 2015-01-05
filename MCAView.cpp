@@ -40,9 +40,12 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 
   //  PF = new PeakFit;
   Fit = NULL;
+  // フィッティング条件のデフォルト。
+  // GUI に書き込んだ値のほうが優先
   fitMaxLoop = 40;
   fitDampFact = 0.5;
-  fitBestPrec = 1e-6;
+  fitPrec1 = 0.1;
+  fitPrec2 = 1e-3;
 
   MCALen = 0;
   MCACh = -1;
@@ -1129,6 +1132,7 @@ QStringList MCAView::getSelectedElms( void )
   return ret;
 }
 
+// これはもう使ってない
 void MCAView::doPeakFit( void )
 {
 #if 1
@@ -1156,7 +1160,7 @@ void MCAView::doPeakFit( void )
     p[i*3]   = MCAPeaks[i].A;
     p[i*3+1] = MCAPeaks[i].BinE;
     //    p[i*3+2] = MCAPeaks[i].C;
-    p[i*3+2] = 5.5;
+    p[i*3+2] = 5.0;
     qDebug() << QString( "#P %1 %2 %3" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
   }
 #if 1
@@ -1175,7 +1179,7 @@ void MCAView::doPeakFit( void )
 #if 1
   Fit->fit( ROIe - ROIs + 1, E + ROIs,
 	    ( DoPeakFitToRaw ) ? ( rMCA + ROIs ) : ( SMCA + ROIs ),
-	    p, 100, 0.2, 1e-6 );
+	    p, 100, 0.2, 0.1, 1e-3 );
 #else
   Fit->fit( MCALen, E, ( DoPeakFitToRaw ) ? ( rMCA ) : ( SMCA ), p, 20, 0.1 );
 #endif
@@ -1260,7 +1264,7 @@ void MCAView::doPeakFitWCPoints( void )
   newFit( peaks );
   Fit->fit( ROIe - ROIs + 1, E + ROIs,
 	    ( DoPeakFitToRaw ) ? ( rMCA + ROIs ) : ( SMCA + ROIs ),
-	    p, fitMaxLoop, fitDampFact, fitBestPrec );
+	    p, fitMaxLoop, fitDampFact, fitPrec1, fitPrec2 );
 
   setMCAPeaksByFit();
   setFittedLines( peaks, E );

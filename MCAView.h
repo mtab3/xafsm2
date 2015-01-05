@@ -26,7 +26,7 @@ private:
   Gs *Fit;
   int fitMaxLoop;
   double fitDampFact;
-  double fitBestPrec;
+  double fitPrec1, fitPrec2;
 
   int valid;
   //  QVecotot<int *> MCAs;
@@ -117,7 +117,8 @@ public:
   void setMaxEnergy( double e ) { MaxEnergy = e; };
   void setMaxLoop( int L ) { fitMaxLoop = L; };
   void setDampFact( double damp ) { fitDampFact = damp; };
-  void setBestPrec( double prec ) { fitBestPrec = prec; };
+  void setPrec1( double prec1 ) { fitPrec1 = prec1; };
+  void setPrec2( double prec2 ) { fitPrec2 = prec2; };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
   void print( QPrinter *p );

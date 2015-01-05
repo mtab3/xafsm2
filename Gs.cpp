@@ -28,7 +28,7 @@ void showV( const char *name, int n, double *V )
 }
 
 void Gs::fit( int points, double *x, double *e, double *p,
-	      int Loop, double damp, double prec )
+	      int Loop, double damp, double prec1, double prec2 )
 {
   int GS = n;
   int PS = GS * 3;
@@ -49,6 +49,7 @@ void Gs::fit( int points, double *x, double *e, double *p,
   setABC( p );
   bool endf = false;
   int loop = 0;
+  double oldz = 10;
   while ( ! endf ) {
     for ( int i = 0; i < PS; i++ ) {
       for ( int j = 0; j < PS; j++ ) {
@@ -118,24 +119,38 @@ void Gs::fit( int points, double *x, double *e, double *p,
 	dp[i] += I[i][j] * V[j];
       }
     }
-    //    showV( "dp", PS, dp );
+    // showV( "dp", PS, dp );
     
-    double adp = 0, ap = 0;
+    // double adp = 0;
     for ( int i = 0; i < PS; i++ ) {
       p[i] += dp[i] * damp;
-      adp += dp[i] * dp[i];
-      ap += p[i] * p[i];
+      // 停止判定「パラメータベクトルの変化が十分小さい?」
+      // double adp0 = dp[i] / p[i];
+      // adp += adp0 * adp0;
     }
     delete [] dp;
     setABC( p );
-    //    showV( "p", PS, p );
+    // showV( "p", PS, p );
 
-    stat.sprintf( "# %d %g", loop, adp / ap );
+    // 停止判定「残差が十分小さい?」
+    double z = 0, z0 = 0;
+    for ( int i = 0; i < points; i++ ) {
+      if ( e[i] > 0 ) {
+	z += fabs( e[i] - f( x[i] ) );
+	z0 += e[i];
+      }
+    }
+    z /= z0;
+
+    // stat.sprintf( "%d %g", loop, adp );
+    stat.sprintf( "%d %g %g %g %d", loop, z, oldz, fabs(( z - oldz ) / z ), n );
     emit nowStat( stat );
     loop++;
-    if ( ( loop > Loop ) || ( ( adp / ap ) < prec ) ) {
+    double rate = fabs(( z - oldz ) / z );
+    if ( ( loop > Loop ) || ( z < prec1 ) || ( rate < prec2 ) ) {
       endf = true;
     }
+    oldz = z;
   }
 
   for ( int i = 0; i < PS; i++ ) {

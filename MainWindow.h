@@ -662,13 +662,14 @@ private slots:
   void SelectedPeakSearch( bool f );
   void SelectedShowSmoothed( bool f );
   void SelectedFitToRaw( bool f);
-  void PushedPeakFit( void );
+  void PushedReFit( void );
   void PushedClearMCAPeaks( void );
   void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
   void newMaxLoop( void );
   void newDampFact( void );
-  void newBestPrec( void );
+  void newPrec1( void );
+  void newPrec2( void );
   void SaveS2DMCAs( void );
 
   void newSensSelected( int );

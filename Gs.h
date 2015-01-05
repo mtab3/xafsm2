@@ -96,8 +96,10 @@ class Gs : public QObject
   ~Gs( void ) {};
 
   void fit( int points, double *x, double *e,
-	    double *p, int Loop, double damp, double prec );
+	    double *p, int Loop, double damp, double prec1, double prec2 );
   // Gs はガウスピークの数, パラメータも一緒に渡す
+  // prec1 : 残差 0.1 切ればまあいい
+  // prec2 : 残差の変化率 1e-3 切ればまあいい
 
   int peaks( void ) { return n; };
   void setABC( double *p )   // パラメータ設定 : A*exp( -C*(x-B)^2 )
