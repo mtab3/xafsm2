@@ -1252,7 +1252,7 @@ void MCAView::doPeakFitWCPoints( void )
     if ( ( e >= rROIsx ) && ( e <= rROIex ) ) {
       p[peaks*3]   = SMCA[ ei ];
       p[peaks*3+1] = e;
-      p[peaks*3+2] = 5.5;
+      p[peaks*3+2] = 5.0;
       peaks++;
     }
   }
