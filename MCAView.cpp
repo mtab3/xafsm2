@@ -779,14 +779,15 @@ void MCAView::Draw( QPainter *p )
   vals << QString::number( liveTime, 'f', 2 );
 
   // デッドタイム
+  double dt = ( realTime != 0 ) ? ( realTime - liveTime )/realTime * 100: 0;
   titles << tr( "Dead Time : " );
+  vals << QString::number( dt, 'f', 2 );
 
   rec.setRect( dLM,   TM+dVW, dLM * 4, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignLeft | Qt::AlignVCenter, titles );
   rec.setRect( dLM*5, TM+dVW, dLM * 4, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignRight | Qt::AlignVCenter, vals );
   
-  double dt = ( realTime != 0 ) ? ( realTime - liveTime )/realTime * 100: 0;
   //　　 青   ->  緑   ->  黄   -> オレンジ -> 赤　　にするとしたら？
   //    0 0 1 -> 0 1 0 -> 1 1 0 ->    ->      1 0 0
   //     0 %      10%      20%        ->       100%
@@ -799,10 +800,9 @@ void MCAView::Draw( QPainter *p )
   if ( g < 0 ) g = 0;
   if ( b < 0 ) b = 0;
   QColor DTC = QColor( r, g, b );
-  p->setPen( DTC );
-  cc.DrawText( p, rec, f, Qt::AlignRight | Qt::AlignVCenter, FIXSIZE,
-	       QString::number( dt, 'f', 2 ) );
-
+  p->fillRect( rec, DTC );
+  p->setPen( Black );
+  p->drawRect( rec );
   
   cc.ShowAButton( p, popDock, tr( "Pop/Dock" ), 0, 100, height() );
 }

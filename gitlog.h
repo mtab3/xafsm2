@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "gFit" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jan 5 20:02:35 2015 +0900\n"\
+                "    LION and something\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 5 19:42:54 2015 +0900\n"\
                 "    Gs.cpp was modified on the fitting-loop-termination condition\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 31 05:12:47 2014 +0900\n"\
                 "    newest\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 31 02:52:42 2014 +0900\n"\
-                "    disp peak info in MCAView\n"\
 		"\n"\
                 ""
 #endif
