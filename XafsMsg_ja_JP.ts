@@ -2973,6 +2973,38 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>Damp. Fact.</source>
         <translation>制動係数</translation>
     </message>
+    <message>
+        <source>ReFit</source>
+        <translation>再フィット</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40, &apos;Damp. Fact.&apos; is 0.5, and &apos;Prec.&apos; is 1e-6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>RF</source>
+        <translation>残差</translation>
+    </message>
+    <message>
+        <source>RFCR</source>
+        <translation>変化率</translation>
+    </message>
+    <message>
+        <source>2.5e-3</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>40</source>
+        <translation>40</translation>
+    </message>
+    <message>
+        <source>Prec.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>1e-6</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>PMConditions</name>

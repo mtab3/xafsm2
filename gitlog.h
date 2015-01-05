@@ -2,8 +2,20 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jan 5 19:42:54 2015 +0900\n"\
+                "    Gs.cpp was modified on the fitting-loop-termination condition\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jan 5 16:59:48 2015 +0900\n"\
+                "    change default width\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jan 4 11:56:37 2015 +0900\n"\
+                "    modify MCAPeaks display in MCAView\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 4 04:30:06 2015 +0900\n"\
                 "    peak information display in gFit is improved\n"\
@@ -31,18 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Dec 31 02:52:42 2014 +0900\n"\
                 "    disp peak info in MCAView\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 30 18:19:18 2014 +0900\n"\
-                "    change all the style-sheets of Push-Buttons\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 30 08:05:40 2014 +0900\n"\
-                "    new line colors in MCAView\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Dec 30 04:36:10 2014 +0900\n"\
-                "    improved gFit\n"\
 		"\n"\
                 ""
 #endif
