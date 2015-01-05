@@ -793,6 +793,8 @@ void MCAView::Draw( QPainter *p )
   //     0 %      10%      20%        ->       100%
   int r, g, b;
   r = g = b = 0;
+  if ( dt < 0 ) dt = 0;
+  if ( dt >= 100 ) dt = 100;
   if ( dt < 10 ) { r = 0; g = (int)( dt / 10 * 255 ); b = 255 - g; };
   if (( 10 <= dt )&&( dt < 20 )) { r = (int)( ( dt - 10 ) / 10 * 255 ); g = 255; b = 0; };
   if ( dt >= 20 ) { r = 255; g = 255 - (int)( ( dt - 20 ) / 80 * 255 ); b = 0; };
@@ -800,9 +802,13 @@ void MCAView::Draw( QPainter *p )
   if ( g < 0 ) g = 0;
   if ( b < 0 ) b = 0;
   QColor DTC = QColor( r, g, b );
+  QRectF bbox = rec;
+  double rw = rec.width();
+  rec.translate( (double)rw / 100 * ( 100 - dt ), 0 );
+  rec.setWidth( (double)rw / 100 * dt );
   p->fillRect( rec, DTC );
   p->setPen( Black );
-  p->drawRect( rec );
+  p->drawRect( bbox );
   
   cc.ShowAButton( p, popDock, tr( "Pop/Dock" ), 0, 100, height() );
 }
