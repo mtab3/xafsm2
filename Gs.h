@@ -5,46 +5,8 @@
 #include <QString>
 
 #include "math.h"
+#include "LinearA.h"
 
-#if 0
-// f = A exp -C ( x-B )^2
-class aG
-{
-  double A, B, C;
-
- public:
-  aG( void ) { A = B = C = 0; };
-  void setA( double a ) { A = a; };
-  void setB( double b ) { B = b; };
-  void setC( double c ) { C = c; };
-  void setW( double w ) { C = 4.*log(2.)/(w*w); }
-  void setHw( double hw ) { C = log(2.)/(hw*hw); }
-  double a( void ) { return A; };
-  double b( void ) { return B; };
-  double c( void ) { return C; };
-  double w( void ) { return 2. * sqrt( log(2.) / fabs( C ) ); }
-  double hw( void ) { return sqrt( log(2.) / fabs( C ) ); }
-  double x2( double x ) { return ( x - B ) * ( x - B ); }
-  double core( double x ) {
-    return exp( -fabs( C ) * x2( x ) );
-  }
-
-  double f( double x ) { return A * core( x ); }
-  double da( double x ) { return core( x ); }
-  double db( double x ) { return 2 * fabs( C ) * ( x - B ) * A * core( x ); }
-  double dc( double x ) { return -A * x2( x ) * core( x ); }
-
-  double di( int i, double x ) {
-    double rv = 0;
-    switch( i ) {
-    case 0: rv = da( x ); break;
-    case 1: rv = db( x ); break;
-    case 2: rv = dc( x ); break;
-    }
-    return rv;
-  }
-};
-#else
 // f = A*A exp -C*C ( x-B )^2
 // ピーク高さ (A*A) と、ピーク幅(C*C) が必ず正であることを自動的に保証した形
 class aG
@@ -81,8 +43,6 @@ class aG
     return rv;
   }
 };
-#endif
-
 
 class Gs : public QObject
 {
@@ -92,6 +52,7 @@ class Gs : public QObject
   aG *gs;
 
   QString stat;
+  LA la;
   
  public:
   Gs( int N ) { n = N; gs = new aG[ n ]; }
