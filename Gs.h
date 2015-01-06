@@ -25,7 +25,9 @@ class aG
   double w( void ) { return 2. * sqrt( log(2.) / fabs( C ) ); }
   double hw( void ) { return sqrt( log(2.) / fabs( C ) ); }
   double x2( double x ) { return ( x - B ) * ( x - B ); }
-  double core( double x ) { return exp( -fabs( C ) * x2( x ) ); }
+  double core( double x ) {
+    return exp( -fabs( C ) * x2( x ) );
+  }
 
   double f( double x ) { return A * core( x ); }
   double da( double x ) { return core( x ); }
@@ -51,14 +53,14 @@ class aG
 
  public:
   aG( void ) { A = B = C = 0; };
-  void setA( double a2 ) { A = sqrt( a2 ); };
+  void setA( double a ) { A = a; };
   void setB( double b ) { B = b; };
-  void setC( double c2 ) { C = sqrt( c2 ); };
+  void setC( double c ) { C = c; };
   void setW( double w ) { C = sqrt( 4.*log(2.)/(w*w) ); }
   void setHw( double hw ) { C = sqrt( log(2.)/(hw*hw) ); }
-  double a( void ) { return A * A; };
+  double a( void ) { return A; };
   double b( void ) { return B; };
-  double c( void ) { return C * C; };
+  double c( void ) { return C; };
   double w( void ) { return 2. * sqrt( log(2.) / ( C * C ) ); }
   double hw( void ) { return sqrt( log(2.) / ( C * C ) ); }
   double x2( double x ) { return ( x - B ) * ( x - B ); }
@@ -95,11 +97,11 @@ class Gs : public QObject
   Gs( int N ) { n = N; gs = new aG[ n ]; }
   ~Gs( void ) {};
 
-  void fit( int points, double *x, double *e,
+  bool fit( int points, double *x, double *e,
 	    double *p, int Loop, double damp, double prec1, double prec2 );
   // Gs はガウスピークの数, パラメータも一緒に渡す
   // prec1 : 残差 0.1 切ればまあいい
-  // prec2 : 残差の変化率 1e-3 切ればまあいい
+  // prec2 : 残差の変化率の2階微分 1e-6 程度か?
 
   int peaks( void ) { return n; };
   void setABC( double *p )   // パラメータ設定 : A*exp( -C*(x-B)^2 )

@@ -1065,7 +1065,7 @@ void MainWindow::setPreAMPGains( void )
 void MainWindow::nowFitStat( QString &stat )
 {
   ShowFittingStat->setText( stat );
-#if 0
+#if 1
   QFile f( "MCAPeakFitStat.dat" );
   f.open( QIODevice::Text | QIODevice::Append );
   QTextStream out( &f );

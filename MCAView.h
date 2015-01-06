@@ -127,7 +127,6 @@ public:
   QVector<MCAPeak> *getMCAPeaks( void ) { return &MCAPeaks; };
   int getMCALength( void ) { return MCALen; };
   double *getSMCA( void ) { return SMCA; };
-  void doPeakFit( void );
   void doPeakFitWCPoints( void );
   void newFit( int peaks );
   void setFittedLines( int peaks, double *E );

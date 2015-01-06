@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 12:12:53 2015 +0900\n"\
+                "    Change unit in QXAFS with DMM from V to microV\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 01:43:06 2015 +0900\n"\
+                "    Change DeadTime siplay\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 5 23:48:36 2015 +0900\n"\
                 "    new DeadTime display\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Jan 3 20:11:52 2015 +0900\n"\
                 "    working on QPokygon in ChCoord\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 31 12:24:29 2014 +0900\n"\
-                "    nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Dec 31 10:50:33 2014 +0900\n"\
-                "    display informations in MCAView was improved\n"\
 		"\n"\
                 ""
 #endif

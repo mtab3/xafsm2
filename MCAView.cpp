@@ -1138,84 +1138,6 @@ QStringList MCAView::getSelectedElms( void )
   return ret;
 }
 
-// これはもう使ってない
-void MCAView::doPeakFit( void )
-{
-#if 1
-  QFile f( "fit.dat" );
-  f.open( QIODevice::WriteOnly | QIODevice::Text );
-  QTextStream out( &f );
-#endif
-  int ROIs = k2p->E2p( MCACh, rROIsx );
-  int ROIe = k2p->E2p( MCACh, rROIex );
-  if ( ROIs < 0 )
-    ROIs = 0;
-  if ( ROIe >= MCALen )
-    ROIe = MCALen - 1;
-  
-  int peaks = MCAPeaks.count();
-  double *E = new double [ MCALen ];
-  double *p = new double [ peaks * 3 ];
-
-  newFit( peaks );
-
-  for ( int i = 0; i < MCALen; i++ ) {
-    E[i] = k2p->p2E( MCACh, i );
-  }
-  for ( int i = 0; i < peaks; i++ ) {
-    p[i*3]   = MCAPeaks[i].A;
-    p[i*3+1] = MCAPeaks[i].BinE;
-    //    p[i*3+2] = MCAPeaks[i].C;
-    p[i*3+2] = 5.0;
-    qDebug() << QString( "#P %1 %2 %3" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
-  }
-#if 1
-  out << "#p(before)\n";
-  for ( int i = 0; i < peaks; i++ ) {
-    out << QString( "#P %1 %2 %3\n" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
-  }
-#endif
-
-  qDebug() << "ROI" << ROIs << ROIe;
-  Gs gs0( peaks ), gs1( peaks );
-  gs0.setABC( p );
-
-  qDebug() << "fit start";
-
-#if 1
-  Fit->fit( ROIe - ROIs + 1, E + ROIs,
-	    ( DoPeakFitToRaw ) ? ( rMCA + ROIs ) : ( SMCA + ROIs ),
-	    p, 100, 0.2, 0.1, 1e-3 );
-#else
-  Fit->fit( MCALen, E, ( DoPeakFitToRaw ) ? ( rMCA ) : ( SMCA ), p, 20, 0.1 );
-#endif
-
-  qDebug() << "fit end";
-  
-  setFittedLines( peaks, E );
-  
-#if 1
-  out << "#p(after)\n";
-  for ( int i = 0; i < peaks; i++ ) {
-    out << QString( "# %1 %2 %3\n" ).arg( p[i*3] ).arg( p[i*3+1] ).arg( p[i*3+2] );
-  }
-  
-  
-  QString buf;
-  for ( int i = ROIs; i <= ROIe; i++ ) {
-    buf.sprintf( "%f %f %f %f\n", E[i], ( DoPeakFitToRaw ) ? rMCA[i] : SMCA[i],
-		 gs0.f( E[i] ), Fit->f( E[i] ) );
-    out << buf;
-  }
-
-  f.close();
-#endif
-
-  delete [] E;
-  delete [] p;
-  update();
-}
-
 void MCAView::setFittedLines( int peaks, double *E )
 {
   FittedLine.clear();
@@ -1239,8 +1161,16 @@ void MCAView::setFittedLines( int peaks, double *E )
 
 void MCAView::doPeakFitWCPoints( void )
 {
-  int ROIs = k2p->E2p( MCACh, rROIsx );
-  int ROIe = k2p->E2p( MCACh, rROIex );
+  double Rs = rROIsx;
+  double Re = rROIex;
+  if ( Rs > Re ) {
+    double tmp = Rs;
+    Rs = Re;
+    Re = tmp;
+  }
+
+  int ROIs = k2p->E2p( MCACh, Rs );
+  int ROIe = k2p->E2p( MCACh, Re );
   if ( ROIs < 0 )
     ROIs = 0;
   if ( ROIe >= MCALen )
@@ -1259,10 +1189,10 @@ void MCAView::doPeakFitWCPoints( void )
     int ei = k2p->E2p( MCACh, e );
     if ( ei < 0 ) ei = 0;
     if ( ei >= MCALen ) ei = MCALen - 1;
-    if ( ( e >= rROIsx ) && ( e <= rROIex ) ) {
-      p[peaks*3]   = SMCA[ ei ];
+    if ( ( e >= Rs ) && ( e <= Re ) ) {
+      p[peaks*3]   = sqrt( fabs( SMCA[ ei ] ) );
       p[peaks*3+1] = e;
-      p[peaks*3+2] = 5.0;
+      p[peaks*3+2] = sqrt( fabs( 5.0 ) );
       peaks++;
     }
   }
@@ -1275,6 +1205,14 @@ void MCAView::doPeakFitWCPoints( void )
   setMCAPeaksByFit();
   setFittedLines( peaks, E );
 
+#if 1
+  QFile f( "MCAPeakFitStat.dat" );
+  f.open( QIODevice::Text | QIODevice::Append );
+  QTextStream out( &f );
+  out << "= = = = =\n";
+  f.close();
+#endif
+  
   delete [] E;
   delete [] p;
   update();
@@ -1300,9 +1238,11 @@ void MCAView::setMCAPeaksByFit( void )
   for ( int i = 0; i < peaks; i++ ) {
     MCAPeak ap;
     ap.A = Fit->ag( i )->a();
+    ap.A *= ap.A;
     ap.BinE = Fit->ag(i)->b();     // エネルギー単位のピーク位置
     ap.BinP = k2p->E2p( MCACh, ap.BinE );
     ap.CinE = Fit->ag(i)->c();
+    ap.CinE *= ap.CinE;
     ap.WinE = Fit->ag(i)->w();     // エネルギー単位の半値全幅
     double sp = k2p->E2p( MCACh, ap.BinE - ap.WinE / 2. );
     double ep = k2p->E2p( MCACh, ap.BinE + ap.WinE / 2. );
