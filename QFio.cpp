@@ -213,7 +213,9 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
     buf.sprintf( "%10.5f" "%10.5f" "%10.4f", deg, deg2, QXafsDwellTime );
 
     for ( int j = 0; j < Us; j++ ) {
-      buf2.sprintf( " %9.6f", vals[j][i+1].toDouble() - dark[j] );  // 8.7 --> 9.6
+      // buf2.sprintf( " %9.6f", vals[j][i+1].toDouble() - dark[j] );  // 8.7 --> 9.6
+      // Only for QXAFS with DMM. NCT counter is NOT considered!
+      buf2.sprintf( " %9.0f", ( vals[j][i+1].toDouble() - dark[j] ) * 10e6 );
       buf += buf2;
     }
     out << buf << endl;

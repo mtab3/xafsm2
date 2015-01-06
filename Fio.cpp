@@ -184,6 +184,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     out << "    Offset         0         0";
     for ( int i = 0; i < MeasChNo; i++ ) {
       out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+      // For QXAFS with DMM in microV?
     }
     out << endl;
     break;
