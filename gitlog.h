@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 19:08:31 2015 +0900\n"\
+                "    working on LA\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 16:56:09 2015 +0900\n"\
+                "    working on tuning Gs->fit\n"\
+		"\n"\
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 12:12:53 2015 +0900\n"\
                 "    Change unit in QXAFS with DMM from V to microV\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 4 04:30:06 2015 +0900\n"\
                 "    peak information display in gFit is improved\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jan 4 01:45:15 2015 +0900\n"\
-                "    gFit is improved. c -> c*c, a -> a*a.  Some parameters can be controlled via GUI\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Jan 3 20:11:52 2015 +0900\n"\
-                "    working on QPokygon in ChCoord\n"\
 		"\n"\
                 ""
 #endif

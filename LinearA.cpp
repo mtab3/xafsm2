@@ -1,4 +1,5 @@
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -51,12 +52,36 @@ void LA::showM( const char *name, int n, double **M )
   printf( "\n" );
 }
 
+void LA::showMi( const char *name, int n, double **M, int *idx )
+{
+  printf( "# %s = \n# ", name );
+  
+  for ( int i = 0; i < n; i++ ) {
+    for ( int j = 0; j < n; j++ ) {
+      printf( "%g ", M[idx[i]][j] );
+    }
+    printf( "\n# " );
+  }
+  printf( "\n" );
+}
+
 void LA::showV( const char *name, int n, double *V )
 {
   printf( "# %s = \n# ", name );
   
   for ( int i = 0; i < n; i++ ) {
     printf( "%g ", V[i] );
+  }
+  printf( "\n# " );
+  printf( "\n" );
+}
+
+void LA::showVi( const char *name, int n, double *V, int *idx )
+{
+  printf( "# %s = \n# ", name );
+  
+  for ( int i = 0; i < n; i++ ) {
+    printf( "%g ", V[idx[i]] );
   }
   printf( "\n# " );
   printf( "\n" );
@@ -82,10 +107,39 @@ bool LA::checkVerr( int n, double *V )
   return false;
 }
 
+void LA::copyM( int n, double **s, double **d )
+{
+  for ( int i = 0; i < n; i++ )
+    for ( int j = 0; j < n; j++ ) 
+      d[i][j] = s[i][j];
+}
+
 void LA::copyV( int n, double *s, double *d )
 {
   for ( int i = 0; i < n; i++ )
     d[i] = s[i];
+}
+
+void LA::mulMM( int n, double **M, double **N, double **R )
+{
+  for ( int i = 0; i < n; i++ ) {
+    for ( int j = 0; j < n; j++ ) {
+      R[i][j] = 0;
+      for ( int k = 0; k < n; k++ ) {
+	R[i][j] += M[i][k] * N[k][i];
+      }
+    }
+  }
+}
+
+void LA::mulMV( int n, double **M, double *V, double *R )
+{
+  for ( int i = 0; i < n; i++ ) {
+    R[i] = 0;
+    for ( int j = 0; j < n; j++ ) {
+      R[i] += M[i][j] * V[j];
+    }
+  }
 }
 
 void LA::invert( int PS, double **M, double **I )
@@ -134,27 +188,70 @@ void LA::invert( int PS, double **M, double **I )
   }
 }
 
-void LA::makeLU( int n, double **M, int *L )
+void LA::makeLU( int n, double **M, double **L, double **U, int *idx )
 {
   for ( int i = 0; i < n; i++ )
-    L[i] = i;
+    idx[i] = i;
 
+  copyM( n, M, L );
   for ( int i = 0; i < n; i++ ) {
+    // i 番目が最大値になる行を見つける
     double max = -1e300;
     int maxl = i;
     for ( int j = i; j < n; j++ ) {
-      if ( fabs( M[ L[j] ][i] ) > maxl ) {
+      if ( fabs( L[ idx[j] ][i] ) > maxl ) {
 	maxl = j;
-	max = fabs( M[ L[j] ][i] );
+	max = fabs( L[ idx[j] ][i] );
       }
     }
-    double tmp = L[i];
-    L[i] = L[maxl];
-    L[maxl] = tmp;
-  }
+    double tmp = idx[i];
+    idx[i] = idx[maxl];
+    idx[maxl] = tmp;
 
-  showM( "LU M ", n, M );
-  for ( int i = 0; i < n; i++ )
-    printf( "%d ", L[i] );
-  printf( "\n" );
+    // LU 分解 (1個の行列の中にパック)
+    double a = L[idx[i]][i];
+    for ( int j = i+1; j < n; j++ ) {
+      L[idx[j]][i] /= a;
+      double b = L[idx[j]][i];
+      for ( int k = i+1; k < n; k++ ) {
+	L[idx[j]][k] -= b * L[idx[i]][k];
+      }
+    }
+  }
+  
+  // L と U に分けておく
+  for ( int i = 0; i < n; i++ ) {
+    for ( int j = 0; j < n; j++ ) {
+      if ( j < i ) {
+	U[idx[i]][j] = 0;
+      } else {
+	U[idx[i]][j] = L[idx[i]][j];
+	L[idx[i]][j] = 0;
+      }
+      if ( i == j )
+	L[idx[i]][j] = 1;
+    }
+  }
+}
+
+void LA::solveLV( int n, double **L, double *V, double *R, int *idx )
+{
+  copyV( n, V, R );
+  for ( int i = 0; i < n - 1; i++ ) {
+    R[idx[i]] /= L[idx[i]][i];         // L の対角は 1 なので不要のはず
+    for ( int j = i + 1; j < n; j++ ) {
+      R[idx[j]] -= R[idx[i]] * L[idx[j]][i];
+    }
+  }
+}
+
+void LA::solveUV( int n, double **U, double *V, double *R, int *idx )
+{
+  copyV( n, V, R );
+  for ( int i = n - 1; i >= 0; i-- ) {
+    R[idx[i]] /= U[idx[i]][i];
+    for ( int j = i - 1; j >= 0; j-- ) {
+      R[idx[j]] -= R[idx[i]] * U[idx[j]][i];
+    }
+  }
 }
