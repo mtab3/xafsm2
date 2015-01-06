@@ -13,6 +13,8 @@
     <file>DTAutoCalib.seq</file>
     <file>SSDEngAutoCalib.seq</file>  
     <file>XafsM2.png</file>
-    <file>Month01.gif</file>
+    <file>Monthly/Month01.gif</file>
+    <file>Monthly/Month02_03.gif</file>
+    <file>Monthly/Month03_03.gif</file>
   </qresource>
 </RCC>
