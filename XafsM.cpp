@@ -13,6 +13,8 @@
 #include "MainWindow.h"
 #include "Atoms.h"
 
+QSplashScreen *ShowSplashScreen( int m, int d );
+
 enum LANG { English, Japanese, LANGS };
 QString DefFileName;
 bool newFluoMode;
@@ -20,6 +22,9 @@ int qMainVer, qSubVer, qSubSubVer;
 
 int main( int argc, char *argv[] )
 {
+  int month = QDate::currentDate().month();
+  int day = QDate::currentDate().day();
+
   getQVersion();
   if ( qMainVer >= 5 )
     QApplication::setStyle( "Fusion" );
@@ -47,6 +52,14 @@ int main( int argc, char *argv[] )
 	DefFileName = QString( argv[i+1] );
       }
     }
+    if ( QString( argv[i] ) == "-m" ) {
+      if ( i+1 < argc ) {
+	QString MD = QString( argv[i+1] );
+	month = (int)(MD.toInt() / 100);
+	day = MD.toInt() - month * 100;
+	qDebug() << "md " << month << day;
+      }
+    }
   }
 
   if ( QString( argv[0] ).contains( "XafsM2e" ) == true ) {
@@ -55,25 +68,7 @@ int main( int argc, char *argv[] )
 
   QApplication app( argc, argv );
 
-  // Show Splash Screen depending on month of a year
-  QPixmap SSPixmap; //Insert your splash page image here
-  SSPixmap.load( ":XafsM2.png" );
-  switch( QDate::currentDate().month() ) {
-  case 1:
-    if ( QDate::currentDate().day() < 16 )
-      SSPixmap.load( ":Month01.gif" );
-    break;
-  default: break;
-  }
-  QSplashScreen splash( SSPixmap );
-  splash.show();
-  // This line represents the alignment of text, color and position
-  splash.showMessage( QObject::tr( "Starting XafsM2..." ),
-		      Qt::AlignHCenter | Qt::AlignVCenter, QColor( 0, 0, 255 ) );
-  // This is used to accept a click on the screen so that user can cancel the screen
-  qApp->processEvents();
-  // Show Splash Screen depending on month of a year
-
+  QSplashScreen *splash = ShowSplashScreen( month, day );
   
   QTranslator appTr;
   switch( (int)Lang ) {
@@ -96,7 +91,8 @@ int main( int argc, char *argv[] )
   mw->show();
   mw->InitSize();
 
-  splash.finish( mw );
+  splash->finish( mw );
+  delete splash;
   return app.exec();
 }
 
@@ -112,6 +108,39 @@ void getQVersion( void )
   if ( vers.count() >= 3 )
     qSubSubVer = vers[2].toInt();
 }
+
+QSplashScreen *ShowSplashScreen( int m, int d )
+{
+  // Show Splash Screen depending on month of a year
+  QPixmap SSPixmap; //Insert your splash page image here
+  SSPixmap.load( ":XafsM2.png" );
+  switch( m ) {
+  case 1:
+    if ( d < 16 )
+      SSPixmap.load( ":Monthly/Month01.gif" );
+    break;
+  case 2:
+    if ( d < 4 )
+      SSPixmap.load( ":Monthly/Month02_03.gif" );
+    break;
+  case 3:
+    if ( d < 4 )
+      SSPixmap.load( ":Monthly/Month03_03.gif" );
+    break;
+  default: break;
+  }
+
+  QSplashScreen *splash = new QSplashScreen( SSPixmap );
+  splash->show();
+  // This line represents the alignment of text, color and position
+  splash->showMessage( QObject::tr( "Starting XafsM2..." ),
+		      Qt::AlignHCenter | Qt::AlignVCenter, QColor( 0, 0, 255 ) );
+  // This is used to accept a click on the screen so that user can cancel the screen
+  qApp->processEvents();
+
+  return splash;
+}
+
 
 double prec( double x, int n )
 {

@@ -2,11 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "gFit" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+<<<<<<< HEAD
                 "Date        : Tue Jan 6 19:08:31 2015 +0900\n"\
                 "    working on LA\n"\
+=======
+                "Date        : Wed Jan 7 01:31:27 2015 +0900\n"\
+                "    new splash\n"\
+>>>>>>> master
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 16:56:09 2015 +0900\n"\
