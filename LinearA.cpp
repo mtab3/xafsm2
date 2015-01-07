@@ -13,6 +13,46 @@ LA::~LA( void )
 {
 }
 
+
+double **LA::newM( int n )
+{
+  double **M = new double * [n];
+  for ( int i = 0; i < n; i++ ) {
+    M[i] = new double [n];
+  }
+  return M;
+}
+
+double *LA::newV( int n )
+{
+  double *V = new double [n];
+  return V;
+}
+
+int *LA::newIV( int n )
+{
+  int *V = new int [n];
+  return V;
+}
+
+void LA::deleteM( int n, double **M )
+{
+  for ( int i = 0; i < n; i++ ) {
+    delete [] M[i];
+  }
+  delete [] M;
+}
+
+void LA::deleteV( double *V )
+{
+  delete [] V;
+}
+
+void LA::deleteIV( int *V )
+{
+  delete [] V;
+}
+
 void LA::clearM( int n, double **M )
 {
   for ( int i = 0; i < n; i++ ) {
@@ -71,6 +111,17 @@ void LA::showV( const char *name, int n, double *V )
   
   for ( int i = 0; i < n; i++ ) {
     printf( "%g ", V[i] );
+  }
+  printf( "\n# " );
+  printf( "\n" );
+}
+
+void LA::showIV( const char *name, int n, int *V )
+{
+  printf( "# %s = \n# ", name );
+  
+  for ( int i = 0; i < n; i++ ) {
+    printf( "%d ", V[i] );
   }
   printf( "\n# " );
   printf( "\n" );

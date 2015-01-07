@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 7 12:15:49 2015 +0900\n"\
+                "    expired old codes of PeakFit.cpp and .h replaced by Gs.cpp and .h\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 7 12:10:47 2015 +0900\n"\
                 "    ok\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 5 23:48:36 2015 +0900\n"\
                 "    new DeadTime display\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jan 5 20:02:35 2015 +0900\n"\
-                "    LION and something\n"\
 		"\n"\
                 ""
 #endif

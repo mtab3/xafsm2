@@ -12,7 +12,8 @@ bool Gs::fit( int points, double *x, double *e, double *p,
 
   int *idx;
   double *op;
-  double **M, **I, **L, **U;
+  // double **I;
+  double **M, **L, **U;
   double *V, *R1, *R2;
   double *zs;
   double *rs, *r1s;
@@ -21,7 +22,7 @@ bool Gs::fit( int points, double *x, double *e, double *p,
   idx = new int [ PS ];
   op = new double [ PS ];
   M = new double * [ PS ];
-  I = new double * [ PS ];
+  //  I = new double * [ PS ];
   L = new double * [ PS ];
   U = new double * [ PS ];
   V = new double [ PS ];
@@ -29,7 +30,7 @@ bool Gs::fit( int points, double *x, double *e, double *p,
   R2 = new double [ PS ];
   for ( int i = 0; i < PS; i++ ) {
     M[i] = new double [ PS ];
-    I[i] = new double [ PS ];
+    //    I[i] = new double [ PS ];
     L[i] = new double [ PS ];
     U[i] = new double [ PS ];
   }
@@ -45,7 +46,7 @@ bool Gs::fit( int points, double *x, double *e, double *p,
   try {
     while ( ! endf ) {
       la.clearM( PS, M );
-      la.setI( PS, I );
+      //      la.setI( PS, I );
       la.clearV( PS, V );
       for ( int i = 0; i < points; i++ ) {
 	for ( int j = 0; j < PS; j++ ) {
@@ -118,13 +119,13 @@ bool Gs::fit( int points, double *x, double *e, double *p,
 
   for ( int i = 0; i < PS; i++ ) {
     delete [] M[i];
-    delete [] I[i];
+    //    delete [] I[i];
     delete [] L[i];
     delete [] U[i];
   }
   delete [] idx;
   delete [] M;
-  delete [] I;
+  //  delete [] I;
   delete [] L;
   delete [] U;
   delete [] V;

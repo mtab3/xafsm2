@@ -8,11 +8,18 @@ public:
   LA( void );
   ~LA( void );
 
+  double **newM( int n );
+  double *newV( int n );
+  int *newIV( int n );
+  void deleteM( int n, double **M );
+  void deleteV( double *V );
+  void deleteIV( int *V );
   void clearM( int n, double **M );
   void clearV( int n, double *V );
   void setI( int n, double **I );
   void showM( const char *name, int n, double **M );
   void showV( const char *name, int n, double *V );
+  void showIV( const char *name, int n, int *V );
   void showMi( const char *name, int n, double **M, int *idx );
   void showVi( const char *name, int n, double *V, int *idx );
   bool checkMerr( int n, double **M );
