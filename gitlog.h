@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 7 01:31:27 2015 +0900\n"\
+                "    new splash\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 16:56:09 2015 +0900\n"\
                 "    working on tuning Gs->fit\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 4 04:30:06 2015 +0900\n"\
                 "    peak information display in gFit is improved\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jan 4 01:45:15 2015 +0900\n"\
-                "    gFit is improved. c -> c*c, a -> a*a.  Some parameters can be controlled via GUI\n"\
 		"\n"\
                 ""
 #endif

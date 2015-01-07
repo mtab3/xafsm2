@@ -13,7 +13,7 @@
 #include "MainWindow.h"
 #include "Atoms.h"
 
-QSplashScreen *ShowSplashScreen( void );
+QSplashScreen *ShowSplashScreen( int m, int d );
 
 enum LANG { English, Japanese, LANGS };
 QString DefFileName;
@@ -22,6 +22,9 @@ int qMainVer, qSubVer, qSubSubVer;
 
 int main( int argc, char *argv[] )
 {
+  int month = QDate::currentDate().month();
+  int day = QDate::currentDate().day();
+
   getQVersion();
   if ( qMainVer >= 5 )
     QApplication::setStyle( "Fusion" );
@@ -49,6 +52,14 @@ int main( int argc, char *argv[] )
 	DefFileName = QString( argv[i+1] );
       }
     }
+    if ( QString( argv[i] ) == "-m" ) {
+      if ( i+1 < argc ) {
+	QString MD = QString( argv[i+1] );
+	month = (int)(MD.toInt() / 100);
+	day = MD.toInt() - month * 100;
+	qDebug() << "md " << month << day;
+      }
+    }
   }
 
   if ( QString( argv[0] ).contains( "XafsM2e" ) == true ) {
@@ -57,7 +68,7 @@ int main( int argc, char *argv[] )
 
   QApplication app( argc, argv );
 
-  QSplashScreen *splash = ShowSplashScreen();
+  QSplashScreen *splash = ShowSplashScreen( month, day );
   
   QTranslator appTr;
   switch( (int)Lang ) {
@@ -98,11 +109,8 @@ void getQVersion( void )
     qSubSubVer = vers[2].toInt();
 }
 
-QSplashScreen *ShowSplashScreen( void )
+QSplashScreen *ShowSplashScreen( int m, int d )
 {
-  int m = QDate::currentDate().month();
-  int d = QDate::currentDate().day();
-  
   // Show Splash Screen depending on month of a year
   QPixmap SSPixmap; //Insert your splash page image here
   SSPixmap.load( ":XafsM2.png" );
@@ -129,7 +137,6 @@ QSplashScreen *ShowSplashScreen( void )
 		      Qt::AlignHCenter | Qt::AlignVCenter, QColor( 0, 0, 255 ) );
   // This is used to accept a click on the screen so that user can cancel the screen
   qApp->processEvents();
-  // Show Splash Screen depending on month of a year
 
   return splash;
 }
