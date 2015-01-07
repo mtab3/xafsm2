@@ -4,7 +4,7 @@ XafsM2
 ui_*
 moc_*
 qrc_*
-*.pro.user
+*.pro.user*
 Log*.dat
 *.dat
 *.core

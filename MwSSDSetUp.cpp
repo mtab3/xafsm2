@@ -2,7 +2,7 @@
 #include "SMsg.h"
 #include "MainWindow.h"
 #include "MCAView.h"
-#include "PeakFit.h"
+//#include "PeakFit.h"
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {

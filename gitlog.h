@@ -2,16 +2,27 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "gFit" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 7 12:10:47 2015 +0900\n"\
+                "    ok\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 7 12:09:34 2015 +0900\n"\
+                "    modified splash-screen\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-<<<<<<< HEAD
-                "Date        : Tue Jan 6 19:08:31 2015 +0900\n"\
-                "    working on LA\n"\
-=======
                 "Date        : Wed Jan 7 01:31:27 2015 +0900\n"\
                 "    new splash\n"\
->>>>>>> master
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 21:18:29 2015 +0900\n"\
+                "    In Gs, calculation of inverted matrix is placed by LU-decompotion.  Hope the fitting is stabilized and got faster with it.\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 19:08:31 2015 +0900\n"\
+                "    working on LA\n"\
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 16:56:09 2015 +0900\n"\
@@ -32,22 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 5 20:02:35 2015 +0900\n"\
                 "    LION and something\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jan 5 19:42:54 2015 +0900\n"\
-                "    Gs.cpp was modified on the fitting-loop-termination condition\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jan 5 16:59:48 2015 +0900\n"\
-                "    change default width\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jan 4 11:56:37 2015 +0900\n"\
-                "    modify MCAPeaks display in MCAView\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jan 4 04:30:06 2015 +0900\n"\
-                "    peak information display in gFit is improved\n"\
 		"\n"\
                 ""
 #endif

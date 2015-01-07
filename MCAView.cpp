@@ -6,7 +6,7 @@
 
 #include "XafsM.h"
 #include "MCAView.h"
-#include "PeakFit.h"
+//#include "PeakFit.h"
 #include "Diff.h"
 
 #define PEAKSEARCH
