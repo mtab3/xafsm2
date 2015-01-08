@@ -40,6 +40,7 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
   for ( int i = 0; i < MaxMon; i++ ) {
     YShift[ i ] = YShift0[ i ] = yshift[ i ] = 0;
   }
+  movingAvr = 1;
 }
 
 void TYView::SetLines( int Lines )
@@ -111,6 +112,18 @@ void TYView::Draw( QPainter *p )
 {
   if ( valid != true ) return;
 
+  QVector<QVector<double> > mabuf( lines );
+  for ( int i = 0; i < lines; i++ ) {
+    mabuf[i].resize( movingAvr );
+    for ( int j = 0; j < movingAvr; j++ ) {
+      mabuf[i][j] = 0;
+    }
+  }
+  QVector<double> mas( movingAvr );
+  for ( int i = 0; i < movingAvr; i++ ) {
+    mas[i] = 0;
+  }
+  
   QString buf, buf2;
   double RM, LM, TM, TW, BM, HDiv, VDiv;
   QPen pen0, pen1;

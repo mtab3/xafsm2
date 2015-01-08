@@ -515,6 +515,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
   case TYVIEW:
     newView = (void *)(new TYView);
     ((TYView*)newView)->setParent( this );
+    ((TYView*)newView)->setMovingAvr( MovingAvr->text().toInt() );
     break;
   case MCAVIEW:
     newView = (void *)(new MCAView( this ));

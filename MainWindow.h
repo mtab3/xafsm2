@@ -651,6 +651,7 @@ private slots:
   void newGain( void );
   void PopChangeMonLines( bool f );
   void PopDownMonLines( void );
+  void newMovingAvr( void );
 
   void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );

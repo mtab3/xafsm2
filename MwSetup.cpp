@@ -235,6 +235,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
 	   this, SLOT( ToggleGoToButtons( QString ) ),
 	   Qt::UniqueConnection );
+
+  connect( MovingAvr, SIGNAL( edigingFinished() ), this, SLOT( newMovingAvr() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::setupDataRoot( void )
@@ -1212,3 +1215,19 @@ void MainWindow::PopChangeMonLines( bool f )
   }
 }
 
+void MainWindow::newMovingAvr( void )
+{
+  int MA = MovingAvr->text().toInt();
+  if ( MA < 1 )  {
+    MA = 1;
+  }
+  MovingAvr->setText( QString::number( MA ) );
+
+  TYView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == TYVIEW ) {
+    if ( ( view = (TYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setMovingAvr( MA );
+      view->update();
+    }
+  }
+}

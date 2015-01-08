@@ -5704,7 +5704,7 @@ Though, other parameters are fixed at the value on starting.</string>
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEdit">
+                <widget class="QLineEdit" name="MovingAvr">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -5812,8 +5812,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>267</width>
-                     <height>146</height>
+                     <width>256</width>
+                     <height>169</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">

@@ -245,8 +245,8 @@ void MainWindow::newMaxLoop( void )
   int maxLoop = MaxLoop->text().toInt();
   if ( maxLoop < 1 ) {
     maxLoop = 1;
-    MaxLoop->setText( QString::number( maxLoop ) );
   }
+  MaxLoop->setText( QString::number( maxLoop ) );
 
   MCAView *view;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {

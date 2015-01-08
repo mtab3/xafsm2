@@ -42,6 +42,7 @@ private:
   int datas;  // Ring Buffer 内の有効なデータ点数
   int timeShift, timeShift0, tts;   // 表示の時間を現在の時間からどれだけずらすか
   double YShift[ MaxMon ], YShift0[ MaxMon ], yshift[ MaxMon ];
+  int movingAvr;
 
   MouseC m;
   void mouseMoveEvent( QMouseEvent *e );
@@ -69,9 +70,10 @@ public:
   void print( QPrinter *p );
 
   void setParent( QWidget *p );
+  void setMovingAvr( int ma ) { movingAvr = ma; };
 
 public slots:
-  void SetMonScale( int ms ) { MonScale = ms; };;
+  void SetMonScale( int ms ) { MonScale = ms; };
 
 private:
   void paintEvent( QPaintEvent *event );
