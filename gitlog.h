@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "gFit" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 7 12:58:01 2015 +0900\n"\
+                "    made sure that LU-Decomp works 3 times faster than calclation of Inv. matrix when the matrix size is 500x500\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 7 12:15:49 2015 +0900\n"\
                 "    expired old codes of PeakFit.cpp and .h replaced by Gs.cpp and .h\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 01:43:06 2015 +0900\n"\
                 "    Change DeadTime siplay\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jan 5 23:48:36 2015 +0900\n"\
-                "    new DeadTime display\n"\
 		"\n"\
                 ""
 #endif
