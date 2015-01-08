@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 8 21:46:26 2015 +0900\n"\
+                "    working on moving avr\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 8 19:02:00 2015 +0900\n"\
+                "    working in MwSetUp\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 7 12:58:01 2015 +0900\n"\
                 "    made sure that LU-Decomp works 3 times faster than calclation of Inv. matrix when the matrix size is 500x500\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 16:56:09 2015 +0900\n"\
                 "    working on tuning Gs->fit\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 6 12:12:53 2015 +0900\n"\
-                "    Change unit in QXAFS with DMM from V to microV\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 6 01:43:06 2015 +0900\n"\
-                "    Change DeadTime siplay\n"\
 		"\n"\
                 ""
 #endif
