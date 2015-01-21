@@ -55,12 +55,12 @@ class Data : public QFrame, private Ui::Data
   void showMonData( QTextStream &in );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );
-  void showS2DData( QTextStream &in );
+  void showS2DData( QTextStream &in, QVector<AUnit*> &AMotors );
 
  public:
   Data( QWidget *p = NULL );
   ~Data();
-  void GotNewView( ViewCTRL *view );
+  void GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors );
   void GotCurrentView( void *view );
   void setDataRoot( const QString &dataRoot );
 

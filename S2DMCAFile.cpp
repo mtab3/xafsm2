@@ -62,8 +62,3 @@ void MainWindow::SaveS2DMCAs( void )
     }
   }
 }
-
-void MainWindow::LoadS2DMCAs( const QString &name )
-{
-  qDebug() << name;
-}

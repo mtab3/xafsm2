@@ -9,8 +9,10 @@ class S2DB : public QFrame, private Ui::S2DB
 {
   Q_OBJECT
 
+  QFileDialog *S2DMCAsDirSel;
+
  public:
-  S2DB( QWidget *p );
+  S2DB( QWidget *p, FileDialog *MCADirSel );
 
   S2DView *getView( void ) { return S2DV; };
 
@@ -20,6 +22,8 @@ public slots:
     zmax->setText( max );
     zmin->setText( min );
   }
+
+  void LoadS2DMCAs( const QString &fname );
 
 private slots:
   void newInputZmax( void ) { CBar->newInputZmax( zmax->text().toDouble() ); };

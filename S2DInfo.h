@@ -26,10 +26,10 @@ class S2DInfo
   QString MCAFile;
   QString SaveFile;
   int pps;               // use only in RCONT
-
+  
   S2DInfo( void );
-  void saveS2DInfo( QTextStream &out );
-  void loadS2DInfo( QTextStream &in );
+  void save( QTextStream &out );
+  void load( QTextStream &in, QVector<AUnit*> &AMotors );
 };
 
 #endif

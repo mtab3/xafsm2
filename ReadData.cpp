@@ -84,5 +84,5 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     break;
   }
 
-  ((Data*)from)->GotNewView( view );
+  ((Data*)from)->GotNewView( view, AMotors );
 }

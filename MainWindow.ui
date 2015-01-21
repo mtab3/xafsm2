@@ -6100,8 +6100,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>265</width>
-                     <height>158</height>
+                     <width>163</width>
+                     <height>136</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -10524,13 +10524,6 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
              <property name="text">
               <string>For SSD</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="S2DLoadMCAs">
-             <property name="text">
-              <string>Load MCAs</string>
              </property>
             </widget>
            </item>

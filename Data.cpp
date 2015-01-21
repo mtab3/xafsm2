@@ -164,7 +164,7 @@ void Data::StartToShowData( void )
   emit AskToGetNewView( dataType );
 }
 
-void Data::GotNewView( ViewCTRL *view )
+void Data::GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors )
 {
   QFile f( FName );
 
@@ -184,7 +184,7 @@ void Data::GotNewView( ViewCTRL *view )
   case MONDATA:  showMonData( in );  break;
   case SCANDATA: showScanData( in ); break;
   case MCADATA:  showMCAData( in );  break;
-  case S2DDATA:  showS2DData( in );  break;
+  case S2DDATA:  showS2DData( in, AMotors );  break;
   default: break;
   }
 
@@ -507,7 +507,7 @@ void Data::SelectedNewMCACh( int ch )
   theMCAView->update();
 }
 
-void Data::showS2DData( QTextStream &in )
+void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
 {
   QStringList HeadLine1, HeadLine2, vals;
   QString line;
@@ -522,6 +522,7 @@ void Data::showS2DData( QTextStream &in )
   }
   theS2DView->setRatioType( AS_SCREEN );
 
+#if 0
   for ( int i = 0; ( i < 5 ) && ( ! in.atEnd() ); i++ )
     line = in.readLine();
 
@@ -541,10 +542,13 @@ void Data::showS2DData( QTextStream &in )
     dx2 = HeadLine2[6].toDouble();
     ps2 = HeadLine2[7].toInt();
   }
+#endif
 
-  theS2DView->setRange( sx1, sx2 - dx2/2,
-			dx1, dx2,
-			ps1, ps2+1 );
+  S2DInfo s2di;
+  s2di.load( in, AMotors );
+  theS2DView->setRange( s2di.sx[0], s2di.sx[1] - s2di.dx[1] / 2,
+			s2di.dx[0], s2di.dx[1],
+			s2di.ps[0], s2di.ps[1] + 1 );
   int ix = 0, iy = 0;
   while ( ! in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );

@@ -327,7 +327,6 @@ private:
   //  SCANMODE S2DScanMode0;
   DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
-  QFileDialog *S2DMCAsDirSel;
   DIRECTION ReversedDir( DIRECTION d )
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
   QDialog *S2DDialog;
@@ -363,8 +362,9 @@ private:
   void S2DStop0( void );
   void S2DStop00( void );
   void SetupS2DParams( void );
-  void S2DWriteHead( void );
-  void S2DWriteHead2( void );
+  void S2DWriteHead0( void );
+  void S2DWriteHead( QTextStream &out );
+  void S2DWriteHead2( QTextStream &out );
   void S2DWriteBody( double v );
   void S2DWriteBody2( int ix, int iy );
   void S2DWriteBlankLine( void );
@@ -676,7 +676,6 @@ private slots:
   void newPrec1( void );
   void newPrec2( void );
   void SaveS2DMCAs( void );
-  void LoadS2DMCAs( const QString &fname );
 
   void newSensSelected( int );
   void newRangeSelected( int );

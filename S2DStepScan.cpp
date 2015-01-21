@@ -39,7 +39,7 @@ void MainWindow::S2DStepScanSequence( void )
   case 0:
     // 検出器初期化
     if ( mUnits.init() == false ) {  // true :: initializing
-      S2DWriteHead();
+      S2DWriteHead0();
       mUnits.clearStage();
       S2DStage++;
     }

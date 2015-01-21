@@ -16,13 +16,6 @@ void MainWindow::setupScan2DArea( void )
   S2DFileSel->setNameFilter( "*.dat" );
   S2DFileSel->setConfirmOverwrite( false );
 
-  S2DMCAsDirSel = new QFileDialog;
-  S2DMCAsDirSel->setAcceptMode( QFileDialog::AcceptOpen );
-  S2DMCAsDirSel->setDirectory( QDir::currentPath() );
-  S2DMCAsDirSel->setNameFilter( "*" );
-  S2DMCAsDirSel->setFileMode( QFileDialog::Directory );
-  S2DMCAsDirSel->setConfirmOverwrite( false );
-
   S2DDialog = new QDialog;
   S2DDialog->resize( 600, 400 );
   QGridLayout *bl = new QGridLayout;
@@ -126,12 +119,6 @@ void MainWindow::setupScan2DArea( void )
 	   this, SLOT( newS2DFileSelected( const QString & ) ),
 	   Qt::UniqueConnection );
 
-  connect( S2DLoadMCAs, SIGNAL( clicked() ), S2DMCAsDirSel, SLOT( show() ),
-	   Qt::UniqueConnection );
-  connect( S2DMCAsDirSel, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( LoadS2DMCAs( const QString & ) ),
-	   Qt::UniqueConnection );
-  
   for ( int i = 0; i < S2DStarts.count(); i++ ) {
     connect( S2DStarts[i], SIGNAL( editingFinished() ), this, SLOT( newS2DSteps() ),
 	     Qt::UniqueConnection );
@@ -687,9 +674,6 @@ void MainWindow::S2DStop00( void )
 void MainWindow::SaveS2DResult( void )
 {
   if ( S2DI.valid ) {
-    S2DWriteHead();
-    S2DWriteHead2();
-
     if ( ! S2DI.SaveFile.simplified().isEmpty() ) {
       QFile f( S2DI.SaveFile );
       
@@ -697,6 +681,10 @@ void MainWindow::SaveS2DResult( void )
 	return;
       
       QTextStream out(&f);
+
+      S2DWriteHead( out );
+      S2DI.save( out );
+      S2DWriteHead2( out );
       
       for ( int iy = 0; iy <= S2DI.ps[1]; iy++ ) {
 	for ( int ix = 0; ix < S2DI.ps[0]; ix++ ) {
@@ -717,7 +705,7 @@ void MainWindow::SaveS2DResult( void )
   S2DFileName0->setToolTip( FSTATMsgs[ S2DDataStat ][ S2DNameStat ] );
 }
 
-void MainWindow::S2DWriteHead( void )
+void MainWindow::S2DWriteHead0 ( void )
 {
   if ( S2DI.SaveFile.simplified().isEmpty() )
     return;
@@ -730,6 +718,14 @@ void MainWindow::S2DWriteHead( void )
   // Writing fixed headers
   QTextStream out(&f);
 
+  S2DWriteHead( out );
+  S2DI.save( out );
+
+  f.close();
+}
+
+void MainWindow::S2DWriteHead( QTextStream &out )
+{
   // "#" と ":" の間は " " 込で 11桁
 
   out << "# 1306 Aichi SR 2D Scan" << endl;
@@ -737,54 +733,13 @@ void MainWindow::S2DWriteHead( void )
                                      .toString("yy.MM.dd hh:mm:ss.zzz") << endl;
   if ( SLS != NULL ) 
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
-
-  out << "# Scan Mode : ";
-  switch( S2DI.ScanMode ) {
-  case STEP: out << "Step Scan" << endl; break;
-  case QCONT: out << "Quasi Continuous Scan" << endl; break;
-  case RCONT: out << "Real Continuous Scan" << endl; break;
-  }
-  if ( S2DI.ScanBothDir ) {
-    out << "# Scan dir : Both" << endl;
-  } else {
-    out << "# Scan dir : Single" << endl;
-  }
-
-  for ( int i = 0; i < S2DI.motors; i++ ) {
-    if ( S2DI.used[i] ) {
-      out << "#" << QString( " Axis %1    : " ).arg( i, 1 )
-	  << QString( " %1" ).arg( S2DI.sx[i], 10 )
-	  << QString( " %1" ).arg( S2DI.ex[i], 10 )
-	  << QString( " %1" ).arg( S2DI.dx[i], 10 )
-	  << QString( " %1" ).arg( S2DI.ps[i], 10 )
-	  << " : " << S2DI.unit[i]->getName() << endl;
-    }
-  }
-
-  out << "#" << QString( " Dwell Time : %1" ).arg( S2DI.Dwell ) << endl;
-  out << "#" << endl;
-
-  f.close();
 }
 
-void MainWindow::S2DWriteHead2( void )
+void MainWindow::S2DWriteHead2( QTextStream &out )
 {
-  if ( S2DI.SaveFile.simplified().isEmpty() )
-    return;
-  
-  QFile f( S2DI.SaveFile );
-  
-  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
-    return;
-  
-  // Writing additional headers
-  QTextStream out(&f);
-  
   out << "# ***************************************************" << endl;
   out << "# ** This file was generated after the measurement **" << endl;
   out << "# ***************************************************" << endl;
-
-  f.close();
 }
 
 void MainWindow::S2DWriteBody( double v )

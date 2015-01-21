@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 21 12:50:22 2015 +0900\n"\
+                "    Specialgit add .\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jan 9 02:47:38 2015 +0900\n"\
+                "    with a pdf\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 8 21:46:26 2015 +0900\n"\
                 "    working on moving avr\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 6 21:18:29 2015 +0900\n"\
                 "    In Gs, calculation of inverted matrix is placed by LU-decompotion.  Hope the fitting is stabilized and got faster with it.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 6 19:08:31 2015 +0900\n"\
-                "    working on LA\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 6 16:56:09 2015 +0900\n"\
-                "    working on tuning Gs->fit\n"\
 		"\n"\
                 ""
 #endif
