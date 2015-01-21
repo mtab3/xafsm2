@@ -398,6 +398,6 @@ void Status::setEnc( void )
 
 void Status::showOptionBox( void )
 {
-  QScrollBar *vsb = verticalScrollBar();
-  vsb->setValue( vsb->maximum() );
+  QScrollBar *vsb = verticalScrollBar();  // 継承している垂直scroll barのポインタをもらう
+  vsb->setValue( conds->y() );
 }
