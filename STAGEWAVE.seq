@@ -1,0 +1,50 @@
+# Data collect for SSD Dead Time corrction.  ver.1
+
+ARRAY ATTENS SHUTTER Al000 Al001 Al002 Al004 Al006 Al008 Al012 Al016 Al024 Al032 Al040 Al048 Al056 Al064
+
+$I 0                                      # $I = 0
+
+LABEL FNameInit                           # --FNameInit--
+ $FNAME "DTCorrectSSD-"$ATTENS:$I
+ SADD FNAME ".dat"
+ # SHOW "fname " $FNAME
+ $FNAMES:$I $FNAME                        # $FNAMS[$I] = "DTCorrectSSD-" + $ATTENS[$I]
+ INC I                                    # $I++
+IFNEQ $I 15                               # if ( $I != 15 )
+ GOTO FNameInit                           # goto --FNameInit--
+
+$I 0
+
+SCHANGER SELECT    A001         # Select Special Changer A001 (6x5 changer)
+SCHANGER SETDXDY   ASIS         # set dx, dy of the changer as selected on SSD-setting
+
+MONOCH   ENERGY    10.0         # Set I0 energy at 10 keV
+
+FILE WRITE  "DTCorrectI0.dat" "# I0 and I record for SSD Dead Time Correction"
+FILE APPEND "DTCorrectI0.dat" "# " @DATE " " @TIME " Ring Cur. :" @RING 
+FILE APPEND "DTCorrectI0.dat" "# Dwell Time : 1.0"
+FILE APPEND "DTCorrectI0.dat" "# ----------------"
+
+MEASURE  CLEAR                 # Preparation of I0 and I1 sensors
+MEASURE  SENS      S000        # add S000 (Counter 0) to be monitored
+MEASURE  SENS      S001        # add S001 (Counter 1) to be monitored
+MEASURE  SENS      S006        # add S006 (SSD)
+MEASSSD  MODE	   REAL        # Measure SSD for 30s in real-time
+MEASURE  DTIME     30.000      # set dwell time 1.0 s
+
+LABEL LoopPoint
+
+ SCHANGER MOVE $ATTENS:$I       # (Selected)SpecialChanger MoveTo Shutter position
+
+ MEASURE  MEASURE
+ MEASURE  READ
+ FILE APPEND "DTCorrectI0.dat" @MEASURED " : " $ATTENS:$I
+ MEASSSD  RECORD $FNAMES:$I       # save the SSD data
+ SHOW $FNAMES:$I
+
+ INC I
+
+IFNEQ $I 15
+ GOTO LoopPoint
+
+END

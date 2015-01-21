@@ -289,6 +289,8 @@ void MainWindow::newDataRoot( const QString &dataRoot )
     monFSel->setDirectory( dataRoot );
   if ( S2DFileSel != NULL )
     S2DFileSel->setDirectory( dataRoot );
+  if ( S2DMCAsDirSel != NULL )
+    S2DMCAsDirSel->setDirectory( dataRoot );
   if ( SelDFND != NULL )
     SelDFND->setDirectory( dataRoot );
   if ( SelWBFND != NULL )

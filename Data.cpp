@@ -20,7 +20,7 @@ Data::Data( QWidget *p ) : QFrame( p )
   CSDialog = new QColorDialog;
 
   QStringList filters;
-  filters << "*.dat" << "*.*";
+  filters << "*.dat" << "*.*" << "*";
 
   FSDialog->setAcceptMode( QFileDialog::AcceptOpen );
   FSDialog->setDirectory( QDir::currentPath() );
@@ -33,6 +33,7 @@ Data::Data( QWidget *p ) : QFrame( p )
   XYLine0 = XYLines = 0;
   MCADataIsValid = false;
   MCALength = 0;
+  S2DI.valid = false;
 
   DColors << DColor01 << DColor02 << DColor03 << DColor04 << DColor05
 	  << DColor06 << DColor07 << DColor08 << DColor09 << DColor10;
@@ -521,9 +522,9 @@ void Data::showS2DData( QTextStream &in )
   }
   theS2DView->setRatioType( AS_SCREEN );
 
-  // 5行空読み
   for ( int i = 0; ( i < 5 ) && ( ! in.atEnd() ); i++ )
     line = in.readLine();
+
 
   if ( ! in.atEnd() ) HeadLine1 = in.readLine().split( QRegExp( "\\s+" ) );
   if ( ! in.atEnd() ) HeadLine2 = in.readLine().split( QRegExp( "\\s+" ) );
@@ -540,6 +541,7 @@ void Data::showS2DData( QTextStream &in )
     dx2 = HeadLine2[6].toDouble();
     ps2 = HeadLine2[7].toInt();
   }
+
   theS2DView->setRange( sx1, sx2 - dx2/2,
 			dx1, dx2,
 			ps1, ps2+1 );
@@ -557,3 +559,4 @@ void Data::showS2DData( QTextStream &in )
     }
   }
 }
+

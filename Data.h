@@ -6,6 +6,7 @@
 
 #include "ui_Data.h"
 #include "Units.h"
+#include "S2DInfo.h"
 
 class ViewCTRL;
 class XYView;
@@ -47,6 +48,7 @@ class Data : public QFrame, private Ui::Data
   quint32 *cMCA;
   QVector<quint32 *> MCAs0, MCAs;
   QVector<double *> MCAEs;
+  S2DInfo S2DI;
 
   void showMeasData( QTextStream &in );
   void showScanData( QTextStream &in );

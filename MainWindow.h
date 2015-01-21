@@ -327,6 +327,7 @@ private:
   //  SCANMODE S2DScanMode0;
   DIRECTION S2DScanDir;
   QFileDialog *S2DFileSel;
+  QFileDialog *S2DMCAsDirSel;
   DIRECTION ReversedDir( DIRECTION d )
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
   QDialog *S2DDialog;
@@ -565,6 +566,9 @@ private:
   void AutoSequenceEnd( void );
   void ASReadSEQFile( QString fname );
 
+  AUnit *smAm;
+  int smStage;
+				     
 private slots:
   // Main Part
   void Print( QPrinter *p );
@@ -672,6 +676,7 @@ private slots:
   void newPrec1( void );
   void newPrec2( void );
   void SaveS2DMCAs( void );
+  void LoadS2DMCAs( const QString &fname );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -840,6 +845,10 @@ private slots:
   void TYVUpScale( void );
   void TYVDownScale( void );
 
+
+  void SpecialMove( void );
+  void SpecialMoveCore( void );
+  
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
