@@ -4,6 +4,22 @@
 
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 22 17:17:20 2015 +0900\n"\
+                "    working on S2D MCA\n"\
+		"\n"\
+                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 22 14:04:15 2015 +0900\n"\
+                "    workin\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 22 11:58:30 2015 +0900\n"\
+                "    working on S2D broken codes\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 21 18:33:43 2015 +0900\n"\
+                "    working on S2D MCA\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 21 12:50:22 2015 +0900\n"\
                 "    Specialgit add .\n"\
@@ -27,22 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 7 12:15:49 2015 +0900\n"\
                 "    expired old codes of PeakFit.cpp and .h replaced by Gs.cpp and .h\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 7 12:10:47 2015 +0900\n"\
-                "    ok\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 7 12:09:34 2015 +0900\n"\
-                "    modified splash-screen\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 7 01:31:27 2015 +0900\n"\
-                "    new splash\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 6 21:18:29 2015 +0900\n"\
-                "    In Gs, calculation of inverted matrix is placed by LU-decompotion.  Hope the fitting is stabilized and got faster with it.\n"\
 		"\n"\
                 ""
 #endif

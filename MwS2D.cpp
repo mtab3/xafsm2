@@ -491,7 +491,7 @@ void MainWindow::S2DScanStart( void )
       UUnits.addUnit( S2D_ID, mUnits.at(i) );
     }
 
-    S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
+    S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1, MCALength, SAVEMCACh );
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
@@ -797,7 +797,7 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
   for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
     double *E = set->Ch[ ch ].E;
     quint32 *cnt = set->Ch[ ch ].cnt;
-    for ( int i = 0; i < SAVEMCASize; i++ ) {
+    for ( int i = 0; i < MCALength; i++ ) {
       E[i] = kev2pix->p2E( ch, i );
       cnt[i] = SFluo->getAMCAdata( ch, i );
     }
@@ -1012,7 +1012,7 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
       if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
 	double *E = set->Ch[ ch ].E;
 	quint32 *cnt = set->Ch[ ch ].cnt;
-	for ( int i = 0; i < SAVEMCASize; i++ ) {
+	for ( int i = 0; i < MCALength; i++ ) {
 	  if (( E[i] >= ss[ch] )&&( E[i] <= es[ch] )) {
 	    sum += cnt[i];
 	  }
@@ -1040,7 +1040,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
   cnt1 = set1->Ch[ cMCACh ].cnt;
 
   if ( S2DI.ScanMode == STEP ) {
-    for ( int i = 0; i < SAVEMCASize; i++ ) {
+    for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = cnt1[i];
     }
   } else {
@@ -1055,7 +1055,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
     // 往復スキャンなら、奇数業は最初の行の逆向けのスキャン
     dx = ( S2DI.startDir == FORWARD ) ? 1 : -1;
     if (( S2DI.ScanBothDir )&&( iy % 2 == 1 )) dx *= -1;
-    for ( int i = 0; i < SAVEMCASize; i++ ) {
+    for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = ( cnt2[i] - cnt1[i] ) * dx;
     }
   }
@@ -1089,7 +1089,7 @@ void MainWindow::S2DShowIntMCA( int ix, int iy )
     return;
   cnt = set->Ch[ cMCACh ].cnt;
 
-  for ( int i = 0; i < SAVEMCASize; i++ ) {
+  for ( int i = 0; i < MCALength; i++ ) {
     MCAData[i] = cnt[i];
   }
 

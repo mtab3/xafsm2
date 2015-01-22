@@ -1473,9 +1473,10 @@ void MainWindow::StartMeasurement( void )
       if ( cMCAView == NULL )
 	getNewMCAView();
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
-        XafsMCAMap.New( TotalPoints, SelRPT->value() );
+        XafsMCAMap.New( TotalPoints, SelRPT->value(), MCALength, SAVEMCACh );
       else                        // そうでなければ 1スキャン分だけメモリ上に
-        XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
+        XafsMCAMap.New( TotalPoints, 1, MCALength, SAVEMCACh );
+                                  // SelRPT->value() --> 1
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -1808,7 +1809,7 @@ void MainWindow::MoveInMeasView( int ix, double )
 
   cnt = set->Ch[ cMCACh ].cnt;
 
-  for ( int i = 0; i < SAVEMCASize; i++ ) {
+  for ( int i = 0; i < MCALength; i++ ) {
     MCAData[i] = cnt[i];
   }
 

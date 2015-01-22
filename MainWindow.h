@@ -59,6 +59,7 @@
 
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
+#define SAVEMCACh        ( 19 )
 #define S2D_END_STAGE    ( 99 )
 
 struct AutoModeParam {

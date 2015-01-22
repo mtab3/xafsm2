@@ -23,6 +23,13 @@ void MainWindow::SaveS2DMCAs( void )
 	QString fname = QString( "%1-MCA-%2-%3.dat" )
 	  .arg( bfname )
 	  .arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );
+
+	QStringList Elms;
+	if ( cMCAView != NULL )
+	  if ( ShowAlwaysSelElm->isChecked() )
+	    Elms = cMCAView->getSelectedElms();
+	set->save( fname, Elms );
+#if 0
 	QFile f( fname );
 	if ( f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
 	  QTextStream out( &f );
@@ -58,6 +65,7 @@ void MainWindow::SaveS2DMCAs( void )
 	  }
 	  f.close();
 	}
+#endif
       }
     }
   }

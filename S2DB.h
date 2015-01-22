@@ -24,7 +24,7 @@ class S2DB : public QFrame, private Ui::S2DB
   S2DView *getView( void ) { return S2DV; };
   void setLoadBHidden( bool f ) { LoadMCAsBFrame->setHidden( f ); };
   void setDataLoot( QString root ) { MCAsDirSel->setDirectory( root ); };
-  void gotNewMCAView( MCAView *mcav );
+  void gotNewMCAView( MCAView *mcav, int length, int chs );
   void setS2DI( S2DInfo s2di ) { S2DI = s2di; };
 
 public slots:

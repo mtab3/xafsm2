@@ -91,5 +91,5 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
 void MainWindow::ansToGetNewMCAView( S2DB* s2db )
 {
   getNewMCAView();
-  s2db->gotNewMCAView( cMCAView );
+  s2db->gotNewMCAView( cMCAView, MCALength, SAVEMCACh );
 }
