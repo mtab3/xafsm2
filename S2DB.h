@@ -2,6 +2,7 @@
 #define S2DB_H
 
 #include <QFrame>
+#include <QFileDialog>
 
 #include "ui_S2DB.h"
 
@@ -9,12 +10,14 @@ class S2DB : public QFrame, private Ui::S2DB
 {
   Q_OBJECT
 
-  QFileDialog *S2DMCAsDirSel;
+  QFileDialog *MCAsDirSel;
 
  public:
-  S2DB( QWidget *p, FileDialog *MCADirSel );
+  S2DB( QWidget *p );
 
   S2DView *getView( void ) { return S2DV; };
+  void setLoadBHidden( bool f ) { S2DLoadMCAs->setHidden( f ); };
+  void setDataLoot( QString root ) { MCAsDirSel->setDirectory( root ); };
 
 public slots:
   void newZZ( QString max, QString min )
