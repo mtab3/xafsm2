@@ -8,17 +8,17 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   CBar->setAutoScale( AutoScaleB->isChecked() );
   S2DV->setCBar( CBar );
 
-  S2DMCAsDirSel = new QFileDialog;
-  S2DMCAsDirSel->setAcceptMode( QFileDialog::AcceptOpen );
-  S2DMCAsDirSel->setDirectory( QDir::currentPath() );
-  S2DMCAsDirSel->setNameFilter( "*" );
-  S2DMCAsDirSel->setFileMode( QFileDialog::Directory );
-  S2DMCAsDirSel->setConfirmOverwrite( false );
+  MCAsDirSel = new QFileDialog;
+  MCAsDirSel->setAcceptMode( QFileDialog::AcceptOpen );
+  MCAsDirSel->setDirectory( QDir::currentPath() );
+  MCAsDirSel->setNameFilter( "*" );
+  MCAsDirSel->setFileMode( QFileDialog::Directory );
+  MCAsDirSel->setConfirmOverwrite( false );
 
-  connect( S2DLoadMCAs, SIGNAL( clicked() ), S2DMCAsDirSel, SLOT( show() ),
+  connect( LoadMCAsB, SIGNAL( clicked() ), MCAsDirSel, SLOT( show() ),
 	   Qt::UniqueConnection );
-  connect( S2DMCAsDirSel, SIGNAL( fileSelected( const QString & ) ),
-	   this, SLOT( LoadS2DMCAs( const QString & ) ),
+  connect( MCAsDirSel, SIGNAL( fileSelected( const QString & ) ),
+	   this, SLOT( LoadMCAs( const QString & ) ),
 	   Qt::UniqueConnection );
   
 #if 0
@@ -38,10 +38,13 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
 
 
 
-void MainWindow::LoadS2DMCAs( const QString &name )
+void S2DB::LoadMCAs( const QString &name )
 {
   //  getNewMCAView();   // ここで確実に MCAData が有効になる
   //  S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
+
+
+  qDebug() << "aaa";
 }
 
 #if 0

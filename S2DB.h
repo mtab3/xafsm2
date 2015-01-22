@@ -16,7 +16,7 @@ class S2DB : public QFrame, private Ui::S2DB
   S2DB( QWidget *p );
 
   S2DView *getView( void ) { return S2DV; };
-  void setLoadBHidden( bool f ) { S2DLoadMCAs->setHidden( f ); };
+  void setLoadBHidden( bool f ) { LoadMCAsB->setHidden( f ); };
   void setDataLoot( QString root ) { MCAsDirSel->setDirectory( root ); };
 
 public slots:
@@ -26,11 +26,10 @@ public slots:
     zmin->setText( min );
   }
 
-  void LoadS2DMCAs( const QString &fname );
-
 private slots:
   void newInputZmax( void ) { CBar->newInputZmax( zmax->text().toDouble() ); };
   void newInputZmin( void ) { CBar->newInputZmin( zmin->text().toDouble() ); };
+  void LoadMCAs( const QString &fname );
 
 signals:
 #if 0

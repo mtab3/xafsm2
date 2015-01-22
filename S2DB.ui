@@ -213,7 +213,7 @@
        <number>1</number>
       </property>
       <item row="1" column="0">
-       <widget class="QPushButton" name="S2DLoadMCAs">
+       <widget class="QPushButton" name="LoadMCAsB">
         <property name="text">
          <string>Load MCAs</string>
         </property>
