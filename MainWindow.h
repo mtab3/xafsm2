@@ -834,6 +834,7 @@ private slots:
   void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( void );
   void S2DReCalcMap0( void );
+  void ansToGetNewMCAView( S2DB *s2db );
 
   /* AutoSequence */
   void AutoSequence0( void );

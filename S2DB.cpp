@@ -11,6 +11,7 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   MCAsDirSel = new QFileDialog;
   MCAsDirSel->setAcceptMode( QFileDialog::AcceptOpen );
   MCAsDirSel->setDirectory( QDir::currentPath() );
+  qDebug() << "Cur Path" << QDir::currentPath();
   MCAsDirSel->setNameFilter( "*" );
   MCAsDirSel->setFileMode( QFileDialog::Directory );
   MCAsDirSel->setConfirmOverwrite( false );
@@ -35,16 +36,18 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   connect( CBar, SIGNAL( newScale() ), S2DV, SLOT( update() ), Qt::UniqueConnection );
 }
 
-
-
-
 void S2DB::LoadMCAs( const QString &name )
 {
-  //  getNewMCAView();   // ここで確実に MCAData が有効になる
+  mcaMapDir = name;
+  emit askToGetNewMCAView( this );
   //  S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
+  qDebug() << "in load mcas";
+}
 
-
-  qDebug() << "aaa";
+void S2DB::gotNewMCAView( MCAView *mcav )
+{
+  qDebug() << S2DI.ps[0] << S2DI.ps[1];
+  mcaMap.New( 10, 10 );
 }
 
 #if 0

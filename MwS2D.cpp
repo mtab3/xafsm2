@@ -9,6 +9,7 @@
 void MainWindow::setupScan2DArea( void )
 {
   S2Dview = S2DBase->getView();
+  S2DBase->setLoadBHidden( true );
   
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );

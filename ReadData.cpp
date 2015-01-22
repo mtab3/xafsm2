@@ -77,6 +77,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     break;
   case S2DDATA:
     view = SetUpNewView( S2DVIEW );
+    connect( (S2DB*)(view->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ), this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:
@@ -85,4 +86,10 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
   }
 
   ((Data*)from)->GotNewView( view, AMotors );
+}
+
+void MainWindow::ansToGetNewMCAView( S2DB* s2db )
+{
+  getNewMCAView();
+  s2db->gotNewMCAView( cMCAView );
 }

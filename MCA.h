@@ -6,6 +6,8 @@
 #define SAVEMCASize  ( 2048 )
 #define SAVEMCACh    ( 19 )
 
+#include "MCAHead.h"
+
 struct aCh {
   double E[ SAVEMCASize ];
   quint32 cnt[ SAVEMCASize ];

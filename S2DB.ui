@@ -183,7 +183,7 @@
     </widget>
    </item>
    <item row="3" column="1" colspan="3">
-    <widget class="QFrame" name="frame_35">
+    <widget class="QFrame" name="LoadMCAsBFrame">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
