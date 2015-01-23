@@ -236,7 +236,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( ToggleGoToButtons( QString ) ),
 	   Qt::UniqueConnection );
 
-  connect( MovingAvr, SIGNAL( edigingFinished() ), this, SLOT( newMovingAvr() ),
+  connect( MovingAvr, SIGNAL( editingFinished() ), this, SLOT( newMovingAvr() ),
 	   Qt::UniqueConnection );
 }
 

@@ -5,10 +5,13 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+<<<<<<< HEAD
                 "Date        : Wed Jan 21 12:50:22 2015 +0900\n"\
                 "    Specialgit add .\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+=======
+>>>>>>> 13384039987871f563c7fc3676a451bfb6e86266
                 "Date        : Fri Jan 9 02:47:38 2015 +0900\n"\
                 "    with a pdf\n"\
 		"\n"\
@@ -44,5 +47,12 @@
                 "Date        : Tue Jan 6 21:18:29 2015 +0900\n"\
                 "    In Gs, calculation of inverted matrix is placed by LU-decompotion.  Hope the fitting is stabilized and got faster with it.\n"\
 		"\n"\
+<<<<<<< HEAD
+=======
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 6 19:08:31 2015 +0900\n"\
+                "    working on LA\n"\
+		"\n"\
+>>>>>>> 13384039987871f563c7fc3676a451bfb6e86266
                 ""
 #endif

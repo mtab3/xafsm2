@@ -111,18 +111,6 @@ void TYView::print( QPrinter *p )
 void TYView::Draw( QPainter *p )
 {
   if ( valid != true ) return;
-
-  QVector<QVector<double> > mabuf( lines );
-  for ( int i = 0; i < lines; i++ ) {
-    mabuf[i].resize( movingAvr );
-    for ( int j = 0; j < movingAvr; j++ ) {
-      mabuf[i][j] = 0;
-    }
-  }
-  QVector<double> mas( movingAvr );
-  for ( int i = 0; i < movingAvr; i++ ) {
-    mas[i] = 0;
-  }
   
   QString buf, buf2;
   double RM, LM, TM, TW, BM, HDiv, VDiv;
@@ -266,7 +254,7 @@ void TYView::Draw( QPainter *p )
     pen1.setColor( LCs->at( j ) );
     p->setPen( pen1 );
 
-    for ( int i = 0; i < datas - 1; i++ ) { // データプロット
+    for ( int i = 0; i < datas - 1; i++ ) {
       pp1 = ep - 1 - i;
       pp2 = ep - 1 - ( i + 1 );
       if ( pp1 < 0 ) pp1 += RingMax;
