@@ -524,28 +524,6 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
   }
   theS2DView->setRatioType( AS_SCREEN );
 
-#if 0
-  for ( int i = 0; ( i < 5 ) && ( ! in.atEnd() ); i++ )
-    line = in.readLine();
-
-
-  if ( ! in.atEnd() ) HeadLine1 = in.readLine().split( QRegExp( "\\s+" ) );
-  if ( ! in.atEnd() ) HeadLine2 = in.readLine().split( QRegExp( "\\s+" ) );
-
-  double sx1 = 0, sx2 = 0, dx1 = 1, dx2 = 1;
-  int ps1 = 1, ps2 = 1;
-  if ( HeadLine1.count() >= 8 ) {
-    sx1 = HeadLine1[4].toDouble();
-    dx1 = HeadLine1[6].toDouble();
-    ps1 = HeadLine1[7].toInt();
-  }
-  if ( HeadLine2.count() >= 8 ) {
-    sx2 = HeadLine2[4].toDouble();
-    dx2 = HeadLine2[6].toDouble();
-    ps2 = HeadLine2[7].toInt();
-  }
-#endif
-
   S2DInfo s2di;
   s2di.load( in, AMotors );
   theS2DB->setS2DI( s2di );

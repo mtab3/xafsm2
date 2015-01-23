@@ -1,6 +1,7 @@
 #ifndef MCA_H
 #define MCA_H
 
+#include <QTextStream>
 #include <QStringList>
 
 #include "MCAHead.h"
@@ -85,7 +86,10 @@ struct aMCASet {
   
   void setValid( bool f ) { valid = f; };
   bool isValid( void ) { return valid; };
-  void save( QString fname, QStringList &Elms );
+  void save( QString fname, QString title );
+  void writeHead( QTextStream &out );
+  void writeData( QTextStream &out );
+  void load( QString fname, QString title );
 };
 
 struct aMCAMap {
@@ -95,7 +99,7 @@ struct aMCAMap {
   aMCAMap() { iX = iY = 0; Points = NULL; };
   ~aMCAMap() { if ( Points != NULL ) delete [] Points; };
 
-  void New( int length, int CHs, int ix, int iy )
+  void New( int ix, int iy, int length, int CHs )
   {
     if ( Points != NULL ) {
       delete [] Points;

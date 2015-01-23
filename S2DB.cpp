@@ -46,8 +46,8 @@ void S2DB::LoadMCAs( const QString &name )
 
 void S2DB::gotNewMCAView( MCAView *mcav, int length, int chs )
 {
-  qDebug() << S2DI.ps[0] << S2DI.ps[1];
-  mcaMap.New( 10, 10, length, chs );
+  qDebug() << S2DI.ps[0] << S2DI.ps[1] << length << chs;
+  mcaMap.New( S2DI.ps[0], S2DI.ps[1], length, chs );
 }
 
 #if 0

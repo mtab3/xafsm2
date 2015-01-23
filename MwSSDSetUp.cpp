@@ -536,7 +536,6 @@ void MainWindow::saveMCAData( void )
     statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
     return;
   }
-
   MCADataStat = OLD;
   MCANameStat = OLD;
   MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
@@ -547,11 +546,14 @@ void MainWindow::saveMCAData( void )
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
   aMCASet *set = new aMCASet;
+  set->setSize( MCALength, SAVEMCACh );
   SaveMCADataOnMem( set );
-  saveMCAData0( MCARecFile->text(), set );
+  //  saveMCAData0( MCARecFile->text(), set );
+  set->save( MCARecFile->text(), "measured by SSD set up" );
   delete set;
 }
 
+#if 0
 void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 {
   if ( set == NULL )
@@ -564,46 +566,17 @@ void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 			    2000 );
     return;
   }
-
   QTextStream out( &f );
 
   out << "# XafsM2 MCA Data\n";
   out << "# " << set->date << "\n";
 
-  WriteMCAHead( out, set );
-  WriteMCAData( out, set );
+  set->writeHead( out );
+  set->writeData( out );
 
   f.close();
 }
-
-void MainWindow::WriteMCAHead( QTextStream &out, aMCASet *set )
-{
-  out << "# Ring Current : "
-      << ( ( SLS == NULL ) ? "---" : QString::number( set->RINGCurrent ) ) << "\n";
-  out << "# I0           : " << set->I0 << "\n";
-  out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    MCAHead head = set->Heads[i];
-    out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
-	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
-	<< set->ROIStart[i] << "\t" << set->ROIEnd[i] << "\n";
-  }
-  for ( int i = 0; i < set->Elms.count(); i++ ) {
-    out << "# " << set->Elms[i] << "\n";
-  }
-}
-
-void MainWindow::WriteMCAData( QTextStream &out, aMCASet *set )
-{
-  for ( int i = 0; i < MCALength; i++ ) {
-    out << i;
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << "\t" << set->Ch[j].E[i];
-      out << "\t" << set->Ch[j].cnt[i];
-    }
-    out << "\n";
-  }
-}
+#endif
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
 {

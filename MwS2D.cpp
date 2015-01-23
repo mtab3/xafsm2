@@ -779,7 +779,8 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
       QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
       aMCASet *set = new aMCASet;
       SaveMCADataOnMem( set );
-      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
+      //      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
+      set->save( mcaFile.canonicalFilePath(), "measured in S2D" );
       delete set;
     }
   }
