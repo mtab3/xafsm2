@@ -7,6 +7,7 @@
 #include "ui_Data.h"
 #include "Units.h"
 #include "S2DInfo.h"
+#include "S2DB.h"
 
 class ViewCTRL;
 class XYView;
@@ -40,6 +41,7 @@ class Data : public QFrame, private Ui::Data
   TYView *theTYView;
   MCAView *theMCAView;
   S2DView *theS2DView;
+  S2DB *theS2DB;
   int XYLine0, XYLines; 
 
   int MCALength;

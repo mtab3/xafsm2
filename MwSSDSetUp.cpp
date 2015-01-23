@@ -118,7 +118,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   cMCACh = 0;
   //  oldMCACh = -1;
   StartResume = MCA_START;
-  cMCAViewTabNo = -1;;
+  cMCAViewTabNo = -1;
+  MCALength = 2048;
 
   SelSSDs( 0 );
 
@@ -867,7 +868,7 @@ void MainWindow::getNewMCAView( void )
     cMCAViewC->setNowDType( MCADATA );
     cMCAView = (MCAView*)(cMCAViewC->getView());
     cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
-    
+
     MCAData = cMCAView->setMCAdataPointer( MCALength );
     validMCAData = true;
     cMCAViewTabNo = ViewTab->currentIndex();

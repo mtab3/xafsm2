@@ -514,7 +514,9 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
 
   qDebug() << "readint s2d data";
 
-  theS2DView = (S2DView*)(((S2DB*)(theViewC->getView()))->getView());
+  theS2DB = (S2DB*)(theViewC->getView());
+  theS2DB->setLoadBHidden( false );
+  theS2DView = (S2DView*)(theS2DB->getView());
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( S2DDATA );
     theViewC->setNowVType( S2DVIEW );
@@ -546,6 +548,7 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
 
   S2DInfo s2di;
   s2di.load( in, AMotors );
+  theS2DB->setS2DI( s2di );
   theS2DView->setRange( s2di.sx[0], s2di.sx[1] - s2di.dx[1] / 2,
 			s2di.dx[0], s2di.dx[1],
 			s2di.ps[0], s2di.ps[1] + 1 );

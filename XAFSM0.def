@@ -118,12 +118,13 @@ CRYSTAL  "Ge(333)"   1.0887941
 #   0.70         : the partial pressure of the N2. (The total does not have to be 1.)
 #   "He"         ....
 #
-GAS      "No.1 He:N2 70:30"  "N2" 0.700 "He" 0.300 ""
+#GAS      "No.1 He:N2 70:30"  "N2" 0.700 "He" 0.300 ""
+GAS      "No.1    He      "  "He" 1.000 ""
 GAS      "No.2    N2      "  "N2" 1.000            ""
 GAS      "No.3 N2:Ar 85:15"  "N2" 0.845 "Ar" 0.155 ""
 GAS      "No.4 N2:Ar 75:25"  "N2" 0.745 "Ar" 0.255 ""
 GAS      "No.5 N2:Ar 50:50"  "N2" 0.492 "Ar" 0.508 ""
-GAS      "No.6    Ar      "             "Ar" 1.000 ""
+GAS      "No.6    Ar      "  "Ar" 1.000 ""
 
 # 'ICLENGTH' lines provide information for ion-chambers
 # ICLENGTH        : the identifier of the line

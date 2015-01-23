@@ -185,7 +185,8 @@ void MainWindow::MeasSequence( void )
 	  if ( ! MCACanSaveAllOnMem )
 	    // 全部セーブできない時は、1スキャン終わったら
 	    // 次のスキャンに備えてメモリクリア (直近の1スキャン分だけ覚えておく)
-	    XafsMCAMap.New( MPSet.totalPoints, 1 );   // SelRPT->value() --> 1
+	    XafsMCAMap.New( MPSet.totalPoints, 1, MCALength, 19 );
+                               // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
 	UUnits.clear( MEAS_ID );

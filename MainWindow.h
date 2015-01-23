@@ -59,6 +59,7 @@
 
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
+#define SAVEMCACh        ( 19 )
 #define S2D_END_STAGE    ( 99 )
 
 struct AutoModeParam {
@@ -240,6 +241,7 @@ private:
   QMap<QString,int> ASLabels;
   /* Auto Sequence */
 
+  void getGassAbsTable( void );
 
   /***********************************************/
 
@@ -834,6 +836,7 @@ private slots:
   void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( void );
   void S2DReCalcMap0( void );
+  void ansToGetNewMCAView( S2DB *s2db );
 
   /* AutoSequence */
   void AutoSequence0( void );
