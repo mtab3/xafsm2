@@ -256,8 +256,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( OtherOptions, SIGNAL( clicked() ), this, SLOT( ShowOtherOptions() ),
 	   Qt::UniqueConnection );
 
-
-  getGassAbsTable();
+//  getGassAbsTable();
 }
 
 void MainWindow::ShowOtherOptions( void )
