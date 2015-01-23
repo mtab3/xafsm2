@@ -6,7 +6,7 @@
 
 #include "MCA.h"
 
-#define COMMONTITLE "# XafsM2 MCA Data"
+#define COMMONTITLE "XafsM2 MCA Data"
 
 void aMCASet::save( QString fname, QString title )
 {
