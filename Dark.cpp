@@ -103,8 +103,12 @@ bool MainWindow::MeasureDark( void )
 
 void MainWindow::MeasDarkSequence( void )
 {
+  qDebug() << "inm";
+  
   if (( dUnits.isBusy() )||( AskingShutterClose )||( AskingShutterOpen ))
     return;
+
+  qDebug() << "inm2";
 
   switch( MeasDarkStage ) {
   case 0:
@@ -180,6 +184,7 @@ void MainWindow::MeasDarkSequence( void )
     MeasDarkTimer->stop();
     break;
   }
+  qDebug() << "outm";
 }
 
 void MainWindow::ShowNewDark( double dark )

@@ -1447,7 +1447,7 @@ void MainWindow::StartMeasurement( void )
     }
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
-
+    
     //    disconnect( this, SLOT( MoveInMeasView( double ) ) );
     connect( MeasView, SIGNAL( MovedToNewX( int, double ) ),
 	     this, SLOT( MoveInMeasView( int, double ) ),
@@ -1470,7 +1470,7 @@ void MainWindow::StartMeasurement( void )
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
-    
+
     MeasChNo = mUnits.count();         // 測定のチャンネル数
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
     if ( Use19chSSD->isChecked() ) {
@@ -1721,6 +1721,7 @@ void MainWindow::PauseMeasurement( void )
 void MainWindow::OkOverWrite( void )
 {
   AskingOverwrite = false;
+  qDebug() << "ok over";
 }
 
 void MainWindow::RangeSelOK( void )
