@@ -1490,8 +1490,11 @@ void MainWindow::StartMeasurement( void )
       FixedPositionMode = false;
 
     if ( isSFluo ) {
-      if ( cMCAView == NULL )
+      if ( cMCAView == NULL ) {
 	getNewMCAView();
+      } else {
+	cMCAView = (MCAView*)(cMCAViewC->getView());
+      }
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
         XafsMCAMap.New( TotalPoints, SelRPT->value(), MCALength, SAVEMCACh );
       else                        // そうでなければ 1スキャン分だけメモリ上に

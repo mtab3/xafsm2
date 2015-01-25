@@ -2,30 +2,16 @@
 
 void MainWindow::MeasSequence( void )
 {
-  qDebug() << "in";
-
   double Delta;
   bool a1, a2;
 
   if ( inMeasDark ) return;
-  qDebug() << "in1";
   if ( AskingOverwrite ) return;
-  qDebug() << "in2";
-
-  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) {
-    return;
-  }
-  qDebug() << "in3";
-
+  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) return;
   if ( MPSet.qXafsMode ) {
     ShowQXafsProgress();
   }
-
-  qDebug() << "in4";
-  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
-    return;
-  }
-  qDebug() << "in5";
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
   if ( MovingToNewSamplePosition ) {
     if ( Changers[ ChangerSelect->currentIndex() ]->unit1()->isBusy()
 	 || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
@@ -33,16 +19,12 @@ void MainWindow::MeasSequence( void )
     MovingToNewSamplePosition = false;
   }
 
-  qDebug() << "in6";
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
 
-  qDebug() << "in7";
   if ( MPSet.qXafsMode ) {
     QXafsMeasSequence();
     return;
   }
-
-  qDebug() << "in2";
   
   switch( MeasStage ) {
     /* 
@@ -223,7 +205,6 @@ void MainWindow::MeasSequence( void )
       MeasStage = 10;
     break;
   }
-  qDebug() << "out";
 }
 
 void MainWindow::onMeasFinishWorks( void )
