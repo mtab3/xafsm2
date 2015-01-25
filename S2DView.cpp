@@ -9,7 +9,6 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
-  Parent = p;
   showIx = showIy = lastIx = lastIy = 0;
   showIx0 = showIy0 = -1;
   data = NULL;
@@ -27,19 +26,6 @@ S2DView::S2DView( QWidget *p ) : QFrame( p )
   Pink = QColor( 255, 220, 220 );
   AutoScale = true;
   setMouseTracking( true );
-}
-
-void S2DView::setParent( QWidget *p )
-{
-  Parent = p;
-  connect( this, SIGNAL( AskMoveToPointedPosition( int, int ) ),
-	   Parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
-  connect( this, SIGNAL( AskToChangeMCACh( int ) ),
-	   Parent, SLOT( S2DChangeMCACh( int ) ), Qt::UniqueConnection );
-  connect( this, SIGNAL( PointerMovedToNewPosition( int, int ) ),
-	   Parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
-  connect( this, SIGNAL( PointerMovedOnIntMCA( int, int ) ),
-	   Parent, SLOT( S2DShowIntMCA( int, int ) ), Qt::UniqueConnection );
 }
 
 void S2DView::setRange( double Sx, double Sy, double Dx, double Dy, int ix, int iy )

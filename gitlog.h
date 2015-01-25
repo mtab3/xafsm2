@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jan 25 15:38:08 2015 +0900\n"\
+                "    the problem on the MCAView is solved anyway\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 25 13:13:19 2015 +0900\n"\
                 "    I found the reason of the problem that the XAFS measurement with SSD after SSD-data-display is crashed, but can not solve it.   The reason is that the object pointed by cMCAView is deleted by the data-display\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 22 17:17:20 2015 +0900\n"\
                 "    working on S2D MCA\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 22 14:04:15 2015 +0900\n"\
-                "    workin\n"\
 		"\n"\
                 ""
 #endif

@@ -23,10 +23,13 @@ void aMCASet::save( QString fname, QString title )
   }
 }
 
+#define RINGCURRENT "Ring Current"
+#define I0VALUE     "I0          "
+
 void aMCASet::writeHead( QTextStream &out )
 {
-  out << "# Ring Current : " << RINGCurrent << "\n";
-  out << "# I0           : " << I0 << "\n";
+  out << "# " << RINGCURRENT << " : " << RINGCurrent << "\n";
+  out << "# " << I0VALUE     << " : " << I0 << "\n";
   out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
   for ( int i = 0; i < CHs; i++ ) {
     MCAHead head = Heads[i];
@@ -52,8 +55,6 @@ void aMCASet::writeData( QTextStream &out )
   }
 }
 
-//#define S2DFILEID "# XafsM2 MCA Data 
-
 void aMCASet::load( QString fname, QString title )
 {
   bool endf = false;
@@ -70,7 +71,33 @@ void aMCASet::load( QString fname, QString title )
 	  endf = true;
 	}
       }
+      if ( lc > 1 ) {
+	if ( ( line.count() > 0 ) && ( line[0] == '#' ) ) {
+	  if ( line.mid( 2, QString( RINGCURRENT ).length() ) == QString( RINGCURRENT ) ) {
+	    RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
+	    qDebug() << "RC " << RINGCurrent;
+	  }
+	  if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
+	    RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
+	  }
+	} else {
+	  QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
+	  if ( vals.count() >= ( CHs * 2 + 1 ) ) {
+	    int i = vals[0].toInt();
+	    for ( int j = 0; j < CHs; j++ ) {
+	      Ch[j].E[i] = vals[j * 2 + 1].toDouble();
+	      Ch[j].cnt[i] = vals[j * 2 + 2].toInt();
+	    }
+	  }
+	}
+      }
       lc++;
+    }
+    f.close();
+  }
+}
+
+
 #if 0
     out << "# Ring Current : " << RINGCurrent << "\n";
     out << "# I0           : " << I0 << "\n";
@@ -85,17 +112,4 @@ void aMCASet::load( QString fname, QString title )
     for ( int i = 0; i < Elms.count(); i++ ) {
       out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
     }
-    
-    for ( int i = 0; i < Length; i++ ) {
-      out << i;
-      for ( int j = 0; j < CHs; j++ ) {
-	out << "\t" << Ch[ j ].E[ i ];
-	out << "\t" << Ch[ j ].cnt[ i ];
-      }
-      out << "\n";
-    }
 #endif
-    }
-    f.close();
-  }
-}

@@ -10,6 +10,7 @@ void MainWindow::setupScan2DArea( void )
 {
   S2Dview = S2DBase->getView();
   S2DBase->setLoadBHidden( true );
+  S2DBase->setParent( this );
   
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
@@ -60,7 +61,7 @@ void MainWindow::setupScan2DArea( void )
   S2DRelAbs << S2DRelAbs1 << S2DRelAbs2 << S2DRelAbs3;
   S2DSelectedMotors << NULL << NULL << NULL;
 
-  S2Dview->setParent( this );
+  //  S2Dview->setParent( this );
   S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
   S2DFileCheckIsReady = false;
 
@@ -157,8 +158,12 @@ void MainWindow::setupScan2DArea( void )
 #endif
   connect( S2DPrintB, SIGNAL( clicked() ), S2DPrintD, SLOT( show() ),
 	   Qt::UniqueConnection );
+#if 0
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2Dview, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
+#endif
+  connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
+	   S2DBase, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
 }
 
 void MainWindow::PopUpS2D( void )
@@ -1053,7 +1058,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
     // 前進で測定しているときは val(ix+1, iy) - val(ix, iy)
     // 後進で測定しているときは val(ix, iy) - val(ix+1, iy)
     // 片道スキャンなら、最初の行が前進ならずっと前進、後進ならずっと後進
-    // 往復スキャンなら、奇数業は最初の行の逆向けのスキャン
+    // 往復スキャンなら、奇数行は最初の行の逆向けのスキャン
     dx = ( S2DI.startDir == FORWARD ) ? 1 : -1;
     if (( S2DI.ScanBothDir )&&( iy % 2 == 1 )) dx *= -1;
     for ( int i = 0; i < MCALength; i++ ) {

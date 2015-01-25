@@ -18,7 +18,7 @@ void MainWindow::SaveS2DMCAs( void )
   // f2 : path と basename の結合を Qt に任せる
   QString bfname = f2.filePath();
 
-  for ( int y = 0; y < S2DI.ps[1]; y++ ) {
+  for ( int y = 0; y <= S2DI.ps[1]; y++ ) {
     for ( int x = 0; x < S2DI.ps[0]; x++ ) {
       aMCASet *set = S2DMCAMap.aPoint( x, y );
       if ( ( set != NULL ) && ( set->isValid() ) ) {

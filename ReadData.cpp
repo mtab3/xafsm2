@@ -78,6 +78,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
   case S2DDATA:
     viewC = SetUpNewView( S2DVIEW );
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ), this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+    ((S2DB*)(viewC->getView()))->setRead( true );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:

@@ -13,16 +13,20 @@ class S2DB : public QFrame, private Ui::S2DB
 {
   Q_OBJECT
 
+  QWidget *parent;
   QFileDialog *MCAsDirSel;
   QString mcaMapDir;
   aMCAMap mcaMap;
   S2DInfo S2DI;
+  bool Read;
 
  public:
   S2DB( QWidget *p );
 
   S2DView *getView( void ) { return S2DV; };
+  void setParent( QWidget *p );
   void setLoadBHidden( bool f ) { LoadMCAsBFrame->setHidden( f ); };
+  void setRead( bool f ) { Read = f; };
   void setDataLoot( QString root ) { MCAsDirSel->setDirectory( root ); };
   void gotNewMCAView( MCAView *mcav, int length, int chs );
   void setS2DI( S2DInfo s2di ) { S2DI = s2di; };

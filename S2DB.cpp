@@ -5,6 +5,7 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
+  Read = false;
   CBar->setAutoScale( AutoScaleB->isChecked() );
   S2DV->setCBar( CBar );
 
@@ -36,54 +37,37 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   connect( CBar, SIGNAL( newScale() ), S2DV, SLOT( update() ), Qt::UniqueConnection );
 }
 
+void S2DB::setParent( QWidget *p )
+{
+  parent = p;
+  
+  connect( S2DV, SIGNAL( AskMoveToPointedPosition( int, int ) ),
+	   parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
+  connect( S2DV, SIGNAL( AskToChangeMCACh( int ) ),
+	   parent, SLOT( S2DChangeMCACh( int ) ), Qt::UniqueConnection );
+  connect( S2DV, SIGNAL( PointerMovedToNewPosition( int, int ) ),
+	   parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
+  connect( S2DV, SIGNAL( PointerMovedOnIntMCA( int, int ) ),
+	   parent, SLOT( S2DShowIntMCA( int, int ) ), Qt::UniqueConnection );
+}
+
 void S2DB::LoadMCAs( const QString &name )
 {
   mcaMapDir = name;
   emit askToGetNewMCAView( this );
-  //  S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
-  qDebug() << "in load mcas";
 }
 
 void S2DB::gotNewMCAView( MCAView *mcav, int length, int chs )
 {
   qDebug() << S2DI.ps[0] << S2DI.ps[1] << length << chs;
   mcaMap.New( S2DI.ps[0], S2DI.ps[1], length, chs );
+
+  QDir dir( mcaMapDir );
+  QStringList flist = dir.entryList( QDir::Files, QDir::Name );
+  for ( int i = 0; i < flist.count(); i++ ) {
+    int x = i % S2DI.ps[0];
+    int y = i / S2DI.ps[0];
+    mcaMap.aPoint( x, y )->load( flist[i], "" );
+  }
 }
 
-#if 0
-    S2DLastV = 0;
-    S2DI.MCAFile = S2DI.SaveFile;
-    if ( S2DI.MCAFile.isEmpty() )
-      S2DI.MCAFile = QString( "S2DMCA0000.dat" );
-    //    S2DWriteHead();
-    S2DFileCheck();
-    mUnits.clearStage();
-    S2DStage = 0;
-    S2DScanDir = FORWARD;
-
-    S2DTimer->disconnect();
-    switch ( S2DI.ScanMode ) {
-    case STEP:
-      connect( S2DTimer, SIGNAL( timeout() ), this, SLOT( S2DStepScanSequence() ),
-	       Qt::UniqueConnection );
-      break;
-    case QCONT:
-      connect( S2DTimer, SIGNAL( timeout() ),
-	       this, SLOT( S2DQuasiContinuousScanSequence() ),
-	       Qt::UniqueConnection );
-      break;
-    case RCONT:
-      connect( S2DTimer, SIGNAL( timeout() ),
-	       this, SLOT( S2DRealContinuousScanSequence() ),
-	       Qt::UniqueConnection );
-      break;
-    default:
-      qDebug() << "non-defined scan mode !";
-      return;
-    }
-    S2DI.valid = true;
-    S2DTimer->start( 10 );
-  } else {
-    S2DStop0();
-  }
-#endif

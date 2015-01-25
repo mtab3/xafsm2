@@ -1492,7 +1492,7 @@ void MainWindow::StartMeasurement( void )
     if ( isSFluo ) {
       if ( cMCAView == NULL ) {
 	getNewMCAView();
-      } else {
+      } else {                     // その場しのぎ。もっと本質的なやり方があるはず
 	cMCAView = (MCAView*)(cMCAViewC->getView());
       }
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
