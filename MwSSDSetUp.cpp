@@ -834,7 +834,7 @@ void MainWindow::getNewMCAView( void )
     if ( cMCAView != NULL ) {
       cMCAViewC->setIsDeletable( true );
     }
-    
+
     if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
       return;
     ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );

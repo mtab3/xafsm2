@@ -48,6 +48,8 @@ bool ViewCTRL::deleteView( void )
       delete (TYView *)nowView; break;
     case MCAVIEW:
       delete (MCAView *)nowView; break;
+    case S2DVIEW:
+      delete (S2DView *)nowView; break;
     default:
       break;
     }

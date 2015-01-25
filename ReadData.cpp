@@ -46,50 +46,50 @@ void MainWindow::DeleteTheView( void )
 void MainWindow::TryToGiveNewView( DATATYPE dtype )
 {
   QObject *from = sender();
-  ViewCTRL *view;
+  ViewCTRL *viewC;
 
   switch( dtype ) {
 #if 0
   case MEASDATA:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
-    view = ViewCtrls[ ViewTab->currentIndex() ];
-    if ( view->getNowDType() != dtype ) {
-      view = SetUpNewView( XYVIEW );
+    viewC = ViewCtrls[ ViewTab->currentIndex() ];
+    if ( viewC->getNowDType() != dtype ) {
+      viewC = SetUpNewView( XYVIEW );
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-XAFS" ) );
       ClearXViewScreenForMeas( (XYView*)(view->getView()) );
     }
     break;
 #endif
   case MONDATA:   // MONDATA と MCADATA は重ね書きは諦める。
-    view = SetUpNewView( TYVIEW );
+    viewC = SetUpNewView( TYVIEW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANDATA:
-    view = ViewCtrls[ ViewTab->currentIndex() ];
-    if ( view->getNowDType() != dtype ) {
-      view = SetUpNewView( XYVIEW );
+    viewC = ViewCtrls[ ViewTab->currentIndex() ];
+    if ( viewC->getNowDType() != dtype ) {
+      viewC = SetUpNewView( XYVIEW );
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
-      ClearXViewScreenForScan( (XYView*)(view->getView()) );
+      ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     }
     break;
   case MCADATA:
-    view = SetUpNewView( MCAVIEW );
+    viewC = SetUpNewView( MCAVIEW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
     break;
   case S2DDATA:
-    view = SetUpNewView( S2DVIEW );
-    connect( (S2DB*)(view->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ), this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+    viewC = SetUpNewView( S2DVIEW );
+    connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ), this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:
-    view = NULL;
+    viewC = NULL;
     break;
   }
 
-  ((Data*)from)->GotNewView( view, AMotors );
+  ((Data*)from)->GotNewView( viewC, AMotors );
 }
 
 void MainWindow::ansToGetNewMCAView( S2DB* s2db )
 {
-  getNewMCAView();
+  getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
   s2db->gotNewMCAView( cMCAView, MCALength, SAVEMCACh );
 }

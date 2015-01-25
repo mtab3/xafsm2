@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jan 24 22:48:48 2015 +0900\n"\
+                "    tracing a bug which break XafsM2 in the measurement after MCA-data read\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 23 22:37:05 2015 +0900\n"\
                 "    fix a small bug\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 22 11:58:30 2015 +0900\n"\
                 "    working on S2D broken codes\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 21 18:33:43 2015 +0900\n"\
-                "    working on S2D MCA\n"\
 		"\n"\
                 ""
 #endif
