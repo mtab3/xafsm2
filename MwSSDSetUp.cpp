@@ -523,7 +523,8 @@ void MainWindow::setAllROIs( void )
     ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
   ReCalcXAFSWithMCA();
-  S2DReCalcMap0();
+  ReCalcS2DMap();
+  //  S2DReCalcMap0();    // !!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 void MainWindow::saveMCAData( void )
@@ -628,7 +629,8 @@ void MainWindow::SelSSDs20( void )
     }
   }
   ReCalcXAFSWithMCA();
-  S2DReCalcMap0();
+  //  S2DReCalcMap0();     !!!!!!!!!!!!!!!!!!!!!!!
+  ReCalcS2DMap();
 }
 
 void MainWindow::SelSSDs( int ch )
@@ -686,7 +688,8 @@ void MainWindow::newROIStart( const QString &newv )
     if ( AutoROIsetAll->isChecked() )
       setAllROIs();
     ReCalcXAFSWithMCA();
-    S2DReCalcMap0();
+    // S2DReCalcMap0();    !!!!!
+    ReCalcS2DMap();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
@@ -705,7 +708,8 @@ void MainWindow::newROIEnd( const QString &newv )
     if ( AutoROIsetAll->isChecked() )
       setAllROIs();
     ReCalcXAFSWithMCA();
-    S2DReCalcMap0();
+    //    S2DReCalcMap0();
+    ReCalcS2DMap();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
@@ -872,7 +876,8 @@ void MainWindow::setNewROI( int s, int e )
       if ( AutoROIsetAll->isChecked() )
 	setAllROIs();
       ReCalcXAFSWithMCA();
-      S2DReCalcMap0();
+      //      S2DReCalcMap0();
+      ReCalcS2DMap();
     }
   }
 }
@@ -1046,4 +1051,12 @@ void MainWindow::nowFitStat( QString &stat )
   out << stat << "\n";
   f.close();
 #endif
+}
+
+void MainWindow::ReCalcS2DMap( void )
+{
+  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
+    return;
+  }
+  emit ReCalcS2DMap0( S2DMCADataOnMemF, mcaDir, S2DI.MCAFile, S2DI.Use3rdAx );
 }

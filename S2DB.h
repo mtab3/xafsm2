@@ -33,8 +33,13 @@ class S2DB : public QFrame, private Ui::S2DB
 
   void mapNew( int ix, int iy, int l, int chs ) { mcaMap.New( ix, iy, l, chs ); };
   aMCASet *mapAPoint( int ix, int iy ) { return mcaMap.aPoint( ix, iy ); };
-  aMCAMap *getMCAMap( void ) { return &mcaMap; };
+  //  aMCAMap *getMCAMap( void ) { return &mcaMap; };
 
+  double ReCalcAMapPoint( QString fname );
+  double ReCalcAMapPointOnMem( int ix, int iy );
+  QFileInfo GenerateMCAFileName( QDir dir, QString base, bool use3rdAx,
+				    int i1, int i2, int i3 );
+  
 public slots:
   void newZZ( QString max, QString min )
   {
@@ -48,6 +53,7 @@ private slots:
   void LoadMCAs( const QString &fname );
   void ShowInfoAtNewPosition( int ix, int iy );
   void ShowIntMCA( void );
+  void ReCalcMap( bool onMem, QDir dir, QString base, bool use3rdAx );
 
 signals:
   void askToGetNewMCAView( S2DB *s2db );

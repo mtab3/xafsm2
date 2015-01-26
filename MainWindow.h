@@ -838,7 +838,7 @@ private slots:
     
   void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( void );
-  void S2DReCalcMap0( void );
+  //  void S2DReCalcMap0( void );
   void ansToGetNewMCAView( S2DB *s2db );
 
   /* AutoSequence */
@@ -853,6 +853,8 @@ private slots:
 
   void SpecialMove( void );
   void SpecialMoveCore( void );
+
+  void ReCalcS2DMap( void );
   
  signals:
   void SelectedSSD( int i, bool f );
@@ -872,6 +874,8 @@ private slots:
   void SignalMCAViewSetShowElements( bool f );
   void SignalMCAViewShowAlwaysSelElm( bool f );
   void SignalMCAViewShowElmEnergy( bool f );
+
+  void ReCalcS2DMap0( bool onMem, QDir dir, QString base, bool use3rdAx );
 };
 
 #endif

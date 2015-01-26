@@ -781,7 +781,8 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
       SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ) );        // iz は無視
     } else {
       // ファイル名の指定がなくてもとにかく名前を作る。
-      QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
+      QFileInfo mcaFile = S2DBase->
+	GenerateMCAFileName( mcaDir, S2DI.MCAFile, S2DI.Use3rdAx, ix, iy, S2DI.i[2] );
       aMCASet *set = new aMCASet;
       SaveMCADataOnMem( set );
       //      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
@@ -819,6 +820,7 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
   set->setValid( true );
 }
 
+#if 0
 QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
 {
   QFileInfo BaseFile( S2DI.MCAFile );
@@ -841,6 +843,7 @@ QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
 
   return mcaFile;
 }
+#endif
 
 void MainWindow::S2DWriteBlankLine( void )
 {
@@ -903,6 +906,7 @@ void MainWindow::S2DReCalcMap( void )
     setAllROIs();
 }
 
+#if 0
 void MainWindow::S2DReCalcMap0( void )
 {
   if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
@@ -1029,6 +1033,7 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map )
 
   return sum;
 }
+#endif
 
 void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
 {
