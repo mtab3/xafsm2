@@ -1058,5 +1058,6 @@ void MainWindow::ReCalcS2DMap( void )
   if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
     return;
   }
-  emit ReCalcS2DMap0( S2DMCADataOnMemF, mcaDir, S2DI.MCAFile, S2DI.Use3rdAx );
+  S2DBase->setS2DI( S2DI );
+  emit ReCalcS2DMap0( ROIStart, ROIEnd, SSDbs2 );
 }

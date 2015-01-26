@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 27 01:27:24 2015 +0900\n"\
+                "    broken codes. ReCalc\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 26 19:55:00 2015 +0900\n"\
                 "    very near from the goal\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 23 14:41:47 2015 +0900\n"\
                 "    Stop the GasTable in MwMeas\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jan 23 14:41:00 2015 +0900\n"\
-                "    GasTable\n"\
 		"\n"\
                 ""
 #endif

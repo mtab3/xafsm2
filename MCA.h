@@ -84,7 +84,9 @@ struct aMCASet {
       Ch[i].setLength( Length );
     }
   }
-  
+
+  int length( void ) { return Length; };
+  int chs( void ) { return CHs; };
   void setValid( bool f ) { valid = f; };
   bool isValid( void ) { return valid; };
   void save( QString fname, QString title );

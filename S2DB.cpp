@@ -5,6 +5,8 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
+  kev2pix = new KeV2Pix;
+  
   Read = false;
   CBar->setAutoScale( AutoScaleB->isChecked() );
   S2DV->setCBar( CBar );
@@ -52,9 +54,9 @@ void S2DB::setParent( QWidget *p )
   connect( this, SIGNAL( ShowMCASpectrum( aMCASet *, aMCASet * ) ), 
 	   parent, SLOT( ShowMCASpectrum( aMCASet *, aMCASet * ) ), Qt::UniqueConnection );
   connect( parent,
-	   SIGNAL( ReCalcS2DMap0( bool, QDir, QString, bool ) ),
+	   SIGNAL( ReCalcS2DMap0( QString *, QString *, QVector<QPushButton*>& ) ),
 	   this,
-	   SLOT( ReCalcMap( bool, QDir, QString, bool ) ), 
+	   SLOT( ReCalcMap( QString *, QString *, QVector<QPushButton*>& ) ), 
 	   Qt::UniqueConnection );
 }
 
@@ -66,14 +68,14 @@ void S2DB::LoadMCAs( const QString &name )
 
 void S2DB::gotNewMCAView( MCAView *mcav, int length, int chs )
 {
-  qDebug() << S2DI.ps[0] << S2DI.ps[1] << length << chs;
-  mcaMap.New( S2DI.ps[0], S2DI.ps[1], length, chs );
+  qDebug() << S2Di.ps[0] << S2Di.ps[1] << length << chs;
+  mcaMap.New( S2Di.ps[0], S2Di.ps[1], length, chs );
 
   QDir dir( mcaMapDir );
   QFileInfoList flist = dir.entryInfoList( QDir::Files, QDir::Name );
   for ( int i = 0; i < flist.count(); i++ ) {
-    int x = i % S2DI.ps[0];
-    int y = i / S2DI.ps[0];
+    int x = i % S2Di.ps[0];
+    int y = i / S2Di.ps[0];
     mcaMap.aPoint( x, y )->load( flist[i].absoluteFilePath(), "" );
   }
 }
@@ -89,21 +91,18 @@ void S2DB::ShowIntMCA( void )
   emit ShowMCASpectrum( mcaMap.lastP(), NULL );
 }
 
-void S2DB::ReCalcMap( bool onMem, QDir dir, QString base, bool use3rdAx )
+void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
 {
   QFileInfo mcaFile;
   double sum = 0;
   double lastsum = 0;
 
-  if ( S2DI.ScanMode == STEP ) {
-    for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
-      for ( int j = 0; j < S2DI.ps[0]; j++ ) {
-	if ( onMem ) {
-	  sum = ReCalcAMapPointOnMem( j, i );
-	} else {
-	  mcaFile = GenerateMCAFileName( dir, base, use3rdAx, j, i, S2DI.ps[2] );
-	  sum = ReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	}
+  qDebug() << "a";
+  if ( S2Di.ScanMode == STEP ) {
+    qDebug() << "stp";
+    for ( int i = 0; i <= S2Di.ps[1]; i++ ) {
+      for ( int j = 0; j < S2Di.ps[0]; j++ ) {
+	sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
 	if ( sum > 0 ) {
 	  S2DV->setData( j, i, sum );
 	} else {
@@ -113,16 +112,13 @@ void S2DB::ReCalcMap( bool onMem, QDir dir, QString base, bool use3rdAx )
       }
     }
   } else {
-    for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
-      if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
-	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
-	  if ( onMem ) {
-	    sum = ReCalcAMapPointOnMem( j, i );
-	  } else {
-	    mcaFile = GenerateMCAFileName( dir, base, use3rdAx, j, i, S2DI.ps[2] );
-	    sum = ReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	  }
-	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
+    qDebug() << "n-stp";
+    for ( int i = 0; i <= S2Di.ps[1]; i++ ) {
+      if (( S2Di.ScanBothDir ) && (( i % 2 ) == 1 )) {
+	qDebug() << "both";
+	for ( int j = S2Di.ps[0]; j >= 0; j-- ) {
+	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	  if ( ( sum > 0 ) && ( j < S2Di.ps[0] ) ) {
 	    S2DV->setData( j, i, sum - lastsum );
 	  }
 	  if ( sum < 0 )
@@ -130,13 +126,9 @@ void S2DB::ReCalcMap( bool onMem, QDir dir, QString base, bool use3rdAx )
 	  lastsum = sum;
 	}
       } else {
-	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
-	  if ( onMem ) {
-	    sum = ReCalcAMapPointOnMem( j, i );
-	  } else {
-	    mcaFile = GenerateMCAFileName( dir, base, use3rdAx, j, i, S2DI.ps[2] );
-	    sum = ReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	  }
+	qDebug() << "single";
+	for ( int j = 0; j <= S2Di.ps[0]; j++ ) {
+	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
 	  if ( ( sum > 0 ) && ( j > 0 ) ) {
 	    S2DV->setData( j - 1, i, sum - lastsum );
 	  }
@@ -147,63 +139,29 @@ void S2DB::ReCalcMap( bool onMem, QDir dir, QString base, bool use3rdAx )
       }
     }
   }
+  S2DV->update();
 }
 
-double S2DB::ReCalcAMapPoint( QString fname )
-{
-  double sum = 0;
-
-  QStringList vals;
-  QFile f( fname );
-  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
-    return -1.;
-
-  QTextStream in( &f );
-  double eng;
-  double cnt;
-  QVector<double> ss;
-  QVector<double> es;
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
-    es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
-  }
-  while( !in.atEnd() ) {
-    vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
-    if (( vals[0] != "#" )&&( vals.count() >= 36 )) {
-      for ( int i = 0; i < MaxSSDs; i++ ) {
-	if ( SSDbs2[i]->isChecked() == PBTrue ) {
-	  eng = vals[i*2+1].toDouble();
-	  cnt = vals[i*2+2].toDouble();
-	  if (( eng >= ss[i] )&&( eng <= es[i] )) {
-	    sum += cnt;
-	  }
-	}
-      }
-    }
-  }
-  f.close();
-
-  return sum;
-}
-
-double S2DB::ReCalcAMapPointOnMem( int ix, int iy )
+double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
+				   QString *RS, QString *RE,
+				   QVector<QPushButton*> &ssdbs2 )
 {
   double sum = 0;
 
   QVector<double> ss;
   QVector<double> es;
   for ( int i = 0; i < MaxSSDs; i++ ) {
-    ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
-    es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
+    ss << kev2pix->p2E( i, RS[ i ].toDouble() );
+    es << kev2pix->p2E( i, RE[ i ].toDouble() );
   }
 
-  aMCASet *set = map->aPoint( ix, iy );
+  aMCASet *set = mcaMap.aPoint( ix, iy );
   if ( ( set != NULL )&&( set->isValid() ) ) {
-    for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
-      if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
+    for ( int ch = 0; ch < set->chs(); ch++ ) {
+      if ( ssdbs2[ ch ]->isChecked() == PBTrue ) {
 	double *E = set->Ch[ ch ].E;
 	quint32 *cnt = set->Ch[ ch ].cnt;
-	for ( int i = 0; i < MCALength; i++ ) {
+	for ( int i = 0; i < set->length(); i++ ) {
 	  if (( E[i] >= ss[ch] )&&( E[i] <= es[ch] )) {
 	    sum += cnt[i];
 	  }
@@ -213,29 +171,5 @@ double S2DB::ReCalcAMapPointOnMem( int ix, int iy )
   }
   
   return sum;
-}
-
-QFileInfo S2DB::GenerateMCAFileName( QDir dir, QString base, bool use3rdAx,
-					int i1, int i2, int i3 )
-{
-  QFileInfo BaseFile( base );
-  QFileInfo mcaFile;
-
-  if ( use3rdAx ) {
-    mcaFile = QFileInfo( dir,
-			 QString( "%1-%2-%3-%4.dat" )
-			 .arg( BaseFile.baseName() )
-			 .arg( i1, 4, 10, QChar( '0' ) )
-			 .arg( i2, 4, 10, QChar( '0' ) )
-			 .arg( i3, 4, 10, QChar( '0' ) ) );
-  } else {
-    mcaFile = QFileInfo( dir,
-			 QString( "%1-%2-%3.dat" )
-			 .arg( BaseFile.baseName() )
-			 .arg( i1, 4, 10, QChar( '0' ) )
-			 .arg( i2, 4, 10, QChar( '0' ) ) );
-  }
-
-  return mcaFile;
 }
 

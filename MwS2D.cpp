@@ -62,7 +62,6 @@ void MainWindow::setupScan2DArea( void )
   S2DSelectedMotors << NULL << NULL << NULL;
 
   //  S2Dview->setParent( this );
-  S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
   S2DFileCheckIsReady = false;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
@@ -777,18 +776,7 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
 	||( iy < 0 )||( iy > S2DI.ps[1] ))
       return;
 
-    if ( S2DMCADataOnMemF ) {  // 今はこのフラグが常に true 
-      SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ) );        // iz は無視
-    } else {
-      // ファイル名の指定がなくてもとにかく名前を作る。
-      QFileInfo mcaFile = S2DBase->
-	GenerateMCAFileName( mcaDir, S2DI.MCAFile, S2DI.Use3rdAx, ix, iy, S2DI.i[2] );
-      aMCASet *set = new aMCASet;
-      SaveMCADataOnMem( set );
-      //      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
-      set->save( mcaFile.canonicalFilePath(), "measured in S2D" );
-      delete set;
-    }
+    SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ) );        // iz は無視
   }
 }
 
@@ -920,12 +908,7 @@ void MainWindow::S2DReCalcMap0( void )
   if ( S2DI.ScanMode == STEP ) {
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       for ( int j = 0; j < S2DI.ps[0]; j++ ) {
-	if ( S2DMCADataOnMemF ) {
-	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
-	} else {
-	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	}
+	sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	if ( sum > 0 ) {
 	  S2Dview->setData( j, i, sum );
 	} else {
@@ -938,12 +921,7 @@ void MainWindow::S2DReCalcMap0( void )
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
 	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
-	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
-	  } else {
-	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	  }
+	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
 	    S2Dview->setData( j, i, sum - lastsum );
 	  }
@@ -953,12 +931,7 @@ void MainWindow::S2DReCalcMap0( void )
 	}
       } else {
 	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
-	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
-	  } else {
-	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	  }
+	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	  if ( ( sum > 0 ) && ( j > 0 ) ) {
 	    S2Dview->setData( j - 1, i, sum - lastsum );
 	  }

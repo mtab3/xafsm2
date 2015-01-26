@@ -356,7 +356,6 @@ private:
   S2DInfo S2DI;
   //  aMCAMap S2DMCAMap;
   aMCAMap XafsMCAMap;
-  bool S2DMCADataOnMemF;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   double S2DLastV;
 
@@ -875,7 +874,7 @@ private slots:
   void SignalMCAViewShowAlwaysSelElm( bool f );
   void SignalMCAViewShowElmEnergy( bool f );
 
-  void ReCalcS2DMap0( bool onMem, QDir dir, QString base, bool use3rdAx );
+  void ReCalcS2DMap0( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
 };
 
 #endif
