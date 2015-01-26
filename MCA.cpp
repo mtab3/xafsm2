@@ -59,7 +59,7 @@ void aMCASet::load( QString fname, QString title )
 {
   bool endf = false;
   int lc = 0;
-  
+  qDebug() << "Fname " << fname;
   QFile f( fname );
   if ( f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     QTextStream in( &f );
@@ -67,7 +67,7 @@ void aMCASet::load( QString fname, QString title )
       QString line = in.readLine();
       if ( lc == 0 ) {
 	QString Title = QString( "%1 %2" ).arg( COMMONTITLE ).arg( title );
-	if ( line.left( QString( Title ).length() ) != QString( Title ) ) {
+	if ( line.mid( 2, QString( Title ).length() ) != QString( Title ) ) {
 	  endf = true;
 	}
       }
@@ -75,7 +75,6 @@ void aMCASet::load( QString fname, QString title )
 	if ( ( line.count() > 0 ) && ( line[0] == '#' ) ) {
 	  if ( line.mid( 2, QString( RINGCURRENT ).length() ) == QString( RINGCURRENT ) ) {
 	    RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
-	    qDebug() << "RC " << RINGCurrent;
 	  }
 	  if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
 	    RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
@@ -93,6 +92,7 @@ void aMCASet::load( QString fname, QString title )
       }
       lc++;
     }
+    if ( lc > 1 ) valid = true;
     f.close();
   }
 }
@@ -113,3 +113,46 @@ void aMCASet::load( QString fname, QString title )
       out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
     }
 #endif
+
+
+void aMCAMap::New( int ix, int iy, int length, int CHs )
+{
+  if ( Points != NULL ) {
+    delete [] Points;
+  }
+  iX = ix;
+  iY = iy;
+  try {
+    Points = new aMCASet[ iX * iY ];
+  }
+  catch(...) {
+    Points = NULL;
+  }
+  if ( Points != NULL ) {
+    for ( int i = 0; i < iX * iY; i++ ) {
+      Points[i].setSize( length, CHs );
+    }
+  }
+}
+
+aMCASet *aMCAMap::aPoint( int ix, int iy )
+{
+  if ( Points == NULL )
+    return NULL;
+  if (( ix < iX )&&( iy < iY ))
+    return &(Points[ iy * iX + ix ]);
+  return NULL;
+}
+
+aMCASet *aMCAMap::lastP( void )
+{
+  aMCASet *rv = NULL;
+  for ( int i = iX * iY - 1; i >= 0; i++ ) {
+    if ( Points[i].isValid() ) {
+      qDebug() << "Selected set " << i << iX << iY << iX * iY;
+      rv = &(Points[i]);
+      break;
+    }
+  }
+  return rv;
+}

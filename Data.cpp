@@ -119,7 +119,12 @@ void Data::ShowFName( const QString &fname )
 
   SelectedFile->setText( dfname );
   CheckFileType( fname );
-  StartToShowData();
+  emit AskToGetNewView( dataType, FSDialog->directory().absolutePath() );
+}
+
+void Data::StartToShowData( void )
+{
+  emit AskToGetNewView( dataType, "" );
 }
 
 void Data::CheckFileType( const QString &fname )
@@ -157,11 +162,6 @@ void Data::CheckFileType( const QString &fname )
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
     emit showMessage( tr( "The file %1 is not avaliable to show." ).arg( fname ), 2000 );
   }
-}
-
-void Data::StartToShowData( void )
-{
-  emit AskToGetNewView( dataType );
 }
 
 void Data::GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors )

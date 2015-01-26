@@ -77,7 +77,7 @@ class Data : public QFrame, private Ui::Data
   void SelectedNewMCACh( int ch );
 
  signals:
-  void AskToGetNewView( DATATYPE dtype );
+  void AskToGetNewView( DATATYPE dtype, QString dir );
   void showMessage( QString msg, int time );
   void GiveMeCurrentView( void );
   void setMCACh( int i );

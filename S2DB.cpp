@@ -46,9 +46,11 @@ void S2DB::setParent( QWidget *p )
   connect( S2DV, SIGNAL( AskToChangeMCACh( int ) ),
 	   parent, SLOT( S2DChangeMCACh( int ) ), Qt::UniqueConnection );
   connect( S2DV, SIGNAL( PointerMovedToNewPosition( int, int ) ),
-	   parent, SLOT( S2DShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
-  connect( S2DV, SIGNAL( PointerMovedOnIntMCA( int, int ) ),
-	   parent, SLOT( S2DShowIntMCA( int, int ) ), Qt::UniqueConnection );
+	   this, SLOT( ShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
+  connect( S2DV, SIGNAL( PointerMovedOnIntMCA() ),
+	   this, SLOT( ShowIntMCA() ), Qt::UniqueConnection );
+  connect( this, SIGNAL( ShowMCASpectrum( aMCASet *, aMCASet * ) ), 
+	   parent, SLOT( ShowMCASpectrum( aMCASet *, aMCASet * ) ), Qt::UniqueConnection );
 }
 
 void S2DB::LoadMCAs( const QString &name )
@@ -63,11 +65,21 @@ void S2DB::gotNewMCAView( MCAView *mcav, int length, int chs )
   mcaMap.New( S2DI.ps[0], S2DI.ps[1], length, chs );
 
   QDir dir( mcaMapDir );
-  QStringList flist = dir.entryList( QDir::Files, QDir::Name );
+  QFileInfoList flist = dir.entryInfoList( QDir::Files, QDir::Name );
   for ( int i = 0; i < flist.count(); i++ ) {
     int x = i % S2DI.ps[0];
     int y = i / S2DI.ps[0];
-    mcaMap.aPoint( x, y )->load( flist[i], "" );
+    mcaMap.aPoint( x, y )->load( flist[i].absoluteFilePath(), "" );
   }
 }
 
+
+void S2DB::ShowInfoAtNewPosition( int ix, int iy )
+{
+  emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix+1, iy ) );
+}
+
+void S2DB::ShowIntMCA( void )
+{
+  emit ShowMCASpectrum( mcaMap.lastP(), NULL );
+}

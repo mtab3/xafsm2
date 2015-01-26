@@ -496,7 +496,7 @@ void MainWindow::S2DScanStart( void )
       UUnits.addUnit( S2D_ID, mUnits.at(i) );
     }
 
-    S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1, MCALength, SAVEMCACh );
+    S2DBase->mapNew( S2DI.ps[0]+1, S2DI.ps[1]+1, MCALength, SAVEMCACh );
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
@@ -778,7 +778,7 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
       return;
 
     if ( S2DMCADataOnMemF ) {  // 今はこのフラグが常に true 
-      SaveMCADataOnMem( S2DMCAMap.aPoint( ix, iy ) );        // iz は無視
+      SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ) );        // iz は無視
     } else {
       // ファイル名の指定がなくてもとにかく名前を作る。
       QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
@@ -917,7 +917,7 @@ void MainWindow::S2DReCalcMap0( void )
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       for ( int j = 0; j < S2DI.ps[0]; j++ ) {
 	if ( S2DMCADataOnMemF ) {
-	  sum = S2DReCalcAMapPointOnMem( j, i );
+	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	} else {
 	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
 	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
@@ -935,7 +935,7 @@ void MainWindow::S2DReCalcMap0( void )
       if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
 	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
 	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i );
+	    sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	  } else {
 	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
 	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
@@ -950,7 +950,7 @@ void MainWindow::S2DReCalcMap0( void )
       } else {
 	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
 	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i );
+	    sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	  } else {
 	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
 	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
@@ -1001,7 +1001,7 @@ double MainWindow::S2DReCalcAMapPoint( QString fname )
   return sum;
 }
 
-double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
+double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map )
 {
   double sum = 0;
 
@@ -1012,7 +1012,7 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
     es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
   }
 
-  aMCASet *set = S2DMCAMap.aPoint( ix, iy );
+  aMCASet *set = map->aPoint( ix, iy );
   if ( ( set != NULL )&&( set->isValid() ) ) {
     for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
       if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
@@ -1030,7 +1030,31 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
   return sum;
 }
 
-void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
+void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
+{
+  quint32 *cnt1 = NULL;
+  quint32 *cnt2 = NULL;
+  if ( ( set1 != NULL )&&( set1->isValid() ) )
+    cnt1 = set1->Ch[ cMCACh ].cnt;
+  if ( ( set2 != NULL )&&( set2->isValid() ) )
+    cnt2 = set2->Ch[ cMCACh ].cnt;
+
+  qDebug() << "show mca spec. " << ( cnt1 != NULL ) << ( cnt2 != NULL );
+  
+  if ( cnt1 != NULL ) {
+    for ( int i = 0; i < MCALength; i++ ) {
+      if ( cnt2 != NULL ) {
+	MCAData[i] = abs( cnt1[i] - cnt2[i] );
+      } else {
+	MCAData[i] = cnt1[i];
+      }
+    }
+    cMCAView->update();
+  }
+}
+
+#if 0
+void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy, aMCASet *set )
 {
   if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
       ||( cMCAView == NULL )||( MCAData== NULL ))
@@ -1040,7 +1064,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
   aMCASet *set1, *set2;
   quint32 *cnt1, *cnt2;
 
-  set1 = S2DMCAMap.aPoint( ix, iy );
+  set1 = map->aPoint( ix, iy );
   if ( ( set1 == NULL ) || ( ! set1->isValid() ) )
     return;
   cnt1 = set1->Ch[ cMCACh ].cnt;
@@ -1050,7 +1074,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
       MCAData[i] = cnt1[i];
     }
   } else {
-    set2 = S2DMCAMap.aPoint( ix+1, iy );
+    set2 = map->aPoint( ix+1, iy );
     if ( ( set2 == NULL ) || ( ! set2->isValid() ) )
       return;
     cnt2 = set2->Ch[ cMCACh ].cnt;
@@ -1065,9 +1089,10 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
       MCAData[i] = ( cnt2[i] - cnt1[i] ) * dx;
     }
   }
-
+  
   cMCAView->update();
 }
+#endif
 
 void MainWindow::S2DChangeMCACh( int dCh )
 {
@@ -1081,16 +1106,17 @@ void MainWindow::S2DChangeMCACh( int dCh )
   MCACh->setValue( ch );
 }
 
-void MainWindow::S2DShowIntMCA( int ix, int iy )
+#if 0
+void MainWindow::S2DShowIntMCA( int ix, int iy, aMCASet *set )
 {
   if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
       ||( cMCAView == NULL )||( MCAData== NULL ))
     return;
 
-  aMCASet *set;
+  //  aMCASet *set;
   quint32 *cnt;
 
-  set = S2DMCAMap.aPoint( ix, iy );
+  set = map->aPoint( ix, iy );
   if ( ( set == NULL ) || ( ! set->isValid() ) )
     return;
   cnt = set->Ch[ cMCACh ].cnt;
@@ -1101,4 +1127,4 @@ void MainWindow::S2DShowIntMCA( int ix, int iy )
 
   cMCAView->update();
 }
-
+#endif

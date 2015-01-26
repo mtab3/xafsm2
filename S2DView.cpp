@@ -333,7 +333,9 @@ void S2DView::mousePressEvent( QMouseEvent * )
 void S2DView::CheckOnIntMCA( QMouseEvent *e )
 {
   if ( m.CheckABPosition( e, 0, height() ) ) {
-    for ( int iy = maxiy-1; iy >= 0; iy-- ) {
+    emit PointerMovedOnIntMCA();
+#if 0
+    for ( int iy = maxiy-1; iy >= 0; iy-- ) {     // 最後の1点を見つける
       for ( int ix = maxix-1; ix >= 0; ix-- ) {
 	if ( valid[ix][iy] ) {
 	  emit PointerMovedOnIntMCA( ix, iy );
@@ -341,6 +343,7 @@ void S2DView::CheckOnIntMCA( QMouseEvent *e )
 	}
       }
     }
+#endif
   }
 }
 

@@ -1,6 +1,7 @@
 #ifndef MCA_H
 #define MCA_H
 
+#include <QDebug>
 #include <QTextStream>
 #include <QStringList>
 
@@ -99,34 +100,10 @@ struct aMCAMap {
   aMCAMap() { iX = iY = 0; Points = NULL; };
   ~aMCAMap() { if ( Points != NULL ) delete [] Points; };
 
-  void New( int ix, int iy, int length, int CHs )
-  {
-    if ( Points != NULL ) {
-      delete [] Points;
-    }
-    iX = ix;
-    iY = iy;
-    try {
-      Points = new aMCASet[ iX * iY ];
-    }
-    catch(...) {
-      Points = NULL;
-    }
-    if ( Points != NULL ) {
-      for ( int i = 0; i < iX * iY; i++ ) {
-	Points[i].setSize( length, CHs );
-      }
-    }
-  };
+  void New( int ix, int iy, int length, int CHs );
+  aMCASet *aPoint( int ix, int iy );
+  aMCASet *lastP( void );
 
-  aMCASet *aPoint( int ix, int iy )
-  {
-    if ( Points == NULL )
-      return NULL;
-    if (( ix < iX )&&( iy < iY ))
-      return &(Points[ iy * iX + ix ]);
-    return NULL;
-  };
 };
 
 #endif

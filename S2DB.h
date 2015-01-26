@@ -27,9 +27,13 @@ class S2DB : public QFrame, private Ui::S2DB
   void setParent( QWidget *p );
   void setLoadBHidden( bool f ) { LoadMCAsBFrame->setHidden( f ); };
   void setRead( bool f ) { Read = f; };
-  void setDataLoot( QString root ) { MCAsDirSel->setDirectory( root ); };
+  void setDataRoot( QString root ) { MCAsDirSel->setDirectory( root ); };
   void gotNewMCAView( MCAView *mcav, int length, int chs );
   void setS2DI( S2DInfo s2di ) { S2DI = s2di; };
+
+  void mapNew( int ix, int iy, int l, int chs ) { mcaMap.New( ix, iy, l, chs ); };
+  aMCASet *mapAPoint( int ix, int iy ) { return mcaMap.aPoint( ix, iy ); };
+  aMCAMap *getMCAMap( void ) { return &mcaMap; };
 
 public slots:
   void newZZ( QString max, QString min )
@@ -42,9 +46,14 @@ private slots:
   void newInputZmax( void ) { CBar->newInputZmax( zmax->text().toDouble() ); };
   void newInputZmin( void ) { CBar->newInputZmin( zmin->text().toDouble() ); };
   void LoadMCAs( const QString &fname );
+  void ShowInfoAtNewPosition( int ix, int iy );
+  void ShowIntMCA( void );
 
 signals:
   void askToGetNewMCAView( S2DB *s2db );
+  //  void PointerMovedToNewPosition( int ix, int iy, aMCAMap *map );
+  //  void PointerMovedOnIntMCA( int ix, int iy, aMCAMap *map );
+  void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 );
 #if 0
   void print( void );
   void popup( void );

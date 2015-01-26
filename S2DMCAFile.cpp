@@ -20,7 +20,7 @@ void MainWindow::SaveS2DMCAs( void )
 
   for ( int y = 0; y <= S2DI.ps[1]; y++ ) {
     for ( int x = 0; x < S2DI.ps[0]; x++ ) {
-      aMCASet *set = S2DMCAMap.aPoint( x, y );
+      aMCASet *set = S2DBase->mapAPoint( x, y );
       if ( ( set != NULL ) && ( set->isValid() ) ) {
 	QString fname = QString( "%1-MCA-%2-%3.dat" )
 	  .arg( bfname )

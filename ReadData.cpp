@@ -10,8 +10,8 @@ void MainWindow::setupReadDataArea( void )
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
   for ( int i = 0; i < Datas.count(); i++ ) {
-    connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE ) ),
-	     this, SLOT( TryToGiveNewView( DATATYPE ) ),
+    connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE, QString ) ),
+	     this, SLOT( TryToGiveNewView( DATATYPE, QString ) ),
 	     Qt::UniqueConnection );
     //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
     //	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ),
@@ -43,7 +43,7 @@ void MainWindow::DeleteTheView( void )
   ViewCtrls[ ViewTab->currentIndex() ]->deleteView();
 }
 
-void MainWindow::TryToGiveNewView( DATATYPE dtype )
+void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
 {
   QObject *from = sender();
   ViewCTRL *viewC;
@@ -77,8 +77,11 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype )
     break;
   case S2DDATA:
     viewC = SetUpNewView( S2DVIEW );
-    connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ), this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+    connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
+	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+    ((S2DB*)(viewC->getView()))->setParent( this );
     ((S2DB*)(viewC->getView()))->setRead( true );
+    ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? DataRoot->text() : dir );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:

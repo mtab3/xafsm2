@@ -354,7 +354,7 @@ private:
   int S2DStage;
   bool S2DInfoIsValid;
   S2DInfo S2DI;
-  aMCAMap S2DMCAMap;
+  //  aMCAMap S2DMCAMap;
   aMCAMap XafsMCAMap;
   bool S2DMCADataOnMemF;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
@@ -373,7 +373,7 @@ private:
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
   double S2DReCalcAMapPoint( QString fname );
-  double S2DReCalcAMapPointOnMem( int ix, int iy );
+  double S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DFileCheck( void );
 
@@ -783,7 +783,7 @@ private slots:
   void MeasDarkSequence( void );
 
   void TryToNoticeCurrentView( void );
-  void TryToGiveNewView( DATATYPE dtype );
+  void TryToGiveNewView( DATATYPE dtype, QString dir );
   void DeleteTheView( void );
   void ShowButtonsForCurrentTab( void );
   void ShowButtonsForATab( int i );
@@ -831,8 +831,11 @@ private slots:
   void S2DRContScanMeas( void );
   void S2DNewScanValue( QString v );
   void S2DMoveToPointedPosition( int x, int y );
-  void S2DShowInfoAtNewPosition( int x, int y );
-  void S2DShowIntMCA( int x, int y );
+
+  //  void S2DShowInfoAtNewPosition( int x, int y, aMCASet *set );
+  //  void S2DShowIntMCA( int x, int y, aMCASet *set );
+  void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
+    
   void S2DChangeMCACh( int dCh );
   void S2DReCalcMap( void );
   void S2DReCalcMap0( void );

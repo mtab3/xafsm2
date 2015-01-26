@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jan 26 02:02:13 2015 +0900\n"\
+                "    working on S2D to read S2D-data with SFluo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Jan 25 15:40:19 2015 +0900\n"\
+                "    a problem on cMCAView was solved anyway\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 25 15:38:08 2015 +0900\n"\
                 "    the problem on the MCAView is solved anyway\n"\
 		"\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 23 12:20:29 2015 +0900\n"\
                 "    merge\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jan 23 01:22:10 2015 +0900\n"\
-                "    working on S2D MCA. it may broken\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 22 17:17:20 2015 +0900\n"\
-                "    working on S2D MCA\n"\
 		"\n"\
                 ""
 #endif
