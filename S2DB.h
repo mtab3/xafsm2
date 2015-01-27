@@ -31,7 +31,7 @@ class S2DB : public QFrame, private Ui::S2DB
   void setLoadBHidden( bool f ) { LoadMCAsBFrame->setHidden( f ); };
   void setRead( bool f ) { Read = f; };
   void setDataRoot( QString root ) { MCAsDirSel->setDirectory( root ); };
-  void gotNewMCAView( MCAView *mcav, int length, int chs );
+  void getNewMCAMap( int length, int chs );
   void setS2DI( S2DInfo s2di ) { S2Di = s2di; };
 
   void mapNew( int ix, int iy, int l, int chs ) { mcaMap.New( ix, iy, l, chs ); };

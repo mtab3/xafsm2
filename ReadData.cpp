@@ -79,6 +79,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     viewC = SetUpNewView( S2DVIEW );
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+    qDebug() << "Set Parent in ReadData";
     ((S2DB*)(viewC->getView()))->setParent( this );
     ((S2DB*)(viewC->getView()))->setRead( true );
     ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? DataRoot->text() : dir );
@@ -95,5 +96,5 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
 void MainWindow::ansToGetNewMCAView( S2DB* s2db )
 {
   getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
-  s2db->gotNewMCAView( cMCAView, MCALength, SAVEMCACh );
+  s2db->getNewMCAMap( MCALength, SAVEMCACh );
 }

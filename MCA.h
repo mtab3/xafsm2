@@ -97,13 +97,14 @@ struct aMCASet {
 
 struct aMCAMap {
   int iX, iY;
-  aMCASet *Points;
+  QVector<aMCASet> MCASets;
 
-  aMCAMap() { iX = iY = 0; Points = NULL; };
-  ~aMCAMap() { if ( Points != NULL ) delete [] Points; };
+  aMCAMap() { iX = iY = 0; };
+  ~aMCAMap() {};
 
   void New( int ix, int iy, int length, int CHs );
   aMCASet *aPoint( int ix, int iy );
+  bool valid( int ix, int iy );
   aMCASet *lastP( void );
 
 };

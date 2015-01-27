@@ -59,7 +59,6 @@ void aMCASet::load( QString fname, QString title )
 {
   bool endf = false;
   int lc = 0;
-  qDebug() << "Fname " << fname;
   QFile f( fname );
   if ( f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     QTextStream in( &f );
@@ -117,40 +116,44 @@ void aMCASet::load( QString fname, QString title )
 
 void aMCAMap::New( int ix, int iy, int length, int CHs )
 {
-  if ( Points != NULL ) {
-    delete [] Points;
-  }
   iX = ix;
   iY = iy;
   try {
-    Points = new aMCASet[ iX * iY ];
+    MCASets.resize( 0 );
+    MCASets.resize( iX * iY );
   }
   catch(...) {
-    Points = NULL;
+    MCASets.resize( 0 );
   }
-  if ( Points != NULL ) {
-    for ( int i = 0; i < iX * iY; i++ ) {
-      Points[i].setSize( length, CHs );
-    }
+  for ( int i = 0; i < MCASets.count(); i++ ) {
+    MCASets[i].setSize( length, CHs );
   }
 }
 
 aMCASet *aMCAMap::aPoint( int ix, int iy )
 {
-  if ( Points == NULL )
-    return NULL;
-  if (( ix < iX )&&( iy < iY ))
-    return &(Points[ iy * iX + ix ]);
+  int i = iy * iX + ix;
+  
+  if ( ( i >= 0 )&&( i < MCASets.count() ) )
+    return &(MCASets[ i ]);
   return NULL;
+}
+
+bool aMCAMap::valid( int ix, int iy )
+{
+  aMCASet *p = aPoint( ix, iy );
+  if ( p == NULL )
+    return false;
+  return p->isValid();
 }
 
 aMCASet *aMCAMap::lastP( void )
 {
   aMCASet *rv = NULL;
-  for ( int i = iX * iY - 1; i >= 0; i++ ) {
-    if ( Points[i].isValid() ) {
-      qDebug() << "Selected set " << i << iX << iY << iX * iY;
-      rv = &(Points[i]);
+  
+  for ( int i = MCASets.count() - 1; i >= 0; i-- ) {
+    if ( MCASets[i].isValid() ) {
+      rv = &(MCASets[i]);
       break;
     }
   }

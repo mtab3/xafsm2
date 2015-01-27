@@ -583,6 +583,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     break;
   case S2DVIEW:
     newView = (void *)(new S2DB( this ) );
+    qDebug() << "Not Set Parent in MainWindow";
     //    ((S2DB*)newView)->setParent( this );
     break;
   default:

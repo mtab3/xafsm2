@@ -512,8 +512,6 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
   QStringList HeadLine1, HeadLine2, vals;
   QString line;
 
-  qDebug() << "readint s2d data";
-
   theS2DB = (S2DB*)(theViewC->getView());
   theS2DB->setLoadBHidden( false );
   theS2DView = (S2DView*)(theS2DB->getView());

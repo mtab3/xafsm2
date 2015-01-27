@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jan 27 02:34:55 2015 +0900\n"\
+                "    it is almost working but have severe severe buggit add .!\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 27 01:27:24 2015 +0900\n"\
                 "    broken codes. ReCalc\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 23 19:57:20 2015 +0900\n"\
                 "    working on S2D. MCA save in any situation shuld be checked\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jan 23 14:41:47 2015 +0900\n"\
-                "    Stop the GasTable in MwMeas\n"\
 		"\n"\
                 ""
 #endif

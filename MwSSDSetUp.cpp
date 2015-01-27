@@ -869,6 +869,7 @@ void MainWindow::showCurrentValues( int atCur, int inROI )
 
 void MainWindow::setNewROI( int s, int e )
 {
+  qDebug() << "setNewROI";
   if ( sender() == cMCAView ) {
     if ( !inMeas ) {
       ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
@@ -1055,9 +1056,11 @@ void MainWindow::nowFitStat( QString &stat )
 
 void MainWindow::ReCalcS2DMap( void )
 {
-  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
+  //  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
+  if ( inMeas || inMCAMeas || inS2D ) {
     return;
   }
   S2DBase->setS2DI( S2DI );
+  qDebug() << "recalc emit";
   emit ReCalcS2DMap0( ROIStart, ROIEnd, SSDbs2 );
 }

@@ -85,7 +85,7 @@ void S2DInfo::save( QTextStream &out )
   }
   out << endl;
 
-  out << "#" << endl;
+  out << "#" << endl << endl;
 }
 
 void S2DInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
@@ -107,12 +107,14 @@ void S2DInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
       if ( val.left( QString( STEPSCAN  ).length() ) == STEPSCAN  ) ScanMode = STEP;
       if ( val.left( QString( QUASICONT ).length() ) == QUASICONT ) ScanMode = QCONT;
       if ( val.left( QString( REALCONT  ).length() ) == REALCONT  ) ScanMode = RCONT;
-      //      qDebug() << SCANMODE << ScanMode;
+      qDebug() << SCANMODE << ScanMode;
+      valid = true;
     }
     if ( line.mid( 2, QString( SCANDIR ).length() ) == QString( SCANDIR ) ) {
       if ( val.left( QString( SCANBOTH   ).length() ) == SCANBOTH   ) ScanBothDir = true;
       if ( val.left( QString( SCANSINGLE ).length() ) == SCANSINGLE ) ScanBothDir = false;
       //      qDebug() << SCANDIR << ScanBothDir;
+      valid = true;
     }
     if ( line.mid( 2, QString( AXIS ).length() ) == QString( AXIS ) ) {
       int i = line.mid( 2 + QString( AXIS ).length() + 1, 2 ).toInt();
@@ -121,17 +123,22 @@ void S2DInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
 	ex[i] = vals[1].toDouble();
 	dx[i] = vals[2].toDouble();
 	ps[i] = vals[3].toInt();
+	valid = true;
       }
       //      qDebug() << AXIS << i << sx[i] << ex[i] << dx[i] << ps[i];
     }
     if ( line.mid( 2, QString( DWELLTIME ).length() ) == QString( DWELLTIME ) ) {
-      if ( vals.count() >= 1 ) 
+      if ( vals.count() >= 1 ) {
 	Dwell = vals[0].toDouble();
+	valid = true;
+      }
       //      qDebug() << DWELLTIME << Dwell;
     }
     if ( line.mid( 2, QString( MOTORS ).length() ) == QString( MOTORS ) ) {
-      if ( vals.count() >= 1 ) 
+      if ( vals.count() >= 1 ) {
 	motors = vals[0].toInt();
+	valid = true;
+      }
       //      qDebug() << MOTORS << motors;
     }
     if ( line.mid( 2, QString( USE3RDAX ).length() ) == QString( USE3RDAX ) ) {

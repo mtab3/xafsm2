@@ -66,24 +66,36 @@ void S2DB::LoadMCAs( const QString &name )
   emit askToGetNewMCAView( this );
 }
 
-void S2DB::gotNewMCAView( MCAView *mcav, int length, int chs )
+void S2DB::getNewMCAMap( int length, int chs )
 {
-  qDebug() << S2Di.ps[0] << S2Di.ps[1] << length << chs;
-  mcaMap.New( S2Di.ps[0], S2Di.ps[1], length, chs );
+  int iX = S2Di.ps[0] + ( (S2Di.ScanMode == STEP) ? 0 : 1 );
+  mcaMap.New( iX, S2Di.ps[1] + 1, length, chs );
 
   QDir dir( mcaMapDir );
   QFileInfoList flist = dir.entryInfoList( QDir::Files, QDir::Name );
   for ( int i = 0; i < flist.count(); i++ ) {
-    int x = i % S2Di.ps[0];
-    int y = i / S2Di.ps[0];
-    mcaMap.aPoint( x, y )->load( flist[i].absoluteFilePath(), "" );
+    QStringList cmps = flist[i].baseName().split( "-" );
+    if ( cmps.count() > 1 ) {
+      int x = cmps[ cmps.count() - 1 ].toInt();
+      int y = cmps[ cmps.count() - 2 ].toInt();
+      qDebug() << cmps;
+      mcaMap.aPoint( x, y )->load( flist[i].absoluteFilePath(), "" );
+    }
   }
 }
 
 
 void S2DB::ShowInfoAtNewPosition( int ix, int iy )
 {
-  emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix+1, iy ) );
+  if ( S2Di.ScanMode == STEP ) {
+    emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), NULL );
+  } else {
+    if ( mcaMap.valid( ix+1, iy ) ) {
+      emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix+1, iy ) );
+    } else {
+      emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix, iy ) );
+    }
+  }
 }
 
 void S2DB::ShowIntMCA( void )
@@ -93,47 +105,59 @@ void S2DB::ShowIntMCA( void )
 
 void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
 {
+  if ( ! S2Di.valid )
+    return;
+  
   QFileInfo mcaFile;
   double sum = 0;
   double lastsum = 0;
 
-  qDebug() << "a";
   if ( S2Di.ScanMode == STEP ) {
-    qDebug() << "stp";
     for ( int i = 0; i <= S2Di.ps[1]; i++ ) {
       for ( int j = 0; j < S2Di.ps[0]; j++ ) {
-	sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	if ( mcaMap.valid( j, i ) ) {
+	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	} else {
+	  sum = 0;
+	}
 	if ( sum > 0 ) {
 	  S2DV->setData( j, i, sum );
 	} else {
 	  return;
 	}
-	lastsum = sum;
+	//	lastsum = sum;
       }
     }
   } else {
-    qDebug() << "n-stp";
     for ( int i = 0; i <= S2Di.ps[1]; i++ ) {
       if (( S2Di.ScanBothDir ) && (( i % 2 ) == 1 )) {
-	qDebug() << "both";
-	for ( int j = S2Di.ps[0]; j >= 0; j-- ) {
-	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
-	  if ( ( sum > 0 ) && ( j < S2Di.ps[0] ) ) {
-	    S2DV->setData( j, i, sum - lastsum );
+	if ( mcaMap.valid( S2Di.ps[0], i ) ) {
+	  lastsum = ReCalcAMapPointOnMem( S2Di.ps[0], i, RS, RE, ssdbs2 );
+	} else {
+	  lastsum = 0;
+	}
+	for ( int j = S2Di.ps[0]-1; j >= 0; j-- ) {
+	  if ( mcaMap.valid( j, i ) ) {
+	    sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	  } else {
+	    sum = lastsum;
 	  }
-	  if ( sum < 0 )
-	    return;
+	  S2DV->setData( j, i, sum - lastsum );
 	  lastsum = sum;
 	}
       } else {
-	qDebug() << "single";
-	for ( int j = 0; j <= S2Di.ps[0]; j++ ) {
-	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
-	  if ( ( sum > 0 ) && ( j > 0 ) ) {
-	    S2DV->setData( j - 1, i, sum - lastsum );
+	if ( mcaMap.valid( 0, i ) ) {
+	  lastsum = ReCalcAMapPointOnMem( 0, i, RS, RE, ssdbs2 );
+	} else {
+	  lastsum = 0;
+	}
+	for ( int j = 1; j <= S2Di.ps[0]; j++ ) {
+	  if ( mcaMap.valid( j, i ) ) {
+	    sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	  } else {
+	    sum = lastsum;
 	  }
-	  if ( sum < 0 )
-	    return;
+	  S2DV->setData( j - 1, i, sum - lastsum );
 	  lastsum = sum;
 	}
       }

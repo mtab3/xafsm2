@@ -19,9 +19,11 @@ void MainWindow::SaveS2DMCAs( void )
   QString bfname = f2.filePath();
 
   for ( int y = 0; y <= S2DI.ps[1]; y++ ) {
-    for ( int x = 0; x < S2DI.ps[0]; x++ ) {
+    for ( int x = 0; x < S2DI.ps[0] + (( S2DI.ScanMode == STEP ) ? 0 : 1 ); x++ ) {
+      qDebug() << "try to saving " << y << x;
       aMCASet *set = S2DBase->mapAPoint( x, y );
       if ( ( set != NULL ) && ( set->isValid() ) ) {
+	qDebug() << "saving " << y << x;
 	QString fname = QString( "%1-MCA-%2-%3.dat" )
 	  .arg( bfname )
 	  .arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );

@@ -495,7 +495,8 @@ void MainWindow::S2DScanStart( void )
       UUnits.addUnit( S2D_ID, mUnits.at(i) );
     }
 
-    S2DBase->mapNew( S2DI.ps[0]+1, S2DI.ps[1]+1, MCALength, SAVEMCACh );
+    S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
+		     S2DI.ps[1]+1, MCALength, SAVEMCACh );
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
@@ -888,7 +889,7 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
  }
 
 
-void MainWindow::S2DReCalcMap( void )
+void MainWindow::S2DSetROIs( void )
 {
   if ( AutoROIsetAll->isChecked() )
     setAllROIs();
@@ -1017,8 +1018,6 @@ void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
   if ( ( set2 != NULL )&&( set2->isValid() ) )
     cnt2 = set2->Ch[ cMCACh ].cnt;
 
-  qDebug() << "show mca spec. " << ( cnt1 != NULL ) << ( cnt2 != NULL );
-  
   if ( cnt1 != NULL ) {
     for ( int i = 0; i < MCALength; i++ ) {
       if ( cnt2 != NULL ) {

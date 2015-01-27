@@ -836,7 +836,7 @@ private slots:
   void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
     
   void S2DChangeMCACh( int dCh );
-  void S2DReCalcMap( void );
+  void S2DSetROIs( void );
   //  void S2DReCalcMap0( void );
   void ansToGetNewMCAView( S2DB *s2db );
 
