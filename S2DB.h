@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QFileDialog>
+#include <QTimer>
 
 #include "MCA.h"
 #include "S2DInfo.h"
@@ -22,6 +23,10 @@ class S2DB : public QFrame, private Ui::S2DB
   aMCAMap mcaMap;
   S2DInfo S2Di;
   bool Read;
+
+  QTimer *mapTimer;
+  QFileInfoList flist;
+  bool mapReading;
 
  public:
   S2DB( QWidget *p );
@@ -56,12 +61,14 @@ private slots:
   void ShowInfoAtNewPosition( int ix, int iy );
   void ShowIntMCA( void );
   void ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
+  void mapNext( void );
 
 signals:
   void askToGetNewMCAView( S2DB *s2db );
   //  void PointerMovedToNewPosition( int ix, int iy, aMCAMap *map );
   //  void PointerMovedOnIntMCA( int ix, int iy, aMCAMap *map );
   void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 );
+  void ShowMessage( QString msg, int time );
 #if 0
   void print( void );
   void popup( void );

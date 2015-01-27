@@ -18,18 +18,44 @@ void MainWindow::SaveS2DMCAs( void )
   // f2 : path と basename の結合を Qt に任せる
   QString bfname = f2.filePath();
 
+  mcaWFList.clear();
   for ( int y = 0; y <= S2DI.ps[1]; y++ ) {
     for ( int x = 0; x < S2DI.ps[0] + (( S2DI.ScanMode == STEP ) ? 0 : 1 ); x++ ) {
-      qDebug() << "try to saving " << y << x;
-      aMCASet *set = S2DBase->mapAPoint( x, y );
-      if ( ( set != NULL ) && ( set->isValid() ) ) {
-	qDebug() << "saving " << y << x;
-	QString fname = QString( "%1-MCA-%2-%3.dat" )
-	  .arg( bfname )
-	  .arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );
-
-	set->save( fname, S2DMCAFILETITLE );
-      }
+      QString fname = QString( "%1-MCA-%2-%3" )
+	.arg( bfname )
+	.arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );
+      mcaWFList << fname;
     }
   }
+  mcaWriting = false;
+  mcaTimer->setInterval( 10 );
+  mcaTimer->start();
+}
+
+void MainWindow::S2DMCAWriteNext( void )
+{
+  if ( mcaWriting )
+    return;
+
+  QString wfname;
+  if ( mcaWFList.count() > 0 ) {
+    wfname = mcaWFList[0];
+    mcaWFList.removeAt( 0 );
+  } else {
+    mcaTimer->stop();
+  }
+
+  mcaWriting = true;
+
+  QStringList cmps = wfname.split( "-" );
+  if ( cmps.count() > 1 ) {
+    int x = cmps[ cmps.count() - 1 ].toInt();
+    int y = cmps[ cmps.count() - 2 ].toInt();
+    aMCASet *set = S2DBase->mapAPoint( x, y );
+    if ( ( set != NULL ) && ( set->isValid() ) ) {
+      ShowMessageOnSBar( wfname + ".dat", 500 );
+      set->save( wfname + ".dat", S2DMCAFILETITLE );
+    }
+  }
+  mcaWriting = false;
 }

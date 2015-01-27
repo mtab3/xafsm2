@@ -37,6 +37,10 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   connect( S2DV, SIGNAL( newAutoZmin( double ) ), CBar, SLOT( newAutoZmin( double ) ), Qt::UniqueConnection );
   connect( CBar, SIGNAL( newZZ( QString, QString ) ), this, SLOT( newZZ( QString, QString ) ), Qt::UniqueConnection );
   connect( CBar, SIGNAL( newScale() ), S2DV, SLOT( update() ), Qt::UniqueConnection );
+
+  mapTimer = new QTimer;
+  connect( mapTimer, SIGNAL( timeout() ), this, SLOT( mapNext() ), Qt::UniqueConnection );
+  mapReading = false;
 }
 
 void S2DB::setParent( QWidget *p )
@@ -58,6 +62,9 @@ void S2DB::setParent( QWidget *p )
 	   this,
 	   SLOT( ReCalcMap( QString *, QString *, QVector<QPushButton*>& ) ), 
 	   Qt::UniqueConnection );
+
+  connect( this, SIGNAL( ShowMessage( QString, int ) ),
+	   parent, SLOT( ShowMessageOnSBar( QString, int ) ), Qt::UniqueConnection );
 }
 
 void S2DB::LoadMCAs( const QString &name )
@@ -72,20 +79,41 @@ void S2DB::getNewMCAMap( int length, int chs )
   mcaMap.New( iX, S2Di.ps[1] + 1, length, chs );
 
   QDir dir( mcaMapDir );
-  QFileInfoList flist = dir.entryInfoList( QDir::Files, QDir::Name );
-  for ( int i = 0; i < flist.count(); i++ ) {
-    QStringList cmps = flist[i].baseName().split( "-" );
-    if ( cmps.count() > 1 ) {
-      int x = cmps[ cmps.count() - 1 ].toInt();
-      int y = cmps[ cmps.count() - 2 ].toInt();
-      aMCASet *set = mcaMap.aPoint( x, y );
-      set->load( flist[i].absoluteFilePath(), "" );
-#if 0
-      if ( set->isValid() )
-	set->correctE( kev2pix );
-#endif
-    }
+  flist = dir.entryInfoList( QDir::Files, QDir::Name );
+
+  mapTimer->setInterval( 10 );
+  mapReading = false;
+  mapTimer->start();
+}
+
+void S2DB::mapNext( void )
+{
+  if ( mapReading )
+    return;
+
+  QFileInfo fi;
+  if ( flist.count() > 0 ) {
+    fi = flist[0];
+    flist.removeAt( 0 );
+  } else {
+    mapTimer->stop();
+    return;
   }
+  mapReading = true;
+
+  QStringList cmps = fi.baseName().split( "-" );
+  if ( cmps.count() > 1 ) {
+    int x = cmps[ cmps.count() - 1 ].toInt();
+    int y = cmps[ cmps.count() - 2 ].toInt();
+    aMCASet *set = mcaMap.aPoint( x, y );
+    emit ShowMessage( QString( "Reading MCA File : [%1]" ).arg( fi.baseName() ),
+		      500 );
+    set->load( fi.absoluteFilePath(), "" );
+    if ( set->isValid() )
+      set->correctE( kev2pix );
+  }
+
+  mapReading = false;
 }
 
 

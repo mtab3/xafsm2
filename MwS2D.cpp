@@ -163,6 +163,11 @@ void MainWindow::setupScan2DArea( void )
 #endif
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2DBase, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
+
+  mcaWriting = false;
+  mcaTimer = new QTimer;
+  connect( mcaTimer, SIGNAL( timeout() ), this, SLOT( S2DMCAWriteNext() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::PopUpS2D( void )
