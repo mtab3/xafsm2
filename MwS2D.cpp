@@ -746,6 +746,7 @@ void MainWindow::S2DWriteHead2( QTextStream &out )
   out << "# ***************************************************" << endl;
   out << "# ** This file was generated after the measurement **" << endl;
   out << "# ***************************************************" << endl;
+  out << endl;
 }
 
 void MainWindow::S2DWriteBody( double v )

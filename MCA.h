@@ -6,6 +6,7 @@
 #include <QStringList>
 
 #include "MCAHead.h"
+#include "KeV2Pix.h"
 
 struct aCH
 {
@@ -93,6 +94,9 @@ struct aMCASet {
   void writeHead( QTextStream &out );
   void writeData( QTextStream &out );
   void load( QString fname, QString title );
+  void load( QTextStream &in, QString title );
+  void correctE( KeV2Pix *k2p );
+  void copyCnt( int ch, quint32 *cnt );
 };
 
 struct aMCAMap {

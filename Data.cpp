@@ -423,8 +423,11 @@ void Data::showMCAData( QTextStream &in )
   cMCA = theMCAView->setMCAdataPointer( MCALength );
 
   MCADataIsValid = false;
-  getNewMCAs( MCALength );
-
+  //  getNewMCAs( MCALength );
+  aMCA.setSize( MCALength, MaxSSDs );
+  
+  aMCA.load( in, "" );
+#if 0  
   while ( ! in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s" ) );
     if ( vals[0][0] != '#' ) {
@@ -437,6 +440,12 @@ void Data::showMCAData( QTextStream &in )
       }
     }
   }
+#endif
+
+  if ( ! aMCA.isValid() )
+    return;
+  aMCA.correctE( k2p );
+#if 0  
   // 測定時のエネルギーとピクセルの関係は、
   // 今のエネルギーとピクセルの関係とは違っている可能性があるので
   // 今のピクセルに対応するエネルギーでのカウント数を線形補完で求めておく
@@ -454,10 +463,14 @@ void Data::showMCAData( QTextStream &in )
 			  + MCAs0[ch][j-1] );
     }
   }
+#endif
 
+  aMCA.copyCnt( cMCACh, cMCA );
+#if 0
   for ( int i = 0; i < MCALength; i++ ) {
     cMCA[i] = MCAs[cMCACh][i];
   }
+#endif
 
   emit setMCACh( cMCACh );
   theMCAView->SetMCACh( cMCACh );
@@ -465,6 +478,7 @@ void Data::showMCAData( QTextStream &in )
   theMCAView->update();
 }
 
+#if 0
 void Data::getNewMCAs( int MCALength )
 {
   while( MCAs.count() > 0 ) {
@@ -494,15 +508,19 @@ void Data::getNewMCAs( int MCALength )
     MCAEs << amcaE;
   }
 }
+#endif
 
 void Data::SelectedNewMCACh( int ch ) 
 {
   if ( ! MCADataIsValid ) return;
 
   cMCACh = ch;
+  aMCA.copyCnt( cMCACh, cMCA );
+#if 0
   for ( int i = 0; i < MCALength; i++ ) {
     cMCA[i] = MCAs[ cMCACh ][i];
   }
+#endif
   theMCAView->SetMCACh( cMCACh );
   theMCAView->update();
 }

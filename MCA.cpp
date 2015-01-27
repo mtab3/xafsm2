@@ -57,45 +57,51 @@ void aMCASet::writeData( QTextStream &out )
 
 void aMCASet::load( QString fname, QString title )
 {
-  bool endf = false;
-  int lc = 0;
   QFile f( fname );
   if ( f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     QTextStream in( &f );
-    while ( !endf && !in.atEnd() ) {
-      QString line = in.readLine();
-      if ( lc == 0 ) {
-	QString Title = QString( "%1 %2" ).arg( COMMONTITLE ).arg( title );
-	if ( line.mid( 2, QString( Title ).length() ) != QString( Title ) ) {
-	  endf = true;
-	}
-      }
-      if ( lc > 1 ) {
-	if ( ( line.count() > 0 ) && ( line[0] == '#' ) ) {
-	  if ( line.mid( 2, QString( RINGCURRENT ).length() ) == QString( RINGCURRENT ) ) {
-	    RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
-	  }
-	  if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
-	    RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
-	  }
-	} else {
-	  QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
-	  if ( vals.count() >= ( CHs * 2 + 1 ) ) {
-	    int i = vals[0].toInt();
-	    for ( int j = 0; j < CHs; j++ ) {
-	      Ch[j].E[i] = vals[j * 2 + 1].toDouble();
-	      Ch[j].cnt[i] = vals[j * 2 + 2].toInt();
-	    }
-	  }
-	}
-      }
-      lc++;
-    }
-    if ( lc > 1 ) valid = true;
+    load( in, title );
     f.close();
   }
 }
 
+void aMCASet::load( QTextStream &in, QString title )
+{
+  bool endf = false;
+  int lc = 0;
+
+  while ( !endf && !in.atEnd() ) {
+    QString line = in.readLine();
+    if ( lc == 0 ) {
+      QString Title = QString( "%1 %2" ).arg( COMMONTITLE ).arg( title );
+      Title = Title.simplified();
+      if ( line.mid( 2, QString( Title ).length() ) != QString( Title ) ) {
+	endf = true;
+      }
+    }
+    if ( lc > 1 ) {
+      if ( ( line.count() > 0 ) && ( line[0] == '#' ) ) {
+	if ( line.mid( 2, QString( RINGCURRENT ).length() ) == QString( RINGCURRENT ) ) {
+	  RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
+	}
+	if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
+	  RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
+	}
+      } else {
+	QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
+	if ( vals.count() >= ( CHs * 2 + 1 ) ) {
+	  int i = vals[0].toInt();
+	  for ( int j = 0; j < CHs; j++ ) {
+	    Ch[j].E[i] = vals[j * 2 + 1].toDouble();
+	    Ch[j].cnt[i] = vals[j * 2 + 2].toInt();
+	  }
+	}
+      }
+    }
+    lc++;
+  }
+  if ( lc > 1 ) valid = true;
+}
 
 #if 0
     out << "# Ring Current : " << RINGCurrent << "\n";
@@ -112,6 +118,42 @@ void aMCASet::load( QString fname, QString title )
       out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
     }
 #endif
+
+void aMCASet::correctE( KeV2Pix *k2p )
+{
+  // 測定時のエネルギーとピクセルの関係は、
+  // 今のエネルギーとピクセルの関係とは違っている可能性があるので
+  // 今のピクセルに対応するエネルギーでのカウント数を線形補完で求めておく
+  aCH newCh;
+  newCh.setLength( Length );
+  for ( int ch = 0; ch < CHs; ch++ ) {
+    for ( int i = 0; i < Length; i++ ) {
+      double nowE = k2p->p2E( ch, i );
+      newCh.E[i] = nowE;
+      int j;
+      for ( j = 1; j < Length - 1; j++ ) {
+	if ( nowE < Ch[ch].E[j] ) {
+	  break;
+	}
+      }
+      newCh.cnt[i] = 
+	(int)(( nowE - Ch[ch].E[j-1] ) / ( Ch[ch].E[j] - Ch[ch].E[j-1] )
+	      * ( (int)Ch[ch].cnt[j] - (int)Ch[ch].cnt[j-1] )
+	      + Ch[ch].cnt[j-1] );
+    }
+    for ( int i = 0; i < Length; i++ ) {
+      Ch[ch].E[i] = newCh.E[i];
+      Ch[ch].cnt[i] = newCh.cnt[i];
+    }
+  }
+}
+
+void aMCASet::copyCnt( int ch, quint32 *cnt )
+{
+  for ( int i = 0; i < Length; i++ ) {
+    cnt[i] = Ch[ch].cnt[i];
+  }
+}
 
 
 void aMCAMap::New( int ix, int iy, int length, int CHs )

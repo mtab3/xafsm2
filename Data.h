@@ -48,8 +48,9 @@ class Data : public QFrame, private Ui::Data
   bool MCADataIsValid;
   int cMCACh;
   quint32 *cMCA;
-  QVector<quint32 *> MCAs0, MCAs;
-  QVector<double *> MCAEs;
+  //  QVector<quint32 *> MCAs0, MCAs;
+  //  QVector<double *> MCAEs;
+  aMCASet aMCA0, aMCA;
   S2DInfo S2DI;
 
   void showMeasData( QTextStream &in );

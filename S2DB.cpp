@@ -78,8 +78,12 @@ void S2DB::getNewMCAMap( int length, int chs )
     if ( cmps.count() > 1 ) {
       int x = cmps[ cmps.count() - 1 ].toInt();
       int y = cmps[ cmps.count() - 2 ].toInt();
-      qDebug() << cmps;
-      mcaMap.aPoint( x, y )->load( flist[i].absoluteFilePath(), "" );
+      aMCASet *set = mcaMap.aPoint( x, y );
+      set->load( flist[i].absoluteFilePath(), "" );
+#if 0
+      if ( set->isValid() )
+	set->correctE( kev2pix );
+#endif
     }
   }
 }
