@@ -7,6 +7,7 @@ void MainWindow::MeasSequence( void )
 
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
+  if ( NoticingHaveNotMeasDark ) return;
   if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) return;
   if ( MPSet.qXafsMode ) {
     ShowQXafsProgress();

@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "EvToStars" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 17:16:29 2015 +0900\n"\
+                "    ok: generate events on starting and stopping measurements\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 14:07:12 2015 +0900\n"\
                 "    It looks stable, though it is not sure that the Read-S2D-MCA functions as I will\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Jan 25 15:40:19 2015 +0900\n"\
                 "    a problem on cMCAView was solved anyway\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jan 25 15:38:08 2015 +0900\n"\
-                "    the problem on the MCAView is solved anyway\n"\
 		"\n"\
                 ""
 #endif

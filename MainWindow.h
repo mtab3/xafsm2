@@ -469,8 +469,11 @@ private:
   QMessageBox *StopP;
   QMessageBox *AskOverWrite;
   QMessageBox *MakeSureOfRangeSelect;
+  QMessageBox *NoticeHaveNotMeasDark;
   bool AskingOverwrite;
   bool MakingSureOfRangeSelect;
+  bool haveMeasuredDark;
+  bool NoticingHaveNotMeasDark;
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
@@ -486,7 +489,7 @@ private:
   bool AskingShutterOpen;
   int MeasDarkStage;
   bool setRsRe( int &rs, int &re );
-
+  
   void ShowMeasFileStatus( QString fname );
   void ShowTotal( void );
   void CpBlock2SBlock( void );
@@ -759,6 +762,7 @@ private slots:
   void SurelyStop( void );
   void GoingOn( void );
   void OkOverWrite( void );
+  void OkHaveNotMeasDark( void );
   void RangeSelOK( void );
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );

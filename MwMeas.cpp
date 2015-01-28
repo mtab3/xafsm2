@@ -68,11 +68,13 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   TP = 0;
   TT0 = 0;
   EstimatedMeasurementTimeInSec = 0;
+
   inMeas = false;
   inPause = false;
   MeasStage = false;
   FixedPositionMode = false;
   MeasPause->setEnabled( false );
+
   StopP = new QMessageBox;
   tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   StopP->addButton( tr( "OK" ), QMessageBox::AcceptRole );
@@ -83,9 +85,19 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AskOverWrite = new QMessageBox;
   tmpB = AskOverWrite->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   AskOverWrite->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  AskOverWrite->setText( tr( "<h1><center>Over Write ?</center></h1>" ) );
   AskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
   AskOverWrite->setDefaultButton( tmpB );
 
+  NoticeHaveNotMeasDark = new QMessageBox;
+  tmpB = NoticeHaveNotMeasDark->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  NoticeHaveNotMeasDark->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  NoticeHaveNotMeasDark
+    ->setText( tr( "<h1><center>Have not measured dark !</center></h1>" ) );
+  NoticeHaveNotMeasDark->setWindowTitle( tr( "Notice" ) );
+  NoticeHaveNotMeasDark->setDefaultButton( tmpB );
+  haveMeasuredDark = false;
+  
   MakeSureOfRangeSelect = new QMessageBox;
   tmpB = MakeSureOfRangeSelect->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   MakeSureOfRangeSelect->addButton( tr( "OK" ), QMessageBox::AcceptRole );
@@ -202,6 +214,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( MakeSureOfRangeSelect, SIGNAL( rejected() ), this, SLOT( SurelyStop() ),
 	   Qt::UniqueConnection );
   connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ),
+	   Qt::UniqueConnection );
+
+  connect( NoticeHaveNotMeasDark, SIGNAL( accepted() ), this, SLOT( OkHaveNotMeasDark() ),
+	   Qt::UniqueConnection );
+  connect( NoticeHaveNotMeasDark, SIGNAL( rejected() ), this, SLOT( SurelyStop() ),
 	   Qt::UniqueConnection );
 
   connect( AfterShowType, SIGNAL( currentIndexChanged( int ) ),
@@ -1415,6 +1432,13 @@ void MainWindow::StartMeasurement( void )
       } else {
         AskingOverwrite = false;
       }
+
+      if ( ! haveMeasuredDark ) {
+	NoticeHaveNotMeasDark->show();
+	NoticingHaveNotMeasDark = true;
+      } else {
+	NoticingHaveNotMeasDark = false;
+      }
     }
 
     MakingSureOfRangeSelect = false;
@@ -1731,7 +1755,11 @@ void MainWindow::PauseMeasurement( void )
 void MainWindow::OkOverWrite( void )
 {
   AskingOverwrite = false;
-  qDebug() << "ok over";
+}
+
+void MainWindow::OkHaveNotMeasDark( void )
+{
+  NoticingHaveNotMeasDark = false;
 }
 
 void MainWindow::RangeSelOK( void )
