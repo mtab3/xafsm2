@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 17:45:45 2015 +0900\n"\
+                "    checking if dark has already been measured\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 17:16:29 2015 +0900\n"\
                 "    ok: generate events on starting and stopping measurements\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jan 26 02:02:13 2015 +0900\n"\
                 "    working on S2D to read S2D-data with SFluo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Jan 25 15:40:19 2015 +0900\n"\
-                "    a problem on cMCAView was solved anyway\n"\
 		"\n"\
                 ""
 #endif

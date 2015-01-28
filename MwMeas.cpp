@@ -1433,7 +1433,7 @@ void MainWindow::StartMeasurement( void )
         AskingOverwrite = false;
       }
 
-      if ( ! haveMeasuredDark ) {
+      if ( ( ! haveMeasuredDark ) && ( !MeasBackBeforeMeas->isChecked() ) ) {
 	NoticeHaveNotMeasDark->show();
 	NoticingHaveNotMeasDark = true;
       } else {
