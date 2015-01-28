@@ -806,7 +806,9 @@ void MainWindow::StartMCA( void )
     //    cMCACh = MCACh->text().toInt();
 
     //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
-    getNewMCAView();
+    if ( cMCAView == NULL ) {
+      getNewMCAView();
+    }
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );

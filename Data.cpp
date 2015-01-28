@@ -164,7 +164,7 @@ void Data::CheckFileType( const QString &fname )
   }
 }
 
-void Data::GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors )
+void Data::GotNewView( ViewCTRL *viewC, QVector<AUnit*> &AMotors )
 {
   QFile f( FName );
 
@@ -173,7 +173,7 @@ void Data::GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors )
     emit showMessage( tr( "Can not open the file %1." ).arg( FName ), 2000 );
     return;
   }
-  theViewC = view;
+  theViewC = viewC;
 
   QTextStream in( &f );
 

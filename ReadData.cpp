@@ -90,11 +90,14 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     break;
   }
 
-  ((Data*)from)->GotNewView( viewC, AMotors );
+  if ( viewC != NULL )
+    ((Data*)from)->GotNewView( viewC, AMotors );
 }
 
 void MainWindow::ansToGetNewMCAView( S2DB* s2db )
 {
-  getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
+  if ( cMCAView == NULL ) {
+    getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
+  }
   s2db->getNewMCAMap( MCALength, SAVEMCACh );
 }

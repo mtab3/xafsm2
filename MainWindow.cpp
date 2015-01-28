@@ -583,13 +583,19 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     break;
   case S2DVIEW:
     newView = (void *)(new S2DB( this ) );
-    qDebug() << "Not Set Parent in MainWindow";
+    //    "Not Set Parent in MainWindow";
     //    ((S2DB*)newView)->setParent( this );
     break;
   default:
-    return NULL;
+    break;
   }
-
+  // newView は ViewCTRL の中で作れば良さそうなものだが、
+  // 上の操作にいっぱい MainWindow の持ち物が出てくるのでめんどくさい
+  
+  if ( newView == NULL )
+    return NULL;
+  
+  qDebug() << "vtype " << vtype;
   if ( ! ViewCtrls[ ViewTab->currentIndex() ]->setView( newView, vtype ) ) {
     // current tab is not available.
     int i;
@@ -601,8 +607,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     if ( i < ViewTab->count() ) {          // an available tab is found.
       ViewTab->setCurrentIndex( i );       // make it current tab.
     } else {
+#if 0
       // no tab is available.
       statusbar->showMessage( tr( "No Scree is available!" ), 2000 );
+      void *newView = ViewCtrls[ ViewTab->currentIndex() ]->getView();
       switch( vtype ) {
       case XYVIEW:
 	delete (XYView *)newView; break;
@@ -614,6 +622,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
 	qDebug() << "Unknow vewType was passed to SetUpNewView";
       }
       newView = NULL;
+#endif
       return NULL;
     }
   }

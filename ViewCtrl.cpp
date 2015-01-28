@@ -13,6 +13,7 @@ ViewCTRL::ViewCTRL( void )
 
 bool ViewCTRL::setView( void *view, VTYPE vtype )
 {
+#if 0
   if ( nowView != NULL ) {           // 現在の View は使用中 ?
     if ( vtype == nowVType ) {       // 表示しようとしているのと同じ種類のグラフなら
       if ( ! deleteView() ) {        // 乗っ取りを企てる。
@@ -27,7 +28,22 @@ bool ViewCTRL::setView( void *view, VTYPE vtype )
   deletable = true;
   setView( (QWidget *)view );
   gsbStat = new GSBStats;
-  return true;                   // new view is set.
+#endif
+  
+  if ( nowView != NULL ) {
+    qDebug() << "vtype " << nowVType << vtype;
+    if ( nowVType != vtype ) {
+      return false;
+    }
+  } else {
+    nowView = view;
+    nowVType = vtype;
+    setView( (QWidget *)nowView );
+  }
+  deletable = true;
+  gsbStat = new GSBStats;
+  
+  return true;
 }
 
 void ViewCTRL::setView( QWidget *view )

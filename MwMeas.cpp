@@ -1522,9 +1522,12 @@ void MainWindow::StartMeasurement( void )
     if ( isSFluo ) {
       if ( cMCAView == NULL ) {
 	getNewMCAView();
-      } else {                     // その場しのぎ。もっと本質的なやり方があるはず
+      }
+#if 0
+      else {                     // その場しのぎ。もっと本質的なやり方があるはず
 	cMCAView = (MCAView*)(cMCAViewC->getView());
       }
+#endif
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
         XafsMCAMap.New( TotalPoints, SelRPT->value(), MCALength, SAVEMCACh );
       else                        // そうでなければ 1スキャン分だけメモリ上に
