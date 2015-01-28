@@ -802,13 +802,9 @@ void MainWindow::StartMCA( void )
 
     inMCAMeas = true;
 
-    //    oldMCACh = cMCACh;
-    //    cMCACh = MCACh->text().toInt();
-
-    //    if (( StartResume == MCA_START )||( cMCACh != oldMCACh )) {
-    if ( cMCAView == NULL ) {
-      getNewMCAView();
-    }
+    //    if ( cMCAView == NULL ) {
+    getNewMCAView();
+    //    }
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
@@ -840,7 +836,7 @@ void MainWindow::getNewMCAView( void )
   if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
        || ( StartResume == MCA_START ) ) {
     if ( cMCAView != NULL ) {
-      cMCAViewC->setIsDeletable( true );
+      //      cMCAViewC->setIsDeletable( true );
     }
 
     if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 

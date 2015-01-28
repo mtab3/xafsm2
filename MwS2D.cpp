@@ -440,9 +440,9 @@ void MainWindow::S2DScanStart( void )
     S2DI.isSFluo = false;
     if ( as == SFluo ) {
       S2DI.isSFluo = true;
-      if ( cMCAView == NULL ) {
-	getNewMCAView();   // ここで確実に MCAData が有効になる
-      }
+      //      if ( cMCAView == NULL ) {
+      getNewMCAView();   // ここで確実に MCAData が有効になる
+      //      }
     }
     switch( S2DI.ScanMode ) {
     case STEP: break;

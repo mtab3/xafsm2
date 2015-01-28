@@ -607,7 +607,6 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     if ( i < ViewTab->count() ) {          // an available tab is found.
       ViewTab->setCurrentIndex( i );       // make it current tab.
     } else {
-#if 0
       // no tab is available.
       statusbar->showMessage( tr( "No Scree is available!" ), 2000 );
       void *newView = ViewCtrls[ ViewTab->currentIndex() ]->getView();
@@ -622,7 +621,6 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
 	qDebug() << "Unknow vewType was passed to SetUpNewView";
       }
       newView = NULL;
-#endif
       return NULL;
     }
   }

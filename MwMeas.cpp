@@ -1520,9 +1520,9 @@ void MainWindow::StartMeasurement( void )
       FixedPositionMode = false;
 
     if ( isSFluo ) {
-      if ( cMCAView == NULL ) {
-	getNewMCAView();
-      }
+      //      if ( cMCAView == NULL ) {
+      getNewMCAView();
+      //      }
 #if 0
       else {                     // その場しのぎ。もっと本質的なやり方があるはず
 	cMCAView = (MCAView*)(cMCAViewC->getView());
