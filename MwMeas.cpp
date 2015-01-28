@@ -16,6 +16,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
 	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
 
+  MeasStart->setStyleSheet( NormalBXAFS );
+
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
     AfterShowType->setEnabled( false );
@@ -74,6 +76,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MeasStage = false;
   FixedPositionMode = false;
   MeasPause->setEnabled( false );
+  MeasPause->setHidden( true );
 
   StopP = new QMessageBox;
   tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
@@ -1545,6 +1548,7 @@ void MainWindow::StartMeasurement( void )
     }
 
     inMeas = true;
+    MeasPause->setHidden( false );
     SignalToStars( XAFS_M_START );
     if ( MPSet.qXafsMode ) SignalToStars( QXAFS_M_START );
     MeasStage = 0;
@@ -1654,9 +1658,10 @@ void MainWindow::SurelyStop( void )
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = false;
+  MeasPause->setHidden( true );
   SignalToStars( XAFS_M_END );
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( NormalB );
+  MeasStart->setStyleSheet( NormalBXAFS );
   MeasStart->setEnabled( true );
   inPause = false;
   MeasPause->setText( tr( "Pause" ) );

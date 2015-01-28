@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 17:48:37 2015 +0900\n"\
+                "    new what-to-do\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 17:47:56 2015 +0900\n"\
+                "    modify check-meas-dark\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 17:45:45 2015 +0900\n"\
                 "    checking if dark has already been measured\n"\
 		"\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jan 27 01:27:24 2015 +0900\n"\
                 "    broken codes. ReCalc\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jan 26 19:55:00 2015 +0900\n"\
-                "    very near from the goal\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jan 26 02:02:13 2015 +0900\n"\
-                "    working on S2D to read S2D-data with SFluo\n"\
 		"\n"\
                 ""
 #endif

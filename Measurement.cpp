@@ -195,8 +195,10 @@ void MainWindow::MeasSequence( void )
         inMeas = false;
 	MPSet.normallyFinished = true;
         MeasStart->setText( tr( "Start" ) );
-        MeasStart->setStyleSheet( NormalB );
+        MeasStart->setStyleSheet( NormalBXAFS );
         MeasPause->setEnabled( false );
+	MeasPause->setHidden( true );
+	SignalToStars( XAFS_M_END );
         onMeasFinishWorks();
       }
     }
@@ -212,7 +214,6 @@ void MainWindow::onMeasFinishWorks( void )
 {
   MPSet.finalRpt = MeasR + 1;
   MPSet.finalPnt = MeasP;
-  qDebug() << "Final Rpt and Pnt " << MeasR << MeasP;
   SelRealTime->setChecked( SvSelRealTime );
   SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );

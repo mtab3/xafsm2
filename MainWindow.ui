@@ -3757,6 +3757,42 @@ Though, other parameters are fixed at the value on starting.</string>
                </item>
               </layout>
              </item>
+             <item row="0" column="1">
+              <layout class="QVBoxLayout" name="verticalLayout_10">
+               <property name="spacing">
+                <number>2</number>
+               </property>
+               <item>
+                <widget class="QRadioButton" name="QXafsMode">
+                 <property name="toolTip">
+                  <string>Changing to Q-XAFS mode.</string>
+                 </property>
+                 <property name="text">
+                  <string>Q-XAFS mode</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="TuneAtEachStp">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Tune at Each Stp.</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
              <item row="0" column="4">
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <property name="spacing">
@@ -3803,42 +3839,6 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                  <property name="text">
                   <string>Pause</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="0" column="1">
-              <layout class="QVBoxLayout" name="verticalLayout_10">
-               <property name="spacing">
-                <number>2</number>
-               </property>
-               <item>
-                <widget class="QRadioButton" name="QXafsMode">
-                 <property name="toolTip">
-                  <string>Changing to Q-XAFS mode.</string>
-                 </property>
-                 <property name="text">
-                  <string>Q-XAFS mode</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="TuneAtEachStp">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Tune at Each Stp.</string>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
