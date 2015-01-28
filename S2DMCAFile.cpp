@@ -53,7 +53,7 @@ void MainWindow::S2DMCAWriteNext( void )
     int y = cmps[ cmps.count() - 2 ].toInt();
     aMCASet *set = S2DBase->mapAPoint( x, y );
     if ( ( set != NULL ) && ( set->isValid() ) ) {
-      ShowMessageOnSBar( wfname + ".dat", 500 );
+      ShowMessageOnSBar( tr( "Wriging MCA File : [%1]" ).arg( wfname + ".dat" ), 500 );
       set->save( wfname + ".dat", S2DMCAFILETITLE );
     }
   }

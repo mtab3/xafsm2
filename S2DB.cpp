@@ -106,7 +106,7 @@ void S2DB::mapNext( void )
     int x = cmps[ cmps.count() - 1 ].toInt();
     int y = cmps[ cmps.count() - 2 ].toInt();
     aMCASet *set = mcaMap.aPoint( x, y );
-    emit ShowMessage( QString( "Reading MCA File : [%1]" ).arg( fi.baseName() ),
+    emit ShowMessage( tr( "Reading MCA File : [%1]" ).arg( fi.baseName() ),
 		      500 );
     set->load( fi.absoluteFilePath(), "" );
     if ( set->isValid() )

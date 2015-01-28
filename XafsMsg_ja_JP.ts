@@ -2990,20 +2990,40 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <translation>変化率</translation>
     </message>
     <message>
-        <source>2.5e-3</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>40</source>
         <translation>40</translation>
     </message>
     <message>
-        <source>Prec.</source>
+        <source>1e-6</source>
         <translation></translation>
     </message>
     <message>
-        <source>1e-6</source>
-        <translation></translation>
+        <source>Moving Average</source>
+        <translation>移動平均</translation>
+    </message>
+    <message>
+        <source>1000</source>
+        <translation>1000</translation>
+    </message>
+    <message>
+        <source>0.05</source>
+        <translation>0.05</translation>
+    </message>
+    <message>
+        <source>Special</source>
+        <translation>スペシャル</translation>
+    </message>
+    <message>
+        <source>&lt;h1&gt;&lt;center&gt;Over Write ?&lt;/center&gt;&lt;/h1&gt;</source>
+        <translation>&lt;h1&gt;&lt;center&gt;上書きしますか?&lt;/center&gt;&lt;/h1&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;h1&gt;&lt;center&gt;Have not measured dark !&lt;/center&gt;&lt;/h1&gt;</source>
+        <translation>&lt;h1&gt;&lt;center&gt;バックグラウンドが未計測です&lt;/center&gt;&lt;/h1&gt;</translation>
+    </message>
+    <message>
+        <source>Notice</source>
+        <translation>注意</translation>
     </message>
 </context>
 <context>
@@ -3593,6 +3613,18 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Auto Scale</source>
         <translation>自動スケール</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Load MCAs</source>
+        <translation>各MCA読込</translation>
+    </message>
+    <message>
+        <source>For SSD</source>
+        <translation>SSD使用時</translation>
     </message>
 </context>
 <context>
