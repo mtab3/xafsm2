@@ -626,3 +626,7 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
   RingCurrent->setText( Val );
 }
 
+void MainWindow::SignalToStars( QString event )
+{
+  s->SendEvent( event );
+}

@@ -57,6 +57,13 @@
 #define MCA_ID  "MCA Monitor"
 #define S2D_ID  "2D Scan"
 
+#define XAFS_M_START   "StartMeas"
+#define XAFS_M_END     "EndMeas"
+//#define XAFS_M_STOP    "StopMeas"      // suspend measurement
+//#define XAFS_M_RESUME  "ResumeMeas"
+#define QXAFS_M_START  "StartQMeas"
+#define QXAFS_M_END    "EndQMeas"
+
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
 #define SAVEMCACh        ( 19 )
@@ -843,6 +850,7 @@ private slots:
   void S2DSetROIs( void );
   //  void S2DReCalcMap0( void );
   void ansToGetNewMCAView( S2DB *s2db );
+  void ReCalcS2DMap( void );
 
   /* AutoSequence */
   void AutoSequence0( void );
@@ -853,12 +861,11 @@ private slots:
   void TYVUpScale( void );
   void TYVDownScale( void );
 
+  void SpecialMove( void );           // 特殊動作だ !!
+  void SpecialMoveCore( void );       // 特殊動作だ !!
 
-  void SpecialMove( void );
-  void SpecialMoveCore( void );
+  void SignalToStars( QString event );
 
-  void ReCalcS2DMap( void );
-  
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );

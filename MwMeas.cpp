@@ -1470,7 +1470,6 @@ void MainWindow::StartMeasurement( void )
     /*************************************************************************/
     /*************************************************************************/
 
-    inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
@@ -1521,6 +1520,9 @@ void MainWindow::StartMeasurement( void )
       UUnits.addUnit( MEAS_ID, mUnits.at(i) );
     }
 
+    inMeas = true;
+    SignalToStars( XAFS_M_START );
+    if ( MPSet.qXafsMode ) SignalToStars( QXAFS_M_START );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
@@ -1628,6 +1630,7 @@ void MainWindow::SurelyStop( void )
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = false;
+  SignalToStars( XAFS_M_END );
   MeasStart->setText( tr( "Start" ) );
   MeasStart->setStyleSheet( NormalB );
   MeasStart->setEnabled( true );
