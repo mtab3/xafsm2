@@ -1270,7 +1270,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3260,7 +3260,7 @@
                <item>
                 <widget class="QPushButton" name="ShowMeasuredBack">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -3305,7 +3305,7 @@
                   <string>AutoShutter</string>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                  <property name="autoExclusive">
                   <bool>false</bool>
@@ -3324,7 +3324,7 @@
                   <string>Meas. Everytime</string>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
@@ -3339,12 +3339,15 @@
                  <property name="text">
                   <string>Use Measured</string>
                  </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="MeasBackGround">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -3762,7 +3765,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QPushButton" name="MeasStart">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -3784,7 +3787,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QPushButton" name="MeasPause">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -3873,6 +3876,12 @@ Though, other parameters are fixed at the value on starting.</string>
              </property>
              <item row="1" column="1">
               <widget class="QPushButton" name="OtherOptions">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Advanced options cntrolling the XAFS measurement.&lt;/p&gt;&lt;p&gt;Ordinaly, the options found here do not have to be changed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
@@ -3900,6 +3909,12 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
              <item row="1" column="7">
               <widget class="QPushButton" name="AfterSave">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only for spectra measured with 19 ch SSD&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
@@ -3913,6 +3928,12 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
              <item row="1" column="4">
               <widget class="QComboBox" name="AfterShowType">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>80</width>
@@ -5432,6 +5453,12 @@ Though, other parameters are fixed at the value on starting.</string>
              </item>
              <item row="13" column="11">
               <widget class="QPushButton" name="ScanRec">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>40</width>
@@ -6100,8 +6127,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>163</width>
-                     <height>136</height>
+                     <width>277</width>
+                     <height>155</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">

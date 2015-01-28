@@ -1,4 +1,5 @@
 
+#include "global.h"
 #include "MainWindow.h"
 
 void MainWindow::setupSetupArea( void )   /* 設定エリア */
@@ -512,7 +513,7 @@ void MainWindow::saveScanData( void )
 
 void MainWindow::setSelectedMonFName( const QString &fname )
 {
-  MonRecFile->setText( fname );
+  MonRecFile->setText( CheckFNameExt( fname, "dat" ) );
   MonNameStat = NEW;
   MonRecFile->setStyleSheet( FSTATCOLORS[ MonDataStat ][ MonNameStat ] );
   MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
@@ -520,7 +521,7 @@ void MainWindow::setSelectedMonFName( const QString &fname )
 
 void MainWindow::setSelectedScanFName( const QString &fname )
 {
-  ScanRecFileName->setText( fname );
+  ScanRecFileName->setText( CheckFNameExt( fname, "dat" ) );
   ScanNameStat = NEW;
   ScanRecFileName->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
   ScanRecFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );

@@ -1,7 +1,9 @@
 
+#include "global.h"
 #include "SMsg.h"
 #include "MainWindow.h"
 #include "MCAView.h"
+
 //#include "PeakFit.h"
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
@@ -581,7 +583,7 @@ void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
 {
-  MCARecFile->setText( fname );
+  MCARecFile->setText( CheckFNameExt( fname, "dat" ) );
   MCANameStat = NEW;
   MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
   MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );

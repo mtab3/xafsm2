@@ -4,6 +4,7 @@
 #include <QStylePainter>
 #include <QDebug>
 
+#include "global.h"
 #include "XafsM.h"
 #include "MCAView.h"
 //#include "PeakFit.h"

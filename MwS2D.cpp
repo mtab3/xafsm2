@@ -1,6 +1,7 @@
 
 #include "MainWindow.h"
 
+#include "global.h"
 #include "XafsM.h"
 #include "SMsg.h"
 
@@ -315,8 +316,9 @@ void MainWindow::S2DOkOverWrite2( void )
 
 void MainWindow::newS2DFileSelected( const QString &fname )
 {
-  S2DFileName0->setText( fname );
-  QFileInfo f( fname );
+  QString Fname = CheckFNameExt( fname, "dat" );
+  S2DFileName0->setText( Fname );
+  QFileInfo f( Fname );
 
   if ( f.exists() ) {
     S2DNameStat = OLD;

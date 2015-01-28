@@ -1,4 +1,5 @@
 
+#include "global.h"
 #include "MainWindow.h"
 
 void MainWindow::setupMeasArea( void )   /* 測定エリア */
@@ -56,8 +57,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AutoModeComment.clear();
 
   defaultFileName = QDateTime::currentDateTime().toString( "yyMMdd" ) + "-test.dat";
-  EditDFName->setText( defaultFileName );
-  ShowMeasFileStatus( defaultFileName );
+  EditDFName->setText( CheckFNameExt( defaultFileName, "dat" ) );
+  ShowMeasFileStatus( CheckFNameExt( defaultFileName, "dat" ) );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
@@ -267,6 +268,7 @@ void MainWindow::ShowOtherOptions( void )
 
 void MainWindow::CheckNewMeasFileName( void )
 {
+  EditDFName->setText( CheckFNameExt( EditDFName->text(), "dat" ) );
   ShowMeasFileStatus( EditDFName->text() );
 }
 
@@ -946,10 +948,12 @@ void MainWindow::SetDwells( void )
 
 void MainWindow::SelectedNDFN( const QString &fname )
 {
-  EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
-                                  // Start 時に書き出す。
-  SelectedOrgName = fname;
-  ShowMeasFileStatus( fname );
+  QString Fname = CheckFNameExt( fname, "dat" );
+  EditDFName->setText( Fname );
+  // ここではファイル名をセットするだけ。Start 時に書き出す。
+  
+  SelectedOrgName = Fname;
+  ShowMeasFileStatus( Fname );
 }
 
 void MainWindow::SelectedWBFN( const QString &fname )
