@@ -18,7 +18,9 @@ QString MainWindow::LocalizedName( QString name )
   name.replace( QString( "move" ),      tr( "move" ) );
   name.replace( QString( "Counter" ),   tr( "Counter" ) );
 
-  name.replace( QString( "ax" ),        tr( "axis" ) );
+  name.replace( QString( "MinH" ),      tr( "MinH" ) );
+  name.replace( QString( "min Z" ),     tr( "miZ" ) );
+  name.replace( QString( "max Z" ),     tr( "maZ" ) );
 
   name.replace( QString( "Series" ) ,   tr( "Series" ) );
   name.replace( QString( "Shutter" ),   tr( "Shutter" ) );
@@ -29,5 +31,7 @@ QString MainWindow::LocalizedName( QString name )
   name.replace( QString( "U. Gap" ),    tr( "U. Gap" ) );
   name.replace( QString( "BPM H12" ),   tr( "BPM H12" ) );
   
+  name.replace( QString( "ax" ),        tr( "axis" ) );
+
   return name;
 }

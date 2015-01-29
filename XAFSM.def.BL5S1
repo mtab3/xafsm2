@@ -240,6 +240,11 @@ MOTOR AIOo "M029" "GENERAL" "A out 1" "Aio64" "o1" "mV" 1 REAL -10 10
 MOTOR AIOo "M030" "GENERAL" "A out 2: wave out to ctrl. dTh1 via PEZ" "Aio64" "o2" "mV" 1 REAL -10 10
 MOTOR AIOo "M031" "PEZCTRL" "A out 3: DC out to ctrl. dTh1 via PEZ" "Aio64" "o3" "mV" 1 REAL -10 10
 
+MOTOR PM "M032" "GENERAL" "MinH Omg"   "pm16c04-2" "ch13" "deg" 0.001   INT    0 # CEY w
+MOTOR PM "M033" "GENERAL" "MinH min Z" "pm16c04-3" "ch13" "mm"  0.00025 INT 1260 # CEY z
+MOTOR PM "M034" "GENERAL" "MinH max Z" "pm16c04-3" "ch14" "mm"  0.00025 INT 1401 # CEY x
+
+
 DEF_U_REAL M002 M003 M004           # Stage XYZ
 DEF_U_REAL M005 M006 M007 M008      # 4WS
 DEF_U_REAL M009 M010                # 3x3 changer XY
@@ -261,7 +266,7 @@ DEF_U_REAL M024 M025 M026 M027      # Capilari XZ w phi
 #     "um"        : Name of the metric unit (only for display)
 #     0.056       : The metric unit / Volt
 #     REAL        : The unit of the motion should be real ( or INT )
-#     -10         : Minimum Voltage
+#     -10         : inimum Voltage
 #     120         : Maximum Voltage
 
 CHANGER "C000" "3x3 Stage" "M009" "M010" 3 3 1 1 50 45 -1 -1 30000 30000
@@ -409,7 +414,7 @@ SENSOR PAM "S005" "I01" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-# SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006"
+SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006"
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
 SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"

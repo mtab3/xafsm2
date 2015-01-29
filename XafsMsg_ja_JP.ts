@@ -3025,6 +3025,38 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>Notice</source>
         <translation>注意</translation>
     </message>
+    <message>
+        <source>MinH</source>
+        <translation>ハッチ内ミラー</translation>
+    </message>
+    <message>
+        <source>miZ</source>
+        <translation>小 Z</translation>
+    </message>
+    <message>
+        <source>maZ</source>
+        <translation>大 Z</translation>
+    </message>
+    <message>
+        <source>QXAFS</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>XAFS</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>SCAN</source>
+        <translation>スキャン</translation>
+    </message>
+    <message>
+        <source>MON.</source>
+        <translation>モニタ</translation>
+    </message>
+    <message>
+        <source>Wriging MCA File : [%1]</source>
+        <translation>MCAファイル書出中 : [%1]</translation>
+    </message>
 </context>
 <context>
     <name>PMConditions</name>
@@ -3625,6 +3657,10 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>For SSD</source>
         <translation>SSD使用時</translation>
+    </message>
+    <message>
+        <source>Reading MCA File : [%1]</source>
+        <translation>MCAファイル読込中 : [%1]</translation>
     </message>
 </context>
 <context>
