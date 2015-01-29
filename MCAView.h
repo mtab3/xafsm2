@@ -9,7 +9,6 @@
 #include "ChCoord.h"
 #include "FluoDBase.h"
 #include "KeV2Pix.h"
-//#include "PeakFit.h"
 #include "MCAPeak.h"
 #include "Gs.h"
 
