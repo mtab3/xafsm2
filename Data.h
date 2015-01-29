@@ -15,7 +15,8 @@ class TYView;
 class MCAView;
 class S2DView;
 
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, S2DDATA, NONDATA };
+enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, S2DDATA,
+		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW, S2DSHOW, NONDATA };
 
 class Data : public QFrame, private Ui::Data
 {
@@ -53,7 +54,7 @@ class Data : public QFrame, private Ui::Data
   aMCASet aMCA0, aMCA;
   S2DInfo S2DI;
 
-  void showMeasData( QTextStream &in );
+  //  void showMeasData( QTextStream &in );
   void showScanData( QTextStream &in );
   void showMonData( QTextStream &in );
   void showMCAData( QTextStream &in );

@@ -51,6 +51,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
   switch( dtype ) {
 #if 0
   case MEASDATA:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
+    // ここは復活させるなら要再検討
     viewC = ViewCtrls[ ViewTab->currentIndex() ];
     if ( viewC->getNowDType() != dtype ) {
       viewC = SetUpNewView( XYVIEW );
@@ -59,24 +60,21 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     }
     break;
 #endif
-  case MONDATA:   // MONDATA と MCADATA は重ね書きは諦める。
-    viewC = SetUpNewView( TYVIEW );
+  case MONDATA:
+    viewC = SetUpNewView( TYVIEW, MONSHOW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANDATA:
-    viewC = ViewCtrls[ ViewTab->currentIndex() ];
-    if ( viewC->getNowDType() != dtype ) {
-      viewC = SetUpNewView( XYVIEW );
-      ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
-      ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
-    }
+    viewC = SetUpNewView( XYVIEW, SCANSHOW );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
+    ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
   case MCADATA:
-    viewC = SetUpNewView( MCAVIEW );
+    viewC = SetUpNewView( MCAVIEW, MCASHOW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
     break;
   case S2DDATA:
-    viewC = SetUpNewView( S2DVIEW );
+    viewC = SetUpNewView( S2DVIEW, S2DSHOW );
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
     qDebug() << "Set Parent in ReadData";

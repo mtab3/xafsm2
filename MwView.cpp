@@ -11,10 +11,10 @@ void MainWindow::setupView( void )
   for ( int i = 0; i < ViewBases.count(); i++ ) {
     viewCtrl = new ViewCTRL;
     viewCtrl->setViewBase( ViewBases.at(i) );
-    viewCtrl->setNowView( (void *)NULL );
-    viewCtrl->setNowVType( NONVIEW );
-    viewCtrl->setNowDType( NONDATA );
-    viewCtrl->setIsDeletable( true );
+    //    viewCtrl->setNowView( (void *)NULL );
+    //    viewCtrl->setNowVType( NONVIEW );
+    //    viewCtrl->setNowDType( NONDATA );
+    //    viewCtrl->setIsDeletable( true );
     ViewCtrls << viewCtrl;
   }
 

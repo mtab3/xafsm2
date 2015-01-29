@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 13:52:27 2015 +0900\n"\
+                "    working on ViewCTRL.cpp\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 23:15:28 2015 +0900\n"\
                 "    the control of Views looks much better than before, but should be checked more very carefully\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 14:07:12 2015 +0900\n"\
                 "    It looks stable, though it is not sure that the Read-S2D-MCA functions as I will\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 03:16:48 2015 +0900\n"\
-                "    improving\n"\
 		"\n"\
                 ""
 #endif

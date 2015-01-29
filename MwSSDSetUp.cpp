@@ -298,7 +298,7 @@ void MainWindow::PopUpMCA( void )
   if ( PoppingMCADialog ) {
     if (( cMCAViewC == NULL )||( cMCAView == NULL ))
       return;
-    cMCAViewC->setView( (QWidget*)cMCAView );
+    cMCAViewC->layoutViewAgain();
     MCADialog->hide();
   } else {
     if ( cMCAView == NULL )
@@ -812,7 +812,7 @@ void MainWindow::StartMCA( void )
     UUnits.addUnit( MCA_ID, SFluo );
     MCAClearRequest = false;
     SFluo->RunStop();
-    cMCAViewC->setIsDeletable( false );
+    //    cMCAViewC->setIsDeletable( false );
     MCAStage = 0;
     MCATimer->start( 100 );
   } else {
@@ -827,7 +827,7 @@ void MainWindow::StartMCA( void )
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
     MCAStart->setStyleSheet( NormalB );
-    cMCAViewC->setIsDeletable( false );
+    //    cMCAViewC->setIsDeletable( false );
   }
 }
 

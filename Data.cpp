@@ -149,15 +149,15 @@ void Data::CheckFileType( const QString &fname )
   f.close();
 
   if ( aline.left( Checks[ MEASDATA ].length() ) == Checks[ MEASDATA ] ) {
-    DataType->setText( DataTypeNames[ dataType = MEASDATA ] );
+    DataType->setText( DataTypeNames[ dataType = MEASSHOW ] );
   } else if ( aline.left( Checks[ SCANDATA ].length() ) == Checks[ SCANDATA ] ) {
-    DataType->setText( DataTypeNames[ dataType = SCANDATA ] );
+    DataType->setText( DataTypeNames[ dataType = SCANSHOW ] );
   } else if ( aline.left( Checks[ MONDATA ].length() ) == Checks[ MONDATA ] ) {
-    DataType->setText( DataTypeNames[ dataType = MONDATA ] );
+    DataType->setText( DataTypeNames[ dataType = MONSHOW ] );
   } else if ( aline.left( Checks[ MCADATA ].length() ) == Checks[ MCADATA ] ) {
-    DataType->setText( DataTypeNames[ dataType = MCADATA ] );
+    DataType->setText( DataTypeNames[ dataType = MCASHOW ] );
   } else if ( aline.left( Checks[ S2DDATA ].length() ) == Checks[ S2DDATA ] ) {
-    DataType->setText( DataTypeNames[ dataType = S2DDATA ] );
+    DataType->setText( DataTypeNames[ dataType = S2DSHOW ] );
   } else {
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
     emit showMessage( tr( "The file %1 is not avaliable to show." ).arg( fname ), 2000 );
@@ -196,6 +196,7 @@ void Data::SetColor( int i, const QColor &c )
   DColors.at(i)->setStyleSheet( "background-color: " + c.name() );
 }
 
+#if 0
 void Data::showMeasData( QTextStream &in )
 {
   QString HeaderEnd = "    Offset";
@@ -204,7 +205,8 @@ void Data::showMeasData( QTextStream &in )
 
   theXYView = (XYView*)(theViewC->getView());
 
-  if ( theViewC->getNowDType() == NONDATA ) {
+  // なんか怪しげ showMeasData を復活させるなら要再検討
+  if ( theViewC->getDType() == NONDATA ) {
     theViewC->setNowDType( MEASDATA );
     theViewC->setNowVType( XYVIEW );
     theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
@@ -299,6 +301,7 @@ void Data::showMeasData( QTextStream &in )
 
   theXYView->update();
 }
+#endif
 
 void Data::showScanData( QTextStream &in )
 {
@@ -306,12 +309,14 @@ void Data::showScanData( QTextStream &in )
   QString line;
   
   theXYView = (XYView*)theViewC->getView();
-
-  if ( theViewC->getNowDType() == NONDATA ) {
+  theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
+#if 0
+  if ( theViewC->getDType() == NONDATA ) {
     theViewC->setNowDType( SCANDATA );
     theViewC->setNowVType( XYVIEW );
     theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
   }
+#endif
   theXYView->SetAutoScale( true );
 
   int L0 = theXYView->GetLines();
@@ -359,11 +364,12 @@ void Data::showMonData( QTextStream &in )
   double Values[ MaxMon ];
   
   theTYView = (TYView*)theViewC->getView();
-
+#if 0
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( MONDATA );
     theViewC->setNowVType( TYVIEW );
   }
+#endif
   theTYView->SetMonScale( 0 );
   theTYView->makeValid( true );
 
@@ -414,11 +420,12 @@ void Data::showMCAData( QTextStream &in )
 
   KeV2Pix *k2p = theMCAView->keV2Pix();
   cMCACh = 0;
-
+#if 0
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( MCADATA );
     theViewC->setNowVType( MCAVIEW );
   }
+#endif
   theMCAView->makeValid( true );
   cMCA = theMCAView->setMCAdataPointer( MCALength );
 
@@ -533,11 +540,13 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
   theS2DB = (S2DB*)(theViewC->getView());
   theS2DB->setLoadBHidden( false );
   theS2DView = (S2DView*)(theS2DB->getView());
+#if 0
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( S2DDATA );
     theViewC->setNowVType( S2DVIEW );
     // theS2DView->SetWindow0( 1e300, 0, -1e300, 0 );
   }
+#endif
   theS2DView->setRatioType( AS_SCREEN );
 
   S2DInfo s2di;

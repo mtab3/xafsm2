@@ -12,7 +12,12 @@ ViewCTRL::ViewCTRL( void )
   gsbStat = NULL;
 }
 
-bool ViewCTRL::setView( void *view, VTYPE vtype )
+ViewCTRL::~ViewCTRL( void )
+{
+  deleteView();
+}
+
+bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype )
 {
 #if 0
   if ( nowView != NULL ) {           // 現在の View は使用中 ?
@@ -33,13 +38,14 @@ bool ViewCTRL::setView( void *view, VTYPE vtype )
   
   if ( nowView != NULL ) {
     qDebug() << "vtype " << nowVType << vtype;
-    if ( nowVType != vtype ) {
+    if ( ( nowVType != vtype ) || ( nowDType != dtype ) ){
       return false;
     }
   } else {
     nowView = view;
     nowVType = vtype;
-    setView( (QWidget *)nowView );
+    nowDType = dtype;
+    ViewBase->layout()->addWidget( (QWidget *)nowView );
   }
   deletable = true;
   gsbStat = new GSBStats;
@@ -47,9 +53,9 @@ bool ViewCTRL::setView( void *view, VTYPE vtype )
   return true;
 }
 
-void ViewCTRL::setView( QWidget *view )
+void ViewCTRL::layoutViewAgain( void )
 {
-  ViewBase->layout()->addWidget( view );
+  ViewBase->layout()->addWidget( (QWidget*)nowView );
 }
 
 bool ViewCTRL::deleteView( void )
@@ -76,6 +82,7 @@ bool ViewCTRL::deleteView( void )
     gsbStat->clear();
     delete gsbStat;
     gsbStat = NULL;
+    // deletable = true;
     return true;                    // the view is cleaned up
   }
   return false;                     // the view can not be cleaned up
@@ -161,7 +168,7 @@ ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 *******************/
 
 
-ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
+ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
 {
   // まずは View の方を先に作っておいて
   void *newView = NULL;
@@ -213,11 +220,11 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
 
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK
-  if ( ! ViewCtrls[ ViewTab->currentIndex() ]->setView( newView, vtype ) ) {
+  if ( ! ViewCtrls[ ViewTab->currentIndex() ]->setView( newView, vtype, dtype ) ) {
     // 使えなかったら、若い番号の ViewTab から順番に登録できないか試してみる
     int i;
     for ( i = 0; i < ViewTab->count(); i++ ) {
-      if ( ViewCtrls[ i ]->setView( newView, vtype ) ) {
+      if ( ViewCtrls[ i ]->setView( newView, vtype, dtype ) ) {
 	break;
       }
     }
@@ -263,17 +270,26 @@ void MainWindow::getNewMCAView( void )
 {
   // cMCAViewTabNo は初期値では -1
   // cMCAViewTabNo != ViewTab->currentIndex() という条件は
-  // 
+  // 「MCAView が無い || 現在表示されているTab ではない」と同値
+
+  // 「計測中に View, ViewCTRL を横取りされては困る」が本質のはず
+  // また「計測」は同時には一つしかできないので、
+  // MwSSDSetUp, MwS2DC からは同じ View を排他的に使う
+  //    ---> cMCAMeasView
+  // ReadData/Data は随時新しい View を使う
+  //    (現在表示中のものが、MCA のデータ表示だったらそのまま、
+  //     そうでなければ新しい ViewTab を確保しようとする、という標準的な戦略)
+  
   if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
        || ( StartResume == MCA_START ) ) {
     if ( cMCAView != NULL ) {
       //      cMCAViewC->setIsDeletable( true );
     }
 
-    if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
+    if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA ) ) == NULL ) 
       return;
     ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
-    cMCAViewC->setNowDType( MCADATA );
+    //    cMCAViewC->setNowDType( MCADATA );
     cMCAView = (MCAView*)(cMCAViewC->getView());
     cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
 

@@ -814,14 +814,14 @@ void MainWindow::ScanStart( void )
   //  AUnit *am, *as, *as0 = NULL;
 
   if ( !inSPSing ) {
-    if ( ( ScanViewC = SetUpNewView( XYVIEW ) ) == NULL ) {
+    if ( ( ScanViewC = SetUpNewView( XYVIEW, SCANDATA ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
     setSInfo();
 
-    ViewTab->setTabText( ViewTab->currentIndex(), "SCAN" );
-    ScanViewC->setNowDType( SCANDATA );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "SCAN" ) );
+    //    ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
 
     // 古いコネクションがあったらとりあえず消しておく
@@ -929,9 +929,9 @@ void MainWindow::ScanStart( void )
 
     ScanStage = 0;
     ScanTimer->start( 100 );
-    ScanViewC->setIsDeletable( false );
+    //    ScanViewC->setIsDeletable( false );
   } else {
-    ScanViewC->setIsDeletable( true );
+    //    ScanViewC->setIsDeletable( true );
     ScanStop0();
   }
 }
@@ -961,11 +961,11 @@ void MainWindow::Monitor( void )
       NewLogMsg( msg );
       return;
     }
-    if ( ( MonitorViewC = SetUpNewView( TYVIEW ) ) == NULL ) {
+    if ( ( MonitorViewC = SetUpNewView( TYVIEW, MONDATA ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
-    ViewTab->setTabText( ViewTab->currentIndex(), "MON." );
+    ViewTab->setTabText( ViewTab->currentIndex(), tr( "MON." ) );
     if ( IsMonRec->isChecked() ) {
       if ( MonRecFile->text().isEmpty() ) {
 	statusbar->showMessage( tr ( "No Record file is selected" ) );
@@ -994,7 +994,7 @@ void MainWindow::Monitor( void )
       monRecF = false;
     }
 
-    MonitorViewC->setNowDType( MONDATA );
+    //    MonitorViewC->setNowDType( MONDATA );
     MonitorView = (TYView*)(MonitorViewC->getView());
 
     mUnits.clearUnits();
@@ -1078,7 +1078,7 @@ void MainWindow::Monitor( void )
     inMonitor = true;
     MinPause = false;
     MonStage = 0;   // 計測のサイクル
-    MonitorViewC->setIsDeletable( false );
+    //    MonitorViewC->setIsDeletable( false );
     MPause->setEnabled( true );
     MonTime.restart();
     MonTimer->start( 100 );
@@ -1099,7 +1099,7 @@ void MainWindow::Monitor( void )
     }
 
     UUnits.clear( MONITOR_ID );
-    MonitorViewC->setIsDeletable( true );
+    //    MonitorViewC->setIsDeletable( true );
     MPause->setEnabled( false );
     MPause->setText( tr( "Pause" ) );
     MPause->setStyleSheet( NormalB );

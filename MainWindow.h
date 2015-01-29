@@ -474,7 +474,7 @@ private:
   bool MakingSureOfRangeSelect;
   bool haveMeasuredDark;
   bool NoticingHaveNotMeasDark;
-  ViewCTRL *SetUpNewView( VTYPE vtype );
+  ViewCTRL *SetUpNewView( VTYPE vtype, DATATYPE dtype );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
   void SetDFName( int rpt, int rptMax, QString ext = "" );

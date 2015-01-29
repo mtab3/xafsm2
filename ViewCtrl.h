@@ -28,19 +28,20 @@ class ViewCTRL : public QObject
 
  public:
   ViewCTRL( void );
+  ~ViewCTRL( void );
 
   void setViewBase( QWidget *base ) { ViewBase = base; };
-  void setNowView( void *nowv ) { nowView = nowv; };
-  void setNowVType( VTYPE nvtype ) { nowVType = nvtype; };
-  bool setView( void *view, VTYPE vtype );
+  //  void setNowView( void *nowv ) { nowView = nowv; };
+  //  void setNowVType( VTYPE nvtype ) { nowVType = nvtype; };
+  bool setView( void *view, VTYPE vtype, DATATYPE dtype );
   void *getView( void ) { return nowView; };
   VTYPE getVType( void ) { return nowVType; };
   DATATYPE getDType( void ) { return nowDType; };
   bool deleteView( void );
-  bool isDeletable( void ) { return deletable; };
-  void setIsDeletable( bool Deletable ) { deletable = Deletable; };
-  void setNowDType ( DATATYPE dtype ) { nowDType = dtype; };
-  DATATYPE getNowDType ( void ) { return nowDType; };
+  //  bool isDeletable( void ) { return deletable; };
+  //  void setIsDeletable( bool Deletable ) { deletable = Deletable; };
+  //  void setDType ( DATATYPE dtype ) { nowDType = dtype; };
+  // //  DATATYPE getNowDType ( void ) { return nowDType; };
   void addAGSBStat( QString label, bool f );
   void setGSBStats( QVector<aGSBS> GSBSs );
   void setGSBStat( int button, bool f );
@@ -48,7 +49,8 @@ class ViewCTRL : public QObject
   bool getAGSBSStat( int n );
   QStringList getGSBLabels( void );
   QVector<bool> getGSBFlags( void );
-  void setView( QWidget *view );
+  //  void setView( QWidget *view );
+  void layoutViewAgain( void );
 };
 
 

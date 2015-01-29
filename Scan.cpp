@@ -90,7 +90,7 @@ void MainWindow::ScanSequence( void )
     ScanTimer->stop();
     SPSScan->setEnabled( true );
     GoMotor->setEnabled( true );
-    ScanViewC->setIsDeletable( true );
+    //    ScanViewC->setIsDeletable( true );
     break;
   }
 }
