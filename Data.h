@@ -6,6 +6,8 @@
 
 #include "ui_Data.h"
 #include "Units.h"
+#include "S2DInfo.h"
+#include "S2DB.h"
 
 class ViewCTRL;
 class XYView;
@@ -39,26 +41,29 @@ class Data : public QFrame, private Ui::Data
   TYView *theTYView;
   MCAView *theMCAView;
   S2DView *theS2DView;
+  S2DB *theS2DB;
   int XYLine0, XYLines; 
 
   int MCALength;
   bool MCADataIsValid;
   int cMCACh;
   quint32 *cMCA;
-  QVector<quint32 *> MCAs0, MCAs;
-  QVector<double *> MCAEs;
+  //  QVector<quint32 *> MCAs0, MCAs;
+  //  QVector<double *> MCAEs;
+  aMCASet aMCA0, aMCA;
+  S2DInfo S2DI;
 
   void showMeasData( QTextStream &in );
   void showScanData( QTextStream &in );
   void showMonData( QTextStream &in );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );
-  void showS2DData( QTextStream &in );
+  void showS2DData( QTextStream &in, QVector<AUnit*> &AMotors );
 
  public:
   Data( QWidget *p = NULL );
   ~Data();
-  void GotNewView( ViewCTRL *view );
+  void GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors );
   void GotCurrentView( void *view );
   void setDataRoot( const QString &dataRoot );
 
@@ -73,7 +78,7 @@ class Data : public QFrame, private Ui::Data
   void SelectedNewMCACh( int ch );
 
  signals:
-  void AskToGetNewView( DATATYPE dtype );
+  void AskToGetNewView( DATATYPE dtype, QString dir );
   void showMessage( QString msg, int time );
   void GiveMeCurrentView( void );
   void setMCACh( int i );

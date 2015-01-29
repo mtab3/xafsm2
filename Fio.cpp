@@ -589,7 +589,8 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       QFileInfo f = QFileInfo( DFName0 );
       QFileInfo mcaf = QFileInfo( newDir.absolutePath(),
 				  f.baseName() + FnameExt );
-      saveMCAData0( mcaf.filePath(), XafsMCAMap.aPoint( MeasP, mcaSaveP ) );
+      //      saveMCAData0( mcaf.filePath(), XafsMCAMap.aPoint( MeasP, mcaSaveP ) );
+      XafsMCAMap.aPoint( MeasP, mcaSaveP )->save( mcaf.filePath(), "measured while XAFS measurement" );
     }
   }
 

@@ -1,4 +1,5 @@
 
+#include "global.h"
 #include "MainWindow.h"
 
 void MainWindow::setupMeasArea( void )   /* 測定エリア */
@@ -14,6 +15,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	    << BLKpoints06 << BLKpoints07 << BLKpoints08;
   BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
 	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
+
+  MeasStart->setStyleSheet( NormalBXAFS );
 
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
@@ -56,8 +59,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AutoModeComment.clear();
 
   defaultFileName = QDateTime::currentDateTime().toString( "yyMMdd" ) + "-test.dat";
-  EditDFName->setText( defaultFileName );
-  ShowMeasFileStatus( defaultFileName );
+  EditDFName->setText( CheckFNameExt( defaultFileName, "dat" ) );
+  ShowMeasFileStatus( CheckFNameExt( defaultFileName, "dat" ) );
 
   OnFinishP->addItem( tr( "Return" ) );
   OnFinishP->addItem( tr( "Stay" ) );
@@ -67,11 +70,14 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   TP = 0;
   TT0 = 0;
   EstimatedMeasurementTimeInSec = 0;
+
   inMeas = false;
   inPause = false;
   MeasStage = false;
   FixedPositionMode = false;
   MeasPause->setEnabled( false );
+  MeasPause->setHidden( true );
+
   StopP = new QMessageBox;
   tmpB = StopP->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   StopP->addButton( tr( "OK" ), QMessageBox::AcceptRole );
@@ -82,9 +88,19 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   AskOverWrite = new QMessageBox;
   tmpB = AskOverWrite->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   AskOverWrite->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  AskOverWrite->setText( tr( "<h1><center>Over Write ?</center></h1>" ) );
   AskOverWrite->setWindowTitle( tr( "Over Write ?" ) );
   AskOverWrite->setDefaultButton( tmpB );
 
+  NoticeHaveNotMeasDark = new QMessageBox;
+  tmpB = NoticeHaveNotMeasDark->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
+  NoticeHaveNotMeasDark->addButton( tr( "OK" ), QMessageBox::AcceptRole );
+  NoticeHaveNotMeasDark
+    ->setText( tr( "<h1><center>Have not measured dark !</center></h1>" ) );
+  NoticeHaveNotMeasDark->setWindowTitle( tr( "Notice" ) );
+  NoticeHaveNotMeasDark->setDefaultButton( tmpB );
+  haveMeasuredDark = false;
+  
   MakeSureOfRangeSelect = new QMessageBox;
   tmpB = MakeSureOfRangeSelect->addButton( tr( "Cancel" ), QMessageBox::RejectRole );
   MakeSureOfRangeSelect->addButton( tr( "OK" ), QMessageBox::AcceptRole );
@@ -203,6 +219,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   connect( MeasBackGround, SIGNAL( clicked() ), this, SLOT( MeasureDark() ),
 	   Qt::UniqueConnection );
 
+  connect( NoticeHaveNotMeasDark, SIGNAL( accepted() ), this, SLOT( OkHaveNotMeasDark() ),
+	   Qt::UniqueConnection );
+  connect( NoticeHaveNotMeasDark, SIGNAL( rejected() ), this, SLOT( SurelyStop() ),
+	   Qt::UniqueConnection );
+
   connect( AfterShowType, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( ReCalcXAFSWithMCA() ),
 	   Qt::UniqueConnection );
@@ -255,6 +276,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   connect( OtherOptions, SIGNAL( clicked() ), this, SLOT( ShowOtherOptions() ),
 	   Qt::UniqueConnection );
+
+//  getGassAbsTable();
 }
 
 void MainWindow::ShowOtherOptions( void )
@@ -265,6 +288,7 @@ void MainWindow::ShowOtherOptions( void )
 
 void MainWindow::CheckNewMeasFileName( void )
 {
+  EditDFName->setText( CheckFNameExt( EditDFName->text(), "dat" ) );
   ShowMeasFileStatus( EditDFName->text() );
 }
 
@@ -475,6 +499,24 @@ void MainWindow::newA2Range( int newR )
   }
 }
 
+void MainWindow::getGassAbsTable( void )
+{
+  QFile f( "GasTable.dat" );
+  f.open( QIODevice::Text | QIODevice::WriteOnly );
+  QTextStream out( &f );
+  qDebug() << Vics;
+  for ( int vi = 1; vi < Vics; vi++ ) {
+    QString buf = QString( "%1" ).arg( A[ Vic[vi].AN ].AName ); // 原子名
+    for ( int i = 0; i < 2; i++ ) {     // 0 : 14cm, 1 : 28cm のはず 
+      for ( int j = 0; j < Gases.count(); j++ ) {
+	buf += QString( "\t%1" ).arg( exp( -calcMuT( i, j, Vic[vi].AE[0] ) ) ); // K
+	buf += QString( "\t%1" ).arg( exp( -calcMuT( i, j, Vic[vi].AE[3] ) ) ); // L3
+      }
+    }
+    out << buf << "\n";
+  }
+  f.close();
+}
 
 void MainWindow::SetNewGases( void )
 {
@@ -926,10 +968,12 @@ void MainWindow::SetDwells( void )
 
 void MainWindow::SelectedNDFN( const QString &fname )
 {
-  EditDFName->setText( fname );   // ここではファイル名をセットするだけ。
-                                  // Start 時に書き出す。
-  SelectedOrgName = fname;
-  ShowMeasFileStatus( fname );
+  QString Fname = CheckFNameExt( fname, "dat" );
+  EditDFName->setText( Fname );
+  // ここではファイル名をセットするだけ。Start 時に書き出す。
+  
+  SelectedOrgName = Fname;
+  ShowMeasFileStatus( Fname );
 }
 
 void MainWindow::SelectedWBFN( const QString &fname )
@@ -1391,6 +1435,13 @@ void MainWindow::StartMeasurement( void )
       } else {
         AskingOverwrite = false;
       }
+
+      if ( ( ! haveMeasuredDark ) && ( !MeasBackBeforeMeas->isChecked() ) ) {
+	NoticeHaveNotMeasDark->show();
+	NoticingHaveNotMeasDark = true;
+      } else {
+	NoticingHaveNotMeasDark = false;
+      }
     }
 
     MakingSureOfRangeSelect = false;
@@ -1427,7 +1478,7 @@ void MainWindow::StartMeasurement( void )
     }
     MeasViewC->setGSBStats( GSBSs );
     ShowButtonsForCurrentTab();
-
+    
     //    disconnect( this, SLOT( MoveInMeasView( double ) ) );
     connect( MeasView, SIGNAL( MovedToNewX( int, double ) ),
 	     this, SLOT( MoveInMeasView( int, double ) ),
@@ -1446,11 +1497,10 @@ void MainWindow::StartMeasurement( void )
     /*************************************************************************/
     /*************************************************************************/
 
-    inMeas = true;
     MeasStart->setText( tr( "Stop" ) );
     MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
-    
+
     MeasChNo = mUnits.count();         // 測定のチャンネル数
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
     if ( Use19chSSD->isChecked() ) {
@@ -1470,12 +1520,16 @@ void MainWindow::StartMeasurement( void )
       FixedPositionMode = false;
 
     if ( isSFluo ) {
-      if ( cMCAView == NULL )
+      if ( cMCAView == NULL ) {
 	getNewMCAView();
+      } else {                     // その場しのぎ。もっと本質的なやり方があるはず
+	cMCAView = (MCAView*)(cMCAViewC->getView());
+      }
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
-        XafsMCAMap.New( TotalPoints, SelRPT->value() );
+        XafsMCAMap.New( TotalPoints, SelRPT->value(), MCALength, SAVEMCACh );
       else                        // そうでなければ 1スキャン分だけメモリ上に
-        XafsMCAMap.New( TotalPoints, 1 );   // SelRPT->value() --> 1
+        XafsMCAMap.New( TotalPoints, 1, MCALength, SAVEMCACh );
+                                  // SelRPT->value() --> 1
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -1493,6 +1547,10 @@ void MainWindow::StartMeasurement( void )
       UUnits.addUnit( MEAS_ID, mUnits.at(i) );
     }
 
+    inMeas = true;
+    MeasPause->setHidden( false );
+    SignalToStars( XAFS_M_START );
+    if ( MPSet.qXafsMode ) SignalToStars( QXAFS_M_START );
     MeasStage = 0;
     //    ClearMeasView();
     MeasViewC->setIsDeletable( false );
@@ -1600,8 +1658,10 @@ void MainWindow::SurelyStop( void )
   statusbar->showMessage( tr( "The Measurement is Stopped" ), 4000 );
   MeasTimer->stop();
   inMeas = false;
+  MeasPause->setHidden( true );
+  SignalToStars( XAFS_M_END );
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( NormalB );
+  MeasStart->setStyleSheet( NormalBXAFS );
   MeasStart->setEnabled( true );
   inPause = false;
   MeasPause->setText( tr( "Pause" ) );
@@ -1700,6 +1760,11 @@ void MainWindow::PauseMeasurement( void )
 void MainWindow::OkOverWrite( void )
 {
   AskingOverwrite = false;
+}
+
+void MainWindow::OkHaveNotMeasDark( void )
+{
+  NoticingHaveNotMeasDark = false;
 }
 
 void MainWindow::RangeSelOK( void )
@@ -1808,7 +1873,7 @@ void MainWindow::MoveInMeasView( int ix, double )
 
   cnt = set->Ch[ cMCACh ].cnt;
 
-  for ( int i = 0; i < SAVEMCASize; i++ ) {
+  for ( int i = 0; i < MCALength; i++ ) {
     MCAData[i] = cnt[i];
   }
 

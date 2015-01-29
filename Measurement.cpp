@@ -7,18 +7,12 @@ void MainWindow::MeasSequence( void )
 
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
-
-  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) {
-    return;
-  }
-
+  if ( NoticingHaveNotMeasDark ) return;
+  if ( MStabOk && MPSet.TuneAtEachStep && MMStab->isBusy() ) return;
   if ( MPSet.qXafsMode ) {
     ShowQXafsProgress();
   }
-
-  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) {
-    return;
-  }
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
   if ( MovingToNewSamplePosition ) {
     if ( Changers[ ChangerSelect->currentIndex() ]->unit1()->isBusy()
 	 || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
@@ -32,7 +26,7 @@ void MainWindow::MeasSequence( void )
     QXafsMeasSequence();
     return;
   }
-
+  
   switch( MeasStage ) {
     /* 
        0: 測定開始 Repeat = 0
@@ -185,7 +179,8 @@ void MainWindow::MeasSequence( void )
 	  if ( ! MCACanSaveAllOnMem )
 	    // 全部セーブできない時は、1スキャン終わったら
 	    // 次のスキャンに備えてメモリクリア (直近の1スキャン分だけ覚えておく)
-	    XafsMCAMap.New( MPSet.totalPoints, 1 );   // SelRPT->value() --> 1
+	    XafsMCAMap.New( MPSet.totalPoints, 1, MCALength, 19 );
+                               // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
 	UUnits.clear( MEAS_ID );
@@ -200,8 +195,10 @@ void MainWindow::MeasSequence( void )
         inMeas = false;
 	MPSet.normallyFinished = true;
         MeasStart->setText( tr( "Start" ) );
-        MeasStart->setStyleSheet( NormalB );
+        MeasStart->setStyleSheet( NormalBXAFS );
         MeasPause->setEnabled( false );
+	MeasPause->setHidden( true );
+	SignalToStars( XAFS_M_END );
         onMeasFinishWorks();
       }
     }
@@ -217,7 +214,6 @@ void MainWindow::onMeasFinishWorks( void )
 {
   MPSet.finalRpt = MeasR + 1;
   MPSet.finalPnt = MeasP;
-  qDebug() << "Final Rpt and Pnt " << MeasR << MeasP;
   SelRealTime->setChecked( SvSelRealTime );
   SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );

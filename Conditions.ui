@@ -491,12 +491,18 @@ with usual 9809 format datas.</string>
           <property name="text">
            <string>Normalize the SSD-measured value by RealTime</string>
           </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QRadioButton" name="radioButton_3">
           <property name="text">
            <string>Normalize the SSD-measured value by LiveTime</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

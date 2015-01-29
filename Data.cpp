@@ -20,7 +20,7 @@ Data::Data( QWidget *p ) : QFrame( p )
   CSDialog = new QColorDialog;
 
   QStringList filters;
-  filters << "*.dat" << "*.*";
+  filters << "*.dat" << "*.*" << "*";
 
   FSDialog->setAcceptMode( QFileDialog::AcceptOpen );
   FSDialog->setDirectory( QDir::currentPath() );
@@ -33,6 +33,7 @@ Data::Data( QWidget *p ) : QFrame( p )
   XYLine0 = XYLines = 0;
   MCADataIsValid = false;
   MCALength = 0;
+  S2DI.valid = false;
 
   DColors << DColor01 << DColor02 << DColor03 << DColor04 << DColor05
 	  << DColor06 << DColor07 << DColor08 << DColor09 << DColor10;
@@ -118,7 +119,12 @@ void Data::ShowFName( const QString &fname )
 
   SelectedFile->setText( dfname );
   CheckFileType( fname );
-  StartToShowData();
+  emit AskToGetNewView( dataType, FSDialog->directory().absolutePath() );
+}
+
+void Data::StartToShowData( void )
+{
+  emit AskToGetNewView( dataType, "" );
 }
 
 void Data::CheckFileType( const QString &fname )
@@ -158,12 +164,7 @@ void Data::CheckFileType( const QString &fname )
   }
 }
 
-void Data::StartToShowData( void )
-{
-  emit AskToGetNewView( dataType );
-}
-
-void Data::GotNewView( ViewCTRL *view )
+void Data::GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors )
 {
   QFile f( FName );
 
@@ -183,7 +184,7 @@ void Data::GotNewView( ViewCTRL *view )
   case MONDATA:  showMonData( in );  break;
   case SCANDATA: showScanData( in ); break;
   case MCADATA:  showMCAData( in );  break;
-  case S2DDATA:  showS2DData( in );  break;
+  case S2DDATA:  showS2DData( in, AMotors );  break;
   default: break;
   }
 
@@ -422,8 +423,11 @@ void Data::showMCAData( QTextStream &in )
   cMCA = theMCAView->setMCAdataPointer( MCALength );
 
   MCADataIsValid = false;
-  getNewMCAs( MCALength );
-
+  //  getNewMCAs( MCALength );
+  aMCA.setSize( MCALength, MaxSSDs );
+  
+  aMCA.load( in, "" );
+#if 0  
   while ( ! in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s" ) );
     if ( vals[0][0] != '#' ) {
@@ -436,6 +440,12 @@ void Data::showMCAData( QTextStream &in )
       }
     }
   }
+#endif
+
+  if ( ! aMCA.isValid() )
+    return;
+  aMCA.correctE( k2p );
+#if 0  
   // 測定時のエネルギーとピクセルの関係は、
   // 今のエネルギーとピクセルの関係とは違っている可能性があるので
   // 今のピクセルに対応するエネルギーでのカウント数を線形補完で求めておく
@@ -453,10 +463,14 @@ void Data::showMCAData( QTextStream &in )
 			  + MCAs0[ch][j-1] );
     }
   }
+#endif
 
+  aMCA.copyCnt( cMCACh, cMCA );
+#if 0
   for ( int i = 0; i < MCALength; i++ ) {
     cMCA[i] = MCAs[cMCACh][i];
   }
+#endif
 
   emit setMCACh( cMCACh );
   theMCAView->SetMCACh( cMCACh );
@@ -464,6 +478,7 @@ void Data::showMCAData( QTextStream &in )
   theMCAView->update();
 }
 
+#if 0
 void Data::getNewMCAs( int MCALength )
 {
   while( MCAs.count() > 0 ) {
@@ -493,27 +508,31 @@ void Data::getNewMCAs( int MCALength )
     MCAEs << amcaE;
   }
 }
+#endif
 
 void Data::SelectedNewMCACh( int ch ) 
 {
   if ( ! MCADataIsValid ) return;
 
   cMCACh = ch;
+  aMCA.copyCnt( cMCACh, cMCA );
+#if 0
   for ( int i = 0; i < MCALength; i++ ) {
     cMCA[i] = MCAs[ cMCACh ][i];
   }
+#endif
   theMCAView->SetMCACh( cMCACh );
   theMCAView->update();
 }
 
-void Data::showS2DData( QTextStream &in )
+void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
 {
   QStringList HeadLine1, HeadLine2, vals;
   QString line;
 
-  qDebug() << "readint s2d data";
-
-  theS2DView = (S2DView*)(((S2DB*)(theViewC->getView()))->getView());
+  theS2DB = (S2DB*)(theViewC->getView());
+  theS2DB->setLoadBHidden( false );
+  theS2DView = (S2DView*)(theS2DB->getView());
   if ( theViewC->getNowDType() == NONDATA ) {
     theViewC->setNowDType( S2DDATA );
     theViewC->setNowVType( S2DVIEW );
@@ -521,28 +540,12 @@ void Data::showS2DData( QTextStream &in )
   }
   theS2DView->setRatioType( AS_SCREEN );
 
-  // 5行空読み
-  for ( int i = 0; ( i < 5 ) && ( ! in.atEnd() ); i++ )
-    line = in.readLine();
-
-  if ( ! in.atEnd() ) HeadLine1 = in.readLine().split( QRegExp( "\\s+" ) );
-  if ( ! in.atEnd() ) HeadLine2 = in.readLine().split( QRegExp( "\\s+" ) );
-
-  double sx1 = 0, sx2 = 0, dx1 = 1, dx2 = 1;
-  int ps1 = 1, ps2 = 1;
-  if ( HeadLine1.count() >= 8 ) {
-    sx1 = HeadLine1[4].toDouble();
-    dx1 = HeadLine1[6].toDouble();
-    ps1 = HeadLine1[7].toInt();
-  }
-  if ( HeadLine2.count() >= 8 ) {
-    sx2 = HeadLine2[4].toDouble();
-    dx2 = HeadLine2[6].toDouble();
-    ps2 = HeadLine2[7].toInt();
-  }
-  theS2DView->setRange( sx1, sx2 - dx2/2,
-			dx1, dx2,
-			ps1, ps2+1 );
+  S2DInfo s2di;
+  s2di.load( in, AMotors );
+  theS2DB->setS2DI( s2di );
+  theS2DView->setRange( s2di.sx[0], s2di.sx[1] - s2di.dx[1] / 2,
+			s2di.dx[0], s2di.dx[1],
+			s2di.ps[0], s2di.ps[1] + 1 );
   int ix = 0, iy = 0;
   while ( ! in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
@@ -557,3 +560,4 @@ void Data::showS2DData( QTextStream &in )
     }
   }
 }
+

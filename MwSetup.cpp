@@ -1,4 +1,5 @@
 
+#include "global.h"
 #include "MainWindow.h"
 
 void MainWindow::setupSetupArea( void )   /* 設定エリア */
@@ -235,6 +236,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
 	   this, SLOT( ToggleGoToButtons( QString ) ),
 	   Qt::UniqueConnection );
+
+  connect( MovingAvr, SIGNAL( editingFinished() ), this, SLOT( newMovingAvr() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::setupDataRoot( void )
@@ -286,6 +290,8 @@ void MainWindow::newDataRoot( const QString &dataRoot )
     monFSel->setDirectory( dataRoot );
   if ( S2DFileSel != NULL )
     S2DFileSel->setDirectory( dataRoot );
+  //  if ( S2DMCAsDirSel != NULL )
+  //    S2DMCAsDirSel->setDirectory( dataRoot );
   if ( SelDFND != NULL )
     SelDFND->setDirectory( dataRoot );
   if ( SelWBFND != NULL )
@@ -507,7 +513,7 @@ void MainWindow::saveScanData( void )
 
 void MainWindow::setSelectedMonFName( const QString &fname )
 {
-  MonRecFile->setText( fname );
+  MonRecFile->setText( CheckFNameExt( fname, "dat" ) );
   MonNameStat = NEW;
   MonRecFile->setStyleSheet( FSTATCOLORS[ MonDataStat ][ MonNameStat ] );
   MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
@@ -515,7 +521,7 @@ void MainWindow::setSelectedMonFName( const QString &fname )
 
 void MainWindow::setSelectedScanFName( const QString &fname )
 {
-  ScanRecFileName->setText( fname );
+  ScanRecFileName->setText( CheckFNameExt( fname, "dat" ) );
   ScanNameStat = NEW;
   ScanRecFileName->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
   ScanRecFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
@@ -1212,3 +1218,19 @@ void MainWindow::PopChangeMonLines( bool f )
   }
 }
 
+void MainWindow::newMovingAvr( void )
+{
+  int MA = MovingAvr->text().toInt();
+  if ( MA < 1 )  {
+    MA = 1;
+  }
+  MovingAvr->setText( QString::number( MA ) );
+
+  TYView *view;
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == TYVIEW ) {
+    if ( ( view = (TYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
+      view->setMovingAvr( MA );
+      view->update();
+    }
+  }
+}

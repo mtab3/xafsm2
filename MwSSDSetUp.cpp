@@ -1,7 +1,9 @@
 
+#include "global.h"
 #include "SMsg.h"
 #include "MainWindow.h"
 #include "MCAView.h"
+
 //#include "PeakFit.h"
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
@@ -118,7 +120,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   cMCACh = 0;
   //  oldMCACh = -1;
   StartResume = MCA_START;
-  cMCAViewTabNo = -1;;
+  cMCAViewTabNo = -1;
+  MCALength = 2048;
 
   SelSSDs( 0 );
 
@@ -245,8 +248,8 @@ void MainWindow::newMaxLoop( void )
   int maxLoop = MaxLoop->text().toInt();
   if ( maxLoop < 1 ) {
     maxLoop = 1;
-    MaxLoop->setText( QString::number( maxLoop ) );
   }
+  MaxLoop->setText( QString::number( maxLoop ) );
 
   MCAView *view;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
@@ -522,7 +525,8 @@ void MainWindow::setAllROIs( void )
     ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
   }
   ReCalcXAFSWithMCA();
-  S2DReCalcMap0();
+  ReCalcS2DMap();
+  //  S2DReCalcMap0();    // !!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 void MainWindow::saveMCAData( void )
@@ -535,7 +539,6 @@ void MainWindow::saveMCAData( void )
     statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
     return;
   }
-
   MCADataStat = OLD;
   MCANameStat = OLD;
   MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
@@ -546,11 +549,14 @@ void MainWindow::saveMCAData( void )
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
   aMCASet *set = new aMCASet;
+  set->setSize( MCALength, SAVEMCACh );
   SaveMCADataOnMem( set );
-  saveMCAData0( MCARecFile->text(), set );
+  //  saveMCAData0( MCARecFile->text(), set );
+  set->save( MCARecFile->text(), "measured by SSD set up" );
   delete set;
 }
 
+#if 0
 void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 {
   if ( set == NULL )
@@ -563,50 +569,21 @@ void MainWindow::saveMCAData0( QString fname, aMCASet *set )
 			    2000 );
     return;
   }
-
   QTextStream out( &f );
 
   out << "# XafsM2 MCA Data\n";
   out << "# " << set->date << "\n";
 
-  WriteMCAHead( out, set );
-  WriteMCAData( out, set );
+  set->writeHead( out );
+  set->writeData( out );
 
   f.close();
 }
-
-void MainWindow::WriteMCAHead( QTextStream &out, aMCASet *set )
-{
-  out << "# Ring Current : "
-      << ( ( SLS == NULL ) ? "---" : QString::number( set->RINGCurrent ) ) << "\n";
-  out << "# I0           : " << set->I0 << "\n";
-  out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    MCAHead head = set->Heads[i];
-    out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
-	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
-	<< set->ROIStart[i] << "\t" << set->ROIEnd[i] << "\n";
-  }
-  for ( int i = 0; i < set->Elms.count(); i++ ) {
-    out << "# " << set->Elms[i] << "\n";
-  }
-}
-
-void MainWindow::WriteMCAData( QTextStream &out, aMCASet *set )
-{
-  for ( int i = 0; i < MCALength; i++ ) {
-    out << i;
-    for ( int j = 0; j < MaxSSDs; j++ ) {
-      out << "\t" << set->Ch[j].E[i];
-      out << "\t" << set->Ch[j].cnt[i];
-    }
-    out << "\n";
-  }
-}
+#endif
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
 {
-  MCARecFile->setText( fname );
+  MCARecFile->setText( CheckFNameExt( fname, "dat" ) );
   MCANameStat = NEW;
   MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
   MCARecFile->setToolTip( FSTATMsgs[ MCADataStat ][ MCANameStat ] );
@@ -654,7 +631,8 @@ void MainWindow::SelSSDs20( void )
     }
   }
   ReCalcXAFSWithMCA();
-  S2DReCalcMap0();
+  //  S2DReCalcMap0();     !!!!!!!!!!!!!!!!!!!!!!!
+  ReCalcS2DMap();
 }
 
 void MainWindow::SelSSDs( int ch )
@@ -712,7 +690,8 @@ void MainWindow::newROIStart( const QString &newv )
     if ( AutoROIsetAll->isChecked() )
       setAllROIs();
     ReCalcXAFSWithMCA();
-    S2DReCalcMap0();
+    // S2DReCalcMap0();    !!!!!
+    ReCalcS2DMap();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] );
@@ -731,7 +710,8 @@ void MainWindow::newROIEnd( const QString &newv )
     if ( AutoROIsetAll->isChecked() )
       setAllROIs();
     ReCalcXAFSWithMCA();
-    S2DReCalcMap0();
+    //    S2DReCalcMap0();
+    ReCalcS2DMap();
   } else {
     statusbar->showMessage( tr( "ROI cannot change while the XAFS measurements" ), 2000 );
     ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] );
@@ -860,14 +840,14 @@ void MainWindow::getNewMCAView( void )
     if ( cMCAView != NULL ) {
       cMCAViewC->setIsDeletable( true );
     }
-    
+
     if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
       return;
     ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
     cMCAViewC->setNowDType( MCADATA );
     cMCAView = (MCAView*)(cMCAViewC->getView());
     cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
-    
+
     MCAData = cMCAView->setMCAdataPointer( MCALength );
     validMCAData = true;
     cMCAViewTabNo = ViewTab->currentIndex();
@@ -898,7 +878,8 @@ void MainWindow::setNewROI( int s, int e )
       if ( AutoROIsetAll->isChecked() )
 	setAllROIs();
       ReCalcXAFSWithMCA();
-      S2DReCalcMap0();
+      //      S2DReCalcMap0();
+      ReCalcS2DMap();
     }
   }
 }
@@ -1072,4 +1053,14 @@ void MainWindow::nowFitStat( QString &stat )
   out << stat << "\n";
   f.close();
 #endif
+}
+
+void MainWindow::ReCalcS2DMap( void )
+{
+  //  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
+  if ( inMeas || inMCAMeas || inS2D ) {
+    return;
+  }
+  S2DBase->setS2DI( S2DI );
+  emit ReCalcS2DMap0( ROIStart, ROIEnd, SSDbs2 );
 }

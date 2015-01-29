@@ -15,7 +15,6 @@ class S2DView : public QFrame, private Ui::S2DView
 {
   Q_OBJECT
 
-  QWidget *Parent;
   ChCoord cc;
   cBar *CBar;
   RATIO_TYPE rType;
@@ -59,7 +58,6 @@ class S2DView : public QFrame, private Ui::S2DView
   void setRatioType( RATIO_TYPE r ) { rType = r; };
   void setRange( double sx, double sy, double dx, double dy, int ix, int iy );
   void setData( int ix, int iy, double v );
-  void setParent( QWidget *p );
   double getData( int ix, int iy );
   bool getInvXf( void ) { return invXf; };
   bool getInvYf( void ) { return invYf; };
@@ -75,7 +73,7 @@ public slots:
   void AskMoveToPointedPosition( int x, int y );
   void PointerMovedToNewPosition( int x, int y );
   void AskToChangeMCACh( int dCh );
-  void PointerMovedOnIntMCA( int x, int y );
+  void PointerMovedOnIntMCA( void );
   void newAutoZmax( double max );
   void newAutoZmin( double min );
 };

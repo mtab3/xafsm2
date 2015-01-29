@@ -40,6 +40,7 @@ TYView::TYView( QWidget *parent ) : QFrame( parent )
   for ( int i = 0; i < MaxMon; i++ ) {
     YShift[ i ] = YShift0[ i ] = yshift[ i ] = 0;
   }
+  movingAvr = 1;
 }
 
 void TYView::SetLines( int Lines )
@@ -110,7 +111,7 @@ void TYView::print( QPrinter *p )
 void TYView::Draw( QPainter *p )
 {
   if ( valid != true ) return;
-
+  
   QString buf, buf2;
   double RM, LM, TM, TW, BM, HDiv, VDiv;
   QPen pen0, pen1;
@@ -253,7 +254,7 @@ void TYView::Draw( QPainter *p )
     pen1.setColor( LCs->at( j ) );
     p->setPen( pen1 );
 
-    for ( int i = 0; i < datas - 1; i++ ) { // データプロット
+    for ( int i = 0; i < datas - 1; i++ ) {
       pp1 = ep - 1 - i;
       pp2 = ep - 1 - ( i + 1 );
       if ( pp1 < 0 ) pp1 += RingMax;

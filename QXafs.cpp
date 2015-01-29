@@ -680,10 +680,13 @@ void MainWindow::QXafsFinish( void )
   statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
   NewLogMsg( QString( tr( "Meas: QXafs Finished" ) ) );
   MeasTimer->stop();
+  SignalToStars( XAFS_M_END );
+  SignalToStars( QXAFS_M_END );
   inMeas = false;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( NormalB );
+  MeasStart->setStyleSheet( NormalBXAFS );
   MeasPause->setEnabled( false );
+  MeasPause->setHidden( true );
   QXafsFinish0();
   onMeasFinishWorks();
 }

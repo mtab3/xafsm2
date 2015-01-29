@@ -7,7 +7,6 @@
 #include <QDebug>
 
 #include <stdio.h>
-#include <math.h>
 
 #include "XafsM.h"
 #include "MainWindow.h"
@@ -141,9 +140,3 @@ QSplashScreen *ShowSplashScreen( int m, int d )
   return splash;
 }
 
-
-double prec( double x, int n )
-{
-  double p = pow( 10, n );
-  return ((int)( x * p ))/p;
-}

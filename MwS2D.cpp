@@ -1,6 +1,7 @@
 
 #include "MainWindow.h"
 
+#include "global.h"
 #include "XafsM.h"
 #include "SMsg.h"
 
@@ -9,13 +10,15 @@
 void MainWindow::setupScan2DArea( void )
 {
   S2Dview = S2DBase->getView();
+  S2DBase->setLoadBHidden( true );
+  S2DBase->setParent( this );
   
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
   S2DFileSel->setDirectory( QDir::currentPath() );
   S2DFileSel->setNameFilter( "*.dat" );
   S2DFileSel->setConfirmOverwrite( false );
-  
+
   S2DDialog = new QDialog;
   S2DDialog->resize( 600, 400 );
   QGridLayout *bl = new QGridLayout;
@@ -59,23 +62,7 @@ void MainWindow::setupScan2DArea( void )
   S2DRelAbs << S2DRelAbs1 << S2DRelAbs2 << S2DRelAbs3;
   S2DSelectedMotors << NULL << NULL << NULL;
 
-  S2DI.motors = 3;
-  S2DI.ScanBothDir = false;
-  S2DI.Use3rdAx = false;
-  S2DI.isSFluo = false;
-  S2DI.unit << NULL << NULL << NULL;
-  S2DI.used << true << true << false;
-  S2DI.ps << 0 << 0 << 0;
-  S2DI.now << 0 << 0 << 0;
-  S2DI.sx << 0 << 0 << 0;
-  S2DI.ex << 0 << 0 << 0;
-  S2DI.dx << 0 << 0 << 0;
-  S2DI.i << 0 << 0 << 0;
-  S2DI.ScanMode = STEP;
-
-  S2DI.valid = false;
-  S2Dview->setParent( this );
-  S2DMCADataOnMemF = true; // Map の元の MCA データをメモリ上に残すかファイルにするか
+  //  S2Dview->setParent( this );
   S2DFileCheckIsReady = false;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
@@ -171,8 +158,17 @@ void MainWindow::setupScan2DArea( void )
 #endif
   connect( S2DPrintB, SIGNAL( clicked() ), S2DPrintD, SLOT( show() ),
 	   Qt::UniqueConnection );
+#if 0
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2Dview, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
+#endif
+  connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
+	   S2DBase, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
+
+  mcaWriting = false;
+  mcaTimer = new QTimer;
+  connect( mcaTimer, SIGNAL( timeout() ), this, SLOT( S2DMCAWriteNext() ),
+	   Qt::UniqueConnection );
 }
 
 void MainWindow::PopUpS2D( void )
@@ -320,8 +316,9 @@ void MainWindow::S2DOkOverWrite2( void )
 
 void MainWindow::newS2DFileSelected( const QString &fname )
 {
-  S2DFileName0->setText( fname );
-  QFileInfo f( fname );
+  QString Fname = CheckFNameExt( fname, "dat" );
+  S2DFileName0->setText( Fname );
+  QFileInfo f( Fname );
 
   if ( f.exists() ) {
     S2DNameStat = OLD;
@@ -505,7 +502,8 @@ void MainWindow::S2DScanStart( void )
       UUnits.addUnit( S2D_ID, mUnits.at(i) );
     }
 
-    S2DMCAMap.New( S2DI.ps[0]+1, S2DI.ps[1]+1 );
+    S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
+		     S2DI.ps[1]+1, MCALength, SAVEMCACh );
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
@@ -689,9 +687,6 @@ void MainWindow::S2DStop00( void )
 void MainWindow::SaveS2DResult( void )
 {
   if ( S2DI.valid ) {
-    S2DWriteHead();
-    S2DWriteHead2();
-
     if ( ! S2DI.SaveFile.simplified().isEmpty() ) {
       QFile f( S2DI.SaveFile );
       
@@ -699,6 +694,10 @@ void MainWindow::SaveS2DResult( void )
 	return;
       
       QTextStream out(&f);
+
+      S2DWriteHead( out );
+      S2DI.save( out );
+      S2DWriteHead2( out );
       
       for ( int iy = 0; iy <= S2DI.ps[1]; iy++ ) {
 	for ( int ix = 0; ix < S2DI.ps[0]; ix++ ) {
@@ -719,7 +718,7 @@ void MainWindow::SaveS2DResult( void )
   S2DFileName0->setToolTip( FSTATMsgs[ S2DDataStat ][ S2DNameStat ] );
 }
 
-void MainWindow::S2DWriteHead( void )
+void MainWindow::S2DWriteHead0 ( void )
 {
   if ( S2DI.SaveFile.simplified().isEmpty() )
     return;
@@ -732,6 +731,14 @@ void MainWindow::S2DWriteHead( void )
   // Writing fixed headers
   QTextStream out(&f);
 
+  S2DWriteHead( out );
+  S2DI.save( out );
+
+  f.close();
+}
+
+void MainWindow::S2DWriteHead( QTextStream &out )
+{
   // "#" と ":" の間は " " 込で 11桁
 
   out << "# 1306 Aichi SR 2D Scan" << endl;
@@ -739,54 +746,14 @@ void MainWindow::S2DWriteHead( void )
                                      .toString("yy.MM.dd hh:mm:ss.zzz") << endl;
   if ( SLS != NULL ) 
     out << "#" << " Ring Cur. : " << SLS->value().toDouble() << "[mA]" << endl;
-
-  out << "# Scan Mode : ";
-  switch( S2DI.ScanMode ) {
-  case STEP: out << "Step Scan" << endl; break;
-  case QCONT: out << "Quasi Continuous Scan" << endl; break;
-  case RCONT: out << "Real Continuous Scan" << endl; break;
-  }
-  if ( S2DI.ScanBothDir ) {
-    out << "# Scan dir : Both" << endl;
-  } else {
-    out << "# Scan dir : Single" << endl;
-  }
-
-  for ( int i = 0; i < S2DI.motors; i++ ) {
-    if ( S2DI.used[i] ) {
-      out << "#" << QString( " Axis %1    : " ).arg( i, 1 )
-	  << QString( " %1" ).arg( S2DI.sx[i], 10 )
-	  << QString( " %1" ).arg( S2DI.ex[i], 10 )
-	  << QString( " %1" ).arg( S2DI.dx[i], 10 )
-	  << QString( " %1" ).arg( S2DI.ps[i], 10 )
-	  << " : " << S2DI.unit[i]->getName() << endl;
-    }
-  }
-
-  out << "#" << QString( " Dwell Time : %1" ).arg( S2DI.Dwell ) << endl;
-  out << "#" << endl;
-
-  f.close();
 }
 
-void MainWindow::S2DWriteHead2( void )
+void MainWindow::S2DWriteHead2( QTextStream &out )
 {
-  if ( S2DI.SaveFile.simplified().isEmpty() )
-    return;
-  
-  QFile f( S2DI.SaveFile );
-  
-  if ( !f.open( QIODevice::Append | QIODevice::Text ) )
-    return;
-  
-  // Writing additional headers
-  QTextStream out(&f);
-  
   out << "# ***************************************************" << endl;
   out << "# ** This file was generated after the measurement **" << endl;
   out << "# ***************************************************" << endl;
-
-  f.close();
+  out << endl;
 }
 
 void MainWindow::S2DWriteBody( double v )
@@ -818,16 +785,7 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
 	||( iy < 0 )||( iy > S2DI.ps[1] ))
       return;
 
-    if ( S2DMCADataOnMemF ) {  // 今はこのフラグが常に true 
-      SaveMCADataOnMem( S2DMCAMap.aPoint( ix, iy ) );        // iz は無視
-    } else {
-      // ファイル名の指定がなくてもとにかく名前を作る。
-      QFileInfo mcaFile = S2DGenerateMCAFileName( ix, iy, S2DI.i[2] );
-      aMCASet *set = new aMCASet;
-      SaveMCADataOnMem( set );
-      saveMCAData0( mcaFile.canonicalFilePath(), set ); // 通常のテキスト形式でのセーブ
-      delete set;
-    }
+    SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ) );        // iz は無視
   }
 }
 
@@ -843,7 +801,7 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
   for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
     double *E = set->Ch[ ch ].E;
     quint32 *cnt = set->Ch[ ch ].cnt;
-    for ( int i = 0; i < SAVEMCASize; i++ ) {
+    for ( int i = 0; i < MCALength; i++ ) {
       E[i] = kev2pix->p2E( ch, i );
       cnt[i] = SFluo->getAMCAdata( ch, i );
     }
@@ -859,6 +817,7 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
   set->setValid( true );
 }
 
+#if 0
 QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
 {
   QFileInfo BaseFile( S2DI.MCAFile );
@@ -881,6 +840,7 @@ QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
 
   return mcaFile;
 }
+#endif
 
 void MainWindow::S2DWriteBlankLine( void )
 {
@@ -937,12 +897,13 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
  }
 
 
-void MainWindow::S2DReCalcMap( void )
+void MainWindow::S2DSetROIs( void )
 {
   if ( AutoROIsetAll->isChecked() )
     setAllROIs();
 }
 
+#if 0
 void MainWindow::S2DReCalcMap0( void )
 {
   if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
@@ -956,12 +917,7 @@ void MainWindow::S2DReCalcMap0( void )
   if ( S2DI.ScanMode == STEP ) {
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       for ( int j = 0; j < S2DI.ps[0]; j++ ) {
-	if ( S2DMCADataOnMemF ) {
-	  sum = S2DReCalcAMapPointOnMem( j, i );
-	} else {
-	  mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	  sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	}
+	sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	if ( sum > 0 ) {
 	  S2Dview->setData( j, i, sum );
 	} else {
@@ -974,12 +930,7 @@ void MainWindow::S2DReCalcMap0( void )
     for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
       if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
 	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
-	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i );
-	  } else {
-	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	  }
+	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
 	    S2Dview->setData( j, i, sum - lastsum );
 	  }
@@ -989,12 +940,7 @@ void MainWindow::S2DReCalcMap0( void )
 	}
       } else {
 	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
-	  if ( S2DMCADataOnMemF ) {
-	    sum = S2DReCalcAMapPointOnMem( j, i );
-	  } else {
-	    mcaFile = S2DGenerateMCAFileName( j, i, S2DI.ps[2] );
-	    sum = S2DReCalcAMapPoint( mcaFile.canonicalFilePath() );
-	  }
+	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
 	  if ( ( sum > 0 ) && ( j > 0 ) ) {
 	    S2Dview->setData( j - 1, i, sum - lastsum );
 	  }
@@ -1041,7 +987,7 @@ double MainWindow::S2DReCalcAMapPoint( QString fname )
   return sum;
 }
 
-double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
+double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map )
 {
   double sum = 0;
 
@@ -1052,13 +998,13 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
     es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
   }
 
-  aMCASet *set = S2DMCAMap.aPoint( ix, iy );
+  aMCASet *set = map->aPoint( ix, iy );
   if ( ( set != NULL )&&( set->isValid() ) ) {
     for ( int ch = 0; ch < SAVEMCACh; ch++ ) {
       if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
 	double *E = set->Ch[ ch ].E;
 	quint32 *cnt = set->Ch[ ch ].cnt;
-	for ( int i = 0; i < SAVEMCASize; i++ ) {
+	for ( int i = 0; i < MCALength; i++ ) {
 	  if (( E[i] >= ss[ch] )&&( E[i] <= es[ch] )) {
 	    sum += cnt[i];
 	  }
@@ -1069,8 +1015,31 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy )
 
   return sum;
 }
+#endif
 
-void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
+void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
+{
+  quint32 *cnt1 = NULL;
+  quint32 *cnt2 = NULL;
+  if ( ( set1 != NULL )&&( set1->isValid() ) )
+    cnt1 = set1->Ch[ cMCACh ].cnt;
+  if ( ( set2 != NULL )&&( set2->isValid() ) )
+    cnt2 = set2->Ch[ cMCACh ].cnt;
+
+  if ( cnt1 != NULL ) {
+    for ( int i = 0; i < MCALength; i++ ) {
+      if ( cnt2 != NULL ) {
+	MCAData[i] = abs( cnt1[i] - cnt2[i] );
+      } else {
+	MCAData[i] = cnt1[i];
+      }
+    }
+    cMCAView->update();
+  }
+}
+
+#if 0
+void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy, aMCASet *set )
 {
   if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
       ||( cMCAView == NULL )||( MCAData== NULL ))
@@ -1080,17 +1049,17 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
   aMCASet *set1, *set2;
   quint32 *cnt1, *cnt2;
 
-  set1 = S2DMCAMap.aPoint( ix, iy );
+  set1 = map->aPoint( ix, iy );
   if ( ( set1 == NULL ) || ( ! set1->isValid() ) )
     return;
   cnt1 = set1->Ch[ cMCACh ].cnt;
 
   if ( S2DI.ScanMode == STEP ) {
-    for ( int i = 0; i < SAVEMCASize; i++ ) {
+    for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = cnt1[i];
     }
   } else {
-    set2 = S2DMCAMap.aPoint( ix+1, iy );
+    set2 = map->aPoint( ix+1, iy );
     if ( ( set2 == NULL ) || ( ! set2->isValid() ) )
       return;
     cnt2 = set2->Ch[ cMCACh ].cnt;
@@ -1098,16 +1067,17 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy )
     // 前進で測定しているときは val(ix+1, iy) - val(ix, iy)
     // 後進で測定しているときは val(ix, iy) - val(ix+1, iy)
     // 片道スキャンなら、最初の行が前進ならずっと前進、後進ならずっと後進
-    // 往復スキャンなら、奇数業は最初の行の逆向けのスキャン
+    // 往復スキャンなら、奇数行は最初の行の逆向けのスキャン
     dx = ( S2DI.startDir == FORWARD ) ? 1 : -1;
     if (( S2DI.ScanBothDir )&&( iy % 2 == 1 )) dx *= -1;
-    for ( int i = 0; i < SAVEMCASize; i++ ) {
+    for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = ( cnt2[i] - cnt1[i] ) * dx;
     }
   }
-
+  
   cMCAView->update();
 }
+#endif
 
 void MainWindow::S2DChangeMCACh( int dCh )
 {
@@ -1121,85 +1091,25 @@ void MainWindow::S2DChangeMCACh( int dCh )
   MCACh->setValue( ch );
 }
 
-void MainWindow::S2DShowIntMCA( int ix, int iy )
+#if 0
+void MainWindow::S2DShowIntMCA( int ix, int iy, aMCASet *set )
 {
   if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
       ||( cMCAView == NULL )||( MCAData== NULL ))
     return;
 
-  aMCASet *set;
+  //  aMCASet *set;
   quint32 *cnt;
 
-  set = S2DMCAMap.aPoint( ix, iy );
+  set = map->aPoint( ix, iy );
   if ( ( set == NULL ) || ( ! set->isValid() ) )
     return;
   cnt = set->Ch[ cMCACh ].cnt;
 
-  for ( int i = 0; i < SAVEMCASize; i++ ) {
+  for ( int i = 0; i < MCALength; i++ ) {
     MCAData[i] = cnt[i];
   }
 
   cMCAView->update();
 }
-
-void MainWindow::SaveS2DMCAs( void )
-{
-  if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )) {
-    statusbar->showMessage( tr( "Can not save MCA spectra for 2D scan." ), 2000 );
-    return;
-  }
-  if ( S2DFileName0->text().simplified().isEmpty() ) {
-    statusbar->showMessage( tr( "No file name was selected" ), 2000 );
-    return;
-  }
-  QFileInfo f1( S2DFileName0->text() );
-  QFileInfo f2 = QFileInfo( f1.absoluteDir().absolutePath(), f1.baseName() );
-  // f2 : path と basename の結合を Qt に任せる
-  QString bfname = f2.filePath();
-
-  for ( int y = 0; y < S2DI.ps[1]; y++ ) {
-    for ( int x = 0; x < S2DI.ps[0]; x++ ) {
-      aMCASet *set = S2DMCAMap.aPoint( x, y );
-      if ( ( set != NULL ) && ( set->isValid() ) ) {
-	QString fname = QString( "%1-MCA-%2-%3.dat" )
-	  .arg( bfname )
-	  .arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );
-	QFile f( fname );
-	if ( f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-	  QTextStream out( &f );
-	  out << "# XafsM2 MCA Data measured by 2D Scan\n";
-	  out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
-	      << "\n";
-	  out << "# Ring Current : " << set->RINGCurrent << "\n";
-	  out << "# I0           : " << set->I0 << "\n";
-	  out << "# Channel Status Length RealTime LiveTime ICR\n";
-	  for ( int i = 0; i < MaxSSDs; i++ ) {
-	    MCAHead head = set->Heads[i];
-	    out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
-                << head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\n";
-	  }
-
-	  if ( cMCAView != NULL ) {
-	    if ( ShowAlwaysSelElm->isChecked() ) {
-	      out << "# Selected elements list\n";
-	      QStringList Elms = cMCAView->getSelectedElms();
-	      for ( int i = 0; i < Elms.count(); i++ ) {
-		out << "# " << Elms[i] << "\n";
-	      }
-	    }
-	  }
-
-	  for ( int i = 0; i < MCALength; i++ ) {
-	    out << i;
-	    for ( int j = 0; j < MaxSSDs; j++ ) {
-	      out << "\t" << set->Ch[ j ].E[ i ];
-	      out << "\t" << set->Ch[ j ].cnt[ i ];
-	    }
-	    out << "\n";
-	  }
-	  f.close();
-	}
-      }
-    }
-  }
-}
+#endif

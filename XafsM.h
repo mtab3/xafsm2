@@ -29,10 +29,14 @@ const int MaxSSDs = 19;       // Max SSD elements
 
 const QString RadioBOn = "background-color: rgb(250,250,200)";
 const QString RadioBOff = "background-color: rgb(200,200,190)";
+#if 0
 const QString NormalB = "background-color: "
 		       "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 "
 		       "rgba(225, 235, 225, 255), stop:1 "
                        "rgba(255, 255, 255, 255));";
+#endif
+const QString NormalB = "";
+const QString NormalBXAFS = "background-color: rgb(180,250,250)"; 
 const QString InActive = "background-color: rgb(250,250,180)"; 
 const QString AlartRed = "background-color: rgb(250,200,200)";
 const QString SSDActive = "background-color: #f0f0d0";
@@ -138,7 +142,5 @@ struct MCAGain {
   int ch;
   double gain;
 };
-
-extern double prec( double x, int n );
 
 #endif

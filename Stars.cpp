@@ -413,6 +413,17 @@ void Stars::ReceiveMessageFromStars( void )
   }
 }
 
+bool Stars::SendEvent( QString event )
+{
+  if ( ConnectionStage != CSTAGEEND )
+    return false;
+
+  QString aLine = MyNameOnStars + ">System _Ev" + event +"\n";
+  ss->write( aLine.toLatin1() );
+
+  return true;
+}
+
 bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
 {
   if ( ConnectionStage != CSTAGEEND )
@@ -421,7 +432,6 @@ bool Stars::SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 )
   QString Cmd = MyNameOnStars + "." + fromCh + ">" + dev + " " + cmd1;
   if ( !cmd2.isEmpty() )
     Cmd += " " + cmd2;
-//  qDebug() << "Stars << " << Cmd;
   Cmd += "\n";
 
   emit AskRecord( tr( "Sending a message [%1] to Stars" ).arg( Cmd ) );

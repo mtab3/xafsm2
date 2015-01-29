@@ -171,6 +171,7 @@ void MainWindow::MeasDarkSequence( void )
     MeasDarkStage = 6;
     break;
   case 6:
+    haveMeasuredDark = true;
     inMeasDark = false;
     statusbar->showMessage( "", 0 );
     MeasBackGround->setText( tr( "Measure Background" ) );

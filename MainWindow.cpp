@@ -206,10 +206,54 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( conds, SIGNAL( NewDiff2( int ) ), this, SIGNAL( NewDiff2( int ) ),
 	   Qt::UniqueConnection );
 
+  connect( Special, SIGNAL( clicked() ), this, SLOT( SpecialMove() ) );
+  
   setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
 
   s->AskStatus();
   s->MakeConnection();
+}
+
+void MainWindow::SpecialMove( void )
+{
+  smAm = NULL;
+  for ( int i = 0; i < AMotors.count(); i++ ) {
+    AUnit *am = AMotors[i];
+    qDebug() << am->getID();
+    if ( ( am->getID() == "STAGEX" ) || ( am->getID() == "StageX" ) ){
+      smAm = am;
+      break;
+    }
+  }
+  if ( smAm == NULL )
+    return;
+  
+  QTimer *smt = new QTimer;
+  smt->setInterval( 100 );
+  connect( smt, SIGNAL( timeout() ), this, SLOT( SpecialMoveCore() ) );
+  smStage = 0;
+  smt->start();
+}
+
+void MainWindow::SpecialMoveCore( void )
+{
+  if ( smAm->isBusy() )
+    return;
+
+  switch( smStage ) {
+  case 0:
+    smAm->SetValue( smAm->value().toInt() + 2.5 / smAm->getUPP() );
+    smStage = 1;
+    break;
+  case 1:
+    smAm->SetValue( smAm->value().toInt() - 5.0 / smAm->getUPP() );
+    smStage = 2;
+    break;
+  case 2:
+    smAm->SetValue( smAm->value().toInt() + 5.0 / smAm->getUPP() );
+    smStage = 1;
+    break;
+  }
 }
 
 void MainWindow::SetDXMPMC( void )
@@ -515,6 +559,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
   case TYVIEW:
     newView = (void *)(new TYView);
     ((TYView*)newView)->setParent( this );
+    ((TYView*)newView)->setMovingAvr( MovingAvr->text().toInt() );
     break;
   case MCAVIEW:
     newView = (void *)(new MCAView( this ));
@@ -538,6 +583,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype )
     break;
   case S2DVIEW:
     newView = (void *)(new S2DB( this ) );
+    qDebug() << "Not Set Parent in MainWindow";
     //    ((S2DB*)newView)->setParent( this );
     break;
   default:
@@ -580,3 +626,7 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
   RingCurrent->setText( Val );
 }
 
+void MainWindow::SignalToStars( QString event )
+{
+  s->SendEvent( event );
+}

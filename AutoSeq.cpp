@@ -352,7 +352,8 @@ void MainWindow::AutoSequence0( void )
 	  VAL.remove( QChar( '"' ) );
 	  aMCASet *set = new aMCASet;
 	  SaveMCADataOnMem( set );
-	  saveMCAData0( VAL, set );
+	  set->save( VAL, "measured by auto Sequence" );
+	  //	  saveMCAData0( VAL, set );
 	  delete set;
 	}
       } else {

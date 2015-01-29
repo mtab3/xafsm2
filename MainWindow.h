@@ -57,8 +57,16 @@
 #define MCA_ID  "MCA Monitor"
 #define S2D_ID  "2D Scan"
 
+#define XAFS_M_START   "StartMeas"
+#define XAFS_M_END     "EndMeas"
+//#define XAFS_M_STOP    "StopMeas"      // suspend measurement
+//#define XAFS_M_RESUME  "ResumeMeas"
+#define QXAFS_M_START  "StartQMeas"
+#define QXAFS_M_END    "EndQMeas"
+
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
+#define SAVEMCACh        ( 19 )
 #define S2D_END_STAGE    ( 99 )
 
 struct AutoModeParam {
@@ -240,6 +248,7 @@ private:
   QMap<QString,int> ASLabels;
   /* Auto Sequence */
 
+  void getGassAbsTable( void );
 
   /***********************************************/
 
@@ -352,9 +361,8 @@ private:
   int S2DStage;
   bool S2DInfoIsValid;
   S2DInfo S2DI;
-  aMCAMap S2DMCAMap;
+  //  aMCAMap S2DMCAMap;
   aMCAMap XafsMCAMap;
-  bool S2DMCADataOnMemF;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   double S2DLastV;
 
@@ -362,19 +370,23 @@ private:
   void S2DStop0( void );
   void S2DStop00( void );
   void SetupS2DParams( void );
-  void S2DWriteHead( void );
-  void S2DWriteHead2( void );
+  void S2DWriteHead0( void );
+  void S2DWriteHead( QTextStream &out );
+  void S2DWriteHead2( QTextStream &out );
   void S2DWriteBody( double v );
   void S2DWriteBody2( int ix, int iy );
   void S2DWriteBlankLine( void );
   void S2DWriteTail( void );
   QFileInfo S2DGenerateMCAFileName( int i1, int i2, int i3 );
   double S2DReCalcAMapPoint( QString fname );
-  double S2DReCalcAMapPointOnMem( int ix, int iy );
+  double S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DFileCheck( void );
-
   void SaveMCADataOnMem( aMCASet *set );
+
+  QTimer *mcaTimer;
+  QStringList mcaWFList;
+  bool mcaWriting;
 
   QVector<AUnit*> SensWithRange;
 
@@ -457,8 +469,11 @@ private:
   QMessageBox *StopP;
   QMessageBox *AskOverWrite;
   QMessageBox *MakeSureOfRangeSelect;
+  QMessageBox *NoticeHaveNotMeasDark;
   bool AskingOverwrite;
   bool MakingSureOfRangeSelect;
+  bool haveMeasuredDark;
+  bool NoticingHaveNotMeasDark;
   ViewCTRL *SetUpNewView( VTYPE vtype );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
@@ -474,7 +489,7 @@ private:
   bool AskingShutterOpen;
   int MeasDarkStage;
   bool setRsRe( int &rs, int &re );
-
+  
   void ShowMeasFileStatus( QString fname );
   void ShowTotal( void );
   void CpBlock2SBlock( void );
@@ -565,6 +580,9 @@ private:
   void AutoSequenceEnd( void );
   void ASReadSEQFile( QString fname );
 
+  AUnit *smAm;
+  int smStage;
+				     
 private slots:
   // Main Part
   void Print( QPrinter *p );
@@ -651,6 +669,7 @@ private slots:
   void newGain( void );
   void PopChangeMonLines( bool f );
   void PopDownMonLines( void );
+  void newMovingAvr( void );
 
   void ShowNewMCAStat( char *MCAs );
   void ShowNewMCARealTime( int ch );
@@ -671,6 +690,7 @@ private slots:
   void newPrec1( void );
   void newPrec2( void );
   void SaveS2DMCAs( void );
+  void S2DMCAWriteNext( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -702,9 +722,9 @@ private slots:
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
   void saveMCAData( void );
-  void saveMCAData0( QString fname, aMCASet *set );
-  void WriteMCAHead( QTextStream &out, aMCASet *set );
-  void WriteMCAData( QTextStream &out, aMCASet *set );
+  //  void saveMCAData0( QString fname, aMCASet *set );
+  //  void WriteMCAHead( QTextStream &out, aMCASet *set );
+  //  void WriteMCAData( QTextStream &out, aMCASet *set );
 
   void ChangeBLKUnit( int i );
   void ChangeBLKs( int i );
@@ -742,6 +762,7 @@ private slots:
   void SurelyStop( void );
   void GoingOn( void );
   void OkOverWrite( void );
+  void OkHaveNotMeasDark( void );
   void RangeSelOK( void );
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );
@@ -776,7 +797,7 @@ private slots:
   void MeasDarkSequence( void );
 
   void TryToNoticeCurrentView( void );
-  void TryToGiveNewView( DATATYPE dtype );
+  void TryToGiveNewView( DATATYPE dtype, QString dir );
   void DeleteTheView( void );
   void ShowButtonsForCurrentTab( void );
   void ShowButtonsForATab( int i );
@@ -824,11 +845,16 @@ private slots:
   void S2DRContScanMeas( void );
   void S2DNewScanValue( QString v );
   void S2DMoveToPointedPosition( int x, int y );
-  void S2DShowInfoAtNewPosition( int x, int y );
-  void S2DShowIntMCA( int x, int y );
+
+  //  void S2DShowInfoAtNewPosition( int x, int y, aMCASet *set );
+  //  void S2DShowIntMCA( int x, int y, aMCASet *set );
+  void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
+    
   void S2DChangeMCACh( int dCh );
-  void S2DReCalcMap( void );
-  void S2DReCalcMap0( void );
+  void S2DSetROIs( void );
+  //  void S2DReCalcMap0( void );
+  void ansToGetNewMCAView( S2DB *s2db );
+  void ReCalcS2DMap( void );
 
   /* AutoSequence */
   void AutoSequence0( void );
@@ -838,6 +864,11 @@ private slots:
   /* AcceptTYView */
   void TYVUpScale( void );
   void TYVDownScale( void );
+
+  void SpecialMove( void );           // 特殊動作だ !!
+  void SpecialMoveCore( void );       // 特殊動作だ !!
+
+  void SignalToStars( QString event );
 
  signals:
   void SelectedSSD( int i, bool f );
@@ -857,6 +888,8 @@ private slots:
   void SignalMCAViewSetShowElements( bool f );
   void SignalMCAViewShowAlwaysSelElm( bool f );
   void SignalMCAViewShowElmEnergy( bool f );
+
+  void ReCalcS2DMap0( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
 };
 
 #endif

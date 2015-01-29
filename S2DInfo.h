@@ -6,7 +6,7 @@
 #include "XafsM.h"
 #include "AUnit.h"
 
-struct S2DInfo
+class S2DInfo
 {
  public:
 
@@ -26,6 +26,10 @@ struct S2DInfo
   QString MCAFile;
   QString SaveFile;
   int pps;               // use only in RCONT
+  
+  S2DInfo( void );
+  void save( QTextStream &out );
+  void load( QTextStream &in, QVector<AUnit*> &AMotors );
 };
 
 #endif

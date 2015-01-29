@@ -43,7 +43,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // 検出器初期化
     if ( mUnits.init() ) // true :: initializing
       break;
-    S2DWriteHead();
+    S2DWriteHead0();
     mUnits.clearStage();
     S2DStage++;
     break;

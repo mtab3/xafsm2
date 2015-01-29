@@ -45,6 +45,7 @@ public:
   void MakeConnection( void );
   bool SendCMD( QString dev, QString cmd1, QString cmd2 = "" );
   bool SendCMD2( QString fromCh, QString dev, QString cmd1, QString cmd2 = "" );
+  bool SendEvent( QString event );
 
 public slots:
   void SetNewSVAddress( const QString &item );

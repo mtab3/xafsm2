@@ -10,8 +10,8 @@ void MainWindow::setupReadDataArea( void )
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
   for ( int i = 0; i < Datas.count(); i++ ) {
-    connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE ) ),
-	     this, SLOT( TryToGiveNewView( DATATYPE ) ),
+    connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE, QString ) ),
+	     this, SLOT( TryToGiveNewView( DATATYPE, QString ) ),
 	     Qt::UniqueConnection );
     //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
     //	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ),
@@ -43,46 +43,58 @@ void MainWindow::DeleteTheView( void )
   ViewCtrls[ ViewTab->currentIndex() ]->deleteView();
 }
 
-void MainWindow::TryToGiveNewView( DATATYPE dtype )
+void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
 {
   QObject *from = sender();
-  ViewCTRL *view;
+  ViewCTRL *viewC;
 
   switch( dtype ) {
 #if 0
   case MEASDATA:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
-    view = ViewCtrls[ ViewTab->currentIndex() ];
-    if ( view->getNowDType() != dtype ) {
-      view = SetUpNewView( XYVIEW );
+    viewC = ViewCtrls[ ViewTab->currentIndex() ];
+    if ( viewC->getNowDType() != dtype ) {
+      viewC = SetUpNewView( XYVIEW );
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-XAFS" ) );
       ClearXViewScreenForMeas( (XYView*)(view->getView()) );
     }
     break;
 #endif
   case MONDATA:   // MONDATA と MCADATA は重ね書きは諦める。
-    view = SetUpNewView( TYVIEW );
+    viewC = SetUpNewView( TYVIEW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANDATA:
-    view = ViewCtrls[ ViewTab->currentIndex() ];
-    if ( view->getNowDType() != dtype ) {
-      view = SetUpNewView( XYVIEW );
+    viewC = ViewCtrls[ ViewTab->currentIndex() ];
+    if ( viewC->getNowDType() != dtype ) {
+      viewC = SetUpNewView( XYVIEW );
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
-      ClearXViewScreenForScan( (XYView*)(view->getView()) );
+      ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     }
     break;
   case MCADATA:
-    view = SetUpNewView( MCAVIEW );
+    viewC = SetUpNewView( MCAVIEW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
     break;
   case S2DDATA:
-    view = SetUpNewView( S2DVIEW );
+    viewC = SetUpNewView( S2DVIEW );
+    connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
+	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+    qDebug() << "Set Parent in ReadData";
+    ((S2DB*)(viewC->getView()))->setParent( this );
+    ((S2DB*)(viewC->getView()))->setRead( true );
+    ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? DataRoot->text() : dir );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:
-    view = NULL;
+    viewC = NULL;
     break;
   }
 
-  ((Data*)from)->GotNewView( view );
+  ((Data*)from)->GotNewView( viewC, AMotors );
+}
+
+void MainWindow::ansToGetNewMCAView( S2DB* s2db )
+{
+  getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
+  s2db->getNewMCAMap( MCALength, SAVEMCACh );
 }
