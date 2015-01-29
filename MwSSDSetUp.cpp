@@ -831,34 +831,6 @@ void MainWindow::StartMCA( void )
   }
 }
 
-void MainWindow::getNewMCAView( void )
-{
-  if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
-       || ( StartResume == MCA_START ) ) {
-    if ( cMCAView != NULL ) {
-      //      cMCAViewC->setIsDeletable( true );
-    }
-
-    if ( ( cMCAViewC = SetUpNewView( MCAVIEW ) ) == NULL ) 
-      return;
-    ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
-    cMCAViewC->setNowDType( MCADATA );
-    cMCAView = (MCAView*)(cMCAViewC->getView());
-    cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
-
-    MCAData = cMCAView->setMCAdataPointer( MCALength );
-    validMCAData = true;
-    cMCAViewTabNo = ViewTab->currentIndex();
-    cMCAView->setLog( SetDisplayLog->isChecked() );
-    cMCAView->SetMCACh( cMCACh );
-    cMCAView->makeValid( true );
-    
-    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-    if ( StartResume == MCA_START )
-      for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
-  }
-}
-
 void MainWindow::showCurrentValues( int atCur, int inROI )
 {
   if ( sender() == cMCAView ) {

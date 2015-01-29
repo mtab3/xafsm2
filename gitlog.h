@@ -2,8 +2,24 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 23:15:28 2015 +0900\n"\
+                "    the control of Views looks much better than before, but should be checked more very carefully\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 22:36:35 2015 +0900\n"\
+                "    ViewCTRL is chenging. There are some bugs in getting cMCAView\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 19:32:38 2015 +0900\n"\
+                "    LION and tr\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Jan 28 18:19:28 2015 +0900\n"\
+                "    new Start button\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 17:48:37 2015 +0900\n"\
                 "    new what-to-do\n"\
@@ -27,22 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 03:16:48 2015 +0900\n"\
                 "    improving\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 27 22:55:10 2015 +0900\n"\
-                "    working\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 27 18:36:30 2015 +0900\n"\
-                "    almost done but still are some bugs\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 27 02:34:55 2015 +0900\n"\
-                "    it is almost working but have severe severe buggit add .!\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jan 27 01:27:24 2015 +0900\n"\
-                "    broken codes. ReCalc\n"\
 		"\n"\
                 ""
 #endif
