@@ -15,4 +15,6 @@ Log*.dat
 #*
 SSVHistory.dat
 XafsM2.pro
-Makefile
+Makefile*
+object_script*
+

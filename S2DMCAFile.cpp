@@ -14,7 +14,10 @@ void MainWindow::SaveS2DMCAs( void )
     return;
   }
   QFileInfo f1( S2DFileName0->text() );
-  QFileInfo f2 = QFileInfo( f1.absoluteDir().absolutePath(), f1.baseName() );
+  QDir dir( f1.absoluteDir().absolutePath() );
+  dir.mkdir( f1.baseName() );
+  dir.cd( f1.baseName() );
+  QFileInfo f2 = QFileInfo( dir.absolutePath(), f1.baseName() );
   // f2 : path と basename の結合を Qt に任せる
   QString bfname = f2.filePath();
 

@@ -2,8 +2,24 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "S2DMCA" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 18:41:30 2015 +0900\n"\
+                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 18:09:21 2015 +0900\n"\
+                "    it should be a stable ver\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 18:06:53 2015 +0900\n"\
+                "    Merge branch 'master' of ssh://133.6.107.214/git/Qt0/XAFS/XafsM2\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 18:06:44 2015 +0900\n"\
+                "    what happens?\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 17:58:25 2015 +0900\n"\
                 "    it looks it works basically ok\n"\
@@ -27,22 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 19:32:38 2015 +0900\n"\
                 "    LION and tr\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 18:19:28 2015 +0900\n"\
-                "    new Start button\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 17:48:37 2015 +0900\n"\
-                "    new what-to-do\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 17:47:56 2015 +0900\n"\
-                "    modify check-meas-dark\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 17:45:45 2015 +0900\n"\
-                "    checking if dark has already been measured\n"\
 		"\n"\
                 ""
 #endif
