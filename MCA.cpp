@@ -136,7 +136,7 @@ void aMCASet::correctE( KeV2Pix *k2p )
 	  break;
 	}
       }
-      if ( Ch[ch].E[j] != Ch[ch].E[j-1] ) {
+      if ( ( Ch[ch].E[j] != Ch[ch].E[j-1] ) && ( j < ( Length - 1 ) ) ) {
 	newCh.cnt[i] = 
 	  (int)(( nowE - Ch[ch].E[j-1] ) / ( Ch[ch].E[j] - Ch[ch].E[j-1] )
 		* ( (int)Ch[ch].cnt[j] - (int)Ch[ch].cnt[j-1] )
