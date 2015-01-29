@@ -50,7 +50,7 @@ void MainWindow::MakeDelegateFile( void )
   // Writing fixed headers
   QTextStream out(&file);
 
-  out << "#" << " 1304     AichiSR QXAFS base file" << endl;
+  out << "#" << FileIDs[ QXAFSBASEDATA ] << endl;
   out << "#" << " Unit      : " << UnitName[ SBLKUnit ].name;
   out << "#" << " Start     : " << SBlockStartAsDisp[0] << endl;
   out << "#" << " End       : " << SBlockStartAsDisp[1] << endl;

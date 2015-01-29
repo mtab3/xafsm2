@@ -48,9 +48,11 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
   QObject *from = sender();
   ViewCTRL *viewC;
 
+  qDebug() << "ff";
+  
   switch( dtype ) {
 #if 0
-  case MEASDATA:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
+  case MEASSHOW:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
     // ここは復活させるなら要再検討
     viewC = ViewCtrls[ ViewTab->currentIndex() ];
     if ( viewC->getNowDType() != dtype ) {
@@ -60,20 +62,20 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     }
     break;
 #endif
-  case MONDATA:
+  case MONSHOW:
     viewC = SetUpNewView( TYVIEW, MONSHOW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
-  case SCANDATA:
+  case SCANSHOW:
     viewC = SetUpNewView( XYVIEW, SCANSHOW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
-  case MCADATA:
+  case MCASHOW:
     viewC = SetUpNewView( MCAVIEW, MCASHOW );
     ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
     break;
-  case S2DDATA:
+  case S2DSHOW:
     viewC = SetUpNewView( S2DVIEW, S2DSHOW );
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );

@@ -18,3 +18,43 @@ QString CheckFNameExt( QString fname, QString ext )
 
   return fname;
 }
+
+QStringList FileIDs;
+QStringList DataTypeNames;
+
+void global_init( void )
+{
+  // DATATYPE と一対一対応
+  FileIDs.clear();
+  FileIDs
+    << "  9809     AichiSR"         // XAFSDATA
+    << "# XafsM2 Scan Data"         // SCANDATA
+    << "# XafsM2 Monitor Data"      // MONDATA
+    << "# XafsM2 MCA Data"          // MCADATA
+    << "# 1306 Aichi SR 2D Scan"    // S2DDATA
+    << " 1304     AichiSR QXAFS base file"  // QXAFSBASEDATA
+    << "  9809     AichiSR"         // XAFSSHOW
+    << "# XafsM2 Scan Data"         // SCANSHOW
+    << "# XafsM2 Monitor Data"      // MONSHOW
+    << "# XafsM2 MCA Data"          // MCASHOW
+    << "# 1306 Aichi SR 2D Scan"    // S2DSHOW
+    << " 1304     AichiSR QXAFS base file"  // QXAFSBASESHOW
+    << "";                          // NONDATA
+
+  // DATATYPE と一対一対応
+  DataTypeNames.clear();
+  DataTypeNames
+    << "Measured"
+    << "Scaned"
+    << "Monitored"
+    << "MCA"
+    << "S2D"
+    << "QBASE"
+    << "Measured"
+    << "Scaned"
+    << "Monitored"
+    << "MCA"
+    << "S2D"
+    << "QBASE"
+    << "";
+}

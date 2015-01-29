@@ -23,7 +23,7 @@ int main( int argc, char *argv[] )
 {
   int month = QDate::currentDate().month();
   int day = QDate::currentDate().day();
-
+  
   getQVersion();
   if ( qMainVer >= 5 )
     QApplication::setStyle( "Fusion" );
@@ -84,6 +84,10 @@ int main( int argc, char *argv[] )
   // const char * "" を暗黙に QString に変換する時のコーディング指定
   QTextCodec::setCodecForLocale( QTextCodec::codecForName( "Shift-JIS" ) );
 
+  /****** global initialize ******/
+  global_init();
+  /*******************************/
+  
   ReadVicF();
 
   MainWindow *mw = new MainWindow( myname );

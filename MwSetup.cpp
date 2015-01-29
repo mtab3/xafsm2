@@ -491,7 +491,7 @@ void MainWindow::saveScanData( void )
 
   AUnit *am = SInfo.am;
 
-  out << "# XafsM2 Scan Data\n";
+  out << FileIDs[ SCANDATA ] << "\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
   out << "#\t";
   for ( int i = 0; i < mUnits.count(); i++ )
@@ -985,7 +985,7 @@ void MainWindow::Monitor( void )
 	}
 	MonOut.setDevice( &MonFile );
 
-	MonOut << "# XafsM2 Monitor Data\n";
+	MonOut << FileIDs[ MONDATA ] << "\n";
 	MonOut << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
 	       << "\n";
 	MonFile.close();
@@ -1145,7 +1145,7 @@ void MainWindow::saveMonData( void )
 
   QTextStream out( &f );
 
-  out << "# XafsM2 Monitor Data\n";
+  out << FileIDs[ MONDATA ] << "\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
       << "\n";
   out << "#\tsec";

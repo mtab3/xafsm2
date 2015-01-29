@@ -42,19 +42,6 @@ Data::Data( QWidget *p ) : QFrame( p )
   DColors << DColor21 << DColor22 << DColor23 << DColor24 << DColor25
 	  << DColor26 << DColor27 << DColor28 << DColor29 << DColor30;
 
-  DataTypeNames << tr( "Measured" )
-		<< tr( "Scaned" )
-		<< tr( "Monitored" )
-		<< tr( "MCA" )
-		<< tr( "S2D" )
-		<< "";
-  Checks << "  9809     AichiSR"
-	 << "# XafsM2 Scan Data"
-	 << "# XafsM2 Monitor Data"
-	 << "# XafsM2 MCA Data"
-	 << "# 1306 Aichi SR 2D Scan"
-	 << "";
-
   connect( FileSelect, SIGNAL( clicked() ), FSDialog, SLOT( show() ),
 	   Qt::UniqueConnection );
   connect( FSDialog, SIGNAL( fileSelected( const QString & ) ),
@@ -148,15 +135,15 @@ void Data::CheckFileType( const QString &fname )
   QString aline = in.readLine();
   f.close();
 
-  if ( aline.left( Checks[ MEASDATA ].length() ) == Checks[ MEASDATA ] ) {
+  if ( aline.left( FileIDs[ MEASDATA ].length() ) == FileIDs[ MEASDATA ] ) {
     DataType->setText( DataTypeNames[ dataType = MEASSHOW ] );
-  } else if ( aline.left( Checks[ SCANDATA ].length() ) == Checks[ SCANDATA ] ) {
+  } else if ( aline.left( FileIDs[ SCANDATA ].length() ) == FileIDs[ SCANDATA ] ) {
     DataType->setText( DataTypeNames[ dataType = SCANSHOW ] );
-  } else if ( aline.left( Checks[ MONDATA ].length() ) == Checks[ MONDATA ] ) {
+  } else if ( aline.left( FileIDs[ MONDATA ].length() ) == FileIDs[ MONDATA ] ) {
     DataType->setText( DataTypeNames[ dataType = MONSHOW ] );
-  } else if ( aline.left( Checks[ MCADATA ].length() ) == Checks[ MCADATA ] ) {
+  } else if ( aline.left( FileIDs[ MCADATA ].length() ) == FileIDs[ MCADATA ] ) {
     DataType->setText( DataTypeNames[ dataType = MCASHOW ] );
-  } else if ( aline.left( Checks[ S2DDATA ].length() ) == Checks[ S2DDATA ] ) {
+  } else if ( aline.left( FileIDs[ S2DDATA ].length() ) == FileIDs[ S2DDATA ] ) {
     DataType->setText( DataTypeNames[ dataType = S2DSHOW ] );
   } else {
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
@@ -179,12 +166,12 @@ void Data::GotNewView( ViewCTRL *viewC, QVector<AUnit*> &AMotors )
 
   switch( dataType ) {
 #if 0
-  case MEASDATA: showMeasData( in ); break;
+  case MEASSHOW: showMeasData( in ); break;
 #endif
-  case MONDATA:  showMonData( in );  break;
-  case SCANDATA: showScanData( in ); break;
-  case MCADATA:  showMCAData( in );  break;
-  case S2DDATA:  showS2DData( in, AMotors );  break;
+  case MONSHOW:  showMonData( in );  break;
+  case SCANSHOW: showScanData( in ); break;
+  case MCASHOW:  showMCAData( in );  break;
+  case S2DSHOW:  showS2DData( in, AMotors );  break;
   default: break;
   }
 
@@ -207,7 +194,7 @@ void Data::showMeasData( QTextStream &in )
 
   // なんか怪しげ showMeasData を復活させるなら要再検討
   if ( theViewC->getDType() == NONDATA ) {
-    theViewC->setNowDType( MEASDATA );
+    theViewC->setNowDType( MEASSHOW );
     theViewC->setNowVType( XYVIEW );
     theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
     theXYView->SetLeftName( "mu(E)" );
@@ -312,7 +299,7 @@ void Data::showScanData( QTextStream &in )
   theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
 #if 0
   if ( theViewC->getDType() == NONDATA ) {
-    theViewC->setNowDType( SCANDATA );
+    theViewC->setNowDType( SCANSHOW );
     theViewC->setNowVType( XYVIEW );
     theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
   }
@@ -366,7 +353,7 @@ void Data::showMonData( QTextStream &in )
   theTYView = (TYView*)theViewC->getView();
 #if 0
   if ( theViewC->getNowDType() == NONDATA ) {
-    theViewC->setNowDType( MONDATA );
+    theViewC->setNowDType( MONSHOW );
     theViewC->setNowVType( TYVIEW );
   }
 #endif
@@ -422,7 +409,7 @@ void Data::showMCAData( QTextStream &in )
   cMCACh = 0;
 #if 0
   if ( theViewC->getNowDType() == NONDATA ) {
-    theViewC->setNowDType( MCADATA );
+    theViewC->setNowDType( MCASHOW );
     theViewC->setNowVType( MCAVIEW );
   }
 #endif
@@ -542,7 +529,7 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
   theS2DView = (S2DView*)(theS2DB->getView());
 #if 0
   if ( theViewC->getNowDType() == NONDATA ) {
-    theViewC->setNowDType( S2DDATA );
+    theViewC->setNowDType( S2DSHOW );
     theViewC->setNowVType( S2DVIEW );
     // theS2DView->SetWindow0( 1e300, 0, -1e300, 0 );
   }

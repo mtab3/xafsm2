@@ -66,7 +66,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   // Writing fixed headers
   QTextStream out(&file);
 
-  out << " " << fixS( " 9809     AichiSR", 20 ) << fixS( BLNAME, 5 ) << endl;
+  out << " " << fixS( FileIDs[ MEASDATA ], 20 ) << fixS( BLNAME, 5 ) << endl;
 
   out << " " << fixS( DFName, 14 ) << "  "
       << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << " - "

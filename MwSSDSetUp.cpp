@@ -571,7 +571,7 @@ void MainWindow::saveMCAData0( QString fname, aMCASet *set )
   }
   QTextStream out( &f );
 
-  out << "# XafsM2 MCA Data\n";
+  out << FileIDs[ MCADATA ] << "\n";
   out << "# " << set->date << "\n";
 
   set->writeHead( out );

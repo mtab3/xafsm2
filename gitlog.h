@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 16:47:36 2015 +0900\n"\
+                "    working on ViewControl. it get much simpler than before\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 13:52:27 2015 +0900\n"\
                 "    working on ViewCTRL.cpp\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 17:16:29 2015 +0900\n"\
                 "    ok: generate events on starting and stopping measurements\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 14:07:12 2015 +0900\n"\
-                "    It looks stable, though it is not sure that the Read-S2D-MCA functions as I will\n"\
 		"\n"\
                 ""
 #endif

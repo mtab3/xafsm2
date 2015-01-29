@@ -5,6 +5,7 @@
 #include <QColorDialog>
 
 #include "ui_Data.h"
+#include "global.h"
 #include "Units.h"
 #include "S2DInfo.h"
 #include "S2DB.h"
@@ -14,9 +15,6 @@ class XYView;
 class TYView;
 class MCAView;
 class S2DView;
-
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, S2DDATA,
-		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW, S2DSHOW, NONDATA };
 
 class Data : public QFrame, private Ui::Data
 {
@@ -33,8 +31,7 @@ class Data : public QFrame, private Ui::Data
 
   void CheckFileType( const QString &fname );
   DATATYPE dataType;
-  QStringList DataTypeNames;
-  QStringList Checks;
+  //  QStringList Checks;
   QString FName;
 
   ViewCTRL *theViewC;

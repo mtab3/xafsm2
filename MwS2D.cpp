@@ -743,7 +743,7 @@ void MainWindow::S2DWriteHead( QTextStream &out )
 {
   // "#" と ":" の間は " " 込で 11桁
 
-  out << "# 1306 Aichi SR 2D Scan" << endl;
+  out << FileIDs[ S2DDATA ] << endl;
   out << "#" << " Date      : " << QDateTime::currentDateTime()
                                      .toString("yy.MM.dd hh:mm:ss.zzz") << endl;
   if ( SLS != NULL ) 
