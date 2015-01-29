@@ -21,6 +21,8 @@ QString CheckFNameExt( QString fname, QString ext )
 
 QStringList FileIDs;
 QStringList DataTypeNames;
+QStringList ViewTypeNames;
+QVector<int> viewCounts;
 
 void global_init( void )
 {
@@ -57,4 +59,24 @@ void global_init( void )
     << "S2D"
     << "QBASE"
     << "";
+
+  // DATATYPE と一対一対応
+  ViewTypeNames.clear();
+  ViewTypeNames
+    << "XAFS"
+    << "SCAN"
+    << "MON."
+    << "MCA"
+    << "S2D"
+    << "QBASE"
+    << "D-XAFS"
+    << "D-SCAN"
+    << "D-MON."
+    << "D-MCA"
+    << "D-S2D"
+    << "D-QBASE"
+    << "";
+
+  for ( int i = 0; i < FileIDs.count(); i++ )
+    viewCounts << 0;
 }

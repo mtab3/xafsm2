@@ -38,8 +38,8 @@ class ViewCTRL : public QObject
   VTYPE getVType( void ) { return nowVType; };
   DATATYPE getDType( void ) { return nowDType; };
   bool deleteView( void );
-  //  bool isDeletable( void ) { return deletable; };
-  //  void setIsDeletable( bool Deletable ) { deletable = Deletable; };
+  bool isDeletable( void ) { return deletable; };
+  void setDeletable( bool Deletable ) { deletable = Deletable; };
   //  void setDType ( DATATYPE dtype ) { nowDType = dtype; };
   // //  DATATYPE getNowDType ( void ) { return nowDType; };
   void addAGSBStat( QString label, bool f );

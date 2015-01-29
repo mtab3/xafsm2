@@ -19,23 +19,6 @@ ViewCTRL::~ViewCTRL( void )
 
 bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype )
 {
-#if 0
-  if ( nowView != NULL ) {           // 現在の View は使用中 ?
-    if ( vtype == nowVType ) {       // 表示しようとしているのと同じ種類のグラフなら
-      if ( ! deleteView() ) {        // 乗っ取りを企てる。
-	return false;                // ダメなら諦める。
-      }
-    } else {
-      return false;                  // 種類の違うグラフなら諦める
-    }
-  }
-  nowView = view;
-  nowVType = vtype;
-  deletable = true;
-  setView( (QWidget *)view );
-  gsbStat = new GSBStats;
-#endif
-  
   if ( nowView != NULL ) {
     qDebug() << "vtype " << nowVType << vtype;
     if ( ( nowVType != vtype ) || ( nowDType != dtype ) ){
@@ -233,8 +216,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
       ViewTab->setCurrentIndex( i );
     } else {
       // 登録できなかったら今作った View を消して NULL を返して終了
-      statusbar->showMessage( tr( "No Scree is available!" ), 2000 );
-      void *newView = ViewCtrls[ ViewTab->currentIndex() ]->getView();
+      statusbar->showMessage( tr( "No View is available!" ), 2000 );
       switch( vtype ) {
       case XYVIEW:
 	delete (XYView *)newView; break;
@@ -250,7 +232,19 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
     }
   }
 
+  // 次に使える ViewTab が残っていなかったら一つ追加しておく
+  int i;
+  for ( i = 0; i < ViewCtrls.count(); i++ ) {
+    if ( ViewCtrls[i]->getVType() == NONVIEW )
+      break;
+  }
+  if ( i >= ViewCtrls.count() ) {
+    addAView();
+  }
   // 正常時には確保した ViewCTRL を返して終了
+  ViewTab->setTabText( ViewTab->currentIndex(),
+		       QString( "%1(%2)" )
+		       .arg( ViewTypeNames[dtype] ).arg( ++viewCounts[dtype] ) );
   return ViewCtrls[ ViewTab->currentIndex() ];
 }
 
@@ -268,40 +262,25 @@ ReadData.cpp:  getNewMCAView();
 
 void MainWindow::getNewMCAView( void )
 {
-  // cMCAViewTabNo は初期値では -1
-  // cMCAViewTabNo != ViewTab->currentIndex() という条件は
-  // 「MCAView が無い || 現在表示されているTab ではない」と同値
-
-  // 「計測中に View, ViewCTRL を横取りされては困る」が本質のはず
-  // また「計測」は同時には一つしかできないので、
-  // MwSSDSetUp, MwS2DC からは同じ View を排他的に使う
-  //    ---> cMCAMeasView
-  // ReadData/Data は随時新しい View を使う
-  //    (現在表示中のものが、MCA のデータ表示だったらそのまま、
-  //     そうでなければ新しい ViewTab を確保しようとする、という標準的な戦略)
-  
-  if ( ( cMCAViewTabNo != ViewTab->currentIndex() )
-       || ( StartResume == MCA_START ) ) {
-    if ( cMCAView != NULL ) {
-      //      cMCAViewC->setIsDeletable( true );
-    }
-
-    if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA ) ) == NULL ) 
+  if ( cMCAViewTabNo >= 0 )
+    if ( ViewCtrls[ cMCAViewTabNo ]->getDType() == MCADATA )
       return;
-    ViewTab->setTabText( ViewTab->currentIndex(), "MCA" );
-    //    cMCAViewC->setNowDType( MCADATA );
-    cMCAView = (MCAView*)(cMCAViewC->getView());
-    cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
 
-    MCAData = cMCAView->setMCAdataPointer( MCALength );
-    validMCAData = true;
-    cMCAViewTabNo = ViewTab->currentIndex();
-    cMCAView->setLog( SetDisplayLog->isChecked() );
-    cMCAView->SetMCACh( cMCACh );
-    cMCAView->makeValid( true );
-    
-    cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-    if ( StartResume == MCA_START )
-      for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
-  }
+  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA ) ) == NULL ) 
+    return;
+  ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
+  //    cMCAViewC->setNowDType( MCADATA );
+  cMCAView = (MCAView*)(cMCAViewC->getView());
+  cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
+  
+  MCAData = cMCAView->setMCAdataPointer( MCALength );
+  validMCAData = true;
+  cMCAViewTabNo = ViewTab->currentIndex();
+  cMCAView->setLog( SetDisplayLog->isChecked() );
+  cMCAView->SetMCACh( cMCACh );
+  cMCAView->makeValid( true );
+  
+  cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+  if ( StartResume == MCA_START )
+    for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
 }

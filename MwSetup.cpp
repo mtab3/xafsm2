@@ -820,7 +820,7 @@ void MainWindow::ScanStart( void )
     }
     setSInfo();
 
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "SCAN" ) );
+    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "SCAN" ) );
     //    ScanViewC->setNowDType( SCANDATA );
     ScanView = (XYView*)(ScanViewC->getView());
 
@@ -929,10 +929,10 @@ void MainWindow::ScanStart( void )
 
     ScanStage = 0;
     ScanTimer->start( 100 );
-    //    ScanViewC->setIsDeletable( false );
+    ScanViewC->setDeletable( false );
   } else {
-    //    ScanViewC->setIsDeletable( true );
     ScanStop0();
+    ScanViewC->setDeletable( true );
   }
 }
 
@@ -965,7 +965,7 @@ void MainWindow::Monitor( void )
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "MON." ) );
+    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "MON." ) );
     if ( IsMonRec->isChecked() ) {
       if ( MonRecFile->text().isEmpty() ) {
 	statusbar->showMessage( tr ( "No Record file is selected" ) );
@@ -1078,7 +1078,7 @@ void MainWindow::Monitor( void )
     inMonitor = true;
     MinPause = false;
     MonStage = 0;   // 計測のサイクル
-    //    MonitorViewC->setIsDeletable( false );
+    MonitorViewC->setDeletable( false );
     MPause->setEnabled( true );
     MonTime.restart();
     MonTimer->start( 100 );
@@ -1099,7 +1099,7 @@ void MainWindow::Monitor( void )
     }
 
     UUnits.clear( MONITOR_ID );
-    //    MonitorViewC->setIsDeletable( true );
+    MonitorViewC->setDeletable( true );
     MPause->setEnabled( false );
     MPause->setText( tr( "Pause" ) );
     MPause->setStyleSheet( NormalB );

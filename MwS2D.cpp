@@ -442,7 +442,7 @@ void MainWindow::S2DScanStart( void )
       S2DI.isSFluo = true;
       //      if ( cMCAView == NULL ) {
       getNewMCAView();   // ここで確実に MCAData が有効になる
-      //      }
+      cMCAViewC->setDeletable( false );
     }
     switch( S2DI.ScanMode ) {
     case STEP: break;
@@ -540,6 +540,7 @@ void MainWindow::S2DScanStart( void )
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
+    cMCAViewC->setDeletable( true );
   }
 }
 

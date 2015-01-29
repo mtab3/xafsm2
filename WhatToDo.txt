@@ -1,3 +1,6 @@
+○ MCA の View 獲得の戦略はまだ要検討 (getNewMCAView in ViewCTRL.cpp)
+○ SCAN, MON, MCA で何か計測した後、対応する View を先に消してしまって、
+　それから Save を行おうとしても、拒否されるだけで落ちないことを確認
 ○ S2D の「自動スケール」ボタン機能してない?
 ○ S2D の Pop/Doc は View の中にコントロールを入れる
 ○ MCA のコントロールのつながりかげん

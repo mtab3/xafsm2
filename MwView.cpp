@@ -3,19 +3,11 @@
 
 void MainWindow::setupView( void )
 {
-  QVector<QWidget*> ViewBases;
-  ViewBases << VT1 << VT2 << VT3 << VT4 << VT5 << VT6 << VT7 << VT8 << VT9 << VT10;
+  ViewCount = 0;
 
-  ViewCTRL *viewCtrl;
-
-  for ( int i = 0; i < ViewBases.count(); i++ ) {
-    viewCtrl = new ViewCTRL;
-    viewCtrl->setViewBase( ViewBases.at(i) );
-    //    viewCtrl->setNowView( (void *)NULL );
-    //    viewCtrl->setNowVType( NONVIEW );
-    //    viewCtrl->setNowDType( NONDATA );
-    //    viewCtrl->setIsDeletable( true );
-    ViewCtrls << viewCtrl;
+  ViewTab->setTabsClosable( true );
+  for ( int i = 0; i < 1; i++ ) {
+    addAView();
   }
 
   oldCurrentView = 0;
@@ -23,6 +15,35 @@ void MainWindow::setupView( void )
   connect( ViewTab, SIGNAL( currentChanged( int ) ),
 	   this, SLOT( moveToATab( int ) ),
 	   Qt::UniqueConnection );
+  connect( ViewTab, SIGNAL( tabCloseRequested( int ) ),
+	   this, SLOT( onViewTabClosed( int ) ),
+	   Qt::UniqueConnection );
+}
+
+void MainWindow::addAView( void )
+{
+  QWidget *tab = new QWidget;
+  tab->setLayout( new QGridLayout );
+  ViewTab->addTab( tab, tr( "View %1" ).arg( ++ViewCount ) );
+
+  ViewCTRL *viewCtrl = new ViewCTRL;
+  viewCtrl->setViewBase( tab );
+
+  ViewCtrls << viewCtrl;
+}
+
+void MainWindow::onViewTabClosed( int i )
+{
+  if ( ( ViewTab->count() > 1 )
+       && ( ViewCtrls[i]->getVType() != NONVIEW )
+       && ( ViewCtrls[i]->isDeletable() ) ) {
+
+    if ( ViewCtrls[i]->getDType() == MCADATA )
+      cMCAViewTabNo = -1;
+    ViewTab->removeTab( i );
+    ViewCtrls[i]->deleteView();
+    ViewCtrls.removeAt( i );
+  }
 }
 
 void MainWindow::moveToATab( int tab ) 

@@ -217,7 +217,7 @@ void MainWindow::onMeasFinishWorks( void )
   SelRealTime->setChecked( SvSelRealTime );
   SelLiveTime->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );
-  //  MeasViewC->setIsDeletable( true );
+  MeasViewC->setDeletable( true );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
     if ( AutoModeButton->isChecked() ) {

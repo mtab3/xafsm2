@@ -105,6 +105,7 @@ private:
 
   /* Tab control */
   QVector<ViewCTRL*> ViewCtrls;
+  int ViewCount;
 
   /* ReadDef */
   QVector<AUnit *> AMotors;
@@ -798,7 +799,7 @@ private slots:
 
   void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype, QString dir );
-  void DeleteTheView( void );
+  //  void DeleteTheView( void );
   void ShowButtonsForCurrentTab( void );
   void ShowButtonsForATab( int i );
 
@@ -869,6 +870,9 @@ private slots:
   void SpecialMoveCore( void );       // 特殊動作だ !!
 
   void SignalToStars( QString event );
+
+  void onViewTabClosed( int i );
+  void addAView( void );
 
  signals:
   void SelectedSSD( int i, bool f );

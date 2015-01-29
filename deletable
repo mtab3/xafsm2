@@ -1,0 +1,24 @@
+MwSSDSetUp.cpp:    //    cMCAViewC->setIsDeletable( false );
+MwSSDSetUp.cpp:    //    cMCAViewC->setIsDeletable( false );
+ViewCtrl.cpp:  deletable = true;
+ViewCtrl.cpp:  deletable = true;
+ViewCtrl.cpp:  if ( deletable ) {
+ViewCtrl.cpp:    // deletable = true;
+ViewCtrl.cpp:      //      cMCAViewC->setIsDeletable( true );
+
+
+
+XAFS, QXAFS ok!
+MwMeas.cpp:    //    MeasViewC->setIsDeletable( false );
+Measurement.cpp:  //  MeasViewC->setIsDeletable( true );
+
+MONITOR
+MwSetup.cpp:    //    MonitorViewC->setIsDeletable( false );
+MwSetup.cpp:    //    MonitorViewC->setIsDeletable( true );
+
+SCAN
+MwSetup.cpp:    //    ScanViewC->setIsDeletable( false );
+MwSetup.cpp:    //    ScanViewC->setIsDeletable( true );
+Scan.cpp:    //    ScanViewC->setIsDeletable( true );
+
+

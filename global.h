@@ -2,11 +2,14 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include <QVector>
 #include <QString>
 #include <QStringList>
 
 extern QStringList FileIDs;
 extern QStringList DataTypeNames;
+extern QStringList ViewTypeNames;
+extern QVector<int> viewCounts;
 
 enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA, S2DDATA, QXAFSBASEDATA,
 		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW, S2DSHOW, QXAFSBASESHOW, NONDATA };

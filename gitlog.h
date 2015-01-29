@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 20:45:27 2015 +0900\n"\
+                "    LION\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jan 29 18:53:55 2015 +0900\n"\
+                "    mkdir when save MCAs in S2D\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 18:41:30 2015 +0900\n"\
                 "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Jan 28 23:15:28 2015 +0900\n"\
                 "    the control of Views looks much better than before, but should be checked more very carefully\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 22:36:35 2015 +0900\n"\
-                "    ViewCTRL is chenging. There are some bugs in getting cMCAView\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 19:32:38 2015 +0900\n"\
-                "    LION and tr\n"\
 		"\n"\
                 ""
 #endif

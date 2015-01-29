@@ -27,8 +27,10 @@ void MainWindow::setupReadDataArea( void )
     connect( this, SIGNAL( NewMCACh( int ) ), Datas[i], SLOT( SelectedNewMCACh( int ) ),
 	     Qt::UniqueConnection );
   }
+#if 0
   connect( CloseView, SIGNAL( clicked() ), this, SLOT( DeleteTheView() ),
 	   Qt::UniqueConnection );
+#endif
 }
 
 void MainWindow::TryToNoticeCurrentView( void )
@@ -36,20 +38,20 @@ void MainWindow::TryToNoticeCurrentView( void )
   ((Data*)sender())->GotCurrentView( ViewCtrls[ ViewTab->currentIndex() ]->getView() );
 }
 
+#if 0
 void MainWindow::DeleteTheView( void )
 {
   ViewTab->setTabText( ViewTab->currentIndex(),
 		       QString( "View%1" ).arg( ViewTab->currentIndex()+1 ) );
   ViewCtrls[ ViewTab->currentIndex() ]->deleteView();
 }
+#endif
 
 void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
 {
   QObject *from = sender();
   ViewCTRL *viewC;
 
-  qDebug() << "ff";
-  
   switch( dtype ) {
 #if 0
   case MEASSHOW:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
@@ -57,33 +59,32 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     viewC = ViewCtrls[ ViewTab->currentIndex() ];
     if ( viewC->getNowDType() != dtype ) {
       viewC = SetUpNewView( XYVIEW );
-      ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-XAFS" ) );
+      //      ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-XAFS" ) );
       ClearXViewScreenForMeas( (XYView*)(view->getView()) );
     }
     break;
 #endif
   case MONSHOW:
     viewC = SetUpNewView( TYVIEW, MONSHOW );
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
+    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANSHOW:
     viewC = SetUpNewView( XYVIEW, SCANSHOW );
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
+    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
   case MCASHOW:
     viewC = SetUpNewView( MCAVIEW, MCASHOW );
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
+    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
     break;
   case S2DSHOW:
     viewC = SetUpNewView( S2DVIEW, S2DSHOW );
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
-    qDebug() << "Set Parent in ReadData";
     ((S2DB*)(viewC->getView()))->setParent( this );
     ((S2DB*)(viewC->getView()))->setRead( true );
     ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? DataRoot->text() : dir );
-    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
+    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:
     viewC = NULL;

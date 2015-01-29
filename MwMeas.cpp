@@ -1455,11 +1455,13 @@ void MainWindow::StartMeasurement( void )
       // グラフ表示領域が確保できないとダメ
       return;
     }
+#if 0
     if ( QXafsMode->isChecked() )
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "QXAFS" ) );
     else 
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "XAFS" ) );
-
+#endif
+    
     //    MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
     ClearXViewScreenForMeas( MeasView );
@@ -1556,7 +1558,7 @@ void MainWindow::StartMeasurement( void )
     if ( MPSet.qXafsMode ) SignalToStars( QXAFS_M_START );
     MeasStage = 0;
     //    ClearMeasView();
-    //    MeasViewC->setIsDeletable( false );
+    MeasViewC->setDeletable( false );
     MeasTimer->start( 30 );
   } else {
     StopP->show();
