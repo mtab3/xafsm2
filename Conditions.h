@@ -1,12 +1,17 @@
 #ifndef CONDITIONS_H
 #define CONDITIONS_H
 
+#include <QFileDialog>
+
 #include "ui_Conditions.h"
 
 class Conditions : public QFrame, private Ui::Conditions
 {
   Q_OBJECT
 
+  QString DataRoot0;
+  QFileDialog *DataRootSelect;
+  
 public:
   Conditions();
 
@@ -32,12 +37,17 @@ public:
   bool I0ShouldBeChecked( void );
   double I0Threshold( void );
 
+  void setupDataRoot( void );
+  void setDataRoot( QString root ) { DataRoot0 = root; };
+  QString dataRoot( void ) { return DataRoot0; };
+
  signals:
   void SetDXMPMC( void );
   void AskToSaveDTh1TTable( void );
   void AskToShowDTh1TTable( void );
   void NewDiff1( int i );
   void NewDiff2( int i );
+  void newDataRoot( const QString &name );
 };
 
 #endif

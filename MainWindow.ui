@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3571,438 +3571,6 @@ Though, other parameters are fixed at the value on starting.</string>
             </layout>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QFrame" name="frame_16">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(215, 225, 210);</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
-             <property name="spacing">
-              <number>1</number>
-             </property>
-             <item row="0" column="3">
-              <widget class="QPushButton" name="SetDark">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>100000</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Set Offset</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_77">
-               <property name="maximumSize">
-                <size>
-                 <width>300</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 230,190);</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <property name="text">
-                <string>Check/Set Offset(Dark)</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0" colspan="2">
-              <widget class="QComboBox" name="SelectD3">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(235, 235, 235);</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_52">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="label_17">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2" colspan="2">
-              <widget class="QLineEdit" name="InputDark">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>100000</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QFrame" name="frame_27">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(215, 225, 210);</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_59">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
-             <property name="spacing">
-              <number>1</number>
-             </property>
-             <item row="2" column="0" colspan="6">
-              <widget class="Line" name="line_8">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_106">
-               <property name="text">
-                <string>  Holder No.</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3" colspan="3">
-              <widget class="QComboBox" name="ChangerSelect">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>10000</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(235, 235, 235);</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" colspan="2">
-              <widget class="QLabel" name="label_102">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>300</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 230,190);</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <property name="text">
-                <string>Sample Changer</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QLabel" name="label_107">
-               <property name="text">
-                <string>  Fine Pos.</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1" colspan="2">
-              <widget class="QSpinBox" name="ChangerToGoHolderSelect">
-               <property name="maximumSize">
-                <size>
-                 <width>1000000</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 255, 255);</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="6">
-              <widget class="QPushButton" name="ChangerGo">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>100000</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>MoveTo</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="4" colspan="3">
-              <layout class="QGridLayout" name="gridLayout_60">
-               <property name="spacing">
-                <number>1</number>
-               </property>
-               <item row="0" column="0">
-                <widget class="QLineEdit" name="ChangerToGoFinePosition1">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>60</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QLineEdit" name="ChangerToGoFinePosition2">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>60</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="ChangerUnit1">
-                 <property name="text">
-                  <string>mm</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QLabel" name="ChangerUnit2">
-                 <property name="text">
-                  <string>mm</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="3" column="0" colspan="7">
-              <layout class="QGridLayout" name="gridLayout_58">
-               <property name="spacing">
-                <number>1</number>
-               </property>
-               <item row="0" column="1">
-                <widget class="QLabel" name="label_108">
-                 <property name="text">
-                  <string>ReDef. Center:  Current Holder </string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QSpinBox" name="ChangerCurrentHolder">
-                 <property name="maximumSize">
-                  <size>
-                   <width>1000000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a sample holder of which center is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                 <property name="minimum">
-                  <number>1</number>
-                 </property>
-                 <property name="maximum">
-                  <number>9</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <spacer name="horizontalSpacer_23">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <widget class="QPushButton" name="DatumChanger">
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string>Datum</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="SetChangerCenter">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>10000000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Let the center of the selected No. of the sample holder is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string>Set C.C.</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QFrame" name="frame_2">
             <property name="font">
@@ -4442,6 +4010,553 @@ Though, other parameters are fixed at the value on starting.</string>
             </layout>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QFrame" name="frame_10">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(215, 225, 210);</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_50">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <property name="spacing">
+              <number>1</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_49">
+               <property name="maximumSize">
+                <size>
+                 <width>1000000</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 230,190);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>Monitor Sensors</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QLabel" name="label_62">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="IsMonRec">
+                 <property name="toolTip">
+                  <string>Record the data during the monitor.</string>
+                 </property>
+                 <property name="text">
+                  <string>Record</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="MonRecFile">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(250, 255, 240);</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="SelMonRecFile">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Select</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="SaveMonData">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Save the monitored data after the monitoring.</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Save</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="1" rowspan="2">
+              <layout class="QVBoxLayout" name="verticalLayout_11">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_51">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Dwell T.</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="DwellT20">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>10000000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="text">
+                  <string>0.1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="SelectScale">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(235, 235, 235);</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_64">
+                 <property name="text">
+                  <string>Moving Average</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="MovingAvr">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_14">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="MStart">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100000</width>
+                   <height>10000</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Start</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="MPause">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Pause</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="1" column="0">
+              <widget class="QFrame" name="MonLinesFrame">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_82">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QScrollArea" name="MonLinesBase">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>120</height>
+                   </size>
+                  </property>
+                  <property name="widgetResizable">
+                   <bool>true</bool>
+                  </property>
+                  <widget class="QWidget" name="MonLinesGrid">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>0</y>
+                     <width>312</width>
+                     <height>160</height>
+                    </rect>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_69">
+                    <property name="leftMargin">
+                     <number>1</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>1</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>1</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>1</number>
+                    </property>
+                    <property name="spacing">
+                     <number>1</number>
+                    </property>
+                    <item row="5" column="0">
+                     <widget class="QRadioButton" name="MonSel4">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="5" column="1">
+                     <widget class="QComboBox" name="MonDev4">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="5" column="2">
+                     <widget class="QLabel" name="MonV4">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(250, 255, 240);</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="text">
+                       <string>0.000</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QRadioButton" name="MonSel0">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="checked">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QComboBox" name="MonDev0">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QLabel" name="MonV0">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>24</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(250, 255, 240);</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <property name="text">
+                       <string>0.000</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QRadioButton" name="MonSel1">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="checked">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QComboBox" name="MonDev1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="2">
+                     <widget class="QLabel" name="MonV1">
+                      <property name="minimumSize">
+                       <size>
+                        <width>80</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(250, 255, 240);</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <property name="text">
+                       <string>0.000</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0">
+                     <widget class="QRadioButton" name="MonSel2">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="1">
+                     <widget class="QComboBox" name="MonDev2">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="2">
+                     <widget class="QLabel" name="MonV2">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(250, 255, 240);</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="text">
+                       <string>0.000</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="0">
+                     <widget class="QRadioButton" name="MonSel3">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="1">
+                     <widget class="QComboBox" name="MonDev3">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="2">
+                     <widget class="QLabel" name="MonV3">
+                      <property name="styleSheet">
+                       <string notr="true">background-color: rgb(250, 255, 240);</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="text">
+                       <string>0.000</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QLabel" name="label_50">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Value</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QRadioButton" name="MonLinesPop">
+                      <property name="text">
+                       <string>Pop</string>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
          </layout>
         </item>
         <item row="0" column="3">
@@ -4469,91 +4584,6 @@ Though, other parameters are fixed at the value on starting.</string>
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <layout class="QGridLayout" name="gridLayout_51">
-          <item row="1" column="1">
-           <widget class="QFrame" name="frame_11">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(215, 225, 210);</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_56">
-             <property name="leftMargin">
-              <number>3</number>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
-             <property name="horizontalSpacing">
-              <number>1</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_129">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>300</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 230,190);</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <property name="text">
-                <string>Data Root</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="DataRoot">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(250, 255, 240);</string>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QPushButton" name="SelDataRoot">
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Select</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
         </item>
         <item row="0" column="2" rowspan="3">
          <layout class="QGridLayout" name="gridLayout_9">
@@ -5211,7 +5241,13 @@ Though, other parameters are fixed at the value on starting.</string>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QFrame" name="frame_10">
+           <widget class="QFrame" name="frame_16">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(215, 225, 210);</string>
             </property>
@@ -5221,7 +5257,7 @@ Though, other parameters are fixed at the value on starting.</string>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QGridLayout" name="gridLayout_50">
+            <layout class="QGridLayout" name="gridLayout_6">
              <property name="leftMargin">
               <number>3</number>
              </property>
@@ -5237,12 +5273,37 @@ Though, other parameters are fixed at the value on starting.</string>
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_49">
+             <item row="0" column="3">
+              <widget class="QPushButton" name="SetDark">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="maximumSize">
                 <size>
-                 <width>1000000</width>
-                 <height>24</height>
+                 <width>100000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Set Offset</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_77">
+               <property name="maximumSize">
+                <size>
+                 <width>300</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -5255,107 +5316,336 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <property name="text">
-                <string>Monitor Sensors</string>
+                <string>Check/Set Offset(Dark)</string>
                </property>
               </widget>
              </item>
              <item row="2" column="0" colspan="2">
-              <layout class="QHBoxLayout" name="horizontalLayout_9">
-               <item>
-                <widget class="QLabel" name="label_62">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="IsMonRec">
-                 <property name="toolTip">
-                  <string>Record the data during the monitor.</string>
-                 </property>
-                 <property name="text">
-                  <string>Record</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="MonRecFile">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(250, 255, 240);</string>
-                 </property>
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="SelMonRecFile">
+              <widget class="QComboBox" name="SelectD3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_52">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_17">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2" colspan="2">
+              <widget class="QLineEdit" name="InputDark">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QFrame" name="frame_27">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(215, 225, 210);</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_59">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <property name="spacing">
+              <number>1</number>
+             </property>
+             <item row="2" column="0" colspan="6">
+              <widget class="Line" name="line_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_106">
+               <property name="text">
+                <string>  Holder No.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3" colspan="3">
+              <widget class="QComboBox" name="ChangerSelect">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>10000</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(235, 235, 235);</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="2">
+              <widget class="QLabel" name="label_102">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>300</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 230,190);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="text">
+                <string>Sample Changer</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_107">
+               <property name="text">
+                <string>  Fine Pos.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" colspan="2">
+              <widget class="QSpinBox" name="ChangerToGoHolderSelect">
+               <property name="maximumSize">
+                <size>
+                 <width>1000000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="6">
+              <widget class="QPushButton" name="ChangerGo">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100000</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Get the selected range of the selected sensor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>MoveTo</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4" colspan="3">
+              <layout class="QGridLayout" name="gridLayout_60">
+               <property name="spacing">
+                <number>1</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLineEdit" name="ChangerToGoFinePosition1">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string>Select</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="SaveMonData">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>50</width>
+                   <width>60</width>
                    <height>16777215</height>
                   </size>
                  </property>
-                 <property name="toolTip">
-                  <string>Save the monitored data after the monitoring.</string>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLineEdit" name="ChangerToGoFinePosition2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="ChangerUnit1">
                  <property name="text">
-                  <string>Save</string>
+                  <string>mm</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QLabel" name="ChangerUnit2">
+                 <property name="text">
+                  <string>mm</string>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
-             <item row="0" column="1" rowspan="2">
-              <layout class="QVBoxLayout" name="verticalLayout_11">
+             <item row="3" column="0" colspan="7">
+              <layout class="QGridLayout" name="gridLayout_58">
                <property name="spacing">
                 <number>1</number>
                </property>
-               <item>
-                <widget class="QLabel" name="label_51">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
+               <item row="0" column="1">
+                <widget class="QLabel" name="label_108">
                  <property name="text">
-                  <string>Dwell T.</string>
+                  <string>ReDef. Center:  Current Holder </string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QLineEdit" name="DwellT20">
+               <item row="0" column="2">
+                <widget class="QSpinBox" name="ChangerCurrentHolder">
+                 <property name="maximumSize">
+                  <size>
+                   <width>1000000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a sample holder of which center is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>9</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_23">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="4">
+                <widget class="QPushButton" name="DatumChanger">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Datum</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QPushButton" name="SetChangerCenter">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -5366,393 +5656,18 @@ Though, other parameters are fixed at the value on starting.</string>
                    <height>16777215</height>
                   </size>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                 <property name="text">
-                  <string>0.1</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="SelectScale">
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(235, 235, 235);</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_64">
-                 <property name="text">
-                  <string>Moving Average</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="MovingAvr">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                 <property name="text">
-                  <string>1</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_14">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QPushButton" name="MStart">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100000</width>
-                   <height>10000</height>
-                  </size>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Let the center of the selected No. of the sample holder is at the beam position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true"/>
                  </property>
                  <property name="text">
-                  <string>Start</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="MPause">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string>Pause</string>
+                  <string>Set C.C.</string>
                  </property>
                 </widget>
                </item>
               </layout>
-             </item>
-             <item row="1" column="0">
-              <widget class="QFrame" name="MonLinesFrame">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_82">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QScrollArea" name="MonLinesBase">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>120</height>
-                   </size>
-                  </property>
-                  <property name="widgetResizable">
-                   <bool>true</bool>
-                  </property>
-                  <widget class="QWidget" name="MonLinesGrid">
-                   <property name="geometry">
-                    <rect>
-                     <x>0</x>
-                     <y>0</y>
-                     <width>269</width>
-                     <height>159</height>
-                    </rect>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_69">
-                    <property name="leftMargin">
-                     <number>1</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>1</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>1</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>1</number>
-                    </property>
-                    <property name="spacing">
-                     <number>1</number>
-                    </property>
-                    <item row="5" column="0">
-                     <widget class="QRadioButton" name="MonSel4">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="autoExclusive">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="5" column="1">
-                     <widget class="QComboBox" name="MonDev4">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(235, 235, 235);</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="5" column="2">
-                     <widget class="QLabel" name="MonV4">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(250, 255, 240);</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="text">
-                       <string>0.000</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QRadioButton" name="MonSel0">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="checked">
-                       <bool>true</bool>
-                      </property>
-                      <property name="autoExclusive">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QComboBox" name="MonDev0">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(235, 235, 235);</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="2">
-                     <widget class="QLabel" name="MonV0">
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>24</height>
-                       </size>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(250, 255, 240);</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <property name="text">
-                       <string>0.000</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0">
-                     <widget class="QRadioButton" name="MonSel1">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="checked">
-                       <bool>true</bool>
-                      </property>
-                      <property name="autoExclusive">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QComboBox" name="MonDev1">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(235, 235, 235);</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="2">
-                     <widget class="QLabel" name="MonV1">
-                      <property name="minimumSize">
-                       <size>
-                        <width>80</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(250, 255, 240);</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <property name="text">
-                       <string>0.000</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="0">
-                     <widget class="QRadioButton" name="MonSel2">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="autoExclusive">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="1">
-                     <widget class="QComboBox" name="MonDev2">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(235, 235, 235);</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="2">
-                     <widget class="QLabel" name="MonV2">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(250, 255, 240);</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="text">
-                       <string>0.000</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="0">
-                     <widget class="QRadioButton" name="MonSel3">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="autoExclusive">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="1">
-                     <widget class="QComboBox" name="MonDev3">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(235, 235, 235);</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="2">
-                     <widget class="QLabel" name="MonV3">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(250, 255, 240);</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="text">
-                       <string>0.000</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="2">
-                     <widget class="QLabel" name="label_50">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>Value</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QRadioButton" name="MonLinesPop">
-                      <property name="text">
-                       <string>Pop</string>
-                      </property>
-                      <property name="autoExclusive">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
              </item>
             </layout>
            </widget>

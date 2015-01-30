@@ -273,7 +273,7 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "DATAROOT" ) {    // define data-root
         next = nextItem( next, item );
         if ( item != "" ) {
-          DataRoot0 = item;
+          conds->setDataRoot( item );
         }
       } else if ( item == "MCA_CAN_SAVE_ALL" ) {
         // define if the MCA data can save on memory or not.

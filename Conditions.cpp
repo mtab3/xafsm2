@@ -9,6 +9,8 @@ Conditions::Conditions( void ) : QFrame()
 {
   setupUi( this );
 
+  DataRoot0 = "";
+  
   VersionInfo->setText( QString( "Ver. %1, Compiled Date : %2, Time : %3" )
 			.arg( VERSION )
 			.arg( __DATE__ )
@@ -43,6 +45,43 @@ void Conditions::setVersionInfo( QString ver, QString date, QString time )
   QTextCursor qtc = ShowGitLogs->textCursor();
   qtc.movePosition( QTextCursor::Start );
   ShowGitLogs->setTextCursor( qtc );
+}
+
+void Conditions::setupDataRoot( void )
+{
+  DataRootSelect = new QFileDialog;
+  DataRootSelect->setFileMode( QFileDialog::Directory );
+
+  connect( DataRoot, SIGNAL( textChanged( const QString & ) ),
+	   this, SIGNAL( newDataRoot( const QString & ) ),
+	   Qt::UniqueConnection );
+
+  if ( DataRoot0 != "" ) {          // DataRoot の指定があった
+    QFileInfo droot( DataRoot0 );
+    if ( droot.exists() ) {   // 指定された名前があった
+      if ( !droot.isDir() ) { // 指定された名前がファイルだった (ディレクトリではなかった)
+	DataRoot0 = "";      // 指定は無かったことにする
+      }
+    } else {                  // 指定された名前が無のディレクトリを作るように努力する
+      QDir newdir;
+      if ( ! newdir.mkpath( DataRoot0 ) ) { // 作れなかったら
+	DataRoot0 = "";       // 指定は無かったことにする
+      }
+    }
+  }
+  if ( DataRoot0 == "" ) { // 上の if の中で DataRoot0="" にする可能性があるので改めて訊く
+    DataRoot0 = QDir::currentPath(); 
+  }
+
+  DataRootSelect->setDirectory( DataRoot0 );
+  DataRoot->setText( DataRoot0 );  // この signal で newDataRoot を呼ぶ
+//  EditDFName->setText( QFileInfo( DataRoot0, EditDFName->text() ).filePath() );
+
+  connect( SelDataRoot, SIGNAL( clicked() ), DataRootSelect, SLOT( show() ),
+	   Qt::UniqueConnection );
+  connect( DataRootSelect, SIGNAL( directoryEntered( const QString & ) ),
+	   DataRoot, SLOT( setText( const QString & ) ),
+	   Qt::UniqueConnection );
 }
 
 bool Conditions::isEncAsTh( void )

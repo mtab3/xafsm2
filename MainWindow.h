@@ -93,10 +93,6 @@ private:
   QString XAFSKey;
   QString XAFSTitle;
 
-  QString DataRoot0;
-  QFileDialog *DataRootSelect;
-  void setupDataRoot( void );
-
   QPrintDialog *PrintD;
   QPrintDialog *S2DPrintD;
 

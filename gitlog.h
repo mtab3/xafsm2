@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jan 31 01:05:30 2015 +0900\n"\
+                "    modify gui\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 30 13:39:49 2015 +0900\n"\
                 "    modified gui\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 18:06:44 2015 +0900\n"\
                 "    what happens?\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 17:58:25 2015 +0900\n"\
-                "    it looks it works basically ok\n"\
 		"\n"\
                 ""
 #endif

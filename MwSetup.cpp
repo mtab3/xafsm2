@@ -239,42 +239,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   connect( MovingAvr, SIGNAL( editingFinished() ), this, SLOT( newMovingAvr() ),
 	   Qt::UniqueConnection );
-}
 
-void MainWindow::setupDataRoot( void )
-{
-  DataRootSelect = new QFileDialog;
-  DataRootSelect->setFileMode( QFileDialog::Directory );
-
-  connect( DataRoot, SIGNAL( textChanged( const QString & ) ),
+  connect( conds, SIGNAL( newDataRoot( const QString & ) ),
 	   this, SLOT( newDataRoot( const QString & ) ),
-	   Qt::UniqueConnection );
-
-  if ( DataRoot0 != "" ) {          // DataRoot の指定があった
-    QFileInfo droot( DataRoot0 );
-    if ( droot.exists() ) {   // 指定された名前があった
-      if ( !droot.isDir() ) { // 指定された名前がファイルだった (ディレクトリではなかった)
-	DataRoot0 = "";      // 指定は無かったことにする
-      }
-    } else {                  // 指定された名前が無のディレクトリを作るように努力する
-      QDir newdir;
-      if ( ! newdir.mkpath( DataRoot0 ) ) { // 作れなかったら
-	DataRoot0 = "";       // 指定は無かったことにする
-      }
-    }
-  }
-  if ( DataRoot0 == "" ) { // 上の if の中で DataRoot0="" にする可能性があるので改めて訊く
-    DataRoot0 = QDir::currentPath(); 
-  }
-
-  DataRootSelect->setDirectory( DataRoot0 );
-  DataRoot->setText( DataRoot0 );  // この signal で newDataRoot を呼ぶ
-  EditDFName->setText( QFileInfo( DataRoot0, EditDFName->text() ).filePath() );
-
-  connect( SelDataRoot, SIGNAL( clicked() ), DataRootSelect, SLOT( show() ),
-	   Qt::UniqueConnection );
-  connect( DataRootSelect, SIGNAL( directoryEntered( const QString & ) ),
-	   DataRoot, SLOT( setText( const QString & ) ),
 	   Qt::UniqueConnection );
 }
 
@@ -282,6 +249,8 @@ void MainWindow::newDataRoot( const QString &dataRoot )
 {
   NewLogMsg( QString( "Data root is set at %1" ).arg( dataRoot ) );
 
+  if ( EditDFName != NULL )
+    EditDFName->setText( QFileInfo( dataRoot, EditDFName->text() ).filePath() );
   if ( MCAFSel != NULL )
     MCAFSel->setDirectory( dataRoot );
   if ( scanFSel != NULL )

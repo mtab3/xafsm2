@@ -83,7 +83,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
     ((S2DB*)(viewC->getView()))->setParent( this );
     ((S2DB*)(viewC->getView()))->setRead( true );
-    ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? DataRoot->text() : dir );
+    ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? conds->dataRoot() : dir );
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:

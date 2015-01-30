@@ -21,7 +21,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
-  DataRoot0 = "";
   MCACanSaveAllOnMem = false;
   MCAPreAMPGainHasSet = false;
   MaxMCAEnergy = 20;
@@ -208,7 +207,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   connect( Special, SIGNAL( clicked() ), this, SLOT( SpecialMove() ) );
   
-  setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
+  conds->setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
 
   s->AskStatus();
   s->MakeConnection();
