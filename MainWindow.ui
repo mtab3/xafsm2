@@ -5494,8 +5494,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>277</width>
-                     <height>155</height>
+                     <width>163</width>
+                     <height>136</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -10430,7 +10430,7 @@ Though, other parameters are fixed at the value on starting.</string>
        <string notr="true">background-color: rgb(245, 240, 220);</string>
       </property>
       <property name="tabPosition">
-       <enum>QTabWidget::East</enum>
+       <enum>QTabWidget::North</enum>
       </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
