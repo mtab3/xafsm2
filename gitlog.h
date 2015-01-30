@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jan 30 02:27:19 2015 +0900\n"\
+                "    the S2DMCA project with the re-design of ViewCTRL is almost done.  This point can be a stable point\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 20:45:27 2015 +0900\n"\
                 "    LION\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 13:52:27 2015 +0900\n"\
                 "    working on ViewCTRL.cpp\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Jan 28 23:15:28 2015 +0900\n"\
-                "    the control of Views looks much better than before, but should be checked more very carefully\n"\
 		"\n"\
                 ""
 #endif
