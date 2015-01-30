@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "S2DMCA" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jan 30 13:39:49 2015 +0900\n"\
+                "    modified gui\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 30 13:38:17 2015 +0900\n"\
                 "    nothing\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 17:58:25 2015 +0900\n"\
                 "    it looks it works basically ok\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 16:47:36 2015 +0900\n"\
-                "    working on ViewControl. it get much simpler than before\n"\
 		"\n"\
                 ""
 #endif

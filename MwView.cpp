@@ -5,6 +5,7 @@ void MainWindow::setupView( void )
 {
   ViewCount = 0;
 
+
   ViewTab->setTabsClosable( true );
   for ( int i = 0; i < 1; i++ ) {
     addAView();

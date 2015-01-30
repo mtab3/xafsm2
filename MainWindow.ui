@@ -24,6 +24,21 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_31">
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>3</number>
+    </property>
+    <property name="rightMargin">
+     <number>3</number>
+    </property>
+    <property name="bottomMargin">
+     <number>3</number>
+    </property>
+    <property name="spacing">
+     <number>3</number>
+    </property>
     <item row="2" column="0">
      <widget class="QFrame" name="GraphSwitchBox">
       <property name="frameShape">
@@ -637,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -813,22 +828,22 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_11">
            <property name="spacing">
-            <number>3</number>
+            <number>1</number>
            </property>
            <property name="sizeConstraint">
             <enum>QLayout::SetMinimumSize</enum>
            </property>
            <property name="leftMargin">
-            <number>5</number>
+            <number>3</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>3</number>
            </property>
            <property name="rightMargin">
-            <number>5</number>
+            <number>3</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>3</number>
            </property>
            <item>
             <layout class="QGridLayout" name="gridLayout_7">
@@ -5494,8 +5509,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>163</width>
-                     <height>136</height>
+                     <width>269</width>
+                     <height>159</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
