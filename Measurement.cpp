@@ -195,7 +195,7 @@ void MainWindow::MeasSequence( void )
         inMeas = false;
 	MPSet.normallyFinished = true;
         MeasStart->setText( tr( "Start" ) );
-        MeasStart->setStyleSheet( NormalBXAFS );
+        MeasStart->setStyleSheet( NormalEXECB );
         MeasPause->setEnabled( false );
 	MeasPause->setHidden( true );
 	SignalToStars( XAFS_M_END );

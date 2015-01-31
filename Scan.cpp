@@ -74,7 +74,7 @@ void MainWindow::ScanSequence( void )
     break;
   case 10:
     SPSScan->setText( tr( "Scan" ) );
-    SPSScan->setStyleSheet( NormalB );
+    SPSScan->setStyleSheet( NormalEXECB );
     statusbar->showMessage( tr( "The Scan has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Scan Finished" ) ) );
     am->Stop();

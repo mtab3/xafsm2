@@ -5,7 +5,8 @@ void MainWindow::setupView( void )
 {
   ViewCount = 0;
 
-
+  // タブを動かせるようにすると ViewCTRL と ViewTab の関係がずれて管理が面倒
+  ViewTab->setMovable( false );
   ViewTab->setTabsClosable( true );
   for ( int i = 0; i < 1; i++ ) {
     addAView();
@@ -45,6 +46,24 @@ void MainWindow::onViewTabClosed( int i )
     ViewCtrls[i]->deleteView();
     ViewCtrls.removeAt( i );
   }
+}
+
+void *MainWindow::findAView( DATATYPE dtype )
+{
+  void *rv = NULL;
+  int vcnt = -1;
+  
+  for ( int i = 0; i < ViewCtrls.count(); i++ ) {
+    ViewCTRL *vc = ViewCtrls[i];
+    if ( vc->getDType() == dtype ) {
+      if ( vc->vcnt() > vcnt ) {
+	rv = vc->getView();
+	vcnt = vc->vcnt();
+      }
+    }
+  }
+
+  return rv;
 }
 
 void MainWindow::moveToATab( int tab ) 

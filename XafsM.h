@@ -40,7 +40,7 @@ const QString NormalB = "background-color: "
                        "rgba(255, 255, 255, 255));";
 #endif
 const QString NormalB = "";
-const QString NormalBXAFS = "background-color: rgb(180,250,250)"; 
+const QString NormalEXECB = "background-color: rgb(180,250,250)"; 
 const QString InActive = "background-color: rgb(250,250,180)"; 
 const QString AlartRed = "background-color: rgb(250,200,200)";
 const QString SSDActive = "background-color: #f0f0d0";

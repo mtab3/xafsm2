@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Jan 31 02:27:14 2015 +0900\n"\
+                "    move 'Data Root' in conditions to modify GUI\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Jan 31 01:05:30 2015 +0900\n"\
                 "    modify gui\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 18:06:53 2015 +0900\n"\
                 "    Merge branch 'master' of ssh://133.6.107.214/git/Qt0/XAFS/XafsM2\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 18:06:44 2015 +0900\n"\
-                "    what happens?\n"\
 		"\n"\
                 ""
 #endif

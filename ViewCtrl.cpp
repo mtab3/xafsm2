@@ -2,6 +2,8 @@
 #include "MainWindow.h"
 #include "ViewCtrl.h"
 
+static int vcount = 0;
+
 ViewCTRL::ViewCTRL( void )
 {
   ViewBase = NULL;
@@ -10,6 +12,7 @@ ViewCTRL::ViewCTRL( void )
   nowDType = NONDATA;
   deletable = true;
   gsbStat = NULL;
+  VC = vcount++;
 }
 
 ViewCTRL::~ViewCTRL( void )
@@ -157,6 +160,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
   void *newView = NULL;
   switch( vtype ) {
   case XYVIEW:
+    qDebug() << "get XYView";
     newView = (void *)(new XYView);
     ((XYView*)newView)->setParent( this );
     ((XYView*)newView)->setDiffType1( conds->Diff1Type() );
@@ -268,8 +272,9 @@ void MainWindow::getNewMCAView( void )
 
   if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA ) ) == NULL ) 
     return;
+  // 他のタイプの View は ViewCTRL 内で付けた名前を使ってる
   ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
-  //    cMCAViewC->setNowDType( MCADATA );
+  // cMCAViewC->setNowDType( MCADATA );
   cMCAView = (MCAView*)(cMCAViewC->getView());
   cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
   
@@ -284,3 +289,4 @@ void MainWindow::getNewMCAView( void )
   if ( StartResume == MCA_START )
     for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
 }
+

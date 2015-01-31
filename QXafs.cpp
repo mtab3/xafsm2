@@ -684,7 +684,7 @@ void MainWindow::QXafsFinish( void )
   SignalToStars( QXAFS_M_END );
   inMeas = false;
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( NormalBXAFS );
+  MeasStart->setStyleSheet( NormalEXECB );
   MeasPause->setEnabled( false );
   MeasPause->setHidden( true );
   QXafsFinish0();

@@ -16,7 +16,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   BLKlabels << BLKL01 << BLKL02 << BLKL03 << BLKL04 << BLKL05
 	    << BLKL06 << BLKL07 << BLKL08 << BLKL09 << BLKLAll;
 
-  MeasStart->setStyleSheet( NormalBXAFS );
+  MeasStart->setStyleSheet( NormalEXECB );
 
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
@@ -1666,7 +1666,7 @@ void MainWindow::SurelyStop( void )
   MeasPause->setHidden( true );
   SignalToStars( XAFS_M_END );
   MeasStart->setText( tr( "Start" ) );
-  MeasStart->setStyleSheet( NormalBXAFS );
+  MeasStart->setStyleSheet( NormalEXECB );
   MeasStart->setEnabled( true );
   inPause = false;
   MeasPause->setText( tr( "Pause" ) );

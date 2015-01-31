@@ -9,6 +9,8 @@
 #include "S2DInfo.h"
 #include "MCAView.h"
 #include "KeV2Pix.h"
+#include "S2DInfo.h"
+
 #include "ui_S2DB.h"
 
 
@@ -24,10 +26,16 @@ class S2DB : public QFrame, private Ui::S2DB
   S2DInfo S2Di;
   bool Read;
 
-  QTimer *mapTimer;
-  QFileInfoList flist;
-  bool mapReading;
-
+  QTimer *mapLoadTimer;
+  QFileInfoList LoadMCAFList;
+  bool loadingAMCA;
+  bool loadingMCAMap;
+  
+  QTimer *mapSaveTimer;
+  QStringList SaveMCAFList;
+  bool savingAMCA;
+  bool savingMCAMap;
+  
  public:
   S2DB( QWidget *p );
 
@@ -46,6 +54,8 @@ class S2DB : public QFrame, private Ui::S2DB
   double ReCalcAMapPointOnMem( int ix, int iy,
 			       QString *RS, QString *RE,
 			       QVector<QPushButton *> &ssdbs2 );
+
+  void SaveMCAs( const QString &fname );
   
 public slots:
   void newZZ( QString max, QString min )
@@ -61,7 +71,8 @@ private slots:
   void ShowInfoAtNewPosition( int ix, int iy );
   void ShowIntMCA( void );
   void ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
-  void mapNext( void );
+  void loadNextMap( void );
+  void saveNextMap( void );
 
 signals:
   void askToGetNewMCAView( S2DB *s2db );

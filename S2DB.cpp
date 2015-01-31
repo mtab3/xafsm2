@@ -38,9 +38,17 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   connect( CBar, SIGNAL( newZZ( QString, QString ) ), this, SLOT( newZZ( QString, QString ) ), Qt::UniqueConnection );
   connect( CBar, SIGNAL( newScale() ), S2DV, SLOT( update() ), Qt::UniqueConnection );
 
-  mapTimer = new QTimer;
-  connect( mapTimer, SIGNAL( timeout() ), this, SLOT( mapNext() ), Qt::UniqueConnection );
-  mapReading = false;
+  mapLoadTimer = new QTimer;
+  connect( mapLoadTimer, SIGNAL( timeout() ),
+	   this, SLOT( loadNextMap() ), Qt::UniqueConnection );
+  loadingMCAMap = false;
+  loadingAMCA = false;
+
+  mapSaveTimer = new QTimer;
+  connect( mapSaveTimer, SIGNAL( timeout() ),
+	   this, SLOT( saveNextMap() ), Qt::UniqueConnection );
+  savingMCAMap = false;
+  savingAMCA = false;
 }
 
 void S2DB::setParent( QWidget *p )
@@ -79,27 +87,29 @@ void S2DB::getNewMCAMap( int length, int chs )
   mcaMap.New( iX, S2Di.ps[1] + 1, length, chs );
 
   QDir dir( mcaMapDir );
-  flist = dir.entryInfoList( QDir::Files, QDir::Name );
+  LoadMCAFList = dir.entryInfoList( QDir::Files, QDir::Name );
 
-  mapTimer->setInterval( 10 );
-  mapReading = false;
-  mapTimer->start();
+  mapLoadTimer->setInterval( 10 );
+  loadingAMCA = false;
+  loadingMCAMap = true;
+  mapLoadTimer->start();
 }
 
-void S2DB::mapNext( void )
+void S2DB::loadNextMap( void )
 {
-  if ( mapReading )
+  if ( loadingAMCA )
     return;
 
   QFileInfo fi;
-  if ( flist.count() > 0 ) {
-    fi = flist[0];
-    flist.removeAt( 0 );
+  if ( LoadMCAFList.count() > 0 ) {
+    fi = LoadMCAFList[0];
+    LoadMCAFList.removeAt( 0 );
   } else {
-    mapTimer->stop();
+    mapLoadTimer->stop();
+    loadingMCAMap = false;
     return;
   }
-  mapReading = true;
+  loadingAMCA = true;
 
   QStringList cmps = fi.baseName().split( "-" );
   if ( cmps.count() > 1 ) {
@@ -113,9 +123,73 @@ void S2DB::mapNext( void )
       set->correctE( kev2pix );
   }
 
-  mapReading = false;
+  loadingAMCA = false;
 }
 
+#define S2DMCAFILETITLE "measured by 2D Scan"
+
+void S2DB::SaveMCAs( const QString &bfname )
+{
+  if (( ! S2Di.valid )||( ! S2Di.isSFluo )) {
+    emit ShowMessage( tr( "Can not save MCA spectra for 2D scan." ), 2000 );
+    return;
+  }
+  if ( bfname.simplified().isEmpty() ) {
+    emit ShowMessage( tr( "No file name was selected" ), 2000 );
+    return;
+  }
+  
+  QFileInfo f1( bfname );
+  QDir dir( f1.absoluteDir().absolutePath() );
+  dir.mkdir( f1.baseName() );
+  dir.cd( f1.baseName() );
+  QFileInfo f2 = QFileInfo( dir.absolutePath(), f1.baseName() );
+  // f2 : path と basename の結合を Qt に任せる
+  QString Basefname = f2.filePath();
+  
+  SaveMCAFList.clear();
+  for ( int y = 0; y <= S2Di.ps[1]; y++ ) {
+    for ( int x = 0; x < S2Di.ps[0] + (( S2Di.ScanMode == STEP ) ? 0 : 1 ); x++ ) {
+      QString fname = QString( "%1-MCA-%2-%3" )
+	.arg( Basefname )
+	.arg( y, 4, 10, QChar( '0' ) ).arg( x, 4, 10, QChar( '0' ) );
+      SaveMCAFList << fname;
+    }
+  }
+  savingAMCA = false;
+  savingMCAMap = true;
+  mapSaveTimer->setInterval( 10 );
+  mapSaveTimer->start();
+}
+
+void S2DB::saveNextMap( void )
+{
+  if ( savingAMCA )
+    return;
+
+  QString wfname;
+  if ( SaveMCAFList.count() > 0 ) {
+    wfname = SaveMCAFList[0];
+    SaveMCAFList.removeAt( 0 );
+  } else {
+    mapSaveTimer->stop();
+    savingMCAMap = false;
+    return;
+  }
+
+  savingAMCA = true;
+  QStringList cmps = wfname.split( "-" );
+  if ( cmps.count() > 1 ) {
+    int x = cmps[ cmps.count() - 1 ].toInt();
+    int y = cmps[ cmps.count() - 2 ].toInt();
+    aMCASet *set = mapAPoint( x, y );
+    if ( ( set != NULL ) && ( set->isValid() ) ) {
+      emit ShowMessage( tr( "Wriging MCA File : [%1]" ).arg( wfname + ".dat" ), 500 );
+      set->save( wfname + ".dat", S2DMCAFILETITLE );
+    }
+  }
+  savingAMCA = false;
+}
 
 void S2DB::ShowInfoAtNewPosition( int ix, int iy )
 {

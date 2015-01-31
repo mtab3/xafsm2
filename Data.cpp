@@ -294,7 +294,7 @@ void Data::showScanData( QTextStream &in )
 {
   QStringList heads, vals;
   QString line;
-  
+
   theXYView = (XYView*)theViewC->getView();
   theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
 #if 0
@@ -312,34 +312,44 @@ void Data::showScanData( QTextStream &in )
   if ( ! in.atEnd() ) line = in.readLine();  // 2行空読
   if ( ! in.atEnd() ) line = in.readLine();
   heads = line.split( '\t' );
-  theXYView->SetLineName( L0, heads.at( 1 ) );
-  theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
-  theXYView->SetLineName( L0+1, heads.at( 2 ) );
-  theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
-
-  theXYView->SetXName( heads.at( 3 ) );
-  theXYView->SetXUnitName( heads.at( 4 ) );
-  theXYView->SetUpp( heads.at( 5 ).toDouble() );
-  theXYView->SetCenter( heads.at( 6 ).toDouble() );
+  if ( heads.count() >= 7 ) {
+    theXYView->SetLineName( L0, heads.at( 1 ) );
+    theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+    theXYView->SetLineName( L0+1, heads.at( 2 ) );
+    theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+    
+    theXYView->SetXName( heads.at( 3 ) );
+    theXYView->SetXUnitName( heads.at( 4 ) );
+    theXYView->SetUpp( heads.at( 5 ).toDouble() );
+    theXYView->SetCenter( heads.at( 6 ).toDouble() );
+  } else {
+    theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+    theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+    theXYView->SetUpp( 1 );
+    theXYView->SetCenter( 0 );
+  }
 
   while ( ! in.atEnd() ) {
     line = in.readLine();
     line = line.simplified();
     vals = line.split( QRegExp( "\\s" ) );
-    theXYView->NewPoint( L0, vals.at( 0 ).toDouble(), vals.at( 1 ).toDouble() );
-    theXYView->NewPoint( L0+1, vals.at( 0 ).toDouble(), vals.at( 2 ).toDouble() );
+    if ( vals.count() >= 1 )
+      theXYView->NewPoint( L0, vals.at( 0 ).toDouble(), vals.at( 1 ).toDouble() );
+    if ( vals.count() >= 2 )
+      theXYView->NewPoint( L0+1, vals.at( 0 ).toDouble(), vals.at( 2 ).toDouble() );
   }
+
   int L = theXYView->GetLines();
   for ( int i = L0; i < L; i++ ) {
     SetColor( i - L0, theXYView->GetColor( i ) );
   }
-
+  
   theXYView->SetLLine( L0+1 ); // デフォルトで情報表示される左軸の線はデータの1番め
   theXYView->SetRLine( L0 );   // デフォルトで情報表示される右軸の線はデータの0番め (I0)
 
   XYLine0 = L0;
   XYLines = 2;
-
+  
   theXYView->makeValid( true );
   theXYView->update();
 }
@@ -545,13 +555,15 @@ void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
   int ix = 0, iy = 0;
   while ( ! in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
-    if ( vals[0][0] != '#' ) {
-      if ( vals.count() >= 3 ) {
-	theS2DView->setData( ix, iy, vals[2].toDouble() );
-	ix++;
-      } else {
-	ix = 0;
-	iy++;
+    if ( vals.count() > 0 ) {
+      if ( vals[0][0] != '#' ) {
+	if ( vals.count() >= 3 ) {
+	  theS2DView->setData( ix, iy, vals[2].toDouble() );
+	  ix++;
+	} else {
+	  ix = 0;
+	  iy++;
+	}
       }
     }
   }

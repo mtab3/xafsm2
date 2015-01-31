@@ -15,6 +15,9 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   monDevs << MonDev0 << MonDev1 << MonDev2 << MonDev3 << MonDev4;
   monVals << MonV0 << MonV1 << MonV2 << MonV3 << MonV4;
 
+  SPSScan->setStyleSheet( NormalEXECB );
+  MStart->setStyleSheet( NormalEXECB );
+  
   for ( int i = 0; i < monSels.count(); i++ ) {
     MonLine *aml = new MonLine( monSels[i], monDevs[i], monVals[i] );
     monLines << aml;
@@ -433,7 +436,13 @@ void MainWindow::GotNowRange( int r ) // This function is pure SLOT as it used '
 
 void MainWindow::saveScanData( void )
 {
-  if ( ScanView == NULL ) {
+  XYView *view;   // 現在表示しているのがスキャン画面だったらその画面がセーブの対象
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() == SCANDATA ) {
+    view = (XYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView();
+  } else {        // 違ったら、一番最近のスキャン結果がセーブの対象
+    view = (XYView*)findAView( SCANDATA );
+  }
+  if ( view == NULL ) {
     statusbar->showMessage( tr( "Scan data is not valid" ), 2000 );
     return;
   }
@@ -470,11 +479,11 @@ void MainWindow::saveScanData( void )
   out << ( ( SInfo.showUnit == 0 ) ? 1 : am->getUPP() ) << "\t";
   out << am->getCenter() << "\n";
 
-  int points = ScanView->GetPoints( 1 );
+  int points = view->GetPoints( 1 );
 
   for ( int i = 0; i < points; i++ ) {
-    out << ScanView->GetX( 0, i )
-	<< "\t" << ScanView->GetY( 0, i ) << "\t" << ScanView->GetY( 1, i ) << "\n";
+    out << view->GetX( 0, i )
+	<< "\t" << view->GetY( 0, i ) << "\t" << view->GetY( 1, i ) << "\n";
   }
 
   f.close();
@@ -1073,7 +1082,7 @@ void MainWindow::Monitor( void )
     MPause->setText( tr( "Pause" ) );
     MPause->setStyleSheet( NormalB );
     MStart->setText( tr( "Mon. Start" ) );
-    MStart->setStyleSheet( NormalB );
+    MStart->setStyleSheet( NormalEXECB );
   }
 }
 
@@ -1092,7 +1101,14 @@ void MainWindow::PauseMonitor( void )
 
 void MainWindow::saveMonData( void )
 {
-  if ( MonitorView == NULL ) {
+  TYView *view;   // 現在表示しているのがモニタ画面だったらその画面がセーブの対象
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() == MONDATA ) {
+    view = (TYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView();
+  } else {        // 違ったら、一番最近のモニタ結果がセーブの対象
+    view = (TYView*)findAView( MONDATA );
+  }
+
+  if ( view == NULL ) {
     statusbar->showMessage( tr( "Monitor data is not valid" ), 2000 );
     return;
   }
@@ -1125,13 +1141,13 @@ void MainWindow::saveMonData( void )
   }
   out << "\n";
 
-  int points = MonitorView->getDatas();
-  int lines = MonitorView->GetLines();
+  int points = view->getDatas();
+  int lines = view->GetLines();
 
   for ( int i = 0; i < points; i++ ) {
-    out << (double)(MonitorView->getT( i ))/1000;
+    out << (double)(view->getT( i ))/1000;
     for ( int j = 0; j < lines; j++ ) {
-      out << "\t" << MonitorView->getY( j, i );
+      out << "\t" << view->getY( j, i );
     }
     out << "\n";
   }

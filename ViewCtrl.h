@@ -25,6 +25,7 @@ class ViewCTRL : public QObject
   DATATYPE nowDType;
   bool deletable;
   GSBStats *gsbStat;
+  int VC;
 
  public:
   ViewCTRL( void );
@@ -51,6 +52,7 @@ class ViewCTRL : public QObject
   QVector<bool> getGSBFlags( void );
   //  void setView( QWidget *view );
   void layoutViewAgain( void );
+  int vcnt( void ) { return VC; };
 };
 
 

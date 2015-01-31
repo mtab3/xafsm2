@@ -14,6 +14,8 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   MCADialog->setLayout( bl );
   PoppingMCADialog = false;
 
+  MCAStart->setStyleSheet( NormalEXECB );
+
   connect( MCADialog, SIGNAL( finished(int) ), this, SLOT( PopUpMCA() ),
 	   Qt::UniqueConnection );
   connect( MCAPopUp, SIGNAL( clicked() ), this, SLOT( PopUpMCA() ), 
@@ -531,6 +533,13 @@ void MainWindow::setAllROIs( void )
 
 void MainWindow::saveMCAData( void )
 {
+  // MCA の画面は一つしか無いはずだけど
+  XYView *view;   // 現在表示しているのが MCA画面だったらその画面がセーブの対象
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() == MCADATA ) {
+    view = (XYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView();
+  } else {        // 違ったら、一番最近のMCA結果がセーブの対象
+    view = (XYView*)findAView( MCADATA );
+  }
   if ( !validMCAData ) {
     statusbar->showMessage( tr( "MCA data is not valid" ), 2000 );
     return;
@@ -826,7 +835,7 @@ void MainWindow::StartMCA( void )
     SFluo->setSSDPresetType( "REAL" );
     MCATimer->stop();
     MCAStart->setText( tr( "Start" ) );
-    MCAStart->setStyleSheet( NormalB );
+    MCAStart->setStyleSheet( NormalEXECB );
     cMCAViewC->setDeletable( true );
   }
 }

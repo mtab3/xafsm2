@@ -380,11 +380,7 @@ private:
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DFileCheck( void );
   void SaveMCADataOnMem( aMCASet *set );
-
-  QTimer *mcaTimer;
-  QStringList mcaWFList;
-  bool mcaWriting;
-
+  
   QVector<AUnit*> SensWithRange;
 
   QVector<QLineEdit *> BLKstart;
@@ -687,7 +683,7 @@ private slots:
   void newPrec1( void );
   void newPrec2( void );
   void SaveS2DMCAs( void );
-  void S2DMCAWriteNext( void );
+  //  void S2DMCAWriteNext( void );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -869,6 +865,7 @@ private slots:
 
   void onViewTabClosed( int i );
   void addAView( void );
+  void *findAView( DATATYPE dtype );
 
  signals:
   void SelectedSSD( int i, bool f );

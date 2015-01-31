@@ -69,6 +69,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANSHOW:
+    qDebug() << "getScanShow";
     viewC = SetUpNewView( XYVIEW, SCANSHOW );
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );

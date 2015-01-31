@@ -12,6 +12,8 @@ void MainWindow::setupScan2DArea( void )
   S2Dview = S2DBase->getView();
   S2DBase->setLoadBHidden( true );
   S2DBase->setParent( this );
+
+  S2DStart->setStyleSheet( NormalEXECB );
   
   S2DFileSel = new QFileDialog;
   S2DFileSel->setAcceptMode( QFileDialog::AcceptSave );
@@ -164,11 +166,6 @@ void MainWindow::setupScan2DArea( void )
 #endif
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2DBase, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
-
-  mcaWriting = false;
-  mcaTimer = new QTimer;
-  connect( mcaTimer, SIGNAL( timeout() ), this, SLOT( S2DMCAWriteNext() ),
-	   Qt::UniqueConnection );
 }
 
 void MainWindow::PopUpS2D( void )
@@ -462,6 +459,9 @@ void MainWindow::S2DScanStart( void )
       break;
     }
 
+    // ここから先は return しない
+
+    S2DBase->setS2DI( S2DI );
     inS2D = true;
     if ( S2DI.Use3rdAx ) {
       NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3 (%4))" ) )
@@ -683,12 +683,21 @@ void MainWindow::S2DStop00( void )
   NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
   statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
   S2DStart->setText( tr( "Start" ) );
-  S2DStart->setStyleSheet( NormalB );
+  S2DStart->setStyleSheet( NormalEXECB );
   S2DTimer->stop();
 }
 
 void MainWindow::SaveS2DResult( void )
 {
+  // S2D の事後セーブ
+  // 一番最近の S2D の結果だけがセーブの対象。
+  // S2DI が MainWindow 側にしか無いから
+  S2DView *view = S2DBase->getView();
+  if ( view == NULL ) {
+    statusbar->showMessage( tr( "S2D data is not valid" ), 2000 );
+    return;
+  }
+
   if ( S2DI.valid ) {
     if ( ! S2DI.SaveFile.simplified().isEmpty() ) {
       QFile f( S2DI.SaveFile );
@@ -706,7 +715,7 @@ void MainWindow::SaveS2DResult( void )
 	for ( int ix = 0; ix < S2DI.ps[0]; ix++ ) {
 	  out << QString( " %1" ).arg( S2DI.sx[0] + ( ix + 0.5 ) * S2DI.dx[0], 10 )
 	      << QString( " %1" ).arg( S2DI.sx[1] + ( iy ) * S2DI.dx[1], 10 )
-	      << QString( " %1" ).arg( S2Dview->getData( ix, iy ), 10 )
+	      << QString( " %1" ).arg( view->getData( ix, iy ), 10 )
 	      << endl;
 	}
 	out << endl;
