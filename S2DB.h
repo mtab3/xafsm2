@@ -35,7 +35,11 @@ class S2DB : public QFrame, private Ui::S2DB
   QStringList SaveMCAFList;
   bool savingAMCA;
   bool savingMCAMap;
-  
+
+  QDialog *PopDialog;
+  bool popping;
+  QLayout *layout;
+
  public:
   S2DB( QWidget *p );
 
@@ -46,6 +50,7 @@ class S2DB : public QFrame, private Ui::S2DB
   void setDataRoot( QString root ) { MCAsDirSel->setDirectory( root ); };
   void getNewMCAMap( int length, int chs );
   void setS2DI( S2DInfo s2di ) { S2Di = s2di; };
+  void setLayout( QLayout *l ) { layout = l; };
 
   void mapNew( int ix, int iy, int l, int chs ) { mcaMap.New( ix, iy, l, chs ); };
   aMCASet *mapAPoint( int ix, int iy ) { return mcaMap.aPoint( ix, iy ); };
@@ -73,6 +78,7 @@ private slots:
   void ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
   void loadNextMap( void );
   void saveNextMap( void );
+  void PopUp( void );
 
 signals:
   void askToGetNewMCAView( S2DB *s2db );

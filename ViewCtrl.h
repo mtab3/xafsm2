@@ -51,7 +51,7 @@ class ViewCTRL : public QObject
   QStringList getGSBLabels( void );
   QVector<bool> getGSBFlags( void );
   //  void setView( QWidget *view );
-  void layoutViewAgain( void );
+  //  void layoutViewAgain( void );
   int vcnt( void ) { return VC; };
 };
 

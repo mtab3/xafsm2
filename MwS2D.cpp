@@ -12,6 +12,7 @@ void MainWindow::setupScan2DArea( void )
   S2Dview = S2DBase->getView();
   S2DBase->setLoadBHidden( true );
   S2DBase->setParent( this );
+  S2DBase->setLayout( S2DVFrame->layout() );
 
   S2DStart->setStyleSheet( NormalEXECB );
   
@@ -20,20 +21,6 @@ void MainWindow::setupScan2DArea( void )
   S2DFileSel->setDirectory( QDir::currentPath() );
   S2DFileSel->setNameFilter( "*.dat" );
   S2DFileSel->setConfirmOverwrite( false );
-
-  S2DDialog = new QDialog;
-  S2DDialog->resize( 600, 400 );
-  QGridLayout *bl = new QGridLayout;
-  S2DDialog->setLayout( bl );
-  PoppingS2DDialog = false;
-  connect( S2DDialog, SIGNAL( finished(int) ), this, SLOT( PopUpS2D() ),
-	   Qt::UniqueConnection );
-#if 0
-  connect( S2DBase, SIGNAL( popup() ), this, SLOT( PopUpS2D() ), 
-	   Qt::UniqueConnection );
-#endif
-  connect( S2DPopUp, SIGNAL( clicked() ), this, SLOT( PopUpS2D() ), 
-	   Qt::UniqueConnection );
   
   QPushButton *tmpB;
   S2DAskOverWrite = new QMessageBox;
@@ -166,18 +153,6 @@ void MainWindow::setupScan2DArea( void )
 #endif
   connect( S2DPrintD, SIGNAL( accepted( QPrinter * ) ),
 	   S2DBase, SLOT( print( QPrinter * ) ), Qt::UniqueConnection );
-}
-
-void MainWindow::PopUpS2D( void )
-{
-  if ( PoppingS2DDialog ) {
-    S2DVFrame->layout()->addWidget( S2DBase );
-    S2DDialog->hide();
-  } else {
-    S2DDialog->layout()->addWidget( S2DBase );
-    S2DDialog->show();
-  }
-  PoppingS2DDialog = ! PoppingS2DDialog;
 }
 
 void MainWindow::S2DSetUseChangers( bool f )

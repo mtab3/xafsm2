@@ -8,18 +8,7 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
-  MCADialog = new QDialog;
-  MCADialog->resize( 700, 400 );
-  QGridLayout *bl = new QGridLayout;
-  MCADialog->setLayout( bl );
-  PoppingMCADialog = false;
-
   MCAStart->setStyleSheet( NormalEXECB );
-
-  connect( MCADialog, SIGNAL( finished(int) ), this, SLOT( PopUpMCA() ),
-	   Qt::UniqueConnection );
-  connect( MCAPopUp, SIGNAL( clicked() ), this, SLOT( PopUpMCA() ), 
-	   Qt::UniqueConnection );
 
   MaxMCAEnergyInput->setText( QString::number( MaxMCAEnergy ) );
   connect( MaxMCAEnergyInput, SIGNAL( editingFinished() ),
@@ -293,22 +282,6 @@ void MainWindow::newPrec2( void )
       view->update();
     }
   }
-}
-
-void MainWindow::PopUpMCA( void )
-{
-  if ( PoppingMCADialog ) {
-    if (( cMCAViewC == NULL )||( cMCAView == NULL ))
-      return;
-    cMCAViewC->layoutViewAgain();
-    MCADialog->hide();
-  } else {
-    if ( cMCAView == NULL )
-      return;
-    MCADialog->layout()->addWidget( cMCAView );
-    MCADialog->show();
-  }
-  PoppingMCADialog = ! PoppingMCADialog;
 }
 
 void MainWindow::MoveToNewCaribEnergy( void )

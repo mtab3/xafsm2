@@ -70,6 +70,18 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   dispLog = false;
   popDock = true;   // ボタンは年中光らせておく
 
+  PopDialog = new QDialog;
+  PopDialog->resize( 700, 400 );
+  QGridLayout *bl = new QGridLayout;
+  PopDialog->setLayout( bl );
+  popping = false;
+  layout = NULL;
+
+  connect( PopDialog, SIGNAL( finished(int) ), this, SLOT( PopUp() ),
+	   Qt::UniqueConnection );
+  connect( this, SIGNAL( pop() ), this, SLOT( PopUp() ), 
+	   Qt::UniqueConnection );
+  
   Black = QColor( 0, 0, 0 );
   White = QColor( 255, 255, 255 );
 
@@ -109,9 +121,6 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ),
 	   Qt::UniqueConnection );
   connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
-	   Qt::UniqueConnection );
-  connect( this, SIGNAL( popDockIsChanged( bool ) ),
-	   Parent, SLOT( PopUpMCA() ),
 	   Qt::UniqueConnection );
 
   connect( Parent, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
@@ -1047,7 +1056,7 @@ void MCAView::mouseReleaseEvent( QMouseEvent *e )
 {
   if ( m.CheckABPosition( e, 0, height() ) ) {
     //    popDock = ! popDock;
-    emit popDockIsChanged( popDock );
+    emit pop();
     return;
   }
 
@@ -1258,4 +1267,16 @@ void MCAView::clearMCAPeaks( void )
   cPoints.clear();
   MCAPeaks.clear();
   emit newPeakList( &MCAPeaks );
+}
+
+void MCAView::PopUp( void )
+{
+  if ( popping ) {
+    layout->addWidget( this );
+    PopDialog->hide();
+  } else {
+    PopDialog->layout()->addWidget( this );
+    PopDialog->show();
+  }
+  popping = ! popping;
 }

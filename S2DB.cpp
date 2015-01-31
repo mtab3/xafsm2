@@ -19,6 +19,18 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   MCAsDirSel->setFileMode( QFileDialog::Directory );
   MCAsDirSel->setConfirmOverwrite( false );
 
+  PopDialog = new QDialog;
+  PopDialog->resize( 600, 400 );
+  QGridLayout *bl = new QGridLayout;
+  PopDialog->setLayout( bl );
+  popping = false;
+  layout = NULL;
+
+  connect( PopDialog, SIGNAL( finished(int) ), this, SLOT( PopUp() ),
+	   Qt::UniqueConnection );
+  connect( PopB, SIGNAL( clicked() ), this, SLOT( PopUp() ), 
+	   Qt::UniqueConnection );
+  
   connect( LoadMCAsB, SIGNAL( clicked() ), MCAsDirSel, SLOT( show() ),
 	   Qt::UniqueConnection );
   connect( MCAsDirSel, SIGNAL( fileSelected( const QString & ) ),
@@ -73,6 +85,18 @@ void S2DB::setParent( QWidget *p )
 
   connect( this, SIGNAL( ShowMessage( QString, int ) ),
 	   parent, SLOT( ShowMessageOnSBar( QString, int ) ), Qt::UniqueConnection );
+}
+
+void S2DB::PopUp( void )
+{
+  if ( popping ) {
+    layout->addWidget( this );
+    PopDialog->hide();
+  } else {
+    PopDialog->layout()->addWidget( this );
+    PopDialog->show();
+  }
+  popping = !popping;
 }
 
 void S2DB::LoadMCAs( const QString &name )

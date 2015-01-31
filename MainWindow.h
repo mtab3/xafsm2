@@ -162,8 +162,6 @@ private:
   QStringList SSDCalibEnergys;
   //  double AttenDx, AttenDy;
   AUnit *movingSC1, *movingSC2;
-  QDialog *MCADialog;
-  bool PoppingMCADialog;
 
   /* ReadData */
   QVector<Data*> Datas;
@@ -335,8 +333,8 @@ private:
   QFileDialog *S2DFileSel;
   DIRECTION ReversedDir( DIRECTION d )
   { if ( d == FORWARD ) return BACKWARD; return FORWARD; }
-  QDialog *S2DDialog;
-  bool PoppingS2DDialog;
+  //  QDialog *S2DDialog;
+  //  bool PoppingS2DDialog;
   S2DView *S2Dview;
 
   bool S2DFileCheckIsReady;
@@ -798,7 +796,6 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
   void SetNewGases( void );
   //  void showMCAs( void );
-  void PopUpMCA( void );
   void nowFitStat( QString &stat );
 
   // QXafs
@@ -820,7 +817,7 @@ private slots:
   void CheckS2DDwellTime( void );
   void SaveS2DResult0( void );
   void SaveS2DResult( void );
-  void PopUpS2D( void );
+  //  void PopUpS2D( void );
 
   void S2DOkOverWrite( void );
   void S2DOkOverWrite2( void );

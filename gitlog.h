@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 1 00:26:46 2015 +0900\n"\
+                "    the data saving and loading process got match tight\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Jan 31 02:27:14 2015 +0900\n"\
                 "    move 'Data Root' in conditions to modify GUI\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 18:09:21 2015 +0900\n"\
                 "    it should be a stable ver\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 18:06:53 2015 +0900\n"\
-                "    Merge branch 'master' of ssh://133.6.107.214/git/Qt0/XAFS/XafsM2\n"\
 		"\n"\
                 ""
 #endif

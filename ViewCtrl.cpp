@@ -39,11 +39,6 @@ bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype )
   return true;
 }
 
-void ViewCTRL::layoutViewAgain( void )
-{
-  ViewBase->layout()->addWidget( (QWidget*)nowView );
-}
-
 bool ViewCTRL::deleteView( void )
 {
   if ( nowView == NULL ) 
@@ -228,12 +223,26 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
 	delete (TYView *)newView; break;
       case MCAVIEW:
 	delete (MCAView *)newView; break;
+      case S2DVIEW:
+	delete (S2DB *)newView; break;
       default:
 	qDebug() << "Unknow vewType was passed to SetUpNewView";
       }
       newView = NULL;
       return NULL;
     }
+  }
+
+  // ViewTab まで確定した後の後始末
+  switch( vtype ) {
+  case MCAVIEW:
+    ((MCAView*)newView)->setLayout( ViewTab->widget( ViewTab->currentIndex() )->layout() );
+    break;
+  case S2DVIEW:
+    ((S2DB*)newView)->setLayout( ViewTab->widget( ViewTab->currentIndex() )->layout() );
+    break;
+  default:
+    break;
   }
 
   // 次に使える ViewTab が残っていなかったら一つ追加しておく

@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -7274,16 +7274,6 @@ Though, other parameters are fixed at the value on starting.</string>
                </layout>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QPushButton" name="MCAPopUp">
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Pop Up</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_33">
                <property name="sizePolicy">
@@ -8870,6 +8860,22 @@ Though, other parameters are fixed at the value on starting.</string>
         <property name="spacing">
          <number>3</number>
         </property>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="S2DPrintB">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>Print</string>
+          </property>
+         </widget>
+        </item>
         <item row="5" column="0">
          <spacer name="verticalSpacer_6">
           <property name="orientation">
@@ -8882,6 +8888,13 @@ Though, other parameters are fixed at the value on starting.</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="6" column="0">
+         <widget class="QPushButton" name="Special">
+          <property name="text">
+           <string>Special</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="2" rowspan="3" colspan="2">
          <widget class="QFrame" name="frame_17">
@@ -9638,42 +9651,6 @@ Though, other parameters are fixed at the value on starting.</string>
           </layout>
          </widget>
         </item>
-        <item row="4" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_19">
-          <item>
-           <widget class="QPushButton" name="S2DPrintB">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Print</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="S2DPopUp">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Pop Up</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="2" column="0" colspan="2">
          <widget class="QFrame" name="frame_30">
           <property name="sizePolicy">
@@ -9991,13 +9968,6 @@ Though, other parameters are fixed at the value on starting.</string>
             </widget>
            </item>
           </layout>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QPushButton" name="Special">
-          <property name="text">
-           <string>Special</string>
-          </property>
          </widget>
         </item>
        </layout>

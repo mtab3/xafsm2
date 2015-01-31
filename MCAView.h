@@ -1,8 +1,10 @@
 #ifndef MCAVIEW_H
 #define MCAVIEW_H
 
+#include <QDialog>
 #include <QWidget>
 #include <QPrinter>
+#include <QLayout>
 
 #include "ui_MCAView.h"
 #include "MouseC.h"
@@ -27,6 +29,10 @@ private:
   double fitDampFact;
   double fitPrec1, fitPrec2;
 
+  QLayout *layout;
+  QDialog *PopDialog;
+  bool popping;
+  
   int valid;
   //  QVecotot<int *> MCAs;
   quint32 *MCA;
@@ -96,6 +102,7 @@ public:
   MCAView( QWidget *parent = NULL );
   ~MCAView( void );
 
+  void setLayout( QLayout *l ) { layout = l; };
   void setKeV2Pix( KeV2Pix *K2P ) { k2p = K2P; };
   void setFDBase( FluoDBase *FDBase ) { fdbase = FDBase; };
   quint32 *setMCAdataPointer( int length );
@@ -140,13 +147,14 @@ public slots:
   //  void doPeakFit( void );
   void NewEnergy( double e ) { I0Energy = e; };
   void clearMCAPeaks( void );
+  void PopUp( void );
 
 signals:
   void CurrentValues( int atCur, int inROI );
   void newROI( int ROIstart, int ROIend );
   void newROIinEng( double s, double e );
   void newPeakList( QVector<MCAPeak>* );
-  void popDockIsChanged( bool popDock );
+  void pop( void );
 };
 
 #endif
