@@ -166,6 +166,8 @@ MCAView::~MCAView( void )
   disconnect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ) );
   disconnect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ) );
+
+  PopDialog->deleteLater();
 }
 
 quint32 *MCAView::setMCAdataPointer( int len )

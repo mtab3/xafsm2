@@ -42,6 +42,7 @@ class S2DB : public QFrame, private Ui::S2DB
 
  public:
   S2DB( QWidget *p );
+  ~S2DB( void );
 
   S2DView *getView( void ) { return S2DV; };
   void setParent( QWidget *p );

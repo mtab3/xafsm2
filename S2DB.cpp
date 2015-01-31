@@ -63,6 +63,14 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
   savingAMCA = false;
 }
 
+S2DB::~S2DB( void )
+{
+  delete kev2pix;
+  delete MCAsDirSel;
+  delete mapSaveTimer;
+  PopDialog->deleteLater();
+}
+
 void S2DB::setParent( QWidget *p )
 {
   parent = p;

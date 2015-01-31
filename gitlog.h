@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "S2DMCA" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 1 01:57:09 2015 +0900\n"\
+                "    Pop/Doc fucntions for MCA and S2D is brushed up\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 1 00:26:46 2015 +0900\n"\
                 "    the data saving and loading process got match tight\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 18:41:30 2015 +0900\n"\
                 "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 18:09:21 2015 +0900\n"\
-                "    it should be a stable ver\n"\
 		"\n"\
                 ""
 #endif
