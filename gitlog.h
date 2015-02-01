@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 1 13:26:16 2015 +0900\n"\
+                "    clean up What-to-do\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 1 02:43:40 2015 +0900\n"\
+                "    pop-dialogs of view tab deleted when relating tabs are closed\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 1 01:57:09 2015 +0900\n"\
                 "    Pop/Doc fucntions for MCA and S2D is brushed up\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jan 29 20:45:27 2015 +0900\n"\
                 "    LION\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 18:53:55 2015 +0900\n"\
-                "    mkdir when save MCAs in S2D\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 18:41:30 2015 +0900\n"\
-                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
 		"\n"\
                 ""
 #endif

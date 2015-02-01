@@ -52,7 +52,7 @@ class Data : public QFrame, private Ui::Data
   S2DInfo S2DI;
 
   //  void showMeasData( QTextStream &in );
-  void showScanData( QTextStream &in );
+  void showScanData( QTextStream &in, QVector<AUnit*> &AMotors );
   void showMonData( QTextStream &in );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );

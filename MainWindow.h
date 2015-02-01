@@ -46,7 +46,7 @@
 #include "BlockInfo.h"
 #include "CheckUnits.h"
 #include "MeasParamSet.h"
-#include "ScanParamSet.h"
+#include "ScanInfo.h"
 #include "MonLine.h"
 
 #define MEAS_ID "XAFS Measurement"
@@ -295,8 +295,8 @@ private:
   //  int ScanMotor, ScanSensor;
   //  AUnit *SPSMovingMotor;
   //  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
-  ScanInfo SInfo;
-  QVector<ScanPSet*> ScanPs;    // 各モータ毎に状態を持つ
+  //  ScanInfo SInfo;
+  QVector<ScanInfo*> ScanIFs;    // 各モータ毎に状態を持つ
   int NowScanP;
   ViewCTRL *ScanViewC;
   XYView *ScanView;
@@ -307,8 +307,8 @@ private:
   double SettingMainTh;
   void SetMainThCenter( void );
   bool UseDefUReal( AUnit *am );
-  void PutScanPSet( ScanPSet *set );
-  void GetScanPSet( ScanPSet *set );
+  bool LoadScanInfo( ScanInfo *sif );
+  void SaveScanInfo( ScanInfo *sif, AUnit *am = NULL );
   bool LastInIsPulsV;
 
   //  bool MeasCntIs;
@@ -616,7 +616,7 @@ private slots:
   void SetGoMSpeedH( void );
   void SetGoMSpeedM( void );
   void SetGoMSpeedL( void );
-  void setSInfo( void );
+  //  void setSInfo( void );
   void ScanStart( void );
   void saveScanData( void );
   void SelectedAPointInScanArea( double x, double y );
