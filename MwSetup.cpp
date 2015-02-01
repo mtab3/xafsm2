@@ -511,8 +511,6 @@ void MainWindow::saveScanData( void )
 
   QTextStream out( &f );
 
-  AUnit *am = si.am;
-
   out << FileIDs[ SCANDATA ] << "\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
 

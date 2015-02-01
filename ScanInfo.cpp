@@ -54,7 +54,7 @@ void ScanInfo::save( QTextStream &out )
   out << "\n";
 }
 
-void ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
+bool ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
 {
   bool f = false;
   
@@ -62,9 +62,10 @@ void ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
   while( !in.atEnd() ) {
     QString line = in.readLine();
     if ( line.count() < 2 ) break;
-    if ( line.left( 2 ) != "# " ) break;
+    if ( line.left( 1 ) != "#" ) break;
+    if ( line.left( 2 ) != "# " ) continue;
     QStringList vals = line.mid( 2 ).split( "\t" );
-    if ( vals.count() < 2 ) break;
+    if ( vals.count() < 2 ) continue;
     if ( vals[0] == "UnitNames" ) {
       f = true;
       if ( vals.count() > 1 ) amName = vals[1]; 

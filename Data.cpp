@@ -310,7 +310,33 @@ void Data::showScanData( QTextStream &in, QVector<AUnit*> &AMotors )
 
   ScanInfo si = theXYView->getSInfo();
   bool f = si.load( in, AMotors );
-
+#if 0
+  if ( !f ) {  // 古いデータヘッドの読み込み
+    while( !in.atEnd() ) {
+      QString line = in.readLine();
+      if ( line.count() < 1 )
+	break;
+      heads = line.split( '\t' );
+      if ( heads.count() >= 7 ) {
+	theXYView->SetLineName( L0, heads.at( 1 ) );
+	theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+	theXYView->SetLineName( L0+1, heads.at( 2 ) );
+	theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+	
+	theXYView->SetXName( heads.at( 3 ) );
+	theXYView->SetXUnitName( heads.at( 4 ) );
+	theXYView->SetUpp( heads.at( 5 ).toDouble() );
+	theXYView->SetCenter( heads.at( 6 ).toDouble() );
+      } else {
+	theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+	theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+	theXYView->SetUpp( 1 );
+	theXYView->SetCenter( 0 );
+      }
+    }
+  }
+#endif
+  
   theXYView->SetLineName( L0, si.asName );
   theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
   theXYView->SetLineName( L0+1, si.as0Name );
