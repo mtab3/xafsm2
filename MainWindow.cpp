@@ -562,16 +562,27 @@ void MainWindow::SignalToStars( QString event )
 
 void MainWindow::rcvAlarm( QString uid, QString msg )
 {
-  qDebug() << "aa";
   for ( int i = 0; i < alarms.count(); i++ ) {
     if ( alarms[i].Uid == uid ) {
       if ( msg.left( alarms[i].AlarmOn.length() ) == alarms[i].AlarmOn ) {
-	alarms[i].alarm = true;
-	qDebug() << "Alarm On " << i;
+	if ( ! alarms[i].alarm ) {
+	  alarms[i].alarm = true;
+	  ViewTab->setStyleSheet( ALARMCOLOR );
+	  QMessageBox::warning( this, "Alarm", alarms[i].AlarmMsg );
+	}
       }
       if ( msg.left( alarms[i].AlarmOff.length() ) == alarms[i].AlarmOff ) {
-	alarms[i].alarm = false;
-	qDebug() << "Alarm Off " << i;
+	if ( alarms[i].alarm ) {
+	  alarms[i].alarm = false;
+	  int j;
+	  for ( j = 0; j < alarms.count(); j++ ) {
+	    if ( alarms[j].alarm )
+	      break;
+	  }
+	  if ( j >= alarms.count() ) {
+	    ViewTab->setStyleSheet( "" );
+	  }
+	}
       }
     }
   }

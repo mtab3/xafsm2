@@ -616,3 +616,9 @@ DATAROOT "/home/tabuchi/Data"
 
 # Special Monochro control
 MSTAB "Aio64" "M021"
+
+SENSOR AIOi "S056" "GENERAL" "ALARM Simulator" "Debugger" "AioDebug" "mV" NO ""
+
+ALARM "S056" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
+ALARM "S056" "_EvRangeMax 1" "_EvRangeMaxOff 1" "I1 Range Over"
+ALARM "S056" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"

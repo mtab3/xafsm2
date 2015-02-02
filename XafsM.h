@@ -49,6 +49,7 @@ const QString EDITABLELINE = "background-color: rgb(255,255,255)";
 const QString NONEDITABLELINE = "background-color: rgb(230,230,230)";
 //const QString SSDActive = RadioBOn;
 //const QString SSDnotActive = RadioBOff;
+const QString ALARMCOLOR = "background-color: rgb(255, 210, 210)";
 
 // ファイル名とデータの新旧に応じたステータスを色で表現
 // data, file-name 
