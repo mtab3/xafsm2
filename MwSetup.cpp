@@ -66,8 +66,6 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoPosKeV[3] = Eg + 1.10;
   ScanStage = 0;
 
-  SInfo.valid = false;
-
   for ( int i = 0; i < UNITS; i++ ) {
     GoUnit0->addItem( QString( UnitName[i].name ) );
     for ( int j = 0; j < GOS; j++ ) {
@@ -101,9 +99,12 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ),
 	     Qt::UniqueConnection );
 
-    ScanPSet *aScanP = new ScanPSet;
-    aScanP->Unit = ( UseDefUReal( AMotors[i] ) ) ? 1 : 0;
-    ScanPs << aScanP;
+    ScanInfo *aSif = new ScanInfo;
+    aSif->showUnit = ( UseDefUReal( AMotors[i] ) ) ? 1 : 0;
+    aSif->am = AMotors[i];
+    aSif->as = ASensors[0];
+    aSif->as0 = ASensors[0];
+    ScanIFs << aSif;
   }
   for ( int i = 0; i < MSPEEDS; i++ ) {
     GoMotorS->addItem( MSpeeds[i].MSName );
@@ -121,7 +122,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
   SPSUnitSelect->addItem( "Pulse" );
   SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
-  PutScanPSet( ScanPs[ SPSMotorSelect->currentIndex() ] );
+  LoadScanInfo( ScanIFs[ SPSMotorSelect->currentIndex() ] );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     SPSSelectD1->addItem( ASensors.value(i)->getName() );
@@ -278,30 +279,71 @@ void MainWindow::newDataRoot( const QString &dataRoot )
   }
 }
 
-void MainWindow::PutScanPSet( ScanPSet *set )
+void MainWindow::NewMotor( void )
 {
-  SPSSelectD1->setCurrentIndex( set->Sensor );
-  SPSSelectD10->setCurrentIndex( set->Sensor0 );
-  SPSNormalize->setChecked( set->Sens0Selected );
-  SPSUnitSelect->setCurrentIndex( set->Unit );
-  SPSMotorSpeed->setCurrentIndex( set->Speed );
-  SPSsP0->setText( set->Start );
-  SPSeP0->setText( set->End );
-  SPSstep0->setText( set->Step );
-  SPSdwell0->setText( set->Dwell );
+  setupMDispFirstTime = true;
+  SaveScanInfo( ScanIFs[ SPSLastSelectedM ], AMotors[ SPSLastSelectedM ] );
+
+  SPSLastSelectedM = SPSMotorSelect->currentIndex();
+  AMotors.value( SPSMotorSelect->currentIndex() )->GetValue();
+
+  GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+  SPSUnitSelect->removeItem( 1 );
+  SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+
+  LoadScanInfo( ScanIFs[ SPSLastSelectedM ] );
 }
 
-void MainWindow::GetScanPSet( ScanPSet *set )
+bool MainWindow::LoadScanInfo( ScanInfo *set )
 {
-  set->Sensor = SPSSelectD1->currentIndex();
-  set->Sensor0 = SPSSelectD10->currentIndex();
-  set->Sens0Selected = SPSNormalize->isChecked();
-  set->Unit = SPSUnitSelect->currentIndex();
-  set->Speed = SPSMotorSpeed->currentIndex();
-  set->Start = SPSsP0->text();
-  set->End = SPSeP0->text();
-  set->Step = SPSstep0->text();
-  set->Dwell = SPSdwell0->text();
+  if ( !AMotors.contains( set->am ) ) return false;
+  if ( !ASensors.contains( set->as ) ) return false;
+  if ( !ASensors.contains( set->as0 ) ) return false;
+
+  if ( SPSMotorSelect->currentIndex() != AMotors.indexOf( set->am ) )
+    SPSMotorSelect->setCurrentIndex( AMotors.indexOf( set->am ) );
+  SPSSelectD1->setCurrentIndex( ASensors.indexOf( set->as ) );
+  SPSSelectD10->setCurrentIndex( ASensors.indexOf( set->as0 ) );
+  SPSNormalize->setChecked( set->normalize );
+  SPSUnitSelect->setCurrentIndex( set->showUnit );
+  SPSMotorSpeed->setCurrentIndex( set->speed );
+  SPSsP0->setText( set->sx0 );
+  SPSeP0->setText( set->ex0 );
+  SPSstep0->setText( set->dx0 );
+  SPSdwell0->setText( set->dt0 );
+  SPSRelAbsSelect->setRelAbs( set->relabs );
+
+  return true;
+}
+
+void MainWindow::SaveScanInfo( ScanInfo *set, AUnit *am )
+{
+  if ( am == NULL )
+    set->am = AMotors[ SPSMotorSelect->currentIndex() ];
+  else
+    set->am = am;
+  set->as = ASensors[ SPSSelectD1->currentIndex() ];
+  set->as0 = ASensors[ SPSSelectD10->currentIndex() ];
+  set->normalize = SPSNormalize->isChecked();
+  set->showUnit = SPSUnitSelect->currentIndex();
+  set->unitName = set->am->getUnit();
+  set->upp = ( set->showUnit == 0 ) ? 1 : set->am->getUPP();
+  set->speed = (MSPEED)(SPSMotorSpeed->currentIndex());
+  set->sx0 = SPSsP0->text();
+  set->ex0 = SPSeP0->text();
+  set->dx0 = SPSstep0->text();
+  set->dt0 = SPSdwell0->text();
+  set->relabs = SPSRelAbsSelect->stat();
+
+  set->sx = set->am->any2p( set->sx0.toDouble(), set->showUnit, set->relabs );
+  set->ex = set->am->any2p( set->ex0.toDouble(), set->showUnit, set->relabs );
+  set->dx = fabs( set->dx0.toDouble() / set->upp );
+  if ( set->sx > set->ex )
+    set->dx = -set->dx;
+  set->dt = set->dt0.toDouble();
+
+  set->origin = set->am->value().toDouble();
+  set->offset = set->am->getCenter();
 }
 
 bool MainWindow::UseDefUReal( AUnit *am )
@@ -442,6 +484,8 @@ void MainWindow::saveScanData( void )
   } else {        // 違ったら、一番最近のスキャン結果がセーブの対象
     view = (XYView*)findAView( SCANDATA );
   }
+  ScanInfo si = view->getSInfo();
+  
   if ( view == NULL ) {
     statusbar->showMessage( tr( "Scan data is not valid" ), 2000 );
     return;
@@ -450,7 +494,7 @@ void MainWindow::saveScanData( void )
     statusbar->showMessage( tr( "Save file name is not selected" ), 2000 );
     return;
   }
-  if ( ! SInfo.valid ) {
+  if ( ! si.valid ) {
     statusbar->showMessage( tr( "Scan data is not valid" ), 2000 );
   }
 
@@ -467,17 +511,10 @@ void MainWindow::saveScanData( void )
 
   QTextStream out( &f );
 
-  AUnit *am = SInfo.am;
-
   out << FileIDs[ SCANDATA ] << "\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
-  out << "#\t";
-  for ( int i = 0; i < mUnits.count(); i++ )
-    out << mUnits.at(i)->getName() << "\t";
-  out << am->getName() << "\t";
-  out << ( ( SInfo.showUnit == 0 ) ? "Pulse" : am->getUnit() ) << "\t";
-  out << ( ( SInfo.showUnit == 0 ) ? 1 : am->getUPP() ) << "\t";
-  out << am->getCenter() << "\n";
+
+  view->getSInfo().save( out );
 
   int points = view->GetPoints( 1 );
 
@@ -712,18 +749,6 @@ void MainWindow::GoMAtPuls( double Pos )
 			  1000 );
 }
 
-void MainWindow::NewMotor( void )
-{
-  setupMDispFirstTime = true;
-  GetScanPSet( ScanPs[ SPSLastSelectedM ] );
-  SPSLastSelectedM = SPSMotorSelect->currentIndex();
-  AMotors.value( SPSMotorSelect->currentIndex() )->GetValue();
-  GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
-  SPSUnitSelect->removeItem( 1 );
-  SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
-  PutScanPSet( ScanPs[ SPSLastSelectedM ] );
-}
-
 void MainWindow::GoMStop( void )
 {
   // 動かしたモーターを憶えておいてそれを止めるより、
@@ -756,12 +781,24 @@ void MainWindow::GoMStop0( void )
 
 void MainWindow::SelectedAPointInScanArea( double x, double )
 {
+#if 0
   if ( sender() == ScanView ) {
     // 受け取った x はパルス値
-    SInfo.am->SetValue( x );
+    ScanInfo si = sender()->getSInfo();
+    si.am->SetValue( x );
+  }
+#endif
+  for ( int i = 0; i < ViewCtrls.count(); i++ ) {
+    if ( sender() == ViewCtrls[i]->getView() ) {
+      if ( ViewCtrls[i]->getDType() == SCANDATA ) {
+	ScanInfo si = ((XYView*)(ViewCtrls[i]->getView()))->getSInfo();
+	si.am->SetValue( x );
+      }
+    }
   }
 }
 
+#if 0
 void MainWindow::setSInfo( void )
 {
   SInfo.am = AMotors.value( SPSMotorSelect->currentIndex() );
@@ -786,6 +823,7 @@ void MainWindow::setSInfo( void )
     SInfo.dx = -SInfo.dx;
   SInfo.dwell = SInfo.dwell0.toDouble();
 }
+#endif
 
 void MainWindow::ScanStart( void )
 {
@@ -796,7 +834,8 @@ void MainWindow::ScanStart( void )
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
-    setSInfo();
+    ScanInfo si;
+    SaveScanInfo( &si );
 
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "SCAN" ) );
     //    ScanViewC->setNowDType( SCANDATA );
@@ -811,23 +850,23 @@ void MainWindow::ScanStart( void )
     //    ScanMotor = MotorN->currentIndex();
     //    SInfo.am = AMotors.value( ScanMotor );
     mUnits.clearUnits();
-    mUnits.addUnit( SInfo.as );
-    mUnits.addUnit( SInfo.as0 );
-    mUnits.setDwellTimes( SInfo.dwell );
+    mUnits.addUnit( si.as );
+    mUnits.addUnit( si.as0 );
+    mUnits.setDwellTimes( si.dt );
     mUnits.setDwellTime();
 
     QString User;
-    if ( ! SInfo.am->isEnable() ) {  // 使用するモータに関するチェック
+    if ( ! si.am->isEnable() ) {  // 使用するモータに関するチェック
       QString msg = tr( "Scan cannot Start : (%1) is disabled" )
-	.arg( SInfo.am->getName() );
+	.arg( si.am->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return;
     }
-    if ( ( User = UUnits.isTheUnitInUse( SInfo.am ) ) != "" ) {
+    if ( ( User = UUnits.isTheUnitInUse( si.am ) ) != "" ) {
       // モーターがが他のことに使われたらダメ
       statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
-			      .arg( SInfo.am->getName() ).arg( User ), 2000 );
+			      .arg( si.am->getName() ).arg( User ), 2000 );
       return;
     }
 
@@ -855,19 +894,19 @@ void MainWindow::ScanStart( void )
 	return;
       }
     }
-    if ( SInfo.dx == 0 ) {
+    if ( si.dx == 0 ) {
       statusbar->showMessage( tr( "Error: Scan Step is 0." ), 2000 );
       return;
     }
 
-    SInfo.valid = true;
+    si.valid = true;
     inSPSing = true;
 
     NewLogMsg( QString( tr( "Scan Start (%1 %2)" ) )
-	       .arg( SInfo.am->getName() )
-	       .arg( SInfo.as->getName() ) );
+	       .arg( si.am->getName() )
+	       .arg( si.as->getName() ) );
     
-    SInfo.am->SetSpeed( MSpeeds[ SInfo.speed ].MSid );
+    si.am->SetSpeed( MSpeeds[ si.speed ].MSid );
 
     SPSScan->setText( tr( "Stop" ) );
     SPSScan->setStyleSheet( InActive );
@@ -882,16 +921,16 @@ void MainWindow::ScanStart( void )
     ScanView->SetRightName( " " );
     for ( int i = 0; i < mUnits.count(); i++ )
       ScanView->SetLineName( i, mUnits.at(i)->getName() );
-    ScanView->SetXName( SInfo.am->getName() );
-    ScanView->SetXUnitName( SInfo.unitName );
+    ScanView->SetXName( si.am->getName() );
+    ScanView->SetXUnitName( si.unitName );
 
     ScanView->setDispRelAbsSw( true );            // Rel/Abs SW を表示するかどうか
-    ScanView->setDispRel( SInfo.relabs == REL );  // 初期の表示の仕方(スキャン条件自体の Rel/Abs に合わせる)
+    ScanView->setDispRel( si.relabs == REL );  // 初期の表示の仕方(スキャン条件自体の Rel/Abs に合わせる)
     // 以下の 4 つの情報があれば、XYView(ScanView) の内部で正しく表示できるはず
-    ScanView->SetUnitType( SInfo.showUnit );      // 表示単位 pulse/実単位
-    ScanView->SetUpp( SInfo.upp );                // Unit per pulse
-    ScanView->SetOffset( SInfo.offset );          // PM の 0 点
-    ScanView->SetCenter( SInfo.origin );          // 開始時点での PM 位置
+    ScanView->SetUnitType( si.showUnit );      // 表示単位 pulse/実単位
+    ScanView->SetUpp( si.upp );                // Unit per pulse
+    ScanView->SetOffset( si.offset );          // PM の 0 点
+    ScanView->SetCenter( si.origin );          // 開始時点での PM 位置
     // 以上の 4 つの情報があれば、XYView(ScanView) の内部で正しく表示できるはず
     ScanView->SetAutoScale( true );
     ScanView->makeValid( true );
@@ -900,10 +939,11 @@ void MainWindow::ScanStart( void )
     ScanRecFileName->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
     ScanRecFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 
-    UUnits.addUnit( SCAN_ID, SInfo.am );
+    UUnits.addUnit( SCAN_ID, si.am );
     for ( int i = 0; i < mUnits.count(); i++ ) {
       UUnits.addUnit( SCAN_ID, mUnits.at(i) );
     }
+    ScanView->setSInfo( si );
 
     ScanStage = 0;
     ScanTimer->start( 100 );

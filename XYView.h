@@ -10,6 +10,7 @@
 #include "Diff.h"
 #include "MouseC.h"
 #include "ChCoord.h"
+#include "ScanInfo.h"
 
 #define MAXPOINTS  ( 10000 )
 #define MAXLINENO  ( 50000 ) // 0 - 19999      // I0 と I, mu があるので実質 10,000
@@ -167,6 +168,8 @@ private:
   bool showDiff2;
   WTYPE dwtype1, dwtype2;
 
+  ScanInfo SInfo;
+
 public:
   XYView( QWidget *parent = NULL );
 
@@ -225,6 +228,8 @@ public:
 
   void setParent( QWidget *p );
   double dispX( double x );
+  void setSInfo( ScanInfo &si ) { SInfo = si; };
+  ScanInfo getSInfo( void ) { return SInfo; };
 
 public slots:
   void ChooseAG( int i, bool f );

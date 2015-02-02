@@ -1,0 +1,47 @@
+#ifndef SCANINFO_H
+#define SCANINFO_H
+
+#include <QVector>
+#include <QTextStream>
+
+#include "XafsM.h"
+#include "AUnit.h"
+
+class ScanInfo
+{
+ public:
+
+  RELABS relabs;
+  bool normalize;
+  int showUnit;
+  QString unitName;
+  double upp;
+  int speed;
+  double origin;
+  double offset;
+  QString sx0, ex0, dx0, dwell0;
+  double sx, ex, dx, dwell;
+
+
+  
+  bool valid;
+
+  AUnit *am;
+  AUnit *as;
+  AUnit *as0;
+
+  QString Start;
+  QString End;
+  QString Step;
+  QString Dwell;
+
+  bool UnitSelected;
+  int Speed;
+
+  ScanInfo( void );
+  ~ScanInfo( void );
+  void save( QTextStream &out );
+  void load( QTextStream &in, QVector<AUnit*> &AMotors );
+};
+
+#endif

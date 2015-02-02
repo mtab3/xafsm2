@@ -169,7 +169,7 @@ void Data::GotNewView( ViewCTRL *viewC, QVector<AUnit*> &AMotors )
   case MEASSHOW: showMeasData( in ); break;
 #endif
   case MONSHOW:  showMonData( in );  break;
-  case SCANSHOW: showScanData( in ); break;
+  case SCANSHOW: showScanData( in, AMotors ); break;
   case MCASHOW:  showMCAData( in );  break;
   case S2DSHOW:  showS2DData( in, AMotors );  break;
   default: break;
@@ -290,7 +290,7 @@ void Data::showMeasData( QTextStream &in )
 }
 #endif
 
-void Data::showScanData( QTextStream &in )
+void Data::showScanData( QTextStream &in, QVector<AUnit*> &AMotors )
 {
   QStringList heads, vals;
   QString line;
@@ -308,35 +308,59 @@ void Data::showScanData( QTextStream &in )
 
   int L0 = theXYView->GetLines();
 
-  if ( ! in.atEnd() ) line = in.readLine();
-  if ( ! in.atEnd() ) line = in.readLine();  // 2行空読
-  if ( ! in.atEnd() ) line = in.readLine();
-  heads = line.split( '\t' );
-  if ( heads.count() >= 7 ) {
-    theXYView->SetLineName( L0, heads.at( 1 ) );
-    theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
-    theXYView->SetLineName( L0+1, heads.at( 2 ) );
-    theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
-    
-    theXYView->SetXName( heads.at( 3 ) );
-    theXYView->SetXUnitName( heads.at( 4 ) );
-    theXYView->SetUpp( heads.at( 5 ).toDouble() );
-    theXYView->SetCenter( heads.at( 6 ).toDouble() );
-  } else {
-    theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
-    theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
-    theXYView->SetUpp( 1 );
-    theXYView->SetCenter( 0 );
+  ScanInfo si = theXYView->getSInfo();
+  bool f = si.load( in, AMotors );
+#if 0
+  if ( !f ) {  // 古いデータヘッドの読み込み
+    while( !in.atEnd() ) {
+      QString line = in.readLine();
+      if ( line.count() < 1 )
+	break;
+      heads = line.split( '\t' );
+      if ( heads.count() >= 7 ) {
+	theXYView->SetLineName( L0, heads.at( 1 ) );
+	theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+	theXYView->SetLineName( L0+1, heads.at( 2 ) );
+	theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+	
+	theXYView->SetXName( heads.at( 3 ) );
+	theXYView->SetXUnitName( heads.at( 4 ) );
+	theXYView->SetUpp( heads.at( 5 ).toDouble() );
+	theXYView->SetCenter( heads.at( 6 ).toDouble() );
+      } else {
+	theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+	theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+	theXYView->SetUpp( 1 );
+	theXYView->SetCenter( 0 );
+      }
+    }
   }
+#endif
+  
+  theXYView->SetLineName( L0, si.asName );
+  theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
+  theXYView->SetLineName( L0+1, si.as0Name );
+  theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
+  
+  theXYView->SetXName( si.amName );
+  theXYView->SetXUnitName( si.unitName );
+  theXYView->SetUpp( si.upp );
+  theXYView->SetCenter( si.origin );
 
   while ( ! in.atEnd() ) {
     line = in.readLine();
     line = line.simplified();
+    if ( line.count() < 2 ) continue;
+    if ( line[0] == '#' ) continue;
     vals = line.split( QRegExp( "\\s" ) );
-    if ( vals.count() >= 1 )
-      theXYView->NewPoint( L0, vals.at( 0 ).toDouble(), vals.at( 1 ).toDouble() );
-    if ( vals.count() >= 2 )
-      theXYView->NewPoint( L0+1, vals.at( 0 ).toDouble(), vals.at( 2 ).toDouble() );
+    if ( vals.count() >= 2 ) {
+      theXYView->NewPoint( L0, vals[0].toDouble(), vals[1].toDouble() );
+      qDebug() << vals[0].toDouble() << vals[1].toDouble();
+    }
+    if ( vals.count() >= 3 ) {
+      theXYView->NewPoint( L0+1, vals[0].toDouble(), vals[2].toDouble() );
+      qDebug() << vals[0].toDouble() << vals[2].toDouble();
+    }
   }
 
   int L = theXYView->GetLines();

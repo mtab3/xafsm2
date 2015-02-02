@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "alarm" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 3 00:36:24 2015 +0900\n"\
+                "    the alarm may work\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 2 21:08:21 2015 +0900\n"\
                 "    working on alarm\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jan 30 02:27:19 2015 +0900\n"\
                 "    the S2DMCA project with the re-design of ViewCTRL is almost done.  This point can be a stable point\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jan 29 20:45:27 2015 +0900\n"\
-                "    LION\n"\
 		"\n"\
                 ""
 #endif

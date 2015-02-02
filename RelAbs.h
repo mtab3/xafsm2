@@ -20,6 +20,7 @@ class RelAbs : public QFrame, private Ui::RelAbs
  public:
   RelAbs( QWidget *p = NULL );
   RELABS stat( void ) { return Stat; };
+  void setRelAbs( RELABS stat ) { Stat = stat; Show(); };
 
  signals:
   void statChanged( RELABS stat );
