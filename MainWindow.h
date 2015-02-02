@@ -48,6 +48,7 @@
 #include "MeasParamSet.h"
 #include "ScanParamSet.h"
 #include "MonLine.h"
+#include "Alarm.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -116,6 +117,7 @@ private:
   double MinEnergyInEV, MaxEnergyInEV;
   int DefaultUnit;
   QString LocalizedName( QString name );
+  QVector<Alarm> alarms;
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );
@@ -864,6 +866,8 @@ private slots:
   void addAView( void );
   void *findAView( DATATYPE dtype );
 
+  void rcvAlarm( QString uid, QString alarm );
+  
  signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );

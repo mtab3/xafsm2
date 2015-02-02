@@ -166,6 +166,8 @@ signals:
   void EvReportCurrent( SMsg msg );
   void EvReportInjection( SMsg msg );
   void EvReportValue( SMsg msg );
+  void EvRangeMax( SMsg msg );
+  void EvRangeMaxOff( SMsg msg );
 };
 
 #endif

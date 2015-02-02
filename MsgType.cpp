@@ -111,6 +111,9 @@ const MsgTyp MsgT[] = {
   { "@GoMaxRel", GOMAXREL },
   { "@ShutterOff", SHUTTEROFF },
 
+  { "_EvRangeMax", EvRANGEMAX },
+  { "_EvRangeMaxOff", EvRANGEMAXOFF },
+
   { "_Connected", EvCONNECTED },
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },

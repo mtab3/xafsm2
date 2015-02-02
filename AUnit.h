@@ -393,6 +393,9 @@ public slots:
   void RcvMiddleSpeed( SMsg msg );
   void RcvLowSpeed( SMsg msg );
 
+  void RcvRangeMax( SMsg msg );
+  void RcvRangeMaxOff( SMsg msg );
+  
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
 
@@ -429,6 +432,7 @@ signals:
   void gotLowS( int s );
   
   void LogMsg( QString msg );
+  void Alarm( QString uid, QString msg );
 };
 
 #endif

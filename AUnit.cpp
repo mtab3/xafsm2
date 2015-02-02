@@ -424,6 +424,11 @@ void AUnit::Initialize( Stars *S )
     s->SendCMD2( "Init", "System", "flgon", Driver );
   }
 
+  if ( Type == "AIOi" ) {
+    connect( s, SIGNAL( EvRangeMax( SMsg ) ), this, SLOT( RcvRangeMax( SMsg ) ), Qt::UniqueConnection );
+    connect( s, SIGNAL( EvRangeMaxOff( SMsg ) ), this, SLOT( RcvRangeMaxOff( SMsg ) ), Qt::UniqueConnection );
+  }
+  
   // 以下 Unit タイプではなくて、特定の用途に固定された特定のユニットに固有の処理
   // MMainTh   : "THETA"
   // SI0       : "I0"
@@ -1957,3 +1962,16 @@ void AUnit::OnReportValue( SMsg msg )
   }
 }
 
+void AUnit::RcvRangeMax( SMsg msg )
+{
+  if ( Type == "AIOi" ){
+    emit Alarm( Uid, QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() ) );
+  }
+}
+
+void AUnit::RcvRangeMaxOff( SMsg msg )
+{
+  if ( Type == "AIOi" ){
+    emit Alarm( Uid, QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() ) );
+  }
+}

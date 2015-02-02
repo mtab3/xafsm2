@@ -427,6 +427,11 @@ void MainWindow::InitAndIdentifySensors( void )
     if ( as->getID() == "ENCTH2" ) {
       Enc2 = as;
     }
+    for ( int j = 0; j < alarms.count(); j++ ) {
+      if ( alarms[j].Uid == as->getUid() ) {
+	connect( as, SIGNAL( Alarm( QString, QString ) ), this, SLOT( rcvAlarm( QString, QString ) ), Qt::UniqueConnection );
+      }
+    }
   }
   
   if ( SFluo != NULL ) {
@@ -553,4 +558,21 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
 void MainWindow::SignalToStars( QString event )
 {
   s->SendEvent( event );
+}
+
+void MainWindow::rcvAlarm( QString uid, QString msg )
+{
+  qDebug() << "aa";
+  for ( int i = 0; i < alarms.count(); i++ ) {
+    if ( alarms[i].Uid == uid ) {
+      if ( msg.left( alarms[i].AlarmOn.length() ) == alarms[i].AlarmOn ) {
+	alarms[i].alarm = true;
+	qDebug() << "Alarm On " << i;
+      }
+      if ( msg.left( alarms[i].AlarmOff.length() ) == alarms[i].AlarmOff ) {
+	alarms[i].alarm = false;
+	qDebug() << "Alarm Off " << i;
+      }
+    }
+  }
 }

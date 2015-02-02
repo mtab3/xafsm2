@@ -397,6 +397,10 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit EvReportCurrent( smsg ); break;
 	case EvREPORTINJECTION: 
 	  emit EvReportInjection( smsg ); break;
+	case EvRANGEMAX: 
+	  emit EvRangeMax( smsg ); break;
+	case EvRANGEMAXOFF: 
+	  emit EvRangeMaxOff( smsg ); break;
     case EvREPORTVALUE:
       emit EvReportValue( smsg ); break;
 	default: 
