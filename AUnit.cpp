@@ -1964,7 +1964,9 @@ void AUnit::OnReportValue( SMsg msg )
 
 void AUnit::RcvRangeMax( SMsg msg )
 {
+  qDebug() << "rcv a";
   if ( Type == "AIOi" ){
+    qDebug() << "emit a";
     emit Alarm( Uid, QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() ) );
   }
 }

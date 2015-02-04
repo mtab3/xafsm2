@@ -23,6 +23,8 @@ int main( int argc, char *argv[] )
 {
   int month = QDate::currentDate().month();
   int day = QDate::currentDate().day();
+
+  printf( "starting\n" );
   
   getQVersion();
   if ( qMainVer >= 5 )

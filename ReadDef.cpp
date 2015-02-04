@@ -298,13 +298,12 @@ void MainWindow::ReadDef( QString fname )
 	  conds->RecordEachMCASpectrumEnabled( item.toInt() == 1 );
 	}
       } else if ( item == "ALARM" ) {
-	Alarm a;
-	next = nextItem( next, item ); a.Uid = item;
-	next = nextItem( next, item ); a.AlarmOn = item;
-	next = nextItem( next, item ); a.AlarmOff = item;
-	next = nextItem( next, item ); a.AlarmMsg = item;
-	qDebug() << "ALARM " << a.Uid << a.AlarmOn << a.AlarmOff << a.AlarmMsg;
-	alarms << a;
+	QString uid, aon, aoff, msg;
+	next = nextItem( next, item ); uid = item;
+	next = nextItem( next, item ); aon = item;
+	next = nextItem( next, item ); aoff = item;
+	next = nextItem( next, item ); msg = item;
+	alarms->addAlarm( uid, aon, aoff, msg );
       } else {
         qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

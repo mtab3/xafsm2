@@ -117,7 +117,7 @@ private:
   double MinEnergyInEV, MaxEnergyInEV;
   int DefaultUnit;
   QString LocalizedName( QString name );
-  QVector<Alarm> alarms;
+  Alarms *alarms;
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );
@@ -866,7 +866,8 @@ private slots:
   void addAView( void );
   void *findAView( DATATYPE dtype );
 
-  void rcvAlarm( QString uid, QString alarm );
+  void alarmOn( void );
+  void alarmOff( void );
   
  signals:
   void SelectedSSD( int i, bool f );

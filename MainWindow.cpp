@@ -74,9 +74,13 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   XAFSTitle = myname;
 
   starsSV = new StarsSV2;
-
   conds = new Conditions;
   conds->setVersionInfo( VERSION, __DATE__, __TIME__ );
+  alarms = new Alarms;
+  connect( alarms, SIGNAL( alarmOn() ),
+	   this, SLOT( alarmOn() ), Qt::UniqueConnection );
+  connect( alarms, SIGNAL( alarmOff() ),
+	   this, SLOT( alarmOff() ), Qt::UniqueConnection );
   
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
   ReadDef( DefFileName );
@@ -395,8 +399,12 @@ void MainWindow::InitAndIdentifySensors( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
     as->Initialize( s );
-    connect( as, SIGNAL( LogMsg( QString ) ), this, SLOT( NewLogMsg( QString ) ),
+    connect( as, SIGNAL( LogMsg( QString ) ),
+	     this, SLOT( NewLogMsg( QString ) ),
 	     Qt::UniqueConnection );
+    connect( as, SIGNAL( Alarm( QString, QString ) ),
+			 alarms, SLOT( chkAlarm( QString, QString ) ),
+			 Qt::UniqueConnection );
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
@@ -426,11 +434,6 @@ void MainWindow::InitAndIdentifySensors( void )
     }
     if ( as->getID() == "ENCTH2" ) {
       Enc2 = as;
-    }
-    for ( int j = 0; j < alarms.count(); j++ ) {
-      if ( alarms[j].Uid == as->getUid() ) {
-	connect( as, SIGNAL( Alarm( QString, QString ) ), this, SLOT( rcvAlarm( QString, QString ) ), Qt::UniqueConnection );
-      }
     }
   }
   
@@ -560,30 +563,12 @@ void MainWindow::SignalToStars( QString event )
   s->SendEvent( event );
 }
 
-void MainWindow::rcvAlarm( QString uid, QString msg )
+void MainWindow::alarmOn( void )
 {
-  for ( int i = 0; i < alarms.count(); i++ ) {
-    if ( alarms[i].Uid == uid ) {
-      if ( msg.left( alarms[i].AlarmOn.length() ) == alarms[i].AlarmOn ) {
-	if ( ! alarms[i].alarm ) {
-	  alarms[i].alarm = true;
-	  ViewTab->setStyleSheet( ALARMCOLOR );
-	  QMessageBox::warning( this, "Alarm", alarms[i].AlarmMsg );
-	}
-      }
-      if ( msg.left( alarms[i].AlarmOff.length() ) == alarms[i].AlarmOff ) {
-	if ( alarms[i].alarm ) {
-	  alarms[i].alarm = false;
-	  int j;
-	  for ( j = 0; j < alarms.count(); j++ ) {
-	    if ( alarms[j].alarm )
-	      break;
-	  }
-	  if ( j >= alarms.count() ) {
-	    ViewTab->setStyleSheet( "" );
-	  }
-	}
-      }
-    }
-  }
+  ViewTab->setStyleSheet( ALARMCOLOR );
+}
+
+void MainWindow::alarmOff( void )
+{
+  ViewTab->setStyleSheet( "" );
 }
