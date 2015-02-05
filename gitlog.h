@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 6 01:45:14 2015 +0900\n"\
+                "    modified gui\n"\
+		"\n"\
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 4 15:10:24 2015 +0900\n"\
                 "    alarm system is re-implemented with a call Alarms\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 1 01:57:09 2015 +0900\n"\
                 "    Pop/Doc fucntions for MCA and S2D is brushed up\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Feb 1 00:26:46 2015 +0900\n"\
-                "    the data saving and loading process got match tight\n"\
 		"\n"\
                 ""
 #endif

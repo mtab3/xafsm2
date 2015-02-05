@@ -384,6 +384,7 @@ void Stars::ReceiveMessageFromStars( void )
 	break;
       case RES_EVENT:
 	emit AskRecord( tr( "Receive an event from Stars [%1]" ).arg( RBuf.data() ) );
+	emit EvAll( smsg );
 	switch( smsg.Msgt() ) {
 	case EvCHANGEDVALUE: 
 	  emit EvChangedValue( smsg ); break;

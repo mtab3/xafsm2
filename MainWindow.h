@@ -866,6 +866,7 @@ private slots:
   void addAView( void );
   void *findAView( DATATYPE dtype );
 
+  void RcvEvAll( SMsg msg );
   void alarmOn( void );
   void alarmOff( void );
   

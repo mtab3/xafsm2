@@ -90,6 +90,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   s->ReadStarsKeys( XAFSKey, XAFSName ); // Stars とのコネクション確立の準備
   s->SetNewSVAddress( starsSV->SSVAddress() );
   s->SetNewSVPort( starsSV->SSVPort() );
+  connect( s, SIGNAL( EvAll( SMsg ) ), this, SLOT( RcvEvAll( SMsg ) ), Qt::UniqueConnection );
 
   TTable = new TuningTable;
   pmConds = new PMConditions;
@@ -402,9 +403,11 @@ void MainWindow::InitAndIdentifySensors( void )
     connect( as, SIGNAL( LogMsg( QString ) ),
 	     this, SLOT( NewLogMsg( QString ) ),
 	     Qt::UniqueConnection );
+#if 0
     connect( as, SIGNAL( Alarm( QString, QString ) ),
 			 alarms, SLOT( chkAlarm( QString, QString ) ),
 			 Qt::UniqueConnection );
+#endif
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
     if ( as->getID() == "TotalF" ) { SFluo = as; }
@@ -561,6 +564,20 @@ void MainWindow::ShowNewRingCurrent( QString Val, QStringList )
 void MainWindow::SignalToStars( QString event )
 {
   s->SendEvent( event );
+}
+
+void MainWindow::RcvEvAll( SMsg msg )
+{
+  qDebug() << "Event" << msg.From();
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    qDebug() << "unit " << ASensors[i]->getDevCh() << msg.From();
+    if ( ASensors[i]->getDevCh() == msg.From() ) {
+      qDebug() << "uid " << ASensors[i]->getUid();
+      qDebug() << "msg " << QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() );
+      alarms->chkAlarm( ASensors[i]->getUid(),
+	       QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() ) );
+    }
+  }
 }
 
 void MainWindow::alarmOn( void )

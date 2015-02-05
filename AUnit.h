@@ -393,8 +393,7 @@ public slots:
   void RcvMiddleSpeed( SMsg msg );
   void RcvLowSpeed( SMsg msg );
 
-  void RcvRangeMax( SMsg msg );
-  void RcvRangeMaxOff( SMsg msg );
+  //  void RcvAlarmEvent( SMsg msg );
   
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
