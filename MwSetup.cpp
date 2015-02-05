@@ -346,6 +346,27 @@ void MainWindow::SaveScanInfo( ScanInfo *set, AUnit *am )
   set->offset = set->am->getCenter();
 }
 
+void MainWindow::SaveMonInfo( MonInfo *set )
+{
+  AUnit *as;
+
+  set->Sensors.clear();
+  set->SensorNames.clear();
+  set->SensorUnits.clear();
+  for ( int i = 0; i < monLines.count(); i++ ) {
+    if ( monLines[i]->isChecked() ) {
+      as = ASensors[ monLines[i]->currentIndex() ];
+      if ( as->isEnable() ) {
+	set->Sensors << as;
+	set->SensorNames << as->getName();
+	set->SensorUnits << as->getUnit();
+      }
+    }
+  }
+  set->MeasTime = DwellT20->text().toDouble();
+}
+
+
 bool MainWindow::UseDefUReal( AUnit *am )
 {
   bool rv = false;
@@ -1002,7 +1023,6 @@ void MainWindow::Monitor( void )
 	  return;
 	}
 	MonOut.setDevice( &MonFile );
-
 	MonOut << FileIDs[ MONDATA ] << "\n";
 	MonOut << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
 	       << "\n";
@@ -1052,7 +1072,11 @@ void MainWindow::Monitor( void )
       }
     }
 
+    MonInfo monInfo;
+    SaveMonInfo( &monInfo );
     if ( monRecF ) {
+      monInfo.save( MonOut );
+#if 0
       MonOut << "#\tsec";
       for ( int i = 0; i < mUnits.count(); i++ ) {
 	MonOut << QString( tr( "\t%1[%2]" )
@@ -1060,6 +1084,7 @@ void MainWindow::Monitor( void )
 			   .arg( mUnits.getUnit( i ) ) );
       }
       MonOut << "\n";
+#endif
     }
 
     MonitorView->ClearDataR();
@@ -1079,7 +1104,8 @@ void MainWindow::Monitor( void )
 	     Qt::UniqueConnection );
       }
     }
-		 
+    MonitorView->setMonInfo( monInfo );
+
     MStart->setText( tr( "Stop" ) );
     MStart->setStyleSheet( InActive );
 
@@ -1173,6 +1199,8 @@ void MainWindow::saveMonData( void )
   out << FileIDs[ MONDATA ] << "\n";
   out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" )
       << "\n";
+  view->getMonInfo().save( out );
+#if 0
   out << "#\tsec";
   for ( int i = 0; i < mUnits.count(); i++ ) {
     out << QString( tr( "\t%1[%2]" )
@@ -1180,6 +1208,7 @@ void MainWindow::saveMonData( void )
 		    .arg( mUnits.getUnit( i ) ) );
   }
   out << "\n";
+#endif
 
   int points = view->getDatas();
   int lines = view->GetLines();

@@ -9,6 +9,7 @@
 #include "CColors.h"
 #include "MouseC.h"
 #include "ChCoord.h"
+#include "MonInfo.h"
 
 const int RingMax = 5 * 60 * 60 * 6;
 const int MaxMon = 20;
@@ -20,6 +21,7 @@ class TYView : public QFrame, private Ui::XView
 private:
   QWidget *parent;
 
+  MonInfo monInfo;
   ChCoord cc;
   QColor bgColor, BLACK, ASelC;
   //  QVector<QColor> LC;
@@ -71,6 +73,8 @@ public:
 
   void setParent( QWidget *p );
   void setMovingAvr( int ma ) { movingAvr = ma; };
+  void setMonInfo( MonInfo mi ) { monInfo = mi; };
+  MonInfo getMonInfo() { return monInfo; };
 
 public slots:
   void SetMonScale( int ms ) { MonScale = ms; };

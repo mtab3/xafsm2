@@ -12,12 +12,14 @@ class MonInfo
  public:
 
   QVector<AUnit*> Sensors;
+  QStringList SensorNames;
+  QStringList SensorUnits;
   double MeasTime;
 
   MonInfo( void );
   ~MonInfo( void );
   void save( QTextStream &out );
-  void load( QTextStream &in, QVector<AUnit*> &AMotors );
+  bool load( QTextStream &in, QVector<AUnit*> &AMotors );
 };
 
 #endif

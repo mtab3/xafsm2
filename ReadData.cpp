@@ -93,7 +93,7 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
   }
 
   if ( viewC != NULL )
-    ((Data*)from)->GotNewView( viewC, AMotors );
+    ((Data*)from)->GotNewView( viewC, AMotors, ASensors );
 }
 
 void MainWindow::ansToGetNewMCAView( S2DB* s2db )

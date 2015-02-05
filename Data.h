@@ -53,7 +53,7 @@ class Data : public QFrame, private Ui::Data
 
   //  void showMeasData( QTextStream &in );
   void showScanData( QTextStream &in, QVector<AUnit*> &AMotors );
-  void showMonData( QTextStream &in );
+  void showMonData( QTextStream &in, QVector<AUnit*> &ASensors );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );
   void showS2DData( QTextStream &in, QVector<AUnit*> &AMotors );
@@ -61,7 +61,8 @@ class Data : public QFrame, private Ui::Data
  public:
   Data( QWidget *p = NULL );
   ~Data();
-  void GotNewView( ViewCTRL *view, QVector<AUnit*> &AMotors );
+  void GotNewView( ViewCTRL *view,
+		   QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
   void GotCurrentView( void *view );
   void setDataRoot( const QString &dataRoot );
 

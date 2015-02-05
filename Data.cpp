@@ -151,7 +151,8 @@ void Data::CheckFileType( const QString &fname )
   }
 }
 
-void Data::GotNewView( ViewCTRL *viewC, QVector<AUnit*> &AMotors )
+void Data::GotNewView( ViewCTRL *viewC,
+		       QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors )
 {
   QFile f( FName );
 
@@ -168,7 +169,7 @@ void Data::GotNewView( ViewCTRL *viewC, QVector<AUnit*> &AMotors )
 #if 0
   case MEASSHOW: showMeasData( in ); break;
 #endif
-  case MONSHOW:  showMonData( in );  break;
+  case MONSHOW:  showMonData( in, ASensors );  break;
   case SCANSHOW: showScanData( in, AMotors ); break;
   case MCASHOW:  showMCAData( in );  break;
   case S2DSHOW:  showS2DData( in, AMotors );  break;
@@ -378,7 +379,7 @@ void Data::showScanData( QTextStream &in, QVector<AUnit*> &AMotors )
   theXYView->update();
 }
 
-void Data::showMonData( QTextStream &in )
+void Data::showMonData( QTextStream &in, QVector<AUnit*> &ASensors )
 {
   QStringList heads, vals;
   QString line;
@@ -394,6 +395,9 @@ void Data::showMonData( QTextStream &in )
   theTYView->SetMonScale( 0 );
   theTYView->makeValid( true );
 
+  MonInfo monInfo;
+  monInfo.load( in, ASensors );
+#if 0
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();  // 2π‘∂ı∆…
   if ( ! in.atEnd() ) line = in.readLine();
@@ -401,9 +405,14 @@ void Data::showMonData( QTextStream &in )
   for ( int i = 2; i < heads.count(); i++ ) {
     theTYView->SetLName( i-2, heads.at( i ) );
   }
+#endif
+  int Lines = monInfo.SensorNames.count();
+  for ( int i = 0; i < Lines; i++ ) {
+    theTYView->SetLName( i, monInfo.SensorNames[i] );
+  }
   //  theTYView->SetXName( heads.at( 1 ) );
   theTYView->ClearDataR();
-  theTYView->SetLines( heads.count() - 2 );
+  theTYView->SetLines( Lines );
 
   for ( int i = 0; i < MaxMon; i++ )
     Values[i] = 0;
