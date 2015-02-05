@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -4142,7 +4142,7 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QLabel" name="label_51">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -4179,13 +4179,31 @@ Though, other parameters are fixed at the value on starting.</string>
                </item>
                <item>
                 <widget class="QComboBox" name="SelectScale">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(235, 235, 235);</string>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+                 </property>
+                 <property name="minimumContentsLength">
+                  <number>10</number>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_64">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
                   <string>Moving Average</string>
                  </property>
@@ -4309,7 +4327,7 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>312</width>
+                     <width>310</width>
                      <height>160</height>
                     </rect>
                    </property>
@@ -4343,6 +4361,9 @@ Though, other parameters are fixed at the value on starting.</string>
                      <widget class="QComboBox" name="MonDev4">
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QComboBox::AdjustToMinimumContentsLength</enum>
                       </property>
                      </widget>
                     </item>
@@ -4379,6 +4400,9 @@ Though, other parameters are fixed at the value on starting.</string>
                      <widget class="QComboBox" name="MonDev0">
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QComboBox::AdjustToMinimumContentsLength</enum>
                       </property>
                      </widget>
                     </item>
@@ -4431,6 +4455,9 @@ Though, other parameters are fixed at the value on starting.</string>
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(235, 235, 235);</string>
                       </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+                      </property>
                      </widget>
                     </item>
                     <item row="2" column="2">
@@ -4473,6 +4500,9 @@ Though, other parameters are fixed at the value on starting.</string>
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(235, 235, 235);</string>
                       </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+                      </property>
                      </widget>
                     </item>
                     <item row="3" column="2">
@@ -4505,6 +4535,9 @@ Though, other parameters are fixed at the value on starting.</string>
                      <widget class="QComboBox" name="MonDev3">
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(235, 235, 235);</string>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QComboBox::AdjustToMinimumContentsLength</enum>
                       </property>
                      </widget>
                     </item>

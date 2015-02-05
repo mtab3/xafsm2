@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Feb 4 15:10:24 2015 +0900\n"\
+                "    alarm system is re-implemented with a call Alarms\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 3 00:38:34 2015 +0900\n"\
+                "    it may work\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 3 00:36:24 2015 +0900\n"\
                 "    the alarm may work\n"\
@@ -11,6 +19,18 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 2 21:08:21 2015 +0900\n"\
                 "    working on alarm\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 2 02:21:36 2015 +0900\n"\
+                "    it looks it works at first check\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 2 02:04:16 2015 +0900\n"\
+                "    working on ScanInfo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 1 13:26:16 2015 +0900\n"\
+                "    clean up What-to-do\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 1 02:43:40 2015 +0900\n"\
@@ -23,26 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 1 00:26:46 2015 +0900\n"\
                 "    the data saving and loading process got match tight\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Jan 31 02:27:14 2015 +0900\n"\
-                "    move 'Data Root' in conditions to modify GUI\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Jan 31 01:05:30 2015 +0900\n"\
-                "    modify gui\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jan 30 13:39:49 2015 +0900\n"\
-                "    modified gui\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jan 30 13:38:17 2015 +0900\n"\
-                "    nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jan 30 02:27:19 2015 +0900\n"\
-                "    the S2DMCA project with the re-design of ViewCTRL is almost done.  This point can be a stable point\n"\
 		"\n"\
                 ""
 #endif

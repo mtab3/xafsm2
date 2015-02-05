@@ -33,7 +33,13 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       aml->copyStyles( *monLines[0] );
     }
   }
-
+  for ( int i = 0; i < monLines.count(); i++ ) {
+    //    monLines[i]->dev()
+    //      ->setMinimumContentsLength( 10 );
+    monLines[i]->dev()
+      ->setSizeAdjustPolicy( QComboBox::AdjustToMinimumContentsLengthWithIcon );
+  }
+  
   MonLinesDialog = new QDialog;
   MonLinesDialog->resize( 350, 510 );
   QGridLayout *bl = new QGridLayout;
