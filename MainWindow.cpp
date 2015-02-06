@@ -568,12 +568,8 @@ void MainWindow::SignalToStars( QString event )
 
 void MainWindow::RcvEvAll( SMsg msg )
 {
-  qDebug() << "Event" << msg.From();
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    qDebug() << "unit " << ASensors[i]->getDevCh() << msg.From();
     if ( ASensors[i]->getDevCh() == msg.From() ) {
-      qDebug() << "uid " << ASensors[i]->getUid();
-      qDebug() << "msg " << QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() );
       alarms->chkAlarm( ASensors[i]->getUid(),
 	       QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() ) );
     }

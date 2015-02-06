@@ -23,16 +23,17 @@ ViewCTRL::~ViewCTRL( void )
 bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype )
 {
   if ( nowView != NULL ) {
-    qDebug() << "vtype " << nowVType << vtype;
     if ( ( nowVType != vtype ) || ( nowDType != dtype ) ){
       return false;
     }
-  } else {
-    nowView = view;
-    nowVType = vtype;
-    nowDType = dtype;
-    ViewBase->layout()->addWidget( (QWidget *)nowView );
+    if ( ! deleteView() )
+      return false;
   }
+  nowView = view;
+  nowVType = vtype;
+  nowDType = dtype;
+  ViewBase->layout()->addWidget( (QWidget *)nowView );
+
   deletable = true;
   gsbStat = new GSBStats;
   
@@ -155,7 +156,6 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
   void *newView = NULL;
   switch( vtype ) {
   case XYVIEW:
-    qDebug() << "get XYView";
     newView = (void *)(new XYView);
     ((XYView*)newView)->setParent( this );
     ((XYView*)newView)->setDiffType1( conds->Diff1Type() );
@@ -197,8 +197,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
   // newView は ViewCTRL の中で作れば良さそうなものだが、
   // 上の操作にいっぱい MainWindow の持ち物が出てくるのでめんどくさい
   
-  if ( newView == NULL )
+  if ( newView == NULL ) {
+    qDebug() << "Can't setup new View";
     return NULL;
+  }
 
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK

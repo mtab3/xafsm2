@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "S2DMCA" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 6 02:30:27 2015 +0900\n"\
+                "    alarm signal path was changed\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 6 01:45:14 2015 +0900\n"\
                 "    modified gui\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 1 02:43:40 2015 +0900\n"\
                 "    pop-dialogs of view tab deleted when relating tabs are closed\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Feb 1 01:57:09 2015 +0900\n"\
-                "    Pop/Doc fucntions for MCA and S2D is brushed up\n"\
 		"\n"\
                 ""
 #endif
