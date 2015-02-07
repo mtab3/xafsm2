@@ -1,5 +1,3 @@
-○ Scan に元々あった ScanInfo と ScanParamSet を統合して新生 ScanInfo にする。
-　さらに、これを View に持たせることで ScanView のセーブは問題なくなったはず。
 ○ Scan, Mon の条件を保持しているものが無い。
 　なので、セーブすると常に現在の条件がファイルに記録される。
   惜しいことに、S2D は、測定に使う View が一つしか無いのでこの問題がないが、
@@ -8,8 +6,6 @@
 ○ Scan, Mon は ScanInfo, MonInfo の様なデータセットを作って
 　View 側に持たせ、データの save/load も view 側でやるようにしたら良い気がする。
 　XYView を XAFS と SCAN が使っているので、継承した View を作って区別するか...
-○ S2D の計測に使う View は一つしか無いので問題ないが、
-　S2D の通常の load, save も S2DBase のしごとにしてもいいかも。
 
 ○ MCA の View 獲得の戦略はまだ要検討 (getNewMCAView in ViewCTRL.cpp)
   現状は 計測に使う MCA View はひとつだけにしておきたい
@@ -194,6 +190,12 @@
 ○ S2D の Pop/Doc は View の中にコントロールを入れる --> 入れた
 ○ SCAN, MON, MCA で何か計測した後、対応する View を先に消してしまって、
 　それから Save を行おうとしても、拒否されるだけで落ちないことを確認  --> 多分 OK
+○ Scan した結果のグラフ表示の中で、マウスをダブルクリックした時、
+   正しく対応するモーターを動かすようにちゃんとなってた  OK
+○ Scan に元々あった ScanInfo と ScanParamSet を統合して新生 ScanInfo にする。
+　さらに、これを View に持たせることで ScanView のセーブは問題なくなったはず。 OK だいたい落ち着いた
+○ S2D の計測に使う View は一つしか無いので問題ないが、
+　S2D の通常の load, save も S2DBase のしごとにしてもいいかも。
 
 対処済み 2014.12
 ○ XYView の相対/絶対表示切り替え可能に   : した

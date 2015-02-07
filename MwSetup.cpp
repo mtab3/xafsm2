@@ -787,13 +787,6 @@ void MainWindow::GoMStop0( void )
 
 void MainWindow::SelectedAPointInScanArea( double x, double )
 {
-#if 0
-  if ( sender() == ScanView ) {
-    // 受け取った x はパルス値
-    ScanInfo si = sender()->getSInfo();
-    si.am->SetValue( x );
-  }
-#endif
   for ( int i = 0; i < ViewCtrls.count(); i++ ) {
     if ( sender() == ViewCtrls[i]->getView() ) {
       if ( ViewCtrls[i]->getDType() == SCANDATA ) {
@@ -803,33 +796,6 @@ void MainWindow::SelectedAPointInScanArea( double x, double )
     }
   }
 }
-
-#if 0
-void MainWindow::setSInfo( void )
-{
-  SInfo.am = AMotors.value( SPSMotorSelect->currentIndex() );
-  SInfo.as = ASensors.value( SPSSelectD1->currentIndex() );
-  SInfo.as0 = ASensors.value( SPSSelectD10->currentIndex() );
-  SInfo.normalize = SPSNormalize->isChecked();
-  SInfo.showUnit = SPSUnitSelect->currentIndex();
-  SInfo.unitName = SPSUnitSelect->currentText();
-  SInfo.upp = ( SInfo.showUnit == 0 ) ? 1 : SInfo.am->getUPP();
-  SInfo.speed = SPSMotorSpeed->currentIndex();
-  SInfo.relabs = SPSRelAbsSelect->stat();
-  SInfo.origin = SInfo.am->value().toDouble();
-  SInfo.offset = SInfo.am->getCenter();
-  SInfo.sx0 = SPSsP0->text();
-  SInfo.ex0 = SPSeP0->text();
-  SInfo.dx0 = SPSstep0->text();
-  SInfo.dwell0 = SPSdwell0->text();
-  SInfo.sx = SInfo.am->any2p( SInfo.sx0.toDouble(), SInfo.showUnit, SInfo.relabs );
-  SInfo.ex = SInfo.am->any2p( SInfo.ex0.toDouble(), SInfo.showUnit, SInfo.relabs );
-  SInfo.dx = fabs( SInfo.dx0.toDouble() / SInfo.upp );
-  if ( SInfo.sx > SInfo.ex )
-    SInfo.dx = -SInfo.dx;
-  SInfo.dwell = SInfo.dwell0.toDouble();
-}
-#endif
 
 void MainWindow::ScanStart( void )
 {
