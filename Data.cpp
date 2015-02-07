@@ -170,9 +170,9 @@ void Data::GotNewView( ViewCTRL *viewC,
   case MEASSHOW: showMeasData( in ); break;
 #endif
   case MONSHOW:  showMonData( in, ASensors );  break;
-  case SCANSHOW: showScanData( in, AMotors ); break;
+  case SCANSHOW: showScanData( in, AMotors, ASensors ); break;
   case MCASHOW:  showMCAData( in );  break;
-  case S2DSHOW:  showS2DData( in, AMotors );  break;
+  case S2DSHOW:  showS2DData( in, AMotors, ASensors );  break;
   default: break;
   }
 
@@ -291,52 +291,21 @@ void Data::showMeasData( QTextStream &in )
 }
 #endif
 
-void Data::showScanData( QTextStream &in, QVector<AUnit*> &AMotors )
+void Data::showScanData( QTextStream &in,
+			 QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors )
 {
   QStringList heads, vals;
   QString line;
 
   theXYView = (XYView*)theViewC->getView();
   theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
-#if 0
-  if ( theViewC->getDType() == NONDATA ) {
-    theViewC->setNowDType( SCANSHOW );
-    theViewC->setNowVType( XYVIEW );
-    theXYView->SetWindow0( 1e300, 0, -1e300, 0 );
-  }
-#endif
   theXYView->SetAutoScale( true );
 
   int L0 = theXYView->GetLines();
 
   ScanInfo si = theXYView->getSInfo();
-  bool f = si.load( in, AMotors );
-#if 0
-  if ( !f ) {  // 古いデータヘッドの読み込み
-    while( !in.atEnd() ) {
-      QString line = in.readLine();
-      if ( line.count() < 1 )
-	break;
-      heads = line.split( '\t' );
-      if ( heads.count() >= 7 ) {
-	theXYView->SetLineName( L0, heads.at( 1 ) );
-	theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
-	theXYView->SetLineName( L0+1, heads.at( 2 ) );
-	theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
-	
-	theXYView->SetXName( heads.at( 3 ) );
-	theXYView->SetXUnitName( heads.at( 4 ) );
-	theXYView->SetUpp( heads.at( 5 ).toDouble() );
-	theXYView->SetCenter( heads.at( 6 ).toDouble() );
-      } else {
-	theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
-	theXYView->SetLR( L0+1, LEFT_AX ); theXYView->SetScaleType( 1, FULLSCALE );
-	theXYView->SetUpp( 1 );
-	theXYView->SetCenter( 0 );
-      }
-    }
-  }
-#endif
+  si.load( in, AMotors, ASensors );
+  si.show();
   
   theXYView->SetLineName( L0, si.asName );
   theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
@@ -348,19 +317,17 @@ void Data::showScanData( QTextStream &in, QVector<AUnit*> &AMotors )
   theXYView->SetUpp( si.upp );
   theXYView->SetCenter( si.origin );
 
+  int lines = 2 + si.mi.Sensors.count();
   while ( ! in.atEnd() ) {
     line = in.readLine();
     line = line.simplified();
     if ( line.count() < 2 ) continue;
     if ( line[0] == '#' ) continue;
     vals = line.split( QRegExp( "\\s" ) );
-    if ( vals.count() >= 2 ) {
-      theXYView->NewPoint( L0, vals[0].toDouble(), vals[1].toDouble() );
-      qDebug() << vals[0].toDouble() << vals[1].toDouble();
-    }
-    if ( vals.count() >= 3 ) {
-      theXYView->NewPoint( L0+1, vals[0].toDouble(), vals[2].toDouble() );
-      qDebug() << vals[0].toDouble() << vals[2].toDouble();
+    for ( int i = 0; i < lines; i++ ) {
+      if ( vals.count() > i + 1 ) {
+	theXYView->NewPoint( i, vals[0].toDouble(), vals[i+1].toDouble() );
+      }
     }
   }
 
@@ -397,6 +364,7 @@ void Data::showMonData( QTextStream &in, QVector<AUnit*> &ASensors )
 
   MonInfo monInfo;
   monInfo.load( in, ASensors );
+  monInfo.show();
 #if 0
   if ( ! in.atEnd() ) line = in.readLine();
   if ( ! in.atEnd() ) line = in.readLine();  // 2行空読
@@ -562,7 +530,8 @@ void Data::SelectedNewMCACh( int ch )
   theMCAView->update();
 }
 
-void Data::showS2DData( QTextStream &in, QVector<AUnit*> &AMotors )
+void Data::showS2DData( QTextStream &in,
+			QVector<AUnit*> &AMotors, QVector<AUnit*> & /* ASensors */ )
 {
   QStringList HeadLine1, HeadLine2, vals;
   QString line;

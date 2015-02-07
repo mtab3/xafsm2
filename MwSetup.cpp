@@ -350,6 +350,11 @@ void MainWindow::SaveScanInfo( ScanInfo *set, AUnit *am )
 
   set->origin = set->am->value().toDouble();
   set->offset = set->am->getCenter();
+
+  set->UseMonitors = SPSUseAdditionalSs->isChecked();
+  if ( set->UseMonitors ) {
+    SaveMonInfo( &(set->mi) );
+  }
 }
 
 void MainWindow::SaveMonInfo( MonInfo *set )
@@ -370,6 +375,7 @@ void MainWindow::SaveMonInfo( MonInfo *set )
     }
   }
   set->MeasTime = DwellT20->text().toDouble();
+  set->valid = true;
 }
 
 
@@ -546,8 +552,11 @@ void MainWindow::saveScanData( void )
   int points = view->GetPoints( 1 );
 
   for ( int i = 0; i < points; i++ ) {
-    out << view->GetX( 0, i )
-	<< "\t" << view->GetY( 0, i ) << "\t" << view->GetY( 1, i ) << "\n";
+    out << view->GetX( 0, i );
+    for ( int j = 0; j < mUnits.count(); j++ ) {
+      out << "\t" << view->GetY( j, i );
+    }
+    out << "\n";
   }
 
   f.close();
@@ -845,6 +854,23 @@ void MainWindow::ScanStart( void )
     mUnits.clearUnits();
     mUnits.addUnit( si.as );
     mUnits.addUnit( si.as0 );
+    if ( SPSUseAdditionalSs->isChecked() ) {
+      for ( int i = 0; i < monLines.count(); i++ ) {
+	if ( monLines[i]->isChecked() ) {
+	  AUnit *as = ASensors[ monLines[i]->currentIndex() ];
+	  if ( as->isEnable() ) {
+	    int i;
+	    for ( i = 0; i < mUnits.count(); i++ ) {
+	      if ( as == mUnits.at(i) )
+		break;
+	    }
+	    if ( i >= mUnits.count() ) {
+	      mUnits.addUnit( as );
+	    }
+	  }
+	}
+      }
+    }
     mUnits.setDwellTimes( si.dt );
     mUnits.setDwellTime();
 
@@ -907,10 +933,12 @@ void MainWindow::ScanStart( void )
 
     ScanView->Clear();
     ScanView->SetLR( 0, LEFT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
-    ScanView->SetLR( 1, RIGHT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
     ScanView->SetScaleType( 0, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
-    ScanView->SetScaleType( 1, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
     ScanView->SetLeftName( " " );
+    for ( int i = 1; i < mUnits.count(); i++ ) {
+      ScanView->SetLR( i, RIGHT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
+      ScanView->SetScaleType( i, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
+    }
     ScanView->SetRightName( " " );
     for ( int i = 0; i < mUnits.count(); i++ )
       ScanView->SetLineName( i, mUnits.at(i)->getName() );

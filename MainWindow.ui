@@ -5164,42 +5164,6 @@ Though, other parameters are fixed at the value on starting.</string>
                </property>
               </widget>
              </item>
-             <item row="9" column="0" colspan="10">
-              <layout class="QHBoxLayout" name="horizontalLayout_8">
-               <item>
-                <widget class="QRadioButton" name="SPSNormalize">
-                 <property name="maximumSize">
-                  <size>
-                   <width>10000000</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the 'Normalize' is checked, the value of the detector selected as 'Monitor' is normalized by the value of the detecter selected in the following selection-box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Normalize</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="SPSSelectD10">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The value of the selected detecter is always (with or without check the 'Normalize') recorded with the value of the detecter selected as 'Monitor' for the scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(235, 235, 235);</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
              <item row="0" column="0" colspan="12">
               <widget class="QSplitter" name="splitter">
                <property name="orientation">
@@ -5269,6 +5233,52 @@ Though, other parameters are fixed at the value on starting.</string>
                 <enum>QFrame::Raised</enum>
                </property>
               </widget>
+             </item>
+             <item row="9" column="0" colspan="12">
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QRadioButton" name="SPSNormalize">
+                 <property name="maximumSize">
+                  <size>
+                   <width>10000000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When the 'Normalize' is checked, the value of the detector selected as 'Monitor' is normalized by the value of the detecter selected in the following selection-box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Normalize</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="SPSSelectD10">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The value of the selected detecter is always (with or without check the 'Normalize') recorded with the value of the detecter selected as 'Monitor' for the scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(235, 235, 235);</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="SPSUseAdditionalSs">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use sensors selected at &amp;quot;Monitor Sensors&amp;quot; additional monitoring sensors while the scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Additional</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>

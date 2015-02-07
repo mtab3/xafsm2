@@ -29,6 +29,8 @@ ScanInfo::ScanInfo( void )
 
   origin = 0;
   offset = 0;
+
+  UseMonitors = false;
 }
 
 ScanInfo::~ScanInfo( void )
@@ -37,24 +39,27 @@ ScanInfo::~ScanInfo( void )
 
 void ScanInfo::save( QTextStream &out )
 {
-  out << "# UnitNames\t"
+  out << "# " << UNITNAMES << "\t"
       << am->getName() << "\t" << as->getName() << "\t" << as0->getName() << "\n";
-  out << "# UnitIDs\t"
+  out << "# " << UNITIDS << "\t"
       << am->getUid() << "\t" << as->getUid() << "\t" << as0->getUid() << "\n";
-  out << "# Normalize\t" << ( ( normalize ) ? 1 : 0 ) << "\n";
+  out << "# " << NORMALIZE << "\t" << ( ( normalize ) ? 1 : 0 ) << "\n";
 
-  out << "# MetricUnit\t" << unitName << "\n";
-  out << "# Unit/Pulse\t" << upp << "\n";
-  out << "# Orig.Point\t" << origin << "\n";
-  out << "# Offset\t"     << offset << "\n";
-  out << "# Start/End/Step\t"  << sx0 << "\t" << ex0 << "\t" << dx0 << "\n";
-  out << "# RelAbs\t" << relabs << "\n";
-  out << "# Speed\t" << speed << "\n";
-  out << "# DwellTime\t" << dt0 << "\n";
-  out << "\n";
+  out << "# " << METRICUNIT << "\t" << unitName << "\n";
+  out << "# " << UNIT_PULSE << "\t" << upp << "\n";
+  out << "# " << ORIG_POINT << "\t" << origin << "\n";
+  out << "# " << OFFSET << "\t" << offset << "\n";
+  out << "# " << START_END_STEP << "\t"  << sx0 << "\t" << ex0 << "\t" << dx0 << "\n";
+  out << "# " << RELABSSEL << "\t" << relabs << "\n";
+  out << "# " << SPEED << "\t" << speed << "\n";
+  out << "# " << SCANDWELLTIME << "\t" << dt0 << "\n";
+  out << "# " << USEMONITORS << "\t" << ( UseMonitors ? 1 : 0 ) << "\n";
+  mi.save( out );
+  //  out << "\n";    // mi.save の中で出力される
 }
 
-bool ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
+bool ScanInfo::load( QTextStream &in,
+		     QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors )
 {
   bool f = false;
   
@@ -66,13 +71,13 @@ bool ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
     if ( line.left( 2 ) != "# " ) continue;
     QStringList vals = line.mid( 2 ).split( "\t" );
     if ( vals.count() < 2 ) continue;
-    if ( vals[0] == "UnitNames" ) {
+    if ( vals[0] == UNITNAMES ) {
       f = true;
       if ( vals.count() > 1 ) amName = vals[1]; 
       if ( vals.count() > 2 ) asName = vals[2]; 
       if ( vals.count() > 3 ) as0Name = vals[3]; 
     }
-    if ( vals[0] == "UnitIDs" ) {
+    if ( vals[0] == UNITIDS ) {
       if ( vals.count() >= 4 ) {
 	for ( int j = 0; j < AMotors.count(); j++ ) {
 	  if ( AMotors[j]->getUid() == vals[1] ) {
@@ -94,29 +99,33 @@ bool ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
 	}
       }
     }
-    if ( vals[0] == "Normalize" )
+    if ( vals[0] == NORMALIZE )
       normalize = ( vals[1].toInt() == 1 );
-    if ( vals[0] == "MetricUnit" )
+    if ( vals[0] == METRICUNIT )
       unitName = vals[1];
-    if ( vals[0] == "Unit/Pulse" )
+    if ( vals[0] == UNIT_PULSE )
       upp = vals[1].toDouble();
-    if ( vals[0] == "Orig.Point" )
+    if ( vals[0] == ORIG_POINT )
       origin = vals[1].toDouble();
-    if ( vals[0] == "Offset" )
+    if ( vals[0] == OFFSET )
       offset = vals[1].toDouble();
-    if ( vals[0] == "Start/End/Step" ) {
+    if ( vals[0] == START_END_STEP ) {
       if ( vals.count() >= 4 ) {
 	sx0 = vals[1];
 	ex0 = vals[2];
 	dx0 = vals[3];
       }
     }
-    if ( vals[0] == "RelAbs" )
+    if ( vals[0] == RELABSSEL )
       relabs = (RELABS)(vals[1].toInt());
-    if ( vals[0] == "Speed" )
+    if ( vals[0] == SPEED )
       speed = (MSPEED)(vals[1].toInt());
-    if ( vals[0] == "DwellTime" )
+    if ( vals[0] == SCANDWELLTIME )
       dt0 = vals[1];
+    if ( vals[0] == USEMONITORS )
+      UseMonitors = ( vals[1].toInt() == 1 );
+    bool dummyF;
+    mi.load0( line, ASensors, dummyF );
   }
 
   if ( am != NULL ) {
@@ -130,4 +139,24 @@ bool ScanInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
   dt = dt0.toDouble();
 
   return f;
+}
+
+void ScanInfo::show( void )
+{
+  qDebug() << "---- Stat of Scan Info ----";
+  qDebug() << "valid" << valid;
+  qDebug() << "motor" << am->getUid() << amName;
+  qDebug() << "speed" << speed;
+  qDebug() << "showUnit" << showUnit;
+  qDebug() << "upp" << upp;
+  qDebug() << "unit name" << unitName;
+  qDebug() << "rel/abs" << relabs;
+  qDebug() << "sx ex dx dt" << sx0 << ex0 << dx0 << dt0;
+  qDebug() << "sx ex dx dt" << sx << ex << dx << dt;
+  if ( as != NULL ) qDebug() << "sensor" << as->getUid() << asName;
+  if ( as0 != NULL ) qDebug() << "sensor0" << as0->getUid() << as0Name;
+  qDebug() << "normalize" << normalize;
+  qDebug() << "origin offset" << origin << offset;
+  qDebug() << "use monitors" << UseMonitors;
+  mi.show();
 }

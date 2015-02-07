@@ -62,7 +62,9 @@ void MainWindow::ScanSequence( void )
     } else {
       ScanView->NewPoint( 0, NowScanP, MeasVals[0] );
     }
-    ScanView->NewPoint( 1, NowScanP, MeasVals[1] );
+    for ( int i = 1; i < mUnits.count(); i++ ) {
+      ScanView->NewPoint( i, NowScanP, MeasVals[i] );
+    }
     ScanView->update();
     NowScanP += si.dx;
     if ( ( ( si.dx > 0 )&&( NowScanP > si.ex ) )

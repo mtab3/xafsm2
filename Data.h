@@ -52,11 +52,13 @@ class Data : public QFrame, private Ui::Data
   S2DInfo S2DI;
 
   //  void showMeasData( QTextStream &in );
-  void showScanData( QTextStream &in, QVector<AUnit*> &AMotors );
+  void showScanData( QTextStream &in,
+		     QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
   void showMonData( QTextStream &in, QVector<AUnit*> &ASensors );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );
-  void showS2DData( QTextStream &in, QVector<AUnit*> &AMotors );
+  void showS2DData( QTextStream &in,
+		    QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
 
  public:
   Data( QWidget *p = NULL );
