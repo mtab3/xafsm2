@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "S2DMCA" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 8 00:01:05 2015 +0900\n"\
+                "    ScanInfo includes MonInfo and the minimum checke was done for MonInfo\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Feb 7 16:41:40 2015 +0900\n"\
                 "    Merge branch 'monInfo' into S2DMCA\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 3 00:36:24 2015 +0900\n"\
                 "    the alarm may work\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 2 21:08:21 2015 +0900\n"\
-                "    working on alarm\n"\
 		"\n"\
                 ""
 #endif

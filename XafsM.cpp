@@ -132,6 +132,14 @@ QSplashScreen *ShowSplashScreen( int m, int d )
     if ( d < 4 )
       SSPixmap.load( ":Monthly/Month03_03.gif" );
     break;
+  case 4:
+    if ( d < 16 )
+      SSPixmap.load( ":Monthly/Month04.png" );
+    break;
+  case 5:
+    if ( d < 6 )
+      SSPixmap.load( ":Monthly/Month05.png" );
+    break;
   default: break;
   }
 
