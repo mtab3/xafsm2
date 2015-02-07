@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 8 00:41:57 2015 +0900\n"\
+                "    new monthly\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 8 00:01:05 2015 +0900\n"\
                 "    ScanInfo includes MonInfo and the minimum checke was done for MonInfo\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 3 00:38:34 2015 +0900\n"\
                 "    it may work\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 3 00:36:24 2015 +0900\n"\
-                "    the alarm may work\n"\
 		"\n"\
                 ""
 #endif

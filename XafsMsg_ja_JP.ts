@@ -9,6 +9,13 @@
     </message>
 </context>
 <context>
+    <name>Alarms</name>
+    <message>
+        <source>Alarm!</source>
+        <translation>警報!</translation>
+    </message>
+</context>
+<context>
     <name>Conditions</name>
     <message>
         <source>Frame</source>
@@ -260,6 +267,14 @@ The original point will be changed as the angle calculated from the pulse will b
     <message>
         <source>Record Each MCA Spectrum when XAFS measurement</source>
         <translation>XAFS測定時、各点での MCA スペクトルをファイルに記録する</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>選択</translation>
+    </message>
+    <message>
+        <source>Data Root</source>
+        <translation>データルート</translation>
     </message>
 </context>
 <context>
@@ -3057,6 +3072,46 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>Wriging MCA File : [%1]</source>
         <translation>MCAファイル書出中 : [%1]</translation>
     </message>
+    <message>
+        <source>Scan Start</source>
+        <translation>スキャン開始</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use sensors selected at &amp;quot;Monitor Sensors&amp;quot; additional monitoring sensors while the scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>スキャンの際、「モニタ」用に選択された検出器の値も計測します。</translation>
+    </message>
+    <message>
+        <source>Additional</source>
+        <translation>追加使用</translation>
+    </message>
+    <message>
+        <source>SSD Start</source>
+        <translation>SSD計測開始</translation>
+    </message>
+    <message>
+        <source>S2D Start</source>
+        <translation>2次元スキャン開始</translation>
+    </message>
+    <message>
+        <source>S2D data is not valid</source>
+        <translation>2次元スキャンデータ無効</translation>
+    </message>
+    <message>
+        <source>View %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Can not save MCA spectra while scanning.</source>
+        <translation>スキャン中はMCAのデータの保存はできません。</translation>
+    </message>
+    <message>
+        <source>No View is available!</source>
+        <translation>使用可能なグラフ表示タブがありません。</translation>
+    </message>
+    <message>
+        <source>MCA</source>
+        <translation>MCA(SSD)</translation>
+    </message>
 </context>
 <context>
     <name>PMConditions</name>
@@ -3661,6 +3716,22 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Reading MCA File : [%1]</source>
         <translation>MCAファイル読込中 : [%1]</translation>
+    </message>
+    <message>
+        <source>Pop</source>
+        <translation>独立</translation>
+    </message>
+    <message>
+        <source>Can not save MCA spectra for 2D scan.</source>
+        <translation>2DスキャンしたMCAスペクトルをセーブできませんでした。</translation>
+    </message>
+    <message>
+        <source>No file name was selected</source>
+        <translation>ファイル名が選択されていません。</translation>
+    </message>
+    <message>
+        <source>Wriging MCA File : [%1]</source>
+        <translation>MCAファイル書出中 : [%1]</translation>
     </message>
 </context>
 <context>
