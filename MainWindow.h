@@ -49,6 +49,7 @@
 #include "ScanInfo.h"
 #include "MonLine.h"
 #include "Alarm.h"
+#include "MonInfo.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -668,6 +669,7 @@ private slots:
   void ShowNewMCARealTime( int ch );
   void ShowNewMCALiveTime( int ch );
   void saveMonData( void );
+  void SaveMonInfo( MonInfo *set );
   void gotNewPeakList( QVector<MCAPeak>* );
   void newPSSens( void );
   void SelectedShowDiff( bool f );
