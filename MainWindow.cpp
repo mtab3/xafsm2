@@ -343,6 +343,7 @@ void MainWindow::InitAndIdentifyMotors( void )
                     this, SLOT( ShowCurThPos() ) );
       }
       MMainTh = am;
+      //      iMMainTh = i;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
     }

@@ -15,7 +15,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   monDevs << MonDev0 << MonDev1 << MonDev2 << MonDev3 << MonDev4;
   monVals << MonV0 << MonV1 << MonV2 << MonV3 << MonV4;
 
-  SPSScan->setStyleSheet( NormalEXECB );
+  SPSScanB->setStyleSheet( NormalEXECB );
   MStart->setStyleSheet( NormalEXECB );
   
   for ( int i = 0; i < monSels.count(); i++ ) {
@@ -52,8 +52,8 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   double Eg = ManTEkeV->text().toDouble();
 
   //  inMove = 0;
-  inMMove = false;
-  inMonitor = false;
+  //  inMMove0 = false;
+  //  inMonitor = false;
   MinPause = false;
   inSPSing = false;
 
@@ -111,6 +111,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
     aSif->as = ASensors[0];
     aSif->as0 = ASensors[0];
     ScanIFs << aSif;
+    //    inMMoves << false;
   }
   for ( int i = 0; i < MSPEEDS; i++ ) {
     GoMotorS->addItem( MSpeeds[i].MSName );
@@ -212,7 +213,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   connect( SPSMotorSelect, SIGNAL( currentIndexChanged( int ) ), this, SLOT( NewMotor() ),
 	   Qt::UniqueConnection );
-  connect( GoMotor, SIGNAL( clicked() ), this, SLOT( GoMAtP() ),
+  connect( GoMotorB, SIGNAL( clicked() ), this, SLOT( GoMAtP() ),
 	   Qt::UniqueConnection );
   connect( GoMotorPosPuls, SIGNAL( textEdited( const QString & ) ),
 	   this, SLOT( NewGoMotorPosPuls( const QString & ) ),
@@ -221,7 +222,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   this, SLOT( NewGoMotorPosUnit( const QString & ) ),
 	   Qt::UniqueConnection );
 
-  connect( SPSScan, SIGNAL( clicked() ), this, SLOT( ScanStart() ),
+  connect( SPSScanB, SIGNAL( clicked() ), this, SLOT( ScanStart() ),
 	   Qt::UniqueConnection );
   connect( MStart, SIGNAL( clicked() ), this, SLOT( Monitor() ),
 	   Qt::UniqueConnection );
@@ -287,17 +288,23 @@ void MainWindow::newDataRoot( const QString &dataRoot )
 
 void MainWindow::NewMotor( void )
 {
-  setupMDispFirstTime = true;
+  //  setupMDispFirstTime = true;
   SaveScanInfo( ScanIFs[ SPSLastSelectedM ], AMotors[ SPSLastSelectedM ] );
 
   SPSLastSelectedM = SPSMotorSelect->currentIndex();
-  AMotors.value( SPSMotorSelect->currentIndex() )->GetValue();
+  AUnit *am = AMotors[ SPSLastSelectedM ];
+  am->GetValue();
 
-  GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+  GoMotorUnit->setText( am->getUnit() );
   SPSUnitSelect->removeItem( 1 );
-  SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+  SPSUnitSelect->addItem( am->getUnit() );
 
   LoadScanInfo( ScanIFs[ SPSLastSelectedM ] );
+  if ( UUnits.user( am ) != "" ) {
+    setGoBAsMoving();
+  } else {
+    setGoBAsNotMoving();
+  }
 }
 
 bool MainWindow::LoadScanInfo( ScanInfo *set )
@@ -319,6 +326,9 @@ bool MainWindow::LoadScanInfo( ScanInfo *set )
   SPSdwell0->setText( set->dt0 );
   SPSRelAbsSelect->setRelAbs( set->relabs );
 
+  GoMotorPosUnit->setText( set->goingPinU );
+  GoMotorPosPuls->setText( set->goingP );
+  qDebug() << "set going " << set->goingPinU << set->goingP;
   return true;
 }
 
@@ -355,6 +365,9 @@ void MainWindow::SaveScanInfo( ScanInfo *set, AUnit *am )
   if ( set->UseMonitors ) {
     SaveMonInfo( &(set->mi) );
   }
+
+  set->goingP = GoMotorPosPuls->text();
+  set->goingPinU = GoMotorPosUnit->text();
 }
 
 void MainWindow::SaveMonInfo( MonInfo *set )
@@ -414,7 +427,7 @@ void MainWindow::GoToPosKeV( void )
     MMainTh->Stop();
   } else {
     QString User;
-    if ( ( User = UUnits.isTheUnitInUse( MMainTh ) ) != "" ) {
+    if ( ( User = UUnits.user( MMainTh ) ) != "" ) {
       // 検出器が他のことに使われていたらダメ
       statusbar->showMessage( tr( "The Monochromator is used by the process %1!" )
 			      .arg( User ), 2000 );
@@ -606,7 +619,7 @@ void MainWindow::ShowGoMSpeed( void )
   GoMSpeedL->setStyleSheet( ( GoMSpeed == LOW )? RadioBOn : RadioBOff );
 }
 
-void MainWindow::ShowCurMotorPos( SMsg msg )
+void MainWindow::ShowCurMotorPos( SMsg msg )  // AUnit を通さずにつないでる !!
 {
   QString buf;
   QString val0;
@@ -627,12 +640,14 @@ void MainWindow::ShowCurMotorPos( SMsg msg )
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
       if ( MMRelAbs->stat() == ABS ) {
+	qDebug() << "show cur pos " << val0 << val;
 	GoMotorPosPuls->setText( val0 );
 	GoMotorPosUnit->setText( val );
 	setupMDispFirstTime = false;
       } else {
-	GoMotorPosPuls->setText( 0 );
-	GoMotorPosUnit->setText( 0 );
+	qDebug() << "show cur pos 00 " << val0 << val;
+	GoMotorPosPuls->setText( "0" );
+	GoMotorPosUnit->setText( "0" );
 	setupMDispFirstTime = false;
       }
     }
@@ -708,10 +723,12 @@ void MainWindow::NewGoMotorPosPuls( const QString &val )
 
   LastInIsPulsV = true;
   if ( MMRelAbs->stat() == ABS ) {
+    qDebug() << "New go motor " << QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() );
     GoMotorPosUnit
       ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() ) );
   } else {
     GoMotorPosUnit->setText( QString::number( val.toDouble() * am->getUPP() ) );
+    qDebug() << "New go motor00 " << QString::number( val.toDouble() * am->getUPP() );
   }
 }
 
@@ -732,7 +749,8 @@ void MainWindow::GoMAtP( void )
 {
   QString User;
 
-  if ( !inMMove ) {
+  if ( UUnits.user( AMotors[ SPSMotorSelect->currentIndex() ] ) == "" ) {
+    // 他のモータが動いていても、当該のモータが動いていなければ OK
     GoMAtPuls( GoMotorPosPuls->text().toDouble() );
   } else {
     GoMStop();
@@ -741,18 +759,20 @@ void MainWindow::GoMAtP( void )
 
 void MainWindow::GoMAtPuls( double Pos )
 {
-  AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
+  int mNo = SPSMotorSelect->currentIndex();
+  AUnit *am = AMotors.value( mNo );
 
   QString User;
-  if ( ( User = UUnits.isTheUnitInUse( am ) ) != "" ) {
+  if ( ( User = UUnits.user( am ) ) != "" ) {
     statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
 			    .arg( am->getName() ).arg( User ), 2000 );
     return;
   }
-
-  inMMove = true;
-  MovingM = SPSMotorSelect->currentIndex();
   //  MovingS = GoMotorS->currentIndex();
+  UUnits.addAnUnit( GOMOTOR_ID, am );
+  setGoBAsMoving();
+  if ( !GoTimer->isActive() )
+    GoTimer->start( 100 );
 
   if ( MMRelAbs->stat() == REL )
     Pos += am->value().toDouble();
@@ -761,18 +781,9 @@ void MainWindow::GoMAtPuls( double Pos )
     Pos = (double)((int)Pos);
   }
 
-  GoMotor->setText( tr( "Stop" ) );
-  GoMotor->setStyleSheet( InActive );
-
-  SPSScan->setEnabled( false );
-
   am->SetSpeed( MSpeeds[ GoMotorS->currentIndex() ].MSid );
   am->SetValue( Pos );
   am->setIsBusy( true );
-
-  UUnits.addUnit( GOMOTOR_ID, am );
-  
-  GoTimer->start( 100 );
 
   NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
 	     .arg( am->getName() )
@@ -785,35 +796,82 @@ void MainWindow::GoMAtPuls( double Pos )
 			  1000 );
 }
 
+void MainWindow::setGoBAsMoving( void )
+{
+  // ここは表示だけ、ステータスをいじってはダメ
+#if 0
+  inMMoves[ mNo ] = true;
+  inMMove0 = true;            // これはどれか一つでも動けばとにかく true
+  UUnits.addAnUnit( GOMOTOR_ID, am );
+#endif
+
+  GoMotorB->setText( tr( "Stop" ) );
+  GoMotorB->setStyleSheet( InActive );
+  //  GoMotorB->setEnabled( false );
+  SPSScanB->setEnabled( false );
+}
+
+void MainWindow::setGoBAsNotMoving( void )
+{
+  // ここは表示だけ、ステータスをいじってはダメ
+#if 0
+  UUnits.clear( GOMOTOR_ID );
+  inMMoves[ mNo ] = false;
+#endif
+  GoMotorB->setText( tr( "Go" ) );
+  GoMotorB->setStyleSheet( NormalB );
+  //  GoMotorB->setEnabled( true );
+  SPSScanB->setEnabled( true );
+
+  // これもここでやることではない
+#if 0
+  int i;
+  for ( i = 0; i < inMMoves.count(); i++ ) {
+    if ( inMMoves[i] )
+      break;
+  }
+  if ( i >= inMMoves.count() ) {
+    // この２つは全部止まってることを確認してから止める
+    inMMove0 = false;
+    GoTimer->stop();
+  }
+#endif
+}
+
 void MainWindow::GoMStop( void )
 {
   // 動かしたモーターを憶えておいてそれを止めるより、
   // 今指定しているモーターを止めるほうが実用的と判断した。
-  AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
+  int mNo = SPSMotorSelect->currentIndex();
+  AUnit *am = AMotors.value( mNo );
 
-  am->Stop();   // なんでも止められる。
-  if ( SPSMotorSelect->currentIndex() == MovingM ) // 今動かしたモーターだったら
-    GoMStop0();
-
-  NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2" ) )
-	     .arg( am->getName() )
-	     .arg( am->value() ) );
-  statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2" ) )
+  // 当該のモータが使われてて、かつそれを使ってるのが GOMOTOR の場合のみ止める
+  if ( UUnits.removeAnUnit( GOMOTOR_ID, am ) ) {
+    am->Stop();
+    setGoBAsNotMoving();
+    
+    NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2" ) )
+	       .arg( am->getName() )
+	       .arg( am->value() ) );
+    statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2" ) )
 			  .arg( am->getName() )
-			  .arg( am->value() ), 1000 );
+			    .arg( am->value() ), 1000 );
+  }
 }
 
+#if 0
 void MainWindow::GoMStop0( void )
 {
   inMMove = false;
 
   UUnits.clear( GOMOTOR_ID );
   GoTimer->stop();
-  GoMotor->setEnabled( true );
-  SPSScan->setEnabled( true );
-  GoMotor->setText( tr( "Go" ) );
-  GoMotor->setStyleSheet( NormalB );
+  GoMotorB->setEnabled( true );
+  SPSScanB->setEnabled( true );
+  GoMotorB->setText( tr( "Go" ) );
+  GoMotorB->setStyleSheet( NormalB );
 }
+#endif
 
 void MainWindow::SelectedAPointInScanArea( double x, double )
 {
@@ -882,7 +940,7 @@ void MainWindow::ScanStart( void )
       NewLogMsg( msg );
       return;
     }
-    if ( ( User = UUnits.isTheUnitInUse( si.am ) ) != "" ) {
+    if ( ( User = UUnits.user( si.am ) ) != "" ) {
       // モーターがが他のことに使われたらダメ
       statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
 			      .arg( si.am->getName() ).arg( User ), 2000 );
@@ -906,7 +964,7 @@ void MainWindow::ScanStart( void )
 	return;
       }
 
-      if ( ( User = UUnits.isTheUnitInUse( as ) ) != "" ) {
+      if ( ( User = UUnits.user( as ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
 				.arg( as->getName() ).arg( User ), 2000 );
@@ -927,9 +985,9 @@ void MainWindow::ScanStart( void )
     
     si.am->SetSpeed( MSpeeds[ si.speed ].MSid );
 
-    SPSScan->setText( tr( "Stop" ) );
-    SPSScan->setStyleSheet( InActive );
-    GoMotor->setEnabled( false );
+    SPSScanB->setText( tr( "Stop" ) );
+    SPSScanB->setStyleSheet( InActive );
+    GoMotorB->setEnabled( false );
 
     ScanView->Clear();
     ScanView->SetLR( 0, LEFT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
@@ -960,9 +1018,9 @@ void MainWindow::ScanStart( void )
     ScanRecFileName->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
     ScanRecFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 
-    UUnits.addUnit( SCAN_ID, si.am );
+    UUnits.addAnUnit( SCAN_ID, si.am );
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addUnit( SCAN_ID, mUnits.at(i) );
+      UUnits.addAnUnit( SCAN_ID, mUnits.at(i) );
     }
     ScanView->setSInfo( si );
 
@@ -1064,7 +1122,7 @@ void MainWindow::Monitor( void )
 	return;
       }
 
-      if ( ( User = UUnits.isTheUnitInUse( as ) ) != "" ) {
+      if ( ( User = UUnits.user( as ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
 				.arg( as->getName() ).arg( User ), 2000 );
@@ -1116,7 +1174,7 @@ void MainWindow::Monitor( void )
     }
 
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addUnit( MONITOR_ID, mUnits.at(i) );
+      UUnits.addAnUnit( MONITOR_ID, mUnits.at(i) );
     }
 
     inMonitor = true;
@@ -1142,7 +1200,7 @@ void MainWindow::Monitor( void )
       }
     }
 
-    UUnits.clear( MONITOR_ID );
+    UUnits.removeUnits( MONITOR_ID );
     MonitorViewC->setDeletable( true );
     MPause->setEnabled( false );
     MPause->setText( tr( "Pause" ) );

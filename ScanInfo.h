@@ -39,6 +39,9 @@ class ScanInfo
   QString sx0, ex0, dx0, dt0;
   double sx, ex, dx, dt;
 
+  QString goingP;
+  QString goingPinU;
+  
   AUnit *as;
   AUnit *as0;
   QString asName;

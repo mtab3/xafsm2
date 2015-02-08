@@ -1175,7 +1175,7 @@ void MainWindow::StartMeasurement( void )
     isSFluo = isSI1 = false;
 
     QString User;
-    if ( ( User = UUnits.isTheUnitInUse( MMainTh ) ) != "" ) {
+    if ( ( User = UUnits.user( MMainTh ) ) != "" ) {
       // 分光器が他のことに使われたらダメ
       statusbar->showMessage( tr( "Monochro is used by the process %1!" )
 			      .arg( User ), 2000 );
@@ -1363,7 +1363,7 @@ void MainWindow::StartMeasurement( void )
         return;
       }
 
-      if ( ( User = UUnits.isTheUnitInUse( as ) ) != "" ) {
+      if ( ( User = UUnits.user( as ) ) != "" ) {
 	// 計測器が他のことに使われてたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
 				.arg( as->getName() ).arg( User ), 2000 );
@@ -1547,9 +1547,13 @@ void MainWindow::StartMeasurement( void )
     // *************************************************************************
     // これ以降に XAFS 測定をやめるときは UUnits.clear() が必要。!!!!!!!!!!!!!!!
     // *************************************************************************
-    UUnits.addUnit( MEAS_ID, MMainTh );
+    UUnits.addAnUnit( MEAS_ID, MMainTh );
+#if 0
+    inMMoves[ iMMainTh ] = true;
+    inMMove0 = true;
+#endif
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addUnit( MEAS_ID, mUnits.at(i) );
+      UUnits.addAnUnit( MEAS_ID, mUnits.at(i) );
     }
 
     inMeas = true;
@@ -1653,7 +1657,7 @@ void MainWindow::SurelyStop( void )
     MeasBackGround->setStyleSheet( NormalB );
     MeasDarkStage = 0;
   }
-  UUnits.clear( MEAS_ID );
+  clearUUnits();
   CheckNewMeasFileName();
   NewLogMsg( tr( "Meas: Stopped %1 keV (%2 deg) [enc] %3 keV (%4 deg) [PM]" )
 	     .arg( u->deg2keV( SelectedCurPosDeg( XENC ) ) )

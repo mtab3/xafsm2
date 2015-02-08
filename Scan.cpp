@@ -76,8 +76,8 @@ void MainWindow::ScanSequence( void )
     }
     break;
   case 10:
-    SPSScan->setText( tr( "Scan" ) );
-    SPSScan->setStyleSheet( NormalEXECB );
+    SPSScanB->setText( tr( "Scan" ) );
+    SPSScanB->setStyleSheet( NormalEXECB );
     statusbar->showMessage( tr( "The Scan has Finished" ), 4000 );
     NewLogMsg( QString( tr( "Scan Finished" ) ) );
     am->Stop();
@@ -88,11 +88,11 @@ void MainWindow::ScanSequence( void )
     ScanStage = 12;
     break;
   case 12:
-    UUnits.clear( SCAN_ID );
+    UUnits.removeUnits( SCAN_ID );
     inSPSing = 0;
     ScanTimer->stop();
-    SPSScan->setEnabled( true );
-    GoMotor->setEnabled( true );
+    SPSScanB->setEnabled( true );
+    GoMotorB->setEnabled( true );
     ScanViewC->setDeletable( true );
     break;
   }

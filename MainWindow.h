@@ -176,6 +176,7 @@ private:
   AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
   AUnit *EncMainTh, *Enc2;
   AUnit *MMStab;
+  //  int iMMainTh;
 
   bool MStabOk;
   QString MStabDrv;
@@ -191,7 +192,8 @@ private:
   void InitAndIdentifyMotors( void );
   void InitAndIdentifySensors( void );
 
-  QTimer *GoTimer, *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
+  QTimer *GoTimer;
+  QTimer *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
   QTimer *S2DTimer, *S2DTimer2;
 
   Stars *s;
@@ -271,8 +273,11 @@ private:
   OLDNEW S2DDataStat;
   OLDNEW S2DNameStat;
 
+
   void GoMAtPuls( double Pos );
-  void GoMStop0( void );
+  void setGoBAsMoving( void );
+  void setGoBAsNotMoving( void );
+  //  void GoMStop0( void );
   void ShowTAE( void );
   void GetNewGo( int i );
   void ShowGo( int i );
@@ -286,9 +291,10 @@ private:
   bool RWDXMCenterF;
   QString DXMCenterFile;
 
-  bool inMMove;
+  //  bool inMMove0;
+  //  QVector<bool> inMMoves;
   int SPSLastSelectedM;
-  int MovingM;           // Moving motor ID
+  //  int MovingM;           // Moving motor ID
   //  int MovingS;           // Moving motor Speed
   //  RELABS GoMRelAbs, SPSRelAbs;
   //  int SPSSelU;           // Selected SPS Unit
@@ -511,7 +517,7 @@ private:
   bool isBusyMotorInMeas( void );
   void SetScanViewWindow( void );
   void ClearXViewScreenForScan( XYView *view );
-
+  void clearUUnits( void );
   void SetEnableOfUnits( QString drv, bool enable );
 
   // Sound

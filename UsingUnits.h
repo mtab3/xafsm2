@@ -8,58 +8,69 @@ class UsingUnit : public QObject
 {
   Q_OBJECT
 
-  QString ID;
+  QString User;
   AUnit *Unit;
 
  public:
-  UsingUnit( QString id, AUnit *u ) { ID = id; Unit = u; };
+  UsingUnit( QString user, AUnit *unit ) { User = user; Unit = unit; };
 
-  bool isUnit( AUnit *u ) { return ( Unit == u ); };
-  bool isUniq( QString id, AUnit *u ) { return ( ( id == ID )&&( Unit == u ) ); };
-  QString id( void ) { return ID; };
+  bool isUnit( AUnit *unit ) { return ( Unit == unit ); };
+  bool isUniq( QString user, AUnit *unit )
+  { return (( user == User )&&( unit == Unit )); };
+  QString user( void ) { return User; };
 };
 
 class UsingUnits : public QObject
 {
   Q_OBJECT
 
-  QVector<UsingUnit*> UUnits;
+  QVector<UsingUnit*> uUnits;
 
  public:
   UsingUnits() {};
 
-  QString isTheUnitInUse( AUnit *Unit ) {
-    for ( int i = 0; i < UUnits.count(); i++ ) {
-      if ( UUnits[i]->isUnit( Unit ) ) {
-	return UUnits[i]->id();
+  QString user( AUnit *unit ) {
+    for ( int i = 0; i < uUnits.count(); i++ ) {
+      if ( uUnits[i]->isUnit( unit ) ) {
+	return uUnits[i]->user();
       }
     }
     return "";
   }
 
-  void addUnit( QString ID, AUnit *Unit ) {
-    UUnits << new UsingUnit( ID, Unit );
+  bool addAnUnit( QString user, AUnit *unit ) {
+    for ( int i = 0; i < uUnits.count(); i++ ) {
+      if ( uUnits[i]->isUnit( unit ) )
+	return false;
+    }
+    uUnits << new UsingUnit( user, unit );
+    return true;
   };
 
-  bool deleteUnit( QString ID, AUnit *Unit ) {
-    for ( int i = 0; i < UUnits.count(); i++ ) {
-      if ( UUnits[i]->isUniq( ID, Unit ) ) {
-	UUnits.remove( i );
+  bool removeAnUnit( QString user, AUnit *unit ) {
+    for ( int i = 0; i < uUnits.count(); i++ ) {
+      if ( uUnits[i]->isUniq( user, unit ) ) {
+	uUnits.remove( i );
 	return true;
       }
     }
     return false;
   };
 
-  void clear( QString ID ) {
-    for ( int i = UUnits.count() - 1; i >= 0; i-- ) {
-      if ( UUnits[i]->id() == ID ) {
-	UUnits.remove( i );
+  void removeUnits( QString user ) {
+    for ( int i = uUnits.count() - 1; i >= 0; i-- ) {
+      if ( uUnits[i]->user() == user ) {
+	uUnits.remove( i );
       }
     }
-    for ( int i = 0; i < UUnits.count(); i++ ) {
-      qDebug() << "remain " << UUnits[i]->id();
+  }
+
+  bool isAnyOneUsedBy( QString user ) {
+    for ( int i = 0; i < uUnits.count(); i++ ) {
+      if ( uUnits[i]->user() == user )
+	return true;
     }
+    return false;
   }
 };
 

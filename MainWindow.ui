@@ -4708,7 +4708,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </widget>
              </item>
              <item row="5" column="7" colspan="3">
-              <widget class="QPushButton" name="GoMotor">
+              <widget class="QPushButton" name="GoMotorB">
                <property name="maximumSize">
                 <size>
                  <width>80</width>
@@ -5106,7 +5106,7 @@ Though, other parameters are fixed at the value on starting.</string>
               </widget>
              </item>
              <item row="11" column="10" colspan="2">
-              <widget class="QPushButton" name="SPSScan">
+              <widget class="QPushButton" name="SPSScanB">
                <property name="maximumSize">
                 <size>
                  <width>80</width>

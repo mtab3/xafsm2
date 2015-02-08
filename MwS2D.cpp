@@ -326,7 +326,11 @@ void MainWindow::S2DScanStart( void )
     CheckS2DDwellTime();
     SetupS2DParams();   // スキャンパラメータを GUI から内部変数にコピー
 
-    if ( inMeas || inSPSing || inMonitor || inMMove || inMCAMeas ) {
+    // inMMove のチェック不要(後で UUnits のチェックがあるので...)
+    // 他のチェックもいらないかも
+    // 自分自信が動いてるかどうかのチェックだけは必要だが
+    // 使用するUnitがダブっていなければ他の動作が並列で走っても構わないはず
+    if ( inMeas || inSPSing || inMonitor || inMCAMeas ) {
       statusbar
 	->showMessage( tr( "Can't start 2D Scan. Othre Process is going on." ), 2000 );
       S2DI = oldInfo;
@@ -376,7 +380,7 @@ void MainWindow::S2DScanStart( void )
 	  }
 	}
 
-	if ( ( User = UUnits.isTheUnitInUse( S2DI.unit[i] ) ) != "" ) {
+	if ( ( User = UUnits.user( S2DI.unit[i] ) ) != "" ) {
 	  // モーターが他のことに使われていたらダメ
 	  statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
 				  .arg( S2DI.unit[i]->getName() ).arg( User ), 2000 );
@@ -400,7 +404,7 @@ void MainWindow::S2DScanStart( void )
 	return;
       }
 
-      if ( ( User = UUnits.isTheUnitInUse( mUnits.at(i) ) ) != "" ) {
+      if ( ( User = UUnits.user( mUnits.at(i) ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
 				.arg( mUnits.at(i)->getName() ).arg( User ), 2000 );
@@ -472,11 +476,11 @@ void MainWindow::S2DScanStart( void )
 
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] ) {
-	UUnits.addUnit( S2D_ID, S2DI.unit[i] );
+	UUnits.addAnUnit( S2D_ID, S2DI.unit[i] );
       }
     }
     for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addUnit( S2D_ID, mUnits.at(i) );
+      UUnits.addAnUnit( S2D_ID, mUnits.at(i) );
     }
 
     S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
@@ -654,7 +658,7 @@ void MainWindow::S2DStop0( void )
 void MainWindow::S2DStop00( void )
 {
   inS2D = false;
-  UUnits.clear( S2D_ID );
+  UUnits.removeUnits( S2D_ID );
   NewLogMsg( QString( tr( "2D Scan Finished." ) ) );
   statusbar->showMessage( QString( tr( "2D Scan Finished." ) ), 2000 );
   S2DStart->setText( tr( "Start" ) );

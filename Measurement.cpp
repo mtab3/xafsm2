@@ -183,7 +183,7 @@ void MainWindow::MeasSequence( void )
                                // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
-	UUnits.clear( MEAS_ID );
+	clearUUnits();
 	CheckNewMeasFileName();
         statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
         NewLogMsg( QString( tr( "Meas: Finished" ) ) );
@@ -208,6 +208,21 @@ void MainWindow::MeasSequence( void )
       MeasStage = 10;
     break;
   }
+}
+
+void MainWindow::clearUUnits( void )
+{
+  UUnits.removeUnits( MEAS_ID );
+#if 0
+  inMMoves[ iMMainTh ] = false;
+  inMMove0 = false;
+  for ( int i = 0; inMMoves.count(); i++ ) {
+    if ( inMMoves[i] ) {
+      inMMove0 = true;
+      break;
+    }
+  }
+#endif
 }
 
 void MainWindow::onMeasFinishWorks( void )

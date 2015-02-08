@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "scan" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 8 00:48:31 2015 +0900\n"\
+                "    LION\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 8 00:41:57 2015 +0900\n"\
                 "    new monthly\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 4 15:10:24 2015 +0900\n"\
                 "    alarm system is re-implemented with a call Alarms\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 3 00:38:34 2015 +0900\n"\
-                "    it may work\n"\
 		"\n"\
                 ""
 #endif
