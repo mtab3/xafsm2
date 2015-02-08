@@ -19,9 +19,7 @@ void MainWindow::MeasSequence( void )
       return;
     MovingToNewSamplePosition = false;
   }
-
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
-
   if ( MPSet.qXafsMode ) {
     QXafsMeasSequence();
     return;

@@ -1548,6 +1548,8 @@ void MainWindow::StartMeasurement( void )
     // これ以降に XAFS 測定をやめるときは UUnits.clear() が必要。!!!!!!!!!!!!!!!
     // *************************************************************************
     UUnits.addAnUnit( MEAS_ID, MMainTh );
+    if ( MDTh1 != NULL )
+      UUnits.addAnUnit( MEAS_ID, MDTh1 );
 #if 0
     inMMoves[ iMMainTh ] = true;
     inMMove0 = true;

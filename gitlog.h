@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "scan" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 00:03:06 2015 +0900\n"\
+                "    inMMove0 and inMMoves are expired from all the source codes.  UUnits are used in much better way\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 8 00:48:31 2015 +0900\n"\
                 "    LION\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 5 14:08:57 2015 +0900\n"\
                 "    the MonInfo is smplimented but not tested\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 4 15:10:24 2015 +0900\n"\
-                "    alarm system is re-implemented with a call Alarms\n"\
 		"\n"\
                 ""
 #endif
