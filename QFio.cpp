@@ -151,7 +151,7 @@ void MainWindow::WriteQBody( int rpt, DIRECTION dir )
 // EIB741なし(Enc2なし)の場合は正しく動かない気がする
 void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir は不要のはず
 {
-  int Us = mUnits.count();
+  int Us = mMeasUnits.count();
 
   QStringList valsEnc;
   if ( Enc2 != NULL ) {
@@ -165,12 +165,12 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   QVector<double> dark;
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
-    vals << mUnits.at(i)->values();
+    vals << mMeasUnits.at(i)->values();
 
-    dark << mUnits.at(i)->getDark();          //  * QXafsDwellTime;  // 即席
+    dark << mMeasUnits.at(i)->getDark();          //  * QXafsDwellTime;  // 即席
     /* q34410a だけならこれでいいけど、他の計測器を使うようになったらダメ */
 
-    qDebug() << "dark " << mUnits.at(i)->getDark() << QXafsDwellTime;
+    qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
     if ( num > vals[i][0].toInt() )
       num = vals[i][0].toInt();
   }
@@ -230,7 +230,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
 // 結局 dir はいらんかった ?
 // そんなことはない !!!! ほんとうは使わないとダメ (いまは backward の時におかしい)
 {
-  int Us = mUnits.count();
+  int Us = mMeasUnits.count();
 
   QStringList valsEnc;
   if ( Enc2 != NULL ) {
@@ -244,9 +244,9 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   QVector<double> dark;
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
-    vals << mUnits.at(i)->values();
-    dark << mUnits.at(i)->getDark() * QXafsDwellTime;
-    qDebug() << "dark " << mUnits.at(i)->getDark() << QXafsDwellTime;
+    vals << mMeasUnits.at(i)->values();
+    dark << mMeasUnits.at(i)->getDark() * QXafsDwellTime;
+    qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
     if ( num > vals[i][0].toInt() )
       num = vals[i][0].toInt();
   }

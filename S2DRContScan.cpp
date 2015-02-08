@@ -32,10 +32,10 @@ void MainWindow::S2DRealContinuousScanSequence( void )
   // センサー busy でも入ってこない 
   // 但し、一旦測定を始めてしまうと検出器はずっと busy なので、内部の busy2 だけチェック
   if ( S2DStage < 2 ) {
-    if ( mUnits.isBusy() )
+    if ( mS2DUnits.isBusy() )
       return;
   } else {
-    if ( mUnits.isBusy2() )
+    if ( mS2DUnits.isBusy2() )
       return;
   }
 
@@ -43,16 +43,16 @@ void MainWindow::S2DRealContinuousScanSequence( void )
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
-    if ( mUnits.init() ) // true :: initializing
+    if ( mS2DUnits.init() ) // true :: initializing
       break;
     S2DWriteHead0();
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case 1:
-    if ( mUnits.getValue02() )
+    if ( mS2DUnits.getValue02() )
       break;
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case 2:
@@ -75,11 +75,11 @@ void MainWindow::S2DRealContinuousScanSequence( void )
   case 4:     // リピートポイント
     // 計測開始準備
     S2DI.i[0] = -1;
-    connect( mUnits.at(0), SIGNAL( newValue( QString ) ),
+    connect( mS2DUnits.at(0), SIGNAL( newValue( QString ) ),
 	     this, SLOT( S2DNewScanValue( QString ) ),
 	     Qt::UniqueConnection );
     S2DTimer2->start( S2DI.Dwell * 1000 / S2DI.ps[0] );
-    mUnits.getValue();
+    mS2DUnits.getValue();
     // 同時に「終点」に移動開始
     if ( S2DScanDir == FORWARD ) {
       S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( S2DI.ex[0] ) );
@@ -144,16 +144,16 @@ void MainWindow::S2DRealContinuousScanSequence( void )
 	S2DI.unit[i]->SetValue( S2DI.now[i] );
     }
     // とりあえずスピードは「High」設定のママほっとく。
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case S2D_END_STAGE+1:
-    if ( mUnits.Close() )
+    if ( mS2DUnits.Close() )
       break;
     S2DStage++;
     break;
   case S2D_END_STAGE+2:
-    disconnect( mUnits.at(0), SIGNAL( newValue( QString ) ),
+    disconnect( mS2DUnits.at(0), SIGNAL( newValue( QString ) ),
 		this, SLOT( S2DNewScanValue( QString ) ) );
     S2DStop00();
     S2DTimer2->stop();
@@ -163,7 +163,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
 
 void MainWindow::S2DRContScanMeas( void )
 {
-  mUnits.getValue();
+  mS2DUnits.getValue();
 }
 
 void MainWindow::S2DNewScanValue( QString v )

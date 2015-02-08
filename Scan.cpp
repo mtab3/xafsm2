@@ -5,7 +5,7 @@ void MainWindow::ScanSequence( void )
   ScanInfo si = ScanView->getSInfo();
   AUnit *am = si.am;
 
-  if ( am->isBusy() || am->isBusy2() || mUnits.isBusy() )
+  if ( am->isBusy() || am->isBusy2() || mScanUnits.isBusy() )
     return;
 
   switch( ScanStage ) {
@@ -23,37 +23,37 @@ void MainWindow::ScanSequence( void )
     NowScanP = si.sx;
     am->SetValue( si.sx );
     SetScanViewWindow();
-    mUnits.clearStage();
+    mScanUnits.clearStage();
     ScanStage = 1;
     // break;                   // break 不要
   case 1:
-    if ( mUnits.init() == false ) {  // true :: initializing
-      mUnits.clearStage();
+    if ( mScanUnits.init() == false ) {  // true :: initializing
+      mScanUnits.clearStage();
       ScanStage = 2;
     }
     break;
   case 2: 
-    mUnits.setDwellTime();
-    if ( mUnits.isParent() ) {
+    mScanUnits.setDwellTime();
+    if ( mScanUnits.isParent() ) {
       ScanStage = 3;
     } else {
       ScanStage = 4;
     }
     break;
   case 3:
-    if ( mUnits.getValue0() == false ) { // only for counters and SSDs
-      mUnits.clearStage();
+    if ( mScanUnits.getValue0() == false ) { // only for counters and SSDs
+      mScanUnits.clearStage();
       ScanStage = 4;
     }
     break;
   case 4:
-    if ( mUnits.getValue() == false ) {  // true :: Getting
-      mUnits.clearStage();
+    if ( mScanUnits.getValue() == false ) {  // true :: Getting
+      mScanUnits.clearStage();
       ScanStage = 5;
     }
     break;
   case 5:
-    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
+    mScanUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
     if ( si.normalize ) {
       if ( MeasVals[1] != 0 )
 	ScanView->NewPoint( 0, NowScanP, MeasVals[0] / MeasVals[1] );
@@ -62,7 +62,7 @@ void MainWindow::ScanSequence( void )
     } else {
       ScanView->NewPoint( 0, NowScanP, MeasVals[0] );
     }
-    for ( int i = 1; i < mUnits.count(); i++ ) {
+    for ( int i = 1; i < mScanUnits.count(); i++ ) {
       ScanView->NewPoint( i, NowScanP, MeasVals[i] );
     }
     ScanView->update();

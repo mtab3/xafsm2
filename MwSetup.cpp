@@ -566,7 +566,7 @@ void MainWindow::saveScanData( void )
 
   for ( int i = 0; i < points; i++ ) {
     out << view->GetX( 0, i );
-    for ( int j = 0; j < mUnits.count(); j++ ) {
+    for ( int j = 0; j < mScanUnits.count(); j++ ) {
       out << "\t" << view->GetY( j, i );
     }
     out << "\n";
@@ -909,28 +909,28 @@ void MainWindow::ScanStart( void )
 
     //    ScanMotor = MotorN->currentIndex();
     //    SInfo.am = AMotors.value( ScanMotor );
-    mUnits.clearUnits();
-    mUnits.addUnit( si.as );
-    mUnits.addUnit( si.as0 );
+    mScanUnits.clearUnits();
+    mScanUnits.addUnit( si.as );
+    mScanUnits.addUnit( si.as0 );
     if ( SPSUseAdditionalSs->isChecked() ) {
       for ( int i = 0; i < monLines.count(); i++ ) {
 	if ( monLines[i]->isChecked() ) {
 	  AUnit *as = ASensors[ monLines[i]->currentIndex() ];
 	  if ( as->isEnable() ) {
 	    int i;
-	    for ( i = 0; i < mUnits.count(); i++ ) {
-	      if ( as == mUnits.at(i) )
+	    for ( i = 0; i < mScanUnits.count(); i++ ) {
+	      if ( as == mScanUnits.at(i) )
 		break;
 	    }
-	    if ( i >= mUnits.count() ) {
-	      mUnits.addUnit( as );
+	    if ( i >= mScanUnits.count() ) {
+	      mScanUnits.addUnit( as );
 	    }
 	  }
 	}
       }
     }
-    mUnits.setDwellTimes( si.dt );
-    mUnits.setDwellTime();
+    mScanUnits.setDwellTimes( si.dt );
+    mScanUnits.setDwellTime();
 
     QString User;
     if ( ! si.am->isEnable() ) {  // 使用するモータに関するチェック
@@ -947,8 +947,8 @@ void MainWindow::ScanStart( void )
       return;
     }
 
-    for ( int i = 0; i < mUnits.count(); i++ ) {   // 使用する検出器に関するチェック
-      AUnit *as = mUnits.at(i);
+    for ( int i = 0; i < mScanUnits.count(); i++ ) {   // 使用する検出器に関するチェック
+      AUnit *as = mScanUnits.at(i);
       if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
 	  .arg( as->getName() );
@@ -993,13 +993,13 @@ void MainWindow::ScanStart( void )
     ScanView->SetLR( 0, LEFT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
     ScanView->SetScaleType( 0, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
     ScanView->SetLeftName( " " );
-    for ( int i = 1; i < mUnits.count(); i++ ) {
+    for ( int i = 1; i < mScanUnits.count(); i++ ) {
       ScanView->SetLR( i, RIGHT_AX );   // 0 番目の線はグループ 0, 1 番目の線はグループ 1
       ScanView->SetScaleType( i, FULLSCALE ); // グループ 0 も 1 も FULLSCALE
     }
     ScanView->SetRightName( " " );
-    for ( int i = 0; i < mUnits.count(); i++ )
-      ScanView->SetLineName( i, mUnits.at(i)->getName() );
+    for ( int i = 0; i < mScanUnits.count(); i++ )
+      ScanView->SetLineName( i, mScanUnits.at(i)->getName() );
     ScanView->SetXName( si.am->getName() );
     ScanView->SetXUnitName( si.unitName );
 
@@ -1019,8 +1019,8 @@ void MainWindow::ScanStart( void )
     ScanRecFileName->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
 
     UUnits.addAnUnit( SCAN_ID, si.am );
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addAnUnit( SCAN_ID, mUnits.at(i) );
+    for ( int i = 0; i < mScanUnits.count(); i++ ) {
+      UUnits.addAnUnit( SCAN_ID, mScanUnits.at(i) );
     }
     ScanView->setSInfo( si );
 
@@ -1093,7 +1093,7 @@ void MainWindow::Monitor( void )
     //    MonitorViewC->setNowDType( MONDATA );
     MonitorView = (TYView*)(MonitorViewC->getView());
 
-    mUnits.clearUnits();
+    mMonUnits.clearUnits();
     for ( int i = 0; i < monLines.count(); i++ ) {
       if ( monLines[i]->isChecked() ) {
 	if ( ! ass[i]->isEnable() ) {
@@ -1103,18 +1103,18 @@ void MainWindow::Monitor( void )
 	  NewLogMsg( msg );
 	  return;
 	}
-	mUnits.addUnit( ass[i] );
+	mMonUnits.addUnit( ass[i] );
 	// 注意 !!
-	// mUnits の unit 番号と、ass, MonSels, MonDevs, MonVals の番号はずれる。
-	// (選ばれていないものは、mUnits に登録されないため)
+	// mMonUnits の unit 番号と、ass, MonSels, MonDevs, MonVals の番号はずれる。
+	// (選ばれていないものは、mMonUnits に登録されないため)
       }
     }
-    mUnits.setDwellTimes( DwellT20->text().toDouble() );
-    mUnits.setDwellTime();
+    mMonUnits.setDwellTimes( DwellT20->text().toDouble() );
+    mMonUnits.setDwellTime();
 
     QString User;
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      AUnit *as = mUnits.at(i);
+    for ( int i = 0; i < mMonUnits.count(); i++ ) {
+      AUnit *as = mMonUnits.at(i);
       if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor [%1] can use only in QXafs mode." )
 	  .arg( as->getName() );
@@ -1136,20 +1136,20 @@ void MainWindow::Monitor( void )
       monInfo.save( MonOut );
 #if 0
       MonOut << "#\tsec";
-      for ( int i = 0; i < mUnits.count(); i++ ) {
+      for ( int i = 0; i < mMonUnits.count(); i++ ) {
 	MonOut << QString( tr( "\t%1[%2]" )
-			   .arg( mUnits.getName( i ) )
-			   .arg( mUnits.getUnit( i ) ) );
+			   .arg( mMonUnits.getName( i ) )
+			   .arg( mMonUnits.getUnit( i ) ) );
       }
       MonOut << "\n";
 #endif
     }
 
     MonitorView->ClearDataR();
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      MonitorView->SetLName( i, mUnits.getName( i ) );
+    for ( int i = 0; i < mMonUnits.count(); i++ ) {
+      MonitorView->SetLName( i, mMonUnits.getName( i ) );
     }
-    MonitorView->SetLines( mUnits.count() );
+    MonitorView->SetLines( mMonUnits.count() );
     MonitorView->makeValid( true );
 
     MonitorView->SetMonScale( SelectScale->currentIndex() );
@@ -1173,8 +1173,8 @@ void MainWindow::Monitor( void )
       MonRecFile->setToolTip( FSTATMsgs[ MonDataStat ][ MonNameStat ] );
     }
 
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addAnUnit( MONITOR_ID, mUnits.at(i) );
+    for ( int i = 0; i < mMonUnits.count(); i++ ) {
+      UUnits.addAnUnit( MONITOR_ID, mMonUnits.at(i) );
     }
 
     inMonitor = true;
@@ -1260,10 +1260,10 @@ void MainWindow::saveMonData( void )
   view->getMonInfo().save( out );
 #if 0
   out << "#\tsec";
-  for ( int i = 0; i < mUnits.count(); i++ ) {
+  for ( int i = 0; i < mMonUnits.count(); i++ ) {
     out << QString( tr( "\t%1[%2]" )
-		    .arg( mUnits.getName( i ) )
-		    .arg( mUnits.getUnit( i ) ) );
+		    .arg( mMonUnits.getName( i ) )
+		    .arg( mMonUnits.getUnit( i ) ) );
   }
   out << "\n";
 #endif

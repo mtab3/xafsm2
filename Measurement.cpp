@@ -12,7 +12,7 @@ void MainWindow::MeasSequence( void )
   if ( MPSet.qXafsMode ) {
     ShowQXafsProgress();
   }
-  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mUnits.isBusy() ) ) return;
+  if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mMeasUnits.isBusy() ) ) return;
   if ( MovingToNewSamplePosition ) {
     if ( Changers[ ChangerSelect->currentIndex() ]->unit1()->isBusy()
 	 || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
@@ -51,15 +51,15 @@ void MainWindow::MeasSequence( void )
     }
     CurrentPnt->setText( QString::number( 1 ) );
     WriteInfoFile();
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     MeasView->SetWindow0( u->any2keV( SBLKUnit, SBlockStartAsDisp[0] ), 0,
 			  u->any2keV( SBLKUnit, SBlockStartAsDisp[ SBlocks ] ), 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
   case 1:
-    if ( mUnits.init() == false ) {  // true :: initializing
+    if ( mMeasUnits.init() == false ) {  // true :: initializing
       MeasR = 0;    // Measurement Repeat count
-      mUnits.clearStage();
+      mMeasUnits.clearStage();
       MeasStage = 2;
     }
     break;
@@ -72,8 +72,8 @@ void MainWindow::MeasSequence( void )
     // break;       MeasStage == 2 の動作はレスポンスを待つ必要なし
   case 3: 
     MeasS = 0;    // Measurement Step count in each block
-    mUnits.setDwellTimes( NowDwell = SBlockDwell[ MeasB ] );
-    mUnits.setDwellTime();
+    mMeasUnits.setDwellTimes( NowDwell = SBlockDwell[ MeasB ] );
+    mMeasUnits.setDwellTime();
     MeasStage = 4;
     // break;       MeasStage == 3 もレスポンスを待つ必要なし
     //              (ここで操作したのはセンサーで, Stage == 4 でセンサーを操作しないから)
@@ -89,11 +89,11 @@ void MainWindow::MeasSequence( void )
       }
       MoveCurThPosKeV( GoToKeV );     // 軸の移動
     }
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     if ( MStabOk && MPSet.TuneAtEachStep ) {
       MeasStage = 41;
     } else {
-      if ( mUnits.isParent() )
+      if ( mMeasUnits.isParent() )
 	MeasStage = 5;
       else
 	MeasStage = 6;
@@ -121,25 +121,25 @@ void MainWindow::MeasSequence( void )
 	}
       }
     }
-    if ( mUnits.isParent() )
+    if ( mMeasUnits.isParent() )
       MeasStage = 5;
     else
       MeasStage = 6;
     break;
   case 5:
-    if ( mUnits.getValue0() == false ) { // only for counters
-      mUnits.clearStage();
+    if ( mMeasUnits.getValue0() == false ) { // only for counters
+      mMeasUnits.clearStage();
       MeasStage = 6;
     }
     break;
   case 6:
-    if ( mUnits.getValue() == false ) {  // true :: Getting
-      mUnits.clearStage();
+    if ( mMeasUnits.getValue() == false ) {  // true :: Getting
+      mMeasUnits.clearStage();
       MeasStage = 7;
     }
     break;
   case 7:
-    mUnits.readValue( MeasVals, MeasCPSs, true );  // true : correct dark
+    mMeasUnits.readValue( MeasVals, MeasCPSs, true );  // true : correct dark
     DispMeasDatas();
     RecordData();
     MeasP++;
@@ -262,7 +262,7 @@ void MainWindow::SetDispMeasModes( void )
 
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );
-  MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+  MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
   MeasView->SetDG( DLC, DG++ );          // I0 は スケーリングのグループわけでは 0 
   DLC++;
   MUC++;
@@ -270,7 +270,7 @@ void MainWindow::SetDispMeasModes( void )
     MeasView->SetLLine( DLC );
     MeasView->SetLR( DLC, LEFT_AX );
     MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
     MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
     DLC++;
     MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -283,7 +283,7 @@ void MainWindow::SetDispMeasModes( void )
   if ( Use19chSSD->isChecked() ) {
     MeasView->SetLR( DLC, LEFT_AX );
     MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
     MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
     DLC++;
     for ( int j = 0; j < MaxSSDs; j++ ) {
@@ -301,7 +301,7 @@ void MainWindow::SetDispMeasModes( void )
       MeasView->SetLLine( DLC );
       MeasView->SetLR( DLC, LEFT_AX );                   // I1
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
       MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
       DLC++;
       MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -313,7 +313,7 @@ void MainWindow::SetDispMeasModes( void )
     } else {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
       MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
       MUC++;
@@ -325,7 +325,7 @@ void MainWindow::SetDispMeasModes( void )
       MeasView->SetLLine( DLC );
       MeasView->SetLR( DLC, LEFT_AX );                   // I1
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
       MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
       DLC++;
       MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -337,7 +337,7 @@ void MainWindow::SetDispMeasModes( void )
     } else {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
       MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
       MUC++;
@@ -345,7 +345,7 @@ void MainWindow::SetDispMeasModes( void )
   }
 }
 
-void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダーク補正済み
+void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダーク補正済み
 {
   int DLC0;
   int DLC = 0;   // display line count
@@ -440,7 +440,7 @@ void MainWindow::DispMeasDatas( void )  // mUnits->readValue の段階でダー�
   }
 
 #if 0
-  for ( i = 1; i < mUnits.count(); i++ ) {
+  for ( i = 1; i < mMeasUnits.count(); i++ ) {
     Val = MeasCPSs[i];
     if ( MeasDispMode[i] == TRANS ) {
       if (( i == 1 )&&( isSI1 )) {

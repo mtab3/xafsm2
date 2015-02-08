@@ -229,7 +229,7 @@ private:
 
   QStringList DriverList;
 
-  MUnits mUnits;
+  MUnits mMeasUnits, mMonUnits, mScanUnits, mS2DUnits;
   MUnits dUnits;
 
   /* Auto Sequence */

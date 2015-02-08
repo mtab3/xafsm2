@@ -31,26 +31,26 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
   // センサー busy でも入ってこない 
   // 但し、一旦測定を始めてしまうと検出器はずっと busy なので、内部の busy2 だけチェック
   if ( S2DStage < 2 ) {
-    if ( mUnits.isBusy() )
+    if ( mS2DUnits.isBusy() )
       return;
   } else {
-    if ( mUnits.isBusy2() )
+    if ( mS2DUnits.isBusy2() )
       return;
   }
 
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
-    if ( mUnits.init() ) // true :: initializing
+    if ( mS2DUnits.init() ) // true :: initializing
       break;
     S2DWriteHead0();
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case 1:
-    if ( mUnits.getValue02() )
+    if ( mS2DUnits.getValue02() )
       break;
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case 2:
@@ -72,7 +72,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // break しない
   case 4:     // リピートポイント
     // 計測開始準備
-    mUnits.getValue();
+    mS2DUnits.getValue();
     // 同時に次の点に移動開始
     if ( S2DI.i[0] < S2DI.ps[0] ) {
       if ( S2DScanDir == FORWARD ) {
@@ -92,7 +92,7 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
     // di0 = 0 の点は、そこまでのモータの移動時間等を含んだ積分値
     // V(1)-V(0), V(2)-V(1), V(3)-V(2),... V(10)-V(9) の 10 の値が、
     // 表示、記録の対象
-    mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
+    mS2DUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
     if ( S2DScanDir == FORWARD )
       S2DWriteBody2( S2DI.i[0], S2DI.i[1] );
     else
@@ -166,12 +166,12 @@ void MainWindow::S2DQuasiContinuousScanSequence( void )
 	S2DI.unit[i]->SetValue( S2DI.now[i] );
     }
     // とりあえずスピードは「High」設定のママほっとく。
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case S2D_END_STAGE+1:
     //    qDebug() << "before";
-    if ( mUnits.Close() )
+    if ( mS2DUnits.Close() )
       break;
     //    qDebug() << "after";
     S2DStage++;

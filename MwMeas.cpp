@@ -1154,14 +1154,14 @@ void MainWindow::StartMeasurement( void )
   // ・ファイルに記録するもの
   // という 3 つの似てるけど違うものがあるF
   // 例えば、I0 と 19ch-SSD で測定する場合
-  // ・測定対象の検出器       : I0, SFluo (19ch を束ねた検出器)  : mUnits で管理
+  // ・測定対象の検出器       : I0, SFluo (19ch を束ねた検出器)  : mMeasUnits で管理
   // ・表示するもの           : I0, Total (19ch の合計), 各チャンネル(19個)
-  //                 元ネタになるデータそのものは mUnits で管理されてる
+  //                 元ネタになるデータそのものは mMeasUnits で管理されてる
   //                 SFluo が何番目に来るかだけ記録しておけば後は、
   //                 ちょっとした例外処理でなんとかなりそうな気がする
   // ・ファイルに記録するもの : I0, 各チャンネル(19個)
-  //                 元ネタになるデータそのものは mUnits で管理されてる
-  //                 mUnits を流用し SFluo を 19 チャンネルに展開することで対応できてる
+  //                 元ネタになるデータそのものは mMeasUnits で管理されてる
+  //                 mMeasUnits を流用し SFluo を 19 チャンネルに展開することで対応できてる
   // 
   AUnit *as;
 
@@ -1264,9 +1264,9 @@ void MainWindow::StartMeasurement( void )
 
     bool OneOfSensIsRangeSelectable = false;
     QString theNames = "";
-    int LC = 0;    // mUnits に登録するユニットに対応したカウント
+    int LC = 0;    // mMeasUnits に登録するユニットに対応したカウント
     //    int DLC = 0;   // 表示するラインに対応したカウント
-    mUnits.clearUnits();
+    mMeasUnits.clearUnits();
     clearGSBs();              // ボタンの表示をクリア
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
@@ -1277,14 +1277,14 @@ void MainWindow::StartMeasurement( void )
 
     MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
     MeasDispPol[ LC ] = 1;          // polarity +
-    mUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
+    mMeasUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
     LC++; 
     aGsb.stat = PBTrue; aGsb.label = "I0"; GSBSs << aGsb;
 
     if ( UseI1->isChecked() ) {
       MeasDispMode[ LC ] = TRANS;     // I1 は TRANS に固定
       MeasDispPol[ LC ] = 1;          // polarity +
-      mUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
+      mMeasUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
       LC++;
       isSI1 = true;
       aGsb.stat = PBFalse; aGsb.label = tr( "I1" ); GSBSs << aGsb;
@@ -1293,7 +1293,7 @@ void MainWindow::StartMeasurement( void )
     if ( Use19chSSD->isChecked() ) {
       MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
       MeasDispPol[ LC ] = 1;          // polarity +
-      mUnits.addUnit( SFluo );
+      mMeasUnits.addUnit( SFluo );
       LC++;
       isSFluo = true;
       SFluoLine = GSBSs.count();
@@ -1317,7 +1317,7 @@ void MainWindow::StartMeasurement( void )
       MeasDispPol[ LC ] = 1;
       if ( ModeA1->currentIndex() == 2 ) MeasDispPol[ LC ] = -1;
       if ( ModeA1->currentIndex() == 4 ) MeasDispPol[ LC ] = -1;
-      mUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
+      mMeasUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
       LC++;
       aGsb.stat = PBFalse; aGsb.label = "A1"; GSBSs << aGsb;
       aGsb.stat = PBTrue;  aGsb.label = "mu2"; GSBSs << aGsb;
@@ -1334,22 +1334,22 @@ void MainWindow::StartMeasurement( void )
 	   ||( ModeA2->currentIndex() == 4 )
 	   ||( ModeA2->currentIndex() == 6 ) )
 	MeasDispPol[ LC ] = -1;
-      mUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
+      mMeasUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
       LC++;
       aGsb.stat = PBFalse; aGsb.label = "A2";     GSBSs << aGsb;
       aGsb.stat = PBTrue;  aGsb.label = "mu3"; GSBSs << aGsb;
     }
     if ( QXafsMode->isChecked() ) {
       if ( Enc2 != NULL ) {
-        mUnits.addUnit( Enc2 );
+        mMeasUnits.addUnit( Enc2 );
       }
-      mUnits.setOneByOne( false );
+      mMeasUnits.setOneByOne( false );
       // 検出器(主に a34410a)の設定を一個ずつ順番にやるかどうか
       // 必要かもと思われたこともあったけど、結局、順番にやるモードを使ったことはない。
     }
 
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      as = mUnits.at(i);
+    for ( int i = 0; i < mMeasUnits.count(); i++ ) {
+      as = mMeasUnits.at(i);
       if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs モードで使えるかどうか
         QString msg;
         if ( QXafsMode->isChecked() ) {
@@ -1384,16 +1384,16 @@ void MainWindow::StartMeasurement( void )
     }
 
     // 同じユニットを2回使っていないか確認。
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      for ( int j = i+1; j < mUnits.count(); j++ ) {
-	if ( mUnits.at(i) == mUnits.at(j) ) {
+    for ( int i = 0; i < mMeasUnits.count(); i++ ) {
+      for ( int j = i+1; j < mMeasUnits.count(); j++ ) {
+	if ( mMeasUnits.at(i) == mMeasUnits.at(j) ) {
 	  QString msg
 	    = tr( "Identical sensor [%1:%2,%3:%4]"
 		  "is used as different inputs, like I0 and I1." )
 	    .arg( i )
-	    .arg( mUnits.at(i)->getName() )
+	    .arg( mMeasUnits.at(i)->getName() )
 	    .arg( j )
-	    .arg( mUnits.at(j)->getName() );
+	    .arg( mMeasUnits.at(j)->getName() );
 	  statusbar->showMessage( msg, 2000 );
             NewLogMsg( msg );
             return;
@@ -1403,13 +1403,13 @@ void MainWindow::StartMeasurement( void )
     // CNT2, OTC2 はカウンタの向こうに Keithley が繋がってる。
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
     // 両方を同時には測定に使えない
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      if (( mUnits.at(i)->getType() == "CNT2" )||( mUnits.at(i)->getType() == "OTC2" )) {
-        for ( int j = 0; j < mUnits.count(); j++ ) {
-          if ( mUnits.at(i)->get2ndUid() == mUnits.at(j)->getUid() ) {
+    for ( int i = 0; i < mMeasUnits.count(); i++ ) {
+      if (( mMeasUnits.at(i)->getType() == "CNT2" )||( mMeasUnits.at(i)->getType() == "OTC2" )) {
+        for ( int j = 0; j < mMeasUnits.count(); j++ ) {
+          if ( mMeasUnits.at(i)->get2ndUid() == mMeasUnits.at(j)->getUid() ) {
             QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
-                .arg( mUnits.at(i)->getName() )
-                .arg( mUnits.at(j)->getName() );
+                .arg( mMeasUnits.at(i)->getName() )
+                .arg( mMeasUnits.at(j)->getName() );
             statusbar->showMessage( msg, 2000 );
             NewLogMsg( msg );
             return;
@@ -1503,7 +1503,7 @@ void MainWindow::StartMeasurement( void )
     MeasStart->setStyleSheet( InActive );
     MeasPause->setEnabled( true );
 
-    MeasChNo = mUnits.count();         // 測定のチャンネル数
+    MeasChNo = mMeasUnits.count();         // 測定のチャンネル数
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
     if ( Use19chSSD->isChecked() ) {
       MeasChNo += ( MaxSSDs -1 );
@@ -1554,8 +1554,8 @@ void MainWindow::StartMeasurement( void )
     inMMoves[ iMMainTh ] = true;
     inMMove0 = true;
 #endif
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addAnUnit( MEAS_ID, mUnits.at(i) );
+    for ( int i = 0; i < mMeasUnits.count(); i++ ) {
+      UUnits.addAnUnit( MEAS_ID, mMeasUnits.at(i) );
     }
 
     inMeas = true;
@@ -1592,8 +1592,8 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   aSet->TuneAtEachStep = TuneAtEachStp->isChecked();
 
   aSet->mUnits.clearUnits();
-  for ( int i = 0; i < mUnits.count(); i++ ) {
-    aSet->mUnits.addUnit( mUnits.at(i) );
+  for ( int i = 0; i < mMeasUnits.count(); i++ ) {
+    aSet->mUnits.addUnit( mMeasUnits.at(i) );
   }
   aSet->fname = EditDFName->text();
   aSet->fname00 = DFName00;
@@ -2038,7 +2038,7 @@ void MainWindow::AfterSaveXafs()
 	  }
 	  // SCALE, Angle, Mode, Offset の 4行作成/書き出し
 	  QVector<double> darks = SFluo->getDarkCountsInROI();
-	  WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
+	  WriteFLUOHeadSection( out, darks, mMeasUnits.at(0)->getDark() );
 	  
 	  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
 	    aline = in.readLine();

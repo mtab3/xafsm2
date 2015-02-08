@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "scan" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 00:13:58 2015 +0900\n"\
+                "    MDTh1 is add to UUnits while the XAFS measurement\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 00:03:06 2015 +0900\n"\
                 "    inMMove0 and inMMoves are expired from all the source codes.  UUnits are used in much better way\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 6 01:45:14 2015 +0900\n"\
                 "    modified gui\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Feb 5 14:08:57 2015 +0900\n"\
-                "    the MonInfo is smplimented but not tested\n"\
 		"\n"\
                 ""
 #endif

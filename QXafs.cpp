@@ -410,7 +410,7 @@ void MainWindow::QXafsMeasSequence( void )
       CurrentRpt->setText( QString::number( 1 ) );
     }
     //    WriteInfoFile();
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
     MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
     MeasView->SetWindow0( u->deg2keV( SBlockStartInDeg[0] ), 0,
@@ -424,18 +424,18 @@ void MainWindow::QXafsMeasSequence( void )
     // 計測器類の初期化ループ (「終了」ステータスになるまで、break して 再入 でループ)
     // 計測器類の内部ループカウンタクリア
     // R = 0 (repeat = 0)
-    if ( mUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
+    if ( mMeasUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
       break;
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     MeasR = 0;    // Measurement Repeat count
     MeasStage++;
     break;
   case 2:
     // 1点の計測時間の設定
     // 計測器類の内部ループカウンタクリア
-    mUnits.setDwellTimes( QXafsDwellTime );  
-    mUnits.setDwellTime();
-    mUnits.clearStage();
+    mMeasUnits.setDwellTimes( QXafsDwellTime );  
+    mMeasUnits.setDwellTime();
+    mMeasUnits.clearStage();
     // 読み取り命令を発行しておいたエンコーダ(nd287)の現在値の取得
     // EIB741 が使えるなら、その現在値も取得
     //          --> ここだと初回だけになるので毎回になるように case 41 に移した
@@ -461,7 +461,7 @@ void MainWindow::QXafsMeasSequence( void )
       MeasStage = 90;
       break;
     }
-    mUnits.clearStage();  
+    mMeasUnits.clearStage();  
     MeasStage = 41;
     break;
   case 41:
@@ -503,9 +503,9 @@ void MainWindow::QXafsMeasSequence( void )
     // スキャン方向の表示 (forward)
     // 「高速」の値を QXafs スキャンのために計算された値にセット
     // 分光器を制御する PM16C のチャンネルが適切なトリガを出すように設定
-    if ( mUnits.QStart() )
+    if ( mMeasUnits.QStart() )
       break;
-    mUnits.clearStage();  
+    mMeasUnits.clearStage();  
     WriteQHeader( MeasR, FORWARD );
     if ( AutoModeButton->isChecked() ) {
       CurrentRpt->setText( QString( "%1 - %2" ).arg( MeasA+1 ).arg( MeasR + 1 ) );
@@ -531,17 +531,17 @@ void MainWindow::QXafsMeasSequence( void )
     t2 = fabs( QIntervalHalf->text().toDouble() * 1000 );
     QIntervalTimer1->start( t1 );
     QIntervalTimer2->start( t2 ); 
-    // mUnits.clearDoneF() : QRead を一台ずつ行うためのしかけ
+    // mMeasUnits.clearDoneF() : QRead を一台ずつ行うためのしかけ
     // OneByOne == true だと働くが、今は true にしていないので現状不要のはず。
-    mUnits.clearDoneF();
+    mMeasUnits.clearDoneF();
     MeasStage++;
     break;
   case 7:
     // 計測器にデータ読み出し命令発行(完了するまでループ)
-    if ( mUnits.QRead() )
+    if ( mMeasUnits.QRead() )
       break;
     MeasView->ShowProgressBar( false );
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     MeasStage++;
     break;
   case 8:
@@ -565,9 +565,9 @@ void MainWindow::QXafsMeasSequence( void )
     //   測定しない場合
     //     分光器の速度を既定最高速度に設定する
     //     PM16C がトリガを発生しないように設定
-    if ( mUnits.QEnd() )
+    if ( mMeasUnits.QEnd() )
       break;
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
       CurrentPnt->setText( tr( "Bwd" ) );
@@ -591,7 +591,7 @@ void MainWindow::QXafsMeasSequence( void )
     }
     statusbar->showMessage( tr( "Backward scan" ) );
     MeasView->ShowProgressBar( true );
-    mUnits.clearStage();  
+    mMeasUnits.clearStage();  
     MeasStage++;
 #if 0
   case 101:
@@ -601,9 +601,9 @@ void MainWindow::QXafsMeasSequence( void )
 #endif
   case 11:
     // 計測器に計測開始命令発行(完了するまでループ)
-    if ( mUnits.QStart() )
+    if ( mMeasUnits.QStart() )
       break;
-    mUnits.clearStage();  
+    mMeasUnits.clearStage();  
     MeasStage++;
     // break; しない
     break;  // してみる。
@@ -613,7 +613,7 @@ void MainWindow::QXafsMeasSequence( void )
     MMainTh->SetValue( QXafsSP );   // 測定開始!!! ( = 助走距離を含めたスタート地点へ)
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
       WriteQHeader( MeasR, BACKWARD );
-      mUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
+      mMeasUnits.clearDoneF();      // QRead を一台ずつ行うため  // 現状不要のはず
       MeasStage++;
     } else {
       MeasStage = 4; // 戻りで測定しない場合 : Repeat Point 1
@@ -621,10 +621,10 @@ void MainWindow::QXafsMeasSequence( void )
     break;
   case 13:
     // 計測器に測定結果を読み出す指示(完了するまでループ)
-    if ( mUnits.QRead() )
+    if ( mMeasUnits.QRead() )
       break;
     MeasView->ShowProgressBar( false );
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     MeasStage++;
     break;
   case 14:
@@ -641,9 +641,9 @@ void MainWindow::QXafsMeasSequence( void )
   case 15:
     // 計測器の測定終了処理(完了するまでループ)
     // 始点でインターバルがあるかないかで分岐
-    if ( mUnits.QEnd() )
+    if ( mMeasUnits.QEnd() )
       break;
-    mUnits.clearStage();
+    mMeasUnits.clearStage();
     MeasStage = 4;
     break;
 
@@ -670,7 +670,7 @@ void MainWindow::QXafsFinish0( void )
 {
   UUnits.removeUnits( MEAS_ID );
   CheckNewMeasFileName();
-  mUnits.setOneByOne( false );           // 「ユニット一つずつ順番に」モードやめる
+  mMeasUnits.setOneByOne( false );           // 「ユニット一つずつ順番に」モードやめる
   MMainTh->SetHighSpeed( OrigHSpeed );   // H のスピードを標準に戻す
   MMainTh->SetSpeed( GoMSpeed );         // 選択されていたスピードに戻す
 }
@@ -699,7 +699,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     << tr( "A1" ) << tr( "mu2" )
     << tr( "A2" ) << tr( "mu3" );
 
-  int Us = mUnits.count();
+  int Us = mMeasUnits.count();
 
   QStringList valsEnc;
   if ( Enc2 != NULL ) {
@@ -713,9 +713,9 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   QVector<double> dark;
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
-    vals << mUnits.at(i)->values();
+    vals << mMeasUnits.at(i)->values();
 
-    dark << mUnits.at(i)->getDark();   //  * QXafsDwellTime;  // 即席
+    dark << mMeasUnits.at(i)->getDark();   //  * QXafsDwellTime;  // 即席
     /* q34410a だけならこれでいいが、他の計測器を使う時はダメ */
 
     if ( num > vals[i][0].toInt() )

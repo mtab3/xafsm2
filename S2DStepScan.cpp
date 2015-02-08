@@ -31,23 +31,23 @@ void MainWindow::S2DStepScanSequence( void )
   }
 
   // センサー busy でも入ってこない
-  if ( mUnits.isBusy() ) {
+  if ( mS2DUnits.isBusy() ) {
     return;
   }
   
   switch( S2DStage ) {
   case 0:
     // 検出器初期化
-    if ( mUnits.init() == false ) {  // true :: initializing
+    if ( mS2DUnits.init() == false ) {  // true :: initializing
       S2DWriteHead0();
-      mUnits.clearStage();
+      mS2DUnits.clearStage();
       S2DStage++;
     }
     break;
   case 1:
     // 検出器の計測時間セット
-    mUnits.setDwellTimes( S2DI.Dwell );
-    mUnits.setDwellTime();
+    mS2DUnits.setDwellTimes( S2DI.Dwell );
+    mS2DUnits.setDwellTime();
     S2DStage++;
     break;
   case 2:
@@ -69,20 +69,20 @@ void MainWindow::S2DStepScanSequence( void )
     // break しない
   case 4:     // リピートポイント
     // 計測開始準備
-    mUnits.clearStage();
-    if ( ! mUnits.isParent() )  // 親がいなければ次のステップはとばす
+    mS2DUnits.clearStage();
+    if ( ! mS2DUnits.isParent() )  // 親がいなければ次のステップはとばす
       S2DStage++;
     S2DStage++;
     break;
   case 5:
-    if ( mUnits.getValue0() == false ) { // 親ユニットの準備
-      mUnits.clearStage();
+    if ( mS2DUnits.getValue0() == false ) { // 親ユニットの準備
+      mS2DUnits.clearStage();
       S2DStage++;
     }
     break;
   case 6:
-    if ( mUnits.getValue() == false ) {  // 計測開始
-      mUnits.clearStage();
+    if ( mS2DUnits.getValue() == false ) {  // 計測開始
+      mS2DUnits.clearStage();
       // 同時に次の点に移動開始
       S2DI.unit[0]->SetValue( S2DI.unit[0]
 			      ->u2p( S2DI.sx[0] + (S2DI.i[0]+1)*S2DI.dx[0] ) );
@@ -91,7 +91,7 @@ void MainWindow::S2DStepScanSequence( void )
     break;
   case 7:
     // 計測値読み取り
-    mUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
+    mS2DUnits.readValue( S2DVals, S2DCPSs, false );  // false : ダークの補正しない
     // ファイル記録
     S2DWriteBody( S2DVals[0] );
     S2DWriteBody2( S2DI.i[0], S2DI.i[1] );
@@ -140,11 +140,11 @@ void MainWindow::S2DStepScanSequence( void )
 	S2DI.unit[i]->SetValue( S2DI.now[i] );
     }
     // とりあえずスピードは「High」設定のママほっとく。
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage++;
     break;
   case S2D_END_STAGE+1:
-     if ( mUnits.Close() )
+     if ( mS2DUnits.Close() )
       break;
      S2DStage++;
     break;

@@ -5,7 +5,7 @@
 
 void MainWindow::MonSequence( void )
 {
-  if ( mUnits.isBusy() )
+  if ( mMonUnits.isBusy() )
     return;
 
   switch( MonStage ) {
@@ -16,40 +16,40 @@ void MainWindow::MonSequence( void )
        2: nct08 を使う時: 計測開始
     */
   case 0:
-    mUnits.clearStage();
+    mMonUnits.clearStage();
     MonStage = 1;
     break;
   case 1:
-    if ( mUnits.init() == false ) {  // true :: initializing
-      mUnits.clearStage();
+    if ( mMonUnits.init() == false ) {  // true :: initializing
+      mMonUnits.clearStage();
       MonStage = 2;
     }
     break;
   case 2: 
-    mUnits.setDwellTime();
-    if ( mUnits.isParent() ) {
+    mMonUnits.setDwellTime();
+    if ( mMonUnits.isParent() ) {
       MonStage = 3;
     } else {
       MonStage = 4;
     }
     break;
   case 3:
-    if ( mUnits.getValue0() == false ) { // only for counters and SSDs
-      mUnits.clearStage();
+    if ( mMonUnits.getValue0() == false ) { // only for counters and SSDs
+      mMonUnits.clearStage();
       MonStage = 4;
     }
     break;
   case 4:
-    if ( mUnits.getValue() == false ) {  // true :: Getting
-      mUnits.clearStage();
+    if ( mMonUnits.getValue() == false ) {  // true :: Getting
+      mMonUnits.clearStage();
       MonStage = 5;
     }
     break;
   case 5:
     int etime;
-    mUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
+    mMonUnits.readValue( MeasVals, MeasCPSs, false );   // false :: not correct dark
     MonitorView->NewPointR( etime = MonTime.elapsed(),
-			    MeasVals, mUnits.count() );
+			    MeasVals, mMonUnits.count() );
     MonitorView->update();
 
     if ( conds->isRecordAllSSDChs() ) {
@@ -82,7 +82,7 @@ void MainWindow::MonSequence( void )
 	MonOut.setDevice( &MonFile );
 	
 	MonOut << (double)etime/1000;
-	for ( int i = 0; i < mUnits.count(); i++ ) {
+	for ( int i = 0; i < mMonUnits.count(); i++ ) {
 	  MonOut << "\t" << MeasVals[i];
 	}
 	if ( SLS != NULL ) 

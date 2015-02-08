@@ -159,7 +159,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     }
   }
 
-  int Munits = mUnits.count();
+  int Munits = mMeasUnits.count();
   if ( MPSet.qXafsMode && ( Enc2 != NULL ) ) {
     Munits -= 1;
   }
@@ -183,7 +183,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
     out << "    Offset         0         0";
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+      out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
       // For QXAFS with DMM in microV?
     }
     out << endl;
@@ -193,7 +193,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     // SSD only
     if ( Use19chSSD->isChecked() ) {
       darks = SFluo->getDarkCountsInROI();
-      WriteFLUOHeadSection( out, darks, mUnits.at(0)->getDark() );
+      WriteFLUOHeadSection( out, darks, mMeasUnits.at(0)->getDark() );
       break;
     } else {
     // 基本的には Lytle 検出器を想定している
@@ -213,7 +213,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
       out << "    Offset         0         0";
       for ( int i = 0; i < MeasChNo; i++ ) {
-        out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+        out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
       }
       out << endl;
       break;
@@ -271,7 +271,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       cnt++;
       // Others
       for ( int i = 0; i < Munits; i++ ) {
-        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
+        if ( ( mMeasUnits.at(i) != SFluo ) && ( mMeasUnits.at(i) != SI0 ) ) {
           out << QString( "%1" ).arg( cnt - MaxSSDs - 1, 10 );
           cnt++;
         }
@@ -294,7 +294,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       out << QString( "%1" ).arg( 101, 10 );
       // Others
       for ( int i = 0; i < Munits; i++ ) {
-        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
+        if ( ( mMeasUnits.at(i) != SFluo ) && ( mMeasUnits.at(i) != SI0 ) ) {
           out << QString( "%1" ).arg( MeasDispMode[i], 10 );
         }
       }
@@ -319,8 +319,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       out << QString( "%1" ).arg( 0., 10, 'f', 3 );
       // Others
       for ( int i = 0; i < Munits; i++ ) {
-        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
-          out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+        if ( ( mMeasUnits.at(i) != SFluo ) && ( mMeasUnits.at(i) != SI0 ) ) {
+          out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
         }
       }
       out << endl;
@@ -330,7 +330,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       out << "  Angle(c)  Angle(o)    time/s";
       cnt = 1;
       for ( int i = 0; i < Munits; i++ ) {
-        if ( mUnits.at(i) != SFluo ) {
+        if ( mMeasUnits.at(i) != SFluo ) {
           out << QString( "%1" ).arg( cnt, 10 );
         } else {
           for ( int j = 0; j < MaxSSDs; j++ ) {
@@ -353,7 +353,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       // Modes Line
       out << QString( "      Mode         0         0" );
       for ( int i = 0; i < Munits; i++ ) {
-        if ( mUnits.at(i) != SFluo ) {
+        if ( mMeasUnits.at(i) != SFluo ) {
           out << QString( "%1" ).arg( MeasDispMode[i], 10 );
         } else {
           for ( int j = 0; j < MaxSSDs; j++ ) {
@@ -369,8 +369,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       // Offsets Line (per second)
       out << QString( "    Offset         0         0" );
       for ( int i = 0; i < Munits; i++ ) {
-        if ( mUnits.at(i) != SFluo ) {
-          out << QString( "%1" ).arg( mUnits.at(i)->getDark(), 10, 'f', 3 );
+        if ( mMeasUnits.at(i) != SFluo ) {
+          out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
         } else {
           QVector<double> darks;
           darks = SFluo->getDarkCountsInROI();
@@ -447,14 +447,14 @@ void MainWindow::WriteInfoFile( void )
     return;
   QTextStream out( &f );
 
-  int Munits = mUnits.count();
+  int Munits = mMeasUnits.count();
   if ( MPSet.qXafsMode && ( Enc2 != NULL ) )
     Munits -= 1;
 
   out << "Version :" << " 1303" << endl;
   out << "Channel Names:";
   for ( int i = 0; i < Munits; i++ )
-    out << QString( " \"%1\"" ).arg( mUnits.at(i)->getName() );
+    out << QString( " \"%1\"" ).arg( mMeasUnits.at(i)->getName() );
   out << endl;
   
   out << "Select Button Names:";
@@ -662,10 +662,10 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       buf.sprintf(" %9d", 0 );
       out << buf;
       // Others
-      for ( int i = 1; i < mUnits.count(); i++ ) {
-        if ( ( mUnits.at(i) != SFluo ) && ( mUnits.at(i) != SI0 ) ) {
-          double v = mUnits.at(i)->value().toDouble()
-              - mUnits.at(i)->getDark() * mUnits.at(i)->GetSetTime();
+      for ( int i = 1; i < mMeasUnits.count(); i++ ) {
+        if ( ( mMeasUnits.at(i) != SFluo ) && ( mMeasUnits.at(i) != SI0 ) ) {
+          double v = mMeasUnits.at(i)->value().toDouble()
+              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->GetSetTime();
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -677,10 +677,10 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
         }
       }
     } else {
-      for ( int i = 1; i < mUnits.count(); i++ ) {
-        if ( mUnits.at(i) != SFluo ) {
-          double v = mUnits.at(i)->value().toDouble()
-              - mUnits.at(i)->getDark() * mUnits.at(i)->GetSetTime();
+      for ( int i = 1; i < mMeasUnits.count(); i++ ) {
+        if ( mMeasUnits.at(i) != SFluo ) {
+          double v = mMeasUnits.at(i)->value().toDouble()
+              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->GetSetTime();
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {

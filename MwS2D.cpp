@@ -390,24 +390,24 @@ void MainWindow::S2DScanStart( void )
       }
     }
 
-    mUnits.clearUnits();
-    mUnits.addUnit( as = S2DOkSensors.value( SelectS2DSensor->currentIndex() ) );
-    mUnits.setDwellTimes( S2DI.Dwell );
-    mUnits.setDwellTime();
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      if ( ! mUnits.at(i)->isEnable() ) {
+    mS2DUnits.clearUnits();
+    mS2DUnits.addUnit( as = S2DOkSensors.value( SelectS2DSensor->currentIndex() ) );
+    mS2DUnits.setDwellTimes( S2DI.Dwell );
+    mS2DUnits.setDwellTime();
+    for ( int i = 0; i < mS2DUnits.count(); i++ ) {
+      if ( ! mS2DUnits.at(i)->isEnable() ) {
 	QString msg = QString( tr( "2D Scan cannot Start : (%1) is disabled" ) )
-	  .arg( mUnits.at(i)->getName() );
+	  .arg( mS2DUnits.at(i)->getName() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	S2DI = oldInfo;
 	return;
       }
 
-      if ( ( User = UUnits.user( mUnits.at(i) ) ) != "" ) {
+      if ( ( User = UUnits.user( mS2DUnits.at(i) ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-				.arg( mUnits.at(i)->getName() ).arg( User ), 2000 );
+				.arg( mS2DUnits.at(i)->getName() ).arg( User ), 2000 );
 	S2DI = oldInfo;
 	return;
       }
@@ -479,8 +479,8 @@ void MainWindow::S2DScanStart( void )
 	UUnits.addAnUnit( S2D_ID, S2DI.unit[i] );
       }
     }
-    for ( int i = 0; i < mUnits.count(); i++ ) {
-      UUnits.addAnUnit( S2D_ID, mUnits.at(i) );
+    for ( int i = 0; i < mS2DUnits.count(); i++ ) {
+      UUnits.addAnUnit( S2D_ID, mS2DUnits.at(i) );
     }
 
     S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
@@ -491,7 +491,7 @@ void MainWindow::S2DScanStart( void )
       S2DI.MCAFile = QString( "S2DMCA0000.dat" );
     //    S2DWriteHead();
     S2DFileCheck();
-    mUnits.clearStage();
+    mS2DUnits.clearStage();
     S2DStage = 0;
     S2DScanDir = FORWARD;
 
