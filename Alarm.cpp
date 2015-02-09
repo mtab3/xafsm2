@@ -44,8 +44,6 @@ Alarms::Alarms( void )
 
 void Alarms::chkAlarm( QString uid, QString aMsg )
 {
-  qDebug() << "Receive Alarm";
-
   bool changed = false;
   for ( int i = 0; i < alarms.count(); i++ ) {
     if ( alarms[i].isNewAlarmOn( uid, aMsg ) ) {

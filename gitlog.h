@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "scan" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 13:12:58 2015 +0900\n"\
+                "    a simple bug in MwSetup (inMonitor was not initialized) was fixed.   The parenets of the units are also checked in UsingUnits\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 02:48:27 2015 +0900\n"\
                 "    new WhatToDo\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Feb 7 16:29:14 2015 +0900\n"\
                 "    what-to-do\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Feb 6 12:44:17 2015 +0900\n"\
-                "    ViewCtrl was slightly changed\n"\
 		"\n"\
                 ""
 #endif

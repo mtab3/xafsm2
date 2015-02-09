@@ -906,7 +906,8 @@ void MainWindow::ScanStart( void )
     //    SInfo.am = AMotors.value( ScanMotor );
     mScanUnits.clearUnits();
     mScanUnits.addUnit( si.as );
-    mScanUnits.addUnit( si.as0 );
+    if ( si.normalize )
+      mScanUnits.addUnit( si.as0 );
     if ( SPSUseAdditionalSs->isChecked() ) {
       for ( int i = 0; i < monLines.count(); i++ ) {
 	if ( monLines[i]->isChecked() ) {
