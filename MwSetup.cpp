@@ -885,6 +885,11 @@ void MainWindow::ScanStart( void )
   //  AUnit *am, *as, *as0 = NULL;
 
   if ( !inSPSing ) {
+    if ( SPSUseAdditionalSs->isChecked() && inSPSing ) {
+      statusbar->showMessage( tr( "Although the 'Additional' button is checked, "
+				  "the monitoring process is running." ) );
+      return;
+    }
     if ( ( ScanViewC = SetUpNewView( XYVIEW, SCANDATA ) ) == NULL ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
@@ -1045,13 +1050,20 @@ void MainWindow::Monitor( void )
   QVector<AUnit*> ass;
   for ( int i = 0; i < monLines.count(); i++ )
     ass << ASensors.value( monLines[i]->currentIndex() );
-
+  
   if ( !inMonitor ) {
+#if 0
     if ( ! ass[0]->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
 	.arg( ass[0]->getName() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
+      return;
+    }
+#endif
+    if ( SPSUseAdditionalSs->isChecked() && inSPSing ) {
+      statusbar->showMessage( tr( "The monitoring sensors might used for scanning, "
+				  "as 'Additonal' button is checked." ) );
       return;
     }
     if ( ( MonitorViewC = SetUpNewView( TYVIEW, MONDATA ) ) == NULL ) {
@@ -1105,6 +1117,13 @@ void MainWindow::Monitor( void )
 	// (選ばれていないものは、mMonUnits に登録されないため)
       }
     }
+    if ( mMonUnits.count() < 1 ) {
+      QString msg
+	= QString( tr( "At least 1 sensor should be selected for the monitor" ) );
+      statusbar->showMessage( msg, 2000 );
+      NewLogMsg( msg );
+      return;
+    }
     mMonUnits.setDwellTimes( DwellT20->text().toDouble() );
     mMonUnits.setDwellTime();
 
@@ -1119,7 +1138,7 @@ void MainWindow::Monitor( void )
       }
 
       if ( ( User = UUnits.user( as ) ) != "" ) {
-	// 検出器が他のことに使われたらダメ
+	// 検出器が他のことに使われたらダメ(この時点ではまだ登録しない)
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
 				.arg( as->getName() ).arg( User ), 2000 );
 	return;

@@ -328,6 +328,7 @@ void MainWindow::S2DScanStart( void )
 
     // inMMove のチェック不要(後で UUnits のチェックがあるので...)
     // 他のチェックもいらないかも
+#if 0
     // 自分自信が動いてるかどうかのチェックだけは必要だが
     // 使用するUnitがダブっていなければ他の動作が並列で走っても構わないはず
     if ( inMeas || inSPSing || inMonitor || inMCAMeas ) {
@@ -336,6 +337,7 @@ void MainWindow::S2DScanStart( void )
       S2DI = oldInfo;
       return;
     }
+#endif
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] && ( ! S2DI.unit[i]->isEnable() ) ) {
 	QString msg = tr( "2D Scan cannot Start : (%1) is disabled" )

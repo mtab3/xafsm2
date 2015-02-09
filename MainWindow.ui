@@ -4327,8 +4327,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>310</width>
-                     <height>160</height>
+                     <width>290</width>
+                     <height>155</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -5250,6 +5250,9 @@ Though, other parameters are fixed at the value on starting.</string>
                  <property name="text">
                   <string>Normalize</string>
                  </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -5275,6 +5278,9 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                  <property name="text">
                   <string>Additional</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
