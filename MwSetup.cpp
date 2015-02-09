@@ -5,7 +5,7 @@
 void MainWindow::setupSetupArea( void )   /* 設定エリア */
 {
   // モニタの 0 番は常に on 
-  MonSel0->setEnabled( false );
+  // MonSel0->setEnabled( false );
 
   GoUnit << GoUnit1 << GoUnit2 << GoUnit3 << GoUnit4;
   GoPosEdit << GoPos1 << GoPos2 << GoPos3 << GoPos4;
@@ -53,7 +53,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 
   //  inMove = 0;
   //  inMMove0 = false;
-  //  inMonitor = false;
+  inMonitor = false;
   MinPause = false;
   inSPSing = false;
 
@@ -328,7 +328,6 @@ bool MainWindow::LoadScanInfo( ScanInfo *set )
 
   GoMotorPosUnit->setText( set->goingPinU );
   GoMotorPosPuls->setText( set->goingP );
-  qDebug() << "set going " << set->goingPinU << set->goingP;
   return true;
 }
 
@@ -640,12 +639,10 @@ void MainWindow::ShowCurMotorPos( SMsg msg )  // AUnit を通さずにつない�
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
       if ( MMRelAbs->stat() == ABS ) {
-	qDebug() << "show cur pos " << val0 << val;
 	GoMotorPosPuls->setText( val0 );
 	GoMotorPosUnit->setText( val );
 	setupMDispFirstTime = false;
       } else {
-	qDebug() << "show cur pos 00 " << val0 << val;
 	GoMotorPosPuls->setText( "0" );
 	GoMotorPosUnit->setText( "0" );
 	setupMDispFirstTime = false;
@@ -723,12 +720,10 @@ void MainWindow::NewGoMotorPosPuls( const QString &val )
 
   LastInIsPulsV = true;
   if ( MMRelAbs->stat() == ABS ) {
-    qDebug() << "New go motor " << QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() );
     GoMotorPosUnit
       ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() ) );
   } else {
     GoMotorPosUnit->setText( QString::number( val.toDouble() * am->getUPP() ) );
-    qDebug() << "New go motor00 " << QString::number( val.toDouble() * am->getUPP() );
   }
 }
 

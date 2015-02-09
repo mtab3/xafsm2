@@ -15,6 +15,12 @@ class UsingUnit : public QObject
   UsingUnit( QString user, AUnit *unit ) { User = user; Unit = unit; };
 
   bool isUnit( AUnit *unit ) { return ( Unit == unit ); };
+  bool isParentUnit( AUnit *unit )
+  {
+    if ( Unit->hasParent() && unit->hasParent() )
+      return ( Unit->getTheParent() == unit->getTheParent() );
+    return false;
+  };
   bool isUniq( QString user, AUnit *unit )
   { return (( user == User )&&( unit == Unit )); };
   QString user( void ) { return User; };
@@ -30,8 +36,15 @@ class UsingUnits : public QObject
   UsingUnits() {};
 
   QString user( AUnit *unit ) {
+    // 指定されたユニットが直接使われていたらその使用者を返す
     for ( int i = 0; i < uUnits.count(); i++ ) {
       if ( uUnits[i]->isUnit( unit ) ) {
+	return uUnits[i]->user();
+      }
+    }
+    // 指定されたユニットの親ユニットが直接使われていたらその使用者を返す
+    for ( int i = 0; i < uUnits.count(); i++ ) {
+      if ( uUnits[i]->isParentUnit( unit ) ) {
 	return uUnits[i]->user();
       }
     }

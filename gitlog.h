@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "scan" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 02:48:27 2015 +0900\n"\
+                "    new WhatToDo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 02:45:39 2015 +0900\n"\
+                "    MUnits are prepared for Measurement, Scanning, Monitoring, and S2D separately\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 00:13:58 2015 +0900\n"\
                 "    MDTh1 is add to UUnits while the XAFS measurement\n"\
 		"\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 6 12:44:17 2015 +0900\n"\
                 "    ViewCtrl was slightly changed\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Feb 6 02:30:27 2015 +0900\n"\
-                "    alarm signal path was changed\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Feb 6 01:45:14 2015 +0900\n"\
-                "    modified gui\n"\
 		"\n"\
                 ""
 #endif
