@@ -20,7 +20,16 @@
    <enum>QFrame::Raised</enum>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>1</number>
+   </property>
+   <property name="topMargin">
+    <number>1</number>
+   </property>
+   <property name="rightMargin">
+    <number>1</number>
+   </property>
+   <property name="bottomMargin">
     <number>1</number>
    </property>
    <property name="spacing">
@@ -684,6 +693,41 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>FileSelect</tabstop>
+  <tabstop>SelectedFile</tabstop>
+  <tabstop>DataShow</tabstop>
+  <tabstop>DColor01</tabstop>
+  <tabstop>DColor09</tabstop>
+  <tabstop>DColor06</tabstop>
+  <tabstop>DColor08</tabstop>
+  <tabstop>DColor07</tabstop>
+  <tabstop>DColor05</tabstop>
+  <tabstop>DColor04</tabstop>
+  <tabstop>DColor03</tabstop>
+  <tabstop>DColor02</tabstop>
+  <tabstop>DColor10</tabstop>
+  <tabstop>DColor18</tabstop>
+  <tabstop>DColor16</tabstop>
+  <tabstop>DColor15</tabstop>
+  <tabstop>DColor19</tabstop>
+  <tabstop>DColor20</tabstop>
+  <tabstop>DColor14</tabstop>
+  <tabstop>DColor17</tabstop>
+  <tabstop>DColor13</tabstop>
+  <tabstop>DColor12</tabstop>
+  <tabstop>DColor11</tabstop>
+  <tabstop>DColor30</tabstop>
+  <tabstop>DColor29</tabstop>
+  <tabstop>DColor28</tabstop>
+  <tabstop>DColor27</tabstop>
+  <tabstop>DColor26</tabstop>
+  <tabstop>DColor25</tabstop>
+  <tabstop>DColor24</tabstop>
+  <tabstop>DColor23</tabstop>
+  <tabstop>DColor22</tabstop>
+  <tabstop>DColor21</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
