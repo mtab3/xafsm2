@@ -947,8 +947,7 @@ The original point will be changed as the angle calculated from the pulse will b
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">
-</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
@@ -1020,6 +1019,37 @@ The original point will be changed as the angle calculated from the pulse will b
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>SelEncAsTh</tabstop>
+  <tabstop>SelSelAsTh</tabstop>
+  <tabstop>SelStepInSelectedUnit</tabstop>
+  <tabstop>SelStepInDegree</tabstop>
+  <tabstop>MakeInfoFile</tabstop>
+  <tabstop>SelAddInfos</tabstop>
+  <tabstop>TuneESAbs</tabstop>
+  <tabstop>TuneESRel</tabstop>
+  <tabstop>TuneESStart</tabstop>
+  <tabstop>TuneESEnd</tabstop>
+  <tabstop>TuneESSteps</tabstop>
+  <tabstop>QuickScanToGoMax</tabstop>
+  <tabstop>QuickScanTimeToGoMax</tabstop>
+  <tabstop>RecordAllSSDChs</tabstop>
+  <tabstop>RecordEachMCASpectrum</tabstop>
+  <tabstop>radioButton</tabstop>
+  <tabstop>radioButton_2</tabstop>
+  <tabstop>radioButton_3</tabstop>
+  <tabstop>CalibDXMPMC</tabstop>
+  <tabstop>UseDTh1TTable</tabstop>
+  <tabstop>ShowDTh1TTable</tabstop>
+  <tabstop>SaveDTh1TTable</tabstop>
+  <tabstop>SelectDiffType1</tabstop>
+  <tabstop>SelectDiffType2</tabstop>
+  <tabstop>CheckI0BeforeMove</tabstop>
+  <tabstop>I0ThresholdInput</tabstop>
+  <tabstop>DataRoot</tabstop>
+  <tabstop>SelDataRoot</tabstop>
+  <tabstop>ShowGitLogs</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
