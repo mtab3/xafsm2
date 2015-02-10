@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 
-#include "AUnit.h"
+#include "AUnits/AMotor.h"
 
 class Changer : public QObject
 {
@@ -13,7 +13,7 @@ class Changer : public QObject
   QString ID;
   QString Name;
   QString UnitID1, UnitID2;
-  AUnit *Unit1, *Unit2;
+  AMotor *Unit1, *Unit2;
   int Holders1, Holders2;
   double Center1, Center2;
   double Spacing1, Spacing2;
@@ -27,8 +27,8 @@ class Changer : public QObject
   void setName( QString name ) { Name = name; };
   void setUnitId1( QString uid1 ) { UnitID1 = uid1; };
   void setUnitId2( QString uid2 ) { UnitID2 = uid2; };
-  void setUnit1( AUnit *u1 ) { Unit1 = u1; };
-  void setUnit2( AUnit *u2 ) { Unit2 = u2; };
+  void setUnit1( AMotor *u1 ) { Unit1 = u1; };
+  void setUnit2( AMotor *u2 ) { Unit2 = u2; };
   void setHolders1( int h1 ) { Holders1 = h1; };
   void setHolders2( int h2 ) { Holders2 = h2; };
   void setCenter1( double c1 ) { Center1 = c1; };
@@ -51,8 +51,8 @@ class Changer : public QObject
   double center2( void ) { return Center2; };
   double spacing1( void ) { return Spacing1; };
   double spacing2( void ) { return Spacing2; };
-  AUnit *unit1( void ) { return Unit1; };
-  AUnit *unit2( void ) { return Unit2; };
+  AMotor *unit1( void ) { return Unit1; };
+  AMotor *unit2( void ) { return Unit2; };
   int dir1( void ) { return Dir1; };
   int dir2( void ) { return Dir2; };
   int width1( void ) { return Width1; };

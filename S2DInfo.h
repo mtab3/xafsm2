@@ -4,7 +4,7 @@
 #include <QVector>
 
 #include "XafsM.h"
-#include "AUnit.h"
+#include "AUnits/AMotor.h"
 
 class S2DInfo
 {
@@ -17,7 +17,7 @@ class S2DInfo
   bool ScanBothDir;
   bool isSFluo;
   DIRECTION startDir; 
-  QVector<AUnit*> unit;
+  QVector<AMotor*> unit;
   QVector<bool> used;
   QVector<int> now;
   QVector<int> i, ps;
@@ -29,7 +29,7 @@ class S2DInfo
   
   S2DInfo( void );
   void save( QTextStream &out );
-  void load( QTextStream &in, QVector<AUnit*> &AMotors );
+  void load( QTextStream &in, QVector<AMotor*> &AMotors );
 };
 
 #endif

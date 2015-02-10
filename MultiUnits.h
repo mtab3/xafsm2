@@ -4,13 +4,13 @@
 #include <QVector>
 #include <QAbstractButton>
 #include <QObject>
-#include "AUnit.h"
+#include "AUnits/ASensor.h"
 
 struct MUElement
 { // Multi Unit を構成するエレメント。
   //    ユニット(実際にはセンサーだけ)のポインタと、
   //    dwell time を情報として持つ
-  AUnit *au;
+  ASensor *au;
   double dt;
   bool done;
 };
@@ -28,10 +28,10 @@ class MUnits : public QObject
 
   void setOneByOne( bool f ) { OneByOne = f; }
   int count( void ) { return Units.count(); }
-  AUnit *at( int i ) { return Units.at(i)->au; }
+  ASensor *at( int i ) { return Units.at(i)->au; }
   bool isParent( void ) { return ( PUnits.count() > 0 ); }
   void clearUnits( void );
-  void addUnit( AUnit *au );
+  void addUnit( ASensor *au );
   void setDwellTimes( double dt );
   double getSetTime( int i );
   bool isBusy( void );

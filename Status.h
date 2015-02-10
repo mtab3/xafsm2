@@ -3,7 +3,7 @@
 
 
 #include "ui_ScrollWGrid.h"
-#include "AUnit.h"
+#include "AUnits/AUnits.h"
 #include "StarsSV2.h"
 #include "SelMC2.h"
 #include "Conditions.h"
@@ -19,9 +19,9 @@ class Status : public QScrollArea, private Ui::ScrollWGrid
   SelMC2 *selMC;
   Conditions *conds;
 
-  QVector<AUnit*> drivers;
+  QVector<AUnit0*> drivers;
   QStringList Drivers;
-  QVector<QVector<AUnit*>*> DrvUnits;
+  QVector<QVector<AUnit0*>*> DrvUnits;
 
   bool SWactive;
 
@@ -39,7 +39,7 @@ class Status : public QScrollArea, private Ui::ScrollWGrid
 public:
   Status( QWidget *parent = 0 );
 
-  void setupStatArea( QVector<AUnit*> *ams, QVector<AUnit*> *ass,
+  void setupStatArea( QVector<AMotor*> *ams, QVector<ASensor*> *ass,
 		      StarsSV2 *starsSV, SelMC2 *selMC,
 		      Conditions *conds, PMConditions *pmConds );
 

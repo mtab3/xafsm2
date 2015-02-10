@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 10 16:32:48 2015 +0900\n"\
+                "    fix a slight bug reading MCA file in MCA.cpp\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 15:51:57 2015 +0900\n"\
                 "    merged with master in which TAB function was fixed\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 00:13:58 2015 +0900\n"\
                 "    MDTh1 is add to UUnits while the XAFS measurement\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 00:03:06 2015 +0900\n"\
-                "    inMMove0 and inMMoves are expired from all the source codes.  UUnits are used in much better way\n"\
 		"\n"\
                 ""
 #endif

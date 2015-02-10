@@ -5,7 +5,8 @@
 #include <QTextStream>
 
 #include "XafsM.h"
-#include "AUnit.h"
+#include "AUnits/ASensor.h"
+#include "AUnits/AMotor.h"
 #include "MonInfo.h"
 
 #define UNITNAMES      "UnitNames"
@@ -27,7 +28,7 @@ class ScanInfo
 
   bool valid;
 
-  AUnit *am;
+  AMotor *am;
   QString amName;
 
   MSPEED speed;
@@ -42,8 +43,8 @@ class ScanInfo
   QString goingP;
   QString goingPinU;
   
-  AUnit *as;
-  AUnit *as0;
+  ASensor *as;
+  ASensor *as0;
   QString asName;
   QString as0Name;
   bool normalize;
@@ -57,7 +58,7 @@ class ScanInfo
   ScanInfo( void );
   ~ScanInfo( void );
   void save( QTextStream &out );
-  bool load( QTextStream &in, QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
+  bool load( QTextStream &in, QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
   void show( void );
 };
 

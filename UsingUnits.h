@@ -2,26 +2,26 @@
 #define USINGUNIT_H
 
 #include <QObject>
-#include "AUnit.h"
+#include "AUnits.h"
 
 class UsingUnit : public QObject
 {
   Q_OBJECT
 
   QString User;
-  AUnit *Unit;
+  AUnit0 *Unit;
 
  public:
-  UsingUnit( QString user, AUnit *unit ) { User = user; Unit = unit; };
+  UsingUnit( QString user, AUnit0 *unit ) { User = user; Unit = unit; };
 
-  bool isUnit( AUnit *unit ) { return ( Unit == unit ); };
-  bool isParentUnit( AUnit *unit )
+  bool isUnit( AUnit0 *unit ) { return ( Unit == unit ); };
+  bool isParentUnit( AUnit0 *unit )
   {
     if ( Unit->hasParent() && unit->hasParent() )
       return ( Unit->getTheParent() == unit->getTheParent() );
     return false;
   };
-  bool isUniq( QString user, AUnit *unit )
+  bool isUniq( QString user, AUnit0 *unit )
   { return (( user == User )&&( unit == Unit )); };
   QString user( void ) { return User; };
 };
@@ -35,7 +35,7 @@ class UsingUnits : public QObject
  public:
   UsingUnits() {};
 
-  QString user( AUnit *unit ) {
+  QString user( AUnit0 *unit ) {
     // 指定されたユニットが直接使われていたらその使用者を返す
     for ( int i = 0; i < uUnits.count(); i++ ) {
       if ( uUnits[i]->isUnit( unit ) ) {
@@ -51,7 +51,7 @@ class UsingUnits : public QObject
     return "";
   }
 
-  bool addAnUnit( QString user, AUnit *unit ) {
+  bool addAnUnit( QString user, AUnit0 *unit ) {
     for ( int i = 0; i < uUnits.count(); i++ ) {
       if ( uUnits[i]->isUnit( unit ) )
 	return false;
@@ -60,7 +60,7 @@ class UsingUnits : public QObject
     return true;
   };
 
-  bool removeAnUnit( QString user, AUnit *unit ) {
+  bool removeAnUnit( QString user, AUnit0 *unit ) {
     for ( int i = 0; i < uUnits.count(); i++ ) {
       if ( uUnits[i]->isUniq( user, unit ) ) {
 	uUnits.remove( i );

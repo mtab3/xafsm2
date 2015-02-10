@@ -7,7 +7,7 @@
 #include <QVector>
 
 #include "PMLine.h"
-#include "AUnit.h"
+#include "AUnits/AMotor.h"
 
 class PMConditions : public QObject
 {
@@ -21,7 +21,7 @@ class PMConditions : public QObject
 
   QWidget *getWidget( void ) { return mainFrame; };
 
-  void setMotors( QVector<AUnit*> *ams );
+  void setMotors( QVector<AMotor*> *ams );
 
  public slots:
    void Initialize( void );
