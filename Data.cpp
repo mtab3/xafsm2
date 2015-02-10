@@ -152,7 +152,7 @@ void Data::CheckFileType( const QString &fname )
 }
 
 void Data::GotNewView( ViewCTRL *viewC,
-		       QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors )
+		       QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors )
 {
   QFile f( FName );
 
@@ -292,7 +292,7 @@ void Data::showMeasData( QTextStream &in )
 #endif
 
 void Data::showScanData( QTextStream &in,
-			 QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors )
+			 QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors )
 {
   QStringList heads, vals;
   QString line;
@@ -346,7 +346,7 @@ void Data::showScanData( QTextStream &in,
   theXYView->update();
 }
 
-void Data::showMonData( QTextStream &in, QVector<AUnit*> &ASensors )
+void Data::showMonData( QTextStream &in, QVector<ASensor*> &ASensors )
 {
   QStringList heads, vals;
   QString line;
@@ -531,7 +531,7 @@ void Data::SelectedNewMCACh( int ch )
 }
 
 void Data::showS2DData( QTextStream &in,
-			QVector<AUnit*> &AMotors, QVector<AUnit*> & /* ASensors */ )
+			QVector<AMotor*> &AMotors, QVector<ASensor*> & /* ASensors */ )
 {
   QStringList HeadLine1, HeadLine2, vals;
   QString line;

@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "Stars.h"
+#include "../Stars.h"
 
 class AUnit0 : public QObject
 {
@@ -42,6 +42,10 @@ class AUnit0 : public QObject
 public:
   AUnit0( QObject *parent = 0 );
 
+  void setEnable( bool enable );
+  void setALine( int aline ) { aLine = aline; };
+  bool isEnable( void ) { return Enable; };
+
   QString getGType( void ) { return GType; };        // Motor, Sensor
   QString getType( void ) { return Type; };          // PM, PZ, ENC, ...
   QString getUid( void ) { return Uid; };            // Uniq Uid
@@ -64,6 +68,15 @@ public:
   void setUnit( QString unit ) { Unit = unit; };
   void makeDevCh( void );
 
+  void setIsBusy( bool busy ) { IsBusy = busy; emit ChangedIsBusy1( Dev ); };
+  void setIsBusy2( bool busy ) { IsBusy2 = busy; emit ChangedIsBusy2( Dev ); };
+  bool isBusy0( void ) { return IsBusy || IsBusy2; };
+  bool isBusy( void ) { return IsBusy; };
+  bool isBusy2( void ) { return IsBusy2; };
+
+  virtual bool GetValue0( void );
+  virtual bool GetValue02( void );
+  virtual bool GetValue( void );
   QString value( void ) { return Value; };
 
   void InitLocalStage( void ) { LocalStage = 0; };
@@ -89,6 +102,10 @@ public:
   virtual void set2ndCh( QString ch2 ); 
   virtual QString get2ndDevCh( void );
   virtual void set2ndDevCh( QString devCh2 ); 
+
+ signals:
+  void ChangedIsBusy1( QString Drv );
+  void ChangedIsBusy2( QString Drv );
 };
 
 #endif

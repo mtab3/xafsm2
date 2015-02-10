@@ -1,16 +1,16 @@
 
 #include "CheckUnits.h"
 
-void CheckUnits::add( AUnit *p, bool b1, bool b2 )
+void CheckUnits::add( AUnit0 *au, bool b1, bool b2 )
 {
   for ( int i = 0; i < units.count(); i++ ) {
-    if ( units[i]->au == p ) {
+    if ( units[i]->au == au ) {
       return;
     }
   }
 
   CUnit *cu = new CUnit;
-  cu->au = p;
+  cu->au = au;
   cu->b1f = b1;
   cu->b2f = b2;
 

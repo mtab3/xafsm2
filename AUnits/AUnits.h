@@ -3,7 +3,7 @@
 #define AUNITS_H
 
 #include "AUnit0.h"
-#include "AMotor.h"
-#include "ASensor.h"
+#include "AMotors.h"
+#include "ASensors.h"
 
 #endif

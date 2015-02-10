@@ -55,8 +55,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   fdbase = new FluoDBase;
   u = new Units;
 
-  MMainTh = MDTh1 = EncMainTh = Enc2 = NULL;
-  SLS = SI0 = SI1 = SFluo = NULL;
+  MMainTh = NULL;
+  MDTh1 = NULL;
+  EncMainTh = NULL;
+  Enc2 = NULL;
+  SLS = NULL;
+  SI0 = NULL;
+  SI1 = NULL;
+  SFluo = NULL;
   MMStab = NULL;
 
   oldDeg = -100;
@@ -222,7 +228,7 @@ void MainWindow::SpecialMove( void )
 {
   smAm = NULL;
   for ( int i = 0; i < AMotors.count(); i++ ) {
-    AUnit *am = AMotors[i];
+    AMotor *am = AMotors[i];
     qDebug() << am->getID();
     if ( ( am->getID() == "STAGEX" ) || ( am->getID() == "StageX" ) ){
       smAm = am;
@@ -304,7 +310,7 @@ void MainWindow::Initialize( void )
   SendListNodes();
   if ( SFluo != NULL ) {
     getMCASettings( MCACh->text().toInt() );
-    s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+    s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetMCALength" );
     for ( int i = 0; i < MCAGains.count(); i++ ) {
       SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
     }
@@ -333,7 +339,7 @@ void MainWindow::InitializeUnitsAgain( void )
 
 void MainWindow::InitAndIdentifyMotors( void )
 {
-  AUnit *am;
+  AMotor *am;
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
     am->Initialize( s );
@@ -396,7 +402,7 @@ void MainWindow::SetMainThCenter( void )
 
 void MainWindow::InitAndIdentifySensors( void )
 {
-  AUnit *as;
+  ASensor *as;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
@@ -490,7 +496,8 @@ void MainWindow::SomeDrvIsDisconnected( SMsg msg )
 
 void MainWindow::SetEnableOfUnits( QString drv, bool enable )
 {
-  AUnit *am, *as;
+  AMotor *am;
+  ASensor *as;
 
   for ( int j = 0; j < AMotors.count(); j++ ) {
     am = AMotors.value( j );

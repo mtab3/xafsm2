@@ -20,10 +20,6 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
   int ilastSetV;
   double dlastSetV;
 
-  // MOTORS
-  double UPP;           // Unit per Puls : only for PM
-  double Center;        // Center position in puls : only for PM
-
   // PM16C
   bool HasSpeedsLine;
   bool HaveSetMaxS;
@@ -36,9 +32,9 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
   int LowS;
   
   // SENSORS
-  double setTime;       // Actually set time;
-  double setDarkTime;   // Actually set time;
-  double Dark;                 // back ground value normalized for 1 sec
+//  double setTime;       // Actually set time;
+//  double setDarkTime;   // Actually set time;
+//  double Dark;                 // back ground value normalized for 1 sec
 
   bool autoRange;
   bool RangeSelectable; // if range is selectable for the unit
@@ -50,34 +46,6 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
   int points;           // Measured Data Points : 34410
   bool HasMaxIntTime;
   double MaxIntTime;    // Maximum integration time
-
-  // SSD (XMAP)
-  bool ConnectedToSSDServer;
-  bool hasConnected;
-  QTcpSocket *dLink;
-  QDataStream *dLinkStream;
-  int dLinkCount;
-  char *MCAs0, *MCAs;
-  bool MCAsReady;    // MCAs に有効なデータがある true, 無い false
-  QString DataLinkHostName;
-  qint16 DataLinkHostPort;
-  QString SSDPresetType;
-  QString *ROIStart, *ROIEnd;
-  QVector<quint64> CountsInROI;
-  QVector<quint64> CountsAll;
-  QVector<quint64> TotalEvents;
-  QVector<double> ICRs;
-  QVector<double> DarkCountsInROI;    // per second
-  QVector<double> DarkCountsAll;      // per second
-  QVector<double> DarkTotalEvents;    // per second
-  QVector<double> DarkICRs;           // per second
-  quint64 MCALength;
-  QStringList MCAValues;
-  QStringList MCAStats;
-  double MCARealTime[ MaxSSDs + 1 ];
-  double MCALiveTime[ MaxSSDs + 1 ];
-  //  int MCALowLimit[ MaxSSDs + 1 ];
-  bool SSDUsingCh[ MaxSSDs + 1 ];       // Only 19 is necessary, 20 is only for safety.
 
   // PZ
   double MaxV;          // only for PZ
@@ -97,9 +65,6 @@ public:
   AUnit( QObject *parent = 0 );
 
   void Initialize( Stars *S );
-  void setEnable( bool enable );
-  void setALine( int aline ) { aLine = aline; };
-  bool isEnable( void ) { return Enable; };
 //  void setGType( QString gtype ) { GType = gtype; };
   void setStars( Stars *S ) { s = S; };
 //  void setType( QString type ) { Type = type; };
@@ -124,15 +89,13 @@ public:
 //      DevCh2 = Driver2 + "." + Ch2;
 //  }
 //  void setUnit( QString unit ) { Unit = unit; };
-  void setIsBusy( bool busy ) { IsBusy = busy; emit ChangedIsBusy1( Driver ); };
-  void setIsBusy2( bool busy ) { IsBusy2 = busy; emit ChangedIsBusy2( Driver ); };
   void setIsInt( bool isInt ) { IsInt = isInt; };
 //  void setHasParent( bool hasParent ) { HasParent = hasParent; };
 //  void setParent( QString pUid ) { PUid = pUid; };
 //  void setTheParent( AUnit *p ) { theParent = p; };
 //  void setThe2ndDriver( AUnit *p ) { the2ndDriver = p; };
 //  void setHas2ndDriver( bool has2ndDriver ) { Has2ndDriver = has2ndDriver; };
-  void setSSDPresetType( QString type ) { SSDPresetType = type; };
+//  void setSSDPresetType( QString type ) { SSDPresetType = type; };
   QString getSSDPresetType( void ) { return SSDPresetType; };
   void setROIs( QString *roistart, QString *roiend )
   { ROIStart = roistart; ROIEnd = roiend; };
@@ -141,26 +104,9 @@ public:
   void setRangeU( int upper ) { RangeU = upper; };
   void setRangeL( int lower ) { RangeL = lower; };
   void setRange( int r ) { SelectedRange = r; };
-  void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
-  void setDark( void )
-  {
-    Dark = Value.toDouble() / ( ( setTime != 0 ) ? setTime : 1 );
-    DarkCountsInROI.clear();
-    DarkCountsAll.clear();
-    DarkTotalEvents.clear();
-    for ( int i = 0; i < CountsInROI.count(); i++ ) {
-      DarkCountsInROI << CountsInROI.at(i) / ( ( setTime != 0 ) ? setTime : 1 );
-      DarkCountsAll << CountsAll.at(i) / ( ( setTime != 0 ) ? setTime : 1 );
-      DarkTotalEvents << TotalEvents.at(i) / ( ( setTime != 0 ) ? setTime : 1 );
-    }
-    DarkICRs = ICRs;
-    setDarkTime = setTime;
-    emit newDark( Dark );
-  }
   bool isAutoRangeAvailable( void );
   bool isAutoRange( void ) { return autoRange; };
   void setAutoRange( bool ar ) { autoRange = ar; };
-  void setGain( int ch, double gain );
 
   bool checkNewVal( void )
   {
@@ -175,12 +121,6 @@ public:
     return a / ( ( selU == 0 ) ? 1 : UPP )
       + ( ( ra == REL ) ? Value.toDouble() : ( ( selU == 0 ) ? 0 : Center ) );
   }
-
-  // only for PM
-  void setUPP( QString upp ) { UPP = upp.toDouble(); };
-  void setCenter( QString center ) { Center = center.toDouble(); };
-  void setCenter( double center ) { Center = center; };
-  double getCeter( void ) { return Center; };
 
   // only for PZ
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
@@ -203,14 +143,10 @@ public:
 //  QString get2ndCh( void ) { return Ch2; };
 //  QString get2ndDevCh( void ) { return DevCh2; };
 //  QString getUnit( void ) { return Unit; };
-  bool isBusy0( void ) { return IsBusy || IsBusy2; };
-  bool isBusy( void ) { return IsBusy; };
-  bool isBusy2( void ) { return IsBusy2; };
 //  QString value( void ) { return Value; };
   double metricValue( void ) { return ( Value.toDouble() - Center ) * UPP; };
   QStringList values( void ) { return Values; };
   QStringList MCAvalues( void ) { return MCAValues; };
-  double getUPP( void ) { return UPP; };
   bool isInt( void ) { return IsInt; };
   bool hasParent( void ) { return HasParent; };
   bool has2ndDriver( void ) { return Has2ndDriver; };
@@ -227,28 +163,14 @@ public:
   int getRangeU( void ) { return RangeU; };
   int getRangeL( void ) { return RangeL; };
   int getRange( void ) { return SelectedRange; };
-  double getDark( void ) { return Dark; };
   QString lastFunc( void ) { return LastFunc; };
   QString lastFunc2( void ) { return LastFunc2; };
   int Points( void ) { return points; };
-
-  QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
-  QVector<quint64> getCountsAll( void ) { return CountsAll; };
-  QVector<quint64> getTotalEvents( void ) { return TotalEvents; };
-  QVector<double> getICRs( void ) { return ICRs; };
-  QVector<double> getDarkCountsInROI( void ) { return DarkCountsInROI; };
-  QVector<double> getDarkCountsAll( void ) { return DarkCountsAll; };
-  QVector<double> getDarkTotalEvents( void ) { return DarkTotalEvents; };
-  QVector<double> getDarkICRs( void ) { return DarkICRs; };
-  quint32 *getAMCA( int ch );
-  quint32 getAMCAdata( int ch, int pixel );
-  MCAHead getAMCAHead( int ch );
 
   int getILastSetV( void ) { return ilastSetV; };
   double getDLastSetV( void ) { return dlastSetV; };
 
   // only for PM
-  double getCenter( void ) { return Center; };
   // only for PZ
   double getMaxV( void ) { return MaxV; };
   double getMinV( void ) { return MinV; };
@@ -275,14 +197,7 @@ public:
   // wrapper functions of stars communication
   void InitLocalStage( void );
   bool InitSensor( void );
-  bool GetValue0( void );
-  bool GetValue02( void );
-  bool GetValue( void );
-  void SetValue( double v );
   bool Close( void );
-  void RunStart( void );
-  void RunStop( void );
-  void RunResume( void );
   void AskIsBusy( void );
   bool QStart( void );                 // QXAFS
   bool QRead( void );                 // QXAFS
@@ -300,7 +215,7 @@ public:
   void SetTimingOutEnd( int endP );       // end position of timing out
   void SetTimingOutInterval( int interval );  // timing out interval
   void SetTimingOutReady( int ready );  // timing out ready
-  double SetTime( double dtime );   // in sec
+//  double SetTime( double dtime );   // in sec
   void Stop( void );
 
   void AskHighSpeed( void );
@@ -321,17 +236,8 @@ public:
   void GoMaxRel( double Width, int Steps );
   void GoMaxRelQ( double Width, int Steps, double Time );
 
-  bool GetMCAs( void );
-  bool GetStat( void );
-  bool SetRealTime( double val );
-  bool SetLiveTime( double val );
-  bool SetRealTime( int ch, double val );
-  bool SetLiveTime( int ch, double val );
-  bool GetRealTime( int ch );
-  bool GetLiveTime( int ch );
   bool GetRange( void );
   void SetRange( int range );
-  double GetSetTime( void ) { return setTime; };   // actual set time
 
   void IsBusy2On( QString drv, QString name );
   void IsBusy2Off( QString drv );
@@ -344,7 +250,6 @@ public slots:
   void SetIsBusyByMsg( SMsg msg );
   void SetCurPos( SMsg msg );
   void ReceiveValues( SMsg msg );
-  void getMCALength( SMsg msg );
   void RcvAnsGetValueOfDriver( SMsg msg );
 
   void ReactGetStat( SMsg msg );
@@ -369,13 +274,10 @@ public slots:
   void getNewValue( QString v );   // only for SSD childlen
   void getNewDark( double d );     // only for SSD childlen
 
-  void CloseShutter( bool close );
-
 signals:
   //  void CountFinished( void );
   void newValue( QString value );
   //  void newValues( void );
-  void newDark( double dark );
   void newCountsInROI( QVector<int> );
   void newCountsAll( QVector<int> );
   void newTotalEvents( QVector<int> );
@@ -384,8 +286,6 @@ signals:
   void newQData( void );
 
   void Enabled( QString Drv, bool flag );
-  void ChangedIsBusy1( QString Drv );
-  void ChangedIsBusy2( QString Drv );
   void ChangedBusy2Count( QString Drv );
   void AskedNowRange( int r );
 

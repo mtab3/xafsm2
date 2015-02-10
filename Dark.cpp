@@ -3,7 +3,7 @@
 
 bool MainWindow::MeasureDark( void )
 {
-  AUnit *as;
+  ASensor *as;
 
   if ( inMeasDark ) {
     if ( AskingShutterClose ) {

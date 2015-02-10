@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QStringList>
 
-#include "MCAHead.h"
+#include "XMAPHead.h"
 #include "KeV2Pix.h"
 
 struct aCH
@@ -41,7 +41,7 @@ struct aMCASet {
   QString date;
 
   aCH *Ch;
-  MCAHead *Heads;
+  XMAPHead *Heads;
 
   QString *ROIStart;
   QString *ROIEnd;
@@ -78,7 +78,7 @@ struct aMCASet {
     if ( ROIStart != NULL ) delete [] ROIStart;
     if ( ROIEnd != NULL )   delete [] ROIEnd;
     Ch = new aCH[ CHs ];
-    Heads = new MCAHead[ CHs ];
+    Heads = new XMAPHead[ CHs ];
     ROIStart = new QString[ CHs ];
     ROIEnd = new QString[ CHs ];
     for ( int i = 0; i < CHs; i++ ) {

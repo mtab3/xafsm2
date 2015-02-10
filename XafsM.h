@@ -28,7 +28,6 @@ enum OLDNEW { OLD, NEW };
 /******************************************************************************/
 const int GOS = 4;            // Presetted Go To Positions
 const int MaxBLKs = 8;        // Max Blocks
-const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
 const QString RadioBOn = "background-color: rgb(250,250,200)";

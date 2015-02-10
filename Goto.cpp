@@ -6,7 +6,7 @@ void MainWindow::MotorMove( void )
   // (動いているフラグが立ってるのに、busy で無くなってたら)
   // 表示を変えたり色々後始末
   int mNo = SPSMotorSelect->currentIndex();
-  AUnit *am = AMotors[ mNo ];
+  AMotor *am = AMotors[ mNo ];
 
   // GOMOTOR が使ってるユニットが
   if ( UUnits.user( am ) == GOMOTOR_ID ) {

@@ -23,3 +23,22 @@ void AUnit0::makeDevCh( void )
   else
     DevCh = Dev;
 }
+
+void AUnit::setEnable( bool enable )
+{
+  Enable = enable;
+  IsBusy = false;
+  LastFunc = "";
+  ConnectedToSSDServer = false;
+  emit Enabled( Driver, enable );
+  emit ChangedIsBusy1( Driver );
+  IsBusy2Off( "" );
+}
+
+bool AUnit::GetValue( void )
+{
+  IsBusy2On( Driver, "GetValue" );
+  s->SendCMD2( Uid, DevCh, "GetValue" );
+
+  return false;
+}
