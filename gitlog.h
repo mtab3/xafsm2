@@ -2,11 +2,19 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "scan" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 15:51:57 2015 +0900\n"\
+                "    merged with master in which TAB function was fixed\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 15:45:19 2015 +0900\n"\
                 "    better checking when starting Scan or Monitor\n"\
+		"\n"\
+                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 9 14:02:14 2015 +0900\n"\
+                "    Fix tab order\n"\
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 13:19:29 2015 +0900\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 00:03:06 2015 +0900\n"\
                 "    inMMove0 and inMMoves are expired from all the source codes.  UUnits are used in much better way\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Feb 8 00:48:31 2015 +0900\n"\
-                "    LION\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Feb 8 00:41:57 2015 +0900\n"\
-                "    new monthly\n"\
 		"\n"\
                 ""
 #endif

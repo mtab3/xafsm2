@@ -103,22 +103,6 @@ void aMCASet::load( QTextStream &in, QString title )
   if ( lc > 1 ) valid = true;
 }
 
-#if 0
-    out << "# Ring Current : " << RINGCurrent << "\n";
-    out << "# I0           : " << I0 << "\n";
-    out << "# Channel Status Length RealTime LiveTime ICR\n";
-    for ( int i = 0; i < Length; i++ ) {
-      MCAHead head = Heads[i];
-      out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
-	  << head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\n";
-    }
-    
-    out << "# Selected elements list\n";
-    for ( int i = 0; i < Elms.count(); i++ ) {
-      out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
-    }
-#endif
-
 void aMCASet::correctE( KeV2Pix *k2p )
 {
   // 測定時のエネルギーとピクセルの関係は、
@@ -137,10 +121,11 @@ void aMCASet::correctE( KeV2Pix *k2p )
 	}
       }
       if ( ( Ch[ch].E[j] != Ch[ch].E[j-1] ) && ( j < ( Length - 1 ) ) ) {
-	newCh.cnt[i] = 
-	  (int)(( nowE - Ch[ch].E[j-1] ) / ( Ch[ch].E[j] - Ch[ch].E[j-1] )
-		* ( (int)Ch[ch].cnt[j] - (int)Ch[ch].cnt[j-1] )
-		+ Ch[ch].cnt[j-1] );
+	int cnt = (int)(( nowE - Ch[ch].E[j-1] ) / ( Ch[ch].E[j] - Ch[ch].E[j-1] )
+			* ( (int)Ch[ch].cnt[j] - (int)Ch[ch].cnt[j-1] )
+			+ Ch[ch].cnt[j-1] );
+	if ( cnt < 0 ) cnt = 0;
+	newCh.cnt[i] = cnt;
       } else {
 	newCh.cnt[i] = 0;
       }
