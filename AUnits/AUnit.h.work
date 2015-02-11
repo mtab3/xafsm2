@@ -67,8 +67,6 @@ public:
   bool isInt( void ) { return IsInt; };
   double stat( int ch, STATELM i );
   double stat( STATELM i );
-  QString lastFunc( void ) { return LastFunc; };
-  QString lastFunc2( void ) { return LastFunc2; };
   int Points( void ) { return points; };
 
   int getILastSetV( void ) { return ilastSetV; };

@@ -86,7 +86,7 @@ bool ScanInfo::load( QTextStream &in,
 	    break;
 	  }
 	}
-	for ( int j = 0; j < ASensor.count(); j++ ) {
+	for ( int j = 0; j < ASensors.count(); j++ ) {
 	  if ( ASensors[j]->getUid() == vals[2] ) {
 	    as = ASensors[j];
 	    break;

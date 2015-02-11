@@ -9,20 +9,20 @@ Status::Status( QWidget *p ) : QScrollArea( p )
   setupUi( this );
 }
 
-void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
+void Status::setupStatArea( QVector<AMotor*> *Ams, QVector<ASensor*> *Ass,
 			    StarsSV2 *StarsSV, SelMC2 *SelMC,
 			    Conditions *Conds, PMConditions *pmConds )
 {
   setWidgetResizable( true );
   for ( int i = 0; i < Ams->count(); i++ ) {
-    drivers << Ams->at(i);
+    drivers << (AUnit0*)(Ams->at(i));
   }
   for ( int i = 0; i < Ass->count(); i++ ) {
-    drivers << Ass->at(i);
+    drivers << (AUnit0*)(Ass->at(i));
   }
 
   for ( int i = 0; i < drivers.count(); i++ ) { // XAFSM.def にある全ドライバ名を集める
-    Drivers << drivers.at(i)->getDriver();
+    Drivers << drivers.at(i)->getDev();
     connect( drivers.at(i), SIGNAL( Enabled( QString, bool ) ),
 	     this, SLOT( OnEnabled( QString, bool ) ),
 	     Qt::UniqueConnection );
@@ -98,13 +98,13 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
   int col;
   for ( int i = 0; i < Drivers.count(); i++ ) {   // 集めた全ドライバ名の一つ一つに対して
     col = 0;
-    QVector<AUnit*> *Units = new QVector<AUnit*>;
+    QVector<AUnit0*> *Units = new QVector<AUnit0*>;
     // それぞれの名前のドライバを使っているユニットのポインタを集める
     for ( int j = 0; j < drivers.count(); j++ ) {
-      if ( Drivers.at(i) == drivers.at(j)->getDriver() )
+      if ( Drivers.at(i) == drivers.at(j)->getDev() )
 	*Units << drivers.at(j);
-      if ( drivers.at(j)->has2ndDriver() )
-	if ( Drivers.at(i) == drivers.at(j)->get2ndDriver() )
+      if ( drivers.at(j)->has2ndDev() )
+	if ( Drivers.at(i) == drivers.at(j)->get2ndDev() )
 	  *Units << drivers.at(j);
     }
     DrvUnits << Units;
@@ -117,10 +117,10 @@ void Status::setupStatArea( QVector<AUnit*> *Ams, QVector<AUnit*> *Ass,
 
     CB1 = new QComboBox;
     for ( int j = 0; j < drivers.count(); j++ ) {
-      if ( drivers.at(j)->getDriver() == Drivers.at(i) )
+      if ( drivers.at(j)->getDev() == Drivers.at(i) )
 	CB1->addItem( drivers.at(j)->getName() );
-      if ( drivers.at(j)->has2ndDriver() )
-	if ( drivers.at(j)->get2ndDriver() == Drivers.at(i) )
+      if ( drivers.at(j)->has2ndDev() )
+	if ( drivers.at(j)->get2ndDev() == Drivers.at(i) )
 	  CB1->addItem( drivers.at(j)->getName() );
     }
     CB1->setStyleSheet( CBack );

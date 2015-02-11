@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 12 02:27:41 2015 +0900\n"\
+                "    still the goal is away!\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 12 01:19:56 2015 +0900\n"\
                 "    hardly struggling with the new AUnits.  but still the codes are broken.\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 13:18:01 2015 +0900\n"\
                 "    Measure, Monitor, and Scan can be conducted at the same time\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 13:12:58 2015 +0900\n"\
-                "    a simple bug in MwSetup (inMonitor was not initialized) was fixed.   The parenets of the units are also checked in UsingUnits\n"\
 		"\n"\
                 ""
 #endif

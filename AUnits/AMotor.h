@@ -37,7 +37,6 @@ class AMotor : public AUnit0
   void init( Stars *s );
   virtual void init0( Stars *s );
   
-  virtual void SetValue( double v );
   virtual void Stop( void );
   bool checkNewVal( void )
   {

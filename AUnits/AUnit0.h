@@ -96,6 +96,7 @@ public:
   bool isBusy( void ) { return IsBusy; };
   bool isBusy2( void ) { return IsBusy2; };
 
+  virtual void SetValue( double v );
   virtual bool GetValue0( void );
   virtual bool GetValue02( void );
   virtual bool GetValue( void );
@@ -133,7 +134,10 @@ public:
   { Dev2 = dev; if ( Ch2 != "" ) DevCh2 = makeDevCh( Dev2, Ch2 ); };
   void set2ndCh( QString ch )
   { Ch2 = ch; if ( Dev2 != "" ) DevCh2 = makeDevCh( Dev2, Ch2 ); };
-  
+
+  QString lastFunc( void ) { return LastFunc; };
+  QString lastFunc2( void ) { return LastFunc2; };
+
  signals:
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
