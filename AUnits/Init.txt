@@ -1,0 +1,27 @@
+
+AUnit0 : Initialize()
+
+  s = S;
+  connect : ReceiveError => ClrBusy
+  connect : AnsIsBusy => SetIsBusyByMsg
+  connect : EvIsBusy  => SetIsBusyByMsg
+  connect : AnsGetValue => SetCurPos
+
+  SendCMD : System <= flgon Dev
+  SendCMD : System <= flgon DevCh
+
+に続いて init() を呼び出し、ASensor と AMotor それぞれの初期化に移る
+
+AMotor : init()
+       : PM PZ SC AIOo
+
+  connect : EvChangedValue => SetCurPos
+  SendCMD : DevCh <= GetValue
+
+ASensor : init()
+        : CNT PAM ENC SSD SSDP CNT2 OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi FP23 EPIC
+
+  現状特になし
+
+この後、AMotor, ASensor 共に init0() を呼び、更に個別のユニットの初期化
+各ユニットの中でバリアントがある場合には更に init0() の中で init00() を呼ぶ

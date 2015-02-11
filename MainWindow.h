@@ -109,6 +109,7 @@ private:
   QVector<AMotor*> AMotors;
   QVector<ASensor*> ASensors;
   void ReadDef( QString fname );
+  AUnit0 *NewNewUnit( QString type );
   QString nextItem( QString start, QString &item );
   QVector<MCCD*> mccd;
   QVector<Gas*> Gases;
@@ -171,12 +172,12 @@ private:
   void setupReadDataArea( void );
 
   /* Special Units */
-  AUnitPM *MMainTh;                 // main Th ax
-  AMotor *MDTh1;                   // Delta Theta 1 ax
+  AMotor *MMainTh;          // main Th ax
+  AMotor *MDTh1;             // Delta Theta 1 ax
   ASensor *SI0, *SI1, *SLS;  // I0, I1, and Fluorescence, LS
   AUnitXMAP *SFluo;
-  AMotor *EncMainTh, *Enc2;
-  AUnitMStab *MMStab;
+  ASensor *EncMainTh, *Enc2;
+  AMotor *MMStab;
   //  int iMMainTh;
 
   bool MStabOk;

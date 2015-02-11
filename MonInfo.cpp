@@ -27,7 +27,7 @@ void MonInfo::save( QTextStream &out )
   out << "\n";
 }
 
-bool MonInfo::load( QTextStream &in, QVector<AUnit*> &ASensors )
+bool MonInfo::load( QTextStream &in, QVector<ASensor*> &ASensors )
 {
   bool f = false;
 
@@ -47,13 +47,13 @@ bool MonInfo::load( QTextStream &in, QVector<AUnit*> &ASensors )
   return f;
 }
 
-void MonInfo::load0( QString line, QVector<AUnit*> &ASensors, bool &f )
+void MonInfo::load0( QString line, QVector<ASensor*> &ASensors, bool &f )
 {
   QStringList vals = line.mid( 2 ).split( "\t" );
   if ( vals.count() < 2 ) return ;
   if ( vals[0] == MONSENSOR ) {
     f = true;
-    AUnit *as = NULL;
+    ASensor *as = NULL;
     QString uid, unit, name;
     if ( vals.count() > 1 ) uid = vals[1]; 
     if ( vals.count() > 2 ) unit = vals[2]; 

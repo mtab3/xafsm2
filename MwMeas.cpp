@@ -1163,7 +1163,7 @@ void MainWindow::StartMeasurement( void )
   //                 元ネタになるデータそのものは mMeasUnits で管理されてる
   //                 mMeasUnits を流用し SFluo を 19 チャンネルに展開することで対応できてる
   // 
-  AUnit *as;
+  ASensor *as;
 
   // 将来の変更
   // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
@@ -1622,7 +1622,7 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
 }
 
 // Ok リストに名前があるか  // 同じ関数が MultiUnit にもある !
-bool MainWindow::CheckOkList( AUnit *as, QStringList OkList )
+bool MainWindow::CheckOkList( ASensor *as, QStringList OkList )
 {
   int j;
   for ( j = 0; j < OkList.count(); j++ ) {
@@ -1636,7 +1636,7 @@ bool MainWindow::CheckOkList( AUnit *as, QStringList OkList )
 }
 
 // 現在のモード ( QXafs or NXafs ) で使えるか
-bool MainWindow::theSensorIsAvailable( AUnit *as )
+bool MainWindow::theSensorIsAvailable( ASensor *as )
 {
   if ( QXafsMode->isChecked() ) {
     return CheckOkList( as, QXafsOk );

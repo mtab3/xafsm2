@@ -348,7 +348,7 @@ void MainWindow::InitAndIdentifyMotors( void )
         disconnect( MMainTh, SIGNAL( newValue( QString ) ),
                     this, SLOT( ShowCurThPos() ) );
       }
-      MMainTh = am;
+      MMainTh = (AUnitPM*)am;
       //      iMMainTh = i;
       connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
@@ -417,7 +417,7 @@ void MainWindow::InitAndIdentifySensors( void )
 #endif
     if ( as->getID() == "I0" ) { SI0 = as; }
     if ( as->getID() == "I1" ) { SI1 = as; }
-    if ( as->getID() == "TotalF" ) { SFluo = as; }
+    if ( as->getID() == "TotalF" ) { SFluo = (AUnitXMAP*)as; }
     if ( as->getID() == "LS" ) {
       if ( SLS != NULL ) {
 	disconnect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
@@ -435,7 +435,7 @@ void MainWindow::InitAndIdentifySensors( void )
 	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
 		    StatDisp, SLOT( newEncTh( QString ) ) );
       }
-      EncMainTh = as;
+      EncMainTh = (AUnitENC*)as;
       connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
       connect( EncMainTh, SIGNAL( newValue( QString ) ),
@@ -443,7 +443,7 @@ void MainWindow::InitAndIdentifySensors( void )
 	       Qt::UniqueConnection );
     }
     if ( as->getID() == "ENCTH2" ) {
-      Enc2 = as;
+      Enc2 = (AUnitENC2*)as;
     }
   }
   
@@ -501,7 +501,7 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
 
   for ( int j = 0; j < AMotors.count(); j++ ) {
     am = AMotors.value( j );
-    if ( am->getDriver() == drv ) {
+    if ( am->getDev() == drv ) {
       am->setEnable( enable );
       if ( enable ) 
 	am->Initialize( s );
@@ -509,7 +509,7 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
   }
   for ( int j = 0; j < ASensors.count(); j++ ) {
     as = ASensors.value( j );
-    if ( as->getDriver() == drv ) {
+    if ( as->getDev() == drv ) {
       as->setEnable( enable );
       if ( enable ) 
 	as->Initialize( s );

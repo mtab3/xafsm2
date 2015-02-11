@@ -1,6 +1,7 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include "AUnits/AUnits.h"
 #include "MainWindow.h"
 
 #define LN "\n"    // only for Qt on MacOS X
@@ -35,7 +36,9 @@ void MainWindow::ReadDef( QString fname )
   bool isMotor;
   QString type;
 
-  AUnit *NewUnit;
+  AUnit0 *NewUnit;
+  ASensor *NewSensor;
+  AMotor *NewMotor;
 
   QTextStream in( &f );
   while( !in.atEnd() ) {
@@ -44,48 +47,51 @@ void MainWindow::ReadDef( QString fname )
     if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
 //    next = nextItem( aline.simplified(), item );
       next = nextItem( aline, item );            // stop using 'simplified'
-      NewUnit = new AUnit;
       if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
+        next = nextItem( next, item ); type = item;
+	NewUnit = NewNewUnit( type );
+
         if ( item == "MOTOR" ) { // Motor か
-          AMotors << NewUnit;
+	  NewMotor = (AMotor*)NewUnit;
+          AMotors << NewMotor;
           NewUnit->setGType( "MOTOR" );
           isMotor = true;
         } else {
-          ASensors << NewUnit;  // Sensor か
+	  NewSensor = (ASensor*)NewUnit;
+          ASensors << NewSensor;
           NewUnit->setGType( "SENSOR" );
           isMotor = false;
         }
         // 全 motor, sensor に共通の項目
+	NewUnit->setType( type );
         NewUnit->setALine( line );
-        next = nextItem( next, item ); NewUnit->setType( type = item );
         next = nextItem( next, item ); NewUnit->setUid( item );
         next = nextItem( next, item ); NewUnit->setID( item );
         next = nextItem( next, item ); NewUnit->setName( item );
-        next = nextItem( next, item ); NewUnit->setDriver( item ); DriverList << item;
+        next = nextItem( next, item ); NewUnit->setDev( item ); DriverList << item;
         next = nextItem( next, item ); NewUnit->setCh( item );
         next = nextItem( next, item ); NewUnit->setUnit( item );
-        NewUnit->setDevCh();
+	// NewUnit->setDevCh();
         // 名前の中の特殊文字の置換
         NewUnit->setName( LocalizedName( NewUnit->getName() ) );
 
         // 以下、motor だけの項目
         if ( isMotor ) {
           // 全 motor 共通
-          next = nextItem( next, item ); NewUnit->setUPP( item );
-          next = nextItem( next, item ); NewUnit->setIsInt( item == "INT" );
-          // 各 motor 個別
-          if (( type == "PM" )||( type == "SC" )) {
-            next = nextItem( next, item ); NewUnit->setCenter( item );
-          } else if (( type == "PZ" )||( type == "AIOo" )) {
-            next = nextItem( next, item ); NewUnit->setMinV( item );
-            next = nextItem( next, item ); NewUnit->setMaxV( item );
-          } else {
+          next = nextItem( next, item ); NewMotor->setUPP( item );
+          next = nextItem( next, item ); NewMotor->setIsInt( item == "INT" );
+          if (( type != "PM" )&&( type != "SC" )) {
+	    next = nextItem( next, item ); NewMotor->setCenter( item );
+	  } else if (( type != "PZ" )&&( type != "AIOo" )) {
+	    next = nextItem( next, item ); NewMotor->setMinV( item );
+	    next = nextItem( next, item ); NewMotor->setMaxV( item );
+	  } else {
             qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
           }
         } else {  // 以下、sensor だけの項目
           // 全 sensor 共通
-          next = nextItem( next, item ); NewUnit->setHasParent( item == "YES" );
-          next = nextItem( next, item ); NewUnit->setParent( item );
+          next = nextItem( next, item ); NewSensor->setHasParent( item == "YES" );
+          next = nextItem( next, item ); NewSensor->setPUid( item );
           // 各 sensor 個別
           if ( type == "ENC" ) {
           } else if ( type == "ENC2" ) {
@@ -98,18 +104,18 @@ void MainWindow::ReadDef( QString fname )
           } else if (( type == "CNT2" )||( type == "OTC2" )) {
             next = nextItem( next, item );
             NewUnit->set2ndUid( item );             // 2nd ドライバの設定
-            NewUnit->setHas2ndDriver( true );       // 2nd ドライバフラグ
-            NewUnit->setRangeSelectable( true );    // レンジ設定可能のフラグ
+            NewUnit->setHas2ndDev( true );          // 2nd ドライバフラグ
+            NewSensor->setRangeSelectable( true );    // レンジ設定可能のフラグ
             next = nextItem( next, item );
-            NewUnit->setRangeU( item.toInt() );     // レンジ上限値
+            NewSensor->setRangeU( item.toInt() );     // レンジ上限値
             next = nextItem( next, item );
-            NewUnit->setRangeL( item.toInt() );     // レンジ下限値
+            NewSensor->setRangeL( item.toInt() );     // レンジ下限値
           } else if ( type == "SSDP" ) {
           } else if ( type == "SSD" ) {
           } else if ( type == "LSR" ) {
           } else if ( type == "DV" ) {
             next = nextItem( next, item );
-            NewUnit->setMaxIntTime( item.toDouble() );
+            ((AUnitDV*)NewUnit)->setMaxIntTime( item.toDouble() );
           } else if ( type == "DV2" ) {
           } else if ( type == "CCG" ) {
           } else if ( type == "AIOi" ) {
@@ -339,8 +345,8 @@ void MainWindow::ReadDef( QString fname )
         ||( ASensors.at(i)->getType() == "OTC2" )) {
       for ( j = 0; j < ASensors.count(); j++ ) {
         if ( ASensors.at(i)->get2ndUid() == ASensors.at(j)->getUid() ) {
-          ASensors.at(i)->setThe2ndDriver( ASensors.at(j) );
-          ASensors.at(i)->set2ndDriver( ASensors.at(j)->getDriver() );
+          ASensors.at(i)->setThe2ndDev( ASensors.at(j) );
+          ASensors.at(i)->set2ndDev( ASensors.at(j)->getDriver() );
           ASensors.at(i)->set2ndCh( ASensors.at(j)->getCh() );
           ASensors.at(i)->set2ndDevCh();
           break;
@@ -353,6 +359,62 @@ void MainWindow::ReadDef( QString fname )
     }
   }
 }
+
+AUnit0 *MainWindow::NewNewUnit( QString type )
+{
+  AUnit0 *rv = NULL;
+  if ( type == "PM" )
+    rv = (AUnit0*)new AUnitPM;
+  if ( type == "PZ" )
+    rv = (AUnit0*)new AUnitPZ;
+  if ( type == "SC" )
+    rv = (AUnit0*)new AUnitSC;
+  if ( type == "AIOo" )
+    rv = (AUnit0*)new AUnitAIOo;
+
+  if ( type == "CNT" )
+    rv = (AUnit0*)new AUnitCNT;
+  if ( type == "PAM" )
+    rv = (AUnit0*)new AUnitPAM;
+  if ( type == "ENC" )
+    rv = (AUnit0*)new AUnitENC;
+  if ( type == "SSD" )
+    rv = (AUnit0*)new AUnitXMAP;
+  if ( type == "SSDP" )
+    rv = (AUnit0*)new AUnitXMAP2;
+  if ( type == "CNT2" )
+    rv = (AUnit0*)new AUnitOTC;
+  if ( type == "OTC" )
+    rv = (AUnit0*)new AUnitOTC;
+  if ( type == "OTC2" )
+    rv = (AUnit0*)new AUnitOTC2;
+  if ( type == "LSR" )
+    rv = (AUnit0*)new AUnitLSR;
+  if ( type == "DV" )
+    rv = (AUnit0*)new AUnitDV;
+  if ( type == "DV2" )
+    rv = (AUnit0*)new AUnitDV2;
+  if ( type == "ENC2" )
+    rv = (AUnit0*)new AUnitENC2;
+  if ( type == "PAM2" )
+    rv = (AUnit0*)new AUnitPAM2;
+  if ( type == "CCG" )
+    rv = (AUnit0*)new AUnitCCG;
+  if ( type == "AIOi" )
+    rv = (AUnit0*)new AUnitAIOi;
+  if ( type == "FP23" )
+    rv = (AUnit0*)new AUnitFP23;
+  if ( type == "EPIC" )
+    rv = (AUnit0*)new AUnitEPIC;
+
+  if ( rv == NULL ) {
+    rv = new AUnit0;
+    qDebug() << QString( "Error Unknown type name [%1]" ).arg( type );
+  }
+
+  return rv;
+}
+
 
 // Uid の重複チェック
 void MainWindow::CheckDuplicateUID( void )

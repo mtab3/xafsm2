@@ -19,7 +19,7 @@ void MUnits::clearUnits( void )
   PUnits.clear();
 }
 
-void MUnits::addUnit( AUnit *au )
+void MUnits::addUnit( ASensor *au )
 {
   int i;
   MUElement *mue = new MUElement;
@@ -33,7 +33,7 @@ void MUnits::addUnit( AUnit *au )
     }
     if ( i >= PUnits.count() ) {
       MUElement *pmue = new MUElement;
-      pmue->au = au->getTheParent();
+      pmue->au = (ASensor*)(au->getTheParent());
       PUnits << pmue;
     }
   }
@@ -257,7 +257,7 @@ bool MUnits::Close( void )
 void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
-  AUnit *as;
+  ASensor *as;
   for ( int i = 0; i < Units.count(); i++ ) {
     as = Units.at(i)->au;
     rvs[i] = as->value().toDouble();

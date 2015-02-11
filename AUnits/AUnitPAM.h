@@ -9,6 +9,9 @@ class AUnitPAM : public ASensor
  public:
   AUnitPAM( void ) {};
 
+  virtual void init00( Stars *s );
+
+  bool isAutoRangeAvailable( void ) { return true; };
 };
 
 class AUnitPAM2 : public AUnitPAM

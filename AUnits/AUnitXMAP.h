@@ -73,6 +73,17 @@ class AUnitXMAP : public ASensor
   XMAPHead getAMCAHead( int ch );
 
   void setGain( int ch, double gain );
+  void setROIs( QString *roistart, QString *roiend )
+  { ROIStart = roistart; ROIEnd = roiend; };
+
+  void SetLowLimit( int ch, int llpix );
+  void setSSDUsingCh( int i, bool f )
+  { if ( i < MaxSSDs ) SSDUsingCh[i] = f; };
+  bool getSSDUsingCh( int i )
+  { if ( i < MaxSSDs ) return SSDUsingCh[i]; else return false; };
+
+  double realTime( int ch );
+  double liveTime( int ch );
 
  public slots:
   void getMCALength( SMsg msg );

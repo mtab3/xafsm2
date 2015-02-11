@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 10 22:07:42 2015 +0900\n"\
+                "    working hard git add .! with broken codes\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 10 19:39:42 2015 +0900\n"\
                 "    just working broken codes\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 02:48:27 2015 +0900\n"\
                 "    new WhatToDo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 02:45:39 2015 +0900\n"\
-                "    MUnits are prepared for Measurement, Scanning, Monitoring, and S2D separately\n"\
 		"\n"\
                 ""
 #endif

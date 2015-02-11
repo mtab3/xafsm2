@@ -38,6 +38,36 @@ bool AUnitXMAP::InitSensor( void )
   return rv;
 }
 
+void AUnitXMAP::init0( Stars *s )
+{
+  connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsRunStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg )),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetRealTime( SMsg )), this, SLOT( ReactGetRealTime( SMsg )),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetLiveTime( SMsg )), this, SLOT( ReactGetLiveTime( SMsg )),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
+	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
+	   Qt::UniqueConnection );
+
+  s->SendCMD2( "Init", DevCh, "IsBusy" );
+  s->SendCMD2( "Init", Driver, "RunStop" );
+  s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
+}
+
+
 double AUnitXMAP::SetTime( double dtime ) // in sec, この関数は、複数ステップ化できない
 {
   IsBusy2On( Driver, "SetTime" );
@@ -307,4 +337,16 @@ MCAHead AUnitXMAP::getAMCAHead( int ch )
 void AUnitXMAP::setGain( int ch, double gain )
 {
   s->SendCMD2( Uid, Driver, QString( "SetPreAMPGain %1 %2" ).arg( ch ).arg( gain ) );
+}
+
+
+/* 連続スキャン対応 */
+
+// 連続スキャンの後にノーマルモードに戻す
+bool AUnitCNT::Close( void )
+{
+  IsBusy2On( Driver, "GetValue0c0" );
+  s->SendCMD2( Uid, Driver, "RunStop" );
+
+  return false;
 }

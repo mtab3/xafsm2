@@ -319,7 +319,7 @@ void MainWindow::showS2DNewAxValue( QString )
 
 void MainWindow::S2DScanStart( void )
 {
-  AUnit *as = NULL;
+  ASensor *as = NULL;
 
   if ( !inS2D ) {
     S2DInfo oldInfo = S2DI;
@@ -551,7 +551,7 @@ void MainWindow::S2DScanNotStart( void )
 
 void MainWindow::CheckS2DDwellTime( void )
 {
-  AUnit *as = S2DSelectedMotors[0];
+  AMotor *am = S2DSelectedMotors[0];
   double sx, ex, dx, dwell;
   int pps, ps;
 
@@ -568,19 +568,19 @@ void MainWindow::CheckS2DDwellTime( void )
     // Step Scan の時 dwell にパルスモータの最高速に起因した制限は無いはず
   }
   else if ( S2DQuasiContScan->isChecked() ) {
-    pps = (int)fabs( dx / as->getUPP() / dwell );
-    if ( pps > as->highestSpeed() ) { // Quasi Cont. Scan
-      pps = as->highestSpeed();
+    pps = (int)fabs( dx / am->getUPP() / dwell );
+    if ( pps > am->highestSpeed() ) { // Quasi Cont. Scan
+      pps = am->highestSpeed();
     }
-    dwell = fabs( dx / as->getUPP() / pps );
+    dwell = fabs( dx / am->getUPP() / pps );
   }
   else if ( S2DRealContScan->isChecked() ) { // Real Cont. Scan
     if ( dwell / ps < 0.25 ) dwell = ps * LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN;
-    pps = (int)fabs( dx * ps / as->getUPP() / dwell );
-    if ( pps > as->highestSpeed() ) {
-      pps = as->highestSpeed();
+    pps = (int)fabs( dx * ps / am->getUPP() / dwell );
+    if ( pps > am->highestSpeed() ) {
+      pps = am->highestSpeed();
     }
-    dwell = fabs( dx * ps / as->getUPP() / pps );
+    dwell = fabs( dx * ps / am->getUPP() / pps );
   }
   S2DTime1->setText( QString::number( dwell ) );
   S2DPoints[0]->setText( QString::number( ps ) );

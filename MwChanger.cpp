@@ -115,8 +115,8 @@ void MainWindow::SetNewChangerCenter( void )
     return;
 
   Changer *changer = Changers[ ChangerSelect->currentIndex() ];
-  AUnit *c1 = changer->unit1();
-  AUnit *c2 = changer->unit2();
+  AMotor *c1 = changer->unit1();
+  AMotor *c2 = changer->unit2();
 
   int target = ChangerCurrentHolder->value();       // Target は 1 始まりの整数
   double ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
@@ -130,8 +130,8 @@ void MainWindow::SetNewChangerCenter( void )
 void MainWindow::moveToTarget( Changer *changer, int target, double dx, double dz )
 {
   //  Changer *changer = Changers[ ChangerSelect->currentIndex() ];
-  AUnit *c1 = changer->unit1();
-  AUnit *c2 = changer->unit2();
+  AMotor *c1 = changer->unit1();
+  AMotor *c2 = changer->unit2();
 
   MovingToNewSamplePosition = true;   // このフラグで移動中の測定をブロックする
   double ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
@@ -236,8 +236,8 @@ void MainWindow::ShowChangerPosition( QString )
     return;
 
   Changer *changer = Changers[ ChangerSelect->currentIndex() ];
-  AUnit *c1 = changer->unit1();
-  AUnit *c2 = changer->unit2();
+  AMotor *c1 = changer->unit1();
+  AMotor *c2 = changer->unit2();
   double p1 = c1->value().toDouble();
   double p2 = c2->value().toDouble();
 

@@ -377,7 +377,7 @@ void MainWindow::newCalibration( void )
       // gain の設定は何故か逆
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
       // 設定したゲインの読み出し
-      s->SendCMD2( "SetUpMCA", SFluo->getDriver(),
+      s->SendCMD2( "SetUpMCA", SFluo->getDev(),
 		   "GetPreAMPGain", QString::number( MCACh->value() ) );
     }
   }
@@ -636,18 +636,18 @@ void MainWindow::SelSSDs( int ch )
 
 void MainWindow::getMCASettings( int ch )
 {
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetPeakingTime", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetThreshold", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetCalibration", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetDynamicRange", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetPreAMPGain", QString::number( ch ) );
 
   SFluo->GetMCAs();
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
   }
   for ( int i = 0; i < MaxSSDs; i++ ) {
@@ -725,35 +725,35 @@ void MainWindow::MCAChSelected( int i )
 
 void MainWindow::showPeakingTime( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     PeakingTimeInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showThreshold( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     ThresholdInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showCalibration( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     CalibrationInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showDynamicRange( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     DynamicRangeInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showPreAMPGain( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     GainInput->setText( msg.Val() );
   }
 }
@@ -900,7 +900,7 @@ void MainWindow::ShowNewMCAStat( char * )
     for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = aMca[i];
     }
-    MCAHead head = SFluo->getAMCAHead( cMCACh );
+    XMAPHead head = SFluo->getAMCAHead( cMCACh );
     cMCAView->SetRealTime( head.realTime );
     cMCAView->SetLiveTime( head.liveTime );
     cMCAView->update();

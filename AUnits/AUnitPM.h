@@ -5,16 +5,16 @@ class AUnitPM : public AMotor
 {
   Q_OBJECT
 
-  double Center;        // Center position in puls : only for PM
+  int AccRate;   // 加減速レート ( AccRage ms/1000pps )
+  int AccRateNo; // 対応する加減速レートの PM16C のテーブル番号
 
  public:
   AUnitPM( void );
 
-  double getCenter( void ) { return Center; };
-  void setCenter( QString center ) { Center = center.toDouble(); };
-  void setCenter( double center ) { Center = center; };
-  double getCeter( void ) { return Center; };
-
+  int accRate( void ) { return AccRate; };    // 加減速レート
+  void setAccRate( int r ) { AccRate = r; };
+  int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
+  void setAccRateNo( int n ) { AccRateNo = n; };
 };
 
 #endif

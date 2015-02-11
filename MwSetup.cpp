@@ -292,7 +292,7 @@ void MainWindow::NewMotor( void )
   SaveScanInfo( ScanIFs[ SPSLastSelectedM ], AMotors[ SPSLastSelectedM ] );
 
   SPSLastSelectedM = SPSMotorSelect->currentIndex();
-  AUnit *am = AMotors[ SPSLastSelectedM ];
+  AMotor *am = AMotors[ SPSLastSelectedM ];
   am->GetValue();
 
   GoMotorUnit->setText( am->getUnit() );
@@ -331,7 +331,7 @@ bool MainWindow::LoadScanInfo( ScanInfo *set )
   return true;
 }
 
-void MainWindow::SaveScanInfo( ScanInfo *set, AUnit *am )
+void MainWindow::SaveScanInfo( ScanInfo *set, AMotor *am )
 {
   if ( am == NULL )
     set->am = AMotors[ SPSMotorSelect->currentIndex() ];
@@ -371,7 +371,7 @@ void MainWindow::SaveScanInfo( ScanInfo *set, AUnit *am )
 
 void MainWindow::SaveMonInfo( MonInfo *set )
 {
-  AUnit *as;
+  ASensor *as;
 
   set->Sensors.clear();
   set->SensorNames.clear();
@@ -391,7 +391,7 @@ void MainWindow::SaveMonInfo( MonInfo *set )
 }
 
 
-bool MainWindow::UseDefUReal( AUnit *am )
+bool MainWindow::UseDefUReal( AMotor *am )
 {
   bool rv = false;
 
@@ -465,7 +465,7 @@ void MainWindow::SetAutoRangeMode( int i )
 
 void MainWindow::SelAutoRange( bool Auto )
 {
-  AUnit *as = SensWithRange.at( SelSensToSetRange->currentIndex() );
+  ASensor *as = SensWithRange.at( SelSensToSetRange->currentIndex() );
   as->setAutoRange( Auto );
   RangeSelect->setEnabled( !Auto );
   if ( I0Sensors[ SelectI0->currentIndex() ] == as )
@@ -480,7 +480,7 @@ void MainWindow::SelAutoRange( bool Auto )
 
 void MainWindow::newRangeSelected( int i )
 {
-  AUnit *as = SensWithRange[ SelSensToSetRange->currentIndex() ];
+  ASensor *as = SensWithRange[ SelSensToSetRange->currentIndex() ];
   as->setRange( i );
   if ( as == I0Sensors[ SelectI0->currentIndex() ] )
     I0Range->setValue( i );
@@ -624,7 +624,7 @@ void MainWindow::ShowCurMotorPos( SMsg msg )  // AUnit を通さずにつない�
   QString val0;
   QString val;
 
-  AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
+  AMotor *am = AMotors.value( SPSMotorSelect->currentIndex() );
 
   if ( ( msg.From() == am->getDevCh() )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) ) ) {
@@ -716,7 +716,7 @@ void MainWindow::NewMMRelAbs( RELABS /* stat */ )
 
 void MainWindow::NewGoMotorPosPuls( const QString &val )
 {
-  AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
+  AMotor *am = AMotors.value( SPSMotorSelect->currentIndex() );
 
   LastInIsPulsV = true;
   if ( MMRelAbs->stat() == ABS ) {
@@ -729,7 +729,7 @@ void MainWindow::NewGoMotorPosPuls( const QString &val )
 
 void MainWindow::NewGoMotorPosUnit( const QString &val )
 {
-  AUnit *am = AMotors.value( SPSMotorSelect->currentIndex() );
+  AMotor *am = AMotors.value( SPSMotorSelect->currentIndex() );
 
   LastInIsPulsV = false;
   if ( MMRelAbs->stat() == ABS ) {
@@ -755,7 +755,7 @@ void MainWindow::GoMAtP( void )
 void MainWindow::GoMAtPuls( double Pos )
 {
   int mNo = SPSMotorSelect->currentIndex();
-  AUnit *am = AMotors.value( mNo );
+  AMotor *am = AMotors.value( mNo );
 
   QString User;
   if ( ( User = UUnits.user( am ) ) != "" ) {
@@ -838,7 +838,7 @@ void MainWindow::GoMStop( void )
   // 動かしたモーターを憶えておいてそれを止めるより、
   // 今指定しているモーターを止めるほうが実用的と判断した。
   int mNo = SPSMotorSelect->currentIndex();
-  AUnit *am = AMotors.value( mNo );
+  AMotor *am = AMotors.value( mNo );
 
   // 当該のモータが使われてて、かつそれを使ってるのが GOMOTOR の場合のみ止める
   if ( UUnits.removeAnUnit( GOMOTOR_ID, am ) ) {
@@ -882,7 +882,8 @@ void MainWindow::SelectedAPointInScanArea( double x, double )
 
 void MainWindow::ScanStart( void )
 {
-  //  AUnit *am, *as, *as0 = NULL;
+  //  AMotor *am;
+  //  ASensor *as, *as0 = NULL;
 
   if ( !inSPSing ) {
     if ( SPSUseAdditionalSs->isChecked() && inSPSing ) {
@@ -916,7 +917,7 @@ void MainWindow::ScanStart( void )
     if ( SPSUseAdditionalSs->isChecked() ) {
       for ( int i = 0; i < monLines.count(); i++ ) {
 	if ( monLines[i]->isChecked() ) {
-	  AUnit *as = ASensors[ monLines[i]->currentIndex() ];
+	  ASensor *as = ASensors[ monLines[i]->currentIndex() ];
 	  if ( as->isEnable() ) {
 	    int i;
 	    for ( i = 0; i < mScanUnits.count(); i++ ) {
@@ -949,7 +950,7 @@ void MainWindow::ScanStart( void )
     }
 
     for ( int i = 0; i < mScanUnits.count(); i++ ) {   // 使用する検出器に関するチェック
-      AUnit *as = mScanUnits.at(i);
+      ASensor *as = mScanUnits.at(i);
       if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
 	  .arg( as->getName() );
@@ -1047,7 +1048,7 @@ void MainWindow::ScanStop0( void )
 
 void MainWindow::Monitor( void )
 {
-  QVector<AUnit*> ass;
+  QVector<ASensor*> ass;
   for ( int i = 0; i < monLines.count(); i++ )
     ass << ASensors.value( monLines[i]->currentIndex() );
   
@@ -1129,7 +1130,7 @@ void MainWindow::Monitor( void )
 
     QString User;
     for ( int i = 0; i < mMonUnits.count(); i++ ) {
-      AUnit *as = mMonUnits.at(i);
+      ASensor *as = mMonUnits.at(i);
       if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor [%1] can use only in QXafs mode." )
 	  .arg( as->getName() );
