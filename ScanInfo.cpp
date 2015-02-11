@@ -85,15 +85,15 @@ bool ScanInfo::load( QTextStream &in,
 	    break;
 	  }
 	}
-	for ( int j = 0; j < AMotors.count(); j++ ) {
-	  if ( AMotors[j]->getUid() == vals[2] ) {
-	    as = AMotors[j];
+	for ( int j = 0; j < ASensors.count(); j++ ) {
+	  if ( ASensors[j]->getUid() == vals[2] ) {
+	    as = ASensors[j];
 	    break;
 	  }
 	}
-	for ( int j = 0; j < AMotors.count(); j++ ) {
-	  if ( AMotors[j]->getUid() == vals[3] ) {
-	    as0 = AMotors[j];
+	for ( int j = 0; j < ASensors.count(); j++ ) {
+	  if ( ASensors[j]->getUid() == vals[3] ) {
+	    as0 = ASensors[j];
 	    break;
 	  }
 	}
