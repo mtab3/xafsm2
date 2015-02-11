@@ -58,6 +58,7 @@ public:
 
   void setEnable( bool enable );
   void setALine( int aline ) { aLine = aline; };
+  int getALine( void ) { return aLine; };
   bool isEnable( void ) { return Enable; };
 
   Stars *getStars( void ) { return s; };

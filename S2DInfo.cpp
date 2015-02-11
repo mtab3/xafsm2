@@ -88,7 +88,7 @@ void S2DInfo::save( QTextStream &out )
   out << "#" << endl << endl;
 }
 
-void S2DInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
+void S2DInfo::load( QTextStream &in, QVector<AMotor*> &AMotors )
 {
   while( ! in.atEnd() ) {
     QString line = in.readLine().simplified();

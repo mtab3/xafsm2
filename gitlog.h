@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 12 01:19:56 2015 +0900\n"\
+                "    hardly struggling with the new AUnits.  but still the codes are broken.\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 10 22:07:42 2015 +0900\n"\
                 "    working hard git add .! with broken codes\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 13:12:58 2015 +0900\n"\
                 "    a simple bug in MwSetup (inMonitor was not initialized) was fixed.   The parenets of the units are also checked in UsingUnits\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 02:48:27 2015 +0900\n"\
-                "    new WhatToDo\n"\
 		"\n"\
                 ""
 #endif

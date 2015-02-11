@@ -2,7 +2,7 @@
 #ifndef AMOTOR_H
 #define AMOTOR_H
 
-#include "../enums.h"
+#include "../RelAbs.h"
 #include "AUnit0.h"
 
 enum MSPEED { LOW, MIDDLE, HIGH, MSPEEDS };

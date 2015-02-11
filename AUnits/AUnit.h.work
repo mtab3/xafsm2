@@ -21,8 +21,6 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
   double dlastSetV;
 
   // PM16C
-  int AccRate;   // 加減速レート ( AccRage ms/1000pps )
-  int AccRateNo; // 対応する加減速レートの PM16C のテーブル番号
   
   // SENSORS
 //  double setTime;       // Actually set time;
@@ -31,13 +29,8 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
 
 
   // 34410
-  int points;           // Measured Data Points : 34410
-  bool HasMaxIntTime;
-  double MaxIntTime;    // Maximum integration time
 
   // PZ
-  double MaxV;          // only for PZ
-  double MinV;          // only for PZ
 
 
  private:
@@ -66,7 +59,6 @@ public:
   // only for PZ
 
   // only for DV
-  void setMaxIntTime( double t ) { MaxIntTime = t; HasMaxIntTime = true; };
 
   int getALine( void ) { return aLine; };
 //  QString get2ndUid( void ) { return Uid2; };
@@ -84,14 +76,8 @@ public:
 
   // only for PM
   // only for PZ
-  double getMaxV( void ) { return MaxV; };
-  double getMinV( void ) { return MinV; };
 
 
-  int accRate( void ) { return AccRate; };    // 加減速レート
-  void setAccRate( int r ) { AccRate = r; };
-  int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
-  void setAccRateNo( int n ) { AccRateNo = n; };
 
   // only for DV
   bool hasMaxIntTime( void ) { return HasMaxIntTime; };

@@ -331,24 +331,24 @@ void MainWindow::ReadDef( QString fname )
   for ( i = 0; i < ASensors.count(); i++ ) {
     if ( ASensors.at(i)->hasParent() ) {
       for ( j = 0; j < ASensors.count(); j++ ) {
-        if ( ASensors.at(i)->getPUid() == ASensors.at(j)->getUid() ) {
-          ASensors.at(i)->setTheParent( ASensors.at(j) );
+        if ( ASensors[i]->getPUid() == ASensors[j]->getUid() ) {
+          ASensors[i]->setTheParent( ASensors[j] );
           break;
         }
       }
       if ( j >= ASensors.count() ) {
         qDebug() << "can not find a parent for " << ASensors.at(i)->getUid()
-                 << "the name is " << ASensors.at(i)->getPUid();
+                 << "the name is " << ASensors[i]->getPUid();
       }
     }
-    if (( ASensors.at(i)->getType() == "CNT2" )
-        ||( ASensors.at(i)->getType() == "OTC2" )) {
+    if (( ASensors[i]->getType() == "CNT2" )
+        ||( ASensors[i]->getType() == "OTC2" )) {
       for ( j = 0; j < ASensors.count(); j++ ) {
-        if ( ASensors.at(i)->get2ndUid() == ASensors.at(j)->getUid() ) {
-          ASensors.at(i)->setThe2ndDev( ASensors.at(j) );
-          ASensors.at(i)->set2ndDev( ASensors.at(j)->getDriver() );
-          ASensors.at(i)->set2ndCh( ASensors.at(j)->getCh() );
-          ASensors.at(i)->set2ndDevCh();
+        if ( ASensors[i]->get2ndUid() == ASensors[j]->getUid() ) {
+          ASensors[i]->setThe2ndDev( ASensors[j] );
+          ASensors[i]->set2ndDev( ASensors[j]->getDev() );
+          ASensors[i]->set2ndCh( ASensors[j]->getCh() );
+	  //          ASensors[i]->set2ndDevCh();
           break;
         }
       }
@@ -450,15 +450,15 @@ void MainWindow::CheckDuplicateUID( void )
   }
 }
 
-void MainWindow::ExitByDuplicateUID( AUnit *a1, AUnit *a2 )
+void MainWindow::ExitByDuplicateUID( AUnit0 *a1, AUnit0 *a2 )
 {
   qDebug() << tr( "UIDs [%1](at line %2) and [%3](at line %4) are duplicated." )
               .arg( a1->getUid() ).arg( a1->getALine() )
               .arg( a2->getUid() ).arg( a2->getALine() );
   qDebug() << tr( "1st one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
-              .arg( a1->getType() ).arg( a1->getID() ).arg( a1->getDriver() ).arg( a1->getCh() );
+              .arg( a1->getType() ).arg( a1->getID() ).arg( a1->getDev() ).arg( a1->getCh() );
   qDebug() << tr( "2nd one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
-              .arg( a2->getType() ).arg( a2->getID() ).arg( a2->getDriver() ).arg( a2->getCh() );
+              .arg( a2->getType() ).arg( a2->getID() ).arg( a2->getDev() ).arg( a2->getCh() );
   exit( 0 );
 }
 

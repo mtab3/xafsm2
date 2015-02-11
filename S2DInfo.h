@@ -6,6 +6,9 @@
 #include "XafsM.h"
 #include "AUnits/AMotor.h"
 
+enum DIRECTION { FORWARD, BACKWARD };
+enum SCANMODE { STEP, QCONT, RCONT };
+
 class S2DInfo
 {
  public:

@@ -50,6 +50,7 @@
 #include "MonLine.h"
 #include "Alarm.h"
 #include "MonInfo.h"
+#include "enums.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"

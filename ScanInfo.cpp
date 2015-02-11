@@ -59,11 +59,12 @@ void ScanInfo::save( QTextStream &out )
 }
 
 bool ScanInfo::load( QTextStream &in,
-		     QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors )
+		     QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors )
 {
   bool f = false;
   
-  am = as = as0 = NULL;
+  am = NULL;
+  as = as0 = NULL;
   while( !in.atEnd() ) {
     QString line = in.readLine();
     if ( line.count() < 2 ) break;
@@ -85,15 +86,15 @@ bool ScanInfo::load( QTextStream &in,
 	    break;
 	  }
 	}
-	for ( int j = 0; j < AMotors.count(); j++ ) {
-	  if ( AMotors[j]->getUid() == vals[2] ) {
-	    as = AMotors[j];
+	for ( int j = 0; j < ASensor.count(); j++ ) {
+	  if ( ASensors[j]->getUid() == vals[2] ) {
+	    as = ASensors[j];
 	    break;
 	  }
 	}
-	for ( int j = 0; j < AMotors.count(); j++ ) {
-	  if ( AMotors[j]->getUid() == vals[3] ) {
-	    as0 = AMotors[j];
+	for ( int j = 0; j < ASensors.count(); j++ ) {
+	  if ( ASensors[j]->getUid() == vals[3] ) {
+	    as0 = ASensors[j];
 	    break;
 	  }
 	}
