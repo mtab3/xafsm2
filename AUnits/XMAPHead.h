@@ -1,6 +1,8 @@
 #ifndef XMAPHEAD_H
 #define XMAPHEAD_H
 
+#define XMAPHEAD    ( 6 * 8 )              // 6 values * 8 bytes
+
 class XMAPHead {
  public:
   qint64 ch;

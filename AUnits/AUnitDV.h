@@ -2,6 +2,8 @@
 #ifndef AUNITDV_H
 #define AUNITDV_H
 
+#include "ASensor.h"
+
 class AUnitDV : public ASensor
 {
   Q_OBJECT
@@ -12,9 +14,14 @@ class AUnitDV : public ASensor
   
  public:
   AUnitDV( void ) {};
-  virtual void init00( Stars *s );
+  void init0( void );
+  virtual void init00( void );
 
   void setMaxIntTime( double t ) { MaxIntTime = t; HasMaxIntTime = true; };
+
+  bool QStart( void );
+  bool QRead( void );
+  bool QEnd( void );
 };
 
 class AUnitDV2 : public AUnitDV
@@ -23,6 +30,9 @@ class AUnitDV2 : public AUnitDV
 
  public:
   AUnitDV2( void ) {};
+  void init00( void );
+
+  void AskIsBusy( void );
 };
 
 #endif

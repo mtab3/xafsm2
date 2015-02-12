@@ -1,17 +1,20 @@
 #ifndef AUNIT_H
 #define AUNIT_H
 
+#include <math.h>
 #include <QObject>
 
+#include "../SMsg.h"
 #include "../Stars.h"
 
 class AUnit0 : public QObject
 {
   Q_OBJECT
 
+ protected:
   Stars *s;
   bool Enable;          // if the unit is enable on Stars server or not
-  int aLine;            // the line number where the definition appears in .def file
+  int ALine;            // the line number where the definition appears in .def file
 
   int LocalStage;
 
@@ -36,11 +39,11 @@ class AUnit0 : public QObject
   QString Value;
   QStringList Values;
   QString LastValue;
-  int ilastSetV;
-  double dlastSetV;
+  int ILastSetV;
+  double DLastSetV;
 
   bool HasParent;
-  AUnit0 *theParent;
+  AUnit0 *TheParent;
   QString PUid;
 
   bool Has2ndDev;
@@ -48,31 +51,32 @@ class AUnit0 : public QObject
   QString Dev2;
   QString Ch2;
   QString DevCh2;       // Dev + "." + Ch
-  AUnit0 *the2ndDev;
+  AUnit0 *The2ndDev;
   
 public:
   AUnit0( QObject *parent = 0 );
 
-  void Initialize( Stars *S );
-  virtual void init( Stars *S );
+  void Initialize( Stars *s );
+  virtual void init( void );
 
   void setEnable( bool enable );
-  void setALine( int aline ) { aLine = aline; };
-  int getALine( void ) { return aLine; };
+  virtual void _setEnable( bool /*enable*/ ) {};
+  void setALine( int aline ) { ALine = aline; };
+  int aLine( void ) { return ALine; };
   bool isEnable( void ) { return Enable; };
 
   Stars *getStars( void ) { return s; };
-  QString getGType( void ) { return GType; };        // Motor, Sensor
-  QString getType( void ) { return Type; };          // PM, PZ, ENC, ...
-  QString getUid( void ) { return Uid; };            // Uniq Uid
-  QString get2ndUid( void ) { return Uid2; };         /* return Uid2; */  // 2nd Uid
-  QString getID( void ) { return ID; };              // MainTh, StageX, General, ...
-  QString getName( void ) { return Name; };          // Displayed name
-  QString getDev( void ) { return Dev; };
-  QString getCh( void ) { return Ch; };
-  QString getDevCh( void ) { return DevCh; };        // Driver + "." + Ch
-  QString getUnit( void ) { return Unit; };          // metric unit "mm", "mA", ...
-  double getUPP( void ) { return UPP; };
+  QString gType( void ) { return GType; };        // Motor, Sensor
+  QString type( void ) { return Type; };          // PM, PZ, ENC, ...
+  QString uid( void ) { return Uid; };            // Uniq Uid
+  QString uid2( void ) { return Uid2; };         /* return Uid2; */  // 2nd Uid
+  QString id( void ) { return ID; };              // MainTh, StageX, General, ...
+  QString name( void ) { return Name; };          // Displayed name
+  QString dev( void ) { return Dev; };
+  QString ch( void ) { return Ch; };
+  QString devCh( void ) { return DevCh; };        // Driver + "." + Ch
+  QString unit( void ) { return Unit; };          // metric unit "mm", "mA", ...
+  double upp( void ) { return UPP; };
 
   void setStars( Stars *S ) { s = S; };
   void setGType( QString gtype ) { GType = gtype; }; // Motor, Sensor
@@ -90,11 +94,17 @@ public:
 
   QString makeDevCh( const QString &dev, const QString &ch );
 
+  virtual void AskIsBusy( void ) {};
   void setIsBusy( bool busy ) { IsBusy = busy; emit ChangedIsBusy1( Dev ); };
   void setIsBusy2( bool busy ) { IsBusy2 = busy; emit ChangedIsBusy2( Dev ); };
   bool isBusy0( void ) { return IsBusy || IsBusy2; };
   bool isBusy( void ) { return IsBusy; };
   bool isBusy2( void ) { return IsBusy2; };
+  void IsBusy2On( QString drv, QString name );
+  void IsBusy2Off( QString drv );
+  void setBusy2Count( int i ) { Busy2Count = i; };
+  void clrBusy2Count( void ) { Busy2Count = 0; };
+  int busy2Count( void ) { return Busy2Count; };
 
   virtual void SetValue( double v );
   virtual bool GetValue0( void );
@@ -114,10 +124,10 @@ public:
   void setHasParent( bool hasParent ) { HasParent = hasParent; };
   bool hasParent( void ) { return HasParent; };
   void setPUid( QString puid ) { PUid = puid; };
-  QString getPUid( void ) { return PUid; };
+  QString pUid( void ) { return PUid; };
   //  void setParent( QString pUid ) { PUid = pUid; };
-  void setTheParent( AUnit0 *p ) { theParent = p; };
-  AUnit0 *getTheParent( void ) { return theParent; };
+  void setTheParent( AUnit0 *p ) { TheParent = p; };
+  AUnit0 *thParent( void ) { return TheParent; };
   
   // Dev2, Ch2, DevCh2 : ユニットの定義に2つのドライバが必要な時、その2つ目のドライバ
   // 例えばKeithley を電流/電圧アンプとして使用して、その出力を例えばカウンタで図る場合
@@ -125,14 +135,14 @@ public:
   // この時メインのデバイスはカウンタだが、Keithley を2ndドライバとして指定する
   void setHas2ndDev( bool has2ndDev ) { Has2ndDev = has2ndDev; };
   bool has2ndDev( void ) { return Has2ndDev; };
-  AUnit0 *getThe2ndDev( void ) { return the2ndDev; };
-  void setThe2ndDev( AUnit0 *dev2 ) { the2ndDev = dev2; };
-  QString get2ndDev( void ) { return Dev2; };
-  QString get2ndCh( void ) { return Ch2; };
-  QString get2ndDevCh( void ) { return DevCh2; };
-  void set2ndDev( QString dev )
+  AUnit0 *the2ndDev( void ) { return The2ndDev; };
+  void setThe2ndDev( AUnit0 *dev2 ) { The2ndDev = dev2; };
+  QString dev2( void ) { return Dev2; };
+  QString ch2( void ) { return Ch2; };
+  QString devCh2( void ) { return DevCh2; };
+  void setDev2( QString dev )
   { Dev2 = dev; if ( Ch2 != "" ) DevCh2 = makeDevCh( Dev2, Ch2 ); };
-  void set2ndCh( QString ch )
+  void setCh2( QString ch )
   { Ch2 = ch; if ( Dev2 != "" ) DevCh2 = makeDevCh( Dev2, Ch2 ); };
 
   QString lastFunc( void ) { return LastFunc; };
@@ -141,6 +151,35 @@ public:
  signals:
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
+  void ChangedBusy2Count( QString Drv );
+  void Enabled( QString Dev, bool enable );
+
+
+#if 0
+  //  void CountFinished( void );
+  void newValue( QString value );
+  //  void newValues( void );
+  void newCountsInROI( QVector<int> );
+  void newCountsAll( QVector<int> );
+  void newTotalEvents( QVector<int> );
+  void newICRs( QVector<double> );
+  //  void newDataPoints( int points );
+  void newQData( void );
+
+
+  
+  void Enabled( QString Drv, bool flag );
+  void NewRingCurrent( QString val, QStringList vals );
+  void NewInjectionReport( QString val, QStringList vals );
+  void NewFP23Temperature( QString val );
+
+  void gotHighS( int s );
+  void gotMiddleS( int s );
+  void gotLowS( int s );
+  
+  void LogMsg( QString msg );
+  void Alarm( QString uid, QString msg );
+#endif
 };
 
 #endif

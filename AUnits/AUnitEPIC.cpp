@@ -1,11 +1,11 @@
 
 #include "AUnitEPIC.h"
 
-AUnitCCG:AUnitEPIC( void )
+AUnitEPIC::AUnitEPIC( void )
 {
 }
 
-void AUnitEPIC::init0( Stars *s )
+void AUnitEPIC::init0( void )
 {
   s->SendCMD2( "Init", DevCh, "IsBusy" );
 }

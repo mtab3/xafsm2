@@ -3,6 +3,7 @@
 #define AUNITAIO_H
 
 #include "ASensor.h"
+#include "AMotor.h"
 
 class AUnitAIOi : public ASensor
 {
@@ -10,6 +11,7 @@ class AUnitAIOi : public ASensor
 
  public:
   AUnitAIOi( void );
+  void init0( void );
 };
 
 class AUnitAIOo : public AMotor
@@ -20,9 +22,16 @@ class AUnitAIOo : public AMotor
   
  public:
   AUnitAIOo( void );
+  void init0( void );
 
   void setMaxV( QString maxv ) { MaxV = maxv.toDouble(); };
   void setMinV( QString minv ) { MinV = minv.toDouble(); };
+
+  void CloseShutter( bool close );
+  void GoMaxAbs( double start, double end, int steps );
+  void GoMaxAbsQ( double start, double end, int steps, double time );
+  void GoMaxRel( double width, int steps );
+  void GoMaxRelQ( double width, int steps, double time );
 };
 
 #endif

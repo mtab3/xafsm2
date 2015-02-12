@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 12 02:46:45 2015 +0900\n"\
+                "    good night!\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 12 02:27:41 2015 +0900\n"\
                 "    still the goal is away!\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 13:19:29 2015 +0900\n"\
                 "    new WhatToDo\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 13:18:01 2015 +0900\n"\
-                "    Measure, Monitor, and Scan can be conducted at the same time\n"\
 		"\n"\
                 ""
 #endif

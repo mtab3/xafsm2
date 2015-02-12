@@ -1,0 +1,139 @@
+
+#include "XafsM.h"
+#include "Stars.h"
+#include "MCAHead.h"
+
+#define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
+// qint64  ch, stat, mcaLength
+// qreal64 realTime, liveTime, icr
+#define AMCABUF    ( MCAHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
+#define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
+
+
+
+
+
+  bool IsInt;           // if the controlling unit is integer or not.
+
+  int ilastSetV;
+  double dlastSetV;
+
+  // PM16C
+  
+  // SENSORS
+//  double setTime;       // Actually set time;
+//  double setDarkTime;   // Actually set time;
+//  double Dark;                 // back ground value normalized for 1 sec
+
+
+  // 34410
+
+  // PZ
+
+
+ private:
+  bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
+		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2, int enc2,
+		int pam2, int ccg, int aioi, int aioo, int fp23, int epic );
+
+ private slots:
+  void receiveMCAs( void );
+
+public:
+  AUnit( QObject *parent = 0 );
+
+
+
+
+//  void setThe2ndDriver( AUnit *p ) { the2ndDriver = p; };
+//  void setHas2ndDriver( bool has2ndDriver ) { Has2ndDriver = has2ndDriver; };
+//  void setSSDPresetType( QString type ) { SSDPresetType = type; };
+  QString getSSDPresetType( void ) { return SSDPresetType; };
+  void setSSDUsingCh( int i, bool f ) { if ( i < MaxSSDs ) SSDUsingCh[i] = f; };
+
+
+
+  // only for PZ
+
+  // only for DV
+
+  int getALine( void ) { return aLine; };
+//  QString get2ndUid( void ) { return Uid2; };
+
+  QStringList MCAvalues( void ) { return MCAValues; };
+  bool isInt( void ) { return IsInt; };
+  double stat( int ch, STATELM i );
+  double stat( STATELM i );
+  int Points( void ) { return points; };
+
+  int getILastSetV( void ) { return ilastSetV; };
+  double getDLastSetV( void ) { return dlastSetV; };
+
+  // only for PM
+  // only for PZ
+
+
+
+  // only for DV
+  bool hasMaxIntTime( void ) { return HasMaxIntTime; };
+  double maxIntTime( void ) { return MaxIntTime; };
+
+  void show( void );   // mainly for debugging
+
+  // wrapper functions of stars communication
+  void InitLocalStage( void );
+  bool InitSensor( void );
+  void AskIsBusy( void );
+//  double SetTime( double dtime );   // in sec
+
+  
+  // 3440
+  void SetTriggerDelay( double time );
+  void SetSamplingSource( QString source );
+  void SetTriggerSource( QString source );
+  void SetTriggerCounts( int count );
+  void SetTriggerSlope( QString type );
+  void GetDataPoints( void );
+  void ReadDataPoints( int points );
+  void Abort( void );
+  void GoMaxAbs( double Start, double End, int Steps );
+  void GoMaxAbsQ( double Start, double End, int Steps, double Time );
+  void GoMaxRel( double Width, int Steps );
+  void GoMaxRelQ( double Width, int Steps, double Time );
+
+
+public slots:
+  void ClrBusy( SMsg msg );
+  void SetIsBusyByMsg( SMsg msg );
+  void SetCurPos( SMsg msg );
+  void ReceiveValues( SMsg msg );
+  void RcvAnsGetValueOfDriver( SMsg msg );
+
+  void ReactGetStat( SMsg msg );
+  void ReactGetRealTime( SMsg msg );
+  void ReactGetLiveTime( SMsg msg );
+  void ReactGetRange( SMsg msg );
+  void OnReportCurrent( SMsg msg );
+  void OnReportInjection( SMsg msg );
+  void OnReportValue( SMsg msg );
+  void ReactGetDataLinkCh( SMsg msg );
+
+  //  void RcvDataPoints( SMsg msg );
+  //  void RcvReadData( SMsg msg );
+  void RcvStat( SMsg msg );
+  void RcvQGetData( SMsg msg );
+  void RcvHighSpeed( SMsg msg );
+  void RcvMiddleSpeed( SMsg msg );
+  void RcvLowSpeed( SMsg msg );
+
+  //  void RcvAlarmEvent( SMsg msg );
+  
+  void getNewValue( QString v );   // only for SSD childlen
+  void getNewDark( double d );     // only for SSD childlen
+
+signals:
+};
+
+#endif
+
+

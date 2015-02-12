@@ -20,6 +20,7 @@ class AMotor : public AUnit0
 {
   Q_OBJECT
 
+ protected:
   double Center;
   bool IsInt;
 
@@ -34,8 +35,8 @@ class AMotor : public AUnit0
  public:
   AMotor( void );
 
-  void init( Stars *s );
-  virtual void init0( Stars *s );
+  void init( void );
+  virtual void init0( void );
   
   virtual void Stop( void );
   bool checkNewVal( void )
@@ -45,16 +46,16 @@ class AMotor : public AUnit0
     return rv;
   };
 
-  double u2p( double u ) { return u / getUPP() + Center; };
-  double p2u( double p ) { return ( p - Center ) * getUPP(); };
+  double u2p( double u ) { return u / UPP + Center; };
+  double p2u( double p ) { return ( p - Center ) * UPP; };
   double any2p( double a, int selU, RELABS ra ) {
-    return a / ( ( selU == 0 ) ? 1 : getUPP() )
-      + ( ( ra == REL ) ? value().toDouble() : ( ( selU == 0 ) ? 0 : Center ) );
+    return a / ( ( selU == 0 ) ? 1 : UPP )
+      + ( ( ra == REL ) ? Value.toDouble() : ( ( selU == 0 ) ? 0 : Center ) );
   }
   double getCenter( void ) { return Center; };
   void setCenter( QString center ) { Center = center.toDouble(); };
   void setCenter( double center ) { Center = center; };
-  double metricValue( void ) { return ( value().toDouble() - Center ) * getUPP(); };
+  double metricValue( void ) { return ( Value.toDouble() - Center ) * UPP; };
   void setIsInt( bool isInt ) { IsInt = isInt; };
 
   /* SPeed 設定関連 */

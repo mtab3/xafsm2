@@ -1,18 +1,20 @@
 #include "AUnit0.h"
 
-AUnit::AUnit0( QObject *parent ) : QObject( parent )
+AUnit0::AUnit0( QObject *parent ) : QObject( parent )
 {
   s = NULL;
   Enable = false;
-  aLine = -1;
+  ALine = -1;
 
+  UPP = 1;
+  
   LocalStage = 0;
 
   IsBusy = IsBusy2 = false;
   Busy2Count = 0;
 }
 
-void AUnit::Initialize( Stars *S )
+void AUnit0::Initialize( Stars *S )
 {
   s = S;
 
@@ -34,7 +36,7 @@ void AUnit::Initialize( Stars *S )
   s->SendCMD2( "Init", "System", "flgon", Dev );
   s->SendCMD2( "Init", "System", "flgon", DevCh );
   
-  init( s );   // 各ユニットに固有の処理
+  init();   // 各ユニットに固有の処理
 
   if ( ID == "THETA" ) {
     AskIsBusy();
@@ -43,14 +45,14 @@ void AUnit::Initialize( Stars *S )
   if ( ID == "TotalF" ) {
     connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALength( SMsg ) ),
 	     Qt::UniqueConnection );
-    s->SendCMD2( "SetUpMCA", getDriver(), "GetMCALength" );
+    s->SendCMD2( "SetUpMCA", Dev, "GetMCALength" );
   }
   if ( ID == "ENCTH" ) {
     GetValue();
   }
-  emit ChangedIsBusy1( Driver );    // ここの3つのエミットは念の為
-  emit ChangedIsBusy2( Driver );
-  emit ChangedBusy2Count( Driver );
+  emit ChangedIsBusy1( Dev );    // ここの3つのエミットは念の為
+  emit ChangedIsBusy2( Dev );
+  emit ChangedBusy2Count( Dev );
 }
 
 QString AUnit0::makeDevCh( const QString &dev, const QString &ch )
@@ -64,21 +66,43 @@ QString AUnit0::makeDevCh( const QString &dev, const QString &ch )
   return dev;
 }
 
-void AUnit::setEnable( bool enable )
+void AUnit0::IsBusy2On( QString drv, QString name )
+{
+  IsBusy2 = true;
+  Busy2Count++;
+  LastFunc2 = name;
+  emit ChangedIsBusy2( drv );
+  emit ChangedBusy2Count( drv );
+}
+
+void AUnit0::IsBusy2Off( QString drv )
+{
+  IsBusy2 = false;
+  Busy2Count--;
+  if ( Busy2Count < 0 ) Busy2Count = 0;
+  LastFunc2 = "";
+  emit ChangedIsBusy2( drv );
+  emit ChangedBusy2Count( drv );
+}
+
+void AUnit0::setEnable( bool enable )
 {
   Enable = enable;
   IsBusy = false;
   LastFunc = "";
-  ConnectedToSSDServer = false;
-  emit Enabled( Driver, enable );
-  emit ChangedIsBusy1( Driver );
+  _setEnable( enable );    // AUnit0 を継承したクラスでの処理用 // AUnitXMAP が呼んでる
+  emit Enabled( Dev, enable );
+  emit ChangedIsBusy1( Dev );
   IsBusy2Off( "" );
 }
 
-bool AUnit::GetValue( void )
+bool AUnit0::GetValue( void )
 {
-  IsBusy2On( Driver, "GetValue" );
+  IsBusy2On( Dev, "GetValue" );
   s->SendCMD2( Uid, DevCh, "GetValue" );
 
   return false;
 }
+
+
+

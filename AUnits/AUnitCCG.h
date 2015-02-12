@@ -10,6 +10,8 @@ class AUnitCCG : public ASensor
 
  public:
   AUnitCCG( void );
+
+  void init0( void );
 };
 
 #endif

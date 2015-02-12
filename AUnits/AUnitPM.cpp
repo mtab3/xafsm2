@@ -1,14 +1,7 @@
 
 #include "AUnitPM.h"
 
-void AUnitPM::SetValue( double v )
-{
-  IsBusy = true;
-  emit ChangedIsBusy1( DevCh );
-  s->SendCMD2( Uid, DevCh, "SetValue", QString::number( ilastSetV = (int)v ) );
-}
-
-void AUnitPM::init0( Stars *s )
+void AUnitPM::init0( void )
 {
   s->SendCMD2( "Init", DevCh, "IsBusy" );
 
@@ -38,6 +31,12 @@ void AUnitPM::init0( Stars *s )
 	   Qt::UniqueConnection );
 }
 
+void AUnitPM::SetValue( double v )
+{
+  IsBusy = true;
+  emit ChangedIsBusy1( DevCh );
+  s->SendCMD2( Uid, DevCh, "SetValue", QString::number( ILastSetV = (int)v ) );
+}
 
 void AUnitPM::SetSpeed( MSPEED speed )
 {
@@ -55,21 +54,21 @@ void AUnitPM::SetSpeed( MSPEED speed )
 
 void AUnitPM::SetHighSpeed( int speed )
 {
-  IsBusy2On( Driver, "SetHighSpeed" );
+  IsBusy2On( Dev, "SetHighSpeed" );
   QString cmd = QString( "SetHighSpeed %1" ).arg( speed );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetMiddleSpeed( int speed )
 {
-  IsBusy2On( Driver, "SetMiddleSpeed" );
+  IsBusy2On( Dev, "SetMiddleSpeed" );
   QString cmd = QString( "SetMiddleSpeed %1" ).arg( speed );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
-void AUnit::SetLowSpeed( int speed )
+void AUnitPM::SetLowSpeed( int speed )
 {
-  IsBusy2On( Driver, "SetLowSpeed" );
+  IsBusy2On( Dev, "SetLowSpeed" );
   QString cmd = QString( "SetLowSpeed %1" ).arg( speed );
   s->SendCMD2( Uid, DevCh, cmd );
 }
@@ -94,48 +93,52 @@ void AUnitPM::AskLowSpeed( void )
   s->SendCMD2( "Init", DevCh, "GetLowSpeed" );
 }
 
-void AUnit::AssignDispCh( int ch )
+void AUnitPM::AssignDispCh( int ch )
 {
-  IsBusy2On( Driver, "AssignDispCh" );
+  IsBusy2On( Dev, "AssignDispCh" );
   int num = Ch.toInt();
   if ( Ch.left( 2 ).toUpper() == "CH" )
     num = Ch.mid( 2 ).toInt();
   QString cmd = QString( "Select %1 %2" ).arg( QChar( 'A' + ch ) ).arg( num );
-  s->SendCMD2( Uid, Driver, cmd );
+  s->SendCMD2( Uid, Dev, cmd );
 }
 
-void AUnit::SetTimingOutMode( int mode )
+void AUnitPM::SetTimingOutMode( int mode )
 {
-  IsBusy2On( Driver, "SetTimingOutMode" );
+  IsBusy2On( Dev, "SetTimingOutMode" );
   QString cmd = QString( "SetTimingOutMode %1" ).arg( mode );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
-void AUnit::SetTimingOutStart( int startP )
+void AUnitPM::SetTimingOutStart( int startP )
 {
-  IsBusy2On( Driver, "SetTimingOutStart" );
+  IsBusy2On( Dev, "SetTimingOutStart" );
   QString cmd = QString( "SetTimingOutStart %1" ).arg( startP );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
-void AUnit::SetTimingOutEnd( int endP )
+void AUnitPM::SetTimingOutEnd( int endP )
 {
-  IsBusy2On( Driver, "SetTimingOutEnd" );
+  IsBusy2On( Dev, "SetTimingOutEnd" );
   QString cmd = QString( "SetTimingOutEnd %1" ).arg( endP );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
-void AUnit::SetTimingOutInterval( int interval )
+void AUnitPM::SetTimingOutInterval( int interval )
 {
-  IsBusy2On( Driver, "SetTimingOutInterval" );
+  IsBusy2On( Dev, "SetTimingOutInterval" );
   QString cmd = QString( "SetTimingOutInterval %1" ).arg( interval );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
-void AUnit::SetTimingOutReady( int ready )
+void AUnitPM::SetTimingOutReady( int ready )
 {
-  IsBusy2On( Driver, "SetTimingOutReady" );
+  IsBusy2On( Dev, "SetTimingOutReady" );
   QString cmd = QString( "SetTimingOutReady %1" ).arg( ready );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
+void AUnitPM::AskIsBusy( void )
+{
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
+}

@@ -1,13 +1,13 @@
 
 #include "AUnitPZ.h"
 
-AUnitCCG:AUnitPZ( void )
+AUnitPZ::AUnitPZ( void )
 {
   MaxV = 0;          // only for PZ
   MinV = 0;          // only for PZ
 }
 
-void AUnitPZ::init0( Stars *s )
+void AUnitPZ::init0( void )
 {
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );

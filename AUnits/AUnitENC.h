@@ -10,7 +10,9 @@ class AUnitENC : public ASensor
  public:
   AUnitENC( void );
 
-  virtual void init00( Stars *s );
+  void init0( void );
+  virtual void init00( void );
+  void SetValue( double v );
 };
 
 class AUnitENC2 :public AUnitENC
@@ -19,6 +21,15 @@ class AUnitENC2 :public AUnitENC
 
  public:
   AUnitENC2( void );
+  void init00( void );
+
+  void AskIsBusy( void );
+  bool QStart( void );
+  bool QRead( void );
 };
 
 #endif
+
+
+
+

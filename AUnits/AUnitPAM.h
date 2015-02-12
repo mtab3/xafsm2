@@ -2,6 +2,8 @@
 #ifndef AUNITPAM_H
 #define AUNITPAM_H
 
+#include "ASensor.h"
+
 class AUnitPAM : public ASensor
 {
   Q_OBJECT
@@ -9,9 +11,11 @@ class AUnitPAM : public ASensor
  public:
   AUnitPAM( void ) {};
 
-  virtual void init00( Stars *s );
+  void init0( void );
+  virtual void init00( void );
 
   bool isAutoRangeAvailable( void ) { return true; };
+  bool GetValue( void );
 };
 
 class AUnitPAM2 : public AUnitPAM
@@ -20,6 +24,7 @@ class AUnitPAM2 : public AUnitPAM
 
  public:
   AUnitPAM2( void ) {};
+  void init00( void );
 
 };
 

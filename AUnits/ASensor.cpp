@@ -14,7 +14,7 @@ ASensor::ASensor( void )
   SelectedRange = 0;
 }
 
-void ASensor::init( Stars *s )
+void ASensor::init( void )
 {
-  init0( s );
+  init0();
 }

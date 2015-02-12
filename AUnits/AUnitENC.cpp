@@ -1,9 +1,7 @@
-void AUnitENC::SetValue( double v )
-{
-  s->SendCMD2( Uid, DevCh, "SetValue", QString::number( dlastSetV = v ) );
-}
 
-void AUnitENC::init0( Stars *s )
+#include "AUnitENC.h"
+
+void AUnitENC::init0( void  )
 {
   connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -14,10 +12,10 @@ void AUnitENC::init0( Stars *s )
   connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  init00( s );
+  init00();
 }
 
-void AUnitENC::init00( Stars *s )
+void AUnitENC::init00( void )
 {
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -25,20 +23,30 @@ void AUnitENC::init00( Stars *s )
   s->SendCMD2( "Init", DevCh, "GetValue" );
 }
 
-void AUnitENC2::init00( Stars *s )
+void AUnitENC2::init00( void )
 {
+}
+
+void AUnitENC::SetValue( double v )
+{
+  s->SendCMD2( Uid, DevCh, "SetValue", QString::number( DLastSetV = v ) );
+}
+
+void AUnitENC2::AskIsBusy( void )
+{
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
 bool AUnitENC2::QStart( void )
 {
-  IsBusy2On( Driver, "Start" );
+  IsBusy2On( Dev, "Start" );
   s->SendCMD2( Uid, DevCh, "StandBy" );
   return false;
 }
 
-bool AUnit::QRead( void )
+bool AUnitENC2::QRead( void )
 {
-  IsBusy2On( Driver, "Read" );
+  IsBusy2On( Dev, "Read" );
   s->SendCMD2( Uid, DevCh, "GetData" );
 
   return false;

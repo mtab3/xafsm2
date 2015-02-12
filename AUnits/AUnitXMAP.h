@@ -5,6 +5,12 @@
 #include "ASensor.h"
 #include "XMAPHead.h"
 
+enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
+	       STAT_EVENTS, STAT_ICR, STAT_OCR };
+
+#define AXMAPBUF    ( XMAPHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
+#define XMAPBUFSIZE ( AXMAPBUF * 19 )       // AMCABUF * 19 ch
+
 const int MaxSSDs = 19;       // Max SSD elements
 
 class AUnitXMAP : public ASensor
@@ -43,16 +49,22 @@ class AUnitXMAP : public ASensor
  public:
   AUnitXMAP( void );
 
+  bool InitSensor( void );
+  void init0( void );
+  void _setEnable( bool enable );
+  void ConnectToXMAPDataLinkServer( QString host, qint16 port );
+
   void RunStart( void );
   void RunStop( void );
   void RunResume( void );
 
   void setSSDPresetType( QString type ) { SSDPresetType = type; };
 
+  double SetTime( double dtime );
   bool GetMCAs( void );
   bool GetStat( void );
-  bool SetRealTime( double val );
-  bool SetLiveTime( double val );
+  //  bool SetRealTime( double val );  // xmap2
+  //  bool SetLiveTime( double val );  // xmap2
   bool SetRealTime( int ch, double val );
   bool SetLiveTime( int ch, double val );
   bool GetRealTime( int ch );
@@ -85,8 +97,35 @@ class AUnitXMAP : public ASensor
   double realTime( int ch );
   double liveTime( int ch );
 
+  double stat( int ch, STATELM i );
+  bool GetValue( void );
+  bool Close( void );
+  
  public slots:
   void getMCALength( SMsg msg );
+  void ReactGetStat( SMsg msg );
+  void ReactGetRealTime( SMsg msg );
+  void ReactGetLiveTime( SMsg msg );
+  void ReactGetDataLinkCh( SMsg msg );
+
+ signals:
+  void ReceivedNewMCARealTime( int i );
+  void ReceivedNewMCALiveTime( int i );
+  void DataLinkServerIsReady( QString host, qint16 port );
+  void NewMCAsAvailable( char *MCAs );
+
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+

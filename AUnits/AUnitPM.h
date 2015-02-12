@@ -1,6 +1,8 @@
 #ifndef AUNITPM_H
 #define AUNITPM_H
 
+#include "AMotor.h"
+
 class AUnitPM : public AMotor
 {
   Q_OBJECT
@@ -10,7 +12,25 @@ class AUnitPM : public AMotor
 
  public:
   AUnitPM( void );
+  void init0( void );
 
+  void SetValue( double v );
+  void SetSpeed( MSPEED speed );
+  void SetHighSpeed( int speed );
+  void SetMiddleSpeed( int speed );
+  void SetLowSpeed( int speed );
+  void Stop( void );
+  void AskHighSpeed( void );
+  void AskMiddleSpeed( void );
+  void AskLowSpeed( void );
+  void AssignDispCh( int ch );
+  void SetTimingOutMode( int mode );
+  void SetTimingOutStart( int startP );
+  void SetTimingOutEnd( int endP );
+  void SetTimingOutInterval( int interval );
+  void SetTimingOutReady( int ready );
+  void AskIsBusy( void );
+  
   int accRate( void ) { return AccRate; };    // 加減速レート
   void setAccRate( int r ) { AccRate = r; };
   int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
@@ -18,3 +38,6 @@ class AUnitPM : public AMotor
 };
 
 #endif
+
+
+

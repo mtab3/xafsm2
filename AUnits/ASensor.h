@@ -8,6 +8,7 @@ class ASensor : public AUnit0
 {
   Q_OBJECT
 
+ protected:
   double setTime;       // Actually set time;
   double setDarkTime;   // Actually set time;
   double Dark;                 // back ground value normalized for 1 sec
@@ -21,8 +22,8 @@ class ASensor : public AUnit0
  public:
   ASensor( void );
 
-  void init( Stars *s );
-  virtual void init0( Stars *s );
+  void init( void );
+  virtual void init0( void );
 
   virtual bool InitSensor( void );
   virtual double SetTime( double dtime );   // in sec
@@ -55,6 +56,8 @@ class ASensor : public AUnit0
 
  signals:
   void newDark( double dark );
+  void AskedNowRange( int r );
+
 };
 
 #endif

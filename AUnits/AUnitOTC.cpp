@@ -1,15 +1,15 @@
 
 #include "AUnitOTC.h"
 
-AUnitOTC:AUnitOTC( void )
+AUnitOTC::AUnitOTC( void )
 {
 }
 
-AUnitOTC2:AUnitOTC2( void )
+AUnitOTC2::AUnitOTC2( void )
 {
 }
 
-void AUnitOTC::init0( Stars *s )
+void AUnitOTC::init0( void )
 {
   connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -25,17 +25,17 @@ void AUnitOTC::init0( Stars *s )
 	   Qt::UniqueConnection );
 
   s->SendCMD2( "Init", Dev, "IsBusy" );
-  s->SendCMD2( "Init", Driver, "Reset" );
-  s->SendCMD2( "Init", Driver, "SetMode", "0" );
+  s->SendCMD2( "Init", Dev, "Reset" );
+  s->SendCMD2( "Init", Dev, "SetMode", "0" );
 
-  init00( s );
+  init00();
 }
 
-void AUnitOTC::init00( Stars * )
+void AUnitOTC::init00( void )
 {
 }
 
-void AUnitOTC2::init00( Stars * )
+void AUnitOTC2::init00( void )
 {
   connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -49,14 +49,28 @@ void AUnitOTC2::init00( Stars * )
 	   Qt::UniqueConnection );
 }
 
+void AUnitOTC::AskIsBusy( void )
+{
+  _AskIsBusy();
+}
+
+void AUnitOTC::_AskIsBusy( void )
+{
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
+}
+
+void AUnitOTC2::_AskIsBusy( void )
+{
+}
+
 bool AUnitOTC2::GetRange( void ) // CNT2, OTC2
 {
-  QString Type2 = the2ndDriver->getType();
-  IsBusy2On( Driver2, "GetRange" );
+  QString Type2 = The2ndDev->type();
+  IsBusy2On( Dev2, "GetRange" );
   if ( Type2 == "PAM" )
     s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
   if ( Type2 == "PAM2" )
-    s->SendCMD2( Uid, Driver2, QString( "GetRange " ) + Ch2 );
+    s->SendCMD2( Uid, Dev2, QString( "GetRange " ) + Ch2 );
 
   return false;
 }
@@ -64,8 +78,8 @@ bool AUnitOTC2::GetRange( void ) // CNT2, OTC2
 void AUnitOTC2::ReactGetRange( SMsg msg )  // CNT2, OTC2
 {
   double range = RangeL;
-  if ( ( msg.From() == DevCh2 ) || ( msg.From() == Driver2 ) ) {
-    QString Type2 = the2ndDriver->getType();
+  if ( ( msg.From() == DevCh2 ) || ( msg.From() == Dev2 ) ) {
+    QString Type2 = The2ndDev->type();
     if ( Type2 == "PAM" ) {
       range = log10( msg.Vals().at(0).toDouble() / 2.1 );
     }
@@ -77,7 +91,7 @@ void AUnitOTC2::ReactGetRange( SMsg msg )  // CNT2, OTC2
       }
     }
     
-    IsBusy2Off( Driver2 );
+    IsBusy2Off( Dev2 );
     if ( range > RangeU ) range = RangeU;
     if ( range < RangeL ) range = RangeL;
     emit AskedNowRange( (int)range );

@@ -1,11 +1,11 @@
 
 #include "AUnitFP23.h"
 
-AUnitCCG:AUnitFP23( void )
+AUnitFP23::AUnitFP23( void )
 {
 }
 
-void AUnitFP23::init0( Stars *s )
+void AUnitFP23::init0( void )
 {
   s->SendCMD2( "Init", Dev, "flgon", Ch );
   s->SendCMD2( "Init", "System", "flgon", Dev );
