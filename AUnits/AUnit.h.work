@@ -3,14 +3,9 @@
 #include "Stars.h"
 #include "MCAHead.h"
 
-#define MCAHEAD    ( 6 * 8 )              // 6 values * 8 bytes
 // qint64  ch, stat, mcaLength
 // qreal64 realTime, liveTime, icr
-#define AMCABUF    ( MCAHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
-#define MCABUFSIZE ( AMCABUF * 19 )       // AMCABUF * 19 ch
 
-enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
-	       STAT_EVENTS, STAT_ICR, STAT_OCR };
 
 
 
@@ -37,7 +32,6 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
   bool TypeCHK( int pm, int pz, int cnt, int pam, int enc, int ssd, int ssdp,
 		int cnt2, int sc, int otc, int otc2, int lsr, int dv, int dv2, int enc2,
 		int pam2, int ccg, int aioi, int aioo, int fp23, int epic );
-  void ConnectToDataLinkServer( QString host, qint16 port );
 
  private slots:
   void receiveMCAs( void );
@@ -104,11 +98,6 @@ public:
   void GoMaxRel( double Width, int Steps );
   void GoMaxRelQ( double Width, int Steps, double Time );
 
-  void IsBusy2On( QString drv, QString name );
-  void IsBusy2Off( QString drv );
-  void setBusy2Count( int i ) { Busy2Count = i; };
-  void clrBusy2Count( void ) { Busy2Count = 0; };
-  int busy2Count( void ) { return Busy2Count; };
 
 public slots:
   void ClrBusy( SMsg msg );
@@ -140,34 +129,6 @@ public slots:
   void getNewDark( double d );     // only for SSD childlen
 
 signals:
-  //  void CountFinished( void );
-  void newValue( QString value );
-  //  void newValues( void );
-  void newCountsInROI( QVector<int> );
-  void newCountsAll( QVector<int> );
-  void newTotalEvents( QVector<int> );
-  void newICRs( QVector<double> );
-  //  void newDataPoints( int points );
-  void newQData( void );
-
-  void Enabled( QString Drv, bool flag );
-  void ChangedBusy2Count( QString Drv );
-  void AskedNowRange( int r );
-
-  void ReceivedNewMCARealTime( int i );
-  void ReceivedNewMCALiveTime( int i );
-  void NewRingCurrent( QString val, QStringList vals );
-  void NewInjectionReport( QString val, QStringList vals );
-  void NewFP23Temperature( QString val );
-  void DataLinkServerIsReady( QString host, qint16 port );
-  void NewMCAsAvailable( char *MCAs );
-
-  void gotHighS( int s );
-  void gotMiddleS( int s );
-  void gotLowS( int s );
-  
-  void LogMsg( QString msg );
-  void Alarm( QString uid, QString msg );
 };
 
 #endif
