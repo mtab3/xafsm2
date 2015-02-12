@@ -159,3 +159,15 @@ void AUnit0::ClrBusy( SMsg msg )
   }
 }
 
+void AUnit0::SetCurPos( SMsg msg )
+{
+  QString buf;
+  
+  if ( ( msg.From() == DevCh )
+       && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
+            || ( msg.Msgt() == READ ) ) ) {
+    Value = msg.Val();
+    emit newValue( Value );
+    IsBusy2Off( Dev );
+  }
+}

@@ -22,10 +22,6 @@ void AUnitAIOo::init0( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsGoMaxRel( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGoMaxAbsQ( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGoMaxRelQ( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsShutterOff( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
 

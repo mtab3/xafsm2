@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 12 21:26:33 2015 +0900\n"\
+                "    Still in dark mist.  But I hope the goal is soon ahead!\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 12 15:16:00 2015 +0900\n"\
                 "    working\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 15:51:57 2015 +0900\n"\
                 "    merged with master in which TAB function was fixed\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 15:45:19 2015 +0900\n"\
-                "    better checking when starting Scan or Monitor\n"\
 		"\n"\
                 ""
 #endif

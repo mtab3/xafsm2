@@ -57,7 +57,7 @@ public:
   AUnit0( QObject *parent = 0 );
 
   void Initialize( Stars *s );
-  virtual void init( void );
+  virtual void init( void ) {};
 
   void setEnable( bool enable );
   virtual void _setEnable( bool /*enable*/ ) {};
@@ -150,9 +150,9 @@ public:
 
  private slots:
   virtual void ReceiveValues( SMsg msg );
-  virtual void RcvAnsGetValueOfDriver( SMsg msg );
-  virtual void SetIsBusyByMsg( SMsg msg );
+  virtual void SetIsBusyByMsg( SMsg /* msg */ ) {};
   void ClrBusy( SMsg msg );
+  virtual void SetCurPos( SMsg /* msg */ );
   
  signals:
   void ChangedIsBusy1( QString Drv );

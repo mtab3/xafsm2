@@ -36,9 +36,9 @@ class AMotor : public AUnit0
   AMotor( void );
 
   void init( void );
-  virtual void init0( void );
+  virtual void init0( void ) {};
   
-  virtual void Stop( void );
+  virtual void Stop( void ) {};
   bool checkNewVal( void )
   {
     bool rv = ( value() != lastValue() );
@@ -60,10 +60,10 @@ class AMotor : public AUnit0
   bool isInt( void ) { return IsInt; };
 
   /* SPeed 設定関連 */
-  virtual void SetSpeed( MSPEED speed );
-  virtual void SetHighSpeed( int speed );
-  virtual void SetMiddleSpeed( int speed );
-  virtual void SetLowSpeed( int speed );
+  virtual void SetSpeed( MSPEED /* speed */ ) {};
+  virtual void SetHighSpeed( int /* speed */ ) {};
+  virtual void SetMiddleSpeed( int /* speed */ ) {};
+  virtual void SetLowSpeed( int /* speed */ ) {};
   bool hasSpeedsLine( void ) { return HasSpeedsLine; };
   void setHasSpeedsLine( bool f ) { HasSpeedsLine = f; };
   int highSpeed( void ) { return MaxS; };     // オリジナルのハイスピード
@@ -73,9 +73,9 @@ class AMotor : public AUnit0
   int getHighS( void ) { return HighS; };
   int getMiddleS( void ) { return MiddleS; };
   int getLowS( void ) { return LowS; };
-  virtual void AskHighSpeed( void );
-  virtual void AskMiddleSpeed( void );
-  virtual void AskLowSpeed( void );
+  virtual void AskHighSpeed( void ) {};
+  virtual void AskMiddleSpeed( void ) {};
+  virtual void AskLowSpeed( void ) {};
   
   /* MStab 可の Unit は下記の関数を実装するべし */
   virtual void CloseShutter( bool /*close*/ ) {};
@@ -85,9 +85,9 @@ class AMotor : public AUnit0
   virtual void GoMaxRelQ( double /*width*/, int /*steps*/, double /*time*/ ) {};
 
   /* PM16C だけかも */
-  virtual void AssignDispCh( int ch );  // ch : 0 - 3 --> 'A' -- 'D'
+  virtual void AssignDispCh( int /* ch */ ) {};  // ch : 0 - 3 --> 'A' -- 'D'
   /* PM16C で QXAFS の為に */
-  virtual void SetTimingOutMode( int mode );
+  virtual void SetTimingOutMode( int /* mode */ ) {};
   // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
   // 34410 triggers rising edge and requires 1us or longer
   // for EB741 2us is long enough
@@ -104,7 +104,6 @@ class AMotor : public AUnit0
   virtual void setMinV( QString /*minv*/ ) {};
 
  public slots:
-   virtual void SetCurPos( SMsg msg );
 };
 
 #endif

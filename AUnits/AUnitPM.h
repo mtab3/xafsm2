@@ -41,6 +41,7 @@ class AUnitPM : public AMotor
   void RcvHighSpeed( SMsg msg );
   void RcvMiddleSpeed( SMsg msg );
   void RcvLowSpeed( SMsg msg );
+  //  void RcvAnsGetValueOfDriver( SMsg msg );
 
  signals:
   void gotHighS( int s );

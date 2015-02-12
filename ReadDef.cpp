@@ -34,6 +34,7 @@ void MainWindow::ReadDef( QString fname )
   QString next;
   QString item;
   bool isMotor;
+  QString gType;
   QString type;
 
   AUnit0 *NewUnit;
@@ -47,11 +48,12 @@ void MainWindow::ReadDef( QString fname )
     if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
 //    next = nextItem( aline.simplified(), item );
       next = nextItem( aline, item );            // stop using 'simplified'
-      if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
+      gType = item;
+      if ( ( gType == "MOTOR" ) || ( gType == "SENSOR" ) ) {
         next = nextItem( next, item ); type = item;
 	NewUnit = NewNewUnit( type );
 
-        if ( item == "MOTOR" ) { // Motor か
+        if ( gType == "MOTOR" ) { // Motor か
 	  NewMotor = (AMotor*)NewUnit;
           AMotors << NewMotor;
           NewUnit->setGType( "MOTOR" );
@@ -80,13 +82,13 @@ void MainWindow::ReadDef( QString fname )
           // 全 motor 共通
           next = nextItem( next, item ); NewMotor->setUPP( item );
           next = nextItem( next, item ); NewMotor->setIsInt( item == "INT" );
-          if (( type != "PM" )&&( type != "SC" )) {
+          if (( type == "PM" )||( type == "SC" )) {
 	    next = nextItem( next, item ); NewMotor->setCenter( item );
-	  } else if (( type != "PZ" )&&( type != "AIOo" )) {
+	  } else if (( type == "PZ" )||( type == "AIOo" )) {
 	    next = nextItem( next, item ); NewMotor->setMinV( item );
 	    next = nextItem( next, item ); NewMotor->setMaxV( item );
 	  } else {
-            qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+            qDebug() << tr( "A::Undefined Unit type [%1]" ).arg( type );
           }
         } else {  // 以下、sensor だけの項目
           // 全 sensor 共通
@@ -122,7 +124,7 @@ void MainWindow::ReadDef( QString fname )
           } else if ( type == "FP23" ) {
 	  } else if ( type == "EPIC" ) {
           } else {
-            qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+            qDebug() << tr( "B::Undefined Unit type [%1]" ).arg( type );
           }
         }
         //	NewUnit->show();

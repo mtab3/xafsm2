@@ -1,17 +1,16 @@
 
 #include "AUnitENC.h"
 
+AUnitENC::AUnitENC( void )
+{
+}
+
+AUnitENC2::AUnitENC2( void )
+{
+}
+
 void AUnitENC::init0( void  )
 {
-  connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL(AnsTrigger( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL(AnsStandBy( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ),
-	   Qt::UniqueConnection );
-
   init00();
 }
 
@@ -25,6 +24,14 @@ void AUnitENC::init00( void )
 
 void AUnitENC2::init00( void )
 {
+  connect( s, SIGNAL(AnsTrigger( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL(AnsStandBy( SMsg )), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL(AnsGetStat( SMsg )), this, SLOT( RcvStat( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL(AnsGetData( SMsg )), this, SLOT( RcvQGetData( SMsg ) ),
+	   Qt::UniqueConnection );
 }
 
 bool AUnitENC::InitSensor( void )
