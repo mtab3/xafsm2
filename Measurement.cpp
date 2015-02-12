@@ -262,7 +262,7 @@ void MainWindow::SetDispMeasModes( void )
 
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );
-  MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+  MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
   MeasView->SetDG( DLC, DG++ );          // I0 は スケーリングのグループわけでは 0 
   DLC++;
   MUC++;
@@ -270,7 +270,7 @@ void MainWindow::SetDispMeasModes( void )
     MeasView->SetLLine( DLC );
     MeasView->SetLR( DLC, LEFT_AX );
     MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
     MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
     DLC++;
     MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -283,7 +283,7 @@ void MainWindow::SetDispMeasModes( void )
   if ( Use19chSSD->isChecked() ) {
     MeasView->SetLR( DLC, LEFT_AX );
     MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
     MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
     DLC++;
     for ( int j = 0; j < MaxSSDs; j++ ) {
@@ -301,7 +301,7 @@ void MainWindow::SetDispMeasModes( void )
       MeasView->SetLLine( DLC );
       MeasView->SetLR( DLC, LEFT_AX );                   // I1
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
       DLC++;
       MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -313,7 +313,7 @@ void MainWindow::SetDispMeasModes( void )
     } else {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
       MUC++;
@@ -325,7 +325,7 @@ void MainWindow::SetDispMeasModes( void )
       MeasView->SetLLine( DLC );
       MeasView->SetLR( DLC, LEFT_AX );                   // I1
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
       DLC++;
       MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -337,7 +337,7 @@ void MainWindow::SetDispMeasModes( void )
     } else {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
       MUC++;

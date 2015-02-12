@@ -57,6 +57,7 @@ class AMotor : public AUnit0
   void setCenter( double center ) { Center = center; };
   double metricValue( void ) { return ( Value.toDouble() - Center ) * UPP; };
   void setIsInt( bool isInt ) { IsInt = isInt; };
+  bool isInt( void ) { return IsInt; };
 
   /* SPeed 設定関連 */
   virtual void SetSpeed( MSPEED speed );
@@ -101,6 +102,9 @@ class AMotor : public AUnit0
   
   virtual void setMaxV( QString /*maxv*/ ) {};
   virtual void setMinV( QString /*minv*/ ) {};
+
+ public slots:
+   virtual void SetCurPos( SMsg msg );
 };
 
 #endif

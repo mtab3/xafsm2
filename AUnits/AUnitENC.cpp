@@ -27,6 +27,30 @@ void AUnitENC2::init00( void )
 {
 }
 
+bool AUnitENC::InitSensor( void )
+{
+  return _InitSensor();
+}
+
+bool AUnitENC::_InitSensor( void )
+{
+  return false;
+}
+
+bool AUnitENC2::_InitSensor( void )
+{
+  bool rv = false;
+
+  if ( Type == "ENC2" ) {
+    IsBusy2On( Dev, "InitSensor-c0" );
+    s->SendCMD2( "Init", DevCh, "GetValue" );
+    LocalStage++;
+    rv = false;
+  }
+
+  return rv;
+}
+
 void AUnitENC::SetValue( double v )
 {
   s->SendCMD2( Uid, DevCh, "SetValue", QString::number( DLastSetV = v ) );
@@ -35,6 +59,19 @@ void AUnitENC::SetValue( double v )
 void AUnitENC2::AskIsBusy( void )
 {
   s->SendCMD2( Uid, DevCh, "IsBusy" );
+}
+
+void AUnitENC2::SetIsBusyByMsg( SMsg msg )
+{
+  if ( ( msg.From() == DevCh )
+       && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
+    IsBusy = ( msg.Val().toInt() == 1 );
+    if ( IsBusy )
+      LastFunc = "SetIsBusyByMsg";
+    else
+      LastFunc = "";
+    emit ChangedIsBusy1( Dev );
+  }
 }
 
 bool AUnitENC2::QStart( void )
@@ -50,4 +87,35 @@ bool AUnitENC2::QRead( void )
   s->SendCMD2( Uid, DevCh, "GetData" );
 
   return false;
+}
+
+double AUnitENC2::SetTime( double dtime ) // in sec // この関数は、複数ステップ化できない
+{
+  setTime = dtime;          // setTime できたと見せかけるだけ。
+
+  return setTime;
+}
+
+void AUnitENC2::RcvQGetData( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )
+       && ( ( msg.Msgt() == GETDATAPOINTS )
+	    || ( msg.Msgt() == QGETDATA )
+	    || ( msg.Msgt() == GETDATA ) ) ) {
+    
+    Values = msg.Vals();
+    emit newQData();
+    IsBusy2Off( Dev );
+  }
+}
+
+
+void AUnitENC2::RcvStat( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == GETSTAT ) ) ) {
+    //      Values = msg.Vals();
+    //      emit newQData();
+    IsBusy2Off( Dev );
+  }
 }

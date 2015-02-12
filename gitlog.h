@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 12 15:16:00 2015 +0900\n"\
+                "    working\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 12 15:14:40 2015 +0900\n"\
+                "    working working working\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 12 02:46:45 2015 +0900\n"\
                 "    good night!\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 15:45:19 2015 +0900\n"\
                 "    better checking when starting Scan or Monitor\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 14:02:14 2015 +0900\n"\
-                "    Fix tab order\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 13:19:29 2015 +0900\n"\
-                "    new WhatToDo\n"\
 		"\n"\
                 ""
 #endif

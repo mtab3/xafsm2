@@ -54,11 +54,14 @@ class AUnitXMAP : public ASensor
   void _setEnable( bool enable );
   void ConnectToXMAPDataLinkServer( QString host, qint16 port );
 
+  bool GetValue0( void );
+  bool GetValue02( void );
   void RunStart( void );
   void RunStop( void );
   void RunResume( void );
 
   void setSSDPresetType( QString type ) { SSDPresetType = type; };
+  QString getSSDPresetType( void ) { return SSDPresetType; };
 
   double SetTime( double dtime );
   bool GetMCAs( void );
@@ -83,7 +86,8 @@ class AUnitXMAP : public ASensor
   quint32 *getAMCA( int ch );
   quint32 getAMCAdata( int ch, int pixel );
   XMAPHead getAMCAHead( int ch );
-
+  QStringList MCAvalues( void ) { return MCAValues; };
+  
   void setGain( int ch, double gain );
   void setROIs( QString *roistart, QString *roiend )
   { ROIStart = roistart; ROIEnd = roiend; };
@@ -102,11 +106,14 @@ class AUnitXMAP : public ASensor
   bool Close( void );
   
  public slots:
+  void SetIsBusyByMsg( SMsg msg );
   void getMCALength( SMsg msg );
   void ReactGetStat( SMsg msg );
   void ReactGetRealTime( SMsg msg );
   void ReactGetLiveTime( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
+  void ReceiveValues( SMsg msg );
+  void receiveMCAs( void );
 
  signals:
   void ReceivedNewMCARealTime( int i );

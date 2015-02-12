@@ -22,7 +22,7 @@ void Status::setupStatArea( QVector<AMotor*> *Ams, QVector<ASensor*> *Ass,
   }
 
   for ( int i = 0; i < drivers.count(); i++ ) { // XAFSM.def にある全ドライバ名を集める
-    Drivers << drivers.at(i)->getDev();
+    Drivers << drivers.at(i)->dev();
     connect( drivers.at(i), SIGNAL( Enabled( QString, bool ) ),
 	     this, SLOT( OnEnabled( QString, bool ) ),
 	     Qt::UniqueConnection );
@@ -101,10 +101,10 @@ void Status::setupStatArea( QVector<AMotor*> *Ams, QVector<ASensor*> *Ass,
     QVector<AUnit0*> *Units = new QVector<AUnit0*>;
     // それぞれの名前のドライバを使っているユニットのポインタを集める
     for ( int j = 0; j < drivers.count(); j++ ) {
-      if ( Drivers.at(i) == drivers.at(j)->getDev() )
+      if ( Drivers.at(i) == drivers.at(j)->dev() )
 	*Units << drivers.at(j);
       if ( drivers.at(j)->has2ndDev() )
-	if ( Drivers.at(i) == drivers.at(j)->get2ndDev() )
+	if ( Drivers.at(i) == drivers.at(j)->dev2() )
 	  *Units << drivers.at(j);
     }
     DrvUnits << Units;
@@ -117,11 +117,11 @@ void Status::setupStatArea( QVector<AMotor*> *Ams, QVector<ASensor*> *Ass,
 
     CB1 = new QComboBox;
     for ( int j = 0; j < drivers.count(); j++ ) {
-      if ( drivers.at(j)->getDev() == Drivers.at(i) )
-	CB1->addItem( drivers.at(j)->getName() );
+      if ( drivers.at(j)->dev() == Drivers.at(i) )
+	CB1->addItem( drivers.at(j)->name() );
       if ( drivers.at(j)->has2ndDev() )
-	if ( drivers.at(j)->get2ndDev() == Drivers.at(i) )
-	  CB1->addItem( drivers.at(j)->getName() );
+	if ( drivers.at(j)->dev2() == Drivers.at(i) )
+	  CB1->addItem( drivers.at(j)->name() );
     }
     CB1->setStyleSheet( CBack );
     DrvsGrid->addWidget( CB1, i + DrvVItems, col++ );
@@ -273,7 +273,7 @@ void Status::OnChangedIsBusy1( QString Drv )
   int cnt = DrvUnits.at(drv)->count();
   for ( i = 0; i < cnt; i++ ) {
     if ( DrvUnits.at(drv)->at(i)->isBusy() ) {
-      IBBx1s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->getName()
+      IBBx1s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->name()
 			       + ":" + DrvUnits.at(drv)->at(i)->lastFunc());
     }
   }
@@ -301,7 +301,7 @@ void Status::OnChangedIsBusy2( QString Drv )
   int cnt = DrvUnits.at(drv)->count();
   for ( i = 0; i < cnt; i++ ) {
     if ( DrvUnits.at(drv)->at(i)->isBusy2() ) {
-      IBBx2s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->getName()
+      IBBx2s.at(drv)->addItem( DrvUnits.at(drv)->at(i)->name()
 			       + ":" + DrvUnits.at(drv)->at(i)->lastFunc2());
     }
   }
@@ -365,7 +365,7 @@ void Status::SelStatWatch( void )
 	cnt = DrvUnits.at(i)->count();
 	for ( int j = 0; j < cnt; j++ ) {
 	  if ( DrvUnits.at(i)->at(j)->isBusy() ) {
-	    IBBx1s.at(i)->addItem( DrvUnits.at(i)->at(j)->getName()
+	    IBBx1s.at(i)->addItem( DrvUnits.at(i)->at(j)->name()
 				   + ":" + DrvUnits.at(i)->at(j)->lastFunc() );
 	  }
 	}
@@ -375,7 +375,7 @@ void Status::SelStatWatch( void )
 	cnt = DrvUnits.at(i)->count();
 	for ( int j = 0; j < cnt; j++ ) {
 	  if ( DrvUnits.at(i)->at(j)->isBusy2() ) {
-	    IBBx2s.at(i)->addItem( DrvUnits.at(i)->at(j)->getName()
+	    IBBx2s.at(i)->addItem( DrvUnits.at(i)->at(j)->name()
 				   + ":" + DrvUnits.at(i)->at(j)->lastFunc2() );
 	  }
 	}

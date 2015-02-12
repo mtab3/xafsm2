@@ -15,9 +15,9 @@ void MainWindow::MotorMove( void )
       UUnits.removeAnUnit( GOMOTOR_ID, am );
       setGoBAsNotMoving();
       NewLogMsg( tr( "Setup: %1 : Reached at %2" )
-		 .arg( am->getName() ).arg( am->value() ) );
+		 .arg( am->name() ).arg( am->value() ) );
       statusbar->showMessage( tr( "Setup: %1 : Reached at %2" )
-			      .arg( am->getName() ).arg( am->value() ), 1000 );
+			      .arg( am->name() ).arg( am->value() ), 1000 );
     }
   }
 

@@ -13,3 +13,24 @@ void AUnitLSR::init0( void )
 	   Qt::UniqueConnection );
   s->SendCMD2( "Init", Dev, "flgon", Ch );
 }
+
+void AUnitLSR::OnReportCurrent( SMsg msg )
+{
+  if ( msg.From() == DevCh ) {
+    Values = msg.Val().simplified().split( QRegExp( "\\s" ) );
+    LastValue = Value;
+    Value = Values[ Values.count() - 1 ];
+    emit NewRingCurrent( Value, Values );
+  }
+}
+
+void AUnitLSR::OnReportInjection( SMsg msg )
+{
+  if ( msg.From() == DevCh ) {
+    Values = msg.Val().simplified().split( QRegExp( "\\s" ) );
+    LastValue = Value;
+    Value = Values[ Values.count() - 1 ];
+    emit NewInjectionReport( Value, Values );
+    emit newValue( Value );
+  }
+}

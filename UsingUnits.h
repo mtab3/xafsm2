@@ -18,7 +18,7 @@ class UsingUnit : public QObject
   bool isParentUnit( AUnit0 *unit )
   {
     if ( Unit->hasParent() && unit->hasParent() )
-      return ( Unit->getTheParent() == unit->getTheParent() );
+      return ( Unit->theParent() == unit->theParent() );
     return false;
   };
   bool isUniq( QString user, AUnit0 *unit )

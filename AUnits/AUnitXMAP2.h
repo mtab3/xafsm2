@@ -14,6 +14,11 @@ class AUnitXMAP2 : public ASensor
 
   double stat( STATELM i );
   bool SetRealTime( double val );
+  double SetTime( double t );
+
+  void getNewValue( QString v );   // only for SSD childlen
+  void getNewDark( double d );     // only for SSD childlen
+
 };
 
 #endif

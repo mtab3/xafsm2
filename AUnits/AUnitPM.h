@@ -35,6 +35,18 @@ class AUnitPM : public AMotor
   void setAccRate( int r ) { AccRate = r; };
   int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
   void setAccRateNo( int n ) { AccRateNo = n; };
+
+ private slots:
+  void SetIsBusyByMsg( SMsg msg );
+  void RcvHighSpeed( SMsg msg );
+  void RcvMiddleSpeed( SMsg msg );
+  void RcvLowSpeed( SMsg msg );
+
+ signals:
+  void gotHighS( int s );
+  void gotMiddleS( int s );
+  void gotLowS( int s );
+
 };
 
 #endif

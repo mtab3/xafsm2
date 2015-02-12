@@ -106,9 +106,9 @@ public:
   void clrBusy2Count( void ) { Busy2Count = 0; };
   int busy2Count( void ) { return Busy2Count; };
 
-  virtual void SetValue( double v );
-  virtual bool GetValue0( void );
-  virtual bool GetValue02( void );
+  virtual void SetValue( double /* v */ ) {};
+  virtual bool GetValue0( void ) { return false; };
+  virtual bool GetValue02( void ) { return false; };
   virtual bool GetValue( void );
   QString value( void ) { return Value; };
   QString lastValue( void ) { return LastValue; };
@@ -127,7 +127,7 @@ public:
   QString pUid( void ) { return PUid; };
   //  void setParent( QString pUid ) { PUid = pUid; };
   void setTheParent( AUnit0 *p ) { TheParent = p; };
-  AUnit0 *thParent( void ) { return TheParent; };
+  AUnit0 *theParent( void ) { return TheParent; };
   
   // Dev2, Ch2, DevCh2 : ユニットの定義に2つのドライバが必要な時、その2つ目のドライバ
   // 例えばKeithley を電流/電圧アンプとして使用して、その出力を例えばカウンタで図る場合
@@ -148,36 +148,29 @@ public:
   QString lastFunc( void ) { return LastFunc; };
   QString lastFunc2( void ) { return LastFunc2; };
 
+ private slots:
+  virtual void ReceiveValues( SMsg msg );
+  virtual void RcvAnsGetValueOfDriver( SMsg msg );
+  virtual void SetIsBusyByMsg( SMsg msg );
+  void ClrBusy( SMsg msg );
+  
  signals:
   void ChangedIsBusy1( QString Drv );
   void ChangedIsBusy2( QString Drv );
   void ChangedBusy2Count( QString Drv );
   void Enabled( QString Dev, bool enable );
-
+  void newValue( QString value );
+  void newQData( void );
+  void LogMsg( QString msg );
 
 #if 0
   //  void CountFinished( void );
-  void newValue( QString value );
   //  void newValues( void );
   void newCountsInROI( QVector<int> );
   void newCountsAll( QVector<int> );
   void newTotalEvents( QVector<int> );
   void newICRs( QVector<double> );
   //  void newDataPoints( int points );
-  void newQData( void );
-
-
-  
-  void Enabled( QString Drv, bool flag );
-  void NewRingCurrent( QString val, QStringList vals );
-  void NewInjectionReport( QString val, QStringList vals );
-  void NewFP23Temperature( QString val );
-
-  void gotHighS( int s );
-  void gotMiddleS( int s );
-  void gotLowS( int s );
-  
-  void LogMsg( QString msg );
   void Alarm( QString uid, QString msg );
 #endif
 };

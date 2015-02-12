@@ -6,11 +6,11 @@ void MainWindow::setupChangerArea( void )
 
   for ( int i = 0; i < Changers.count(); i++ ) {
     for ( int j = 0; j < AMotors.count(); j++ ) {
-      if ( Changers[i]->unitID1() == AMotors[j]->getUid() ) {
+      if ( Changers[i]->unitID1() == AMotors[j]->uid() ) {
 	Changers[i]->setUnit1( AMotors[j] );
 	//	qDebug() << "Changer " << i << "unit1 " << AMotors[j]->getName();
       }
-      if ( Changers[i]->unitID2() == AMotors[j]->getUid() ) {
+      if ( Changers[i]->unitID2() == AMotors[j]->uid() ) {
 	Changers[i]->setUnit2( AMotors[j] );
 	//	qDebug() << "Changer " << i << "unit2 " << AMotors[j]->getName();
       }
@@ -123,8 +123,8 @@ void MainWindow::SetNewChangerCenter( void )
   double iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
   int nowx = c1->value().toInt();
   int nowz = c2->value().toInt();
-  c1->setCenter( nowx - ix * changer->spacing1() / c1->getUPP() * changer->dir1() );
-  c2->setCenter( nowz - iz * changer->spacing2() / c2->getUPP() * changer->dir2() );
+  c1->setCenter( nowx - ix * changer->spacing1() / c1->upp() * changer->dir1() );
+  c2->setCenter( nowz - iz * changer->spacing2() / c2->upp() * changer->dir2() );
 }
 
 void MainWindow::moveToTarget( Changer *changer, int target, double dx, double dz )
@@ -137,9 +137,9 @@ void MainWindow::moveToTarget( Changer *changer, int target, double dx, double d
   double ix = ( target - 1 ) % changer->holders1() - changer->center1();    // -1, 0, 1
   double iz = ( target - 1 ) / changer->holders1() - changer->center2();    // -1, 0, 1
   int targetx = c1->u2p( changer->spacing1() * ix * changer->dir1() )
-                   + dx / c1->getUPP() * changer->dir1();
+                   + dx / c1->upp() * changer->dir1();
   int targetz = c2->u2p( changer->spacing2() * iz * changer->dir2() )
-                   + dz / c2->getUPP() * changer->dir2();
+                   + dz / c2->upp() * changer->dir2();
   DFName00 = QString("_%1").arg( (int)MeasA, 4, 10, QChar( '0' ) );
 
   AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" )
@@ -212,8 +212,8 @@ void MainWindow::NewChangerSelected( int i )
   ChangerToGoHolderSelect->setMaximum( Changers[ i ]->holders() );
   ChangerCurrentHolder->setMinimum( 1 );
   ChangerCurrentHolder->setMaximum( Changers[ i ]->holders() );
-  ChangerUnit1->setText( Changers[i]->unit1()->getUnit() );
-  ChangerUnit2->setText( Changers[i]->unit2()->getUnit() );
+  ChangerUnit1->setText( Changers[i]->unit1()->unit() );
+  ChangerUnit2->setText( Changers[i]->unit2()->unit() );
 
   if ( connecteNewValue2ShowChangerPosition ) {
     disconnect( SIGNAL( newValue( QString ) ),
@@ -242,18 +242,18 @@ void MainWindow::ShowChangerPosition( QString )
   double p2 = c2->value().toDouble();
 
   double x = ( p1 - c1->getCenter() )
-    * c1->getUPP() * changer->dir1() / changer->spacing1() + changer->center1();
+    * c1->upp() * changer->dir1() / changer->spacing1() + changer->center1();
   double y = ( p2 - c2->getCenter() )
-    * c2->getUPP() * changer->dir2() / changer->spacing2() + changer->center2();
+    * c2->upp() * changer->dir2() / changer->spacing2() + changer->center2();
 
   int ix, iy;
   if ( x > 0 ) { ix = (int)( x + 0.5 ); } else { ix = -(int)( -x + 0.5 ); }
   if ( y > 0 ) { iy = (int)( y + 0.5 ); } else { iy = -(int)( -y + 0.5 ); }
   int num = changer->holders1() * iy + ix + 1;
 
-  double dx = ( p1 - c1->getCenter() ) * c1->getUPP() * changer->dir1()
+  double dx = ( p1 - c1->getCenter() ) * c1->upp() * changer->dir1()
     - ( ix - changer->center1() ) * changer->spacing1();
-  double dy = ( p2 - c2->getCenter() ) * c2->getUPP() * changer->dir2()
+  double dy = ( p2 - c2->getCenter() ) * c2->upp() * changer->dir2()
     - ( iy - changer->center2() ) * changer->spacing2();
 
   ChangerToGoHolderSelect->setValue( num );

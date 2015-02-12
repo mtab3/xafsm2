@@ -13,9 +13,15 @@ class AUnitPAM : public ASensor
 
   void init0( void );
   virtual void init00( void );
+  bool InitSensor( void );
 
   bool isAutoRangeAvailable( void ) { return true; };
   bool GetValue( void );
+  void SetRange( int range );
+  virtual void _SetRange( int range );
+  virtual bool _GetValue( void );
+  double SetTime( double dtime );
+  virtual void _SetTime( double t );
 };
 
 class AUnitPAM2 : public AUnitPAM
@@ -26,6 +32,12 @@ class AUnitPAM2 : public AUnitPAM
   AUnitPAM2( void ) {};
   void init00( void );
 
+  void _SetRange( int range );
+  bool _GetValue( void );
+  void _SetTime( double t );
+
+ private slots:
+  void RcvAnsGetValueOfDriver( SMsg msg );
 };
 
 #endif

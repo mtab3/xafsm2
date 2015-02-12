@@ -1,6 +1,12 @@
 
 #include "AUnitPM.h"
 
+AUnitPM::AUnitPM( void )
+{
+  AccRate = 100;    // 加減速レート ( AccRage ms/1000pps )
+  AccRateNo = 24;   // 対応する加減速レートの PM16C のテーブル番号
+}
+
 void AUnitPM::init0( void )
 {
   s->SendCMD2( "Init", DevCh, "IsBusy" );
@@ -141,4 +147,51 @@ void AUnitPM::SetTimingOutReady( int ready )
 void AUnitPM::AskIsBusy( void )
 {
   s->SendCMD2( Uid, DevCh, "IsBusy" );
+}
+
+void AUnitPM::SetIsBusyByMsg( SMsg msg )
+{
+  if ( ( msg.From() == DevCh )
+       && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
+    IsBusy = ( msg.Val().toInt() == 1 );
+    if ( IsBusy )
+      LastFunc = "SetIsBusyByMsg";
+    else
+      LastFunc = "";
+    emit ChangedIsBusy1( Dev );
+  }
+}
+
+void AUnitPM::RcvHighSpeed( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == GETHIGHSPEED ) ) ) {
+    HighS = msg.Val().toInt();
+    if ( ! HaveSetMaxS ) {
+      MaxS = HighS;
+      HaveSetMaxS = true;
+    }
+    IsBusy2Off( Dev );
+    emit gotHighS( HighS );
+  }
+}
+
+void AUnitPM::RcvMiddleSpeed( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == GETMIDDLESPEED ) ) ) {
+    MiddleS = msg.Val().toInt();
+    IsBusy2Off( Dev );
+    emit gotMiddleS( MiddleS );
+  }
+}
+
+void AUnitPM::RcvLowSpeed( SMsg msg )
+{
+  if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == GETLOWSPEED ) ) ) {
+    LowS = msg.Val().toInt();
+    IsBusy2Off( Dev );
+    emit gotLowS( LowS );
+  }
 }

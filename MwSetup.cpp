@@ -99,7 +99,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   }
 
   for ( int i = 0; i < AMotors.count(); i++ ) {
-    SPSMotorSelect->addItem( AMotors.value(i)->getName() );
+    SPSMotorSelect->addItem( AMotors.value(i)->name() );
     connect( s, SIGNAL( AnsGetValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ),
 	     Qt::UniqueConnection );
     connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( ShowCurMotorPos( SMsg ) ),
@@ -126,23 +126,23 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
   SPSLastSelectedM = SPSMotorSelect->currentIndex();
   SPSMotorSpeed->setCurrentIndex( 1 );
   AMotors.at( SPSMotorSelect->currentIndex() )->GetValue();
-  GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+  GoMotorUnit->setText( AMotors.value( SPSMotorSelect->currentIndex() )->unit() );
   SPSUnitSelect->addItem( "Pulse" );
-  SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->getUnit() );
+  SPSUnitSelect->addItem( AMotors.value( SPSMotorSelect->currentIndex() )->unit() );
   LoadScanInfo( ScanIFs[ SPSMotorSelect->currentIndex() ] );
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    SPSSelectD1->addItem( ASensors.value(i)->getName() );
-    SPSSelectD10->addItem( ASensors.value(i)->getName() );
+    SPSSelectD1->addItem( ASensors.value(i)->name() );
+    SPSSelectD10->addItem( ASensors.value(i)->name() );
     for ( int j = 0; j < monLines.count(); j++ ) {
-      monLines[j]->addItem( ASensors.value(i)->getName() );
+      monLines[j]->addItem( ASensors.value(i)->name() );
     }
-    SelectD3->addItem( ASensors.value(i)->getName() );
+    SelectD3->addItem( ASensors.value(i)->name() );
     connect( ASensors.value(i), SIGNAL( newDark( double ) ),
 	     this, SLOT( ShowNewDark( double ) ),
 	     Qt::UniqueConnection );
     if ( ASensors.at(i)->isRangeSelectable() ) {
-      SelSensToSetRange->addItem( ASensors.at(i)->getName() );
+      SelSensToSetRange->addItem( ASensors.at(i)->name() );
       SensWithRange << ASensors.at(i);
       ASensors.at(i)->setRange( ASensors.at(i)->getRangeU() );
       connect( ASensors.at(i), SIGNAL( AskedNowRange( int ) ),
@@ -295,9 +295,9 @@ void MainWindow::NewMotor( void )
   AMotor *am = AMotors[ SPSLastSelectedM ];
   am->GetValue();
 
-  GoMotorUnit->setText( am->getUnit() );
+  GoMotorUnit->setText( am->unit() );
   SPSUnitSelect->removeItem( 1 );
-  SPSUnitSelect->addItem( am->getUnit() );
+  SPSUnitSelect->addItem( am->unit() );
 
   LoadScanInfo( ScanIFs[ SPSLastSelectedM ] );
   if ( UUnits.user( am ) != "" ) {
@@ -341,8 +341,8 @@ void MainWindow::SaveScanInfo( ScanInfo *set, AMotor *am )
   set->as0 = ASensors[ SPSSelectD10->currentIndex() ];
   set->normalize = SPSNormalize->isChecked();
   set->showUnit = SPSUnitSelect->currentIndex();
-  set->unitName = set->am->getUnit();
-  set->upp = ( set->showUnit == 0 ) ? 1 : set->am->getUPP();
+  set->unitName = set->am->unit();
+  set->upp = ( set->showUnit == 0 ) ? 1 : set->am->upp();
   set->speed = (MSPEED)(SPSMotorSpeed->currentIndex());
   set->sx0 = SPSsP0->text();
   set->ex0 = SPSeP0->text();
@@ -381,8 +381,8 @@ void MainWindow::SaveMonInfo( MonInfo *set )
       as = ASensors[ monLines[i]->currentIndex() ];
       if ( as->isEnable() ) {
 	set->Sensors << as;
-	set->SensorNames << as->getName();
-	set->SensorUnits << as->getUnit();
+	set->SensorNames << as->name();
+	set->SensorUnits << as->unit();
       }
     }
   }
@@ -396,7 +396,7 @@ bool MainWindow::UseDefUReal( AMotor *am )
   bool rv = false;
 
   for ( int i = 0; i < DefUReals.count(); i++ ) {
-    if ( am->getUid() == DefUReals[i] ) {
+    if ( am->uid() == DefUReals[i] ) {
       rv = true;
       break;
     }
@@ -626,16 +626,16 @@ void MainWindow::ShowCurMotorPos( SMsg msg )  // AUnit を通さずにつない�
 
   AMotor *am = AMotors.value( SPSMotorSelect->currentIndex() );
 
-  if ( ( msg.From() == am->getDevCh() )
+  if ( ( msg.From() == am->devCh() )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE ) ) ) {
-    if ( ( am->getType() == "SC" ) && ( msg.Msgt() == GETVALUE ) ) {
+    if ( ( am->type() == "SC" ) && ( msg.Msgt() == GETVALUE ) ) {
       val0 = msg.Vals().at(1);
     } else {
       val0 = msg.Val();
     }
     MCurPosPuls->setText( val0 );
     val = QString::number
-      ( ( val0.toDouble() - am->getCenter() ) * am->getUPP() );
+      ( ( val0.toDouble() - am->getCenter() ) * am->upp() );
     MCurPosUnit->setText( val );
     if ( setupMDispFirstTime == true ) {  // 最初の一回だけ
       if ( MMRelAbs->stat() == ABS ) {
@@ -650,9 +650,9 @@ void MainWindow::ShowCurMotorPos( SMsg msg )  // AUnit を通さずにつない�
     }
     if ( am->checkNewVal() ) {
       NewLogMsg( tr( "Current Position of [%1] : [%2] %3" )
-		 .arg( am->getName() )
+		 .arg( am->name() )
 		 .arg( val )
-		 .arg( am->getUnit() ) );
+		 .arg( am->unit() ) );
     }
   }
 }
@@ -721,9 +721,9 @@ void MainWindow::NewGoMotorPosPuls( const QString &val )
   LastInIsPulsV = true;
   if ( MMRelAbs->stat() == ABS ) {
     GoMotorPosUnit
-      ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->getUPP() ) );
+      ->setText( QString::number( ( val.toDouble() - am->getCenter() ) * am->upp() ) );
   } else {
-    GoMotorPosUnit->setText( QString::number( val.toDouble() * am->getUPP() ) );
+    GoMotorPosUnit->setText( QString::number( val.toDouble() * am->upp() ) );
   }
 }
 
@@ -734,9 +734,9 @@ void MainWindow::NewGoMotorPosUnit( const QString &val )
   LastInIsPulsV = false;
   if ( MMRelAbs->stat() == ABS ) {
     GoMotorPosPuls
-      ->setText( QString::number( val.toDouble() / am->getUPP() + am->getCenter() ) );
+      ->setText( QString::number( val.toDouble() / am->upp() + am->getCenter() ) );
   } else {
-    GoMotorPosPuls->setText( QString::number( val.toDouble() / am->getUPP() ) );
+    GoMotorPosPuls->setText( QString::number( val.toDouble() / am->upp() ) );
   }
 }
 
@@ -760,7 +760,7 @@ void MainWindow::GoMAtPuls( double Pos )
   QString User;
   if ( ( User = UUnits.user( am ) ) != "" ) {
     statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
-			    .arg( am->getName() ).arg( User ), 2000 );
+			    .arg( am->name() ).arg( User ), 2000 );
     return;
   }
   //  MovingS = GoMotorS->currentIndex();
@@ -772,7 +772,7 @@ void MainWindow::GoMAtPuls( double Pos )
   if ( MMRelAbs->stat() == REL )
     Pos += am->value().toDouble();
 
-  if ( am->getType() == "PM" ) {
+  if ( am->type() == "PM" ) {
     Pos = (double)((int)Pos);
   }
 
@@ -781,11 +781,11 @@ void MainWindow::GoMAtPuls( double Pos )
   am->setIsBusy( true );
 
   NewLogMsg( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
-	     .arg( am->getName() )
+	     .arg( am->name() )
 	     .arg( GoMotorPosPuls->text().toInt() )
 	     .arg( MSpeeds[ GoMotorS->currentIndex() ].MSName ) );
   statusbar->showMessage( QString( tr( "Setup: %1 : GoTo %2 : Speed %3" ) )
-			  .arg( am->getName() )
+			  .arg( am->name() )
 			  .arg( GoMotorPosPuls->text().toInt() )
 			  .arg( MSpeeds[ GoMotorS->currentIndex() ].MSName ),
 			  1000 );
@@ -846,10 +846,10 @@ void MainWindow::GoMStop( void )
     setGoBAsNotMoving();
     
     NewLogMsg( QString( tr( "Setup: %1 : Stopped at %2" ) )
-	       .arg( am->getName() )
+	       .arg( am->name() )
 	       .arg( am->value() ) );
     statusbar->showMessage( QString( tr( "Setup: %1 : Stopped at %2" ) )
-			  .arg( am->getName() )
+			  .arg( am->name() )
 			    .arg( am->value() ), 1000 );
   }
 }
@@ -937,7 +937,7 @@ void MainWindow::ScanStart( void )
     QString User;
     if ( ! si.am->isEnable() ) {  // 使用するモータに関するチェック
       QString msg = tr( "Scan cannot Start : (%1) is disabled" )
-	.arg( si.am->getName() );
+	.arg( si.am->name() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return;
@@ -945,7 +945,7 @@ void MainWindow::ScanStart( void )
     if ( ( User = UUnits.user( si.am ) ) != "" ) {
       // モーターがが他のことに使われたらダメ
       statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
-			      .arg( si.am->getName() ).arg( User ), 2000 );
+			      .arg( si.am->name() ).arg( User ), 2000 );
       return;
     }
 
@@ -953,14 +953,14 @@ void MainWindow::ScanStart( void )
       ASensor *as = mScanUnits.at(i);
       if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor (%1) can use only in QXafs mode." )
-	  .arg( as->getName() );
+	  .arg( as->name() );
 	statusbar->showMessage( msg, 2000 );
 	return;
       }
 
       if ( ! as->isEnable() ) {
 	QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	  .arg( as->getName() );
+	  .arg( as->name() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	return;
@@ -969,7 +969,7 @@ void MainWindow::ScanStart( void )
       if ( ( User = UUnits.user( as ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-				.arg( as->getName() ).arg( User ), 2000 );
+				.arg( as->name() ).arg( User ), 2000 );
 	return;
       }
     }
@@ -982,8 +982,8 @@ void MainWindow::ScanStart( void )
     inSPSing = true;
 
     NewLogMsg( QString( tr( "Scan Start (%1 %2)" ) )
-	       .arg( si.am->getName() )
-	       .arg( si.as->getName() ) );
+	       .arg( si.am->name() )
+	       .arg( si.as->name() ) );
     
     si.am->SetSpeed( MSpeeds[ si.speed ].MSid );
 
@@ -1001,8 +1001,8 @@ void MainWindow::ScanStart( void )
     }
     ScanView->SetRightName( " " );
     for ( int i = 0; i < mScanUnits.count(); i++ )
-      ScanView->SetLineName( i, mScanUnits.at(i)->getName() );
-    ScanView->SetXName( si.am->getName() );
+      ScanView->SetLineName( i, mScanUnits.at(i)->name() );
+    ScanView->SetXName( si.am->name() );
     ScanView->SetXUnitName( si.unitName );
 
     ScanView->setDispRelAbsSw( true );            // Rel/Abs SW を表示するかどうか
@@ -1056,7 +1056,7 @@ void MainWindow::Monitor( void )
 #if 0
     if ( ! ass[0]->isEnable() ) {
       QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	.arg( ass[0]->getName() );
+	.arg( ass[0]->name() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return;
@@ -1107,7 +1107,7 @@ void MainWindow::Monitor( void )
       if ( monLines[i]->isChecked() ) {
 	if ( ! ass[i]->isEnable() ) {
 	  QString msg = QString( tr( "Scan cannot Start : (%1) is disabled" ) )
-	    .arg( ass[i]->getName() );
+	    .arg( ass[i]->name() );
 	  statusbar->showMessage( msg, 2000 );
 	  NewLogMsg( msg );
 	  return;
@@ -1133,7 +1133,7 @@ void MainWindow::Monitor( void )
       ASensor *as = mMonUnits.at(i);
       if ( ! CheckOkList( as, NXafsOk ) ) {
 	QString msg = tr( "The Sensor [%1] can use only in QXafs mode." )
-	  .arg( as->getName() );
+	  .arg( as->name() );
 	statusbar->showMessage( msg, 2000 );
 	return;
       }
@@ -1141,7 +1141,7 @@ void MainWindow::Monitor( void )
       if ( ( User = UUnits.user( as ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ(この時点ではまだ登録しない)
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-				.arg( as->getName() ).arg( User ), 2000 );
+				.arg( as->name() ).arg( User ), 2000 );
 	return;
       }
     }
@@ -1278,8 +1278,8 @@ void MainWindow::saveMonData( void )
   out << "#\tsec";
   for ( int i = 0; i < mMonUnits.count(); i++ ) {
     out << QString( tr( "\t%1[%2]" )
-		    .arg( mMonUnits.getName( i ) )
-		    .arg( mMonUnits.getUnit( i ) ) );
+		    .arg( mMonUnits.name( i ) )
+		    .arg( mMonUnits.unit( i ) ) );
   }
   out << "\n";
 #endif

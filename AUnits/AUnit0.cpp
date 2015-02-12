@@ -6,12 +6,42 @@ AUnit0::AUnit0( QObject *parent ) : QObject( parent )
   Enable = false;
   ALine = -1;
 
+  GType = "";
+  Type = "";
+  ID = "";
+  Uid = "";
+  Name = "";
+  Dev = "";
+  Ch = "";
+  DevCh = "";
+  Unit = "";
   UPP = 1;
-  
+
+  HasParent = false;
+  TheParent = NULL;
+  PUid = "";
+
+  Has2ndDev = false;
+  Uid2 = "";
+  Dev2 = "";
+  Ch2 = "";
+  DevCh2 = "";       // Dev + "." + Ch
+  The2ndDev = NULL;
+
   LocalStage = 0;
 
   IsBusy = IsBusy2 = false;
   Busy2Count = 0;
+  IsBusy2Off( "" );
+
+  LastFunc = "";
+  LastFunc2 = "";
+
+  Value = "";
+  Values.clear();
+  LastValue = "";
+  ILastSetV = 0;
+  DLastSetV = 0;
 }
 
 void AUnit0::Initialize( Stars *S )
@@ -104,5 +134,28 @@ bool AUnit0::GetValue( void )
   return false;
 }
 
+void AUnit0::ReceiveValues( SMsg msg )
+{
+  QString buf;
 
+  if ( ( msg.From() == Dev ) && ( msg.Msgt() == GETVALUES ) ) { // Check !!!!! DevCh/Drv
+    Value = msg.Vals().at(0);
+    Values = msg.Vals();
+
+    emit newValue( Value );
+    IsBusy2Off( Dev );
+  }
+}
+
+void AUnit0::ClrBusy( SMsg msg )
+{
+  if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {
+    IsBusy2Off( Dev );
+  }
+  if ( Has2ndDev ) {
+    if ( ( msg.From() == DevCh2 ) || ( msg.From() == Dev2 ) ) {
+      IsBusy2Off( Dev2 );
+    }
+  }
+}
 

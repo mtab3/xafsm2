@@ -377,7 +377,7 @@ void MainWindow::newCalibration( void )
       // gain の設定は何故か逆
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
       // 設定したゲインの読み出し
-      s->SendCMD2( "SetUpMCA", SFluo->getDev(),
+      s->SendCMD2( "SetUpMCA", SFluo->dev(),
 		   "GetPreAMPGain", QString::number( MCACh->value() ) );
     }
   }
@@ -636,18 +636,18 @@ void MainWindow::SelSSDs( int ch )
 
 void MainWindow::getMCASettings( int ch )
 {
-  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetThreshold", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetCalibration", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetDynamicRange", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDev(), "GetPreAMPGain", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPeakingTime", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetThreshold", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetCalibration", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetDynamicRange", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPreAMPGain", QString::number( ch ) );
 
   SFluo->GetMCAs();
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
 {
-  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
   }
   for ( int i = 0; i < MaxSSDs; i++ ) {
@@ -725,35 +725,35 @@ void MainWindow::MCAChSelected( int i )
 
 void MainWindow::showPeakingTime( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     PeakingTimeInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showThreshold( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     ThresholdInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showCalibration( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     CalibrationInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showDynamicRange( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     DynamicRangeInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showPreAMPGain( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     GainInput->setText( msg.Val() );
   }
 }
@@ -771,7 +771,7 @@ void MainWindow::StartMCA( void )
     if ( ( User = UUnits.user( SFluo ) ) != "" ) {
       // 検出器が他のことに使われたらダメ
       statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-			      .arg( SFluo->getName() ).arg( User ), 2000 );
+			      .arg( SFluo->name() ).arg( User ), 2000 );
       return;
     }
 

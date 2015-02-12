@@ -11,6 +11,13 @@ class AUnitFP23 : public ASensor
  public:
   AUnitFP23( void );
   void init0( void );
+
+ private slots:
+   void OnReportValue( SMsg msg );
+
+ signals:
+  void NewFP23Temperature( QString val );
+
 };
 
 #endif

@@ -73,7 +73,7 @@ void MainWindow::ReadDef( QString fname )
         next = nextItem( next, item ); NewUnit->setUnit( item );
 	// NewUnit->setDevCh();
         // 名前の中の特殊文字の置換
-        NewUnit->setName( LocalizedName( NewUnit->getName() ) );
+        NewUnit->setName( LocalizedName( NewUnit->name() ) );
 
         // 以下、motor だけの項目
         if ( isMotor ) {
@@ -255,7 +255,7 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "SPEEDS" ) {
         next = nextItem( next, item );
         for ( i = 0; i < AMotors.count(); i++ ) {
-          if ( AMotors[i]->getUid() == item )
+          if ( AMotors[i]->uid() == item )
             break;
         }
         if ( i < AMotors.count() ) {
@@ -331,30 +331,30 @@ void MainWindow::ReadDef( QString fname )
   for ( i = 0; i < ASensors.count(); i++ ) {
     if ( ASensors.at(i)->hasParent() ) {
       for ( j = 0; j < ASensors.count(); j++ ) {
-        if ( ASensors[i]->getPUid() == ASensors[j]->getUid() ) {
+        if ( ASensors[i]->pUid() == ASensors[j]->uid() ) {
           ASensors[i]->setTheParent( ASensors[j] );
           break;
         }
       }
       if ( j >= ASensors.count() ) {
-        qDebug() << "can not find a parent for " << ASensors.at(i)->getUid()
-                 << "the name is " << ASensors[i]->getPUid();
+        qDebug() << "can not find a parent for " << ASensors.at(i)->uid()
+                 << "the name is " << ASensors[i]->pUid();
       }
     }
-    if (( ASensors[i]->getType() == "CNT2" )
-        ||( ASensors[i]->getType() == "OTC2" )) {
+    if (( ASensors[i]->type() == "CNT2" )
+        ||( ASensors[i]->type() == "OTC2" )) {
       for ( j = 0; j < ASensors.count(); j++ ) {
-        if ( ASensors[i]->get2ndUid() == ASensors[j]->getUid() ) {
+        if ( ASensors[i]->uid2() == ASensors[j]->uid() ) {
           ASensors[i]->setThe2ndDev( ASensors[j] );
-          ASensors[i]->set2ndDev( ASensors[j]->getDev() );
-          ASensors[i]->set2ndCh( ASensors[j]->getCh() );
+          ASensors[i]->setDev2( ASensors[j]->dev() );
+          ASensors[i]->setCh2( ASensors[j]->ch() );
 	  //          ASensors[i]->set2ndDevCh();
           break;
         }
       }
       if ( j >= ASensors.count() ) {
-        qDebug() << "can not find a 2nd Driver for " << ASensors.at(i)->getUid()
-                 << "the name is " << ASensors.at(i)->get2ndUid();
+        qDebug() << "can not find a 2nd Driver for " << ASensors.at(i)->uid()
+                 << "the name is " << ASensors.at(i)->uid2();
       }
     }
   }
@@ -363,6 +363,7 @@ void MainWindow::ReadDef( QString fname )
 AUnit0 *MainWindow::NewNewUnit( QString type )
 {
   AUnit0 *rv = NULL;
+
   if ( type == "PM" )
     rv = (AUnit0*)new AUnitPM;
   if ( type == "PZ" )
@@ -422,14 +423,14 @@ void MainWindow::CheckDuplicateUID( void )
   for ( int i = 0; i < AMotors.count(); i++ ) {
     for ( int j = 0; j < AMotors.count(); j++ ) {
       if ( i != j ) {
-        if ( AMotors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
+        if ( AMotors.at(i)->uid() == AMotors.at(j)->uid() ) {
           // Uid がダブってると致命的なので止まらないとしかたない
           ExitByDuplicateUID( AMotors.at(i), AMotors.at(j) );
         }
       }
     }
     for ( int j = 0; j < ASensors.count(); j++ ) {
-      if ( AMotors.at(i)->getUid() == ASensors.at(j)->getUid() ) {
+      if ( AMotors.at(i)->uid() == ASensors.at(j)->uid() ) {
         ExitByDuplicateUID( AMotors.at(i), ASensors.at(j) );
       }
     }
@@ -437,13 +438,13 @@ void MainWindow::CheckDuplicateUID( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     for ( int j = 0; j < ASensors.count(); j++ ) {
       if ( i != j ) {
-        if ( ASensors.at(i)->getUid() == ASensors.at(j)->getUid() ) {
+        if ( ASensors.at(i)->uid() == ASensors.at(j)->uid() ) {
           ExitByDuplicateUID( ASensors.at(i), ASensors.at(j) );
         }
       }
     }
     for ( int j = 0; j < AMotors.count(); j++ ) {
-      if ( ASensors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
+      if ( ASensors.at(i)->uid() == AMotors.at(j)->uid() ) {
         ExitByDuplicateUID( ASensors.at(i), AMotors.at(j) );
       }
     }
@@ -453,12 +454,12 @@ void MainWindow::CheckDuplicateUID( void )
 void MainWindow::ExitByDuplicateUID( AUnit0 *a1, AUnit0 *a2 )
 {
   qDebug() << tr( "UIDs [%1](at line %2) and [%3](at line %4) are duplicated." )
-              .arg( a1->getUid() ).arg( a1->getALine() )
-              .arg( a2->getUid() ).arg( a2->getALine() );
+              .arg( a1->uid() ).arg( a1->aLine() )
+              .arg( a2->uid() ).arg( a2->aLine() );
   qDebug() << tr( "1st one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
-              .arg( a1->getType() ).arg( a1->getID() ).arg( a1->getDev() ).arg( a1->getCh() );
+              .arg( a1->type() ).arg( a1->id() ).arg( a1->dev() ).arg( a1->ch() );
   qDebug() << tr( "2nd one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
-              .arg( a2->getType() ).arg( a2->getID() ).arg( a2->getDev() ).arg( a2->getCh() );
+              .arg( a2->type() ).arg( a2->id() ).arg( a2->dev() ).arg( a2->ch() );
   exit( 0 );
 }
 

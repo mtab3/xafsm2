@@ -12,6 +12,7 @@ AMotor::AMotor( void )
   HighS = 3000;
   MiddleS = 1000;
   LowS = 500;
+  IsInt = false;
 }
 
 void AMotor::init( void )
@@ -23,4 +24,17 @@ void AMotor::init( void )
   s->SendCMD2( "Init", DevCh, "GetValue" );
 
   init0();
+}
+
+void AMotor::SetCurPos( SMsg msg )
+{
+  QString buf;
+  
+  if ( ( msg.From() == DevCh )
+       && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
+            || ( msg.Msgt() == READ ) ) ) {
+    Value = msg.Val();
+    emit newValue( Value );
+    IsBusy2Off( Dev );
+  }
 }

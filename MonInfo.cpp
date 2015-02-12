@@ -20,9 +20,9 @@ void MonInfo::save( QTextStream &out )
   out << QString( "# %1\t%2\n" ).arg( MEASTIME ).arg( MeasTime );
   for ( int i = 0; i < Sensors.count(); i++ ) {
     out << QString( "# %1\t%2\t%3\t%4\n" ).arg( MONSENSOR )
-      .arg( Sensors[i]->getUid() )
-      .arg( Sensors[i]->getUnit() )
-      .arg( Sensors[i]->getName() );
+      .arg( Sensors[i]->uid() )
+      .arg( Sensors[i]->unit() )
+      .arg( Sensors[i]->name() );
   }
   out << "\n";
 }
@@ -59,7 +59,7 @@ void MonInfo::load0( QString line, QVector<ASensor*> &ASensors, bool &f )
     if ( vals.count() > 2 ) unit = vals[2]; 
     if ( vals.count() > 3 ) name = vals[3]; 
     for ( int j = 0; j < ASensors.count(); j++ ) {
-      if ( ASensors[j]->getUid() == uid ) {
+      if ( ASensors[j]->uid() == uid ) {
 	as = ASensors[j];
 	break;
       }
@@ -97,7 +97,7 @@ void MonInfo::show( void )
   qDebug() << "---- Stat of MonInfo ----";
   qDebug() << "valid" << valid;
   for ( int i = 0; i < Sensors.count(); i++ ) {
-    qDebug() << i << Sensors[i]->getUid() << SensorNames[i] << SensorUnits[i];
+    qDebug() << i << Sensors[i]->uid() << SensorNames[i] << SensorUnits[i];
   }
   qDebug() << "MeasTime" << MeasTime;
 }

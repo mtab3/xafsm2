@@ -40,9 +40,9 @@ ScanInfo::~ScanInfo( void )
 void ScanInfo::save( QTextStream &out )
 {
   out << "# " << UNITNAMES << "\t"
-      << am->getName() << "\t" << as->getName() << "\t" << as0->getName() << "\n";
+      << am->name() << "\t" << as->name() << "\t" << as0->name() << "\n";
   out << "# " << UNITIDS << "\t"
-      << am->getUid() << "\t" << as->getUid() << "\t" << as0->getUid() << "\n";
+      << am->uid() << "\t" << as->uid() << "\t" << as0->uid() << "\n";
   out << "# " << NORMALIZE << "\t" << ( ( normalize ) ? 1 : 0 ) << "\n";
 
   out << "# " << METRICUNIT << "\t" << unitName << "\n";
@@ -81,19 +81,19 @@ bool ScanInfo::load( QTextStream &in,
     if ( vals[0] == UNITIDS ) {
       if ( vals.count() >= 4 ) {
 	for ( int j = 0; j < AMotors.count(); j++ ) {
-	  if ( AMotors[j]->getUid() == vals[1] ) {
+	  if ( AMotors[j]->uid() == vals[1] ) {
 	    am = AMotors[j];
 	    break;
 	  }
 	}
 	for ( int j = 0; j < ASensors.count(); j++ ) {
-	  if ( ASensors[j]->getUid() == vals[2] ) {
+	  if ( ASensors[j]->uid() == vals[2] ) {
 	    as = ASensors[j];
 	    break;
 	  }
 	}
 	for ( int j = 0; j < ASensors.count(); j++ ) {
-	  if ( ASensors[j]->getUid() == vals[3] ) {
+	  if ( ASensors[j]->uid() == vals[3] ) {
 	    as0 = ASensors[j];
 	    break;
 	  }
@@ -146,7 +146,7 @@ void ScanInfo::show( void )
 {
   qDebug() << "---- Stat of Scan Info ----";
   qDebug() << "valid" << valid;
-  qDebug() << "motor" << am->getUid() << amName;
+  qDebug() << "motor" << am->uid() << amName;
   qDebug() << "speed" << speed;
   qDebug() << "showUnit" << showUnit;
   qDebug() << "upp" << upp;
@@ -154,8 +154,8 @@ void ScanInfo::show( void )
   qDebug() << "rel/abs" << relabs;
   qDebug() << "sx ex dx dt" << sx0 << ex0 << dx0 << dt0;
   qDebug() << "sx ex dx dt" << sx << ex << dx << dt;
-  if ( as != NULL ) qDebug() << "sensor" << as->getUid() << asName;
-  if ( as0 != NULL ) qDebug() << "sensor0" << as0->getUid() << as0Name;
+  if ( as != NULL ) qDebug() << "sensor" << as->uid() << asName;
+  if ( as0 != NULL ) qDebug() << "sensor0" << as0->uid() << as0Name;
   qDebug() << "normalize" << normalize;
   qDebug() << "origin offset" << origin << offset;
   qDebug() << "use monitors" << UseMonitors;

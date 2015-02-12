@@ -12,6 +12,10 @@ class AUnitAIOi : public ASensor
  public:
   AUnitAIOi( void );
   void init0( void );
+  double SetTime( double dtime );
+
+ private slots:
+  void SetIsBusyByMsg( SMsg msg );
 };
 
 class AUnitAIOo : public AMotor
@@ -32,6 +36,9 @@ class AUnitAIOo : public AMotor
   void GoMaxAbsQ( double start, double end, int steps, double time );
   void GoMaxRel( double width, int steps );
   void GoMaxRelQ( double width, int steps, double time );
+
+ private slots:
+  void SetIsBusyByMsg( SMsg msg );
 };
 
 #endif

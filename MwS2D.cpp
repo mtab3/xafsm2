@@ -56,15 +56,15 @@ void MainWindow::setupScan2DArea( void )
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     S2DOkSensors << ASensors[i];
-    SelectS2DSensor->addItem( ASensors[i]->getName() );
+    SelectS2DSensor->addItem( ASensors[i]->name() );
   }
 
   for ( int i = 0; i < AMotors.count(); i++ ) {
     // SetSpeed, SetMaxSpeed 等が使えないとダメ。現状 PM のみ
-    if ( AMotors[i]->getType() == "PM" ) {
+    if ( AMotors[i]->type() == "PM" ) {
       S2DOkMotors << AMotors[i];
       for ( int j = 0; j < S2DAxis.count(); j++ ) {
-	S2DAxis[j]->addItem( AMotors[i]->getName() );
+	S2DAxis[j]->addItem( AMotors[i]->name() );
       }
     }
   }
@@ -234,7 +234,7 @@ void MainWindow::newS2DSteps( void )
 void MainWindow::newAx0( int ax, int motor )
 {
   double pos;
-  S2DUnits[ax]->setText( S2DOkMotors[ motor ]->getUnit() );
+  S2DUnits[ax]->setText( S2DOkMotors[ motor ]->unit() );
   S2DCurPos[ax]->setText( QString::number( pos = S2DOkMotors[ motor ]->metricValue() ) );
   if ( S2Dview != NULL )
     S2Dview->setNowPosition( ax, pos );
@@ -341,7 +341,7 @@ void MainWindow::S2DScanStart( void )
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] && ( ! S2DI.unit[i]->isEnable() ) ) {
 	QString msg = tr( "2D Scan cannot Start : (%1) is disabled" )
-	  .arg( S2DI.unit[i]->getName() );
+	  .arg( S2DI.unit[i]->name() );
 	statusbar->showMessage( msg, 2000 );
 	S2DI = oldInfo;
 	return;
@@ -385,7 +385,7 @@ void MainWindow::S2DScanStart( void )
 	if ( ( User = UUnits.user( S2DI.unit[i] ) ) != "" ) {
 	  // モーターが他のことに使われていたらダメ
 	  statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
-				  .arg( S2DI.unit[i]->getName() ).arg( User ), 2000 );
+				  .arg( S2DI.unit[i]->name() ).arg( User ), 2000 );
 	  S2DI = oldInfo;
 	  return;
 	}
@@ -399,7 +399,7 @@ void MainWindow::S2DScanStart( void )
     for ( int i = 0; i < mS2DUnits.count(); i++ ) {
       if ( ! mS2DUnits.at(i)->isEnable() ) {
 	QString msg = QString( tr( "2D Scan cannot Start : (%1) is disabled" ) )
-	  .arg( mS2DUnits.at(i)->getName() );
+	  .arg( mS2DUnits.at(i)->name() );
 	statusbar->showMessage( msg, 2000 );
 	NewLogMsg( msg );
 	S2DI = oldInfo;
@@ -409,7 +409,7 @@ void MainWindow::S2DScanStart( void )
       if ( ( User = UUnits.user( mS2DUnits.at(i) ) ) != "" ) {
 	// 検出器が他のことに使われたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-				.arg( mS2DUnits.at(i)->getName() ).arg( User ), 2000 );
+				.arg( mS2DUnits.at(i)->name() ).arg( User ), 2000 );
 	S2DI = oldInfo;
 	return;
       }
@@ -446,15 +446,15 @@ void MainWindow::S2DScanStart( void )
     inS2D = true;
     if ( S2DI.Use3rdAx ) {
       NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3 (%4))" ) )
-		 .arg( as->getName() )
-		 .arg( S2DI.unit[0]->getName() )
-		 .arg( S2DI.unit[1]->getName() )
-		 .arg( S2DI.unit[2]->getName() ) );
+		 .arg( as->name() )
+		 .arg( S2DI.unit[0]->name() )
+		 .arg( S2DI.unit[1]->name() )
+		 .arg( S2DI.unit[2]->name() ) );
     } else {
       NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3)" ) )
-		 .arg( as->getName() )
-		 .arg( S2DI.unit[0]->getName() )
-		 .arg( S2DI.unit[1]->getName() ) );
+		 .arg( as->name() )
+		 .arg( S2DI.unit[0]->name() )
+		 .arg( S2DI.unit[1]->name() ) );
     }
 
     S2DStart->setText( tr( "Stop" ) );
@@ -467,7 +467,7 @@ void MainWindow::S2DScanStart( void )
     // 1st と 2nd の軸の単位が同じなら、表示の縦横比をスキャン範囲の
     // 縦横比に合わせるように努力する。
     // そうでなければ、画面いっぱいを使う。
-    if ( S2DI.unit[0]->getUnit() == S2DI.unit[1]->getUnit() ) {
+    if ( S2DI.unit[0]->unit() == S2DI.unit[1]->unit() ) {
       S2Dview->setRatioType( REAL_RATIO );
     } else {
       S2Dview->setRatioType( AS_SCREEN );
@@ -568,19 +568,19 @@ void MainWindow::CheckS2DDwellTime( void )
     // Step Scan の時 dwell にパルスモータの最高速に起因した制限は無いはず
   }
   else if ( S2DQuasiContScan->isChecked() ) {
-    pps = (int)fabs( dx / am->getUPP() / dwell );
+    pps = (int)fabs( dx / am->upp() / dwell );
     if ( pps > am->highestSpeed() ) { // Quasi Cont. Scan
       pps = am->highestSpeed();
     }
-    dwell = fabs( dx / am->getUPP() / pps );
+    dwell = fabs( dx / am->upp() / pps );
   }
   else if ( S2DRealContScan->isChecked() ) { // Real Cont. Scan
     if ( dwell / ps < 0.25 ) dwell = ps * LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN;
-    pps = (int)fabs( dx * ps / am->getUPP() / dwell );
+    pps = (int)fabs( dx * ps / am->upp() / dwell );
     if ( pps > am->highestSpeed() ) {
       pps = am->highestSpeed();
     }
-    dwell = fabs( dx * ps / am->getUPP() / pps );
+    dwell = fabs( dx * ps / am->upp() / pps );
   }
   S2DTime1->setText( QString::number( dwell ) );
   S2DPoints[0]->setText( QString::number( ps ) );
@@ -625,11 +625,11 @@ void MainWindow::SetupS2DParams( void )
   int pps = 0;
   if ( S2DI.ScanMode == RCONT ) {
     pps = (int)fabs( (double)S2DI.dx[0] * S2DI.ps[0]
-			 / S2DI.unit[0]->getUPP()
+			 / S2DI.unit[0]->upp()
 			 / S2DI.Dwell );
   } else {
     pps = (int)fabs( (double)S2DI.dx[0]
-		     / S2DI.unit[0]->getUPP()
+		     / S2DI.unit[0]->upp()
 		     / S2DI.Dwell );
     
     
@@ -642,7 +642,7 @@ void MainWindow::SetupS2DParams( void )
     pps = S2DI.unit[0]->highestSpeed();
   }
   S2DI.pps = pps;
-  S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->getUPP() / pps;
+  S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->upp() / pps;
 }
 
 void MainWindow::S2DStop0( void )

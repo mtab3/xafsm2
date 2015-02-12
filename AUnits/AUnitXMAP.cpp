@@ -3,6 +3,39 @@
 
 AUnitXMAP::AUnitXMAP( void )
 {
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    MCARealTime[i] = MCALiveTime[i] = 0;
+    SSDUsingCh[i] = true;
+  }
+  ConnectedToSSDServer = false;
+  SSDPresetType = "REAL";   // for MCA/SSD
+  hasConnected = false;
+
+  dLink = NULL;
+  dLinkStream = NULL;
+  MCAs0 = NULL;
+  MCAs = NULL;
+
+  CountsInROI.clear();
+  CountsAll.clear();
+  TotalEvents.clear();
+  ICRs.clear();
+  DarkCountsInROI.clear();
+  DarkCountsAll.clear();
+  DarkTotalEvents.clear();
+  DarkICRs.clear();
+  for ( int i = 0; i < MaxSSDs; i++ ) {
+    CountsInROI << 0;
+    CountsAll << 0;
+    TotalEvents << 0;
+    ICRs << 0;
+    DarkCountsInROI << 0;
+    DarkCountsAll << 0;
+    DarkTotalEvents << 0;
+    DarkICRs << 0;
+  }
+  DataLinkHostName = "";
+  DataLinkHostPort = 0;
 }
 
 bool AUnitXMAP::InitSensor( void )
@@ -87,7 +120,6 @@ void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
   }
 }
 
-
 void AUnitXMAP::_setEnable( bool /*enable*/ )
 {
   ConnectedToSSDServer = false;
@@ -112,6 +144,74 @@ bool AUnitXMAP::GetValue( void )
   //        data-link 経由で完全なデータをもらった時に消す
   //    s->SendCMD2( Uid, Dev, "GetValues" );    // new mcas
   s->SendCMD2( Uid, Dev, "GetMCAs" );
+
+  return false;
+}
+
+bool AUnitXMAP::GetValue0( void )  // 値読み出しコマンドの前に何か必要なタイプの場合
+{
+  bool rv = false;
+
+  switch( LocalStage ) {
+  case 0:
+    IsBusy2On( Dev, "GetValue0c0" );
+    s->SendCMD2( Uid, Dev, "RunStop" );
+    rv = true;
+    LocalStage++;
+    break;
+  case 1:
+    IsBusy2On( Dev, "GetValue0c1" );
+    IsBusy = true;
+    LastFunc = "GetValue0c1";
+    emit ChangedIsBusy1( Dev );
+    s->SendCMD2( Uid, Dev, "RunStart" );
+    rv = false;
+    LocalStage++;
+    break;
+  }
+
+  return rv;
+}
+
+// 値読み出しコマンドの前に何か必要なタイプの場合
+// 別バージョン、presetTime 等の終了条件無しにしてある
+// 連続スキャン (差分で値を見る)モード用
+bool AUnitXMAP::GetValue02( void )
+{
+  bool rv = false;
+
+  switch( LocalStage ) {
+  case 0:
+    IsBusy2On( Dev, "GetValue0c0" );
+    s->SendCMD2( Uid, Dev, "SetPresetType", "NONE" );
+    rv = true;
+    LocalStage++;
+    break;
+  case 1:
+    IsBusy2On( Dev, "GetValue0c1" );
+    s->SendCMD2( Uid, Dev, "RunStop" );
+    rv = true;
+    LocalStage++;
+    break;
+  case 2:
+    IsBusy2On( Dev, "GetValue0c2" );
+    IsBusy = true;
+    LastFunc = "GetValue0c1";
+    emit ChangedIsBusy1( Dev );
+    s->SendCMD2( Uid, Dev, "RunStart" );
+    rv = false;
+    LocalStage++;
+    break;
+  }
+  return rv;
+}
+
+/* 連続スキャン対応 */
+// 連続スキャンの後にノーマルモードに戻す
+bool AUnitXMAP::Close( void )
+{
+  IsBusy2On( Dev, "GetValue0c0" );
+  s->SendCMD2( Uid, Dev, "RunStop" );
 
   return false;
 }
@@ -348,14 +448,102 @@ void AUnitXMAP::setGain( int ch, double gain )
   s->SendCMD2( Uid, Dev, QString( "SetPreAMPGain %1 %2" ).arg( ch ).arg( gain ) );
 }
 
-
-/* 連続スキャン対応 */
-
-// 連続スキャンの後にノーマルモードに戻す
-bool AUnitXMAP::Close( void )
+void AUnitXMAP::ReceiveValues( SMsg msg )
 {
-  IsBusy2On( Dev, "GetValue0c0" );
-  s->SendCMD2( Uid, Dev, "RunStop" );
+  QString buf;
 
-  return false;
+  CountsInROI.clear();
+  CountsAll.clear();
+  TotalEvents.clear();
+  ICRs.clear();
+
+  if ( ( msg.From() == Dev ) && ( msg.Msgt() == GETVALUES ) ) { // Check !!!!! DevCh/Drv
+    int sum = 0;
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      if ( SSDUsingCh[i] ) {
+	sum += msg.Vals().at( i + 1 ).toInt();
+      }
+    }
+    Value = QString::number( sum );
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      CountsInROI << msg.Vals().at( i + 1 ).toInt();
+      CountsAll   << msg.Vals().at( i + 1 + MaxSSDs ).toInt();
+      TotalEvents << msg.Vals().at( i + 1 + MaxSSDs * 2 ).toInt();
+      ICRs        << msg.Vals().at( i + 1 + MaxSSDs * 3 ).toDouble();
+    }
+    
+    Values = msg.Vals();
+    
+    emit newValue( Value );
+    IsBusy2Off( Dev );
+  }
 }
+
+void AUnitXMAP::SetIsBusyByMsg( SMsg msg )
+{
+  if ( ( msg.From() == Dev )
+       && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
+    IsBusy = ( msg.Val().toInt() == 1 );
+    if ( IsBusy )
+      LastFunc = "SetIsBusyByMsg";
+    else
+      LastFunc = "";
+    emit ChangedIsBusy1( Dev );
+  }
+}
+
+void AUnitXMAP::receiveMCAs( void )
+{
+  uint bytes0, bytes;
+
+  bytes0 = dLink->bytesAvailable();
+  // 今届いた分を全部読んでもバッファサイズより小さいなら
+  if ( dLinkCount + bytes0 <= XMAPBUFSIZE )
+    bytes = bytes0;                    // 全部読む
+  else
+    bytes = XMAPBUFSIZE - dLinkCount;   // 大きいなら、読める分だけ読む
+
+  bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
+  dLinkCount += bytes;
+
+  if ( dLinkCount >= XMAPBUFSIZE ) {
+    IsBusy2Off( Dev );
+    dLinkCount = 0;
+    if ( MCAs != NULL ) delete [] MCAs;
+    MCAs = MCAs0;              // 読み込みが完成したバッファ(MCAs0)を
+                               // 最新のデータが置かれたバッファ(MCAs)に移し
+    MCAs0 = new char [ XMAPBUFSIZE ];
+                               // MCAs0 は次のデータを受けるために新しくする
+    MCAsReady = true;          // MCAs のバッファに有効なデータがある
+
+    CountsInROI.clear();
+    CountsAll.clear();
+    TotalEvents.clear();
+    ICRs.clear();
+
+    quint64 sum = 0;
+    quint64 countsAll, countsInROI;
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      quint32 *aMCA = getAMCA( i );
+      countsAll = countsInROI = 0;
+      for ( int j = 0; j < (int)MCALength; j++ ) {
+	if ( ( j >= ROIStart[i].toInt() )&&( j <= ROIEnd[i].toInt() ) )
+	  countsInROI += aMCA[j];
+	countsAll += aMCA[j];
+      }
+      CountsAll << countsAll;
+      sum += countsInROI;
+      CountsInROI << countsInROI;
+    }
+
+    Value = QString::number( sum );
+    for ( int i = 0; i < MaxSSDs; i++ ) {
+      TotalEvents << 0;
+      ICRs        << getAMCAHead( i ).icr;
+    }
+    emit LogMsg( "emitted New MCAs" );
+    emit NewMCAsAvailable( MCAs );
+    emit newValue( Value );
+  }
+}
+

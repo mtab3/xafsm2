@@ -454,7 +454,7 @@ void MainWindow::WriteInfoFile( void )
   out << "Version :" << " 1303" << endl;
   out << "Channel Names:";
   for ( int i = 0; i < Munits; i++ )
-    out << QString( " \"%1\"" ).arg( mMeasUnits.at(i)->getName() );
+    out << QString( " \"%1\"" ).arg( mMeasUnits.at(i)->name() );
   out << endl;
   
   out << "Select Button Names:";

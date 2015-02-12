@@ -230,7 +230,7 @@ void MainWindow::AutoSequence0( void )
       } else if ( FUNC == "SENS" ) {
 	int i;
 	for ( i = 0; i < ASensors.count(); i++ ) {
-	  if ( ASensors[i]->getUid() == VAL ) {
+	  if ( ASensors[i]->uid() == VAL ) {
 	    ASMUnits.addUnit( ASensors[i] );
 	    break;
 	  }

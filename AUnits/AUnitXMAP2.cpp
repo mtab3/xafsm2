@@ -15,6 +15,26 @@ double AUnitXMAP2::stat( STATELM i )
   return ((AUnitXMAP*)TheParent)->stat( Ch.toInt(), i );
 }
 
+void AUnitXMAP2::getNewValue( QString )
+{
+  Value = QString::number( ((AUnitXMAP*)TheParent)->getCountsInROI().at( Ch.toInt() ) );
+}
+
+void AUnitXMAP2::getNewDark( double )
+{
+  Dark = ((AUnitXMAP*)TheParent)->getDarkCountsInROI().at( Ch.toInt() );
+}
+
+double AUnitXMAP2::SetTime( double dtime ) // in sec, この関数は、複数ステップ化できない
+{
+  IsBusy2On( Dev, "SetTime" );
+  s->SendCMD2( Uid, Dev, "RunStop" );   // コマンド連続発行可能か? いちおういけてる
+  s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
+  setTime = dtime;
+
+  return setTime;
+}
+
 bool AUnitXMAP2::SetRealTime( double val )
 {
   bool rv = false;

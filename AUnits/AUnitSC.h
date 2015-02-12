@@ -12,8 +12,13 @@ class AUnitSC : public AMotor
   void init0( void );
 
   void SetValue( double v );
+  bool GetValue( void );
   void Stop( void );
   void AskIsBusy( void );
+
+ private slots:
+  void SetCurPos( SMsg msg );
+  void SetIsBusyByMsg( SMsg msg );
 };
 
 #endif

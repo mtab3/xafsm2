@@ -35,7 +35,7 @@ void PMConditions::setMotors( QVector<AMotor *> *ams )
 
   for ( int i = 0; i < ams->count(); i++ ) {
     am = ams->at(i);
-    if ( am->getType() == "PM" ) {
+    if ( am->type() == "PM" ) {
       PMLine *p = new PMLine;
       pmls << p;
       p->am = am;
@@ -49,8 +49,8 @@ void PMConditions::setMotors( QVector<AMotor *> *ams )
       L->addWidget( p->LSpeed,  row, c++ );
       row++;
 
-      p->PMNo->setText( am->getUid() );
-      p->PMName->setText( am->getName() );
+      p->PMNo->setText( am->uid() );
+      p->PMName->setText( am->name() );
       p->Origin->setText( QString::number( am->getCenter() ) );
       p->HSpeed->setText( QString::number( am->getHighS() ) );
       p->MSpeed->setText( QString::number( am->getMiddleS() ) );

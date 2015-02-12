@@ -324,12 +324,12 @@ void MainWindow::SetUpSensorComboBoxes( void )
   SelectAux2->clear();
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    if ( ASensors[i]->getID() == "QXAFS-I0" ) findQXafsI0 = true;
-    if ( ASensors[i]->getID() == "QXAFS-I1" ) findQXafsI1 = true;
+    if ( ASensors[i]->id() == "QXAFS-I0" ) findQXafsI0 = true;
+    if ( ASensors[i]->id() == "QXAFS-I1" ) findQXafsI1 = true;
 
     bool addOk = false;
     QStringList CheckList = ( QXafsMode->isChecked() ) ? QXafsOk : NXafsOk;
-    QString type = ASensors[i]->getType();
+    QString type = ASensors[i]->type();
 
     for ( int j = 0; j < CheckList.count(); j++ ) {
       if ( CheckList[j] == type ) {
@@ -338,7 +338,7 @@ void MainWindow::SetUpSensorComboBoxes( void )
       }
     }
     if ( addOk ) {
-      QString name = ASensors.value(i)->getName();
+      QString name = ASensors.value(i)->name();
       
       SelectI0->addItem( name );  I0Sensors << ASensors[i];
       SelectI1->addItem( name );  I1Sensors << ASensors[i];
@@ -349,13 +349,13 @@ void MainWindow::SetUpSensorComboBoxes( void )
 	SelectAux2->addItem( name );   A2Sensors << ASensors[i];
       }
       
-      if ( ASensors[i]->getID() == "I0" )
+      if ( ASensors[i]->id() == "I0" )
 	SelectI0->setCurrentIndex( SelectI0->count() - 1 );
-      if ( ASensors[i]->getID() == "I1" )
+      if ( ASensors[i]->id() == "I1" )
 	SelectI1->setCurrentIndex( SelectI1->count() - 1 );
-      if ( ASensors[i]->getID() == "Aux1" )
+      if ( ASensors[i]->id() == "Aux1" )
 	SelectAux1->setCurrentIndex( SelectAux1->count() - 1 );
-      if ( ASensors[i]->getID() == "Aux2" )
+      if ( ASensors[i]->id() == "Aux2" )
 	SelectAux2->setCurrentIndex( SelectAux2->count() - 1 );
     }
   }
@@ -575,7 +575,7 @@ void MainWindow::ShowMB( void )
 
   darkTable->setRowCol( ASensors.count(), 2 );
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    item = new QTableWidgetItem ( ASensors.at( i )->getName() );
+    item = new QTableWidgetItem ( ASensors.at( i )->name() );
     darkTable->setItem( i, 0, item );
     item = new QTableWidgetItem ( QString::number( ASensors.at( i )->getDark() ) );
     item->setTextAlignment( Qt::AlignRight | Qt::AlignVCenter );
@@ -1187,7 +1187,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
       statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
-			      .arg( MMainTh->getName() ), 2000 );
+			      .arg( MMainTh->name() ), 2000 );
     }
     if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
       statusbar->showMessage( tr( "The block parameter is out of range." ), 2000 );
@@ -1353,10 +1353,10 @@ void MainWindow::StartMeasurement( void )
       if ( ! theSensorIsAvailable( as ) ) {  // QXafs / NXafs モードで使えるかどうか
         QString msg;
         if ( QXafsMode->isChecked() ) {
-          msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->getName() );
+          msg = tr( "The sensor [%1] can not use for the QXafs." ).arg( as->name() );
         } else {
           msg = tr( "The sensor [%1] can not use for the Normal Xafs." )
-              .arg( as->getName() );
+              .arg( as->name() );
         }
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
@@ -1366,11 +1366,11 @@ void MainWindow::StartMeasurement( void )
       if ( ( User = UUnits.user( as ) ) != "" ) {
 	// 計測器が他のことに使われてたらダメ
 	statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-				.arg( as->getName() ).arg( User ), 2000 );
+				.arg( as->name() ).arg( User ), 2000 );
 	return;
       }
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-        QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->getName() );
+        QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->name() );
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
         return;
@@ -1378,7 +1378,7 @@ void MainWindow::StartMeasurement( void )
       if ( as->isRangeSelectable() ) {
         if ( ! as->isAutoRange() ) {
           OneOfSensIsRangeSelectable = true;
-          theNames += " [" + as->getName() + "]";
+          theNames += " [" + as->name() + "]";
         }
       }
     }
@@ -1391,9 +1391,9 @@ void MainWindow::StartMeasurement( void )
 	    = tr( "Identical sensor [%1:%2,%3:%4]"
 		  "is used as different inputs, like I0 and I1." )
 	    .arg( i )
-	    .arg( mMeasUnits.at(i)->getName() )
+	    .arg( mMeasUnits.at(i)->name() )
 	    .arg( j )
-	    .arg( mMeasUnits.at(j)->getName() );
+	    .arg( mMeasUnits.at(j)->name() );
 	  statusbar->showMessage( msg, 2000 );
             NewLogMsg( msg );
             return;
@@ -1404,12 +1404,12 @@ void MainWindow::StartMeasurement( void )
     // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
     // 両方を同時には測定に使えない
     for ( int i = 0; i < mMeasUnits.count(); i++ ) {
-      if (( mMeasUnits.at(i)->getType() == "CNT2" )||( mMeasUnits.at(i)->getType() == "OTC2" )) {
+      if (( mMeasUnits.at(i)->type() == "CNT2" )||( mMeasUnits.at(i)->type() == "OTC2" )) {
         for ( int j = 0; j < mMeasUnits.count(); j++ ) {
-          if ( mMeasUnits.at(i)->get2ndUid() == mMeasUnits.at(j)->getUid() ) {
+          if ( mMeasUnits.at(i)->uid2() == mMeasUnits.at(j)->uid() ) {
             QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
-                .arg( mMeasUnits.at(i)->getName() )
-                .arg( mMeasUnits.at(j)->getName() );
+                .arg( mMeasUnits.at(i)->name() )
+                .arg( mMeasUnits.at(j)->name() );
             statusbar->showMessage( msg, 2000 );
             NewLogMsg( msg );
             return;
@@ -1626,7 +1626,7 @@ bool MainWindow::CheckOkList( ASensor *as, QStringList OkList )
 {
   int j;
   for ( j = 0; j < OkList.count(); j++ ) {
-    if ( as->getType() == OkList[j] )
+    if ( as->type() == OkList[j] )
       break;
   }
   if ( j >= OkList.count() ) { // 指定されたセンサー type はリストにない

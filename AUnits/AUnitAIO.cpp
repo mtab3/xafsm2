@@ -33,6 +33,38 @@ void AUnitAIOo::init0( void )
   s->SendCMD2( "Init", Dev, "IsBusy" );
 }
 
+void AUnitAIOi::SetIsBusyByMsg( SMsg msg )
+{
+  if ( ( msg.From() == Dev )   // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
+    IsBusy = ( msg.Val().toInt() == 1 );
+    if ( IsBusy )
+      LastFunc = "SetIsBusyByMsg";
+    else
+      LastFunc = "";
+    emit ChangedIsBusy1( Dev );
+  }
+}
+
+void AUnitAIOo::SetIsBusyByMsg( SMsg msg )
+{
+  if ( ( msg.From() == Dev )   // Check !!!!! DevCh/Drv
+       && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
+    IsBusy = ( msg.Val().toInt() == 1 );
+    if ( IsBusy )
+      LastFunc = "SetIsBusyByMsg";
+    else
+      LastFunc = "";
+    emit ChangedIsBusy1( Dev );
+  }
+}
+
+double AUnitAIOi::SetTime( double dtime ) // in sec // この関数は、複数ステップ化できない
+{
+  setTime = dtime;          // setTime できたと見せかけるだけ。
+
+  return setTime;
+}
 
 /** MStab ************************************************************************/
 
