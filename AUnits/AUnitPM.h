@@ -7,8 +7,8 @@ class AUnitPM : public AMotor
 {
   Q_OBJECT
 
-  int AccRate;   // 加減速レート ( AccRage ms/1000pps )
-  int AccRateNo; // 対応する加減速レートの PM16C のテーブル番号
+  int AccRate;   // $B2C8:B.%l!<%H(B ( AccRage ms/1000pps )
+  int AccRateNo; // $BBP1~$9$k2C8:B.%l!<%H$N(B PM16C $B$N%F!<%V%kHV9f(B
 
  public:
   AUnitPM( void );
@@ -31,9 +31,9 @@ class AUnitPM : public AMotor
   void SetTimingOutReady( int ready );
   void AskIsBusy( void );
   
-  int accRate( void ) { return AccRate; };    // 加減速レート
+  int accRate( void ) { return AccRate; };    // $B2C8:B.%l!<%H(B
   void setAccRate( int r ) { AccRate = r; };
-  int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
+  int accRateNo( void ) { return AccRateNo; }; // $B2C8:B.%l!<%H$N%F!<%V%kHV9f(B
   void setAccRateNo( int n ) { AccRateNo = n; };
 
  private slots:

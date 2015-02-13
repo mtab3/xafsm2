@@ -25,10 +25,10 @@ void AUnitXMAP2::getNewDark( double )
   Dark = ((AUnitXMAP*)TheParent)->getDarkCountsInROI().at( Ch.toInt() );
 }
 
-double AUnitXMAP2::SetTime( double dtime ) // in sec, ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½¤Ç¤­¤Ê¤¤
+double AUnitXMAP2::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   IsBusy2On( Dev, "SetTime" );
-  s->SendCMD2( Uid, Dev, "RunStop" );   // ¥³¥Þ¥ó¥ÉÏ¢Â³È¯¹Ô²ÄÇ½¤«? ¤¤¤Á¤ª¤¦¤¤¤±¤Æ¤ë
+  s->SendCMD2( Uid, Dev, "RunStop" );   // $B%3%^%s%IO"B3H/9T2DG=$+(B? $B$$$A$*$&$$$1$F$k(B
   s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
   setTime = dtime;
 

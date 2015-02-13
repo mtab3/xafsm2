@@ -105,9 +105,9 @@ void aMCASet::load( QTextStream &in, QString title )
 
 void aMCASet::correctE( KeV2Pix *k2p )
 {
-  // Â¬Äê»þ¤Î¥¨¥Í¥ë¥®¡¼¤È¥Ô¥¯¥»¥ë¤Î´Ø·¸¤Ï¡¢
-  // º£¤Î¥¨¥Í¥ë¥®¡¼¤È¥Ô¥¯¥»¥ë¤Î´Ø·¸¤È¤Ï°ã¤Ã¤Æ¤¤¤ë²ÄÇ½À­¤¬¤¢¤ë¤Î¤Ç
-  // º£¤Î¥Ô¥¯¥»¥ë¤ËÂÐ±þ¤¹¤ë¥¨¥Í¥ë¥®¡¼¤Ç¤Î¥«¥¦¥ó¥È¿ô¤òÀþ·ÁÊä´°¤Çµá¤á¤Æ¤ª¤¯
+  // $BB,Dj;~$N%(%M%k%.!<$H%T%/%;%k$N4X78$O!"(B
+  // $B:#$N%(%M%k%.!<$H%T%/%;%k$N4X78$H$O0c$C$F$$$k2DG=@-$,$"$k$N$G(B
+  // $B:#$N%T%/%;%k$KBP1~$9$k%(%M%k%.!<$G$N%+%&%s%H?t$r@~7AJd40$G5a$a$F$*$/(B
   aCH newCh;
   newCh.setLength( Length );
   for ( int ch = 0; ch < CHs; ch++ ) {

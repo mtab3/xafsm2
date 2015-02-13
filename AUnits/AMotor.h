@@ -27,8 +27,8 @@ class AMotor : public AUnit0
 
   bool HasSpeedsLine;
   bool HasSetMaxS;
-  int MaxS;      // max speed (pps) 最初に設定されていたオリジナルのスピード
-  int MaxMaxS;   // 許される最高のスピード
+  int MaxS;      // max speed (pps) $B:G=i$K@_Dj$5$l$F$$$?%*%j%8%J%k$N%9%T!<%I(B
+  int MaxMaxS;   // $B5v$5$l$k:G9b$N%9%T!<%I(B
   int HighS;
   int MiddleS;
   int LowS;
@@ -60,16 +60,16 @@ class AMotor : public AUnit0
   void setIsInt( bool isInt ) { IsInt = isInt; };
   bool isInt( void ) { return IsInt; };
 
-  /* SPeed 設定関連 */
+  /* SPeed $B@_Dj4XO"(B */
   virtual void SetSpeed( MSPEED /* speed */ ) {};
   virtual void SetHighSpeed( int /* speed */ ) {};
   virtual void SetMiddleSpeed( int /* speed */ ) {};
   virtual void SetLowSpeed( int /* speed */ ) {};
   bool hasSpeedsLine( void ) { return HasSpeedsLine; };
   void setHasSpeedsLine( bool f ) { HasSpeedsLine = f; };
-  int highSpeed( void ) { return MaxS; };     // オリジナルのハイスピード
+  int highSpeed( void ) { return MaxS; };     // $B%*%j%8%J%k$N%O%$%9%T!<%I(B
   void setHighSpeed( int h ) { MaxS = h; };
-  int highestSpeed( void ) { return ( HasSpeedsLine ) ? MaxMaxS : MaxS; };// 許容最高速度
+  int highestSpeed( void ) { return ( HasSpeedsLine ) ? MaxMaxS : MaxS; };// $B5vMF:G9bB.EY(B
   void setHighestSpeed( int h ) { MaxMaxS = h; };
   int getHighS( void ) { return HighS; };
   int getMiddleS( void ) { return MiddleS; };
@@ -78,16 +78,16 @@ class AMotor : public AUnit0
   virtual void AskMiddleSpeed( void ) {};
   virtual void AskLowSpeed( void ) {};
   
-  /* MStab 可の Unit は下記の関数を実装するべし */
+  /* MStab $B2D$N(B Unit $B$O2<5-$N4X?t$r<BAu$9$k$Y$7(B */
   virtual void CloseShutter( bool /*close*/ ) {};
   virtual void GoMaxAbs( double /*start*/, double /*end*/, int /*steps*/ ) {};
   virtual void GoMaxAbsQ( double /*start*/, double /*end*/, int /*steps*/, double /*time*/ ) {};
   virtual void GoMaxRel( double /*width*/, int /*steps*/ ) {};
   virtual void GoMaxRelQ( double /*width*/, int /*steps*/, double /*time*/ ) {};
 
-  /* PM16C だけかも */
+  /* PM16C $B$@$1$+$b(B */
   virtual void AssignDispCh( int /* ch */ ) {};  // ch : 0 - 3 --> 'A' -- 'D'
-  /* PM16C で QXAFS の為に */
+  /* PM16C $B$G(B QXAFS $B$N0Y$K(B */
   virtual void SetTimingOutMode( int /* mode */ ) {};
   // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
   // 34410 triggers rising edge and requires 1us or longer
@@ -96,9 +96,9 @@ class AMotor : public AUnit0
   virtual void SetTimingOutEnd( int /*endP*/ ) {};          // end pos. of timing out
   virtual void SetTimingOutInterval( int /*interval*/ ) {}; // timing out interval
   virtual void SetTimingOutReady( int /*ready*/ ) {};       // timing out ready
-  virtual int accRate( void ) { return 1; };                // 加減速レート
+  virtual int accRate( void ) { return 1; };                // $B2C8:B.%l!<%H(B
   virtual void setAccRate( int /*r*/ ) {};
-  virtual int accRateNo( void ) { return 0; };              // 加減速レートのテーブル番号
+  virtual int accRateNo( void ) { return 0; };              // $B2C8:B.%l!<%H$N%F!<%V%kHV9f(B
   virtual void setAccRateNo( int /*n*/ ) {};
   
   virtual void setMaxV( QString /*maxv*/ ) {};

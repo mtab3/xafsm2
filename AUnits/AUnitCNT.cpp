@@ -57,8 +57,8 @@ bool AUnitCNT2::_InitSensor( void )
   }
 
   bool rv;
-  // CNT2, OTC2 のとき カウンタの向こうにつながるのは
-  // keithley なのでそれ用の処理をしておく
+  // CNT2, OTC2 $B$N$H$-(B $B%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O(B
+  // keithley $B$J$N$G$=$lMQ$N=hM}$r$7$F$*$/(B
   QString Type2 = The2ndDev->type();
   switch( LocalStage ) {
   case 0:
@@ -94,7 +94,7 @@ bool AUnitCNT2::_InitSensor( void )
     if ( Type2 == "PAM2" ) {
       s->SendCMD2( "Scan", Dev2, "SetRange " + Ch2,
 		   QString( "2E%1" ).arg( SelectedRange ) );
-      LocalStage+=2;     // PAM2 の時は、LocalStage == 3 をとばす
+      LocalStage+=2;     // PAM2 $B$N;~$O!"(BLocalStage == 3 $B$r$H$P$9(B
       rv = false;
     }
     break;
@@ -113,7 +113,7 @@ bool AUnitCNT2::_InitSensor( void )
 
 void AUnitCNT::AskIsBusy( void )
 {
-  _AskIsBusy();   // CNT だけ反応して CNT2 は反応しない
+  _AskIsBusy();   // CNT $B$@$1H?1~$7$F(B CNT2 $B$OH?1~$7$J$$(B
 }
 
 void AUnitCNT::SetIsBusyByMsg( SMsg msg )
@@ -134,7 +134,7 @@ void AUnitCNT::_AskIsBusy( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
-bool AUnitCNT::GetValue0( void )  // 値読み出しコマンドの前に何か必要なタイプの場合
+bool AUnitCNT::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
 {
   bool rv = false;
 
@@ -159,9 +159,9 @@ bool AUnitCNT::GetValue0( void )  // 値読み出しコマンドの前に何か�
   return rv;
 }
 
-// 値読み出しコマンドの前に何か必要なタイプの場合
-// 別バージョン、presetTime 等の終了条件無しにしてある
-// 連続スキャン (差分で値を見る)モード用
+// $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
+// $BJL%P!<%8%g%s!"(BpresetTime $BEy$N=*N;>r7oL5$7$K$7$F$"$k(B
+// $BO"B3%9%-%c%s(B ($B:9J,$GCM$r8+$k(B)$B%b!<%IMQ(B
 bool AUnitCNT::GetValue02( void )
 {
   bool rv = false;
@@ -193,7 +193,7 @@ bool AUnitCNT::GetValue02( void )
   return rv;
 }
 
-// 連続スキャンの後にノーマルモードに戻す
+// $BO"B3%9%-%c%s$N8e$K%N!<%^%k%b!<%I$KLa$9(B
 bool AUnitCNT::Close( void )
 {
   bool rv = false;
@@ -251,7 +251,7 @@ void AUnitCNT2::ReactGetRange( SMsg msg )  // CNT2, OTC2
   }
 }
 
-double AUnitCNT::SetTime( double dtime ) // in sec // この関数は、複数ステップ化できない
+double AUnitCNT::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   long int ltime;
 
@@ -271,8 +271,8 @@ void AUnitCNT2::SetRange( int range )
   }
 
   IsBusy2On( Dev2, "SetRange" );
-  // CNT2, OTC2 のとき カウンタの向こうにつながるのは
-  // keithley ( PAM/PAM2 )なのでそれ用の処理をしておく
+  // CNT2, OTC2 $B$N$H$-(B $B%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O(B
+  // keithley ( PAM/PAM2 )$B$J$N$G$=$lMQ$N=hM}$r$7$F$*$/(B
   QString Type2 = The2ndDev->type();
   if ( Type2 == "PAM" ) {
     s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( range ) );

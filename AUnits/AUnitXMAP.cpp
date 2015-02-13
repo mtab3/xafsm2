@@ -123,7 +123,7 @@ void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
       delete [] MCAs0;
     MCAs0 = new char [ XMAPBUFSIZE ];
     dLinkCount = 0;
-    MCAsReady = false;  // MCAs ¤Î¥Ð¥Ã¥Õ¥¡¤ËÍ­¸ú¤Ê¥Ç¡¼¥¿¤¬Ìµ¤¤
+    MCAsReady = false;  // MCAs $B$N%P%C%U%!$KM-8z$J%G!<%?$,L5$$(B
     connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ),
 	     Qt::UniqueConnection );
     dLink->connectToHost( host, port );
@@ -133,14 +133,14 @@ void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
 void AUnitXMAP::_setEnable( bool /*enable*/ )
 {
   ConnectedToSSDServer = false;
-  // ËÜÅö¤Ë¤³¤ì¤Ç¤¤¤¤¤« stars ¤È¤ÎÀÜÂ³¤¬ on/off ¤µ¤ì¤ë¤È
-  // ¤«¤Ê¤é¤º¡¢Î¢¤Ç¤Ä¤Ê¤¬¤Ã¤Æ¤¤¤ë¥À¥¤¥ì¥¯¤È¤Î¥³¥Í¥¯¥·¥ç¥ó¤¬ÀÚ¤ì¤¿¤³¤È¤Ë¤µ¤ì¤ë
+  // $BK\Ev$K$3$l$G$$$$$+(B stars $B$H$N@\B3$,(B on/off $B$5$l$k$H(B
+  // $B$+$J$i$:!"N"$G$D$J$,$C$F$$$k%@%$%l%/$H$N%3%M%/%7%g%s$,@Z$l$?$3$H$K$5$l$k(B
 }
 
-double AUnitXMAP::SetTime( double dtime ) // in sec, ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½¤Ç¤­¤Ê¤¤
+double AUnitXMAP::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   IsBusy2On( Dev, "SetTime" );
-  s->SendCMD2( Uid, Dev, "RunStop" );   // ¥³¥Þ¥ó¥ÉÏ¢Â³È¯¹Ô²ÄÇ½¤«? ¤¤¤Á¤ª¤¦¤¤¤±¤Æ¤ë
+  s->SendCMD2( Uid, Dev, "RunStop" );   // $B%3%^%s%IO"B3H/9T2DG=$+(B? $B$$$A$*$&$$$1$F$k(B
   s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
   setTime = dtime;
 
@@ -150,15 +150,15 @@ double AUnitXMAP::SetTime( double dtime ) // in sec, ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½¤
 bool AUnitXMAP::GetValue( void )
 {
   IsBusy2On( Dev, "GetValue" );
-  // ÊÑÂ§ : ¤³¤Î IsBusy2 ¤Ï @GetMCAs Ok: ¤ò¼õ¤±¤Æ¤â¾Ã¤µ¤Ê¤¤
-  //        data-link ·ÐÍ³¤Ç´°Á´¤Ê¥Ç¡¼¥¿¤ò¤â¤é¤Ã¤¿»þ¤Ë¾Ã¤¹
+  // $BJQB'(B : $B$3$N(B IsBusy2 $B$O(B @GetMCAs Ok: $B$r<u$1$F$b>C$5$J$$(B
+  //        data-link $B7PM3$G40A4$J%G!<%?$r$b$i$C$?;~$K>C$9(B
   //    s->SendCMD2( Uid, Dev, "GetValues" );    // new mcas
   s->SendCMD2( Uid, Dev, "GetMCAs" );
 
   return false;
 }
 
-bool AUnitXMAP::GetValue0( void )  // ÃÍÆÉ¤ß½Ð¤·¥³¥Þ¥ó¥É¤ÎÁ°¤Ë²¿¤«É¬Í×¤Ê¥¿¥¤¥×¤Î¾ì¹ç
+bool AUnitXMAP::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
 {
   bool rv = false;
 
@@ -183,9 +183,9 @@ bool AUnitXMAP::GetValue0( void )  // ÃÍÆÉ¤ß½Ð¤·¥³¥Þ¥ó¥É¤ÎÁ°¤Ë²¿¤«É¬Í×¤Ê¥¿¥¤¥×¤Î
   return rv;
 }
 
-// ÃÍÆÉ¤ß½Ð¤·¥³¥Þ¥ó¥É¤ÎÁ°¤Ë²¿¤«É¬Í×¤Ê¥¿¥¤¥×¤Î¾ì¹ç
-// ÊÌ¥Ð¡¼¥¸¥ç¥ó¡¢presetTime Åù¤Î½ªÎ»¾ò·ïÌµ¤·¤Ë¤·¤Æ¤¢¤ë
-// Ï¢Â³¥¹¥­¥ã¥ó (º¹Ê¬¤ÇÃÍ¤ò¸«¤ë)¥â¡¼¥ÉÍÑ
+// $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
+// $BJL%P!<%8%g%s!"(BpresetTime $BEy$N=*N;>r7oL5$7$K$7$F$"$k(B
+// $BO"B3%9%-%c%s(B ($B:9J,$GCM$r8+$k(B)$B%b!<%IMQ(B
 bool AUnitXMAP::GetValue02( void )
 {
   bool rv = false;
@@ -216,8 +216,8 @@ bool AUnitXMAP::GetValue02( void )
   return rv;
 }
 
-/* Ï¢Â³¥¹¥­¥ã¥óÂÐ±þ */
-// Ï¢Â³¥¹¥­¥ã¥ó¤Î¸å¤Ë¥Î¡¼¥Þ¥ë¥â¡¼¥É¤ËÌá¤¹
+/* $BO"B3%9%-%c%sBP1~(B */
+// $BO"B3%9%-%c%s$N8e$K%N!<%^%k%b!<%I$KLa$9(B
 bool AUnitXMAP::Close( void )
 {
   IsBusy2On( Dev, "GetValue0c0" );
@@ -244,8 +244,8 @@ void AUnitXMAP::RunResume( void )
 bool AUnitXMAP::GetMCAs( void )
 {
   IsBusy2On( Dev2, "GetMCAs" );
-  // ÊÑÂ§ : ¤³¤Î IsBusy2 ¤Ï @GetMCAs Ok: ¤ò¼õ¤±¤Æ¤â¾Ã¤µ¤Ê¤¤
-  //        data-link ·ÐÍ³¤Ç´°Á´¤Ê¥Ç¡¼¥¿¤ò¤â¤é¤Ã¤¿»þ¤Ë¾Ã¤¹
+  // $BJQB'(B : $B$3$N(B IsBusy2 $B$O(B @GetMCAs Ok: $B$r<u$1$F$b>C$5$J$$(B
+  //        data-link $B7PM3$G40A4$J%G!<%?$r$b$i$C$?;~$K>C$9(B
   s->SendCMD2( Uid, DevCh, QString( "GetMCAs" ) );
 
   return false;
@@ -507,11 +507,11 @@ void AUnitXMAP::receiveMCAs( void )
   uint bytes0, bytes;
 
   bytes0 = dLink->bytesAvailable();
-  // º£ÆÏ¤¤¤¿Ê¬¤òÁ´ÉôÆÉ¤ó¤Ç¤â¥Ð¥Ã¥Õ¥¡¥µ¥¤¥º¤è¤ê¾®¤µ¤¤¤Ê¤é
+  // $B:#FO$$$?J,$rA4ItFI$s$G$b%P%C%U%!%5%$%:$h$j>.$5$$$J$i(B
   if ( dLinkCount + bytes0 <= XMAPBUFSIZE )
-    bytes = bytes0;                    // Á´ÉôÆÉ¤à
+    bytes = bytes0;                    // $BA4ItFI$`(B
   else
-    bytes = XMAPBUFSIZE - dLinkCount;   // Âç¤­¤¤¤Ê¤é¡¢ÆÉ¤á¤ëÊ¬¤À¤±ÆÉ¤à
+    bytes = XMAPBUFSIZE - dLinkCount;   // $BBg$-$$$J$i!"FI$a$kJ,$@$1FI$`(B
 
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
   dLinkCount += bytes;
@@ -520,11 +520,11 @@ void AUnitXMAP::receiveMCAs( void )
     IsBusy2Off( Dev );
     dLinkCount = 0;
     if ( MCAs != NULL ) delete [] MCAs;
-    MCAs = MCAs0;              // ÆÉ¤ß¹þ¤ß¤¬´°À®¤·¤¿¥Ð¥Ã¥Õ¥¡(MCAs0)¤ò
-                               // ºÇ¿·¤Î¥Ç¡¼¥¿¤¬ÃÖ¤«¤ì¤¿¥Ð¥Ã¥Õ¥¡(MCAs)¤Ë°Ü¤·
+    MCAs = MCAs0;              // $BFI$_9~$_$,40@.$7$?%P%C%U%!(B(MCAs0)$B$r(B
+                               // $B:G?7$N%G!<%?$,CV$+$l$?%P%C%U%!(B(MCAs)$B$K0\$7(B
     MCAs0 = new char [ XMAPBUFSIZE ];
-                               // MCAs0 ¤Ï¼¡¤Î¥Ç¡¼¥¿¤ò¼õ¤±¤ë¤¿¤á¤Ë¿·¤·¤¯¤¹¤ë
-    MCAsReady = true;          // MCAs ¤Î¥Ð¥Ã¥Õ¥¡¤ËÍ­¸ú¤Ê¥Ç¡¼¥¿¤¬¤¢¤ë
+                               // MCAs0 $B$O<!$N%G!<%?$r<u$1$k$?$a$K?7$7$/$9$k(B
+    MCAsReady = true;          // MCAs $B$N%P%C%U%!$KM-8z$J%G!<%?$,$"$k(B
 
     CountsInROI.clear();
     CountsAll.clear();

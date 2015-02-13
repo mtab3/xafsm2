@@ -3,8 +3,8 @@
 
 AUnitPM::AUnitPM( void )
 {
-  AccRate = 100;    // 加減速レート ( AccRage ms/1000pps )
-  AccRateNo = 24;   // 対応する加減速レートの PM16C のテーブル番号
+  AccRate = 100;    // $B2C8:B.%l!<%H(B ( AccRage ms/1000pps )
+  AccRateNo = 24;   // $BBP1~$9$k2C8:B.%l!<%H$N(B PM16C $B$N%F!<%V%kHV9f(B
 }
 
 void AUnitPM::init0( void )
@@ -48,7 +48,7 @@ void AUnitPM::SetSpeed( MSPEED speed )
 {
   QString cmd = "SpeedLow";
 
-  //  IsBusy2 = true;    // setspeed に対する応答は無視するので isBusy2 もセットしない
+  //  IsBusy2 = true;    // setspeed $B$KBP$9$k1~Ez$OL5;k$9$k$N$G(B isBusy2 $B$b%;%C%H$7$J$$(B
   switch( speed ) {
   case LOW: cmd = "SpeedLow"; break;
   case MIDDLE: cmd = "SpeedMiddle"; break;

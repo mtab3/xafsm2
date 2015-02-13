@@ -27,7 +27,7 @@ class AUnitXMAP : public ASensor
   int dLinkCount;
 
   char *MCAs0, *MCAs;
-  bool MCAsReady;    // MCAs ¤ËÍ­¸ú¤Ê¥Ç¡¼¥¿¤¬¤¢¤ë true, Ìµ¤¤ false
+  bool MCAsReady;    // MCAs $B$KM-8z$J%G!<%?$,$"$k(B true, $BL5$$(B false
 
   QString SSDPresetType;
   QString *ROIStart, *ROIEnd;

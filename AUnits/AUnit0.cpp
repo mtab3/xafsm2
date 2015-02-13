@@ -48,15 +48,15 @@ void AUnit0::Initialize( Stars *S )
 {
   s = S;
 
-  // 何らかのコマンドに対する応答がエラーだった場合の対処。
-  // 単に、isBusy2 をクリアしているだけ。
-  // こんなに単純でいいかどうかは難しいところだけれど、
-  // enable をちゃんと管理するようにしたので、変な処理に突入することはそちらで避けて
-  // 変な処理に突入してしまった場合は、緊急避難的にこの方法で逃げることにする。
+  // $B2?$i$+$N%3%^%s%I$KBP$9$k1~Ez$,%(%i!<$@$C$?>l9g$NBP=h!#(B
+  // $BC1$K!"(BisBusy2 $B$r%/%j%"$7$F$$$k$@$1!#(B
+  // $B$3$s$J$KC1=c$G$$$$$+$I$&$+$OFq$7$$$H$3$m$@$1$l$I!"(B
+  // enable $B$r$A$c$s$H4IM}$9$k$h$&$K$7$?$N$G!"JQ$J=hM}$KFMF~$9$k$3$H$O$=$A$i$GHr$1$F(B
+  // $BJQ$J=hM}$KFMF~$7$F$7$^$C$?>l9g$O!"6[5^HrFqE*$K$3$NJ}K!$GF($2$k$3$H$K$9$k!#(B
   connect( s, SIGNAL( ReceiveError( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  // LSR には不要な初期化だが悪くもないので外さない
+  // LSR $B$K$OITMW$J=i4|2=$@$,0-$/$b$J$$$N$G30$5$J$$(B
   connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
@@ -66,7 +66,7 @@ void AUnit0::Initialize( Stars *S )
   s->SendCMD2( "Init", "System", "flgon", Dev );
   s->SendCMD2( "Init", "System", "flgon", DevCh );
   
-  init();   // 各ユニットに固有の処理
+  init();   // $B3F%f%K%C%H$K8GM-$N=hM}(B
 
   if ( ID == "THETA" ) {
     AskIsBusy();
@@ -80,7 +80,7 @@ void AUnit0::Initialize( Stars *S )
   if ( ID == "ENCTH" ) {
     GetValue();
   }
-  emit ChangedIsBusy1( Dev );    // ここの3つのエミットは念の為
+  emit ChangedIsBusy1( Dev );    // $B$3$3$N(B3$B$D$N%(%_%C%H$OG0$N0Y(B
   emit ChangedIsBusy2( Dev );
   emit ChangedBusy2Count( Dev );
 }
@@ -120,7 +120,7 @@ void AUnit0::setEnable( bool enable )
   Enable = enable;
   IsBusy = false;
   LastFunc = "";
-  _setEnable( enable );    // AUnit0 を継承したクラスでの処理用 // AUnitXMAP が呼んでる
+  _setEnable( enable );    // AUnit0 $B$r7Q>5$7$?%/%i%9$G$N=hM}MQ(B // AUnitXMAP $B$,8F$s$G$k(B
   emit Enabled( Dev, enable );
   emit ChangedIsBusy1( Dev );
   IsBusy2Off( "" );

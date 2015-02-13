@@ -31,7 +31,7 @@ class ASensor : public AUnit0
   void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
   double getDark( void ) { return Dark; };
 
-  /* AutoRange 可能なデバイスでは true */
+  /* AutoRange $B2DG=$J%G%P%$%9$G$O(B true */
   virtual bool GetRange( void ) { return false; };
   virtual void SetRange( int /* range */ ) {};
   virtual bool isAutoRangeAvailable( void ) { return false; };
@@ -46,12 +46,12 @@ class ASensor : public AUnit0
   void setRangeU( int upper ) { RangeU = upper; };
   void setRangeL( int lower ) { RangeL = lower; };
   
-  /* QXAFS 対応 */
+  /* QXAFS $BBP1~(B */
   virtual bool QStart( void ) { return false; };
   virtual bool QRead( void ) { return false; };
   virtual bool QEnd( void ) { return false; };
 
-  /* 連続スキャン対応 */
+  /* $BO"B3%9%-%c%sBP1~(B */
   virtual bool Close( void ) { return false; };
 
  signals:

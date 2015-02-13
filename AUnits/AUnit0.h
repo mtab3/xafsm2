@@ -117,10 +117,10 @@ public:
 
   void InitLocalStage( void ) { LocalStage = 0; };
 
-  // parent : ´°Á´¤ËÄêµÁ¤µ¤ì Uid ¤ò»ý¤Ä¥Ç¥Ð¥¤¥¹¡Ö¿Æ¥Ç¥Ð¥¤¥¹¡×
-  // Îã¤¨¤Ð nct08 ¤ÎÊ£¿ô¤Î¥Á¥ã¥ó¥Í¥ë¤Ï¥Ð¥é¥Ð¥é¤Ë¥«¥¦¥ó¥È¥¹¥¿¡¼¥È¥¹¥È¥Ã¥×¤Ç¤­¤Ê¤¤¡£
-  // ch1 °Ê³°¤Î¥Á¥ã¥ó¥Í¥ë¤Î¥¹¥¿¡¼¥È¥¹¥È¥Ã¥×¤âÁ´Éô ch1 ¤Ë¤Þ¤È¤á¤ÆÇ¤¤»¤ë¤¿¤á¤Ë
-  // ch1 ¤ò parent ¤È¤·¡¢Â¾¤Î ch ¤ÏÁ´Éô(ch1¼«¿®¤â) ch1 ¤ò¿Æ¤Ë»ý¤Ä
+  // parent : $B40A4$KDj5A$5$l(B Uid $B$r;}$D%G%P%$%9!V?F%G%P%$%9!W(B
+  // $BNc$($P(B nct08 $B$NJ#?t$N%A%c%s%M%k$O%P%i%P%i$K%+%&%s%H%9%?!<%H%9%H%C%W$G$-$J$$!#(B
+  // ch1 $B0J30$N%A%c%s%M%k$N%9%?!<%H%9%H%C%W$bA4It(B ch1 $B$K$^$H$a$FG$$;$k$?$a$K(B
+  // ch1 $B$r(B parent $B$H$7!"B>$N(B ch $B$OA4It(B(ch1$B<+?.$b(B) ch1 $B$r?F$K;}$D(B
   void setHasParent( bool hasParent ) { HasParent = hasParent; };
   bool hasParent( void ) { return HasParent; };
   void setPUid( QString puid ) { PUid = puid; };
@@ -129,10 +129,10 @@ public:
   void setTheParent( AUnit0 *p ) { TheParent = p; };
   AUnit0 *theParent( void ) { return TheParent; };
   
-  // Dev2, Ch2, DevCh2 : ¥æ¥Ë¥Ã¥È¤ÎÄêµÁ¤Ë2¤Ä¤Î¥É¥é¥¤¥Ð¤¬É¬Í×¤Ê»þ¡¢¤½¤Î2¤ÄÌÜ¤Î¥É¥é¥¤¥Ð
-  // Îã¤¨¤ÐKeithley ¤òÅÅÎ®/ÅÅ°µ¥¢¥ó¥×¤È¤·¤Æ»ÈÍÑ¤·¤Æ¡¢¤½¤Î½ÐÎÏ¤òÎã¤¨¤Ð¥«¥¦¥ó¥¿¤Ç¿Þ¤ë¾ì¹ç
-  // Keithley ¤ÎÊý¤ò¥³¥ó¥È¥í¡¼¥ë¤¹¤ë¤È¥ì¥ó¥¸ÀßÄê¤¬¤Ç¤­¤ë¥«¥¦¥ó¥¿¤Î¤è¤¦¤Ë°·¤¨¤ë
-  // ¤³¤Î»þ¥á¥¤¥ó¤Î¥Ç¥Ð¥¤¥¹¤Ï¥«¥¦¥ó¥¿¤À¤¬¡¢Keithley ¤ò2nd¥É¥é¥¤¥Ð¤È¤·¤Æ»ØÄê¤¹¤ë
+  // Dev2, Ch2, DevCh2 : $B%f%K%C%H$NDj5A$K(B2$B$D$N%I%i%$%P$,I,MW$J;~!"$=$N(B2$B$DL\$N%I%i%$%P(B
+  // $BNc$($P(BKeithley $B$rEEN.(B/$BEE05%"%s%W$H$7$F;HMQ$7$F!"$=$N=PNO$rNc$($P%+%&%s%?$G?^$k>l9g(B
+  // Keithley $B$NJ}$r%3%s%H%m!<%k$9$k$H%l%s%8@_Dj$,$G$-$k%+%&%s%?$N$h$&$K07$($k(B
+  // $B$3$N;~%a%$%s$N%G%P%$%9$O%+%&%s%?$@$,!"(BKeithley $B$r(B2nd$B%I%i%$%P$H$7$F;XDj$9$k(B
   void setHas2ndDev( bool has2ndDev ) { Has2ndDev = has2ndDev; };
   bool has2ndDev( void ) { return Has2ndDev; };
   AUnit0 *the2ndDev( void ) { return The2ndDev; };

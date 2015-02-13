@@ -5,7 +5,7 @@ AUnitDV::AUnitDV( void )
 {
   points = 0;
   HasMaxIntTime = false;
-  MaxIntTime = 1000000;   // 十分大きい
+  MaxIntTime = 1000000;   // $B==J,Bg$-$$(B
 }
 
 void AUnitDV::init0( void )
@@ -89,7 +89,7 @@ void AUnitDV::SetIsBusyByMsg( SMsg msg ) // DV, DV2
 }
 
 
-/* DV/DV2 は DV の方が QXAFS 用で、DV2 が NORMAL 用 */
+/* DV/DV2 $B$O(B DV $B$NJ}$,(B QXAFS $BMQ$G!"(BDV2 $B$,(B NORMAL $BMQ(B */
 
 bool AUnitDV::QStart( void )
 {
@@ -114,12 +114,12 @@ bool AUnitDV::QEnd( void )
   return false;
 }
 
-double AUnitDV::SetTime( double dtime ) // in sec // この関数は、複数ステップ化できない
+double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
   if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
-  if ( Type == "DV2" ) {   // DV の場合、ここでは内部変数 setTime に値を設定するだけ。
+  if ( Type == "DV2" ) {   // DV $B$N>l9g!"$3$3$G$OFbItJQ?t(B setTime $B$KCM$r@_Dj$9$k$@$1!#(B
     IsBusy2On( Dev, "SetAperture" );
     s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
   }
@@ -128,19 +128,19 @@ double AUnitDV::SetTime( double dtime ) // in sec // この関数は、複数ス
   return setTime;
 }
 
-void AUnitDV::SetTriggerDelay( double time )  // 使っていない
+void AUnitDV::SetTriggerDelay( double time )  // $B;H$C$F$$$J$$(B
 {
   IsBusy2On( Dev, "SetTriggerDelay" );
   s->SendCMD2( Uid, DevCh, "SetTriggerDelay", QString::number( time ) );
 }
 
-void AUnitDV::SetSamplingSource( QString source ) //source := TIM, IMM // 使ってない
+void AUnitDV::SetSamplingSource( QString source ) //source := TIM, IMM // $B;H$C$F$J$$(B
 {
   IsBusy2On( Dev, "SetSamplingSource" );
   s->SendCMD2( Uid, DevCh, "SetSamplingSource", source );
 }
 
-void AUnitDV::SetTriggerSource( QString source ) //source := IMM, EXT, BUS //使ってない
+void AUnitDV::SetTriggerSource( QString source ) //source := IMM, EXT, BUS //$B;H$C$F$J$$(B
 {
   IsBusy2On( Dev, "SetTriggerSource" );
   s->SendCMD2( Uid, DevCh, "SetTriggerSource", source );

@@ -67,8 +67,8 @@ bool AUnitOTC2::_InitSensor( void )
   }
   
   bool rv = false;
-  // CNT2, OTC2 ¤Î¤È¤­ ¥«¥¦¥ó¥¿¤Î¸þ¤³¤¦¤Ë¤Ä¤Ê¤¬¤ë¤Î¤Ï
-  // keithley ¤Ê¤Î¤Ç¤½¤ìÍÑ¤Î½èÍý¤ò¤·¤Æ¤ª¤¯
+  // CNT2, OTC2 $B$N$H$-(B $B%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O(B
+  // keithley $B$J$N$G$=$lMQ$N=hM}$r$7$F$*$/(B
   QString Type2 = The2ndDev->type();
   switch( LocalStage ) {
   case 0:
@@ -104,7 +104,7 @@ bool AUnitOTC2::_InitSensor( void )
     if ( Type2 == "PAM2" ) {
       s->SendCMD2( "Scan", Dev2, "SetRange " + Ch2,
 		   QString( "2E%1" ).arg( SelectedRange ) );
-      LocalStage+=2;     // PAM2 ¤Î»þ¤Ï¡¢LocalStage == 3 ¤ò¤È¤Ð¤¹
+      LocalStage+=2;     // PAM2 $B$N;~$O!"(BLocalStage == 3 $B$r$H$P$9(B
       rv = false;
     }
     break;
@@ -150,7 +150,7 @@ void AUnitOTC::SetIsBusyByMsg( SMsg msg )
   }
 }
 
-bool AUnitOTC::GetValue0( void )  // ÃÍÆÉ¤ß½Ð¤·¥³¥Þ¥ó¥É¤ÎÁ°¤Ë²¿¤«É¬Í×¤Ê¥¿¥¤¥×¤Î¾ì¹ç
+bool AUnitOTC::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
 {
   bool rv = false;
 
@@ -210,7 +210,7 @@ void AUnitOTC2::ReactGetRange( SMsg msg )  // CNT2, OTC2
   }
 }
 
-double AUnitOTC::SetTime( double dtime ) // in sec // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½¤Ç¤­¤Ê¤¤
+double AUnitOTC::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   int M, N;
 
@@ -218,7 +218,7 @@ double AUnitOTC::SetTime( double dtime ) // in sec // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½
   N = log10( dtime * 10 );
   M = ceil( dtime / pow( 10., N - 1 ) );
   s->SendCMD2( Uid, Dev, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
-  setTime = M * pow( 10, N ) * 0.1;  // ¤³¤ì¤ÇÉÃÃ±°Ì¤ÎÉáÄÌ¤Î»þ´Ö¤ËÌá¤Ã¤Æ¤ë
+  setTime = M * pow( 10, N ) * 0.1;  // $B$3$l$GICC10L$NIaDL$N;~4V$KLa$C$F$k(B
 
   return setTime;
 }
@@ -231,8 +231,8 @@ void AUnitOTC2::SetRange( int range )
   }
   
   IsBusy2On( Dev2, "SetRange" );
-  // CNT2, OTC2 ¤Î¤È¤­ ¥«¥¦¥ó¥¿¤Î¸þ¤³¤¦¤Ë¤Ä¤Ê¤¬¤ë¤Î¤Ï
-  // keithley ( PAM/PAM2 )¤Ê¤Î¤Ç¤½¤ìÍÑ¤Î½èÍý¤ò¤·¤Æ¤ª¤¯
+  // CNT2, OTC2 $B$N$H$-(B $B%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O(B
+  // keithley ( PAM/PAM2 )$B$J$N$G$=$lMQ$N=hM}$r$7$F$*$/(B
   QString Type2 = The2ndDev->type();
   if ( Type2 == "PAM" ) {
     s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( range ) );

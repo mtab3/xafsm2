@@ -2,7 +2,7 @@
 #define AUNITXMAP2_H
 
 #include "ASensor.h"
-#include "AUnitXMAP.h"   // AUnitXMAP ¤È AUnitXMAP2 ¤Ï·Ñ¾µ´Ø·¸¤Ë¤Ê¤¤
+#include "AUnitXMAP.h"   // AUnitXMAP $B$H(B AUnitXMAP2 $B$O7Q>54X78$K$J$$(B
 
 class AUnitXMAP2 : public ASensor
 {

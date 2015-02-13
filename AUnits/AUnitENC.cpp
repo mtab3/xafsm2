@@ -96,9 +96,9 @@ bool AUnitENC2::QRead( void )
   return false;
 }
 
-double AUnitENC2::SetTime( double dtime ) // in sec // ¤³¤Î´Ø¿ô¤Ï¡¢Ê£¿ô¥¹¥Æ¥Ã¥×²½¤Ç¤­¤Ê¤¤
+double AUnitENC2::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
-  setTime = dtime;          // setTime ¤Ç¤­¤¿¤È¸«¤»¤«¤±¤ë¤À¤±¡£
+  setTime = dtime;          // setTime $B$G$-$?$H8+$;$+$1$k$@$1!#(B
 
   return setTime;
 }

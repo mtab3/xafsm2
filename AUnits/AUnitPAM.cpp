@@ -24,7 +24,7 @@ void AUnitPAM::init00( void )
   s->SendCMD2( "Init", DevCh, "IsBusy" );
 }
 
-void AUnitPAM2::init00( void )    // PAM と PAM2 で違ってる
+void AUnitPAM2::init00( void )    // PAM $B$H(B PAM2 $B$G0c$C$F$k(B
 {
   connect( s, SIGNAL( AnsRead( SMsg ) ),this, SLOT( RcvAnsGetValueOfDriver( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -65,7 +65,7 @@ bool AUnitPAM::InitSensor( void )
       LocalStage++;
       rv = true;
     } else {
-      rv = false;      // PAM2 は ZeroCheck の設定ないらしい
+      rv = false;      // PAM2 $B$O(B ZeroCheck $B$N@_Dj$J$$$i$7$$(B
       LocalStage = 4;
     }
     break;
@@ -102,17 +102,17 @@ bool AUnitPAM2::_GetValue( void )
   return false;
 }
 
-void AUnitPAM2::RcvAnsGetValueOfDriver( SMsg msg )  // driver 名だけで呼ばれる場合
+void AUnitPAM2::RcvAnsGetValueOfDriver( SMsg msg )  // driver $BL>$@$1$G8F$P$l$k>l9g(B
 {
   if ( ( msg.From() == Dev ) && ( msg.Msgt() == READ ) ) {
     Values = msg.Val().split( QChar( ',' ) );
-    Value = Values.at( Ch.toInt() ); // 親ドライバ宛の返答から自分用の答えを選り分ける
+    Value = Values.at( Ch.toInt() ); // $B?F%I%i%$%P08$NJVEz$+$i<+J,MQ$NEz$($rA*$jJ,$1$k(B
     emit newValue( Value );
     IsBusy2Off( Dev );
   }
 }
 
-double AUnitPAM::SetTime( double dtime ) // in sec// この関数は、複数ステップ化できない
+double AUnitPAM::SetTime( double dtime ) // in sec// $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   double time;
 
@@ -124,7 +124,7 @@ double AUnitPAM::SetTime( double dtime ) // in sec// この関数は、複数ス
 
   _SetTime( time );
 
-  setTime = time / 60;    // これで「秒」単位の普通の時間に戻ってる
+  setTime = time / 60;    // $B$3$l$G!VIC!WC10L$NIaDL$N;~4V$KLa$C$F$k(B
   return setTime;
 }
 
