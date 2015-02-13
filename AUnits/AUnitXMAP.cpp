@@ -3,19 +3,26 @@
 
 AUnitXMAP::AUnitXMAP( void )
 {
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    MCARealTime[i] = MCALiveTime[i] = 0;
-    SSDUsingCh[i] = true;
-  }
+  MCALength = 2048;    // !!
+  
   ConnectedToSSDServer = false;
-  SSDPresetType = "REAL";   // for MCA/SSD
   hasConnected = false;
-
+  DataLinkHostName = "";
+  DataLinkHostPort = 0;
   dLink = NULL;
   dLinkStream = NULL;
+  dLinkCount = 0;
+
   MCAs0 = NULL;
   MCAs = NULL;
+  MCAsReady = false;
 
+  SSDPresetType = "REAL";   // for MCA/SSD
+  ROIStart = ROIEnd = NULL;
+
+  MCARealTime.clear();
+  MCALiveTime.clear();
+  SSDUsingCh.clear();
   CountsInROI.clear();
   CountsAll.clear();
   TotalEvents.clear();
@@ -25,6 +32,9 @@ AUnitXMAP::AUnitXMAP( void )
   DarkTotalEvents.clear();
   DarkICRs.clear();
   for ( int i = 0; i < MaxSSDs; i++ ) {
+    MCARealTime << 0;
+    MCALiveTime << 0;
+    SSDUsingCh << true;
     CountsInROI << 0;
     CountsAll << 0;
     TotalEvents << 0;
@@ -34,8 +44,8 @@ AUnitXMAP::AUnitXMAP( void )
     DarkTotalEvents << 0;
     DarkICRs << 0;
   }
-  DataLinkHostName = "";
-  DataLinkHostPort = 0;
+
+  MCAStats.clear();
 }
 
 bool AUnitXMAP::InitSensor( void )

@@ -10,6 +10,7 @@ struct MSPEEDD {
   MSPEED MSid;
   const QString MSName;
 };
+
 const MSPEEDD MSpeeds[ MSPEEDS ] = {
   { LOW,    "Low" },
   { MIDDLE, "Middle" },
@@ -25,7 +26,7 @@ class AMotor : public AUnit0
   bool IsInt;
 
   bool HasSpeedsLine;
-  bool HaveSetMaxS;
+  bool HasSetMaxS;
   int MaxS;      // max speed (pps) 最初に設定されていたオリジナルのスピード
   int MaxMaxS;   // 許される最高のスピード
   int HighS;

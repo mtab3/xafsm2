@@ -40,11 +40,10 @@ class AUnitXMAP : public ASensor
   QVector<double> DarkTotalEvents;    // per second
   QVector<double> DarkICRs;           // per second
   quint64 MCALength;
-  QStringList MCAValues;
   QStringList MCAStats;
-  double MCARealTime[ MaxSSDs + 1 ];
-  double MCALiveTime[ MaxSSDs + 1 ];
-  bool SSDUsingCh[ MaxSSDs + 1 ];       // Only 19 is necessary, 20 is only for safety.
+  QVector<double> MCARealTime;
+  QVector<double> MCALiveTime;
+  QVector<bool> SSDUsingCh;
   
  public:
   AUnitXMAP( void );
@@ -86,7 +85,6 @@ class AUnitXMAP : public ASensor
   quint32 *getAMCA( int ch );
   quint32 getAMCAdata( int ch, int pixel );
   XMAPHead getAMCAHead( int ch );
-  QStringList MCAvalues( void ) { return MCAValues; };
   
   void setGain( int ch, double gain );
   void setROIs( QString *roistart, QString *roiend )

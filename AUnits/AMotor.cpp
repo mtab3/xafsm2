@@ -6,7 +6,7 @@ AMotor::AMotor( void )
   Center = 0;
 
   HasSpeedsLine = false;
-  HaveSetMaxS = false;
+  HasSetMaxS = false;
   MaxS = 3000;      // max speed (pps) 最初に設定されていたオリジナルのスピード
   MaxMaxS = 3000;   // 許される最高のスピード
   HighS = 3000;

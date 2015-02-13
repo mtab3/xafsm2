@@ -86,17 +86,17 @@ void AUnitPM::Stop( void )
 
 void AUnitPM::AskHighSpeed( void )
 {
-  s->SendCMD2( "Init", DevCh, "GetHighSpeed" );
+  s->SendCMD2( Uid, DevCh, "GetHighSpeed" );
 }
 
 void AUnitPM::AskMiddleSpeed( void )
 {
-  s->SendCMD2( "Init", DevCh, "GetMiddleSpeed" );
+  s->SendCMD2( Uid, DevCh, "GetMiddleSpeed" );
 }
 
 void AUnitPM::AskLowSpeed( void )
 {
-  s->SendCMD2( "Init", DevCh, "GetLowSpeed" );
+  s->SendCMD2( Uid, DevCh, "GetLowSpeed" );
 }
 
 void AUnitPM::AssignDispCh( int ch )
@@ -167,9 +167,9 @@ void AUnitPM::RcvHighSpeed( SMsg msg )
   if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETHIGHSPEED ) ) ) {
     HighS = msg.Val().toInt();
-    if ( ! HaveSetMaxS ) {
+    if ( ! HasSetMaxS ) {
       MaxS = HighS;
-      HaveSetMaxS = true;
+      HasSetMaxS = true;
     }
     IsBusy2Off( Dev );
     emit gotHighS( HighS );
