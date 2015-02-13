@@ -149,7 +149,8 @@ void AUnitPM::AskIsBusy( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
-void AUnitPM::SetIsBusyByMsg( SMsg msg )
+#if 0
+//void AUnitPM::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
@@ -158,9 +159,10 @@ void AUnitPM::SetIsBusyByMsg( SMsg msg )
       LastFunc = "SetIsBusyByMsg";
     else
       LastFunc = "";
-    emit ChangedIsBusy1( Dev );
+    emit ChangedIsBusy1( DevCh );
   }
 }
+#endif
 
 void AUnitPM::RcvHighSpeed( SMsg msg )
 {

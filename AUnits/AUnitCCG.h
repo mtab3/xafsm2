@@ -14,7 +14,7 @@ class AUnitCCG : public ASensor
   void init0( void );
 
  private slots:
-  void SetCurPos( SMsg msg );
+   //  void SetCurPos( SMsg msg );
 };
 
 #endif

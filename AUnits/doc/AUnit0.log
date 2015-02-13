@@ -1,0 +1,79 @@
+This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (Web2C 2014) (preloaded format=platex 2015.2.4)  13 FEB 2015 15:11
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**AUnit0.tex
+(./AUnit0.tex
+pLaTeX2e <2006/11/10> (based on LaTeX2e <2014/05/01> patch level 0)
+Babel <3.9k> and hyphenation patterns for 78 languages loaded.
+(/usr/local/share/texmf-dist/tex/platex/base/jarticle.cls
+Document Class: jarticle 2006/06/27 v1.6 Standard pLaTeX class
+\c@@paper=\count81
+(/usr/local/share/texmf-dist/tex/platex/base/jsize10.clo
+File: jsize10.clo 2006/06/27 v1.6 Standard pLaTeX file (size option)
+)
+\c@part=\count82
+\c@section=\count83
+\c@subsection=\count84
+\c@subsubsection=\count85
+\c@paragraph=\count86
+\c@subparagraph=\count87
+\c@figure=\count88
+\c@table=\count89
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\symmincho=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `mincho' in version `bold'
+(Font)                  JY1/mc/m/n --> JY1/gt/m/n on input line 601.
+\toclineskip=\dimen118
+\@lnumwidth=\dimen119
+\bibindent=\dimen120
+\heisei=\count90
+)
+(/home/tabuchi/inputs/my.sty
+\SIDEX=\dimen121
+\TEXTWIDTH=\dimen122
+\TOPX=\dimen123
+\TEXTLENGTH=\dimen124
+\c@rnumber=\count91
+)
+
+LaTeX Warning: Unused global option(s):
+    [a4papr].
+
+(./AUnit0.aux)
+\openout1 = `AUnit0.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 8.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 8.
+ [1
+
+] (./AUnit0.aux) ) 
+Here is how much of TeX's memory you used:
+ 427 strings out of 493807
+ 3582 string characters out of 6148809
+ 61306 words of memory out of 5000000
+ 3967 multiletter control sequences out of 15000+600000
+ 7827 words of font info for 32 fonts, out of 8000000 for 9000
+ 934 hyphenation exceptions out of 8191
+ 22i,4n,19p,132b,157s stack positions out of 5000i,2500n,10000p,300000b,80000s
+
+Output written on AUnit0.dvi (1 page, 372 bytes).

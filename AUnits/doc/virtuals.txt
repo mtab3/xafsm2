@@ -1,0 +1,69 @@
+新たに AMotor, ASensor を継承したサブクラスを作るときには、
+以下の関数の実装を検討する。
+AUnit0 に含まれる仮想関数 8 本、AMotor に含まれる仮想関数 
+
+
+
+AUnit0 : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+
+       void _setEnable( bool enable )
+       void AskIsBusy( void )
+       void SetValue( double val )
+       void GetValue( void )
+       void GetValue0( void )
+       void GetValue02( void )
+       slots: void SetIsBusyByMsg( SMsg msg )
+       slots: void SetCurPos( SMsg msg )
+
+void _setEnable( bool enable ) {}  (現行 XMAP)
+  そのユニットが enable/disEnable した時、独自の動作が必要なら実装
+  例 : AUnitXMAP : 裏のコネクションを操作
+
+void AskIsBusy( void ) {}  (現行 CNT, DV, ENC, OTC, PM, SC)
+  Stars に対して Busy かどうかの問い合わせを出す。
+  相手のデバイスにこれに返事ができる機能があるなら実装する。
+
+void SetValue( double val ) {}  (現行 ENC, PM, SC)
+  Stars に対して、値を設定するコマンドを発行する
+  相手のデバイスにその機能があるなら実装する
+
+void GetValue( void ) (現行 CNT, OTC, PAM, SC, XMAP が独自実装)
+　デフォルト : Stars << "GetValue"
+  Stars に対して、値を問い合わせるコマンドを発行する
+  相手のデバイスにその機能があるなら実装する
+
+void GetValue0( void ) {} (現行 CNT, OTC, XMAP)
+  GetValue する前に、あらかじめ Stars にコマンドを送る必要があるなら実装する
+  例 : CNT : CounterReset, CountStart を発行
+
+void GetValue02( void ) {} (現行 CNT, XMAP)
+  連続スキャン(差分で値を見る)ことが可能なデバイスで、かつ
+  GetValue の前に Stars にコマンドを送る必要があるなら実装する
+  例 : CNT : SetStpMode="N", CounterReset, CountStart
+
+slots:
+ void SetIsBusyByMsg( SMsg msg ) (現行 AIOi, AIOo, CNT, OTC, XMAP)
+  デフォルト : ISBUSY || EvISBUSY from Dev
+  　　　　　　　--> ChangedIsBusy (帰ってきた値の並びの先頭の一つが1かどうかによって)
+               (ISBUSYに対する返答か、EvISBUSY が発生した場合、
+	       　デバイス+チャンネル(DevではなくDevCh)のフラグを変更する)
+  Stars に対する、busy 状態の問い合わせに対する返答や、
+  デバイスが発生する busy イベントを受けて、busy フラグを操作する。
+  デバイスによってチャンネルごとに busy/not-busy があるものと、
+  デバイス全体に busy/not-busy があるものがある。
+  個別チャンネルの busy 状態が設定できる場合と、
+  上記のデフォルトのパタンでないイベントを受ける場合は実装する
+
+slots:
+ void SetCurPos( SMsg msg ) (現行 SC)
+  デフォルト : CETVALUE || EvCHANGEDVALUE || READ from DevCh
+                 -> Value <= msg.Val(), emit newValue, IsBusy2Off
+  Stars に対する GetValue または Read に対する返答、
+  または Stars からの EvChangedValue イベントを受けて、
+  内部変数 Value をセットすると同時に newValue のシグナルを発生する
+  GetValu 時に Stars に投げるコマンドが上記以外の場合や、
+  返ってくる値が、値の並びの先頭の一つでない場合、実装する
+
+
+AMotor : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+ASensor : に定義された virtual (全てダミー関数あり純粋仮想は無い)

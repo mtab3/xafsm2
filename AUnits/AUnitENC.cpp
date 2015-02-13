@@ -16,8 +16,8 @@ void AUnitENC::init0( void  )
 
 void AUnitENC::init00( void )
 {
-  connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
-	   Qt::UniqueConnection );
+  //  connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+  //	   Qt::UniqueConnection );
   s->SendCMD2( "Init", DevCh, "IsBusy" );
   s->SendCMD2( "Init", DevCh, "GetValue" );
 }
@@ -68,7 +68,8 @@ void AUnitENC2::AskIsBusy( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
-void AUnitENC2::SetIsBusyByMsg( SMsg msg )
+#if 0
+//void AUnitENC2::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
@@ -77,9 +78,10 @@ void AUnitENC2::SetIsBusyByMsg( SMsg msg )
       LastFunc = "SetIsBusyByMsg";
     else
       LastFunc = "";
-    emit ChangedIsBusy1( Dev );
+    emit ChangedIsBusy1( DevCh );
   }
 }
+#endif
 
 bool AUnitENC2::QStart( void )
 {

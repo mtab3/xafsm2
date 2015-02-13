@@ -10,7 +10,8 @@ void AUnitEPIC::init0( void )
   s->SendCMD2( "Init", DevCh, "IsBusy" );
 }
 
-void AUnitEPIC::SetIsBusyByMsg( SMsg msg )
+#if 0
+//void AUnitEPIC::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
@@ -19,9 +20,10 @@ void AUnitEPIC::SetIsBusyByMsg( SMsg msg )
       LastFunc = "SetIsBusyByMsg";
     else
       LastFunc = "";
-    emit ChangedIsBusy1( Dev );
+    emit ChangedIsBusy1( DevCh );
   }
 }
+#endif
 
 double AUnitEPIC::SetTime( double dtime ) // in sec // この関数は、複数ステップ化できない
 {

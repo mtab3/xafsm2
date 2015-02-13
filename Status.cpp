@@ -256,11 +256,16 @@ void Status::OnEnabled( QString Drv, bool flg )
   }
 }
 
-void Status::OnChangedIsBusy1( QString Drv )
+void Status::OnChangedIsBusy1( QString DevCh )
 {
   if ( !SWactive )
     return;
 
+  QString Drv = DevCh;
+  if ( Drv.indexOf( '.' ) >= 0 ) {
+    Drv = Drv.left( Drv.indexOf( '.' ) );
+  }
+  
   int drv, i;
   for ( drv = 0; drv < Drivers.count(); drv++ ) {
     if ( Drivers.at(drv) == Drv )

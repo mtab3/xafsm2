@@ -10,6 +10,7 @@ void AUnitCCG::init0( void )
   s->SendCMD2( "Init", DevCh, "IsBusy" );
 }
 
+#if 0
 void AUnitCCG::SetCurPos( SMsg msg )
 {
   QString buf;
@@ -22,3 +23,4 @@ void AUnitCCG::SetCurPos( SMsg msg )
     IsBusy2Off( Dev );
   }
 }
+#endif

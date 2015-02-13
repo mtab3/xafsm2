@@ -75,8 +75,12 @@ void AUnitDV2::AskIsBusy( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
-void AUnitDV::SetIsBusyByMsg( SMsg msg ) // DV, DV2
+#if 0
+//void AUnitDV::SetIsBusyByMsg( SMsg msg ) // DV, DV2
 {
+  // 本当は DV は、デバイスにチャンネルは無いので、Dev でいい
+  // シミュレーション時に simmotor の１つのチャンネルにしてシミュレーションするので
+  // DevCh を確認している
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
     IsBusy = ( msg.Val().toInt() == 1 );
@@ -84,10 +88,10 @@ void AUnitDV::SetIsBusyByMsg( SMsg msg ) // DV, DV2
       LastFunc = "SetIsBusyByMsg";
     else
       LastFunc = "";
-    emit ChangedIsBusy1( Dev );
+    emit ChangedIsBusy1( DevCh );
   }
 }
-
+#endif
 
 /* DV/DV2 は DV の方が QXAFS 用で、DV2 が NORMAL 用 */
 

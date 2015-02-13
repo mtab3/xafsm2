@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 13 14:27:31 2015 +0900\n"\
+                "    cleanning\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 13 13:52:37 2015 +0900\n"\
+                "    cleaning AUnits\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 13 00:06:19 2015 +0900\n"\
                 "    Finally it works with simmotor but not tested in real\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 10 22:07:42 2015 +0900\n"\
                 "    working hard git add .! with broken codes\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 10 19:39:42 2015 +0900\n"\
-                "    just working broken codes\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 10 16:32:48 2015 +0900\n"\
-                "    fix a slight bug reading MCA file in MCA.cpp\n"\
 		"\n"\
                 ""
 #endif

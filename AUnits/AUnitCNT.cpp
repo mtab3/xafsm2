@@ -116,6 +116,11 @@ void AUnitCNT::AskIsBusy( void )
   _AskIsBusy();   // CNT だけ反応して CNT2 は反応しない
 }
 
+void AUnitCNT::_AskIsBusy( void )
+{
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
+}
+
 void AUnitCNT::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == Dev )   // Check !!!!! DevCh/Drv
@@ -127,11 +132,6 @@ void AUnitCNT::SetIsBusyByMsg( SMsg msg )
       LastFunc = "";
     emit ChangedIsBusy1( Dev );
   }
-}
-
-void AUnitCNT::_AskIsBusy( void )
-{
-  s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
 bool AUnitCNT::GetValue0( void )  // 値読み出しコマンドの前に何か必要なタイプの場合

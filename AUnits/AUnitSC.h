@@ -18,7 +18,7 @@ class AUnitSC : public AMotor
 
  private slots:
   void SetCurPos( SMsg msg );
-  void SetIsBusyByMsg( SMsg msg );
+  //  void SetIsBusyByMsg( SMsg msg );
 };
 
 #endif

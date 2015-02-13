@@ -24,7 +24,7 @@ class AUnitCNT : public ASensor
   bool Close( void );
 
  private slots:
-  void SetIsBusyByMsg( SMsg msg );
+   void SetIsBusyByMsg( SMsg msg );
 };
 
 class AUnitCNT2 : public AUnitCNT

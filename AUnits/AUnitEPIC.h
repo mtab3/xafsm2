@@ -15,7 +15,7 @@ class AUnitEPIC : public ASensor
   double SetTime( double dtime );
 
   private slots:
-  void SetIsBusyByMsg( SMsg msg );
+    //  void SetIsBusyByMsg( SMsg msg );
 };
 
 #endif

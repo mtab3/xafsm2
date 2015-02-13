@@ -37,7 +37,7 @@ class AUnitPM : public AMotor
   void setAccRateNo( int n ) { AccRateNo = n; };
 
  private slots:
-  void SetIsBusyByMsg( SMsg msg );
+   //  void SetIsBusyByMsg( SMsg msg );
   void RcvHighSpeed( SMsg msg );
   void RcvMiddleSpeed( SMsg msg );
   void RcvLowSpeed( SMsg msg );

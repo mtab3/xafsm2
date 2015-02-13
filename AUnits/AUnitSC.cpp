@@ -33,7 +33,8 @@ void AUnitSC::AskIsBusy( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
-void AUnitSC::SetIsBusyByMsg( SMsg msg )
+#if 0
+//void AUnitSC::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
@@ -42,9 +43,10 @@ void AUnitSC::SetIsBusyByMsg( SMsg msg )
       LastFunc = "SetIsBusyByMsg";
     else
       LastFunc = "";
-    emit ChangedIsBusy1( Dev );
+    emit ChangedIsBusy1( DevCh );
   }
 }
+#endif
 
 void AUnitSC::SetCurPos( SMsg msg )
 {
@@ -56,7 +58,7 @@ void AUnitSC::SetCurPos( SMsg msg )
     if ( msg.Msgt() == EvCHANGEDVALUE ) {
       Value = msg.Val();
     } else {
-      Value = msg.Vals().at(1);
+      Value = msg.Vals().at(1);    // !! 0 でなく 1 (2番目の値を使う)
     }
     emit newValue( Value );
     IsBusy2Off( Dev );

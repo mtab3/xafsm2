@@ -63,6 +63,8 @@ void AUnit0::Initialize( Stars *S )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsGetValue( SMsg ) ),this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	   Qt::UniqueConnection );
   s->SendCMD2( "Init", "System", "flgon", Dev );
   s->SendCMD2( "Init", "System", "flgon", DevCh );
   
@@ -115,6 +117,19 @@ void AUnit0::IsBusy2Off( QString drv )
   emit ChangedBusy2Count( drv );
 }
 
+void AUnit0::SetIsBusyByMsg( SMsg msg )
+{
+  if ( ( msg.From() == DevCh )    // Dev -> DevCh 2015.02.13
+       && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
+    IsBusy = ( msg.Val().toInt() == 1 );
+    if ( IsBusy )
+      LastFunc = "SetIsBusyByMsg";
+    else
+      LastFunc = "";
+    emit ChangedIsBusy1( DevCh );    // Dev -> DevCh 2015.02.13
+  }
+}
+
 void AUnit0::setEnable( bool enable )
 {
   Enable = enable;
@@ -132,19 +147,6 @@ bool AUnit0::GetValue( void )
   s->SendCMD2( Uid, DevCh, "GetValue" );
 
   return false;
-}
-
-void AUnit0::ReceiveValues( SMsg msg )
-{
-  QString buf;
-
-  if ( ( msg.From() == Dev ) && ( msg.Msgt() == GETVALUES ) ) { // Check !!!!! DevCh/Drv
-    Value = msg.Vals().at(0);
-    Values = msg.Vals();
-
-    emit newValue( Value );
-    IsBusy2Off( Dev );
-  }
 }
 
 void AUnit0::ClrBusy( SMsg msg )
@@ -166,8 +168,23 @@ void AUnit0::SetCurPos( SMsg msg )
   if ( ( msg.From() == DevCh )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
             || ( msg.Msgt() == READ ) ) ) {
-    Value = msg.Val();
+    Value = msg.Vals().at( 0 );   // 値並びの場合は先頭の値
     emit newValue( Value );
     IsBusy2Off( Dev );
   }
 }
+
+#if 0
+//void AUnit0::ReceiveValues( SMsg msg )
+{
+  QString buf;
+
+  if ( ( msg.From() == Dev ) && ( msg.Msgt() == GETVALUES ) ) { // Check !!!!! DevCh/Drv
+    Value = msg.Vals().at(0);
+    Values = msg.Vals();
+
+    emit newValue( Value );
+    IsBusy2Off( Dev );
+  }
+}
+#endif

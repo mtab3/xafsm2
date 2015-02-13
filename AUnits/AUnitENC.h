@@ -33,7 +33,7 @@ class AUnitENC2 :public AUnitENC
   bool QRead( void );
 
  private slots:
-  void SetIsBusyByMsg( SMsg msg );
+   //  void SetIsBusyByMsg( SMsg msg );
   void RcvQGetData( SMsg msg );
   void RcvStat( SMsg msg );
 };

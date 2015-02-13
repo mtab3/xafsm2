@@ -149,8 +149,7 @@ public:
   QString lastFunc2( void ) { return LastFunc2; };
 
  private slots:
-  virtual void ReceiveValues( SMsg msg );
-  virtual void SetIsBusyByMsg( SMsg /* msg */ ) {};
+  virtual void SetIsBusyByMsg( SMsg /* msg */ );
   void ClrBusy( SMsg msg );
   virtual void SetCurPos( SMsg /* msg */ );
   

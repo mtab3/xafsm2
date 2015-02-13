@@ -226,6 +226,7 @@ bool AUnitXMAP::Close( void )
   return false;
 }
 
+
 void AUnitXMAP::RunStart( void )
 {
   s->SendCMD2( Uid, Dev, "RunStart" );

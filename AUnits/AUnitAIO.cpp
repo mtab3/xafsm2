@@ -31,7 +31,7 @@ void AUnitAIOo::init0( void )
 
 void AUnitAIOi::SetIsBusyByMsg( SMsg msg )
 {
-  if ( ( msg.From() == Dev )   // Check !!!!! DevCh/Drv
+  if ( ( msg.From() == Dev )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
     IsBusy = ( msg.Val().toInt() == 1 );
     if ( IsBusy )
@@ -44,7 +44,7 @@ void AUnitAIOi::SetIsBusyByMsg( SMsg msg )
 
 void AUnitAIOo::SetIsBusyByMsg( SMsg msg )
 {
-  if ( ( msg.From() == Dev )   // Check !!!!! DevCh/Drv
+  if ( ( msg.From() == Dev )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
     IsBusy = ( msg.Val().toInt() == 1 );
     if ( IsBusy )

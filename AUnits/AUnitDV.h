@@ -41,7 +41,7 @@ class AUnitDV : public ASensor
   void Abort( void );
 
  private slots:
-  void SetIsBusyByMsg( SMsg msg );
+   //  void SetIsBusyByMsg( SMsg msg );
   void RcvQGetData( SMsg msg );
 };
 
