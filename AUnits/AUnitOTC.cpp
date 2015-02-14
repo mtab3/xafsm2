@@ -72,13 +72,13 @@ bool AUnitOTC2::_InitSensor( void )
   QString Type2 = The2ndDev->type();
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev2, "InitSensor-c0" );
+    busy2On( Dev2, "InitSensor-c0" );
     s->SendCMD2( "Scan", DevCh2, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
   case 1:
-    IsBusy2On( Dev2, "InitSensor-c1" );
+    busy2On( Dev2, "InitSensor-c1" );
     if ( autoRange ) {
       if ( Type2 == "PAM" )
 	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "1" );
@@ -95,7 +95,7 @@ bool AUnitOTC2::_InitSensor( void )
     rv = true;
     break;
   case 2:
-    IsBusy2On( Dev2, "InitSensor-c2" );
+    busy2On( Dev2, "InitSensor-c2" );
     if ( Type2 == "PAM" ) {
       s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
       LocalStage++;
@@ -109,7 +109,7 @@ bool AUnitOTC2::_InitSensor( void )
     }
     break;
   case 3:
-    IsBusy2On( Dev2, "InitSensor-c3" );
+    busy2On( Dev2, "InitSensor-c3" );
     s->SendCMD2( "Scan", DevCh2, "SetZeroCheckEnable", "0" );
     rv = false;
     LocalStage++;
@@ -156,13 +156,13 @@ bool AUnitOTC::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W
 
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev, "GetValue0c0" );
+    busy2On( Dev, "GetValue0c0" );
     s->SendCMD2( Uid, Dev, "CounterReset" );
     LocalStage++;
     rv = true;
     break;
   case 1:
-    IsBusy2On( Dev, "GetValue0c1" );
+    busy2On( Dev, "GetValue0c1" );
     IsBusy = true;
     LastFunc = "GetValue0c1";
     emit ChangedIsBusy1( Dev );
@@ -178,7 +178,7 @@ bool AUnitOTC::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W
 bool AUnitOTC2::GetRange( void ) // CNT2, OTC2
 {
   QString Type2 = The2ndDev->type();
-  IsBusy2On( Dev2, "GetRange" );
+  busy2On( Dev2, "GetRange" );
   if ( Type2 == "PAM" )
     s->SendCMD2( Uid, DevCh2, QString( "GetRange" ) );
   if ( Type2 == "PAM2" )
@@ -203,7 +203,7 @@ void AUnitOTC2::ReactGetRange( SMsg msg )  // CNT2, OTC2
       }
     }
     
-    IsBusy2Off( Dev2 );
+    busy2Off( Dev2 );
     if ( range > RangeU ) range = RangeU;
     if ( range < RangeL ) range = RangeL;
     emit AskedNowRange( (int)range );
@@ -214,7 +214,7 @@ double AUnitOTC::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%
 {
   int M, N;
 
-  IsBusy2On( Dev, "SetTime" );
+  busy2On( Dev, "SetTime" );
   N = log10( dtime * 10 );
   M = ceil( dtime / pow( 10., N - 1 ) );
   s->SendCMD2( Uid, Dev, "SetCountPreset", QString( "%1,%2" ).arg( M ).arg( N ) );
@@ -230,7 +230,7 @@ void AUnitOTC2::SetRange( int range )
     return;
   }
   
-  IsBusy2On( Dev2, "SetRange" );
+  busy2On( Dev2, "SetRange" );
   // CNT2, OTC2 $B$N$H$-(B $B%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O(B
   // keithley ( PAM/PAM2 )$B$J$N$G$=$lMQ$N=hM}$r$7$F$*$/(B
   QString Type2 = The2ndDev->type();

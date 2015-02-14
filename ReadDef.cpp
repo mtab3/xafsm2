@@ -84,9 +84,12 @@ void MainWindow::ReadDef( QString fname )
           next = nextItem( next, item ); NewMotor->setIsInt( item == "INT" );
           if (( type == "PM" )||( type == "SC" )) {
 	    next = nextItem( next, item ); NewMotor->setCenter( item );
-	  } else if (( type == "PZ" )||( type == "AIOo" )) {
-	    next = nextItem( next, item ); NewMotor->setMinV( item );
-	    next = nextItem( next, item ); NewMotor->setMaxV( item );
+	  } else if ( type == "PZ" ) {
+	    next = nextItem( next, item ); ((AUnitPZ*)NewMotor)->setMinV( item );
+	    next = nextItem( next, item ); ((AUnitPZ*)NewMotor)->setMaxV( item );
+	  } else if ( type == "AIOo" ) {
+	    next = nextItem( next, item ); ((AUnitAIOo*)NewMotor)->setMinV( item );
+	    next = nextItem( next, item ); ((AUnitAIOo*)NewMotor)->setMaxV( item );
 	  } else {
             qDebug() << tr( "A::Undefined Unit type [%1]" ).arg( type );
           }

@@ -100,8 +100,8 @@ public:
   bool isBusy0( void ) { return IsBusy || IsBusy2; };
   bool isBusy( void ) { return IsBusy; };
   bool isBusy2( void ) { return IsBusy2; };
-  void IsBusy2On( QString drv, QString name );
-  void IsBusy2Off( QString drv );
+  void busy2On( QString drv, QString name );
+  void busy2Off( QString drv );
   void setBusy2Count( int i ) { Busy2Count = i; };
   void clrBusy2Count( void ) { Busy2Count = 0; };
   int busy2Count( void ) { return Busy2Count; };
@@ -115,7 +115,7 @@ public:
   void setLastValue( QString v ) { LastValue = v; };
   QStringList values( void ) { return Values; };
 
-  void InitLocalStage( void ) { LocalStage = 0; };
+  void initLocalStage( void ) { LocalStage = 0; };
 
   // parent : 完全に定義され Uid を持つデバイス「親デバイス」
   // 例えば nct08 の複数のチャンネルはバラバラにカウントスタートストップできない。
@@ -158,17 +158,17 @@ public:
   void ChangedIsBusy2( QString Drv );
   void ChangedBusy2Count( QString Drv );
   void Enabled( QString Dev, bool enable );
-  void newValue( QString value );
-  void newQData( void );
+  void NewValue( QString value );
+  void NewQData( void );
   void LogMsg( QString msg );
 
 #if 0
   //  void CountFinished( void );
   //  void newValues( void );
-  void newCountsInROI( QVector<int> );
-  void newCountsAll( QVector<int> );
-  void newTotalEvents( QVector<int> );
-  void newICRs( QVector<double> );
+  void NewCountsInROI( QVector<int> );
+  void NewCountsAll( QVector<int> );
+  void NewTotalEvents( QVector<int> );
+  void NewICRs( QVector<double> );
   //  void newDataPoints( int points );
   void Alarm( QString uid, QString msg );
 #endif

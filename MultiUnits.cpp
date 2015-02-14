@@ -80,10 +80,10 @@ bool MUnits::isBusy2( void )
 void MUnits::clearStage( void )
 {
   for ( int i = 0; i < PUnits.count(); i++ ) {
-    PUnits.at(i)->au->InitLocalStage();
+    PUnits.at(i)->au->initLocalStage();
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    Units.at(i)->au->InitLocalStage();
+    Units.at(i)->au->initLocalStage();
   }
 }
 
@@ -262,7 +262,7 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
     as = Units.at(i)->au;
     rvs[i] = as->value().toDouble();
     if ( correctBack )
-      rvs[i] -= as->getDark() * as->GetSetTime();
-    cps[i] = rvs[i] / as->GetSetTime();
+      rvs[i] -= as->getDark() * as->getSetTime();
+    cps[i] = rvs[i] / as->getSetTime();
   }
 }

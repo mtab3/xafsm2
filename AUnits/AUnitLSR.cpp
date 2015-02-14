@@ -31,6 +31,6 @@ void AUnitLSR::OnReportInjection( SMsg msg )
     LastValue = Value;
     Value = Values[ Values.count() - 1 ];
     emit NewInjectionReport( Value, Values );
-    emit newValue( Value );
+    emit NewValue( Value );
   }
 }

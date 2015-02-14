@@ -38,13 +38,13 @@ bool AUnitPAM::InitSensor( void )
   if ( Type == "PAM" ) { dev = Dev; } else { dev = Dev; } // !!
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev, "InitSensor-c0" );
+    busy2On( Dev, "InitSensor-c0" );
     s->SendCMD2( "Scan", dev, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
   case 1:
-    IsBusy2On( Dev, "InitSensor-c1" );
+    busy2On( Dev, "InitSensor-c1" );
     if ( Type == "PAM" ) 
       s->SendCMD2( "Scan", dev, "SetAutoRangeEnable", "1" );
     if ( Type == "PAM2" ) 
@@ -53,7 +53,7 @@ bool AUnitPAM::InitSensor( void )
     rv = true;
     break;
   case 2:
-    IsBusy2On( Dev, "InitSensor-c2" );
+    busy2On( Dev, "InitSensor-c2" );
     if ( Type == "PAM" )
       s->SendCMD2( "Scan", dev, "SetDataFormatElements", "READ" );
     if ( Type == "PAM2" )
@@ -68,7 +68,7 @@ bool AUnitPAM::InitSensor( void )
     }
     break;
   case 3:
-    IsBusy2On( Dev, "InitSensor-c3" );
+    busy2On( Dev, "InitSensor-c3" );
     s->SendCMD2( "Scan", dev, "SetZeroCheckEnable", "0" );
     rv = false;
     LocalStage++;
@@ -86,7 +86,7 @@ bool AUnitPAM::GetValue( void )
   
 bool AUnitPAM::_GetValue( void )
 {
-  IsBusy2On( Dev, "GetValue" );
+  busy2On( Dev, "GetValue" );
   s->SendCMD2( Uid, DevCh, "Read" );
 
   return false;
@@ -94,7 +94,7 @@ bool AUnitPAM::_GetValue( void )
 
 bool AUnitPAM2::_GetValue( void )
 {
-  IsBusy2On( Dev, "GetValue" );
+  busy2On( Dev, "GetValue" );
   s->SendCMD2( Uid, Dev, "Read" );
 
   return false;
@@ -105,8 +105,8 @@ void AUnitPAM2::RcvAnsGetValueOfDriver( SMsg msg )  // driver $BL>$@$1$G8F$P$l$
   if ( ( msg.From() == Dev ) && ( msg.Msgt() == READ ) ) {
     Values = msg.Val().split( QChar( ',' ) );
     Value = Values.at( Ch.toInt() ); // $B?F%I%i%$%P08$NJVEz$+$i<+J,MQ$NEz$($rA*$jJ,$1$k(B
-    emit newValue( Value );
-    IsBusy2Off( Dev );
+    emit NewValue( Value );
+    busy2Off( Dev );
   }
 }
 
@@ -114,7 +114,7 @@ double AUnitPAM::SetTime( double dtime ) // in sec// $B$3$N4X?t$O!"J#?t%9%F%C%W
 {
   double time;
 
-  IsBusy2On( Dev, "SetTime" );
+  busy2On( Dev, "SetTime" );
   // 1 sec -> 1/60 sec
   time = dtime * 60;
   if ( time < 1 ) time = 1;
@@ -138,7 +138,7 @@ void AUnitPAM2::_SetTime( double time )
 
 void AUnitPAM::SetRange( int range )
 {
-  IsBusy2On( Dev2, "SetRange" );
+  busy2On( Dev2, "SetRange" );
   _SetRange( range );
   SelectedRange = range;
 }

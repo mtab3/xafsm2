@@ -55,19 +55,19 @@ bool AUnitXMAP::InitSensor( void )
   QString ROIs = "";
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev, "InitSensor-c0" );
+    busy2On( Dev, "InitSensor-c0" );
     s->SendCMD2( "Init", Dev, "RunStop" );
     LocalStage++;
     rv = true;
     break;
   case 1:
-    IsBusy2On( Dev, "InitSensor-c1" );
+    busy2On( Dev, "InitSensor-c1" );
     s->SendCMD2( "Init", Dev, "SetPresetType", SSDPresetType );
     LocalStage++;
     rv = true;
     break;
   case 2:
-    IsBusy2On( Dev, "InitSensor-c2" );
+    busy2On( Dev, "InitSensor-c2" );
     ROIs = ROIStart[0] + " " + ROIEnd[0];
     for ( int i = 1; i < MaxSSDs; i++ ) {
       ROIs += " " + ROIStart[i] + " " + ROIEnd[i];
@@ -139,7 +139,7 @@ void AUnitXMAP::_setEnable( bool /*enable*/ )
 
 double AUnitXMAP::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
-  IsBusy2On( Dev, "SetTime" );
+  busy2On( Dev, "SetTime" );
   s->SendCMD2( Uid, Dev, "RunStop" );   // $B%3%^%s%IO"B3H/9T2DG=$+(B? $B$$$A$*$&$$$1$F$k(B
   s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
   setTime = dtime;
@@ -149,7 +149,7 @@ double AUnitXMAP::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W
 
 bool AUnitXMAP::GetValue( void )
 {
-  IsBusy2On( Dev, "GetValue" );
+  busy2On( Dev, "GetValue" );
   // $BJQB'(B : $B$3$N(B IsBusy2 $B$O(B @GetMCAs Ok: $B$r<u$1$F$b>C$5$J$$(B
   //        data-link $B7PM3$G40A4$J%G!<%?$r$b$i$C$?;~$K>C$9(B
   //    s->SendCMD2( Uid, Dev, "GetValues" );    // new mcas
@@ -164,13 +164,13 @@ bool AUnitXMAP::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%
 
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev, "GetValue0c0" );
+    busy2On( Dev, "GetValue0c0" );
     s->SendCMD2( Uid, Dev, "RunStop" );
     rv = true;
     LocalStage++;
     break;
   case 1:
-    IsBusy2On( Dev, "GetValue0c1" );
+    busy2On( Dev, "GetValue0c1" );
     IsBusy = true;
     LastFunc = "GetValue0c1";
     emit ChangedIsBusy1( Dev );
@@ -192,19 +192,19 @@ bool AUnitXMAP::GetValue02( void )
 
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev, "GetValue0c0" );
+    busy2On( Dev, "GetValue0c0" );
     s->SendCMD2( Uid, Dev, "SetPresetType", "NONE" );
     rv = true;
     LocalStage++;
     break;
   case 1:
-    IsBusy2On( Dev, "GetValue0c1" );
+    busy2On( Dev, "GetValue0c1" );
     s->SendCMD2( Uid, Dev, "RunStop" );
     rv = true;
     LocalStage++;
     break;
   case 2:
-    IsBusy2On( Dev, "GetValue0c2" );
+    busy2On( Dev, "GetValue0c2" );
     IsBusy = true;
     LastFunc = "GetValue0c1";
     emit ChangedIsBusy1( Dev );
@@ -220,7 +220,7 @@ bool AUnitXMAP::GetValue02( void )
 // $BO"B3%9%-%c%s$N8e$K%N!<%^%k%b!<%I$KLa$9(B
 bool AUnitXMAP::Close( void )
 {
-  IsBusy2On( Dev, "GetValue0c0" );
+  busy2On( Dev, "GetValue0c0" );
   s->SendCMD2( Uid, Dev, "RunStop" );
 
   return false;
@@ -244,7 +244,7 @@ void AUnitXMAP::RunResume( void )
 
 bool AUnitXMAP::GetMCAs( void )
 {
-  IsBusy2On( Dev2, "GetMCAs" );
+  busy2On( Dev2, "GetMCAs" );
   // $BJQB'(B : $B$3$N(B IsBusy2 $B$O(B @GetMCAs Ok: $B$r<u$1$F$b>C$5$J$$(B
   //        data-link $B7PM3$G40A4$J%G!<%?$r$b$i$C$?;~$K>C$9(B
   s->SendCMD2( Uid, DevCh, QString( "GetMCAs" ) );
@@ -263,7 +263,7 @@ bool AUnitXMAP::GetStat( void )
 {
   bool rv = false;
 
-  IsBusy2On( Dev, "GetStat" );
+  busy2On( Dev, "GetStat" );
   s->SendCMD2( Uid, Dev, "GetStatistics" );
 
   return rv;
@@ -272,7 +272,7 @@ bool AUnitXMAP::GetStat( void )
 void AUnitXMAP::ReactGetStat( SMsg msg )
 {
   if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {  // Check !!!!! DevCh/Drv
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     MCAStats = msg.Vals();
   }
 }
@@ -292,7 +292,7 @@ bool AUnitXMAP::SetRealTime( int ch, double val )
 {
   bool rv = false;
 
-  IsBusy2On( Dev, "SetRealTime2" );
+  busy2On( Dev, "SetRealTime2" );
   s->SendCMD2( Uid, Dev, "SetRealTime",
 	       QString::number( ch ) + " " + QString::number( val ) );
 
@@ -303,7 +303,7 @@ bool AUnitXMAP::GetRealTime( int ch )
 {
   bool rv = false;
 
-  IsBusy2On( Dev, "GetRealTime" );
+  busy2On( Dev, "GetRealTime" );
   s->SendCMD2( Uid, Dev, "GetRealTime", QString::number( ch ) );
 
   return rv;
@@ -314,7 +314,7 @@ void AUnitXMAP::ReactGetRealTime( SMsg msg )
   int ch;
 
   if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {  // Check !!!!! DevCh/Drv
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     MCARealTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
     emit ReceivedNewMCARealTime( ch );
   }
@@ -331,7 +331,7 @@ bool AUnitXMAP::SetLiveTime( double val )
   bool rv = false;
 
   if ( Type == "SSDP" ) {
-    IsBusy2On( Dev, "SetLiveTime1" );
+    busy2On( Dev, "SetLiveTime1" );
     s->SendCMD2( Uid, DevCh, "SetLiveTime", QString::number( val ) );
     rv = false;
   }
@@ -344,7 +344,7 @@ bool AUnitXMAP::SetLiveTime( int ch, double val )
 {
   bool rv = false;
 
-  IsBusy2On( Dev, "SetLiveTime2" );
+  busy2On( Dev, "SetLiveTime2" );
   s->SendCMD2( Uid, Dev, "SetLiveTime",
 	       QString::number( ch ) + " " + QString::number( val ) );
 
@@ -355,7 +355,7 @@ bool AUnitXMAP::GetLiveTime( int ch )
 {
   bool rv = false;
 
-  IsBusy2On( Dev, "GetLiveTime2" );
+  busy2On( Dev, "GetLiveTime2" );
   s->SendCMD2( Uid, Dev, "GetLiveTime", QString::number( ch ) );
 
   return rv;
@@ -366,7 +366,7 @@ void AUnitXMAP::ReactGetLiveTime( SMsg msg )
   int ch;
 
   if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {  // Check !!!!! DevCh/Drv
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     MCALiveTime[ ch = msg.Vals().at(0).toInt() ] = msg.Vals().at(1).toDouble();
     emit ReceivedNewMCALiveTime( ch );
   }
@@ -392,7 +392,7 @@ void AUnitXMAP::ReactGetDataLinkCh( SMsg msg )
 {
   if ( msg.From() == Dev ) {
     if ( msg.Vals().count() == 2 ) {
-      IsBusy2Off( Dev );
+      busy2Off( Dev );
       QString NewDataLinkHostName = msg.Vals().at(0);
       int NewDataLinkHostPort = msg.Vals().at(1).toInt();
       if ( ( ! ConnectedToSSDServer ) || 
@@ -485,8 +485,8 @@ void AUnitXMAP::ReceiveValues( SMsg msg )
     
     Values = msg.Vals();
     
-    emit newValue( Value );
-    IsBusy2Off( Dev );
+    emit NewValue( Value );
+    busy2Off( Dev );
   }
 }
 
@@ -518,7 +518,7 @@ void AUnitXMAP::receiveMCAs( void )
   dLinkCount += bytes;
 
   if ( dLinkCount >= XMAPBUFSIZE ) {
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     dLinkCount = 0;
     if ( MCAs != NULL ) delete [] MCAs;
     MCAs = MCAs0;              // $BFI$_9~$_$,40@.$7$?%P%C%U%!(B(MCAs0)$B$r(B
@@ -552,9 +552,8 @@ void AUnitXMAP::receiveMCAs( void )
       TotalEvents << 0;
       ICRs        << getAMCAHead( i ).icr;
     }
-    emit LogMsg( "emitted New MCAs" );
     emit NewMCAsAvailable( MCAs );
-    emit newValue( Value );
+    emit NewValue( Value );
   }
 }
 

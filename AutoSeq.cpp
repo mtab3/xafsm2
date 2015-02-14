@@ -319,7 +319,7 @@ void MainWindow::AutoSequence0( void )
 	  case 0:
 	    ASMUnits.clearUnits();
 	    ASMUnits.addUnit( SFluo );
-	    SFluo->InitLocalStage();
+	    SFluo->initLocalStage();
 	    ASCMDii++;
 	    break;
 	  case 1:

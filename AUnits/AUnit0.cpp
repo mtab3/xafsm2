@@ -32,7 +32,7 @@ AUnit0::AUnit0( QObject *parent ) : QObject( parent )
 
   IsBusy = IsBusy2 = false;
   Busy2Count = 0;
-  IsBusy2Off( "" );
+  busy2Off( "" );
 
   LastFunc = "";
   LastFunc2 = "";
@@ -56,7 +56,8 @@ void AUnit0::Initialize( Stars *S )
   connect( s, SIGNAL( ReceiveError( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  // LSR には不要な初期化だが悪くもないので外さない
+  // ここで書くと、全ユニットに共通の connect になる。
+  // 本当は LSR には不要な初期化だが悪くもないので外さない
   connect( s, SIGNAL( AnsIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( EvIsBusy( SMsg ) ), this, SLOT( SetIsBusyByMsg( SMsg ) ),
@@ -98,7 +99,7 @@ QString AUnit0::makeDevCh( const QString &dev, const QString &ch )
   return dev;
 }
 
-void AUnit0::IsBusy2On( QString drv, QString name )
+void AUnit0::busy2On( QString drv, QString name )
 {
   IsBusy2 = true;
   Busy2Count++;
@@ -107,7 +108,7 @@ void AUnit0::IsBusy2On( QString drv, QString name )
   emit ChangedBusy2Count( drv );
 }
 
-void AUnit0::IsBusy2Off( QString drv )
+void AUnit0::busy2Off( QString drv )
 {
   IsBusy2 = false;
   Busy2Count--;
@@ -138,12 +139,12 @@ void AUnit0::setEnable( bool enable )
   _setEnable( enable );    // AUnit0 を継承したクラスでの処理用 // AUnitXMAP が呼んでる
   emit Enabled( Dev, enable );
   emit ChangedIsBusy1( Dev );
-  IsBusy2Off( "" );
+  busy2Off( "" );
 }
 
 bool AUnit0::GetValue( void )
 {
-  IsBusy2On( Dev, "GetValue" );
+  busy2On( Dev, "GetValue" );
   s->SendCMD2( Uid, DevCh, "GetValue" );
 
   return false;
@@ -152,11 +153,11 @@ bool AUnit0::GetValue( void )
 void AUnit0::ClrBusy( SMsg msg )
 {
   if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
   }
   if ( Has2ndDev ) {
     if ( ( msg.From() == DevCh2 ) || ( msg.From() == Dev2 ) ) {
-      IsBusy2Off( Dev2 );
+      busy2Off( Dev2 );
     }
   }
 }
@@ -169,8 +170,8 @@ void AUnit0::SetCurPos( SMsg msg )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
             || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Vals().at( 0 );   // 値並びの場合は先頭の値
-    emit newValue( Value );
-    IsBusy2Off( Dev );
+    emit NewValue( Value );
+    busy2Off( Dev );
   }
 }
 
@@ -183,8 +184,8 @@ void AUnit0::SetCurPos( SMsg msg )
     Value = msg.Vals().at(0);
     Values = msg.Vals();
 
-    emit newValue( Value );
-    IsBusy2Off( Dev );
+    emit NewValue( Value );
+    busy2Off( Dev );
   }
 }
 #endif

@@ -27,7 +27,7 @@ void AUnitXMAP2::getNewDark( double )
 
 double AUnitXMAP2::SetTime( double dtime ) // in sec, この関数は、複数ステップ化できない
 {
-  IsBusy2On( Dev, "SetTime" );
+  busy2On( Dev, "SetTime" );
   s->SendCMD2( Uid, Dev, "RunStop" );   // コマンド連続発行可能か? いちおういけてる
   s->SendCMD2( Uid, DevCh, "SetPresetValue", QString::number( dtime ) );
   setTime = dtime;
@@ -39,7 +39,7 @@ bool AUnitXMAP2::SetRealTime( double val )
 {
   bool rv = false;
 
-  IsBusy2On( Dev, "SetRealTime1" );
+  busy2On( Dev, "SetRealTime1" );
   s->SendCMD2( Uid, DevCh, "SetRealTime", QString::number( val ) );
   rv = false;
 

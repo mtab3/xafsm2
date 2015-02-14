@@ -381,7 +381,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     QVector<double> darks = SFluo->getDarkCountsInROI();
     sum = 0;
     for ( int j = 0; j < MaxSSDs; j++ ) {
-      double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
+      double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
       if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
 	sum += v;
       MeasView->NewPoint( DLC, GoToKeV, v );
@@ -466,7 +466,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
 	QVector<double> darks = SFluo->getDarkCountsInROI();
 	sum = 0;
 	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
+	  double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
 	  if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
 	    sum += v;
 	  MeasView->NewPoint( DLC, GoToKeV, v );

@@ -854,7 +854,7 @@ void MainWindow::MCASequence( void )
 
   switch( MCAStage ) {
   case 0:
-    SFluo->InitLocalStage();
+    SFluo->initLocalStage();
     MCAStage = 1;
   case 1:
     if ( SelRealTime->isChecked() ) {
@@ -882,7 +882,7 @@ void MainWindow::MCASequence( void )
       } else {
 	SFluo->RunResume();
       }
-      SFluo->InitLocalStage();
+      SFluo->initLocalStage();
       MCAStage = 4;
     }
     break;

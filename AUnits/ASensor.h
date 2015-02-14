@@ -27,7 +27,7 @@ class ASensor : public AUnit0
 
   virtual bool InitSensor( void ) { return true; };
   virtual double SetTime( double dtime ) { return dtime; };   // in sec
-  double GetSetTime( void ) { return setTime; };   // actual set time
+  double getSetTime( void ) { return setTime; };   // actual set time
   void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
   double getDark( void ) { return Dark; };
 
@@ -57,7 +57,6 @@ class ASensor : public AUnit0
  signals:
   void newDark( double dark );
   void AskedNowRange( int r );
-
 };
 
 #endif

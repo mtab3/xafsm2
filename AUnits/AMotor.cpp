@@ -23,5 +23,5 @@ void AMotor::init( void )
 
   s->SendCMD2( "Init", DevCh, "GetValue" );
 
-  init0();
+  init0();  // 更に個別のユニットの初期化を行うための仮想関数
 }

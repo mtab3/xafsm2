@@ -144,7 +144,7 @@ void MainWindow::MeasDarkSequence( void )
     // 前は MeasCPSs は無かったので MeasVals (count) を cps に直す計算をここでやってる。
     // 直しても良いけどそのままにしておく
     for ( int i = 0; i < dUnits.count(); i++ ) {
-      setTime = dUnits.at(i)->GetSetTime();
+      setTime = dUnits.at(i)->getSetTime();
       if ( setTime > 0 ) {
 	dUnits.at(i)->setDark( MeasVals[i] / setTime );
       } else {

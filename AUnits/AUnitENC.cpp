@@ -49,7 +49,7 @@ bool AUnitENC2::_InitSensor( void )
   bool rv = false;
 
   if ( Type == "ENC2" ) {
-    IsBusy2On( Dev, "InitSensor-c0" );
+    busy2On( Dev, "InitSensor-c0" );
     s->SendCMD2( "Init", DevCh, "GetValue" );
     LocalStage++;
     rv = false;
@@ -85,14 +85,14 @@ void AUnitENC2::AskIsBusy( void )
 
 bool AUnitENC2::QStart( void )
 {
-  IsBusy2On( Dev, "Start" );
+  busy2On( Dev, "Start" );
   s->SendCMD2( Uid, DevCh, "StandBy" );
   return false;
 }
 
 bool AUnitENC2::QRead( void )
 {
-  IsBusy2On( Dev, "Read" );
+  busy2On( Dev, "Read" );
   s->SendCMD2( Uid, DevCh, "GetData" );
 
   return false;
@@ -113,8 +113,8 @@ void AUnitENC2::RcvQGetData( SMsg msg )
 	    || ( msg.Msgt() == GETDATA ) ) ) {
     
     Values = msg.Vals();
-    emit newQData();
-    IsBusy2Off( Dev );
+    emit NewQData();
+    busy2Off( Dev );
   }
 }
 
@@ -124,7 +124,7 @@ void AUnitENC2::RcvStat( SMsg msg )
   if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETSTAT ) ) ) {
     //      Values = msg.Vals();
-    //      emit newQData();
-    IsBusy2Off( Dev );
+    //      emit NewQData();
+    busy2Off( Dev );
   }
 }

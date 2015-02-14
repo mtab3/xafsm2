@@ -638,7 +638,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       QVector<double> darks = SFluo->getDarkCountsInROI();
       // 19ch ROI
       for ( int j = 0; j < MaxSSDs; j++ ) {
-        buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
+        buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->getSetTime() ) ) );
         out << buf;
       }
       // I0
@@ -655,7 +655,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       QVector<double> icrs = SFluo->getICRs();
       // 19ch SSD  ICR ( per second )
       for ( int j = 0; j < MaxSSDs; j++ ) {
-        buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );
+        buf.sprintf(" %9d", (int)( icrs[j] * SFluo->getSetTime() ) );
         out << buf;
       }
       // Reset
@@ -665,7 +665,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( ( mMeasUnits.at(i) != SFluo ) && ( mMeasUnits.at(i) != SI0 ) ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->GetSetTime();
+              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->getSetTime();
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -680,7 +680,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( mMeasUnits.at(i) != SFluo ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->GetSetTime();
+              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->getSetTime();
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -694,7 +694,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
           QVector<quint64> vals = SFluo->getCountsInROI(); // vals は count
           QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps
           for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
-            buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
+            buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->getSetTime() ) ) );
             out << buf;
           }
           if ( MeasFileType == FLUO ) {
@@ -710,7 +710,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
           }
           QVector<double> icrs = SFluo->getICRs();
           for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
-            buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );
+            buf.sprintf(" %9d", (int)( icrs[j] * SFluo->getSetTime() ) );
             out << buf;
           }
           buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる

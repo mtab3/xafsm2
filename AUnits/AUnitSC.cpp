@@ -18,7 +18,7 @@ void AUnitSC::SetValue( double v )
 
 bool AUnitSC::GetValue( void )
 {
-  IsBusy2On( Dev, "GetValue" );
+  busy2On( Dev, "GetValue" );
   s->SendCMD2( Uid, DevCh, "GetValue 0" );
   return false;
 }
@@ -60,7 +60,7 @@ void AUnitSC::SetCurPos( SMsg msg )
     } else {
       Value = msg.Vals().at(1);    // !! 0 でなく 1 (2番目の値を使う)
     }
-    emit newValue( Value );
-    IsBusy2Off( Dev );
+    emit NewValue( Value );
+    busy2Off( Dev );
   }
 }

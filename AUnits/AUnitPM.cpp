@@ -60,21 +60,21 @@ void AUnitPM::SetSpeed( MSPEED speed )
 
 void AUnitPM::SetHighSpeed( int speed )
 {
-  IsBusy2On( Dev, "SetHighSpeed" );
+  busy2On( Dev, "SetHighSpeed" );
   QString cmd = QString( "SetHighSpeed %1" ).arg( speed );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetMiddleSpeed( int speed )
 {
-  IsBusy2On( Dev, "SetMiddleSpeed" );
+  busy2On( Dev, "SetMiddleSpeed" );
   QString cmd = QString( "SetMiddleSpeed %1" ).arg( speed );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetLowSpeed( int speed )
 {
-  IsBusy2On( Dev, "SetLowSpeed" );
+  busy2On( Dev, "SetLowSpeed" );
   QString cmd = QString( "SetLowSpeed %1" ).arg( speed );
   s->SendCMD2( Uid, DevCh, cmd );
 }
@@ -101,7 +101,7 @@ void AUnitPM::AskLowSpeed( void )
 
 void AUnitPM::AssignDispCh( int ch )
 {
-  IsBusy2On( Dev, "AssignDispCh" );
+  busy2On( Dev, "AssignDispCh" );
   int num = Ch.toInt();
   if ( Ch.left( 2 ).toUpper() == "CH" )
     num = Ch.mid( 2 ).toInt();
@@ -111,35 +111,35 @@ void AUnitPM::AssignDispCh( int ch )
 
 void AUnitPM::SetTimingOutMode( int mode )
 {
-  IsBusy2On( Dev, "SetTimingOutMode" );
+  busy2On( Dev, "SetTimingOutMode" );
   QString cmd = QString( "SetTimingOutMode %1" ).arg( mode );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetTimingOutStart( int startP )
 {
-  IsBusy2On( Dev, "SetTimingOutStart" );
+  busy2On( Dev, "SetTimingOutStart" );
   QString cmd = QString( "SetTimingOutStart %1" ).arg( startP );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetTimingOutEnd( int endP )
 {
-  IsBusy2On( Dev, "SetTimingOutEnd" );
+  busy2On( Dev, "SetTimingOutEnd" );
   QString cmd = QString( "SetTimingOutEnd %1" ).arg( endP );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetTimingOutInterval( int interval )
 {
-  IsBusy2On( Dev, "SetTimingOutInterval" );
+  busy2On( Dev, "SetTimingOutInterval" );
   QString cmd = QString( "SetTimingOutInterval %1" ).arg( interval );
   s->SendCMD2( Uid, DevCh, cmd );
 }
 
 void AUnitPM::SetTimingOutReady( int ready )
 {
-  IsBusy2On( Dev, "SetTimingOutReady" );
+  busy2On( Dev, "SetTimingOutReady" );
   QString cmd = QString( "SetTimingOutReady %1" ).arg( ready );
   s->SendCMD2( Uid, DevCh, cmd );
 }
@@ -173,7 +173,7 @@ void AUnitPM::RcvHighSpeed( SMsg msg )
       MaxS = HighS;
       HasSetMaxS = true;
     }
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     emit gotHighS( HighS );
   }
 }
@@ -183,7 +183,7 @@ void AUnitPM::RcvMiddleSpeed( SMsg msg )
   if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETMIDDLESPEED ) ) ) {
     MiddleS = msg.Val().toInt();
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     emit gotMiddleS( MiddleS );
   }
 }
@@ -193,7 +193,7 @@ void AUnitPM::RcvLowSpeed( SMsg msg )
   if ( ( ( msg.From() == DevCh )||( msg.From() == Dev ) )  // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == GETLOWSPEED ) ) ) {
     LowS = msg.Val().toInt();
-    IsBusy2Off( Dev );
+    busy2Off( Dev );
     emit gotLowS( LowS );
   }
 }

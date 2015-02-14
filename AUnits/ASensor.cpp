@@ -16,5 +16,5 @@ ASensor::ASensor( void )
 
 void ASensor::init( void )
 {
-  init0();
+  init0();  // 更に個別のユニットの初期化を行うための仮想関数
 }

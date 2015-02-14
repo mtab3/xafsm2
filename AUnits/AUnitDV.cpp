@@ -41,7 +41,7 @@ bool AUnitDV::InitSensor( void )
 
 bool AUnitDV::_InitSensor( void )
 {
-  IsBusy2On( Dev, "InitSensor-c0" );
+  busy2On( Dev, "InitSensor-c0" );
   s->SendCMD2( "Scan", DevCh, "Reset", "" );
   return false;
 }
@@ -52,13 +52,13 @@ bool AUnitDV2::_InitSensor( void )
   
   switch( LocalStage ) {
   case 0:
-    IsBusy2On( Dev, "InitSensor-c0" );
+    busy2On( Dev, "InitSensor-c0" );
     s->SendCMD2( "Scan", DevCh, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
   case 1:
-    IsBusy2On( Dev, "InitSensor-c1" );
+    busy2On( Dev, "InitSensor-c1" );
     s->SendCMD2( "Scan", DevCh, "SetAutoZero", "OFF" );
     LocalStage++;
     rv = false;
@@ -97,14 +97,14 @@ void AUnitDV2::AskIsBusy( void )
 
 bool AUnitDV::QStart( void )
 {
-  IsBusy2On( Dev, "Start" );
+  busy2On( Dev, "Start" );
   s->SendCMD2( Uid, DevCh, "qInitialize", QString::number( setTime ) );
   return false;
 }
 
 bool AUnitDV::QRead( void )
 {
-  IsBusy2On( Dev, "Read" );
+  busy2On( Dev, "Read" );
   s->SendCMD2( Uid, DevCh, "qGetData" );
 
   return false;
@@ -112,7 +112,7 @@ bool AUnitDV::QRead( void )
 
 bool AUnitDV::QEnd( void )
 {
-  IsBusy2On( Dev, "End" );
+  busy2On( Dev, "End" );
   s->SendCMD2( Uid, DevCh, "qFinalize" );
 
   return false;
@@ -124,7 +124,7 @@ double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W
   if ( dtime > 1.0 ) dtime = 1.0;
   if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
   if ( Type == "DV2" ) {   // DV $B$N>l9g!"$3$3$G$OFbItJQ?t(B setTime $B$KCM$r@_Dj$9$k$@$1!#(B
-    IsBusy2On( Dev, "SetAperture" );
+    busy2On( Dev, "SetAperture" );
     s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
   }
   setTime = dtime;
@@ -134,25 +134,25 @@ double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W
 
 void AUnitDV::SetTriggerDelay( double time )  // $B;H$C$F$$$J$$(B
 {
-  IsBusy2On( Dev, "SetTriggerDelay" );
+  busy2On( Dev, "SetTriggerDelay" );
   s->SendCMD2( Uid, DevCh, "SetTriggerDelay", QString::number( time ) );
 }
 
 void AUnitDV::SetSamplingSource( QString source ) //source := TIM, IMM // $B;H$C$F$J$$(B
 {
-  IsBusy2On( Dev, "SetSamplingSource" );
+  busy2On( Dev, "SetSamplingSource" );
   s->SendCMD2( Uid, DevCh, "SetSamplingSource", source );
 }
 
 void AUnitDV::SetTriggerSource( QString source ) //source := IMM, EXT, BUS //$B;H$C$F$J$$(B
 {
-  IsBusy2On( Dev, "SetTriggerSource" );
+  busy2On( Dev, "SetTriggerSource" );
   s->SendCMD2( Uid, DevCh, "SetTriggerSource", source );
 }
 
 void AUnitDV::SetTriggerCounts( int counts )   
 {
-  IsBusy2On( Dev, "SetTriggerCounts" );
+  busy2On( Dev, "SetTriggerCounts" );
   
   QString arg;
   if ( counts > 0 )
@@ -165,25 +165,25 @@ void AUnitDV::SetTriggerCounts( int counts )
 
 void AUnitDV::SetTriggerSlope( QString type ) // POS : rising-edge
 {
-  IsBusy2On( Dev, "SetTriggerSlope" );
+  busy2On( Dev, "SetTriggerSlope" );
   s->SendCMD2( Uid, DevCh, "SetTriggerSlope", type );
 }
 
 void AUnitDV::GetDataPoints( void )
 {
-  IsBusy2On( Dev, "GetDataPoints" );
+  busy2On( Dev, "GetDataPoints" );
   s->SendCMD2( Uid, DevCh, "GetDataPoints" );
 }
 
 void AUnitDV::ReadDataPoints( int datas )
 {
-  IsBusy2On( Dev, "ReadDataPoints" );
+  busy2On( Dev, "ReadDataPoints" );
   s->SendCMD2( Uid, DevCh, "GetDataPoints", QString::number( datas ) );
 }
 
 void AUnitDV::Abort( void )
 {
-  IsBusy2On( Dev, "Abort" );
+  busy2On( Dev, "Abort" );
   s->SendCMD2( Uid, DevCh, "Abort" );
 }
 
@@ -195,7 +195,7 @@ void AUnitDV::RcvQGetData( SMsg msg )
 	    || ( msg.Msgt() == GETDATA ) ) ) {
     
     Values = msg.Vals();
-    emit newQData();
-    IsBusy2Off( Dev );
+    emit NewQData();
+    busy2Off( Dev );
   }
 }

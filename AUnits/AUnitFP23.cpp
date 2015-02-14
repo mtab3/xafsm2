@@ -21,6 +21,6 @@ void AUnitFP23::OnReportValue( SMsg msg )
     Values = msg.Val().simplified().split( QRegExp( "\\s" ) );
     LastValue = Value;
     Value = Values[ Values.count() - 1 ];
-    emit NewFP23Temperature( Value );
+    emit NewValue( Value );
   }
 }

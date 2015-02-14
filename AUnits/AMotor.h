@@ -77,14 +77,14 @@ class AMotor : public AUnit0
   virtual void AskHighSpeed( void ) {};
   virtual void AskMiddleSpeed( void ) {};
   virtual void AskLowSpeed( void ) {};
-  
+
   /* MStab 可の Unit は下記の関数を実装するべし */
   virtual void CloseShutter( bool /*close*/ ) {};
   virtual void GoMaxAbs( double /*start*/, double /*end*/, int /*steps*/ ) {};
   virtual void GoMaxAbsQ( double /*start*/, double /*end*/, int /*steps*/, double /*time*/ ) {};
   virtual void GoMaxRel( double /*width*/, int /*steps*/ ) {};
   virtual void GoMaxRelQ( double /*width*/, int /*steps*/, double /*time*/ ) {};
-
+  
   /* PM16C だけかも */
   virtual void AssignDispCh( int /* ch */ ) {};  // ch : 0 - 3 --> 'A' -- 'D'
   /* PM16C で QXAFS の為に */
@@ -100,9 +100,6 @@ class AMotor : public AUnit0
   virtual void setAccRate( int /*r*/ ) {};
   virtual int accRateNo( void ) { return 0; };              // 加減速レートのテーブル番号
   virtual void setAccRateNo( int /*n*/ ) {};
-  
-  virtual void setMaxV( QString /*maxv*/ ) {};
-  virtual void setMinV( QString /*minv*/ ) {};
 
  public slots:
 };

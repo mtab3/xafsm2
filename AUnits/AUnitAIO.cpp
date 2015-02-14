@@ -75,7 +75,7 @@ void AUnitAIOo::CloseShutter( bool close )
 
 void AUnitAIOo::GoMaxAbs( double start, double end, int steps )
 {
-  IsBusy2On( Dev, "GoMaxAbs" );
+  busy2On( Dev, "GoMaxAbs" );
   s->SendCMD2( Uid, Dev,
 	       QString( "GoMaxAbs 0 %1 %2 %3" ).arg( start ).arg( end ).arg( steps ) );
 }
@@ -83,7 +83,7 @@ void AUnitAIOo::GoMaxAbs( double start, double end, int steps )
 void AUnitAIOo::GoMaxAbsQ( double start, double end, int steps, double time )
 {
   if ( Type == "AIOo" ) {
-    IsBusy2On( Dev, "GoMaxAbsQ" );
+    busy2On( Dev, "GoMaxAbsQ" );
     s->SendCMD2( Uid, Dev,
 		 QString( "GoMaxAbs 1 %1 %2 %3 %4" )
 		 .arg( start ).arg( end ).arg( steps ).arg( time ) );
@@ -93,7 +93,7 @@ void AUnitAIOo::GoMaxAbsQ( double start, double end, int steps, double time )
 void AUnitAIOo::GoMaxRel( double width, int steps )
 {
   if ( Type == "AIOo" ) {
-    IsBusy2On( Dev, "GoMaxRel" );
+    busy2On( Dev, "GoMaxRel" );
     s->SendCMD2( Uid, Dev,
 		 QString( "GoMaxRel 0 %1 %2" ).arg( width ).arg( steps ) );
   }
@@ -102,7 +102,7 @@ void AUnitAIOo::GoMaxRel( double width, int steps )
 void AUnitAIOo::GoMaxRelQ( double width, int steps, double time )
 {
   if ( Type == "AIOo" ) {
-    IsBusy2On( Dev, "GoMaxRelQ" );
+    busy2On( Dev, "GoMaxRelQ" );
     s->SendCMD2( Uid, Dev,
 		 QString( "GoMaxRel 1 %1 %2 %3" )
 		 .arg( width ).arg( steps ).arg( time ) );

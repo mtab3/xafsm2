@@ -1,6 +1,9 @@
 新たに AMotor, ASensor を継承したサブクラスを作るときには、
 以下の関数の実装を検討する。
-AUnit0 に含まれる仮想関数 8 本、AMotor に含まれる仮想関数 
+AUnit0 に含まれる仮想関数 8 本
+AMotor に含まれる仮想関数 22 本あるが殆どは実装の必要なし。
+  検討すべきなのは init0 と Stop のみ。
+  
 
 
 
@@ -66,4 +69,86 @@ slots:
 
 
 AMotor : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+
+virtual void init0( void ) {}
+  追加でそのユニット特有の初期化処理を行う
+
+virtual void Stop( void ) {}
+  Stars に当該の Motor の停止コマンドを発行する。
+  相当する機能があるデバイスには必ず実装するべき
+
+virtual void SetSpeed( MSPEED /* speed */ ) {};
+virtual void SetHighSpeed( int /* speed */ ) {};
+virtual void SetMiddleSpeed( int /* speed */ ) {};
+virtual void SetLowSpeed( int /* speed */ ) {};
+  Stars にスピード設定のコマンドを発行する。
+virtual void AskHighSpeed( void ) {};
+virtual void AskMiddleSpeed( void ) {};
+virtual void AskLowSpeed( void ) {};
+  Stars に設定スピード問い合わせのコマンドを発行する。
+  応答を受ける slot と、そのスロットに対する connect は個別のユニット内で実装。
+  (各ユニットの内部で閉じた接続にできるので、上位の抽象化された unit (AMotor) で
+  　定義しておく必要がない)
+
+virtual void CloseShutter( bool /*close*/ ) {};
+virtual void GoMaxAbs( double /*start*/, double /*end*/, int /*steps*/ ) {};
+virtual void GoMaxRel( double /*width*/, int /*steps*/ ) {};
+  MStab を実行できる Unit ((AMotor*)MMStab に使われる可能性のある Unit)は
+  上記の関数を実装する。
+
+virtual void AssignDispCh( int /* ch */ ) {};  // ch : 0 - 3 --> 'A' -- 'D'
+virtual void SetTimingOutMode( int /* mode */ ) {};
+virtual void SetTimingOutStart( int /*startP*/ ) {};      // start pos. of timing out
+virtual void SetTimingOutEnd( int /*endP*/ ) {};          // end pos. of timing out
+virtual void SetTimingOutInterval( int /*interval*/ ) {}; // timing out interval
+virtual void SetTimingOutReady( int /*ready*/ ) {};       // timing out ready
+virtual int accRate( void ) { return 1; };                // 加減速レート
+virtual void setAccRate( int /*r*/ ) {};
+virtual int accRateNo( void ) { return 0; };              // 加減速レートのテーブル番号
+virtual void setAccRateNo( int /*n*/ ) {};
+  PM16C で QXafs を実行するための関数。
+  今のところ他の Motor で QXafs を行うことが無いのでこれでも良いが
+  実際にはもっと抽象化を進める必要があるはず。
+
+
 ASensor : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+
+virtual void init0( void ) {};
+  追加でそのユニット特有の初期化処理を行う
+
+virtual bool InitSensor( void ) { return true; };
+  各ユニットに固有の初期化処理を行う。
+  init0 は Stars との接続が確立する前に呼ばれる。
+  従って XafsM2 内部の初期化しかできないのに対して、InitSensor は Stars との接続が
+  できた時(あるいは再接続された時)に呼ばれるので、Stars 経由でデバイス側の初期化ができる。
+
+virtual double SetTime( double dtime ) { return dtime; };   // in sec
+  計測時間の設定。「計測時間」という概念がない場合(例えば、リング電流モニタ LSR)や
+  かならず一定の積分時間で計測して、ユーザー側に変更の余地が無いような場合には
+  実装不要。
+  
+virtual bool GetRange( void ) { return false; };
+　レンジ設定できるデバイスに対して、
+　Stars 経由で現在のレンジを問い合わせるコマンドを発行する。
+
+virtual void SetRange( int /* range */ ) {};
+　レンジ設定できるデバイスに対して、
+　Stars 経由でレンジを設定するコマンドを発行する。
+
+virtual bool isAutoRangeAvailable( void ) { return false; };
+　オートレンジが使用可能かどうかを返答する関数。
+　使えない場合は実装不要。
+　使える場合は return false を return true に変えたものを実装すれば良い。
+  
+　以下の関数は QXafs に対応したデバイスのみ実装すれば良い
+virtual bool QStart( void ) { return false; };
+virtual bool QRead( void ) { return false; };
+virtual bool QEnd( void ) { return false; };
+　それぞれ、QXafs のスタート(トリガ待状態に入る)、計測終了後に値の読み出し、
+　計測終了時に状態をリセットするためのコマンドを Stars 経由でデバイスに発行する。
+
+  以下の関数は、連続スキャンに対応したデバイスのみ実装すれば良い
+virtual bool Close( void ) { return false; };
+  連続スキャン終了時に呼ばれる。
+  連続スキャンのためにデバイスの状態を特殊な状態に変更した場合などは、
+  この関数内で通常の状態に戻す。
