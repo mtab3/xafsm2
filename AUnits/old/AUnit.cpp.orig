@@ -29,7 +29,6 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   RangeSelectable = false;
   SelectedRange = 0;
   setTime = 1;
-  ConnectedToSSDServer = false;
   HasMaxIntTime = false;
   MaxIntTime = 1000000;   // 十分大きい
   HaveSetMaxS = false;
@@ -40,7 +39,7 @@ AUnit::AUnit( QObject *parent ) : QObject( parent )
   MinV = 0;          // only for PZ
 
   SSDPresetType = "REAL";   // for MCA/SSD
-  hasConnected = false;
+  connectingDLink = false;
   dLink = NULL;
   dLinkStream = NULL;
   MCAs0 = NULL;
@@ -91,7 +90,7 @@ void AUnit::setEnable( bool enable )
   Enable = enable;
   IsBusy = false;
   LastFunc = "";
-  ConnectedToSSDServer = false;
+  //  ConnectedToSSDServer = false;
   emit Enabled( Driver, enable );
   emit ChangedIsBusy1( Driver );
   IsBusy2Off( "" );
@@ -322,6 +321,7 @@ void AUnit::Initialize( Stars *S )
 	     Qt::UniqueConnection );
     s->SendCMD2( "Init", "System", "flgon", Driver );
     s->SendCMD2( "Init", Driver, "RunStop" );
+    connectingDLink = false;
     s->SendCMD2( "Init", Driver, "GetDataLinkCh" );
   }
   //              PM  PZ CNT PAM ENC SSD SSDP CNT2 SC OTC OTC2 LSR DV DV2 ENC2 PAM2 CCG AIOi AIOo FP23 EPIC
@@ -1650,17 +1650,10 @@ void AUnit::ReactGetDataLinkCh( SMsg msg )
     if ( msg.From() == Driver ) {
       if ( msg.Vals().count() == 2 ) {
 	IsBusy2Off( Driver );
-	QString NewDataLinkHostName = msg.Vals().at(0);
-	int NewDataLinkHostPort = msg.Vals().at(1).toInt();
-	if ( ( ! ConnectedToSSDServer ) || 
-	     ( ( NewDataLinkHostName != DataLinkHostName )
-	       &&( NewDataLinkHostPort != DataLinkHostPort ) ) ) {
-	  DataLinkHostName = NewDataLinkHostName;
-	  DataLinkHostPort = NewDataLinkHostPort;
-	  ConnectedToSSDServer = true;
-	  ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
-	  qDebug() << "Connect to SSD server" << DataLinkHostName << DataLinkHostPort;
-	}
+	DataLinkHostName = msg.Vals().at(0);
+	DataLinkHostPort = msg.Vals().at(1).toInt();
+	ConnectToDataLinkServer( DataLinkHostName, DataLinkHostPort );
+	qDebug() << "Connect to SSD server" << DataLinkHostName << DataLinkHostPort;
       }
     }
   }
@@ -1697,8 +1690,8 @@ void AUnit::getNewDark( double )
 
 void AUnit::ConnectToDataLinkServer( QString host, qint16 port )
 {
-  if ( !hasConnected ) {
-    hasConnected = true;
+  if ( !connectingDLink ) {
+    connectingDLink = true;
     qDebug() << "data link server" << host << port;
     if ( dLink != NULL ) delete dLink;
     dLink = new QTcpSocket;
