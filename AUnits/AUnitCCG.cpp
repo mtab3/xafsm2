@@ -19,7 +19,7 @@ void AUnitCCG::SetCurPos( SMsg msg )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
             || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Vals().at(0);
-    emit newValue( Value );
+    emit NewValue( Value );
     IsBusy2Off( Dev );
   }
 }

@@ -17,8 +17,7 @@ class AUnitXMAP : public ASensor
 {
   Q_OBJECT
 
-  bool ConnectedToSSDServer;
-  bool hasConnected;
+  bool connectingDLink;
   
   QString DataLinkHostName;
   qint16 DataLinkHostPort;
@@ -118,15 +117,9 @@ class AUnitXMAP : public ASensor
   void ReceivedNewMCALiveTime( int i );
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
-
 };
 
 #endif
-
-
-
-
-
 
 
 

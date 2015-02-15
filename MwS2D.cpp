@@ -248,11 +248,11 @@ void MainWindow::newAx0( int ax, int motor )
       }
     }
     if ( Uniq )
-      disconnect( S2DSelectedMotors[ax], SIGNAL( newValue( QString ) ),
+      disconnect( S2DSelectedMotors[ax], SIGNAL( NewValue( QString ) ),
 		  this, SLOT( showS2DNewAxValue( QString ) ) );
   }
   S2DSelectedMotors[ax] = S2DOkMotors[motor];   // その軸に選ばれたモータを覚えておく
-  connect( S2DSelectedMotors[ax], SIGNAL( newValue( QString ) ),
+  connect( S2DSelectedMotors[ax], SIGNAL( NewValue( QString ) ),
 	   this, SLOT( showS2DNewAxValue( QString ) ),
 	   Qt::UniqueConnection );
 }

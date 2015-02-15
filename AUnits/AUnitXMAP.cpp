@@ -4,9 +4,9 @@
 AUnitXMAP::AUnitXMAP( void )
 {
   MCALength = 2048;    // !!
+
+  connectingDLink = false;   // new
   
-  ConnectedToSSDServer = false;
-  hasConnected = false;
   DataLinkHostName = "";
   DataLinkHostPort = 0;
   dLink = NULL;
@@ -48,6 +48,76 @@ AUnitXMAP::AUnitXMAP( void )
   MCAStats.clear();
 }
 
+void AUnitXMAP::_setEnable( bool /*enable*/ )
+{
+  connectingDLink = false;    
+  // この setEnable に続いて init0 が呼ばれるはずなので、ここでやらなくても良いはず
+}
+
+void AUnitXMAP::init0( void )
+{
+  connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsRunStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg )),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetRealTime( SMsg )), this, SLOT( ReactGetRealTime( SMsg )),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetLiveTime( SMsg )), this, SLOT( ReactGetLiveTime( SMsg )),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
+	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
+	   Qt::UniqueConnection );
+
+  s->SendCMD2( "Init", DevCh, "IsBusy" );
+  s->SendCMD2( "Init", Dev, "RunStop" );
+
+  connectingDLink = false;          // new
+  s->SendCMD2( "Init", Dev, "GetDataLinkCh" );
+}
+
+void AUnitXMAP::ReactGetDataLinkCh( SMsg msg )
+{
+  if ( msg.From() == Dev ) {
+    if ( msg.Vals().count() == 2 ) {
+      busy2Off( Dev );
+      DataLinkHostName = msg.Vals().at(0);
+      DataLinkHostPort = msg.Vals().at(1).toInt();
+      ConnectToXMAPDataLinkServer( DataLinkHostName, DataLinkHostPort );
+      qDebug() << "Connecting to SSD server" << DataLinkHostName << DataLinkHostPort;
+    }
+  }
+}
+
+void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
+{
+  if ( !connectingDLink ) {
+    connectingDLink = true;                          // new
+    qDebug() << "data link server" << host << port;
+    if ( dLink != NULL ) delete dLink;
+    dLink = new QTcpSocket;
+    if ( dLinkStream != NULL ) delete dLinkStream;
+    dLinkStream = new QDataStream( dLink );
+    if ( MCAs0 != NULL )
+      delete [] MCAs0;
+    MCAs0 = new char [ XMAPBUFSIZE ];
+    dLinkCount = 0;
+    MCAsReady = false;  // MCAs のバッファに有効なデータが無い
+    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ),
+	     Qt::UniqueConnection );
+    dLink->connectToHost( host, port );
+  }
+}
+
 bool AUnitXMAP::InitSensor( void )
 {
   bool rv = false;
@@ -79,62 +149,6 @@ bool AUnitXMAP::InitSensor( void )
   }
 
   return rv;
-}
-
-void AUnitXMAP::init0( void )
-{
-  connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsRunStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsRunStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGetValues( SMsg ) ), this, SLOT( ReceiveValues( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGetStatistics( SMsg ) ), this, SLOT( ReactGetStat( SMsg )),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGetRealTime( SMsg )), this, SLOT( ReactGetRealTime( SMsg )),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGetLiveTime( SMsg )), this, SLOT( ReactGetLiveTime( SMsg )),
-	   Qt::UniqueConnection );
-  connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
-	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
-	   Qt::UniqueConnection );
-
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
-  s->SendCMD2( "Init", Dev, "RunStop" );
-  s->SendCMD2( "Init", Dev, "GetDataLinkCh" );
-}
-
-void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
-{
-  if ( !hasConnected ) {
-    hasConnected = true;
-    qDebug() << "data link server" << host << port;
-    if ( dLink != NULL ) delete dLink;
-    dLink = new QTcpSocket;
-    if ( dLinkStream != NULL ) delete dLinkStream;
-    dLinkStream = new QDataStream( dLink );
-    if ( MCAs0 != NULL )
-      delete [] MCAs0;
-    MCAs0 = new char [ XMAPBUFSIZE ];
-    dLinkCount = 0;
-    MCAsReady = false;  // MCAs のバッファに有効なデータが無い
-    connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ),
-	     Qt::UniqueConnection );
-    dLink->connectToHost( host, port );
-  }
-}
-
-void AUnitXMAP::_setEnable( bool /*enable*/ )
-{
-  ConnectedToSSDServer = false;
-  // 本当にこれでいいか stars との接続が on/off されると
-  // かならず、裏でつながっているダイレクとのコネクションが切れたことにされる
 }
 
 double AUnitXMAP::SetTime( double dtime ) // in sec, この関数は、複数ステップ化できない
@@ -385,26 +399,6 @@ void AUnitXMAP::SetLowLimit( int ch, int llpix )
 		 QString( "SetLLimit %1 %2" ).arg( ch ).arg( llpix ) );
   } else {
     qDebug() << "Setting LowLimit the ch " << ch << "is too big";
-  }
-}
-
-void AUnitXMAP::ReactGetDataLinkCh( SMsg msg )
-{
-  if ( msg.From() == Dev ) {
-    if ( msg.Vals().count() == 2 ) {
-      busy2Off( Dev );
-      QString NewDataLinkHostName = msg.Vals().at(0);
-      int NewDataLinkHostPort = msg.Vals().at(1).toInt();
-      if ( ( ! ConnectedToSSDServer ) || 
-	   ( ( NewDataLinkHostName != DataLinkHostName )
-	     &&( NewDataLinkHostPort != DataLinkHostPort ) ) ) {
-	DataLinkHostName = NewDataLinkHostName;
-	DataLinkHostPort = NewDataLinkHostPort;
-	ConnectedToSSDServer = true;
-	ConnectToXMAPDataLinkServer( DataLinkHostName, DataLinkHostPort );
-	qDebug() << "Connect to SSD server" << DataLinkHostName << DataLinkHostPort;
-      }
-    }
   }
 }
 

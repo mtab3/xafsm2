@@ -16,7 +16,7 @@ class AUnitFP23 : public ASensor
    void OnReportValue( SMsg msg );
 
  signals:
-  void NewFP23Temperature( QString val );
+   //  void NewFP23Temperature( QString val );  // --> NewValue( QString )
 
 };
 

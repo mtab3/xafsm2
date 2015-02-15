@@ -1174,7 +1174,7 @@ void MainWindow::Monitor( void )
 	     Qt::UniqueConnection );
     for ( int i = 0; i < monLines.count(); i++ ) {
       if ( monLines[i]->isChecked() ) {
-	connect( ass[i], SIGNAL( newValue( QString ) ), this, SLOT( newVs( QString ) ),
+	connect( ass[i], SIGNAL( NewValue( QString ) ), this, SLOT( newVs( QString ) ),
 	     Qt::UniqueConnection );
       }
     }
@@ -1211,7 +1211,7 @@ void MainWindow::Monitor( void )
 	     MonitorView, SLOT( SetMonScale( int ) ) );
     for ( int i = 0; i < monLines.count(); i++ ) {
       if ( monLines[i]->isChecked() ) {
-	disconnect( ass[i], SIGNAL( newValue( QString ) ),
+	disconnect( ass[i], SIGNAL( NewValue( QString ) ),
 		    this, SLOT( newVs( QString ) ) );
       }
     }

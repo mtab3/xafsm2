@@ -216,14 +216,14 @@ void MainWindow::NewChangerSelected( int i )
   ChangerUnit2->setText( Changers[i]->unit2()->unit() );
 
   if ( connecteNewValue2ShowChangerPosition ) {
-    disconnect( SIGNAL( newValue( QString ) ),
+    disconnect( SIGNAL( NewValue( QString ) ),
 		this, SLOT( ShowChangerPosition( QString ) ) );
   }
   connecteNewValue2ShowChangerPosition = true;
-  connect( Changers[i]->unit1(), SIGNAL( newValue( QString ) ),
+  connect( Changers[i]->unit1(), SIGNAL( NewValue( QString ) ),
 	   this, SLOT( ShowChangerPosition( QString ) ),
 	   Qt::UniqueConnection );
-  connect( Changers[i]->unit2(), SIGNAL( newValue( QString ) ),
+  connect( Changers[i]->unit2(), SIGNAL( NewValue( QString ) ),
 	   this, SLOT( ShowChangerPosition( QString ) ),
 	   Qt::UniqueConnection );
   Changers[i]->unit1()->GetValue();

@@ -47,7 +47,6 @@ class AUnitPM : public AMotor
   void gotHighS( int s );
   void gotMiddleS( int s );
   void gotLowS( int s );
-
 };
 
 #endif

@@ -345,22 +345,22 @@ void MainWindow::InitAndIdentifyMotors( void )
     am->Initialize( s );
     if ( am->id() == "THETA" ) {
       if ( MMainTh != NULL ) {
-        disconnect( MMainTh, SIGNAL( newValue( QString ) ),
+        disconnect( MMainTh, SIGNAL( NewValue( QString ) ),
                     this, SLOT( ShowCurThPos() ) );
       }
       MMainTh = (AUnitPM*)am;
       //      iMMainTh = i;
-      connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
+      connect( MMainTh, SIGNAL( NewValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
     }
 
     if ( am->id() == "DTH1" ) {
       if ( MDTh1 != NULL ) {
-        disconnect( MDTh1, SIGNAL( newValue( QString ) ),
+        disconnect( MDTh1, SIGNAL( NewValue( QString ) ),
                     this, SLOT( ShowCurDTh1() ) );
       }
       MDTh1 = am;
-      connect( MDTh1, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurDTh1() ),
+      connect( MDTh1, SIGNAL( NewValue( QString ) ), this, SLOT( ShowCurDTh1() ),
 	       Qt::UniqueConnection );
     }
 
@@ -430,15 +430,15 @@ void MainWindow::InitAndIdentifySensors( void )
     }
     if ( as->id() == "ENCTH" ) {
       if ( EncMainTh != NULL ) {
-	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
+	disconnect( EncMainTh, SIGNAL( NewValue( QString ) ),
 		    this, SLOT( ShowCurThPos() ) );
-	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
+	disconnect( EncMainTh, SIGNAL( NewValue( QString ) ),
 		    StatDisp, SLOT( newEncTh( QString ) ) );
       }
       EncMainTh = (AUnitENC*)as;
-      connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
+      connect( EncMainTh, SIGNAL( NewValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
-      connect( EncMainTh, SIGNAL( newValue( QString ) ),
+      connect( EncMainTh, SIGNAL( NewValue( QString ) ),
 	       StatDisp, SLOT( newEncTh( QString ) ),
 	       Qt::UniqueConnection );
     }
@@ -452,7 +452,7 @@ void MainWindow::InitAndIdentifySensors( void )
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);
       if (( as->theParent() == SFluo )&&( as != SFluo )) {
-	connect( SFluo, SIGNAL( newValue( QString ) ),
+	connect( SFluo, SIGNAL( NewValue( QString ) ),
 		 as, SLOT( getNewValue( QString ) ),
 		 Qt::UniqueConnection );
 	connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ),
