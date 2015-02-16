@@ -21,7 +21,7 @@ void AUnitLSR::OnReportCurrent( SMsg msg )
     LastValue = Value;
     Value = Values[ Values.count() - 1 ];
     emit NewRingCurrent( Value, Values );
-    emit NewValue();
+    emit NewValue( Value );
   }
 }
 
