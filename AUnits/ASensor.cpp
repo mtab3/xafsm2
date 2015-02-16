@@ -16,5 +16,7 @@ ASensor::ASensor( void )
 
 void ASensor::init( void )
 {
-  init0();  // 更に個別のユニットの初期化を行うための仮想関数
+  connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
+	   Qt::UniqueConnection );
+  init0();
 }

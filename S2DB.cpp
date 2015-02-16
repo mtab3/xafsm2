@@ -335,3 +335,7 @@ double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
   return sum;
 }
 
+void S2DB::print( QPrinter *p )
+{
+  S2DV->print( p );
+}
