@@ -69,6 +69,7 @@ public slots:
     zmax->setText( max );
     zmin->setText( min );
   }
+  void print( QPrinter *p );
 
 private slots:
   void newInputZmax( void ) { CBar->newInputZmax( zmax->text().toDouble() ); };

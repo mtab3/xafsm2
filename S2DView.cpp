@@ -292,7 +292,7 @@ void S2DView::Draw( QPainter *p )
 	  QString::number( minz ) : QString( "--" ) );
 
   rec = QRectF( 10, 10, LM-20, dVW );
-  cc.DrawTexts( p, rec, 0, dVW2, F1, Qt::AlignLeft | Qt::AlignVCenter, Infos );
+  cc.DrawTexts( p, rec, 0, dVW2, F1, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, Infos );
 }
 
 void S2DView::mouseMoveEvent( QMouseEvent *e )

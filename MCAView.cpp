@@ -380,7 +380,7 @@ void MCAView::Draw( QPainter *p )
   /* ここから描画開始 */
 
   double lastE = 0;
-  int sum = 0;
+  double sum = 0;
   for ( int i = 0; i < MCALen; i++ ) {       // ROI の範囲の積算と MCA スペクトルの描画
     double E = k2p->p2E( MCACh, i );         // MCA pixel から エネルギーへの換算
     if (( E >= wrROIsx )&&( E <= wrROIex )) {
@@ -775,11 +775,11 @@ void MCAView::Draw( QPainter *p )
 
   // ROI 内の積分値
   titles << tr( " Count : " );
-  vals  << QString::number( sum );
+  vals  << QString::number( (double)sum, 'g', 2 );
 
   // ROI 内の積分値を LiveTime で割った cps
   titles << tr( "   CPS : " );
-  vals << QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'f', 2 );
+  vals << QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'g', 2 );
 
   // Real Time
   titles << tr( "Real Time : " );
@@ -795,9 +795,9 @@ void MCAView::Draw( QPainter *p )
   vals << QString::number( dt, 'f', 2 );
 
   rec.setRect( dLM,   TM+dVW, dLM * 4, dVW );
-  cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignLeft | Qt::AlignVCenter, titles );
+  cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, titles );
   rec.setRect( dLM*5, TM+dVW, dLM * 4, dVW );
-  cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignRight | Qt::AlignVCenter, vals );
+  cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, vals );
   
   //　　 青   ->  緑   ->  黄   -> オレンジ -> 赤　　にするとしたら？
   //    0 0 1 -> 0 1 0 -> 1 1 0 ->    ->      1 0 0

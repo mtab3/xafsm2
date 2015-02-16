@@ -18,6 +18,5 @@ void ASensor::init( void )
 {
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );
-
   init0();
 }

@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 16 16:40:16 2015 +0900\n"\
+                "    Step scan with CNT, XMAP is OK.  QXAFS with CNT is OK,  measure SSD Spectrum is OK,   Monitoring with CNT, XMAP is OK.    The XANES parameter for Q-XAFS is tuned\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 16 11:09:39 2015 +0900\n"\
                 "    a bug fix\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 13 00:06:19 2015 +0900\n"\
                 "    Finally it works with simmotor but not tested in real\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Feb 12 21:26:33 2015 +0900\n"\
-                "    Still in dark mist.  But I hope the goal is soon ahead!\n"\
 		"\n"\
                 ""
 #endif
