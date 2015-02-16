@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Feb 15 21:40:49 2015 +0900\n"\
+                "    DLink for SSD is re-connectable when the Stars connection is up and down\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 12 02:30:15 2015 +0900\n"\
                 "    fix a bug in ScanInfo\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 02:48:27 2015 +0900\n"\
                 "    new WhatToDo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 02:45:39 2015 +0900\n"\
-                "    MUnits are prepared for Measurement, Scanning, Monitoring, and S2D separately\n"\
 		"\n"\
                 ""
 #endif
