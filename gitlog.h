@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 16 11:09:39 2015 +0900\n"\
+                "    a bug fix\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 15 22:30:29 2015 +0900\n"\
                 "    nothing\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 12 21:26:33 2015 +0900\n"\
                 "    Still in dark mist.  But I hope the goal is soon ahead!\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Feb 12 15:16:00 2015 +0900\n"\
-                "    working\n"\
 		"\n"\
                 ""
 #endif

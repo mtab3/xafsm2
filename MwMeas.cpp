@@ -782,44 +782,55 @@ void MainWindow::SetStdXANESBLKs( void )
   QString buf;
   double Eg = ManTEkeV->text().toDouble();
 
-  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.20 ) );
-  BLKstart[0]->setText( buf );
-  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.03 ) );
-  BLKstart[1]->setText( buf );
-  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.07 ) );
-  BLKstart[2]->setText( buf );
-  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.30 ) );
-  BLKstart[3]->setText( buf );
+  if ( QXafsMode->isChecked() ) {   // QXAFS
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.03 ) );
+    BLKstart[0]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.07 ) );
+    BLKstart[1]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
+    for ( int i = 2; i < MaxBLKs+1; i++ )
+      BLKstart[i]->setText( buf );
 
-  buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
-  for ( int i = 4; i < MaxBLKs+1; i++ )
-    BLKstart[i]->setText( buf );
+    buf.sprintf( "% 4d", 0 );
+    for ( int i = 0; i < MaxBLKs; i++ )
+      BLKstep[i]->setText( buf );
 
-  buf.sprintf( "% 4d", 0 );
-  for ( int i = 0; i < MaxBLKs; i++ )
-    BLKstep[i]->setText( buf );
-  
-  buf.sprintf( "% 4d", 17 );
-  BLKpoints[0]->setText( buf );
-  buf.sprintf( "% 4d", 300 );
-  BLKpoints[1]->setText( buf );
-  buf.sprintf( "% 4d", 23 );
-  BLKpoints[2]->setText( buf );
-  buf.sprintf( "% 4d", 0 );
-  for ( int i = 3; i < MaxBLKs; i++ )
-    BLKpoints[i]->setText( buf );
-
-  if ( ! QXafsMode->isChecked() ) {
+    buf.sprintf( "% 4d", 1000 );
+    BLKpoints[0]->setText( buf );
+    
     buf.sprintf( "% 5.2f", 1.0 );
     BLKdwell[0]->setText( buf );
-    BLKdwell[1]->setText( buf );
-    BLKdwell[2]->setText( buf );
     buf.sprintf( "% 5.2f", 0.0 );
-    for ( int i = 3; i < MaxBLKs; i++ )
+    for ( int i = 1; i < MaxBLKs; i++ )
       BLKdwell[i]->setText( buf );
-    ChangeBLKs( 3 );
-  }
+  } else {
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.20 ) );
+    BLKstart[0]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.03 ) );
+    BLKstart[1]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.07 ) );
+    BLKstart[2]->setText( buf );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.30 ) );
+    BLKstart[3]->setText( buf );
+    
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
+    for ( int i = 4; i < MaxBLKs+1; i++ )
+      BLKstart[i]->setText( buf );
 
+    buf.sprintf( "% 4d", 0 );
+    for ( int i = 0; i < MaxBLKs; i++ )
+      BLKstep[i]->setText( buf );
+    
+    buf.sprintf( "% 4d", 17 );
+    BLKpoints[0]->setText( buf );
+    buf.sprintf( "% 4d", 300 );
+    BLKpoints[1]->setText( buf );
+    buf.sprintf( "% 4d", 23 );
+    BLKpoints[2]->setText( buf );
+    buf.sprintf( "% 4d", 0 );
+    for ( int i = 3; i < MaxBLKs; i++ )
+      BLKpoints[i]->setText( buf );
+  }
   ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
