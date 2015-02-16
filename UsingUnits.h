@@ -2,7 +2,7 @@
 #define USINGUNIT_H
 
 #include <QObject>
-#include "AUnits.h"
+#include "AUnits/AUnits.h"
 
 class UsingUnit : public QObject
 {

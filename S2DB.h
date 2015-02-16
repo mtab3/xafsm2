@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <QTimer>
 
-#include "MCA.h"
+#include "AUnits/MCA.h"
 #include "S2DInfo.h"
 #include "MCAView.h"
 #include "KeV2Pix.h"

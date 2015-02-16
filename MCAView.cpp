@@ -283,7 +283,8 @@ void MCAView::Draw( QPainter *p )
   cc.SetScreenCoord( LM, TM, LM+HW, TM+VW );
   p->fillRect( 0, 0, w, h, White );
 
-  double min, max;
+  // double min,
+  double max, min;
   double min0 = 1e300, max0 = 0;
   // y 軸方向の表示スケール決定のため表示範囲での最大値を探す
   for ( int i = 0; i < MCALen; i++ ) {
@@ -337,7 +338,7 @@ void MCAView::Draw( QPainter *p )
 
   // 微係数の計算
   double maxD, minD, maxD2, minD2, maxD3, minD3, maxD4, minD4;
-  int minI, maxI;
+  int minI = 0, maxI = 0;
   if ( ShowDiff || DoPeakSearch ) {
     maxD = minD = maxD2 = minD2 = maxD3 = minD3 = 0;
     minI = k2p->E2p( MCACh, MinE );
@@ -348,8 +349,8 @@ void MCAView::Draw( QPainter *p )
       // 4次の微係数まで一気に計算
       //    SDiff3( true, MCA, DMCA, DMCA2, DMCA3, MCALen, 10,
       SDiff4( false, SMCA, DMCA, DMCA2, DMCA3, DMCA4, MCALen, 10,
-	      WT3, WT3, WT3, WT3, 
-	      &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, &minD4, &maxD4, minI, maxI );
+              WT3, WT3, WT3, WT3,
+              &minD, &maxD, &minD2, &maxD2, &minD3, &maxD3, &minD4, &maxD4, minI, maxI );
       maxD = ( fabs( minD ) > fabs( maxD ) ) ? fabs( minD ) : fabs( maxD );
       minD = -maxD;
       maxD2 = ( fabs( minD2 ) > fabs( maxD2 ) ) ? fabs( minD2 ) : fabs( maxD2 );
@@ -366,9 +367,9 @@ void MCAView::Draw( QPainter *p )
     for ( int i = 0; i < MCALen; i++ ) {
       double d = 1;
       if ( ( ( i + DELOFFSET ) >= 0 ) && ( ( i - DELOFFSET ) < MCALen ) ) {
-	for ( int j = 0; j < DIFFRANGE; j++ ) {
-	  d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
-	}
+        for ( int j = 0; j < DIFFRANGE; j++ ) {
+          d += DelWeight[j] * SMCA[ i + j + DELOFFSET ];
+        }
       }
       dMCA[i] = d = sqrt( d ) / 2;
       if ( d > maxd ) { maxd = d; }
