@@ -411,7 +411,7 @@ void Data::showMonData( QTextStream &in, QVector<ASensor*> &ASensors )
 
 void Data::showMCAData( QTextStream &in )
 {
-  MCALength = 2048;
+  //  MCALength = 2048;
 
   QStringList vals;
   theMCAView = (MCAView*)theViewC->getView();
@@ -429,7 +429,7 @@ void Data::showMCAData( QTextStream &in )
 
   MCADataIsValid = false;
   //  getNewMCAs( MCALength );
-  aMCA.setSize( MCALength, MaxSSDs );
+  //  aMCA.setSize( MCALength, MaxSSDs );
   
   aMCA.load( in, "" );
 #if 0  

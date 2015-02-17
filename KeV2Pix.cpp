@@ -52,16 +52,16 @@ void KeV2Pix::MakeUpAB( int MCAChs, int Dim, QString fname )
     QTextStream in( &f );
     
     QVector<double> KeVs;
-    QVector<double> Chs[ SSDChs ];
+    QVector<double> Chs[ MCAChs ];   // ************** Broken
     QStringList items;
     
     while( !in.atEnd() ) {
       items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
       if ( items.count() > 0 ) {
 	if ( items.at( 0 ).mid( 0, 1 ) == "#" ) continue;
-	if ( items.count() > SSDChs ) {       // == MaxSSDs + 1 (のはず)
+	if ( items.count() > MCAChs ) {       // == MaxSSDs + 1 (のはず)
 	  KeVs << items.at( 0 ).toDouble();
-	  for ( int i = 0; i < SSDChs; i++ ) {
+	  for ( int i = 0; i < MCAChs; i++ ) {
 	    Chs[ i ] << items.at( i + 1 ).toDouble();
 	  }
 	}
@@ -69,7 +69,7 @@ void KeV2Pix::MakeUpAB( int MCAChs, int Dim, QString fname )
     }
   }
 
-  for ( int i = 0; i < SSDChs; i++ ) {
+  for ( int i = 0; i < MCAChs; i++ ) {
     double ab0[ dim + 2 ];
     if ( !calcAB( Chs[ i ], KeVs, ab0 ) ) {       // MCApix -> keV に直す係数を求める
       qDebug() << "ab can not be calculated for " << i;

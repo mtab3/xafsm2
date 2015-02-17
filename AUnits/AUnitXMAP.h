@@ -59,6 +59,8 @@ class AUnitXMAP : public ASensor
   void RunStart( void );
   void RunStop( void );
   void RunResume( void );
+  int length( void ) { return McaLength; };
+  int chs( void ) { return SSDChs; };
 
   void setSSDPresetType( QString type ) { SSDPresetType = type; };
   QString getSSDPresetType( void ) { return SSDPresetType; };

@@ -1,0 +1,7 @@
+QVector<double> MCACorrect     MasSSDs
+  QString ROIStart[ MaxSSDs ];
+  QString ROIEnd[ MaxSSDs ];
+
+
+MCA data の load はチェックするべき
+KeV2Pix もかなり怪しい

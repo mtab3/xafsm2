@@ -140,9 +140,9 @@ private:
   bool MCAPreAMPGainHasSet;
   KeV2Pix *kev2pix;
   FluoDBase *fdbase;
-  double MCACorrect[ MaxSSDs ];
-  QString ROIStart[ MaxSSDs ];
-  QString ROIEnd[ MaxSSDs ];
+  QVector<double> MCACorrect;
+  QVector<QString> ROIStart;
+  QVector<QString> ROIEnd;
   int MCALength;
   bool inMCAMeas;
   bool validMCAData;

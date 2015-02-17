@@ -41,6 +41,7 @@ void aMCASet::writeHead( QTextStream &out )
   for ( int i = 0; i < Elms.count(); i++ ) {
     out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
   }
+  out << "\n";
 }
 
 void aMCASet::writeData( QTextStream &out )
@@ -68,39 +69,59 @@ void aMCASet::load( QString fname, QString title )
 void aMCASet::load( QTextStream &in, QString title )
 {
   bool endf = false;
-  int lc = 0;
-
-  while ( !endf && !in.atEnd() ) {
+  valid = false;
+  
+  if  ( !in.atEnd() ) {
     QString line = in.readLine();
-    if ( lc == 0 ) {
-      QString Title = QString( "%1 %2" ).arg( COMMONTITLE ).arg( title );
-      Title = Title.simplified();
-      if ( line.mid( 2, QString( Title ).length() ) != QString( Title ) ) {
-	endf = true;
-      }
+    QString Title = QString( "%1 %2" ).arg( COMMONTITLE ).arg( title );
+    Title = Title.simplified();
+    if ( line.mid( 2, QString( Title ).length() ) != QString( Title ) ) {
+      return;
     }
-    if ( lc > 1 ) {
-      if ( ( line.count() > 0 ) && ( line[0] == '#' ) ) {
-	if ( line.mid( 2, QString( RINGCURRENT ).length() ) == QString( RINGCURRENT ) ) {
-	  RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
-	}
-	if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
-	  RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
-	}
-      } else {
-	QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
-	if ( vals.count() >= ( CHs * 2 + 1 ) ) {
-	  int i = vals[0].toInt();
-	  for ( int j = 0; j < CHs; j++ ) {
-	    Ch[j].E[i] = vals[j * 2 + 1].toDouble();
-	    Ch[j].cnt[i] = vals[j * 2 + 2].toInt();
-	  }
-	}
+  }
+  loadHeader( in );
+  int lc = 0;
+  while ( !in.atEnd() ) {
+    QString line = in.readLine();
+    QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
+    if ( vals.count() >= ( CHs * 2 + 1 ) ) {
+      int i = vals[0].toInt();
+      for ( int j = 0; j < CHs; j++ ) {
+	Ch[j].E[i] = vals[j * 2 + 1].toDouble();
+	Ch[j].cnt[i] = vals[j * 2 + 2].toInt();
       }
     }
     lc++;
   }
-  if ( lc > 1 ) valid = true;
+  if ( lc > 0 )
+    valid = true;
+}
+
+void aMCASet::loadHeader( QTextStream &in )
+{
+  int maxCh = 0;
+  int maxL = 0;
+  while ( !in.atEnd() ) {
+    QString line = in.readLine();
+    QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
+    if ( ( vals.count() > 0 ) && ( vals[0] == "#" ) ) {
+      if ( line.mid( 2, QString( RINGCURRENT ).length() ) == QString( RINGCURRENT ) ) {
+	RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
+      }
+      if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
+	RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
+      }
+      if ( vals.count() >= 9 ) {
+	int ch = vals[1].toInt();
+	int L = vals[3].toInt();
+	if ( ch > maxCh ) maxCh = ch;
+	if ( L > maxL ) maxL = L;
+      }
+    } else {
+      setSize( maxL, maxCh + 1 );
+      return;
+    }
+  }
 }
 
 void aMCASet::correctE( KeV2Pix *k2p )
