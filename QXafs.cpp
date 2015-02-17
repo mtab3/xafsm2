@@ -374,16 +374,6 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   ShowQTime( dtime, WidthInPuls );
 }
 
-void MainWindow::SetUpMainThToGenerageTriggerSignal( int sp, int ep )
-{
-  MMainTh->AssignDispCh( 0 );              // QXafs のために PM16C からトリガパルスをとる
-                                           // 配線は、チャンネル A ( 0 ) に繋いでる。
-  MMainTh->SetTimingOutMode( 3 );          // 10um puls at every interval
-  MMainTh->SetTimingOutStart( sp );
-  MMainTh->SetTimingOutEnd( ep );
-  MMainTh->SetTimingOutInterval( QXafsInterval );
-  MMainTh->SetTimingOutReady( 1 );
-}
 
 void MainWindow::QXafsMeasSequence( void )
 {
@@ -514,7 +504,7 @@ void MainWindow::QXafsMeasSequence( void )
     }
     CurrentPnt->setText( tr( "Fwd" ) );
     MMainTh->SetHighSpeed( HSpeed );
-    SetUpMainThToGenerageTriggerSignal( QXafsSP0, QXafsEP0 );
+    MMainTh->SetUpToGenerageTriggerSignal( QXafsSP0, QXafsEP0, QXafsInterval );
     MeasStage++;
     break;
   case 6:
@@ -569,13 +559,12 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     mMeasUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
-      SetUpMainThToGenerageTriggerSignal( QXafsEP0, QXafsSP0 );
+      MMainTh->SetUpToGenerageTriggerSignal( QXafsEP0, QXafsSP0, QXafsInterval );
       CurrentPnt->setText( tr( "Bwd" ) );
       MeasStage = 10;
     } else {
       MMainTh->SetHighSpeed( MaxHSpeed );
-      MMainTh->SetTimingOutMode( 0 );
-      MMainTh->SetTimingOutReady( 0 );
+      MMainTh->TriggerOff();
       statusbar->showMessage( tr( "Return back to the start position" ) );
       MeasStage = 12;
       break;

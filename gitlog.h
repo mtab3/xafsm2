@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newAUnit" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 16 23:52:25 2015 +0900\n"\
+                "    new WhatToDo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 16 17:03:01 2015 +0900\n"\
                 "    fixed the file-path of some header files in AUnits\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 15 01:11:54 2015 +0900\n"\
                 "    documantaion of Virtuals in AUntis, and rename some fuctions of AUnit familiy\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Feb 13 19:28:17 2015 +0900\n"\
-                "    preparing doccuments of new AUnits\n"\
 		"\n"\
                 ""
 #endif
