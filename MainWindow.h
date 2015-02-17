@@ -552,7 +552,7 @@ private:
   void setupQXafsMode( void );
   void HideBLKs( bool f );
   void GetPM16CParamsForQXAFS( void );
-  void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
+  //  void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
 
   void SetDFName2( int rpt, DIRECTION dir, int type );
   // type :: 0 normal Q-XAFS, 1 : Simulate Step Scan

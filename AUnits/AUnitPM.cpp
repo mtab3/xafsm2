@@ -197,3 +197,24 @@ void AUnitPM::RcvLowSpeed( SMsg msg )
     emit gotLowS( LowS );
   }
 }
+
+void AUnitPM::SetUpToGenerageTriggerSignal( int sp, int ep, int interval )
+{
+  // 配線は、チャンネル A ( 0 ) に繋いでる。
+  // QXafs のために PM16C からトリガパルスをとる
+  AssignDispCh( 0 );
+  // 34410 triggers rising edge and requires 1us or longer
+  // for EB741 2us is long enough
+  // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
+  SetTimingOutMode( 3 );          // 10um puls at every interval
+  SetTimingOutStart( sp );
+  SetTimingOutEnd( ep );
+  SetTimingOutInterval( interval );
+  SetTimingOutReady( 1 );
+}
+
+void AUnitPM::TriggerOff( void )
+{
+  SetTimingOutMode( 0 );
+  SetTimingOutReady( 0 );
+}

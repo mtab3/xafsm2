@@ -32,6 +32,7 @@ class AUnitAIOo : public AMotor
   void setMinV( QString minv ) { MinV = minv.toDouble(); };
 
   void CloseShutter( bool close );
+  bool canBeMStab( void ) { return true; };
   void GoMaxAbs( double start, double end, int steps );
   void GoMaxAbsQ( double start, double end, int steps, double time );
   void GoMaxRel( double width, int steps );
