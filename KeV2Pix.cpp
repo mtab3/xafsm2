@@ -9,23 +9,33 @@
 
 KeV2Pix::KeV2Pix( void ) : QObject()
 {
-  MakeUpAB( 2 );    // 2次の最小自乗にした
+  MakeUpAB( 19, 2 );    // 2次の最小自乗にした
 }
 
-void KeV2Pix::MakeUpAB( int Dim )
+void KeV2Pix::setMCALen(int mcaLen )
+{
+  MCALen = mcaLen;
+}
+
+void KeV2Pix::MakeUpAB( int MCAChs, int Dim )
 {
   if ( Dim > 0 )
     dim = Dim;
   else 
     dim = 1;
 
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+  ab.clear();
+  ba.clear();
+  for ( int i = 0; i < MCAChs; i++ ) {
+    QVector<double> ab0, ba0;
     for ( int j = 0; j < dim + 1; j++ ) {
-      ab[i] << 0;
-      ba[i] << 0;
+      ab0 << 0;
+      ba0 << 0;
     }
+    ab << ab0;
+    ba << ba0;
   }
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+  for ( int i = 0; i < MCAChs; i++ ) {
     ab[i][1] = 0.01;
     ba[i][1] = 100;
   }

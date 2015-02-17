@@ -3,7 +3,9 @@
 
 AUnitXMAP::AUnitXMAP( void )
 {
-  MCALength = 2048;    // !!
+  SSDChs = 19;
+  McaLength = 2048;    // !!
+  MCALength = 2048;    // old val
 
   connectingDLink = false;   // new
   
@@ -12,7 +14,8 @@ AUnitXMAP::AUnitXMAP( void )
   dLink = NULL;
   dLinkStream = NULL;
   dLinkCount = 0;
-
+  resetVectors( SSDChs );
+  
   MCAs0 = NULL;
   MCAs = NULL;
   MCAsReady = false;
@@ -20,6 +23,12 @@ AUnitXMAP::AUnitXMAP( void )
   SSDPresetType = "REAL";   // for MCA/SSD
   ROIStart = ROIEnd = NULL;
 
+
+  MCAStats.clear();
+}
+
+void AUnitXMAP::resetVectors( int chs )
+{
   MCARealTime.clear();
   MCALiveTime.clear();
   SSDUsingCh.clear();
@@ -31,7 +40,7 @@ AUnitXMAP::AUnitXMAP( void )
   DarkCountsAll.clear();
   DarkTotalEvents.clear();
   DarkICRs.clear();
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+  for ( int i = 0; i < chs; i++ ) {
     MCARealTime << 0;
     MCALiveTime << 0;
     SSDUsingCh << true;
@@ -44,8 +53,6 @@ AUnitXMAP::AUnitXMAP( void )
     DarkTotalEvents << 0;
     DarkICRs << 0;
   }
-
-  MCAStats.clear();
 }
 
 void AUnitXMAP::_setEnable( bool /*enable*/ )
