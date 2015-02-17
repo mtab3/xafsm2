@@ -23,11 +23,6 @@ class AUnitPM : public AMotor
   void AskHighSpeed( void );
   void AskMiddleSpeed( void );
   void AskLowSpeed( void );
-  void AssignDispCh( int ch );
-  void SetTimingOutMode( int mode );
-  void SetTimingOutStart( int startP );
-  void SetTimingOutEnd( int endP );
-  void SetTimingOutInterval( int interval );
   void SetTimingOutReady( int ready );
   void AskIsBusy( void );
   
@@ -36,6 +31,14 @@ class AUnitPM : public AMotor
   int accRateNo( void ) { return AccRateNo; }; // 加減速レートのテーブル番号
   void setAccRateNo( int n ) { AccRateNo = n; };
 
+  void SetUpToGenerageTriggerSignal( int sp, int ep, int interval ); // QXafs
+  void TriggerOff( void );
+  void AssignDispCh( int ch );
+  void SetTimingOutMode( int mode );
+  void SetTimingOutStart( int startP );
+  void SetTimingOutEnd( int endP );
+  void SetTimingOutInterval( int interval );
+ 
  private slots:
    //  void SetIsBusyByMsg( SMsg msg );
   void RcvHighSpeed( SMsg msg );

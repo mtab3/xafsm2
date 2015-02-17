@@ -79,23 +79,15 @@ class AMotor : public AUnit0
   virtual void AskLowSpeed( void ) {};
 
   /* MStab 可の Unit は下記の関数を実装するべし */
+  virtual bool canBeMStab( void ) { return false; };
   virtual void CloseShutter( bool /*close*/ ) {};
   virtual void GoMaxAbs( double /*start*/, double /*end*/, int /*steps*/ ) {};
   virtual void GoMaxAbsQ( double /*start*/, double /*end*/, int /*steps*/, double /*time*/ ) {};
   virtual void GoMaxRel( double /*width*/, int /*steps*/ ) {};
   virtual void GoMaxRelQ( double /*width*/, int /*steps*/, double /*time*/ ) {};
-  
-  /* PM16C だけかも */
-  virtual void AssignDispCh( int /* ch */ ) {};  // ch : 0 - 3 --> 'A' -- 'D'
-  /* PM16C で QXAFS の為に */
-  virtual void SetTimingOutMode( int /* mode */ ) {};
-  // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms
-  // 34410 triggers rising edge and requires 1us or longer
-  // for EB741 2us is long enough
-  virtual void SetTimingOutStart( int /*startP*/ ) {};      // start pos. of timing out
-  virtual void SetTimingOutEnd( int /*endP*/ ) {};          // end pos. of timing out
-  virtual void SetTimingOutInterval( int /*interval*/ ) {}; // timing out interval
-  virtual void SetTimingOutReady( int /*ready*/ ) {};       // timing out ready
+
+  virtual void SetUpToGenerageTriggerSignal( int /*sp*/, int /*ep*/, int /*interval*/ ) {}; // QXafs
+  virtual void TriggerOff( void ) {};
   virtual int accRate( void ) { return 1; };                // 加減速レート
   virtual void setAccRate( int /*r*/ ) {};
   virtual int accRateNo( void ) { return 0; };              // 加減速レートのテーブル番号
