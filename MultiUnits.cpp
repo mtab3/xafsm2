@@ -19,7 +19,7 @@ void MUnits::clearUnits( void )
   PUnits.clear();
 }
 
-void MUnits::addUnit( AUnit *au )
+void MUnits::addUnit( ASensor *au )
 {
   int i;
   MUElement *mue = new MUElement;
@@ -28,12 +28,12 @@ void MUnits::addUnit( AUnit *au )
 
   if ( au->hasParent() ) {
     for ( i = 0; i < PUnits.count(); i++ ) {
-      if ( PUnits.at(i)->au->getUid() == au->getPUid() )
+      if ( PUnits.at(i)->au->uid() == au->pUid() )
 	break;
     }
     if ( i >= PUnits.count() ) {
       MUElement *pmue = new MUElement;
-      pmue->au = au->getTheParent();
+      pmue->au = (ASensor*)(au->theParent());
       PUnits << pmue;
     }
   }
@@ -80,10 +80,10 @@ bool MUnits::isBusy2( void )
 void MUnits::clearStage( void )
 {
   for ( int i = 0; i < PUnits.count(); i++ ) {
-    PUnits.at(i)->au->InitLocalStage();
+    PUnits.at(i)->au->initLocalStage();
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    Units.at(i)->au->InitLocalStage();
+    Units.at(i)->au->initLocalStage();
   }
 }
 
@@ -148,7 +148,7 @@ bool MUnits::init( void )
     ff |= PUnits.at(i)->au->InitSensor();
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    if (( Units.at(i)->au->hasParent() )&&( Units.at(i)->au->getType() == "PAM2" ))
+    if (( Units.at(i)->au->hasParent() )&&( Units.at(i)->au->type() == "PAM2" ))
       continue;
     ff |= Units.at(i)->au->InitSensor();
   }
@@ -167,7 +167,7 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
       msg1->setModal( false );
       msg1->setText( tr( "Dwell time was set [%1] for [%2],"
 			 " though tried to be as [%3]." )
-		     .arg( rv ).arg( PUnits.at(i)->au->getName() )
+		     .arg( rv ).arg( PUnits.at(i)->au->name() )
 		     .arg( PUnits.at(i)->dt ) );
       msg1->setWindowTitle( tr( "Warning on dwell time" ) );
       connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
@@ -177,7 +177,7 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
     }
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    if (( Units.at(i)->au->hasParent() )&&( Units.at(i)->au->getType() == "PAM2" ))
+    if (( Units.at(i)->au->hasParent() )&&( Units.at(i)->au->type() == "PAM2" ))
       continue;
     if ( ( rv = Units.at(i)->au->SetTime( Units.at(i)->dt ) ) != Units.at(i)->dt ) {
       // 設定しようとした値と実際に設定された値が違ってたら
@@ -185,7 +185,7 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
       msg1->setModal( false );
       msg1->setText( tr( "Dwell time was set [%1] for [%2],"
 			 " though tried to be as [%3]." )
-		     .arg( rv ).arg( Units.at(i)->au->getName() )
+		     .arg( rv ).arg( Units.at(i)->au->name() )
 		     .arg( Units.at(i)->dt ) );
       msg1->setWindowTitle( tr( "Warning on dwell time" ) );
       connect( msg1, SIGNAL( buttonClicked( QAbstractButton * ) ),
@@ -232,11 +232,11 @@ bool MUnits::getValue( void )
   bool ff = false;
 
   for ( int i = 0; i < PUnits.count(); i++ ) {
-    if ( PUnits.at(i)->au->getType() == "PAM2" )
+    if ( PUnits.at(i)->au->type() == "PAM2" )
       ff |= PUnits.at(i)->au->GetValue();
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    if ( Units.at(i)->au->getType() != "PAM2" )
+    if ( Units.at(i)->au->type() != "PAM2" )
       ff |= Units.at(i)->au->GetValue();
   }
 
@@ -257,12 +257,12 @@ bool MUnits::Close( void )
 void MUnits::readValue( double *rvs, double *cps, bool correctBack )
 // 登録されているユニットの現在値を前詰めの配列で返す
 {
-  AUnit *as;
+  ASensor *as;
   for ( int i = 0; i < Units.count(); i++ ) {
     as = Units.at(i)->au;
     rvs[i] = as->value().toDouble();
     if ( correctBack )
-      rvs[i] -= as->getDark() * as->GetSetTime();
-    cps[i] = rvs[i] / as->GetSetTime();
+      rvs[i] -= as->getDark() * as->getSetTime();
+    cps[i] = rvs[i] / as->getSetTime();
   }
 }

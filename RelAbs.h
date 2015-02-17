@@ -4,6 +4,8 @@
 #include "ui_RelAbs.h"
 #include "XafsM.h"
 
+enum RELABS { REL, ABS };
+
 class RelAbs : public QFrame, private Ui::RelAbs
 {
   Q_OBJECT

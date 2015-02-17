@@ -81,19 +81,19 @@ void MainWindow::ToggleQXafsMode( bool )
     SetUpSensorComboBoxes();
 
     for ( int i = 0; i < I0Sensors.count(); i++ ) {
-      if ( I0Sensors[i]->getID() == "QXAFS-I0" ) {
+      if ( I0Sensors[i]->id() == "QXAFS-I0" ) {
 	SelectI0->setCurrentIndex( i );
 	break;
       }
     }
     for ( int i = 0; i < I1Sensors.count(); i++ ) {
-      if ( I1Sensors[i]->getID() == "QXAFS-I1" ) {
+      if ( I1Sensors[i]->id() == "QXAFS-I1" ) {
 	SelectI1->setCurrentIndex( i );
 	break;
       }
     }
     for ( int i = 0; i < I1Sensors.count(); i++ ) {
-      if ( I1Sensors[i]->getID() == "QXAFS-I2" ) {
+      if ( I1Sensors[i]->id() == "QXAFS-I2" ) {
 	SelectAux1->setCurrentIndex( i );
 	break;
       }
@@ -212,8 +212,8 @@ void MainWindow::CheckQXafsParams( void )
   double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
   double dtime = BLKdwell[0]->text().toDouble();
 
-  HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->getUPP() );
-  double MinTimeSpeed = sqrt( fabs( edeg - sdeg ) / MMainTh->getUPP()
+  HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->upp() );
+  double MinTimeSpeed = sqrt( fabs( edeg - sdeg ) / MMainTh->upp()
 			       / ( 2. * RunUpRate / 1000. ) );
 
   if ( QMinTime->isChecked() ) {
@@ -224,8 +224,8 @@ void MainWindow::CheckQXafsParams( void )
     HSpeed = MaxHSpeed;
 
   DispQSpeedInPPS->setText( QString::number( HSpeed ) );
-  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->getUPP() ) );
-  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
+  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->upp() ) );
+  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp();
 
   if ( ( WidthInPuls / BLKpoints[0]->text().toInt() / HSpeed ) < MIN_INTERVAL ) {
     // PM16C が出す Trigger は 10us 幅にするので
@@ -315,16 +315,16 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   int points = abs( SBlockPoints[0] );
   double dtime = SBlockDwell[0];
 
-  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->getUPP();
+  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp();
   HSpeed = WidthInPuls / dtime;
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
     HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
   DispQSpeedInPPS->setText( QString::number( HSpeed ) );
-  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->getUPP() ) );
+  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->upp() ) );
 
-  QXafsSP0 = sdeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の始点
-  QXafsEP0 = edeg / MMainTh->getUPP() + MMainTh->getCenter();  // 測定範囲の終点
+  QXafsSP0 = sdeg / MMainTh->upp() + MMainTh->getCenter();  // 測定範囲の始点
+  QXafsEP0 = edeg / MMainTh->upp() + MMainTh->getCenter();  // 測定範囲の終点
   if ( abs( QXafsSP0 - QXafsEP0 ) > points )
     QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / points);
   // Trigger パルスを出す間隔
@@ -727,14 +727,14 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   int p = QXafsSP0;
   int d = QXafsInterval;
   int c = MMainTh->getCenter();
-  double upp = MMainTh->getUPP();
+  double upp = MMainTh->upp();
   double deg2;
   double upp2 = 0;
   double E, I0, I00, I1, I2;
   I2 = 0;
 
   if ( Enc2 != NULL ) {
-    upp2 = Enc2->getUPP();
+    upp2 = Enc2->upp();
   }
   if ( QLimitedDisplay->isChecked() ) {
     g = g % QLastLines->value();

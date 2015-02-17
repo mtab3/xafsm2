@@ -21,7 +21,7 @@
 #include "Atoms.h"
 #include "Stars.h"
 #include "PeriodicT.h"
-#include "AUnit.h"
+#include "AUnits/AUnits.h"
 #include "MultiUnits.h"
 #include "XYView.h"
 #include "TYView.h"
@@ -41,7 +41,7 @@
 #include "UsingUnits.h"
 #include "TuningTable.h"
 #include "S2DInfo.h"
-#include "MCA.h"
+#include "AUnits/MCAMap.h"
 #include "ScanInfo.h"
 #include "BlockInfo.h"
 #include "CheckUnits.h"
@@ -50,6 +50,7 @@
 #include "MonLine.h"
 #include "Alarm.h"
 #include "MonInfo.h"
+#include "enums.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -68,7 +69,7 @@
 
 #define DXMCENTERFILE0 "DXMCenter.cfg"
 
-#define SAVEMCACh        ( 19 )
+//#define SAVEMCACh        ( 19 )
 #define S2D_END_STAGE    ( 99 )
 
 struct AutoModeParam {
@@ -106,15 +107,16 @@ private:
   int ViewCount;
 
   /* ReadDef */
-  QVector<AUnit *> AMotors;
-  QVector<AUnit *> ASensors;
+  QVector<AMotor*> AMotors;
+  QVector<ASensor*> ASensors;
   void ReadDef( QString fname );
+  AUnit0 *NewNewUnit( QString type );
   QString nextItem( QString start, QString &item );
   QVector<MCCD*> mccd;
   QVector<Gas*> Gases;
   QVector<IonChLength*> ICLengths;
   void CheckDuplicateUID( void );
-  void ExitByDuplicateUID( AUnit *a1, AUnit *a2 );
+  void ExitByDuplicateUID( AUnit0 *a1, AUnit0 *a2 );
   double MinEnergyInEV, MaxEnergyInEV;
   int DefaultUnit;
   QString LocalizedName( QString name );
@@ -164,18 +166,19 @@ private:
   QVector<MCAPeak> *MCAPeaks;
   QStringList SSDCalibEnergys;
   //  double AttenDx, AttenDy;
-  AUnit *movingSC1, *movingSC2;
+  AMotor *movingSC1, *movingSC2;
 
   /* ReadData */
   QVector<Data*> Datas;
   void setupReadDataArea( void );
 
   /* Special Units */
-  AUnit *MMainTh;                 // main Th ax
-  AUnit *MDTh1;                   // Delta Theta 1 ax
-  AUnit *SI0, *SI1, *SFluo, *SLS;  // I0, I1, and Fluorescence, LS
-  AUnit *EncMainTh, *Enc2;
-  AUnit *MMStab;
+  AMotor *MMainTh;          // main Th ax
+  AMotor *MDTh1;             // Delta Theta 1 ax
+  ASensor *SI0, *SI1, *SLS;  // I0, I1, and Fluorescence, LS
+  AUnitXMAP *SFluo;
+  ASensor *EncMainTh, *Enc2;
+  AMotor *MMStab;
   //  int iMMainTh;
 
   bool MStabOk;
@@ -184,7 +187,7 @@ private:
 
   QVector<QString> DefUReals;
   QVector<Changer*> Changers;
-  AUnit *movingC1, *movingC2;
+  AMotor *movingC1, *movingC2;
   bool connecteNewValue2ShowChangerPosition;
 
   QVector<SpecChanger*> SChangers;
@@ -302,7 +305,7 @@ private:
   bool inSPSing;
   int ScanStage;
   //  int ScanMotor, ScanSensor;
-  //  AUnit *SPSMovingMotor;
+  //  AMotor *SPSMovingMotor;
   //  double ScanOrigin, ScanSP, ScanEP, ScanSTP;
   //  ScanInfo SInfo;
   QVector<ScanInfo*> ScanIFs;    // 各モータ毎に状態を持つ
@@ -315,9 +318,9 @@ private:
   //  bool useFixedDelta;
   double SettingMainTh;
   void SetMainThCenter( void );
-  bool UseDefUReal( AUnit *am );
+  bool UseDefUReal( AMotor *am );
   bool LoadScanInfo( ScanInfo *sif );
-  void SaveScanInfo( ScanInfo *sif, AUnit *am = NULL );
+  void SaveScanInfo( ScanInfo *sif, AMotor *am = NULL );
   bool LastInIsPulsV;
 
   //  bool MeasCntIs;
@@ -358,9 +361,9 @@ private:
   QVector<QLineEdit *> S2DPoints;
   QVector<RelAbs *> S2DRelAbs;
   //  QVector<bool> S2DMotorUse;
-  QVector<AUnit *> S2DOkSensors;
-  QVector<AUnit *> S2DOkMotors;
-  QVector<AUnit *> S2DSelectedMotors;
+  QVector<ASensor*> S2DOkSensors;
+  QVector<AMotor*> S2DOkMotors;
+  QVector<AMotor*> S2DSelectedMotors;
   bool inS2D;
   int S2DStage;
   bool S2DInfoIsValid;
@@ -388,7 +391,7 @@ private:
   void S2DFileCheck( void );
   void SaveMCADataOnMem( aMCASet *set );
   
-  QVector<AUnit*> SensWithRange;
+  QVector<ASensor*> SensWithRange;
 
   QVector<QLineEdit *> BLKstart;
   QVector<QLineEdit *> BLKstep;
@@ -451,7 +454,7 @@ private:
 
   QVector<int> ChModes;
 
-  QVector<AUnit *> I0Sensors, I1Sensors, A1Sensors, A2Sensors;
+  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors, A2Sensors;
   QString fixS( QString s, int l );
   QString DFName00, DFName0, DFName;
   int TP;
@@ -566,8 +569,8 @@ private:
   void DispQSpectrum( int g );
   void QXafsFinish0( void );
   void QXafsFinish( void );
-  bool CheckOkList( AUnit *as, QStringList OkList );
-  bool theSensorIsAvailable( AUnit *as );
+  bool CheckOkList( ASensor *as, QStringList OkList );
+  bool theSensorIsAvailable( ASensor *as );
   void ShowQTime( double dtime, double WidthInPuls );
 
   void getNewMCAView( void );
@@ -580,7 +583,8 @@ private:
   void AutoSequenceEnd( void );
   void ASReadSEQFile( QString fname );
 
-  AUnit *smAm;
+  /* Special !!!! */
+  AMotor *smAm;
   int smStage;
 				     
 private slots:

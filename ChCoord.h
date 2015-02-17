@@ -67,7 +67,7 @@ class ChCoord : public QObject
 
   /* ChCoord とは直接関係ないけど、グラフ関係の一般的な関数なのでここに置いとく */
   void DrawTexts( QPainter *p, QRectF &rec, double dx, double dy,
-		  QFont &font, int flags, QStringList texts );
+		  QFont &font, int flags, DRAWTXTF f, QStringList texts );
   QRectF DrawText( QPainter *p, 
 		 QRectF rec, QFont font, int flags, DRAWTXTF f, QString msg );
   QRectF UnDrawText( QPainter *p, 

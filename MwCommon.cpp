@@ -264,10 +264,10 @@ void MainWindow::MoveCurThPosKeV( double keV )
   }
 
   if ( SelThEncorder->isChecked() ) {
-    SettingMainTh = (u->keV2deg( keV )-EncMainTh->value().toDouble())/MMainTh->getUPP()
+    SettingMainTh = (u->keV2deg( keV )-EncMainTh->value().toDouble())/MMainTh->upp()
 	+ MMainTh->value().toInt();
   } else {
-    SettingMainTh = u->keV2deg( keV ) / MMainTh->getUPP() + MMainTh->getCenter();
+    SettingMainTh = u->keV2deg( keV ) / MMainTh->upp() + MMainTh->getCenter();
   }
   MMainTh->setIsBusy( true );
   MMainTh->SetValue( SettingMainTh );

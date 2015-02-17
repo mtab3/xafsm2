@@ -1,0 +1,4179 @@
+%!PS-Adobe-1.0
+%%Title: AUnit0.h
+%%Creator: Id: a2ps,v 1.45 2001/05/28 07:25:46 utashiro Exp 
+%%CreationDate: Fri Feb 13 14:01:07 2015
+%%Pages: (atend)
+%%PageOrder: Ascend
+%%DocumentPaperSizes: A4
+%%Orientation: Landscape
+%%EndComments
+
+/$a2psdict 100 dict def
+$a2psdict begin
+% Initialize page description variables.
+/inch {72 mul} bind def
+%% SelectTray
+statusdict /a4tray known { statusdict begin a4tray end } if
+/landscape true def
+/twinpage true def
+/sheetheight 11.64 inch def
+/sheetwidth 8.27 inch def
+/lmargin 1.2 inch def
+/smargin 1.2 inch def
+/paper_adjust 0.05 inch def
+/noborder false def
+/noheader false def
+/headersize 0.22 inch def
+/nofooter false def
+/nopunchmark true def
+/bodyfontsize 6.6 def
+/kanjiAsciiRatio 1 def
+/lines 66 def
+/columns 86 def
+/date (Feb 13 2015 14:01) def
+/doasciimag false def
+%!  PostScript Source Code
+%
+%  File: imag:/users/local/a2ps/header.ps
+%  Created: Tue Nov 29 12:14:02 1988 by miguel@imag (Miguel Santana)
+%  Version: 2.0
+%  Description: PostScript prolog for a2ps ascii to PostScript program.
+% 
+%  Edit History:
+%  - Original version by evan@csli (Evan Kirshenbaum).
+%  - Modified by miguel@imag to:
+%    1) Correct an overflow bug when printing page number 10 (operator
+%	cvs).
+%    2) Define two other variables (sheetwidth, sheetheight) describing
+%	the physical page (by default A4 format).
+%    3) Minor changes (reorganization, comments, etc).
+%  - Modified by tullemans@apolloway.prl.philips.nl
+%    1) Correct stack overflows with regard to operators cvs and copy.
+%       The resulting substrings where in some cases not popped off 
+%       the stack, what can result in a stack overflow.
+%    2) Replaced copypage and erasepage by showpage. Page througput
+%       degrades severely (see red book page 140) on our ps-printer
+%       after printing sheet 16 (i.e. page 8) of a file which was 
+%       actually bigger. For this purpose the definitions of startdoc
+%       and startpage are changed.
+%  - Modified by Tim Clark <T.Clark@uk.ac.warwick> to:
+%    1) Print one page per sheet (portrait) as an option.
+%    2) Reduce size of file name heading, if it's too big.
+%    3) Save and restore PostScript state at begining/end. It now uses
+%	conventional %%Page %%Trailer markers.
+%    4) Print one wide page per sheet in landscape mode as an option.
+%  - Modified by miguel@imag.fr to
+%    1) Add new option to print n copies of a file.
+%    2) Add new option to suppress heading printing.
+%    3) Add new option to suppress page surrounding border printing.
+%    4) Add new option to change font size. Number of lines and columns
+%	are now automatically adjusted, depending on font size and
+%	printing mode used.
+%    5) Minor changes (best layout, usage message, etc).
+%  - Modified by kanazawa@sra.co.jp to:
+%    1) Handle Japanese code
+%  - Modified by utashiro@sra.co.jp to:
+%    1) Fix bug in printing long label
+%    2) Handle carriage-return
+%    3) Specify kanji-ascii character retio
+%    4) Add footer label
+%    5) Change filename->fname becuase ghostscript has operator filename
+%    6) Support three different font style
+%    7) Incorporate B4 paper support and punchmark contributed
+%       by Masami Ueno <cabbage@kki.esi.yamanashi.ac.jp>
+%
+
+% Copyright (c) 1988, Miguel Santana, miguel@imag.imag.fr
+%
+% Permission is granted to copy and distribute this file in modified
+% or unmodified form, for noncommercial use, provided (a) this copyright
+% notice is preserved, (b) no attempt is made to restrict redistribution
+% of this file, and (c) this file is not distributed as part of any
+% collection whose redistribution is restricted by a compilation copyright.
+%
+
+
+% General macros.
+/xdef {exch def} bind def
+/getfont {exch findfont exch scalefont} bind def
+
+% Page description variables and inch function are defined by a2ps program.
+
+% Character size for differents fonts.
+   landscape
+   { /filenamefontsize 12 def }
+   { /filenamefontsize 16 def }
+ifelse
+/datefontsize filenamefontsize 0.8 mul def
+/headermargin filenamefontsize 0.25 mul def
+/bodymargin bodyfontsize 0.7 mul def
+
+% Font assignment to differents kinds of "objects"
+/filenamefontname /Helvetica-Bold def
+/stdfilenamefont filenamefontname filenamefontsize getfont def
+/datefont /Helvetica datefontsize getfont def
+/footerfont /Helvetica-Bold datefontsize getfont def
+/mag { doasciimag { [ 1 0 0 asciimagsize 0 0 ] makefont } if } def
+/bodynfont /Courier bodyfontsize getfont mag def
+/bodybfont /Courier-Bold bodyfontsize getfont mag def
+/bodyofont /Courier-BoldOblique bodyfontsize getfont mag def
+/fontarray [ bodynfont bodybfont bodyofont ] def
+/bodyfont bodynfont def
+
+% Initializing kanji fonts
+/kanji_initialized false def
+/kanji_init {
+   kanji_initialized not
+   {
+      /bodykfontsize bodyfontsize kanjiAsciiRatio mul def
+      /bodyknfont /Ryumin-Light-H bodykfontsize getfont def
+      /bodykbfont /GothicBBB-Medium-H bodykfontsize getfont def
+      /bodykofont bodykbfont [ 1 0 .2 1 0 0 ] makefont def
+      /KanjiRomanDiff 1.2 bodyfontsize mul 1.0 bodykfontsize mul sub def
+      /KanjiRomanDiffHalf KanjiRomanDiff 2 div def
+      /kfontarray [ bodyknfont bodykbfont bodykofont ] def
+      /kanji_initialized true def
+   } if
+} def
+
+% Backspace width
+/backspacewidth
+   bodyfont setfont (0) stringwidth pop
+   def
+
+% Logical page attributs (a half of a real page or sheet).
+/pagewidth
+   bodyfont setfont (0) stringwidth pop columns mul bodymargin dup add add
+   def
+/pageheight
+   bodyfontsize 1.1 mul lines mul bodymargin dup add add headersize add
+   def
+
+% Coordinates for upper corner of a logical page and for sheet number.
+% Coordinates depend on format mode used.
+% In twinpage mode, coordinate x of upper corner is not the same for left
+% and right pages: upperx is an array of two elements, indexed by sheetside.
+/rightmargin smargin 3 div def
+/leftmargin smargin 2 mul 3 div def
+/topmargin lmargin twinpage {3} {2} ifelse div def
+landscape
+{  % Landscape format
+   /punchx .4 inch def           % for PunchMark
+   /punchy sheetwidth 2 div def  % for PunchMark
+   /uppery rightmargin pageheight add bodymargin add def
+   /sheetnumbery sheetwidth leftmargin pageheight add datefontsize add sub def
+   twinpage
+   {  % Two logical pages
+      /upperx [ topmargin 2 mul			% upperx for left page
+		dup topmargin add pagewidth add	% upperx for right page
+	      ] def
+      /sheetnumberx sheetheight topmargin 2 mul sub def
+   }
+   {  /upperx [ topmargin dup ] def
+      /sheetnumberx sheetheight topmargin sub datefontsize sub def
+   }
+   ifelse
+}
+{  % Portrait format
+   /punchx .3 inch def
+   /punchy sheetheight 2 div def
+   /uppery topmargin pageheight add def
+   /upperx [ leftmargin dup ] def
+   /sheetnumberx sheetwidth rightmargin sub datefontsize sub def
+   /sheetnumbery
+	 sheetheight 
+	 topmargin pageheight add datefontsize add headermargin add
+      sub
+      def
+}
+ifelse
+
+% Strings used to make easy printing numbers
+/pnum 12 string def
+/empty 12 string def
+
+% Other initializations.
+datefont setfont
+/datewidth date stringwidth pop def
+/pagenumwidth (Page 999) stringwidth pop def
+/filenameroom
+         pagewidth
+	 filenamefontsize 4 mul datewidth add pagenumwidth add
+      sub
+   def
+
+
+% Function startdoc: initializes printer and global variables.
+/startdoc
+    { /sheetside 0 def			% sheet side that contains current page
+   } bind def
+
+% Function setlabel: initialize label in header
+/setlabel
+    { stdfilenamefont setfont
+      /fname xdef
+      /filenamewidth fname stringwidth pop def
+      /filenamefont
+	 filenamewidth filenameroom gt
+	 {
+	       filenamefontname
+	       filenamefontsize filenameroom mul filenamewidth div
+	    getfont
+	 }
+	 {  stdfilenamefont }
+	 ifelse
+	 def
+    } bind def
+
+% Function printpage: Print a physical page.
+/printpage
+    { /sheetside 0 def
+      twinpage
+      {  sheetnumber }
+      {  noheader noborder not and
+	    { sheetnumber }
+	 if
+      }
+      ifelse
+      showpage 
+%      pagesave restore
+%      /sheet sheet 1 add def
+    } bind def
+
+% Function cleanup: terminates printing, flushing last page if necessary.
+/cleanup
+    { twinpage sheetside 1 eq and
+         { printpage }
+      if
+    } bind def
+
+%
+% Function startpage: prints page header and page border and initializes
+% printing of the file lines.  Page number is stored on the top of stack,
+% and file name is next.
+/startpage
+    { /pagenum exch def
+      sheetside 0 eq
+	{ % /pagesave save def
+	  landscape
+	    { sheetwidth 0 inch translate	% new coordinates system origin
+	      90 rotate				% landscape format
+	      paper_adjust neg 0 translate
+	    } if
+	} if
+      noborder not { printborder } if
+      noheader not { printheader } if
+      nofooter not { printfooter } if
+      nopunchmark not { punchmark } if
+	 upperx sheetside get  bodymargin  add
+	    uppery
+	    bodymargin bodyfontsize add  noheader {0} {headersize} ifelse  add
+	 sub
+      moveto
+    } bind def
+
+% Function printheader: prints page header.
+/printheader
+    { upperx sheetside get  uppery headersize sub 1 add  moveto
+      datefont setfont
+      gsave
+        datefontsize headermargin rmoveto
+	date show					% date/hour
+      grestore
+      gsave
+	pagenum pnum cvs pop
+	   pagewidth pagenumwidth sub
+	   headermargin
+	rmoveto
+        (Page ) show pnum show				% page number
+      grestore
+      empty pnum copy pop
+      gsave
+        filenamefont setfont
+	      filenameroom fname stringwidth pop sub 2 div datewidth add
+	      filenamefontsize 2 mul 
+	   add 
+	   headermargin
+	rmoveto
+        fname show						% file name
+      grestore
+    } bind def
+
+% Function printfooter: prints page footer.
+/printfooter
+    { upperx 0 get sheetnumbery moveto
+      footerfont setfont
+      fname show
+    } bind def
+
+% Function printborder: prints border page.
+/printborder 
+    { upperx sheetside get uppery moveto
+      gsave					% print the four sides
+        pagewidth 0 rlineto			% of the square
+        0 pageheight neg rlineto
+        pagewidth neg 0 rlineto
+        closepath stroke
+      grestore
+      noheader not
+         { 0 headersize neg rmoveto pagewidth 0 rlineto stroke }
+      if
+    } bind def
+
+% Punch Marker
+/punchmark {
+  gsave
+    newpath punchx punchy moveto
+    punchx 2 add punchy -0.5 add lineto
+    punchx 2 add punchy 0.5 add lineto
+    punchx punchy lineto
+    closepath
+    0 setgray .8 setlinewidth stroke
+  grestore
+  } bind def
+
+%
+% Function endpage: adds a sheet number to the page (footnote) and prints
+% the formatted page (physical impression). Activated at the end of each
+% source page (lines reached or FF character).
+/endpage
+   { twinpage  sheetside 0 eq  and
+        { /sheetside 1 def }
+        { printpage }
+     ifelse
+   } bind def
+
+% Function sheetnumber: prints the sheet number.
+/sheetnumber
+    { sheetnumberx sheetnumbery moveto
+      datefont setfont
+      sheet pnum cvs
+	 dup stringwidth pop (0) stringwidth pop sub neg 0 rmoveto show
+      empty pnum copy pop
+    } bind def
+
+% Function bs: go back one character width to emulate BS
+/bs { backspacewidth neg 0 rmoveto } bind def
+
+% Function s: print a source string
+/s  { fontarray fonttype get setfont
+      show
+    } bind def
+
+% Function ks: print a kanji source string
+/ks { kfontarray fonttype get setfont
+      KanjiRomanDiffHalf 0 rmoveto
+      KanjiRomanDiff 0 3 -1 roll ashow
+      KanjiRomanDiffHalf neg 0 rmoveto
+    } def
+
+% Function bl: beginning of line
+/bl { gsave } bind def
+
+% Function nl: newline
+/nl {
+      grestore
+      0 bodyfontsize 1.1 mul neg rmoveto
+    } bind def
+
+% Function cr: carriage return
+/cr { grestore } bind def
+
+% Function hlr: half-line up
+/hlr { 0 bodyfontsize 0.55 mul rmoveto } bind def
+
+% Function hlr: half-line down
+/hlf { 0 bodyfontsize 0.55 mul neg rmoveto } bind def
+
+% Function hlr: half-character backward
+/hcr { backspacewidth 2 div neg 0 rmoveto } bind def
+
+% Function hlr: half-character forward
+/hcf { backspacewidth 2 div 0 rmoveto } bind def
+
+/R { /fonttype 0 def } bind def
+/B { /fonttype 1 def } bind def
+/I { /fonttype 2 def } bind def
+R
+/docsave save def
+startdoc
+%%EndProlog
+
+%%Page: 1 1
+/sheet 1 def
+(AUnit0.h) setlabel
+1 startpage
+bl ( ) s (#ifndef AUNIT_H) s nl
+bl ( ) s (#define AUNIT_H) s nl
+bl ( ) s nl
+bl ( ) s (#include <math.h>) s nl
+bl ( ) s (#include <QObject>) s nl
+bl ( ) s nl
+bl ( ) s (#include "../SMsg.h") s nl
+bl ( ) s (#include "../Stars.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnit0 : public QObject) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( protected:) s nl
+bl ( ) s (  Stars *s;) s nl
+bl ( ) s (  bool Enable;          // if the unit is enable on Stars server or not) s nl
+bl ( ) s (  int ALine;            // the line number where the definition appears in .def file) s nl
+bl ( ) s nl
+bl ( ) s (  int LocalStage;) s nl
+bl ( ) s nl
+bl ( ) s (  QString GType;        // Motor, Sensor) s nl
+bl ( ) s (  QString Type;         // PM, PZ, ENC, ...) s nl
+bl ( ) s (  QString Uid;          // Uniq ID) s nl
+bl ( ) s (  QString ID;           // MainTh, StageX, General, ...) s nl
+bl ( ) s (  QString Name;         // Displayed name) s nl
+bl ( ) s (  QString Dev;) s nl
+bl ( ) s (  QString Ch;) s nl
+bl ( ) s (  QString DevCh;        // Dev + "." + Ch) s nl
+bl ( ) s (  QString Unit;         // metric unit "mm", "mA", ...) s nl
+bl ( ) s (  double UPP;) s nl
+bl ( ) s nl
+bl ( ) s (  QString LastFunc;     // last function which enabled isBusy) s nl
+bl ( ) s (  QString LastFunc2;    // last function which enabled isBusy2) s nl
+bl ( ) s nl
+bl ( ) s (  bool IsBusy;) s nl
+bl ( ) s (  bool IsBusy2;) s nl
+bl ( ) s (  int Busy2Count;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  QString Value;) s nl
+bl ( ) s (  QStringList Values;) s nl
+bl ( ) s (  QString LastValue;) s nl
+bl ( ) s (  int ILastSetV;) s nl
+bl ( ) s (  double DLastSetV;) s nl
+bl ( ) s nl
+bl ( ) s (  bool HasParent;) s nl
+bl ( ) s (  AUnit0 *TheParent;) s nl
+bl ( ) s (  QString PUid;) s nl
+bl ( ) s nl
+bl ( ) s (  bool Has2ndDev;) s nl
+bl ( ) s (  QString Uid2;) s nl
+bl ( ) s (  QString Dev2;) s nl
+bl ( ) s (  QString Ch2;) s nl
+bl ( ) s (  QString DevCh2;       // Dev + "." + Ch) s nl
+bl ( ) s (  AUnit0 *The2ndDev;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (public:) s nl
+bl ( ) s (  AUnit0\( QObject *parent = 0 \);) s nl
+bl ( ) s nl
+bl ( ) s (  void Initialize\( Stars *s \);) s nl
+bl ( ) s (  virtual void init\( void \) {};) s nl
+bl ( ) s nl
+bl ( ) s (  void setEnable\( bool enable \);) s nl
+bl ( ) s (  virtual void _setEnable\( bool /*enable*/ \) {};) s nl
+bl ( ) s (  void setALine\( int aline \) { ALine = aline; };) s nl
+bl ( ) s (  int aLine\( void \) { return ALine; };) s nl
+bl ( ) s (  bool isEnable\( void \) { return Enable; };) s nl
+
+endpage
+2 startpage
+bl ( ) s nl
+bl ( ) s (  Stars *getStars\( void \) { return s; };) s nl
+bl ( ) s (  QString gType\( void \) { return GType; };        // Motor, Sensor) s nl
+bl ( ) s (  QString type\( void \) { return Type; };          // PM, PZ, ENC, ...) s nl
+bl ( ) s (  QString uid\( void \) { return Uid; };            // Uniq Uid) s nl
+bl ( ) s (  QString uid2\( void \) { return Uid2; };         /* return Uid2; */  // 2nd Uid) s nl
+bl ( ) s (  QString id\( void \) { return ID; };              // MainTh, StageX, General, ...) s nl
+bl ( ) s (  QString name\( void \) { return Name; };          // Displayed name) s nl
+bl ( ) s (  QString dev\( void \) { return Dev; };) s nl
+bl ( ) s (  QString ch\( void \) { return Ch; };) s nl
+bl ( ) s (  QString devCh\( void \) { return DevCh; };        // Driver + "." + Ch) s nl
+bl ( ) s (  QString unit\( void \) { return Unit; };          // metric unit "mm", "mA", ...) s nl
+bl ( ) s (  double upp\( void \) { return UPP; };) s nl
+bl ( ) s nl
+bl ( ) s (  void setStars\( Stars *S \) { s = S; };) s nl
+bl ( ) s (  void setGType\( QString gtype \) { GType = gtype; }; // Motor, Sensor) s nl
+bl ( ) s (  void setType\( QString type \) { Type = type; };     // PM, PZ, ENC, ...) s nl
+bl ( ) s (  void setUid\( QString uid \) { Uid = uid; };         // Uniq Uid) s nl
+bl ( ) s (  void set2ndUid\( QString uid \) { Uid2 = uid; };) s nl
+bl ( ) s (  void setID\( QString id \) { ID = id; };) s nl
+bl ( ) s (  void setName\( QString name \) { Name = name; };) s nl
+bl ( ) s (  void setDev\( QString dev \)) s nl
+bl ( ) s (  { Dev = dev; if \( Ch != "" \) DevCh = makeDevCh\( Dev, Ch \); };) s nl
+bl ( ) s (  void setCh\( QString ch \)) s nl
+bl ( ) s (  { Ch = ch; if \( Dev != "" \) DevCh = makeDevCh\( Dev, Ch \); };) s nl
+bl ( ) s (  void setUnit\( QString unit \) { Unit = unit; };) s nl
+bl ( ) s (  void setUPP\( QString upp \) { UPP = upp.toDouble\(\); };) s nl
+bl ( ) s nl
+bl ( ) s (  QString makeDevCh\( const QString &dev, const QString &ch \);) s nl
+bl ( ) s nl
+bl ( ) s (  virtual void AskIsBusy\( void \) {};) s nl
+bl ( ) s (  void setIsBusy\( bool busy \) { IsBusy = busy; emit ChangedIsBusy1\( Dev \); };) s nl
+bl ( ) s (  void setIsBusy2\( bool busy \) { IsBusy2 = busy; emit ChangedIsBusy2\( Dev \); };) s nl
+bl ( ) s (  bool isBusy0\( void \) { return IsBusy || IsBusy2; };) s nl
+bl ( ) s (  bool isBusy\( void \) { return IsBusy; };) s nl
+bl ( ) s (  bool isBusy2\( void \) { return IsBusy2; };) s nl
+bl ( ) s (  void IsBusy2On\( QString drv, QString name \);) s nl
+bl ( ) s (  void IsBusy2Off\( QString drv \);) s nl
+bl ( ) s (  void setBusy2Count\( int i \) { Busy2Count = i; };) s nl
+bl ( ) s (  void clrBusy2Count\( void \) { Busy2Count = 0; };) s nl
+bl ( ) s (  int busy2Count\( void \) { return Busy2Count; };) s nl
+bl ( ) s nl
+bl ( ) s (  virtual void SetValue\( double /* v */ \) {};) s nl
+bl ( ) s (  virtual bool GetValue0\( void \) { return false; };) s nl
+bl ( ) s (  virtual bool GetValue02\( void \) { return false; };) s nl
+bl ( ) s (  virtual bool GetValue\( void \);) s nl
+bl ( ) s (  QString value\( void \) { return Value; };) s nl
+bl ( ) s (  QString lastValue\( void \) { return LastValue; };) s nl
+bl ( ) s (  void setLastValue\( QString v \) { LastValue = v; };) s nl
+bl ( ) s (  QStringList values\( void \) { return Values; };) s nl
+bl ( ) s nl
+bl ( ) s (  void InitLocalStage\( void \) { LocalStage = 0; };) s nl
+bl ( ) s nl
+bl ( ) s (  // parent : ) s kanji_init (40A4$KDj5A$5$l) ks ( Uid ) s ($r;}$D%G%P%$%9!V?F%G%P%$%9!W) ks nl
+bl ( ) s (  // ) s (Nc$\($P) ks ( nct08 ) s ($NJ#?t$N%A%c%s%M%k$O%P%i%P%i$K%+%&%s%H%9%?!<%H%9%H%C%W$G$-$J$$!#) ks nl
+bl ( ) s (  // ch1 ) s (0J30$N%A%c%s%M%k$N%9%?!<%H%9%H%C%W$bA4It) ks ( ch1 ) s ($K$^$H$a$FG$$;$k$?$a$K) ks nl
+bl ( ) s (  // ch1 ) s ($r) ks ( parent ) s ($H$7!"B>$N) ks ( ch ) s ($OA4It) ks (\(ch1) s (<+?.$b) ks (\) ch1 ) s ($r?F$K;}$D) ks nl
+bl ( ) s (  void setHasParent\( bool hasParent \) { HasParent = hasParent; };) s nl
+bl ( ) s (  bool hasParent\( void \) { return HasParent; };) s nl
+bl ( ) s (  void setPUid\( QString puid \) { PUid = puid; };) s nl
+bl ( ) s (  QString pUid\( void \) { return PUid; };) s nl
+bl ( ) s (  //  void setParent\( QString pUid \) { PUid = pUid; };) s nl
+bl ( ) s (  void setTheParent\( AUnit0 *p \) { TheParent = p; };) s nl
+bl ( ) s (  AUnit0 *theParent\( void \) { return TheParent; };) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  // Dev2, Ch2, DevCh2 : ) s (%f%K%C%H$NDj5A$K) ks (2) s ($D$N%I%i%$%P$,I,MW$J;~!"$=$N) ks (2) s ($DL\\$N%I%i%$%P) ks nl
+
+endpage
+cleanup
+%%Page: 2 2
+/sheet 2 def
+(AUnit0.h) setlabel
+3 startpage
+bl ( ) s (  // ) s kanji_init (Nc$\($P) ks (Keithley ) s ($rEEN.) ks (/) s (EE05%"%s%W$H$7$F;HMQ$7$F!"$=$N=PNO$rNc$\($P%+%&%s%?$G?^$k>l) ks nl
+bl ( ) s (9g) ks nl
+bl ( ) s (  // Keithley ) s ($NJ}$r%3%s%H%m!<%k$9$k$H%l%s%8@_Dj$,$G$-$k%+%&%s%?$N$h$&$K07$\($k) ks nl
+bl ( ) s (  // ) s ($3$N;~%a%$%s$N%G%P%$%9$O%+%&%s%?$@$,!") ks (Keithley ) s ($r) ks (2nd) s (%I%i%$%P$H$7$F;XDj$9$k) ks nl
+bl ( ) s (  void setHas2ndDev\( bool has2ndDev \) { Has2ndDev = has2ndDev; };) s nl
+bl ( ) s (  bool has2ndDev\( void \) { return Has2ndDev; };) s nl
+bl ( ) s (  AUnit0 *the2ndDev\( void \) { return The2ndDev; };) s nl
+bl ( ) s (  void setThe2ndDev\( AUnit0 *dev2 \) { The2ndDev = dev2; };) s nl
+bl ( ) s (  QString dev2\( void \) { return Dev2; };) s nl
+bl ( ) s (  QString ch2\( void \) { return Ch2; };) s nl
+bl ( ) s (  QString devCh2\( void \) { return DevCh2; };) s nl
+bl ( ) s (  void setDev2\( QString dev \)) s nl
+bl ( ) s (  { Dev2 = dev; if \( Ch2 != "" \) DevCh2 = makeDevCh\( Dev2, Ch2 \); };) s nl
+bl ( ) s (  void setCh2\( QString ch \)) s nl
+bl ( ) s (  { Ch2 = ch; if \( Dev2 != "" \) DevCh2 = makeDevCh\( Dev2, Ch2 \); };) s nl
+bl ( ) s nl
+bl ( ) s (  QString lastFunc\( void \) { return LastFunc; };) s nl
+bl ( ) s (  QString lastFunc2\( void \) { return LastFunc2; };) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  virtual void ReceiveValues\( SMsg msg \);) s nl
+bl ( ) s (  virtual void SetIsBusyByMsg\( SMsg /* msg */ \) {};) s nl
+bl ( ) s (  void ClrBusy\( SMsg msg \);) s nl
+bl ( ) s (  virtual void SetCurPos\( SMsg /* msg */ \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s ( signals:) s nl
+bl ( ) s (  void ChangedIsBusy1\( QString Drv \);) s nl
+bl ( ) s (  void ChangedIsBusy2\( QString Drv \);) s nl
+bl ( ) s (  void ChangedBusy2Count\( QString Drv \);) s nl
+bl ( ) s (  void Enabled\( QString Dev, bool enable \);) s nl
+bl ( ) s (  void newValue\( QString value \);) s nl
+bl ( ) s (  void newQData\( void \);) s nl
+bl ( ) s (  void LogMsg\( QString msg \);) s nl
+bl ( ) s nl
+bl ( ) s (#if 0) s nl
+bl ( ) s (  //  void CountFinished\( void \);) s nl
+bl ( ) s (  //  void newValues\( void \);) s nl
+bl ( ) s (  void newCountsInROI\( QVector<int> \);) s nl
+bl ( ) s (  void newCountsAll\( QVector<int> \);) s nl
+bl ( ) s (  void newTotalEvents\( QVector<int> \);) s nl
+bl ( ) s (  void newICRs\( QVector<double> \);) s nl
+bl ( ) s (  //  void newDataPoints\( int points \);) s nl
+bl ( ) s (  void Alarm\( QString uid, QString msg \);) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 3 3
+/sheet 3 def
+(AUnit0.cpp) setlabel
+1 startpage
+bl ( ) s (#include "AUnit0.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnit0::AUnit0\( QObject *parent \) : QObject\( parent \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s = NULL;) s nl
+bl ( ) s (  Enable = false;) s nl
+bl ( ) s (  ALine = -1;) s nl
+bl ( ) s nl
+bl ( ) s (  GType = "";) s nl
+bl ( ) s (  Type = "";) s nl
+bl ( ) s (  ID = "";) s nl
+bl ( ) s (  Uid = "";) s nl
+bl ( ) s (  Name = "";) s nl
+bl ( ) s (  Dev = "";) s nl
+bl ( ) s (  Ch = "";) s nl
+bl ( ) s (  DevCh = "";) s nl
+bl ( ) s (  Unit = "";) s nl
+bl ( ) s (  UPP = 1;) s nl
+bl ( ) s nl
+bl ( ) s (  HasParent = false;) s nl
+bl ( ) s (  TheParent = NULL;) s nl
+bl ( ) s (  PUid = "";) s nl
+bl ( ) s nl
+bl ( ) s (  Has2ndDev = false;) s nl
+bl ( ) s (  Uid2 = "";) s nl
+bl ( ) s (  Dev2 = "";) s nl
+bl ( ) s (  Ch2 = "";) s nl
+bl ( ) s (  DevCh2 = "";       // Dev + "." + Ch) s nl
+bl ( ) s (  The2ndDev = NULL;) s nl
+bl ( ) s nl
+bl ( ) s (  LocalStage = 0;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy = IsBusy2 = false;) s nl
+bl ( ) s (  Busy2Count = 0;) s nl
+bl ( ) s (  IsBusy2Off\( "" \);) s nl
+bl ( ) s nl
+bl ( ) s (  LastFunc = "";) s nl
+bl ( ) s (  LastFunc2 = "";) s nl
+bl ( ) s nl
+bl ( ) s (  Value = "";) s nl
+bl ( ) s (  Values.clear\(\);) s nl
+bl ( ) s (  LastValue = "";) s nl
+bl ( ) s (  ILastSetV = 0;) s nl
+bl ( ) s (  DLastSetV = 0;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::Initialize\( Stars *S \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s = S;) s nl
+bl ( ) s nl
+bl ( ) s (  // ) s kanji_init (2?$i$+$N%3%^%s%I$KBP$9$k1~Ez$,%\(%i!<$@$C$?>l9g$NBP=h!#) ks nl
+bl ( ) s (  // ) s (C1$K!") ks (isBusy2 ) s ($r%/%j%"$7$F$$$k$@$1!#) ks nl
+bl ( ) s (  // ) s ($3$s$J$KC1=c$G$$$$$+$I$&$+$OFq$7$$$H$3$m$@$1$l$I!") ks nl
+bl ( ) s (  // enable ) s ($r$A$c$s$H4IM}$9$k$h$&$K$7$?$N$G!"JQ$J=hM}$KFMF~$9$k$3$H$O$=$A$i$GHr$1$F) ks nl
+bl ( ) s (  // ) s (JQ$J=hM}$KFMF~$7$F$7$^$C$?>l9g$O!"6[5^HrFqE*$K$3$NJ}K!$GF\($2$k$3$H$K$9$k!#) ks nl
+bl ( ) s (  connect\( s, SIGNAL\( ReceiveError\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  // LSR ) s ($K$OITMW$J=i4|2=$@$,0-$/$b$J$$$N$G30$5$J$$) ks nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsIsBusy\( SMsg \) \), this, SLOT\( SetIsBusyByMsg\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( EvIsBusy\( SMsg \) \), this, SLOT\( SetIsBusyByMsg\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetValue\( SMsg \) \),this, SLOT\( SetCurPos\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", "System", "flgon", Dev \);) s nl
+
+endpage
+2 startpage
+bl ( ) s (  s->SendCMD2\( "Init", "System", "flgon", DevCh \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  init\(\);   // ) s (3F%f%K%C%H$K8GM-$N=hM}) ks nl
+bl ( ) s nl
+bl ( ) s (  if \( ID == "THETA" \) {) s nl
+bl ( ) s (    AskIsBusy\(\);) s nl
+bl ( ) s (    GetValue\(\);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  if \( ID == "TotalF" \) {) s nl
+bl ( ) s (    connect\( s, SIGNAL\( AnsGetMCALength\( SMsg \) \), this, SLOT\( getMCALength\( SMsg \) \)) s nl
+bl ( ) s (,) s nl
+bl ( ) s (             Qt::UniqueConnection \);) s nl
+bl ( ) s (    s->SendCMD2\( "SetUpMCA", Dev, "GetMCALength" \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  if \( ID == "ENCTH" \) {) s nl
+bl ( ) s (    GetValue\(\);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  emit ChangedIsBusy1\( Dev \);    // ) s ($3$3$N) ks (3) s ($D$N%\(%_%C%H$OG0$N0Y) ks nl
+bl ( ) s (  emit ChangedIsBusy2\( Dev \);) s nl
+bl ( ) s (  emit ChangedBusy2Count\( Dev \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (QString AUnit0::makeDevCh\( const QString &dev, const QString &ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( dev == "" \) {) s nl
+bl ( ) s (    return "";) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  if \( ch != "" \)) s nl
+bl ( ) s (    return dev + "." + ch;) s nl
+bl ( ) s nl
+bl ( ) s (  return dev;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::IsBusy2On\( QString drv, QString name \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2 = true;) s nl
+bl ( ) s (  Busy2Count++;) s nl
+bl ( ) s (  LastFunc2 = name;) s nl
+bl ( ) s (  emit ChangedIsBusy2\( drv \);) s nl
+bl ( ) s (  emit ChangedBusy2Count\( drv \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::IsBusy2Off\( QString drv \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2 = false;) s nl
+bl ( ) s (  Busy2Count--;) s nl
+bl ( ) s (  if \( Busy2Count < 0 \) Busy2Count = 0;) s nl
+bl ( ) s (  LastFunc2 = "";) s nl
+bl ( ) s (  emit ChangedIsBusy2\( drv \);) s nl
+bl ( ) s (  emit ChangedBusy2Count\( drv \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::setEnable\( bool enable \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Enable = enable;) s nl
+bl ( ) s (  IsBusy = false;) s nl
+bl ( ) s (  LastFunc = "";) s nl
+bl ( ) s (  _setEnable\( enable \);    // AUnit0 ) s ($r7Q>5$7$?%/%i%9$G$N=hM}MQ) ks ( // AUnitXMAP ) s ($,8F$s$G) ks nl
+bl ( ) s ($k) ks nl
+bl ( ) s (  emit Enabled\( Dev, enable \);) s nl
+bl ( ) s (  emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  IsBusy2Off\( "" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnit0::GetValue\( void \)) s nl
+bl ( ) s ({) s nl
+
+endpage
+cleanup
+%%Page: 4 4
+/sheet 4 def
+(AUnit0.cpp) setlabel
+3 startpage
+bl ( ) s (  IsBusy2On\( Dev, "GetValue" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetValue" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::ReceiveValues\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString buf;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \) && \( msg.Msgt\(\) == GETVALUES \) \) { // Check !!!!! DevCh/) s nl
+bl ( ) s (Drv) s nl
+bl ( ) s (    Value = msg.Vals\(\).at\(0\);) s nl
+bl ( ) s (    Values = msg.Vals\(\);) s nl
+bl ( ) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::ClrBusy\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \) || \( msg.From\(\) == Dev \) \) {) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  if \( Has2ndDev \) {) s nl
+bl ( ) s (    if \( \( msg.From\(\) == DevCh2 \) || \( msg.From\(\) == Dev2 \) \) {) s nl
+bl ( ) s (      IsBusy2Off\( Dev2 \);) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnit0::SetCurPos\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString buf;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETVALUE \) || \( msg.Msgt\(\) == EvCHANGEDVALUE \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == READ \) \) \) {) s nl
+bl ( ) s (    Value = msg.Val\(\);) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 5 5
+/sheet 5 def
+(AMotor.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AMOTOR_H) s nl
+bl ( ) s (#define AMOTOR_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "../RelAbs.h") s nl
+bl ( ) s (#include "AUnit0.h") s nl
+bl ( ) s nl
+bl ( ) s (enum MSPEED { LOW, MIDDLE, HIGH, MSPEEDS };) s nl
+bl ( ) s (struct MSPEEDD {) s nl
+bl ( ) s (  MSPEED MSid;) s nl
+bl ( ) s (  const QString MSName;) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (const MSPEEDD MSpeeds[ MSPEEDS ] = {) s nl
+bl ( ) s (  { LOW,    "Low" },) s nl
+bl ( ) s (  { MIDDLE, "Middle" },) s nl
+bl ( ) s (  { HIGH,   "High" },) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AMotor : public AUnit0) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( protected:) s nl
+bl ( ) s (  double Center;) s nl
+bl ( ) s (  bool IsInt;) s nl
+bl ( ) s nl
+bl ( ) s (  bool HasSpeedsLine;) s nl
+bl ( ) s (  bool HasSetMaxS;) s nl
+bl ( ) s (  int MaxS;      // max speed \(pps\) ) s kanji_init (:G=i$K@_Dj$5$l$F$$$?%*%j%8%J%k$N%9%T!<%I) ks nl
+bl ( ) s (  int MaxMaxS;   // ) s (5v$5$l$k:G9b$N%9%T!<%I) ks nl
+bl ( ) s (  int HighS;) s nl
+bl ( ) s (  int MiddleS;) s nl
+bl ( ) s (  int LowS;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AMotor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void init\( void \);) s nl
+bl ( ) s (  virtual void init0\( void \) {};) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  virtual void Stop\( void \) {};) s nl
+bl ( ) s (  bool checkNewVal\( void \)) s nl
+bl ( ) s (  {) s nl
+bl ( ) s (    bool rv = \( value\(\) != lastValue\(\) \);) s nl
+bl ( ) s (    setLastValue\( value\(\) \);) s nl
+bl ( ) s (    return rv;) s nl
+bl ( ) s (  };) s nl
+bl ( ) s nl
+bl ( ) s (  double u2p\( double u \) { return u / UPP + Center; };) s nl
+bl ( ) s (  double p2u\( double p \) { return \( p - Center \) * UPP; };) s nl
+bl ( ) s (  double any2p\( double a, int selU, RELABS ra \) {) s nl
+bl ( ) s (    return a / \( \( selU == 0 \) ? 1 : UPP \)) s nl
+bl ( ) s (      + \( \( ra == REL \) ? Value.toDouble\(\) : \( \( selU == 0 \) ? 0 : Center \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  double getCenter\( void \) { return Center; };) s nl
+bl ( ) s (  void setCenter\( QString center \) { Center = center.toDouble\(\); };) s nl
+bl ( ) s (  void setCenter\( double center \) { Center = center; };) s nl
+bl ( ) s (  double metricValue\( void \) { return \( Value.toDouble\(\) - Center \) * UPP; };) s nl
+bl ( ) s (  void setIsInt\( bool isInt \) { IsInt = isInt; };) s nl
+bl ( ) s (  bool isInt\( void \) { return IsInt; };) s nl
+bl ( ) s nl
+bl ( ) s (  /* SPeed ) s (@_Dj4XO") ks ( */) s nl
+bl ( ) s (  virtual void SetSpeed\( MSPEED /* speed */ \) {};) s nl
+bl ( ) s (  virtual void SetHighSpeed\( int /* speed */ \) {};) s nl
+bl ( ) s (  virtual void SetMiddleSpeed\( int /* speed */ \) {};) s nl
+
+endpage
+2 startpage
+bl ( ) s (  virtual void SetLowSpeed\( int /* speed */ \) {};) s nl
+bl ( ) s (  bool hasSpeedsLine\( void \) { return HasSpeedsLine; };) s nl
+bl ( ) s (  void setHasSpeedsLine\( bool f \) { HasSpeedsLine = f; };) s nl
+bl ( ) s (  int highSpeed\( void \) { return MaxS; };     // ) s (%*%j%8%J%k$N%O%$%9%T!<%I) ks nl
+bl ( ) s (  void setHighSpeed\( int h \) { MaxS = h; };) s nl
+bl ( ) s (  int highestSpeed\( void \) { return \( HasSpeedsLine \) ? MaxMaxS : MaxS; };// ) s (5vMF:G9b) ks nl
+bl ( ) s (B.EY) ks nl
+bl ( ) s (  void setHighestSpeed\( int h \) { MaxMaxS = h; };) s nl
+bl ( ) s (  int getHighS\( void \) { return HighS; };) s nl
+bl ( ) s (  int getMiddleS\( void \) { return MiddleS; };) s nl
+bl ( ) s (  int getLowS\( void \) { return LowS; };) s nl
+bl ( ) s (  virtual void AskHighSpeed\( void \) {};) s nl
+bl ( ) s (  virtual void AskMiddleSpeed\( void \) {};) s nl
+bl ( ) s (  virtual void AskLowSpeed\( void \) {};) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  /* MStab ) s (2D$N) ks ( Unit ) s ($O2<5-$N4X?t$r<BAu$9$k$Y$7) ks ( */) s nl
+bl ( ) s (  virtual void CloseShutter\( bool /*close*/ \) {};) s nl
+bl ( ) s (  virtual void GoMaxAbs\( double /*start*/, double /*end*/, int /*steps*/ \) {};) s nl
+bl ( ) s (  virtual void GoMaxAbsQ\( double /*start*/, double /*end*/, int /*steps*/, double /*t) s nl
+bl ( ) s (ime*/ \) {};) s nl
+bl ( ) s (  virtual void GoMaxRel\( double /*width*/, int /*steps*/ \) {};) s nl
+bl ( ) s (  virtual void GoMaxRelQ\( double /*width*/, int /*steps*/, double /*time*/ \) {};) s nl
+bl ( ) s nl
+bl ( ) s (  /* PM16C ) s ($@$1$+$b) ks ( */) s nl
+bl ( ) s (  virtual void AssignDispCh\( int /* ch */ \) {};  // ch : 0 - 3 --> 'A' -- 'D') s nl
+bl ( ) s (  /* PM16C ) s ($G) ks ( QXAFS ) s ($N0Y$K) ks ( */) s nl
+bl ( ) s (  virtual void SetTimingOutMode\( int /* mode */ \) {};) s nl
+bl ( ) s (  // 0 - 5 :: 0: none, 1: cont., 2: 200ns, 3: 10us, 4: 100us, 5: 1ms) s nl
+bl ( ) s (  // 34410 triggers rising edge and requires 1us or longer) s nl
+bl ( ) s (  // for EB741 2us is long enough) s nl
+bl ( ) s (  virtual void SetTimingOutStart\( int /*startP*/ \) {};      // start pos. of timing o) s nl
+bl ( ) s (ut) s nl
+bl ( ) s (  virtual void SetTimingOutEnd\( int /*endP*/ \) {};          // end pos. of timing out) s nl
+bl ( ) s (  virtual void SetTimingOutInterval\( int /*interval*/ \) {}; // timing out interval) s nl
+bl ( ) s (  virtual void SetTimingOutReady\( int /*ready*/ \) {};       // timing out ready) s nl
+bl ( ) s (  virtual int accRate\( void \) { return 1; };                // ) s (2C8:B.%l!<%H) ks nl
+bl ( ) s (  virtual void setAccRate\( int /*r*/ \) {};) s nl
+bl ( ) s (  virtual int accRateNo\( void \) { return 0; };              // ) s (2C8:B.%l!<%H$N%F!<%V%k) ks nl
+bl ( ) s (HV9f) ks nl
+bl ( ) s (  virtual void setAccRateNo\( int /*n*/ \) {};) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  virtual void setMaxV\( QString /*maxv*/ \) {};) s nl
+bl ( ) s (  virtual void setMinV\( QString /*minv*/ \) {};) s nl
+bl ( ) s nl
+bl ( ) s ( public slots:) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 6 6
+/sheet 6 def
+(AMotor.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AMotor.h") s nl
+bl ( ) s nl
+bl ( ) s (AMotor::AMotor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Center = 0;) s nl
+bl ( ) s nl
+bl ( ) s (  HasSpeedsLine = false;) s nl
+bl ( ) s (  HasSetMaxS = false;) s nl
+bl ( ) s (  MaxS = 3000;      // max speed \(pps\) ) s kanji_init (:G=i$K@_Dj$5$l$F$$$?%*%j%8%J%k$N%9%T!<%I) ks nl
+bl ( ) s (  MaxMaxS = 3000;   // ) s (5v$5$l$k:G9b$N%9%T!<%I) ks nl
+bl ( ) s (  HighS = 3000;) s nl
+bl ( ) s (  MiddleS = 1000;) s nl
+bl ( ) s (  LowS = 500;) s nl
+bl ( ) s (  IsInt = false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AMotor::init\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  // SetValue ) s ($O) ks ( Ok: ) s ($G$b) ks ( Er: ) s ($G$bL5;k$9$k!#) ks (\(ClrBusy) s ($b$7$J$$) ks (\)) s nl
+bl ( ) s (  connect\( s, SIGNAL\( EvChangedValue\( SMsg \) \), this, SLOT\( SetCurPos\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "GetValue" \);) s nl
+bl ( ) s nl
+bl ( ) s (  init0\(\);) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 7 7
+/sheet 7 def
+(ASensor.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef ASENSOR_H) s nl
+bl ( ) s (#define ASENSOR_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "AUnit0.h") s nl
+bl ( ) s nl
+bl ( ) s (class ASensor : public AUnit0) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( protected:) s nl
+bl ( ) s (  double setTime;       // Actually set time;) s nl
+bl ( ) s (  double setDarkTime;   // Actually set time;) s nl
+bl ( ) s (  double Dark;                 // back ground value normalized for 1 sec) s nl
+bl ( ) s nl
+bl ( ) s (  bool autoRange;) s nl
+bl ( ) s (  bool RangeSelectable; // if range is selectable for the unit) s nl
+bl ( ) s (  int RangeU;           // Upper range limit) s nl
+bl ( ) s (  int RangeL;           // Lower range limit) s nl
+bl ( ) s (  int SelectedRange;) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  ASensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void init\( void \);) s nl
+bl ( ) s (  virtual void init0\( void \) {};) s nl
+bl ( ) s nl
+bl ( ) s (  virtual bool InitSensor\( void \) { return true; };) s nl
+bl ( ) s (  virtual double SetTime\( double dtime \) { return dtime; };   // in sec) s nl
+bl ( ) s (  double GetSetTime\( void \) { return setTime; };   // actual set time) s nl
+bl ( ) s (  void setDark\( double dark \) { Dark = dark; emit newDark\( Dark \); };) s nl
+bl ( ) s (  double getDark\( void \) { return Dark; };) s nl
+bl ( ) s nl
+bl ( ) s (  /* AutoRange ) s kanji_init (2DG=$J%G%P%$%9$G$O) ks ( true */) s nl
+bl ( ) s (  virtual bool GetRange\( void \) { return false; };) s nl
+bl ( ) s (  virtual void SetRange\( int /* range */ \) {};) s nl
+bl ( ) s (  virtual bool isAutoRangeAvailable\( void \) { return false; };) s nl
+bl ( ) s (  bool isAutoRange\( void \) { return autoRange; };) s nl
+bl ( ) s (  void setAutoRange\( bool ar \) { autoRange = ar; };) s nl
+bl ( ) s (  int getRangeU\( void \) { return RangeU; };) s nl
+bl ( ) s (  int getRangeL\( void \) { return RangeL; };) s nl
+bl ( ) s (  int getRange\( void \) { return SelectedRange; };) s nl
+bl ( ) s (  void setRangeSelectable\( bool f \) { RangeSelectable = f; };) s nl
+bl ( ) s (  bool isRangeSelectable\( void \) { return RangeSelectable; };) s nl
+bl ( ) s (  void setRange\( int r \) { SelectedRange = r; };) s nl
+bl ( ) s (  void setRangeU\( int upper \) { RangeU = upper; };) s nl
+bl ( ) s (  void setRangeL\( int lower \) { RangeL = lower; };) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  /* QXAFS ) s (BP1~) ks ( */) s nl
+bl ( ) s (  virtual bool QStart\( void \) { return false; };) s nl
+bl ( ) s (  virtual bool QRead\( void \) { return false; };) s nl
+bl ( ) s (  virtual bool QEnd\( void \) { return false; };) s nl
+bl ( ) s nl
+bl ( ) s (  /* ) s (O"B3%9%-%c%sBP1~) ks ( */) s nl
+bl ( ) s (  virtual bool Close\( void \) { return false; };) s nl
+bl ( ) s nl
+bl ( ) s ( signals:) s nl
+bl ( ) s (  void newDark\( double dark \);) s nl
+bl ( ) s (  void AskedNowRange\( int r \);) s nl
+bl ( ) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 8 8
+/sheet 8 def
+(ASensor.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (ASensor::ASensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  setTime = 1;       // Actually set time;) s nl
+bl ( ) s (  setDarkTime = 1;   // Actually set time;) s nl
+bl ( ) s (  Dark = 0;          // back ground value normalized for 1 sec) s nl
+bl ( ) s nl
+bl ( ) s (  autoRange = false;) s nl
+bl ( ) s (  RangeSelectable = false;) s nl
+bl ( ) s (  RangeU = 0;           // Upper range limit) s nl
+bl ( ) s (  RangeL = 0;           // Lower range limit) s nl
+bl ( ) s (  SelectedRange = 0;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void ASensor::init\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  init0\(\);) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 9 9
+/sheet 9 def
+(AUnitPM.h) setlabel
+1 startpage
+bl ( ) s (#ifndef AUNITPM_H) s nl
+bl ( ) s (#define AUNITPM_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "AMotor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitPM : public AMotor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s (  int AccRate;   // ) s kanji_init (2C8:B.%l!<%H) ks ( \( AccRage ms/1000pps \)) s nl
+bl ( ) s (  int AccRateNo; // ) s (BP1~$9$k2C8:B.%l!<%H$N) ks ( PM16C ) s ($N%F!<%V%kHV9f) ks nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitPM\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void SetValue\( double v \);) s nl
+bl ( ) s (  void SetSpeed\( MSPEED speed \);) s nl
+bl ( ) s (  void SetHighSpeed\( int speed \);) s nl
+bl ( ) s (  void SetMiddleSpeed\( int speed \);) s nl
+bl ( ) s (  void SetLowSpeed\( int speed \);) s nl
+bl ( ) s (  void Stop\( void \);) s nl
+bl ( ) s (  void AskHighSpeed\( void \);) s nl
+bl ( ) s (  void AskMiddleSpeed\( void \);) s nl
+bl ( ) s (  void AskLowSpeed\( void \);) s nl
+bl ( ) s (  void AssignDispCh\( int ch \);) s nl
+bl ( ) s (  void SetTimingOutMode\( int mode \);) s nl
+bl ( ) s (  void SetTimingOutStart\( int startP \);) s nl
+bl ( ) s (  void SetTimingOutEnd\( int endP \);) s nl
+bl ( ) s (  void SetTimingOutInterval\( int interval \);) s nl
+bl ( ) s (  void SetTimingOutReady\( int ready \);) s nl
+bl ( ) s (  void AskIsBusy\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  int accRate\( void \) { return AccRate; };    // ) s (2C8:B.%l!<%H) ks nl
+bl ( ) s (  void setAccRate\( int r \) { AccRate = r; };) s nl
+bl ( ) s (  int accRateNo\( void \) { return AccRateNo; }; // ) s (2C8:B.%l!<%H$N%F!<%V%kHV9f) ks nl
+bl ( ) s (  void setAccRateNo\( int n \) { AccRateNo = n; };) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (  void RcvHighSpeed\( SMsg msg \);) s nl
+bl ( ) s (  void RcvMiddleSpeed\( SMsg msg \);) s nl
+bl ( ) s (  void RcvLowSpeed\( SMsg msg \);) s nl
+bl ( ) s (  //  void RcvAnsGetValueOfDriver\( SMsg msg \);) s nl
+bl ( ) s nl
+bl ( ) s ( signals:) s nl
+bl ( ) s (  void gotHighS\( int s \);) s nl
+bl ( ) s (  void gotMiddleS\( int s \);) s nl
+bl ( ) s (  void gotLowS\( int s \);) s nl
+bl ( ) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 10 10
+/sheet 10 def
+(AUnitPM.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitPM.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitPM::AUnitPM\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  AccRate = 100;    // ) s kanji_init (2C8:B.%l!<%H) ks ( \( AccRage ms/1000pps \)) s nl
+bl ( ) s (  AccRateNo = 24;   // ) s (BP1~$9$k2C8:B.%l!<%H$N) ks ( PM16C ) s ($N%F!<%V%kHV9f) ks nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetHighSpeed\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetMiddleSpeed\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetLowSpeed\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetTimingOutMode\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetTimingOutStart\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetTimingOutEnd\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetTimingOutInterval\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSetTimingOutReady\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsSelect\( SMsg \)\), this, SLOT\(ClrBusy\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsGetHighSpeed\( SMsg \)\), this, SLOT\(RcvHighSpeed\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsGetMiddleSpeed\( SMsg \)\), this, SLOT\(RcvMiddleSpeed\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsGetLowSpeed\( SMsg \)\), this, SLOT\(RcvLowSpeed\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetValue\( double v \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy = true;) s nl
+bl ( ) s (  emit ChangedIsBusy1\( DevCh \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetValue", QString::number\( ILastSetV = \(int\)v \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetSpeed\( MSPEED speed \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString cmd = "SpeedLow";) s nl
+bl ( ) s nl
+bl ( ) s (  //  IsBusy2 = true;    // setspeed ) s ($KBP$9$k1~Ez$OL5;k$9$k$N$G) ks ( isBusy2 ) s ($b%;%C%H$7$J) ks nl
+bl ( ) s ($$) ks nl
+bl ( ) s (  switch\( speed \) {) s nl
+bl ( ) s (  case LOW: cmd = "SpeedLow"; break;) s nl
+bl ( ) s (  case MIDDLE: cmd = "SpeedMiddle"; break;) s nl
+bl ( ) s (  case HIGH: cmd = "SpeedHigh"; break;) s nl
+bl ( ) s (  default: cmd = "SpeedLow"; break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetHighSpeed\( int speed \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetHighSpeed" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetHighSpeed %1" \).arg\( speed \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+
+endpage
+2 startpage
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetMiddleSpeed\( int speed \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetMiddleSpeed" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetMiddleSpeed %1" \).arg\( speed \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetLowSpeed\( int speed \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetLowSpeed" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetLowSpeed %1" \).arg\( speed \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::Stop\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "Stop" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::AskHighSpeed\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetHighSpeed" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::AskMiddleSpeed\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetMiddleSpeed" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::AskLowSpeed\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetLowSpeed" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::AssignDispCh\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "AssignDispCh" \);) s nl
+bl ( ) s (  int num = Ch.toInt\(\);) s nl
+bl ( ) s (  if \( Ch.left\( 2 \).toUpper\(\) == "CH" \)) s nl
+bl ( ) s (    num = Ch.mid\( 2 \).toInt\(\);) s nl
+bl ( ) s (  QString cmd = QString\( "Select %1 %2" \).arg\( QChar\( 'A' + ch \) \).arg\( num \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetTimingOutMode\( int mode \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTimingOutMode" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetTimingOutMode %1" \).arg\( mode \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetTimingOutStart\( int startP \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTimingOutStart" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetTimingOutStart %1" \).arg\( startP \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetTimingOutEnd\( int endP \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTimingOutEnd" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetTimingOutEnd %1" \).arg\( endP \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 11 11
+/sheet 11 def
+(AUnitPM.cpp) setlabel
+3 startpage
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetTimingOutInterval\( int interval \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTimingOutInterval" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetTimingOutInterval %1" \).arg\( interval \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetTimingOutReady\( int ready \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTimingOutReady" \);) s nl
+bl ( ) s (  QString cmd = QString\( "SetTimingOutReady %1" \).arg\( ready \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, cmd \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::RcvHighSpeed\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( \( msg.From\(\) == DevCh \)||\( msg.From\(\) == Dev \) \)  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETHIGHSPEED \) \) \) {) s nl
+bl ( ) s (    HighS = msg.Val\(\).toInt\(\);) s nl
+bl ( ) s (    if \( ! HasSetMaxS \) {) s nl
+bl ( ) s (      MaxS = HighS;) s nl
+bl ( ) s (      HasSetMaxS = true;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    emit gotHighS\( HighS \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::RcvMiddleSpeed\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( \( msg.From\(\) == DevCh \)||\( msg.From\(\) == Dev \) \)  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETMIDDLESPEED \) \) \) {) s nl
+bl ( ) s (    MiddleS = msg.Val\(\).toInt\(\);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    emit gotMiddleS\( MiddleS \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPM::RcvLowSpeed\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( \( msg.From\(\) == DevCh \)||\( msg.From\(\) == Dev \) \)  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETLOWSPEED \) \) \) {) s nl
+bl ( ) s (    LowS = msg.Val\(\).toInt\(\);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    emit gotLowS\( LowS \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 12 12
+/sheet 12 def
+(AUnitSC.h) setlabel
+1 startpage
+bl ( ) s (#ifndef AUNITSC_H) s nl
+bl ( ) s (#define AUNITSC_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "AMotor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitSC : public AMotor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitSC\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void SetValue\( double v \);) s nl
+bl ( ) s (  bool GetValue\( void \);) s nl
+bl ( ) s (  void Stop\( void \);) s nl
+bl ( ) s (  void AskIsBusy\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetCurPos\( SMsg msg \);) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 13 13
+/sheet 13 def
+(AUnitSC.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitSC.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitSC::AUnitSC\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitSC::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitSC::SetValue\( double v \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetValue", QString\( "%1 1 0 0 0 0" \)) s nl
+bl ( ) s (               .arg\( ILastSetV = \(int\)v \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitSC::GetValue\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetValue" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetValue 0" \);) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitSC::Stop\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "Stop" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitSC::AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitSC::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitSC::SetCurPos\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString buf;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETVALUE \) || \( msg.Msgt\(\) == EvCHANGEDVALUE \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == READ \) \) \) {) s nl
+bl ( ) s (    if \( msg.Msgt\(\) == EvCHANGEDVALUE \) {) s nl
+bl ( ) s (      Value = msg.Val\(\);) s nl
+bl ( ) s (    } else {) s nl
+bl ( ) s (      Value = msg.Vals\(\).at\(1\);) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 14 14
+/sheet 14 def
+(AUnitPZ.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITPZ_H) s nl
+bl ( ) s (#define AUNITPZ_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "AMotor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitPZ : public AMotor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s (  double MaxV, MinV;) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitPZ\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void setMaxV\( QString maxv \) { MaxV = maxv.toDouble\(\); };) s nl
+bl ( ) s (  void setMinV\( QString minv \) { MinV = minv.toDouble\(\); };) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 15 15
+/sheet 15 def
+(AUnitPZ.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitPZ.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitPZ::AUnitPZ\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  MaxV = 0;          // only for PZ) s nl
+bl ( ) s (  MinV = 0;          // only for PZ) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPZ::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( EvChangedValue\( SMsg \) \), this, SLOT\( SetCurPos\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGoMaxAbs\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGoMaxRel\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsShutterOff\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "Init" \);) s nl
+bl ( ) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 16 16
+/sheet 16 def
+(AUnitCNT.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITCNT_H) s nl
+bl ( ) s (#define AUNITCNT_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitCNT : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitCNT\( void \) {};) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  virtual void init00\( void \);) s nl
+bl ( ) s (  bool InitSensor\( void \);) s nl
+bl ( ) s (  virtual bool _InitSensor\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  void AskIsBusy\( void \);) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s (  virtual void _AskIsBusy\( void \);) s nl
+bl ( ) s (  bool GetValue0\( void \);) s nl
+bl ( ) s (  bool GetValue02\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  bool Close\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitCNT2 : public AUnitCNT) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitCNT2\( void \) {};) s nl
+bl ( ) s nl
+bl ( ) s (  void init00\( void \);) s nl
+bl ( ) s (  bool _InitSensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void _AskIsBusy\( void \) {};) s nl
+bl ( ) s nl
+bl ( ) s (  bool isAutoRangeAvailable\( void \) { return true; }) s nl
+bl ( ) s (  bool GetRange\( void \);) s nl
+bl ( ) s (  void SetRange\( int range \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void ReactGetRange\( SMsg msg \);) s nl
+bl ( ) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 17 17
+/sheet 17 def
+(AUnitCNT.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitCNT.h") s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetStopMode\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetTimerPreset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsCounterReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsCountStart\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsStop\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "SetStopMode", "T" \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  init00\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT2::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "IsBusy" \);) s nl
+bl ( ) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetAutoRange\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetZeroCheck\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetRange\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetRange\( SMsg \) \), this, SLOT\( ReactGetRange\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitCNT::InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return _InitSensor\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitCNT::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitCNT2::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( The2ndDev == NULL \) {) s nl
+bl ( ) s (    qDebug\(\) << "InitSensor: the 2nd Dev is not defined for" << Uid << Name;) s nl
+bl ( ) s (    return false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  bool rv;) s nl
+bl ( ) s (  // CNT2, OTC2 ) s kanji_init ($N$H$-) ks ( ) s (%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O) ks nl
+bl ( ) s (  // keithley ) s ($J$N$G$=$lMQ$N=hM}$r$7$F$*$/) ks nl
+bl ( ) s (  QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh2, "Reset", "" \);) s nl
+
+endpage
+2 startpage
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c1" \);) s nl
+bl ( ) s (    if \( autoRange \) {) s nl
+bl ( ) s (      if \( Type2 == "PAM" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", DevCh2, "SetAutoRangeEnable", "1" \);) s nl
+bl ( ) s (      if \( Type2 == "PAM2" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", Dev2, "SetAutoRangeEnable " + Ch2, "1" \);) s nl
+bl ( ) s (      LocalStage = 3;) s nl
+bl ( ) s (    } else {) s nl
+bl ( ) s (      if \( Type2 == "PAM" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", DevCh2, "SetAutoRangeEnable", "0" \);) s nl
+bl ( ) s (      if \( Type2 == "PAM2" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", Dev2, "SetAutoRangeEnable " + Ch2, "0" \);) s nl
+bl ( ) s (      LocalStage = 2;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 2:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c2" \);) s nl
+bl ( ) s (    if \( Type2 == "PAM" \) {) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", DevCh2, "SetRange", QString\( "2E%1" \).arg\( SelectedRange \)) s nl
+bl ( ) s ( \);) s nl
+bl ( ) s (      LocalStage++;) s nl
+bl ( ) s (      rv = true;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    if \( Type2 == "PAM2" \) {) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", Dev2, "SetRange " + Ch2,) s nl
+bl ( ) s (                   QString\( "2E%1" \).arg\( SelectedRange \) \);) s nl
+bl ( ) s (      LocalStage+=2;     // PAM2 ) s ($N;~$O!") ks (LocalStage == 3 ) s ($r$H$P$9) ks nl
+bl ( ) s (      rv = false;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 3:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c3" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh2, "SetZeroCheckEnable", "0" \);) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  default:) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT::AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  _AskIsBusy\(\);   // CNT ) s ($@$1H?1~$7$F) ks ( CNT2 ) s ($OH?1~$7$J$$) ks nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \)   // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 18 18
+/sheet 18 def
+(AUnitCNT.cpp) setlabel
+3 startpage
+bl ( ) s (void AUnitCNT::_AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitCNT::GetValue0\( void \)  // ) s kanji_init (CMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "CounterReset" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c1" \);) s nl
+bl ( ) s (    IsBusy = true;) s nl
+bl ( ) s (    LastFunc = "GetValue0c1";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "CountStart" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (// ) s (CMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g) ks nl
+bl ( ) s (// ) s (JL%P!<%8%g%s!") ks (presetTime ) s (Ey$N=*N;>r7oL5$7$K$7$F$"$k) ks nl
+bl ( ) s (// ) s (O"B3%9%-%c%s) ks ( \() s (:9J,$GCM$r8+$k) ks (\)) s (%b!<%IMQ) ks nl
+bl ( ) s (bool AUnitCNT::GetValue02\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "SetStopMode", "N" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c1" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "CounterReset" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 2:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c2" \);) s nl
+bl ( ) s (    IsBusy = true;) s nl
+bl ( ) s (    LastFunc = "GetValue0c1";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "CountStart" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (// ) s (O"B3%9%-%c%s$N8e$K%N!<%^%k%b!<%I$KLa$9) ks nl
+bl ( ) s (bool AUnitCNT::Close\( void \)) s nl
+
+endpage
+4 startpage
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "Close0" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "Stop" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "Close1" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "SetStopMode", "T" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitCNT2::GetRange\( void \) // CNT2, OTC2) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (  IsBusy2On\( Dev2, "GetRange" \);) s nl
+bl ( ) s (  if \( Type2 == "PAM" \)) s nl
+bl ( ) s (    s->SendCMD2\( Uid, DevCh2, QString\( "GetRange" \) \);) s nl
+bl ( ) s (  if \( Type2 == "PAM2" \)) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev2, QString\( "GetRange " \) + Ch2 \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT2::ReactGetRange\( SMsg msg \)  // CNT2, OTC2) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  double range = RangeL;) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh2 \) || \( msg.From\(\) == Dev2 \) \) {) s nl
+bl ( ) s (    QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (    if \( Type2 == "PAM" \) {) s nl
+bl ( ) s (      range = log10\( msg.Vals\(\).at\(0\).toDouble\(\) / 2.1 \);) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    if \( Type2 == "PAM2" \) {) s nl
+bl ( ) s (      if \( msg.Vals\(\).at\(0\).toInt\(\) == Ch2.toInt\(\) \) {) s nl
+bl ( ) s (        range = log10\( msg.Vals\(\).at\(1\).toDouble\(\) / 2.1 \);) s nl
+bl ( ) s (      } else {) s nl
+bl ( ) s (        return;) s nl
+bl ( ) s (      }) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    IsBusy2Off\( Dev2 \);) s nl
+bl ( ) s (    if \( range > RangeU \) range = RangeU;) s nl
+bl ( ) s (    if \( range < RangeL \) range = RangeL;) s nl
+bl ( ) s (    emit AskedNowRange\( \(int\)range \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitCNT::SetTime\( double dtime \) // in sec // ) s ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-) ks nl
+bl ( ) s ($J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  long int ltime;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTime" \);) s nl
+bl ( ) s (  ltime = dtime * 1e6;) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "SetTimerPreset", QString::number\( ltime \) \);) s nl
+bl ( ) s (  setTime = dtime;) s nl
+bl ( ) s (  ) s nl
+
+endpage
+cleanup
+%%Page: 19 19
+/sheet 19 def
+(AUnitCNT.cpp) setlabel
+5 startpage
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCNT2::SetRange\( int range \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( The2ndDev == NULL \) {) s nl
+bl ( ) s (    qDebug\(\) << "SetRange: the 2nd Dev is not defined for" << Uid << Name;) s nl
+bl ( ) s (    return;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev2, "SetRange" \);) s nl
+bl ( ) s (  // CNT2, OTC2 ) s kanji_init ($N$H$-) ks ( ) s (%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O) ks nl
+bl ( ) s (  // keithley \( PAM/PAM2 \)) s ($J$N$G$=$lMQ$N=hM}$r$7$F$*$/) ks nl
+bl ( ) s (  QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (  if \( Type2 == "PAM" \) {) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh2, "SetRange", QString\( "2E%1" \).arg\( range \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  if \( Type2 == "PAM2" \) {) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", Dev2, "SetRange " + Ch2,) s nl
+bl ( ) s (                 QString\( "2E%1" \).arg\( range \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  SelectedRange = range;) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 20 20
+/sheet 20 def
+(AUnitDV.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITDV_H) s nl
+bl ( ) s (#define AUNITDV_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitDV : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( protected:) s nl
+bl ( ) s (  int points;           // Measured Data Points : 34410) s nl
+bl ( ) s (  bool HasMaxIntTime;) s nl
+bl ( ) s (  double MaxIntTime;    // Maximum integration time) s nl
+bl ( ) s (  ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitDV\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  virtual void init00\( void \);) s nl
+bl ( ) s (  bool InitSensor\( void \);) s nl
+bl ( ) s (  virtual bool _InitSensor\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s nl
+bl ( ) s (  bool hasMaxIntTime\( void \) { return HasMaxIntTime; };) s nl
+bl ( ) s (  double maxIntTime\( void \) { return MaxIntTime; };) s nl
+bl ( ) s (  void setMaxIntTime\( double t \) { MaxIntTime = t; HasMaxIntTime = true; };) s nl
+bl ( ) s (  int Points\( void \) { return points; };) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  bool QStart\( void \);) s nl
+bl ( ) s (  bool QRead\( void \);) s nl
+bl ( ) s (  bool QEnd\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void SetTriggerDelay\( double time \);) s nl
+bl ( ) s (  void SetSamplingSource\( QString source \);) s nl
+bl ( ) s (  void SetTriggerSource\( QString source \);) s nl
+bl ( ) s (  void SetTriggerCounts\( int counts \);) s nl
+bl ( ) s (  void SetTriggerSlope\( QString type \);) s nl
+bl ( ) s (  void GetDataPoints\( void \);) s nl
+bl ( ) s (  void ReadDataPoints\( int datas \);) s nl
+bl ( ) s (  void Abort\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (  void RcvQGetData\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitDV2 : public AUnitDV) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitDV2\( void \) {};) s nl
+bl ( ) s (  void init00\( void \);) s nl
+bl ( ) s (  bool _InitSensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void AskIsBusy\( void \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 21 21
+/sheet 21 def
+(AUnitDV.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitDV.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitDV::AUnitDV\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  points = 0;) s nl
+bl ( ) s (  HasMaxIntTime = false;) s nl
+bl ( ) s (  MaxIntTime = 1000000;   // ) s kanji_init (==J,Bg$-$$) ks nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  init00\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsQInitialize\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsQGetData\( SMsg \) \), this, SLOT\( RcvQGetData\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsQFinalize\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV2::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetAperture\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetAutoZero\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitDV::InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return _InitSensor\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitDV::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "InitSensor-c0" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Scan", DevCh, "Reset", "" \);) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitDV2::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh, "Reset", "" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c1" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh, "SetAutoZero", "OFF" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  default:) s nl
+
+endpage
+2 startpage
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV2::AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::SetIsBusyByMsg\( SMsg msg \) // DV, DV2) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s (/* DV/DV2 ) s ($O) ks ( DV ) s ($NJ}$,) ks ( QXAFS ) s (MQ$G!") ks (DV2 ) s ($,) ks ( NORMAL ) s (MQ) ks ( */) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitDV::QStart\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "Start" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "qInitialize", QString::number\( setTime \) \);) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitDV::QRead\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "Read" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "qGetData" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitDV::QEnd\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "End" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "qFinalize" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitDV::SetTime\( double dtime \) // in sec // ) s ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J) ks nl
+bl ( ) s ($$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( dtime < 0.0001 \) dtime = 0.0001;) s nl
+bl ( ) s (  if \( dtime > 1.0 \) dtime = 1.0;) s nl
+bl ( ) s (  if \(\( HasMaxIntTime \)&&\( dtime > MaxIntTime \)\) { dtime = MaxIntTime; };) s nl
+bl ( ) s (  if \( Type == "DV2" \) {   // DV ) s ($N>l9g!"$3$3$G$OFbItJQ?t) ks ( setTime ) s ($KCM$r@_Dj$9$k$@$1) ks nl
+bl ( ) s (!#) ks nl
+bl ( ) s (    IsBusy2On\( Dev, "SetAperture" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, DevCh, "SetAperture", QString\( "%1" \).arg\( dtime \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  setTime = dtime;) s nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 22 22
+/sheet 22 def
+(AUnitDV.cpp) setlabel
+3 startpage
+bl ( ) s (void AUnitDV::SetTriggerDelay\( double time \)  // ) s kanji_init (;H$C$F$$$J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTriggerDelay" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetTriggerDelay", QString::number\( time \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::SetSamplingSource\( QString source \) //source := TIM, IMM // ) s (;H$C$F$J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetSamplingSource" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetSamplingSource", source \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::SetTriggerSource\( QString source \) //source := IMM, EXT, BUS //) s (;H$C$F$J) ks nl
+bl ( ) s ($$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTriggerSource" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetTriggerSource", source \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::SetTriggerCounts\( int counts \)   ) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTriggerCounts" \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  QString arg;) s nl
+bl ( ) s (  if \( counts > 0 \)) s nl
+bl ( ) s (    arg = QString::number\( counts \);) s nl
+bl ( ) s (  else) s nl
+bl ( ) s (    arg = "INF";) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetTriggerCounts", arg \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::SetTriggerSlope\( QString type \) // POS : rising-edge) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTriggerSlope" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetTriggerSlope", type \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::GetDataPoints\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetDataPoints" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetDataPoints" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::ReadDataPoints\( int datas \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "ReadDataPoints" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetDataPoints", QString::number\( datas \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::Abort\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "Abort" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "Abort" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitDV::RcvQGetData\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( \( msg.From\(\) == DevCh \)||\( msg.From\(\) == Dev \) \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETDATAPOINTS \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == QGETDATA \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == GETDATA \) \) \) {) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    Values = msg.Vals\(\);) s nl
+bl ( ) s (    emit newQData\(\);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+
+endpage
+4 startpage
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 23 23
+/sheet 23 def
+(AUnitXMAP.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITXMAP_H) s nl
+bl ( ) s (#define AUNITXMAP_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s (#include "XMAPHead.h") s nl
+bl ( ) s nl
+bl ( ) s (enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,) s nl
+bl ( ) s (               STAT_EVENTS, STAT_ICR, STAT_OCR };) s nl
+bl ( ) s nl
+bl ( ) s (#define AXMAPBUF    \( XMAPHEAD + 2048 * 4 \) // MCAHEAD + 2048 pixels * 4byte) s nl
+bl ( ) s (#define XMAPBUFSIZE \( AXMAPBUF * 19 \)       // AMCABUF * 19 ch) s nl
+bl ( ) s nl
+bl ( ) s (const int MaxSSDs = 19;       // Max SSD elements) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitXMAP : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s (  bool ConnectedToSSDServer;) s nl
+bl ( ) s (  bool hasConnected;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  QString DataLinkHostName;) s nl
+bl ( ) s (  qint16 DataLinkHostPort;) s nl
+bl ( ) s (  QTcpSocket *dLink;) s nl
+bl ( ) s (  QDataStream *dLinkStream;) s nl
+bl ( ) s (  int dLinkCount;) s nl
+bl ( ) s nl
+bl ( ) s (  char *MCAs0, *MCAs;) s nl
+bl ( ) s (  bool MCAsReady;    // MCAs ) s kanji_init ($KM-8z$J%G!<%?$,$"$k) ks ( true, ) s (L5$$) ks ( false) s nl
+bl ( ) s nl
+bl ( ) s (  QString SSDPresetType;) s nl
+bl ( ) s (  QString *ROIStart, *ROIEnd;) s nl
+bl ( ) s (  QVector<quint64> CountsInROI;) s nl
+bl ( ) s (  QVector<quint64> CountsAll;) s nl
+bl ( ) s (  QVector<quint64> TotalEvents;) s nl
+bl ( ) s (  QVector<double> ICRs;) s nl
+bl ( ) s (  QVector<double> DarkCountsInROI;    // per second) s nl
+bl ( ) s (  QVector<double> DarkCountsAll;      // per second) s nl
+bl ( ) s (  QVector<double> DarkTotalEvents;    // per second) s nl
+bl ( ) s (  QVector<double> DarkICRs;           // per second) s nl
+bl ( ) s (  quint64 MCALength;) s nl
+bl ( ) s (  QStringList MCAStats;) s nl
+bl ( ) s (  QVector<double> MCARealTime;) s nl
+bl ( ) s (  QVector<double> MCALiveTime;) s nl
+bl ( ) s (  QVector<bool> SSDUsingCh;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitXMAP\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  bool InitSensor\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  void _setEnable\( bool enable \);) s nl
+bl ( ) s (  void ConnectToXMAPDataLinkServer\( QString host, qint16 port \);) s nl
+bl ( ) s nl
+bl ( ) s (  bool GetValue0\( void \);) s nl
+bl ( ) s (  bool GetValue02\( void \);) s nl
+bl ( ) s (  void RunStart\( void \);) s nl
+bl ( ) s (  void RunStop\( void \);) s nl
+bl ( ) s (  void RunResume\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void setSSDPresetType\( QString type \) { SSDPresetType = type; };) s nl
+bl ( ) s (  QString getSSDPresetType\( void \) { return SSDPresetType; };) s nl
+bl ( ) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s (  bool GetMCAs\( void \);) s nl
+
+endpage
+2 startpage
+bl ( ) s (  bool GetStat\( void \);) s nl
+bl ( ) s (  //  bool SetRealTime\( double val \);  // xmap2) s nl
+bl ( ) s (  //  bool SetLiveTime\( double val \);  // xmap2) s nl
+bl ( ) s (  bool SetRealTime\( int ch, double val \);) s nl
+bl ( ) s (  bool SetLiveTime\( int ch, double val \);) s nl
+bl ( ) s (  bool GetRealTime\( int ch \);) s nl
+bl ( ) s (  bool GetLiveTime\( int ch \);) s nl
+bl ( ) s nl
+bl ( ) s (  void setDark\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  QVector<quint64> getCountsInROI\( void \) { return CountsInROI; };) s nl
+bl ( ) s (  QVector<quint64> getCountsAll\( void \) { return CountsAll; };) s nl
+bl ( ) s (  QVector<quint64> getTotalEvents\( void \) { return TotalEvents; };) s nl
+bl ( ) s (  QVector<double> getICRs\( void \) { return ICRs; };) s nl
+bl ( ) s (  QVector<double> getDarkCountsInROI\( void \) { return DarkCountsInROI; };) s nl
+bl ( ) s (  QVector<double> getDarkCountsAll\( void \) { return DarkCountsAll; };) s nl
+bl ( ) s (  QVector<double> getDarkTotalEvents\( void \) { return DarkTotalEvents; };) s nl
+bl ( ) s (  QVector<double> getDarkICRs\( void \) { return DarkICRs; };) s nl
+bl ( ) s (  quint32 *getAMCA\( int ch \);) s nl
+bl ( ) s (  quint32 getAMCAdata\( int ch, int pixel \);) s nl
+bl ( ) s (  XMAPHead getAMCAHead\( int ch \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  void setGain\( int ch, double gain \);) s nl
+bl ( ) s (  void setROIs\( QString *roistart, QString *roiend \)) s nl
+bl ( ) s (  { ROIStart = roistart; ROIEnd = roiend; };) s nl
+bl ( ) s nl
+bl ( ) s (  void SetLowLimit\( int ch, int llpix \);) s nl
+bl ( ) s (  void setSSDUsingCh\( int i, bool f \)) s nl
+bl ( ) s (  { if \( i < MaxSSDs \) SSDUsingCh[i] = f; };) s nl
+bl ( ) s (  bool getSSDUsingCh\( int i \)) s nl
+bl ( ) s (  { if \( i < MaxSSDs \) return SSDUsingCh[i]; else return false; };) s nl
+bl ( ) s nl
+bl ( ) s (  double realTime\( int ch \);) s nl
+bl ( ) s (  double liveTime\( int ch \);) s nl
+bl ( ) s nl
+bl ( ) s (  double stat\( int ch, STATELM i \);) s nl
+bl ( ) s (  bool GetValue\( void \);) s nl
+bl ( ) s (  bool Close\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s ( public slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (  void getMCALength\( SMsg msg \);) s nl
+bl ( ) s (  void ReactGetStat\( SMsg msg \);) s nl
+bl ( ) s (  void ReactGetRealTime\( SMsg msg \);) s nl
+bl ( ) s (  void ReactGetLiveTime\( SMsg msg \);) s nl
+bl ( ) s (  void ReactGetDataLinkCh\( SMsg msg \);) s nl
+bl ( ) s (  void ReceiveValues\( SMsg msg \);) s nl
+bl ( ) s (  void receiveMCAs\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( signals:) s nl
+bl ( ) s (  void ReceivedNewMCARealTime\( int i \);) s nl
+bl ( ) s (  void ReceivedNewMCALiveTime\( int i \);) s nl
+bl ( ) s (  void DataLinkServerIsReady\( QString host, qint16 port \);) s nl
+bl ( ) s (  void NewMCAsAvailable\( char *MCAs \);) s nl
+bl ( ) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 24 24
+/sheet 24 def
+(AUnitXMAP.h) setlabel
+3 startpage
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 25 25
+/sheet 25 def
+(AUnitXMAP.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitXMAP.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitXMAP::AUnitXMAP\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  MCALength = 2048;    // !!) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  ConnectedToSSDServer = false;) s nl
+bl ( ) s (  hasConnected = false;) s nl
+bl ( ) s (  DataLinkHostName = "";) s nl
+bl ( ) s (  DataLinkHostPort = 0;) s nl
+bl ( ) s (  dLink = NULL;) s nl
+bl ( ) s (  dLinkStream = NULL;) s nl
+bl ( ) s (  dLinkCount = 0;) s nl
+bl ( ) s nl
+bl ( ) s (  MCAs0 = NULL;) s nl
+bl ( ) s (  MCAs = NULL;) s nl
+bl ( ) s (  MCAsReady = false;) s nl
+bl ( ) s nl
+bl ( ) s (  SSDPresetType = "REAL";   // for MCA/SSD) s nl
+bl ( ) s (  ROIStart = ROIEnd = NULL;) s nl
+bl ( ) s nl
+bl ( ) s (  MCARealTime.clear\(\);) s nl
+bl ( ) s (  MCALiveTime.clear\(\);) s nl
+bl ( ) s (  SSDUsingCh.clear\(\);) s nl
+bl ( ) s (  CountsInROI.clear\(\);) s nl
+bl ( ) s (  CountsAll.clear\(\);) s nl
+bl ( ) s (  TotalEvents.clear\(\);) s nl
+bl ( ) s (  ICRs.clear\(\);) s nl
+bl ( ) s (  DarkCountsInROI.clear\(\);) s nl
+bl ( ) s (  DarkCountsAll.clear\(\);) s nl
+bl ( ) s (  DarkTotalEvents.clear\(\);) s nl
+bl ( ) s (  DarkICRs.clear\(\);) s nl
+bl ( ) s (  for \( int i = 0; i < MaxSSDs; i++ \) {) s nl
+bl ( ) s (    MCARealTime << 0;) s nl
+bl ( ) s (    MCALiveTime << 0;) s nl
+bl ( ) s (    SSDUsingCh << true;) s nl
+bl ( ) s (    CountsInROI << 0;) s nl
+bl ( ) s (    CountsAll << 0;) s nl
+bl ( ) s (    TotalEvents << 0;) s nl
+bl ( ) s (    ICRs << 0;) s nl
+bl ( ) s (    DarkCountsInROI << 0;) s nl
+bl ( ) s (    DarkCountsAll << 0;) s nl
+bl ( ) s (    DarkTotalEvents << 0;) s nl
+bl ( ) s (    DarkICRs << 0;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  MCAStats.clear\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  QString ROIs = "";) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Init", Dev, "RunStop" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c1" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Init", Dev, "SetPresetType", SSDPresetType \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+
+endpage
+2 startpage
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 2:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c2" \);) s nl
+bl ( ) s (    ROIs = ROIStart[0] + " " + ROIEnd[0];) s nl
+bl ( ) s (    for \( int i = 1; i < MaxSSDs; i++ \) {) s nl
+bl ( ) s (      ROIs += " " + ROIStart[i] + " " + ROIEnd[i];) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    s->SendCMD2\( "Init", Dev, "SetROIs", ROIs \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetPresetType\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetPresetValue\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsRunStart\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsRunStop\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetValues\( SMsg \) \), this, SLOT\( ReceiveValues\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetROIs\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetStatistics\( SMsg \) \), this, SLOT\( ReactGetStat\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetRealTime\( SMsg \)\), this, SLOT\( ReactGetRealTime\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetLiveTime\( SMsg \)\), this, SLOT\( ReactGetLiveTime\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetDataLinkCh\( SMsg \) \),) s nl
+bl ( ) s (           this, SLOT\( ReactGetDataLinkCh\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "RunStop" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "GetDataLinkCh" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::ConnectToXMAPDataLinkServer\( QString host, qint16 port \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( !hasConnected \) {) s nl
+bl ( ) s (    hasConnected = true;) s nl
+bl ( ) s (    qDebug\(\) << "data link server" << host << port;) s nl
+bl ( ) s (    if \( dLink != NULL \) delete dLink;) s nl
+bl ( ) s (    dLink = new QTcpSocket;) s nl
+bl ( ) s (    if \( dLinkStream != NULL \) delete dLinkStream;) s nl
+bl ( ) s (    dLinkStream = new QDataStream\( dLink \);) s nl
+bl ( ) s (    if \( MCAs0 != NULL \)) s nl
+bl ( ) s (      delete [] MCAs0;) s nl
+bl ( ) s (    MCAs0 = new char [ XMAPBUFSIZE ];) s nl
+bl ( ) s (    dLinkCount = 0;) s nl
+bl ( ) s (    MCAsReady = false;  // MCAs ) s kanji_init ($N%P%C%U%!$KM-8z$J%G!<%?$,L5$$) ks nl
+bl ( ) s (    connect\( dLink, SIGNAL\( readyRead\(\) \), this, SLOT\( receiveMCAs\(\) \),) s nl
+bl ( ) s (             Qt::UniqueConnection \);) s nl
+bl ( ) s (    dLink->connectToHost\( host, port \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 26 26
+/sheet 26 def
+(AUnitXMAP.cpp) setlabel
+3 startpage
+bl ( ) s (void AUnitXMAP::_setEnable\( bool /*enable*/ \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  ConnectedToSSDServer = false;) s nl
+bl ( ) s (  // ) s kanji_init (K\\Ev$K$3$l$G$$$$$+) ks ( stars ) s ($H$N@\\B3$,) ks ( on/off ) s ($5$l$k$H) ks nl
+bl ( ) s (  // ) s ($+$J$i$:!"N"$G$D$J$,$C$F$$$k%@%$%l%/$H$N%3%M%/%7%g%s$,@Z$l$?$3$H$K$5$l$k) ks nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitXMAP::SetTime\( double dtime \) // in sec, ) s ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J) ks nl
+bl ( ) s ($$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTime" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "RunStop" \);   // ) s (%3%^%s%IO"B3H/9T2DG=$+) ks (? ) s ($$$A$*$&$$$1$F$k) ks nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetPresetValue", QString::number\( dtime \) \);) s nl
+bl ( ) s (  setTime = dtime;) s nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::GetValue\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetValue" \);) s nl
+bl ( ) s (  // ) s (JQB') ks ( : ) s ($3$N) ks ( IsBusy2 ) s ($O) ks ( @GetMCAs Ok: ) s ($r<u$1$F$b>C$5$J$$) ks nl
+bl ( ) s (  //        data-link ) s (7PM3$G40A4$J%G!<%?$r$b$i$C$?;~$K>C$9) ks nl
+bl ( ) s (  //    s->SendCMD2\( Uid, Dev, "GetValues" \);    // new mcas) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "GetMCAs" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::GetValue0\( void \)  // ) s (CMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "RunStop" \);) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c1" \);) s nl
+bl ( ) s (    IsBusy = true;) s nl
+bl ( ) s (    LastFunc = "GetValue0c1";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "RunStart" \);) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (// ) s (CMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g) ks nl
+bl ( ) s (// ) s (JL%P!<%8%g%s!") ks (presetTime ) s (Ey$N=*N;>r7oL5$7$K$7$F$"$k) ks nl
+bl ( ) s (// ) s (O"B3%9%-%c%s) ks ( \() s (:9J,$GCM$r8+$k) ks (\)) s (%b!<%IMQ) ks nl
+bl ( ) s (bool AUnitXMAP::GetValue02\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "SetPresetType", "NONE" \);) s nl
+bl ( ) s (    rv = true;) s nl
+
+endpage
+4 startpage
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c1" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "RunStop" \);) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 2:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c2" \);) s nl
+bl ( ) s (    IsBusy = true;) s nl
+bl ( ) s (    LastFunc = "GetValue0c1";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "RunStart" \);) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (/* ) s (O"B3%9%-%c%sBP1~) ks ( */) s nl
+bl ( ) s (// ) s (O"B3%9%-%c%s$N8e$K%N!<%^%k%b!<%I$KLa$9) ks nl
+bl ( ) s (bool AUnitXMAP::Close\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetValue0c0" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "RunStop" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::RunStart\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "RunStart" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::RunStop\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "RunStop" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::RunResume\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "Resume" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::GetMCAs\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev2, "GetMCAs" \);) s nl
+bl ( ) s (  // ) s (JQB') ks ( : ) s ($3$N) ks ( IsBusy2 ) s ($O) ks ( @GetMCAs Ok: ) s ($r<u$1$F$b>C$5$J$$) ks nl
+bl ( ) s (  //        data-link ) s (7PM3$G40A4$J%G!<%?$r$b$i$C$?;~$K>C$9) ks nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, QString\( "GetMCAs" \) \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::getMCALength\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( msg.From\(\) == Dev \) {  //   // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (    MCALength = msg.Val\(\).toInt\(\);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::GetStat\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+
+endpage
+cleanup
+%%Page: 27 27
+/sheet 27 def
+(AUnitXMAP.cpp) setlabel
+5 startpage
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetStat" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "GetStatistics" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::ReactGetStat\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \) || \( msg.From\(\) == Dev \) \) {  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    MCAStats = msg.Vals\(\);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitXMAP::stat\( int ch, STATELM i \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  double rv = 0;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( MCAStats.count\(\) >= 140 \) {) s nl
+bl ( ) s (    rv = MCAStats.at\( ch * 7 + \(int\)i \).toDouble\(\);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::SetRealTime\( int ch, double val \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetRealTime2" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "SetRealTime",) s nl
+bl ( ) s (               QString::number\( ch \) + " " + QString::number\( val \) \);) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::GetRealTime\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetRealTime" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "GetRealTime", QString::number\( ch \) \);) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::ReactGetRealTime\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  int ch;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \) || \( msg.From\(\) == Dev \) \) {  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    MCARealTime[ ch = msg.Vals\(\).at\(0\).toInt\(\) ] = msg.Vals\(\).at\(1\).toDouble\(\);) s nl
+bl ( ) s (    emit ReceivedNewMCARealTime\( ch \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitXMAP::realTime\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return MCARealTime[ ch ];) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (#if 0) s nl
+bl ( ) s (bool AUnitXMAP::SetLiveTime\( double val \)) s nl
+bl ( ) s ({) s nl
+
+endpage
+6 startpage
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( Type == "SSDP" \) {) s nl
+bl ( ) s (    IsBusy2On\( Dev, "SetLiveTime1" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, DevCh, "SetLiveTime", QString::number\( val \) \);) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::SetLiveTime\( int ch, double val \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetLiveTime2" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "SetLiveTime",) s nl
+bl ( ) s (               QString::number\( ch \) + " " + QString::number\( val \) \);) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP::GetLiveTime\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetLiveTime2" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "GetLiveTime", QString::number\( ch \) \);) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::ReactGetLiveTime\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  int ch;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \) || \( msg.From\(\) == Dev \) \) {  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    MCALiveTime[ ch = msg.Vals\(\).at\(0\).toInt\(\) ] = msg.Vals\(\).at\(1\).toDouble\(\);) s nl
+bl ( ) s (    emit ReceivedNewMCALiveTime\( ch \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitXMAP::liveTime\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return MCALiveTime[ ch ];) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::SetLowLimit\( int ch, int llpix \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( ch < MaxSSDs \) {) s nl
+bl ( ) s (    //    MCALowLimit[ ch ] = llpix;) s nl
+bl ( ) s (    s->SendCMD2\( "SSDSetting", Dev,) s nl
+bl ( ) s (                 QString\( "SetLLimit %1 %2" \).arg\( ch \).arg\( llpix \) \);) s nl
+bl ( ) s (  } else {) s nl
+bl ( ) s (    qDebug\(\) << "Setting LowLimit the ch " << ch << "is too big";) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::ReactGetDataLinkCh\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( msg.From\(\) == Dev \) {) s nl
+bl ( ) s (    if \( msg.Vals\(\).count\(\) == 2 \) {) s nl
+bl ( ) s (      IsBusy2Off\( Dev \);) s nl
+bl ( ) s (      QString NewDataLinkHostName = msg.Vals\(\).at\(0\);) s nl
+
+endpage
+cleanup
+%%Page: 28 28
+/sheet 28 def
+(AUnitXMAP.cpp) setlabel
+7 startpage
+bl ( ) s (      int NewDataLinkHostPort = msg.Vals\(\).at\(1\).toInt\(\);) s nl
+bl ( ) s (      if \( \( ! ConnectedToSSDServer \) || ) s nl
+bl ( ) s (           \( \( NewDataLinkHostName != DataLinkHostName \)) s nl
+bl ( ) s (             &&\( NewDataLinkHostPort != DataLinkHostPort \) \) \) {) s nl
+bl ( ) s (        DataLinkHostName = NewDataLinkHostName;) s nl
+bl ( ) s (        DataLinkHostPort = NewDataLinkHostPort;) s nl
+bl ( ) s (        ConnectedToSSDServer = true;) s nl
+bl ( ) s (        ConnectToXMAPDataLinkServer\( DataLinkHostName, DataLinkHostPort \);) s nl
+bl ( ) s (        qDebug\(\) << "Connect to SSD server" << DataLinkHostName << DataLinkHostPort;) s nl
+bl ( ) s (      }) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::setDark\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Dark = Value.toDouble\(\) / \( \( setTime != 0 \) ? setTime : 1 \);) s nl
+bl ( ) s (  DarkCountsInROI.clear\(\);) s nl
+bl ( ) s (  DarkCountsAll.clear\(\);) s nl
+bl ( ) s (  DarkTotalEvents.clear\(\);) s nl
+bl ( ) s (  for \( int i = 0; i < CountsInROI.count\(\); i++ \) {) s nl
+bl ( ) s (    DarkCountsInROI << CountsInROI.at\(i\) / \( \( setTime != 0 \) ? setTime : 1 \);) s nl
+bl ( ) s (    DarkCountsAll << CountsAll.at\(i\) / \( \( setTime != 0 \) ? setTime : 1 \);) s nl
+bl ( ) s (    DarkTotalEvents << TotalEvents.at\(i\) / \( \( setTime != 0 \) ? setTime : 1 \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  DarkICRs = ICRs;) s nl
+bl ( ) s (  setDarkTime = setTime;) s nl
+bl ( ) s (  emit newDark\( Dark \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s (quint32 AUnitXMAP::getAMCAdata\( int ch, int pixel \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( !MCAsReady \)) s nl
+bl ( ) s (    return 0;) s nl
+bl ( ) s (  return *\(\(quint32 *\)\( MCAs + AXMAPBUF * ch + XMAPHEAD \) + pixel \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (quint32 *AUnitXMAP::getAMCA\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( !MCAsReady \)) s nl
+bl ( ) s (    return NULL;) s nl
+bl ( ) s (  return \(quint32 *\)\( MCAs + AXMAPBUF * ch + XMAPHEAD \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (XMAPHead AUnitXMAP::getAMCAHead\( int ch \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  XMAPHead rv;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( !MCAsReady \)) s nl
+bl ( ) s (    return rv;) s nl
+bl ( ) s (  rv.ch       = *\(qint64*\)\( MCAs + AXMAPBUF * ch +  0 \);) s nl
+bl ( ) s (  rv.stat     = *\(qint64*\)\( MCAs + AXMAPBUF * ch +  8 \);) s nl
+bl ( ) s (  rv.len      = *\(qint64*\)\( MCAs + AXMAPBUF * ch + 16 \);) s nl
+bl ( ) s (  rv.realTime = *\(double*\)\( MCAs + AXMAPBUF * ch + 24 \);) s nl
+bl ( ) s (  rv.liveTime = *\(double*\)\( MCAs + AXMAPBUF * ch + 32 \);) s nl
+bl ( ) s (  rv.icr      = *\(double*\)\( MCAs + AXMAPBUF * ch + 40 \);) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::setGain\( int ch, double gain \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, QString\( "SetPreAMPGain %1 %2" \).arg\( ch \).arg\( gain \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::ReceiveValues\( SMsg msg \)) s nl
+
+endpage
+8 startpage
+bl ( ) s ({) s nl
+bl ( ) s (  QString buf;) s nl
+bl ( ) s nl
+bl ( ) s (  CountsInROI.clear\(\);) s nl
+bl ( ) s (  CountsAll.clear\(\);) s nl
+bl ( ) s (  TotalEvents.clear\(\);) s nl
+bl ( ) s (  ICRs.clear\(\);) s nl
+bl ( ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \) && \( msg.Msgt\(\) == GETVALUES \) \) { // Check !!!!! DevCh/) s nl
+bl ( ) s (Drv) s nl
+bl ( ) s (    int sum = 0;) s nl
+bl ( ) s (    for \( int i = 0; i < MaxSSDs; i++ \) {) s nl
+bl ( ) s (      if \( SSDUsingCh[i] \) {) s nl
+bl ( ) s (        sum += msg.Vals\(\).at\( i + 1 \).toInt\(\);) s nl
+bl ( ) s (      }) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    Value = QString::number\( sum \);) s nl
+bl ( ) s (    for \( int i = 0; i < MaxSSDs; i++ \) {) s nl
+bl ( ) s (      CountsInROI << msg.Vals\(\).at\( i + 1 \).toInt\(\);) s nl
+bl ( ) s (      CountsAll   << msg.Vals\(\).at\( i + 1 + MaxSSDs \).toInt\(\);) s nl
+bl ( ) s (      TotalEvents << msg.Vals\(\).at\( i + 1 + MaxSSDs * 2 \).toInt\(\);) s nl
+bl ( ) s (      ICRs        << msg.Vals\(\).at\( i + 1 + MaxSSDs * 3 \).toDouble\(\);) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    Values = msg.Vals\(\);) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP::receiveMCAs\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  uint bytes0, bytes;) s nl
+bl ( ) s nl
+bl ( ) s (  bytes0 = dLink->bytesAvailable\(\);) s nl
+bl ( ) s (  // ) s kanji_init (:#FO$$$?J,$rA4ItFI$s$G$b%P%C%U%!%5%$%:$h$j>.$5$$$J$i) ks nl
+bl ( ) s (  if \( dLinkCount + bytes0 <= XMAPBUFSIZE \)) s nl
+bl ( ) s (    bytes = bytes0;                    // ) s (A4ItFI$`) ks nl
+bl ( ) s (  else) s nl
+bl ( ) s (    bytes = XMAPBUFSIZE - dLinkCount;   // ) s (Bg$-$$$J$i!"FI$a$kJ,$@$1FI$`) ks nl
+bl ( ) s nl
+bl ( ) s (  bytes = dLinkStream->readRawData\( MCAs0 + dLinkCount, bytes \);) s nl
+bl ( ) s (  dLinkCount += bytes;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( dLinkCount >= XMAPBUFSIZE \) {) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (    dLinkCount = 0;) s nl
+bl ( ) s (    if \( MCAs != NULL \) delete [] MCAs;) s nl
+bl ( ) s (    MCAs = MCAs0;              // ) s (FI$_9~$_$,40@.$7$?%P%C%U%!) ks (\(MCAs0\)) s ($r) ks nl
+bl ( ) s (                               // ) s (:G?7$N%G!<%?$,CV$+$l$?%P%C%U%!) ks (\(MCAs\)) s ($K0\\$7) ks nl
+bl ( ) s (    MCAs0 = new char [ XMAPBUFSIZE ];) s nl
+bl ( ) s (                               // MCAs0 ) s ($O<!$N%G!<%?$r<u$1$k$?$a$K?7$7$/$9$k) ks nl
+
+endpage
+cleanup
+%%Page: 29 29
+/sheet 29 def
+(AUnitXMAP.cpp) setlabel
+9 startpage
+bl ( ) s (    MCAsReady = true;          // MCAs ) s kanji_init ($N%P%C%U%!$KM-8z$J%G!<%?$,$"$k) ks nl
+bl ( ) s nl
+bl ( ) s (    CountsInROI.clear\(\);) s nl
+bl ( ) s (    CountsAll.clear\(\);) s nl
+bl ( ) s (    TotalEvents.clear\(\);) s nl
+bl ( ) s (    ICRs.clear\(\);) s nl
+bl ( ) s nl
+bl ( ) s (    quint64 sum = 0;) s nl
+bl ( ) s (    quint64 countsAll, countsInROI;) s nl
+bl ( ) s (    for \( int i = 0; i < MaxSSDs; i++ \) {) s nl
+bl ( ) s (      quint32 *aMCA = getAMCA\( i \);) s nl
+bl ( ) s (      countsAll = countsInROI = 0;) s nl
+bl ( ) s (      for \( int j = 0; j < \(int\)MCALength; j++ \) {) s nl
+bl ( ) s (        if \( \( j >= ROIStart[i].toInt\(\) \)&&\( j <= ROIEnd[i].toInt\(\) \) \)) s nl
+bl ( ) s (          countsInROI += aMCA[j];) s nl
+bl ( ) s (        countsAll += aMCA[j];) s nl
+bl ( ) s (      }) s nl
+bl ( ) s (      CountsAll << countsAll;) s nl
+bl ( ) s (      sum += countsInROI;) s nl
+bl ( ) s (      CountsInROI << countsInROI;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s nl
+bl ( ) s (    Value = QString::number\( sum \);) s nl
+bl ( ) s (    for \( int i = 0; i < MaxSSDs; i++ \) {) s nl
+bl ( ) s (      TotalEvents << 0;) s nl
+bl ( ) s (      ICRs        << getAMCAHead\( i \).icr;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    emit LogMsg\( "emitted New MCAs" \);) s nl
+bl ( ) s (    emit NewMCAsAvailable\( MCAs \);) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 30 30
+/sheet 30 def
+(AUnitXMAP2.h) setlabel
+1 startpage
+bl ( ) s (#ifndef AUNITXMAP2_H) s nl
+bl ( ) s (#define AUNITXMAP2_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s (#include "AUnitXMAP.h"   // AUnitXMAP ) s kanji_init ($H) ks ( AUnitXMAP2 ) s ($O7Q>54X78$K$J$$) ks nl
+bl ( ) s nl
+bl ( ) s (class AUnitXMAP2 : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitXMAP2\( void \) {};) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  double stat\( STATELM i \);) s nl
+bl ( ) s (  bool SetRealTime\( double val \);) s nl
+bl ( ) s (  double SetTime\( double t \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void getNewValue\( QString v \);   // only for SSD childlen) s nl
+bl ( ) s (  void getNewDark\( double d \);     // only for SSD childlen) s nl
+bl ( ) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 31 31
+/sheet 31 def
+(AUnitXMAP2.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitXMAP2.h") s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP2::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetPresetValue\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetROIs\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", "System", "flgon", DevCh \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitXMAP2::stat\( STATELM i \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return \(\(AUnitXMAP*\)TheParent\)->stat\( Ch.toInt\(\), i \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP2::getNewValue\( QString \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Value = QString::number\( \(\(AUnitXMAP*\)TheParent\)->getCountsInROI\(\).at\( Ch.toInt\(\) \)) s nl
+bl ( ) s ( \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitXMAP2::getNewDark\( double \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Dark = \(\(AUnitXMAP*\)TheParent\)->getDarkCountsInROI\(\).at\( Ch.toInt\(\) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitXMAP2::SetTime\( double dtime \) // in sec, ) s kanji_init ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-) ks nl
+bl ( ) s ($J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTime" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "RunStop" \);   // ) s (%3%^%s%IO"B3H/9T2DG=$+) ks (? ) s ($$$A$*$&$$$1$F$k) ks nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetPresetValue", QString::number\( dtime \) \);) s nl
+bl ( ) s (  setTime = dtime;) s nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitXMAP2::SetRealTime\( double val \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetRealTime1" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetRealTime", QString::number\( val \) \);) s nl
+bl ( ) s (  rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 32 32
+/sheet 32 def
+(AUnitPAM.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITPAM_H) s nl
+bl ( ) s (#define AUNITPAM_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitPAM : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitPAM\( void \) {};) s nl
+bl ( ) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  virtual void init00\( void \);) s nl
+bl ( ) s (  bool InitSensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  bool isAutoRangeAvailable\( void \) { return true; };) s nl
+bl ( ) s (  bool GetValue\( void \);) s nl
+bl ( ) s (  void SetRange\( int range \);) s nl
+bl ( ) s (  virtual void _SetRange\( int range \);) s nl
+bl ( ) s (  virtual bool _GetValue\( void \);) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s (  virtual void _SetTime\( double t \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitPAM2 : public AUnitPAM) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitPAM2\( void \) {};) s nl
+bl ( ) s (  void init00\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void _SetRange\( int range \);) s nl
+bl ( ) s (  bool _GetValue\( void \);) s nl
+bl ( ) s (  void _SetTime\( double t \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void RcvAnsGetValueOfDriver\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 33 33
+/sheet 33 def
+(AUnitPAM.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitPAM.h") s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsRead\( SMsg \) \), this, SLOT\( SetCurPos\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetAutoRange\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetDataFormat\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetZeroCheck\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetNPLCycles\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  init00\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM2::init00\( void \)    // PAM ) s kanji_init ($H) ks ( PAM2 ) s ($G0c$C$F$k) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsRead\( SMsg \) \),this, SLOT\( RcvAnsGetValueOfDriver\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitPAM::InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  QString dev;) s nl
+bl ( ) s (  if \( Type == "PAM" \) { dev = Dev; } else { dev = Dev; } // !!) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", dev, "Reset", "" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c1" \);) s nl
+bl ( ) s (    if \( Type == "PAM" \) ) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", dev, "SetAutoRangeEnable", "1" \);) s nl
+bl ( ) s (    if \( Type == "PAM2" \) ) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", dev, "SetAutoRangeEnable " + Ch, "1" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 2:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c2" \);) s nl
+bl ( ) s (    if \( Type == "PAM" \)) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", dev, "SetDataFormatElements", "READ" \);) s nl
+bl ( ) s (    if \( Type == "PAM2" \)) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", dev, "SetDataFormatElements", "CURR1,CURR2" \);) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    if \( Type == "PAM" \) {) s nl
+bl ( ) s (      LocalStage++;) s nl
+bl ( ) s (      rv = true;) s nl
+
+endpage
+2 startpage
+bl ( ) s (    } else {) s nl
+bl ( ) s (      rv = false;      // PAM2 ) s ($O) ks ( ZeroCheck ) s ($N@_Dj$J$$$i$7$$) ks nl
+bl ( ) s (      LocalStage = 4;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 3:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c3" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", dev, "SetZeroCheckEnable", "0" \);) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  default:) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitPAM::GetValue\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return _GetValue\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (bool AUnitPAM::_GetValue\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetValue" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "Read" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitPAM2::_GetValue\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GetValue" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "Read" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM2::RcvAnsGetValueOfDriver\( SMsg msg \)  // driver ) s (L>$@$1$G8F$P$l$k>l9g) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \) && \( msg.Msgt\(\) == READ \) \) {) s nl
+bl ( ) s (    Values = msg.Val\(\).split\( QChar\( ',' \) \);) s nl
+bl ( ) s (    Value = Values.at\( Ch.toInt\(\) \); // ) s (?F%I%i%$%P08$NJVEz$+$i<+J,MQ$NEz$\($rA*$jJ,$1) ks nl
+bl ( ) s ($k) ks nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitPAM::SetTime\( double dtime \) // in sec// ) s ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J) ks nl
+bl ( ) s ($$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  double time;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTime" \);) s nl
+bl ( ) s (  // 1 sec -> 1/60 sec) s nl
+bl ( ) s (  time = dtime * 60;) s nl
+bl ( ) s (  if \( time < 1 \) time = 1;) s nl
+bl ( ) s (  if \( time > 40 \) time = 40;) s nl
+bl ( ) s nl
+bl ( ) s (  _SetTime\( time \);) s nl
+bl ( ) s nl
+bl ( ) s (  setTime = time / 60;    // ) s ($3$l$G!VIC!WC10L$NIaDL$N;~4V$KLa$C$F$k) ks nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 34 34
+/sheet 34 def
+(AUnitPAM.cpp) setlabel
+3 startpage
+bl ( ) s (void AUnitPAM::_SetTime\( double time \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetNPLCycles", QString::number\( time \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM2::_SetTime\( double time \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "SetNPLCycles " + Ch, QString::number\( time \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM::SetRange\( int range \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev2, "SetRange" \);) s nl
+bl ( ) s (  _SetRange\( range \);) s nl
+bl ( ) s (  SelectedRange = range;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM::_SetRange\( int range \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Scan", DevCh, "SetRange", QString\( "2E%1" \).arg\( range \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitPAM2::_SetRange\( int range \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Scan", Dev, "SetRange " + Ch, QString\( "2E%1" \).arg\( range \) \);) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 35 35
+/sheet 35 def
+(AUnitOTC.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITOTC_H) s nl
+bl ( ) s (#define AUNITOTC_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitOTC : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitOTC\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  virtual void init00\( void \);) s nl
+bl ( ) s (  bool InitSensor\( void \);) s nl
+bl ( ) s (  virtual bool _InitSensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  bool GetValue0\( void \);) s nl
+bl ( ) s (  void AskIsBusy\( void \);) s nl
+bl ( ) s (  virtual void _AskIsBusy\( void \);) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitOTC2 : public AUnitOTC) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitOTC2\( void \);) s nl
+bl ( ) s (  void init00\( void \);) s nl
+bl ( ) s (  bool _InitSensor\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  void _AskIsBusy\( void \);) s nl
+bl ( ) s (  bool isAutoRangeAvailable\( void \) { return true; };) s nl
+bl ( ) s (  bool GetRange\( void \);) s nl
+bl ( ) s (  void SetRange\( int range \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void ReactGetRange\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 36 36
+/sheet 36 def
+(AUnitOTC.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitOTC.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitOTC::AUnitOTC\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (AUnitOTC2::AUnitOTC2\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetMode\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetCountPreset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsCounterReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (             Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsRun\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsStop\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "IsBusy" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "Reset" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "SetMode", "0" \);) s nl
+bl ( ) s nl
+bl ( ) s (  init00\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC2::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsReset\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetAutoRange\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetZeroCheck\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsSetRange\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGetRange\( SMsg \) \), this, SLOT\( ReactGetRange\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitOTC::InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return _InitSensor\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitOTC::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitOTC2::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( The2ndDev == NULL \) {) s nl
+bl ( ) s (    qDebug\(\) << "InitSensor:: The2ndDev is not initialized" << Uid << Name;) s nl
+bl ( ) s (    return false;) s nl
+
+endpage
+2 startpage
+bl ( ) s (  }) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s (  // CNT2, OTC2 ) s kanji_init ($N$H$-) ks ( ) s (%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O) ks nl
+bl ( ) s (  // keithley ) s ($J$N$G$=$lMQ$N=hM}$r$7$F$*$/) ks nl
+bl ( ) s (  QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh2, "Reset", "" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c1" \);) s nl
+bl ( ) s (    if \( autoRange \) {) s nl
+bl ( ) s (      if \( Type2 == "PAM" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", DevCh2, "SetAutoRangeEnable", "1" \);) s nl
+bl ( ) s (      if \( Type2 == "PAM2" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", Dev2, "SetAutoRangeEnable " + Ch2, "1" \);) s nl
+bl ( ) s (      LocalStage = 3;) s nl
+bl ( ) s (    } else {) s nl
+bl ( ) s (      if \( Type2 == "PAM" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", DevCh2, "SetAutoRangeEnable", "0" \);) s nl
+bl ( ) s (      if \( Type2 == "PAM2" \)) s nl
+bl ( ) s (        s->SendCMD2\( "Scan", Dev2, "SetAutoRangeEnable " + Ch2, "0" \);) s nl
+bl ( ) s (      LocalStage = 2;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 2:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c2" \);) s nl
+bl ( ) s (    if \( Type2 == "PAM" \) {) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", DevCh2, "SetRange", QString\( "2E%1" \).arg\( SelectedRange \)) s nl
+bl ( ) s ( \);) s nl
+bl ( ) s (      LocalStage++;) s nl
+bl ( ) s (      rv = true;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    if \( Type2 == "PAM2" \) {) s nl
+bl ( ) s (      s->SendCMD2\( "Scan", Dev2, "SetRange " + Ch2,) s nl
+bl ( ) s (                   QString\( "2E%1" \).arg\( SelectedRange \) \);) s nl
+bl ( ) s (      LocalStage+=2;     // PAM2 ) s ($N;~$O!") ks (LocalStage == 3 ) s ($r$H$P$9) ks nl
+bl ( ) s (      rv = false;) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 3:) s nl
+bl ( ) s (    IsBusy2On\( Dev2, "InitSensor-c3" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh2, "SetZeroCheckEnable", "0" \);) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  default:) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC::AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  _AskIsBusy\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC::_AskIsBusy\( void \)) s nl
+
+endpage
+cleanup
+%%Page: 37 37
+/sheet 37 def
+(AUnitOTC.cpp) setlabel
+3 startpage
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC2::_AskIsBusy\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \)   // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitOTC::GetValue0\( void \)  // ) s kanji_init (CMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  switch\( LocalStage \) {) s nl
+bl ( ) s (  case 0:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "CounterReset" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = true;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  case 1:) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GetValue0c1" \);) s nl
+bl ( ) s (    IsBusy = true;) s nl
+bl ( ) s (    LastFunc = "GetValue0c1";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "Run" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (    break;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitOTC2::GetRange\( void \) // CNT2, OTC2) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (  IsBusy2On\( Dev2, "GetRange" \);) s nl
+bl ( ) s (  if \( Type2 == "PAM" \)) s nl
+bl ( ) s (    s->SendCMD2\( Uid, DevCh2, QString\( "GetRange" \) \);) s nl
+bl ( ) s (  if \( Type2 == "PAM2" \)) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev2, QString\( "GetRange " \) + Ch2 \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC2::ReactGetRange\( SMsg msg \)  // CNT2, OTC2) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  double range = RangeL;) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh2 \) || \( msg.From\(\) == Dev2 \) \) {) s nl
+bl ( ) s (    QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (    if \( Type2 == "PAM" \) {) s nl
+bl ( ) s (      range = log10\( msg.Vals\(\).at\(0\).toDouble\(\) / 2.1 \);) s nl
+bl ( ) s (    }) s nl
+
+endpage
+4 startpage
+bl ( ) s (    if \( Type2 == "PAM2" \) {) s nl
+bl ( ) s (      if \( msg.Vals\(\).at\(0\).toInt\(\) == Ch2.toInt\(\) \) {) s nl
+bl ( ) s (        range = log10\( msg.Vals\(\).at\(1\).toDouble\(\) / 2.1 \);) s nl
+bl ( ) s (      } else {) s nl
+bl ( ) s (        return;) s nl
+bl ( ) s (      }) s nl
+bl ( ) s (    }) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    IsBusy2Off\( Dev2 \);) s nl
+bl ( ) s (    if \( range > RangeU \) range = RangeU;) s nl
+bl ( ) s (    if \( range < RangeL \) range = RangeL;) s nl
+bl ( ) s (    emit AskedNowRange\( \(int\)range \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitOTC::SetTime\( double dtime \) // in sec // ) s ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-) ks nl
+bl ( ) s ($J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  int M, N;) s nl
+bl ( ) s nl
+bl ( ) s (  IsBusy2On\( Dev, "SetTime" \);) s nl
+bl ( ) s (  N = log10\( dtime * 10 \);) s nl
+bl ( ) s (  M = ceil\( dtime / pow\( 10., N - 1 \) \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev, "SetCountPreset", QString\( "%1,%2" \).arg\( M \).arg\( N \) \);) s nl
+bl ( ) s (  setTime = M * pow\( 10, N \) * 0.1;  // ) s ($3$l$GICC10L$NIaDL$N;~4V$KLa$C$F$k) ks nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitOTC2::SetRange\( int range \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( The2ndDev == NULL \) {) s nl
+bl ( ) s (    qDebug\(\) << "SetRange : The2ndDev is not initialized" << Uid << Name;) s nl
+bl ( ) s (    return;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  IsBusy2On\( Dev2, "SetRange" \);) s nl
+bl ( ) s (  // CNT2, OTC2 ) s ($N$H$-) ks ( ) s (%+%&%s%?$N8~$3$&$K$D$J$,$k$N$O) ks nl
+bl ( ) s (  // keithley \( PAM/PAM2 \)) s ($J$N$G$=$lMQ$N=hM}$r$7$F$*$/) ks nl
+bl ( ) s (  QString Type2 = The2ndDev->type\(\);) s nl
+bl ( ) s (  if \( Type2 == "PAM" \) {) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", DevCh2, "SetRange", QString\( "2E%1" \).arg\( range \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  if \( Type2 == "PAM2" \) {) s nl
+bl ( ) s (    s->SendCMD2\( "Scan", Dev2, "SetRange " + Ch2,) s nl
+bl ( ) s (                 QString\( "2E%1" \).arg\( range \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (  SelectedRange = range;) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 38 38
+/sheet 38 def
+(AUnitENC.h) setlabel
+1 startpage
+bl ( ) s (#ifndef AUNITENC_H) s nl
+bl ( ) s (#define AUNITENC_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitENC : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitENC\( void \);) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  virtual void init00\( void \);) s nl
+bl ( ) s (  bool InitSensor\( void \);) s nl
+bl ( ) s (  virtual bool _InitSensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void SetValue\( double v \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitENC2 :public AUnitENC) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitENC2\( void \);) s nl
+bl ( ) s (  void init00\( void \);) s nl
+bl ( ) s (  bool _InitSensor\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s (  void AskIsBusy\( void \);) s nl
+bl ( ) s (  bool QStart\( void \);) s nl
+bl ( ) s (  bool QRead\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (  void RcvQGetData\( SMsg msg \);) s nl
+bl ( ) s (  void RcvStat\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s nl
+
+endpage
+cleanup
+%%Page: 39 39
+/sheet 39 def
+(AUnitENC.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitENC.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitENC::AUnitENC\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (AUnitENC2::AUnitENC2\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC::init0\( void  \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  init00\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( EvChangedValue\( SMsg \) \), this, SLOT\( SetCurPos\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "GetValue" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC2::init00\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsTrigger\( SMsg \)\), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsStandBy\( SMsg \)\), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsGetStat\( SMsg \)\), this, SLOT\( RcvStat\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(AnsGetData\( SMsg \)\), this, SLOT\( RcvQGetData\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitENC::InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return _InitSensor\(\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitENC::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitENC2::_InitSensor\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  bool rv = false;) s nl
+bl ( ) s nl
+bl ( ) s (  if \( Type == "ENC2" \) {) s nl
+bl ( ) s (    IsBusy2On\( Dev, "InitSensor-c0" \);) s nl
+bl ( ) s (    s->SendCMD2\( "Init", DevCh, "GetValue" \);) s nl
+bl ( ) s (    LocalStage++;) s nl
+bl ( ) s (    rv = false;) s nl
+bl ( ) s (  }) s nl
+bl ( ) s nl
+bl ( ) s (  return rv;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC::SetValue\( double v \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "SetValue", QString::number\( DLastSetV = v \) \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC2::AskIsBusy\( void \)) s nl
+
+endpage
+2 startpage
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC2::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitENC2::QStart\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "Start" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "StandBy" \);) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (bool AUnitENC2::QRead\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "Read" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, DevCh, "GetData" \);) s nl
+bl ( ) s nl
+bl ( ) s (  return false;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitENC2::SetTime\( double dtime \) // in sec // ) s kanji_init ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-) ks nl
+bl ( ) s ($J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  setTime = dtime;          // setTime ) s ($G$-$?$H8+$;$+$1$k$@$1!#) ks nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC2::RcvQGetData\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( \( msg.From\(\) == DevCh \)||\( msg.From\(\) == Dev \) \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETDATAPOINTS \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == QGETDATA \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == GETDATA \) \) \) {) s nl
+bl ( ) s (    ) s nl
+bl ( ) s (    Values = msg.Vals\(\);) s nl
+bl ( ) s (    emit newQData\(\);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitENC2::RcvStat\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( \( msg.From\(\) == DevCh \)||\( msg.From\(\) == Dev \) \)  // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETSTAT \) \) \) {) s nl
+bl ( ) s (    //      Values = msg.Vals\(\);) s nl
+bl ( ) s (    //      emit newQData\(\);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 40 40
+/sheet 40 def
+(AUnitAIO.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITAIO_H) s nl
+bl ( ) s (#define AUNITAIO_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s (#include "AMotor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitAIOi : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitAIOi\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (class AUnitAIOo : public AMotor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s (  double MaxV, MinV;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitAIOo\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void setMaxV\( QString maxv \) { MaxV = maxv.toDouble\(\); };) s nl
+bl ( ) s (  void setMinV\( QString minv \) { MinV = minv.toDouble\(\); };) s nl
+bl ( ) s nl
+bl ( ) s (  void CloseShutter\( bool close \);) s nl
+bl ( ) s (  void GoMaxAbs\( double start, double end, int steps \);) s nl
+bl ( ) s (  void GoMaxAbsQ\( double start, double end, int steps, double time \);) s nl
+bl ( ) s (  void GoMaxRel\( double width, int steps \);) s nl
+bl ( ) s (  void GoMaxRelQ\( double width, int steps, double time \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 41 41
+/sheet 41 def
+(AUnitAIO.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitAIO.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitAIOi::AUnitAIOi\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (AUnitAIOo::AUnitAIOo\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  MaxV = 0;) s nl
+bl ( ) s (  MinV = 0;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOi::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGoMaxAbs\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsGoMaxRel\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\( AnsShutterOff\( SMsg \) \), this, SLOT\( ClrBusy\( SMsg \) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "Init" \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOi::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \)   // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == Dev \)   // Check !!!!! DevCh/Drv) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitAIOi::SetTime\( double dtime \) // in sec // ) s kanji_init ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-) ks nl
+bl ( ) s ($J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  setTime = dtime;          // setTime ) s ($G$-$?$H8+$;$+$1$k$@$1!#) ks nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (/** MStab ************************************************************************/) s nl
+
+endpage
+2 startpage
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::CloseShutter\( bool close \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( close \) {) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "ShutterOff 1" \);) s nl
+bl ( ) s (  } else {) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev, "ShutterOff 0" \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::GoMaxAbs\( double start, double end, int steps \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  IsBusy2On\( Dev, "GoMaxAbs" \);) s nl
+bl ( ) s (  s->SendCMD2\( Uid, Dev,) s nl
+bl ( ) s (               QString\( "GoMaxAbs 0 %1 %2 %3" \).arg\( start \).arg\( end \).arg\( steps \) ) s nl
+bl ( ) s (\);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::GoMaxAbsQ\( double start, double end, int steps, double time \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( Type == "AIOo" \) {) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GoMaxAbsQ" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev,) s nl
+bl ( ) s (                 QString\( "GoMaxAbs 1 %1 %2 %3 %4" \)) s nl
+bl ( ) s (                 .arg\( start \).arg\( end \).arg\( steps \).arg\( time \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::GoMaxRel\( double width, int steps \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( Type == "AIOo" \) {) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GoMaxRel" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev,) s nl
+bl ( ) s (                 QString\( "GoMaxRel 0 %1 %2" \).arg\( width \).arg\( steps \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitAIOo::GoMaxRelQ\( double width, int steps, double time \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( Type == "AIOo" \) {) s nl
+bl ( ) s (    IsBusy2On\( Dev, "GoMaxRelQ" \);) s nl
+bl ( ) s (    s->SendCMD2\( Uid, Dev,) s nl
+bl ( ) s (                 QString\( "GoMaxRel 1 %1 %2 %3" \)) s nl
+bl ( ) s (                 .arg\( width \).arg\( steps \).arg\( time \) \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 42 42
+/sheet 42 def
+(AUnitLSR.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITLSR_H) s nl
+bl ( ) s (#define AUNITLSR_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitLSR : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitLSR\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void OnReportCurrent\( SMsg msg \);) s nl
+bl ( ) s (  void OnReportInjection\( SMsg msg \);) s nl
+bl ( ) s nl
+bl ( ) s ( signals:) s nl
+bl ( ) s (  void NewRingCurrent\( QString val, QStringList vals \);) s nl
+bl ( ) s (  void NewInjectionReport\( QString val, QStringList vals \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 43 43
+/sheet 43 def
+(AUnitLSR.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitLSR.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitLSR::AUnitLSR\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitLSR::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  connect\( s, SIGNAL\(EvReportCurrent\( SMsg \)\), this, SLOT\(OnReportCurrent\( SMsg \)\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  connect\( s, SIGNAL\(EvReportInjection\( SMsg \)\), this, SLOT\(OnReportInjection\( SMsg \)) s nl
+bl ( ) s (\),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "flgon", Ch \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitLSR::OnReportCurrent\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( msg.From\(\) == DevCh \) {) s nl
+bl ( ) s (    Values = msg.Val\(\).simplified\(\).split\( QRegExp\( "\\\\s" \) \);) s nl
+bl ( ) s (    LastValue = Value;) s nl
+bl ( ) s (    Value = Values[ Values.count\(\) - 1 ];) s nl
+bl ( ) s (    emit NewRingCurrent\( Value, Values \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitLSR::OnReportInjection\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( msg.From\(\) == DevCh \) {) s nl
+bl ( ) s (    Values = msg.Val\(\).simplified\(\).split\( QRegExp\( "\\\\s" \) \);) s nl
+bl ( ) s (    LastValue = Value;) s nl
+bl ( ) s (    Value = Values[ Values.count\(\) - 1 ];) s nl
+bl ( ) s (    emit NewInjectionReport\( Value, Values \);) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 44 44
+/sheet 44 def
+(AUnitCCG.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITCCG_H) s nl
+bl ( ) s (#define AUNITCCG_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitCCG : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitCCG\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (  void SetCurPos\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 45 45
+/sheet 45 def
+(AUnitCCG.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitCCG.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitCCG::AUnitCCG\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCCG::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitCCG::SetCurPos\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  QString buf;) s nl
+bl ( ) s (  ) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == GETVALUE \) || \( msg.Msgt\(\) == EvCHANGEDVALUE \)) s nl
+bl ( ) s (            || \( msg.Msgt\(\) == READ \) \) \) {) s nl
+bl ( ) s (    Value = msg.Vals\(\).at\(0\);) s nl
+bl ( ) s (    emit newValue\( Value \);) s nl
+bl ( ) s (    IsBusy2Off\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 46 46
+/sheet 46 def
+(AUnitFP23.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITFP23_H) s nl
+bl ( ) s (#define AUNITFP23_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitFP23 : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitFP23\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s ( private slots:) s nl
+bl ( ) s (   void OnReportValue\( SMsg msg \);) s nl
+bl ( ) s nl
+bl ( ) s ( signals:) s nl
+bl ( ) s (  void NewFP23Temperature\( QString val \);) s nl
+bl ( ) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 47 47
+/sheet 47 def
+(AUnitFP23.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitFP23.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitFP23::AUnitFP23\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitFP23::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", Dev, "flgon", Ch \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", "System", "flgon", Dev \);) s nl
+bl ( ) s nl
+bl ( ) s (  connect\( s, SIGNAL\( EvReportValue\(SMsg\) \), this, SLOT\( OnReportValue\(SMsg\) \),) s nl
+bl ( ) s (           Qt::UniqueConnection \);) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitFP23::OnReportValue\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( msg.From\(\) == DevCh \) {) s nl
+bl ( ) s (    Values = msg.Val\(\).simplified\(\).split\( QRegExp\( "\\\\s" \) \);) s nl
+bl ( ) s (    LastValue = Value;) s nl
+bl ( ) s (    Value = Values[ Values.count\(\) - 1 ];) s nl
+bl ( ) s (    emit NewFP23Temperature\( Value \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+
+endpage
+cleanup
+%%Page: 48 48
+/sheet 48 def
+(AUnitEPIC.h) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#ifndef AUNITEPIC_H) s nl
+bl ( ) s (#define AUNITEPIC_H) s nl
+bl ( ) s nl
+bl ( ) s (#include "ASensor.h") s nl
+bl ( ) s nl
+bl ( ) s (class AUnitEPIC : public ASensor) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  Q_OBJECT) s nl
+bl ( ) s nl
+bl ( ) s ( public:) s nl
+bl ( ) s (  AUnitEPIC\( void \);) s nl
+bl ( ) s (  void init0\( void \);) s nl
+bl ( ) s nl
+bl ( ) s (  double SetTime\( double dtime \);) s nl
+bl ( ) s nl
+bl ( ) s (  private slots:) s nl
+bl ( ) s (  void SetIsBusyByMsg\( SMsg msg \);) s nl
+bl ( ) s (};) s nl
+bl ( ) s nl
+bl ( ) s (#endif) s nl
+
+endpage
+cleanup
+%%Page: 49 49
+/sheet 49 def
+(AUnitEPIC.cpp) setlabel
+1 startpage
+bl ( ) s nl
+bl ( ) s (#include "AUnitEPIC.h") s nl
+bl ( ) s nl
+bl ( ) s (AUnitEPIC::AUnitEPIC\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitEPIC::init0\( void \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  s->SendCMD2\( "Init", DevCh, "IsBusy" \);) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (void AUnitEPIC::SetIsBusyByMsg\( SMsg msg \)) s nl
+bl ( ) s ({) s nl
+bl ( ) s (  if \( \( msg.From\(\) == DevCh \)) s nl
+bl ( ) s (       && \( \( msg.Msgt\(\) == ISBUSY \) || \( msg.Msgt\(\) == EvISBUSY \) \) \) {) s nl
+bl ( ) s (    IsBusy = \( msg.Val\(\).toInt\(\) == 1 \);) s nl
+bl ( ) s (    if \( IsBusy \)) s nl
+bl ( ) s (      LastFunc = "SetIsBusyByMsg";) s nl
+bl ( ) s (    else) s nl
+bl ( ) s (      LastFunc = "";) s nl
+bl ( ) s (    emit ChangedIsBusy1\( Dev \);) s nl
+bl ( ) s (  }) s nl
+bl ( ) s (}) s nl
+bl ( ) s nl
+bl ( ) s (double AUnitEPIC::SetTime\( double dtime \) // in sec // ) s kanji_init ($3$N4X?t$O!"J#?t%9%F%C%W2=$G$-) ks nl
+bl ( ) s ($J$$) ks nl
+bl ( ) s ({) s nl
+bl ( ) s (  setTime = dtime;          // setTime ) s ($G$-$?$H8+$;$+$1$k$@$1!#) ks nl
+bl ( ) s nl
+bl ( ) s (  return setTime;) s nl
+bl ( ) s (}) s nl
+
+endpage
+
+cleanup
+%%Trailer
+docsave restore end

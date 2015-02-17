@@ -3,10 +3,10 @@
 
 #include <QObject>
 
-#include "AUnit.h"
+#include "AUnits/AUnits.h"
 
 struct CUnit {
-  AUnit *au;
+  AUnit0 *au;
   bool b1f;
   bool b2f;
 };
@@ -21,7 +21,7 @@ public:
   CheckUnits() {};
 
   void clear( void );
-  void add( AUnit *p, bool b1, bool b2 );
+  void add( AUnit0 *p, bool b1, bool b2 );
   bool isBusy( void );
 };
 

@@ -3,7 +3,7 @@
 
 bool MainWindow::MeasureDark( void )
 {
-  AUnit *as;
+  ASensor *as;
 
   if ( inMeasDark ) {
     if ( AskingShutterClose ) {
@@ -53,7 +53,7 @@ bool MainWindow::MeasureDark( void )
   for ( int i = 0; i < dUnits.count(); i++ ) {
     as = dUnits.at(i);
     if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-      QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->getName() );
+      QString msg = tr( "Scan cannot Start : (%1) is disabled" ).arg( as->name() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return false;
@@ -63,12 +63,12 @@ bool MainWindow::MeasureDark( void )
   // CNT2, OTC2 では Keithley をレンジ固定で、直接ではオートレンジで使うので
   // 両方を同時には測定に使えない
   for ( int i = 0; i < dUnits.count(); i++ ) {
-    if (( dUnits.at(i)->getType() == "CNT2" )||( dUnits.at(i)->getType() == "OTC2" )) {
+    if (( dUnits.at(i)->type() == "CNT2" )||( dUnits.at(i)->type() == "OTC2" )) {
       for ( int j = 0; j < dUnits.count(); j++ ) {
-	if ( dUnits.at(i)->get2ndUid() == dUnits.at(j)->getUid() ) {
+	if ( dUnits.at(i)->uid2() == dUnits.at(j)->uid() ) {
 	  QString msg = tr( "Selected sensors [%1] and [%2] are conflicting." )
-	    .arg( dUnits.at(i)->getName() )
-	    .arg( dUnits.at(j)->getName() );
+	    .arg( dUnits.at(i)->name() )
+	    .arg( dUnits.at(j)->name() );
 	  statusbar->showMessage( msg, 2000 );
 	  NewLogMsg( msg );
 	  return false;
@@ -144,7 +144,7 @@ void MainWindow::MeasDarkSequence( void )
     // 前は MeasCPSs は無かったので MeasVals (count) を cps に直す計算をここでやってる。
     // 直しても良いけどそのままにしておく
     for ( int i = 0; i < dUnits.count(); i++ ) {
-      setTime = dUnits.at(i)->GetSetTime();
+      setTime = dUnits.at(i)->getSetTime();
       if ( setTime > 0 ) {
 	dUnits.at(i)->setDark( MeasVals[i] / setTime );
       } else {
@@ -152,7 +152,7 @@ void MainWindow::MeasDarkSequence( void )
 	  ->showMessage( tr( "Invalid dwell time [%1] was set for [%2]."
 			     "However, the background was set "
 			     "as if the time was set at 1sec." )
-			 .arg( setTime ).arg( dUnits.at(i)->getName() ), 2000 );
+			 .arg( setTime ).arg( dUnits.at(i)->name() ), 2000 );
 	dUnits.at(i)->setDark( MeasVals[i] );
       }
       if ( dUnits.at(i) == SFluo ) {

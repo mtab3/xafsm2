@@ -61,7 +61,7 @@ void S2DInfo::save( QTextStream &out )
 	  << QString( " %1" ).arg( ex[i], 10 )
 	  << QString( " %1" ).arg( dx[i], 10 )
 	  << QString( " %1" ).arg( ps[i], 10 )
-	  << " : " << unit[i]->getName() << endl;
+	  << " : " << unit[i]->name() << endl;
     }
   }
 
@@ -73,7 +73,7 @@ void S2DInfo::save( QTextStream &out )
   out << "# " << UNITS << " :";
   for ( int i = 0; i < motors; i++ ) {
     if ( unit[i] != NULL ) {
-      out << QString( " %1" ).arg( unit[i]->getUid() );
+      out << QString( " %1" ).arg( unit[i]->uid() );
     } else {
       out << " None";
     }
@@ -88,7 +88,7 @@ void S2DInfo::save( QTextStream &out )
   out << "#" << endl << endl;
 }
 
-void S2DInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
+void S2DInfo::load( QTextStream &in, QVector<AMotor*> &AMotors )
 {
   while( ! in.atEnd() ) {
     QString line = in.readLine().simplified();
@@ -158,11 +158,11 @@ void S2DInfo::load( QTextStream &in, QVector<AUnit*> &AMotors )
     if ( line.mid( 2, QString( UNITS ).length() ) == QString( UNITS ) ) {
       for ( int i = 0; ( i < vals.count() ) && ( i < motors ); i++ ) {
 	for ( int j = 0; j < AMotors.count(); j++ ) {
-	  if ( AMotors[j]->getUid() == vals[i] ) {
+	  if ( AMotors[j]->uid() == vals[i] ) {
 	    unit[i] = AMotors[j];
 	  }
 	}
-	//	qDebug() << UNITS << i << unit[i]->getUid();
+	//	qDebug() << UNITS << i << unit[i]->uid();
       }
     }
     if ( line.mid( 2, QString( USED ).length() ) == QString( USED ) ) {

@@ -10,10 +10,10 @@ PMConditions::PMConditions( void )
   mainFrame->setFrameShape( QFrame::StyledPanel );
 }
 
-void PMConditions::setMotors( QVector<AUnit *> *ams )
+void PMConditions::setMotors( QVector<AMotor *> *ams )
 {
   int row = 0;
-  AUnit *am = NULL;
+  AMotor *am = NULL;
 
   QGridLayout *L = new QGridLayout;
   mainFrame->setLayout( L );
@@ -35,7 +35,7 @@ void PMConditions::setMotors( QVector<AUnit *> *ams )
 
   for ( int i = 0; i < ams->count(); i++ ) {
     am = ams->at(i);
-    if ( am->getType() == "PM" ) {
+    if ( am->type() == "PM" ) {
       PMLine *p = new PMLine;
       pmls << p;
       p->am = am;
@@ -49,8 +49,8 @@ void PMConditions::setMotors( QVector<AUnit *> *ams )
       L->addWidget( p->LSpeed,  row, c++ );
       row++;
 
-      p->PMNo->setText( am->getUid() );
-      p->PMName->setText( am->getName() );
+      p->PMNo->setText( am->uid() );
+      p->PMName->setText( am->name() );
       p->Origin->setText( QString::number( am->getCenter() ) );
       p->HSpeed->setText( QString::number( am->getHighS() ) );
       p->MSpeed->setText( QString::number( am->getMiddleS() ) );
@@ -71,7 +71,7 @@ void PMConditions::setMotors( QVector<AUnit *> *ams )
 void PMConditions::Initialize( void )
 {
   for ( int i = 0; i < pmls.count(); i++ ) {
-    AUnit *am = pmls[i]->am;
+    AMotor *am = pmls[i]->am;
     if ( am != NULL ) {
       am->AskHighSpeed();
       am->AskMiddleSpeed();
@@ -111,7 +111,7 @@ void PMConditions::newOrigin( void )
 {
   for ( int i = 0; i < pmls.count(); i++ ) {
     if ( sender() == pmls[i]->Origin ) {
-      AUnit *am = pmls[i]->am;
+      AMotor *am = pmls[i]->am;
       am->setCenter( pmls[i]->Origin->text().toDouble() );
     }
   }
@@ -121,7 +121,7 @@ void PMConditions::newHSpeed( void )
 {
   for ( int i = 0; i < pmls.count(); i++ ) {
     if ( sender() == pmls[i]->HSpeed ) {
-      AUnit *am = pmls[i]->am;
+      AMotor *am = pmls[i]->am;
       am->SetHighSpeed( pmls[i]->HSpeed->text().toInt() );
     }
   }
@@ -131,7 +131,7 @@ void PMConditions::newMSpeed( void )
 {
   for ( int i = 0; i < pmls.count(); i++ ) {
     if ( sender() == pmls[i]->MSpeed ) {
-      AUnit *am = pmls[i]->am;
+      AMotor *am = pmls[i]->am;
       am->SetMiddleSpeed( pmls[i]->MSpeed->text().toInt() );
     }
   }
@@ -141,7 +141,7 @@ void PMConditions::newLSpeed( void )
 {
   for ( int i = 0; i < pmls.count(); i++ ) {
     if ( sender() == pmls[i]->LSpeed ) {
-      AUnit *am = pmls[i]->am;
+      AMotor *am = pmls[i]->am;
       am->SetLowSpeed( pmls[i]->LSpeed->text().toInt() );
     }
   }

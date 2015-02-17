@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QDateTime>
 
-#include "MCA.h"
+#include "MCAMap.h"
 
 #define COMMONTITLE "XafsM2 MCA Data"
 
@@ -32,7 +32,7 @@ void aMCASet::writeHead( QTextStream &out )
   out << "# " << I0VALUE     << " : " << I0 << "\n";
   out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
   for ( int i = 0; i < CHs; i++ ) {
-    MCAHead head = Heads[i];
+    XMAPHead head = Heads[i];
     out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
 	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
 	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
@@ -105,9 +105,9 @@ void aMCASet::load( QTextStream &in, QString title )
 
 void aMCASet::correctE( KeV2Pix *k2p )
 {
-  // Â¬Äê»þ¤Î¥¨¥Í¥ë¥®¡¼¤È¥Ô¥¯¥»¥ë¤Î´Ø·¸¤Ï¡¢
-  // º£¤Î¥¨¥Í¥ë¥®¡¼¤È¥Ô¥¯¥»¥ë¤Î´Ø·¸¤È¤Ï°ã¤Ã¤Æ¤¤¤ë²ÄÇ½À­¤¬¤¢¤ë¤Î¤Ç
-  // º£¤Î¥Ô¥¯¥»¥ë¤ËÂÐ±þ¤¹¤ë¥¨¥Í¥ë¥®¡¼¤Ç¤Î¥«¥¦¥ó¥È¿ô¤òÀþ·ÁÊä´°¤Çµá¤á¤Æ¤ª¤¯
+  // $BB,Dj;~$N%(%M%k%.!<$H%T%/%;%k$N4X78$O!"(B
+  // $B:#$N%(%M%k%.!<$H%T%/%;%k$N4X78$H$O0c$C$F$$$k2DG=@-$,$"$k$N$G(B
+  // $B:#$N%T%/%;%k$KBP1~$9$k%(%M%k%.!<$G$N%+%&%s%H?t$r@~7AJd40$G5a$a$F$*$/(B
   aCH newCh;
   newCh.setLength( Length );
   for ( int ch = 0; ch < CHs; ch++ ) {

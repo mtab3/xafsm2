@@ -3,7 +3,7 @@
 void MainWindow::ScanSequence( void )
 {
   ScanInfo si = ScanView->getSInfo();
-  AUnit *am = si.am;
+  AMotor *am = si.am;
 
   if ( am->isBusy() || am->isBusy2() || mScanUnits.isBusy() )
     return;

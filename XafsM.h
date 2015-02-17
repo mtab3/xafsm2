@@ -12,23 +12,12 @@ extern int qMainVer;
 extern int qSubVer;
 extern int qSubSubVer;
 
-enum SCANMODE { STEP, QCONT, RCONT };
-enum DIRECTION { FORWARD, BACKWARD };
-
-enum MCASTARTRESUME { MCA_START, MCA_RESUME };
-// START : 次に「開始」ボタンを押された時にスタートすべき状態(停止か、一時停止)
-// START : 次に「開始」ボタンを押された時にスタートすべき状態(停止か、一時停止)
-
-enum ENCORPM { XENC, XPM };
-enum OLDNEW { OLD, NEW };
-
 /******************************************************************************/
 /* Don't change these numbers ! without deep considerations.                  */
 /* Window design of the program is assuming these values are as defined here. */
 /******************************************************************************/
 const int GOS = 4;            // Presetted Go To Positions
 const int MaxBLKs = 8;        // Max Blocks
-const int MaxSSDs = 19;       // Max SSD elements
 /******************************************************************************/
 
 const QString RadioBOn = "background-color: rgb(250,250,200)";
@@ -76,8 +65,6 @@ const QString FSTATCOLORS[2][2] =
 #define PBTrue    ( false )   // PushButton を Checkable にすると、押した時、暗いのに
 #define PBFalse   ( true  )   // true になるので、定数名で反転させて使う
 
-enum ASType { EACHSCAN, SUMUPOFSCANS };   // after save type
-
 extern QString DefFileName;
 extern bool newFluoMode;
 
@@ -105,26 +92,11 @@ const MSCALED MScales[ MSCALES ] = {
 };
 
 enum MEASMODE{ I0 = 1, TRANS, FLUO, EYIELD, EXTRA, MEASMODES };
-extern const QString CMode[ MEASMODES + 1 ];
-
 enum MEASCHNAME{ MC_I0, MC_I1, MC_SSD, MC_AUX1, MC_AUX2, MCHANNELS };
 enum MEASCHMODE{ MCM_I0, MCM_TRANS, MCM_FLUO, MCM_EY, MCMODES };
-
-enum MSPEED { LOW, MIDDLE, HIGH, MSPEEDS };
-struct MSPEEDD {
-  MSPEED MSid;
-  const QString MSName;
-};
-const MSPEEDD MSpeeds[ MSPEEDS ] = {
-  { LOW,    "Low" },
-  { MIDDLE, "Middle" },
-  { HIGH,   "High" },
-};
-
+extern const QString CMode[ MEASMODES + 1 ];
 
 enum ONFIN { RETURN, STAY, ONFINS };
-
-enum RELABS { REL, ABS };
 
 struct GasComp {
   QString GasForm;

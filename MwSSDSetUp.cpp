@@ -377,7 +377,7 @@ void MainWindow::newCalibration( void )
       // gain の設定は何故か逆
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
       // 設定したゲインの読み出し
-      s->SendCMD2( "SetUpMCA", SFluo->getDriver(),
+      s->SendCMD2( "SetUpMCA", SFluo->dev(),
 		   "GetPreAMPGain", QString::number( MCACh->value() ) );
     }
   }
@@ -531,7 +531,7 @@ void MainWindow::saveMCAData( void )
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
   aMCASet *set = new aMCASet;
-  set->setSize( MCALength, SAVEMCACh );
+  set->setSize( MCALength, MaxSSDs );
   SaveMCADataOnMem( set );
   //  saveMCAData0( MCARecFile->text(), set );
   set->save( MCARecFile->text(), "measured by SSD set up" );
@@ -636,18 +636,18 @@ void MainWindow::SelSSDs( int ch )
 
 void MainWindow::getMCASettings( int ch )
 {
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetThreshold", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetCalibration", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetDynamicRange", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetPreAMPGain", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPeakingTime", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetThreshold", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetCalibration", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetDynamicRange", QString::number( ch ) );
+  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPreAMPGain", QString::number( ch ) );
 
   SFluo->GetMCAs();
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
   }
   for ( int i = 0; i < MaxSSDs; i++ ) {
@@ -725,35 +725,35 @@ void MainWindow::MCAChSelected( int i )
 
 void MainWindow::showPeakingTime( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     PeakingTimeInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showThreshold( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     ThresholdInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showCalibration( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     CalibrationInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showDynamicRange( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     DynamicRangeInput->setText( msg.Val() );
   }
 }
 
 void MainWindow::showPreAMPGain( SMsg msg )
 {
-  if ( ( msg.From() == SFluo->getDriver() )&&( msg.ToCh() == "SetUpMCA" ) ) {
+  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     GainInput->setText( msg.Val() );
   }
 }
@@ -771,7 +771,7 @@ void MainWindow::StartMCA( void )
     if ( ( User = UUnits.user( SFluo ) ) != "" ) {
       // 検出器が他のことに使われたらダメ
       statusbar->showMessage( tr( "The Sensor [%1] is used by the process %2!" )
-			      .arg( SFluo->getName() ).arg( User ), 2000 );
+			      .arg( SFluo->name() ).arg( User ), 2000 );
       return;
     }
 
@@ -854,7 +854,7 @@ void MainWindow::MCASequence( void )
 
   switch( MCAStage ) {
   case 0:
-    SFluo->InitLocalStage();
+    SFluo->initLocalStage();
     MCAStage = 1;
   case 1:
     if ( SelRealTime->isChecked() ) {
@@ -882,7 +882,7 @@ void MainWindow::MCASequence( void )
       } else {
 	SFluo->RunResume();
       }
-      SFluo->InitLocalStage();
+      SFluo->initLocalStage();
       MCAStage = 4;
     }
     break;
@@ -900,7 +900,7 @@ void MainWindow::ShowNewMCAStat( char * )
     for ( int i = 0; i < MCALength; i++ ) {
       MCAData[i] = aMca[i];
     }
-    MCAHead head = SFluo->getAMCAHead( cMCACh );
+    XMAPHead head = SFluo->getAMCAHead( cMCACh );
     cMCAView->SetRealTime( head.realTime );
     cMCAView->SetLiveTime( head.liveTime );
     cMCAView->update();

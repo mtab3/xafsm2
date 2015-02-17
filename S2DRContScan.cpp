@@ -75,7 +75,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
   case 4:     // リピートポイント
     // 計測開始準備
     S2DI.i[0] = -1;
-    connect( mS2DUnits.at(0), SIGNAL( newValue( QString ) ),
+    connect( mS2DUnits.at(0), SIGNAL( NewValue( QString ) ),
 	     this, SLOT( S2DNewScanValue( QString ) ),
 	     Qt::UniqueConnection );
     S2DTimer2->start( S2DI.Dwell * 1000 / S2DI.ps[0] );
@@ -153,7 +153,7 @@ void MainWindow::S2DRealContinuousScanSequence( void )
     S2DStage++;
     break;
   case S2D_END_STAGE+2:
-    disconnect( mS2DUnits.at(0), SIGNAL( newValue( QString ) ),
+    disconnect( mS2DUnits.at(0), SIGNAL( NewValue( QString ) ),
 		this, SLOT( S2DNewScanValue( QString ) ) );
     S2DStop00();
     S2DTimer2->stop();

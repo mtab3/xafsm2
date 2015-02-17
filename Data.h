@@ -4,6 +4,9 @@
 #include <QFileDialog>
 #include <QColorDialog>
 
+#include "AUnits/ASensor.h"
+#include "AUnits/AMotor.h"
+
 #include "ui_Data.h"
 #include "global.h"
 #include "Units.h"
@@ -53,18 +56,18 @@ class Data : public QFrame, private Ui::Data
 
   //  void showMeasData( QTextStream &in );
   void showScanData( QTextStream &in,
-		     QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
-  void showMonData( QTextStream &in, QVector<AUnit*> &ASensors );
+		     QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
+  void showMonData( QTextStream &in, QVector<ASensor*> &ASensors );
   void showMCAData( QTextStream &in );
   void getNewMCAs( int length );
   void showS2DData( QTextStream &in,
-		    QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
+		    QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
 
  public:
   Data( QWidget *p = NULL );
   ~Data();
   void GotNewView( ViewCTRL *view,
-		   QVector<AUnit*> &AMotors, QVector<AUnit*> &ASensors );
+		   QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
   void GotCurrentView( void *view );
   void setDataRoot( const QString &dataRoot );
 

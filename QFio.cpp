@@ -192,7 +192,7 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   int p = QXafsSP0;
   int d = QXafsInterval;
   int c = MMainTh->getCenter();
-  double upp = MMainTh->getUPP();
+  double upp = MMainTh->upp();
   double encV0 = EncValue0.toDouble();
   double enc2V0 = Enc2Value0.toDouble();
   double deg, deg2;
@@ -200,7 +200,7 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   QString buf, buf2;
 
   if ( Enc2 != NULL ) {
-    upp2 = Enc2->getUPP();
+    upp2 = Enc2->upp();
   }
 
   // dir == FORWARD と dir == BACKWARD で違うはず !!!!
@@ -265,13 +265,13 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   int p = QXafsSP0;
   int d = QXafsInterval;
   int c = MMainTh->getCenter();
-  double upp = MMainTh->getUPP();
+  double upp = MMainTh->upp();
   double deg, deg2;
   double upp2 = 0;
   QString buf, buf2;
 
   if ( Enc2 != NULL ) {
-    upp2 = Enc2->getUPP();
+    upp2 = Enc2->upp();
   }
 
   double encV0 = EncValue0.toDouble();

@@ -1,0 +1,50 @@
+
+// もしかして不要 ??   *********************************
+  int getILastSetV( void ) { return ilastSetV; };
+  double getDLastSetV( void ) { return dlastSetV; };
+// *****************************************************
+
+  // only for DV
+
+  void show( void );   // mainly for debugging
+
+  // 3440
+
+  void SetTriggerDelay( double time );
+  void SetSamplingSource( QString source );
+  void SetTriggerSource( QString source );
+  void SetTriggerCounts( int count );
+  void SetTriggerSlope( QString type );
+  void GetDataPoints( void );
+  void ReadDataPoints( int points );
+  void Abort( void );
+
+
+public slots:
+  void ClrBusy( SMsg msg );
+  void SetIsBusyByMsg( SMsg msg );
+  void SetCurPos( SMsg msg );
+  void ReceiveValues( SMsg msg );
+  void RcvAnsGetValueOfDriver( SMsg msg );
+
+  void ReactGetStat( SMsg msg );
+  void ReactGetRealTime( SMsg msg );
+  void ReactGetLiveTime( SMsg msg );
+  void ReactGetRange( SMsg msg );
+  void OnReportValue( SMsg msg );
+  void ReactGetDataLinkCh( SMsg msg );
+
+  //  void RcvDataPoints( SMsg msg );
+  //  void RcvReadData( SMsg msg );
+  void RcvStat( SMsg msg );
+  void RcvQGetData( SMsg msg );
+
+  //  void RcvAlarmEvent( SMsg msg );
+  
+
+signals:
+};
+
+#endif
+
+

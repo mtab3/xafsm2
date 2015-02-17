@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Feb 16 18:09:32 2015 +0900\n"\
+                "    new gitlog.h\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 15 21:40:49 2015 +0900\n"\
                 "    DLink for SSD is re-connectable when the Stars connection is up and down\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 9 13:12:58 2015 +0900\n"\
                 "    a simple bug in MwSetup (inMonitor was not initialized) was fixed.   The parenets of the units are also checked in UsingUnits\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 9 02:48:27 2015 +0900\n"\
-                "    new WhatToDo\n"\
 		"\n"\
                 ""
 #endif

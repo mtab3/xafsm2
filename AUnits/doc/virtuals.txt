@@ -1,0 +1,165 @@
+新たに AMotor, ASensor を継承したサブクラスを作るときには、
+以下の関数の実装を検討する。
+AUnit0 に含まれる仮想関数 8 本。
+  必要に応じて実装を検討する。
+  データ取得のための Stars に対する命令が "GetValue" でない場合は
+  void GetValue は必ず再実装が必要。その他は実装する必要が無い可能性が高い。
+AMotor に含まれる仮想関数 22 本。殆どは再実装の必要なし。
+  検討すべきなのは init0 と Stop のみ。
+ASensor に含まれる仮想関数 10 本。これも殆どは再実装の必要なし。
+　検討すべきなのは init0 と InitSensor, SetTime のみ。
+
+---------------------------------
+
+AUnit0 : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+
+       void _setEnable( bool enable )
+       void AskIsBusy( void )
+       void SetValue( double val )
+       void GetValue( void )
+       void GetValue0( void )
+       void GetValue02( void )
+       slots: void SetIsBusyByMsg( SMsg msg )
+       slots: void SetCurPos( SMsg msg )
+
+void _setEnable( bool enable ) {}  (現行 XMAP)
+  そのユニットが enable/disEnable した時、独自の動作が必要なら実装
+  例 : AUnitXMAP : 裏のコネクションを操作
+
+void AskIsBusy( void ) {}  (現行 CNT, DV, ENC, OTC, PM, SC)
+  Stars に対して Busy かどうかの問い合わせを出す。
+  相手のデバイスにこれに返事ができる機能があるなら実装する。
+
+void SetValue( double val ) {}  (現行 ENC, PM, SC)
+  Stars に対して、値を設定するコマンドを発行する
+  相手のデバイスにその機能があるなら実装する
+
+void GetValue( void ) (現行 CNT, OTC, PAM, SC, XMAP が独自実装)
+　デフォルト : Stars << "GetValue"
+  Stars に対して、値を問い合わせるコマンドを発行する
+  相手のデバイスにその機能があるなら実装する
+
+void GetValue0( void ) {} (現行 CNT, OTC, XMAP)
+  GetValue する前に、あらかじめ Stars にコマンドを送る必要があるなら実装する
+  例 : CNT : CounterReset, CountStart を発行
+
+void GetValue02( void ) {} (現行 CNT, XMAP)
+  連続スキャン(差分で値を見る)ことが可能なデバイスで、かつ
+  GetValue の前に Stars にコマンドを送る必要があるなら実装する
+  例 : CNT : SetStpMode="N", CounterReset, CountStart
+
+slots:
+ void SetIsBusyByMsg( SMsg msg ) (現行 AIOi, AIOo, CNT, OTC, XMAP)
+  デフォルト : ISBUSY || EvISBUSY from Dev
+  　　　　　　　--> ChangedIsBusy (帰ってきた値の並びの先頭の一つが1かどうかによって)
+               (ISBUSYに対する返答か、EvISBUSY が発生した場合、
+	       　デバイス+チャンネル(DevではなくDevCh)のフラグを変更する)
+  Stars に対する、busy 状態の問い合わせに対する返答や、
+  デバイスが発生する busy イベントを受けて、busy フラグを操作する。
+  デバイスによってチャンネルごとに busy/not-busy があるものと、
+  デバイス全体に busy/not-busy があるものがある。
+  個別チャンネルの busy 状態が設定できる場合と、
+  上記のデフォルトのパタンでないイベントを受ける場合は実装する
+
+slots:
+ void SetCurPos( SMsg msg ) (現行 SC)
+  デフォルト : CETVALUE || EvCHANGEDVALUE || READ from DevCh
+                 -> Value <= msg.Val(), emit newValue, IsBusy2Off
+  Stars に対する GetValue または Read に対する返答、
+  または Stars からの EvChangedValue イベントを受けて、
+  内部変数 Value をセットすると同時に newValue のシグナルを発生する
+  GetValu 時に Stars に投げるコマンドが上記以外の場合や、
+  返ってくる値が、値の並びの先頭の一つでない場合、実装する
+
+
+-------------------------------------------------
+
+AMotor : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+
+virtual void init0( void ) {}
+  追加でそのユニット特有の初期化処理を行う
+  init0 は Stars との接続ができた時(あるいは再接続された時)に呼ばれるので、
+  Stars 経由でデバイス側の初期化ができる。
+
+virtual void Stop( void ) {}
+  Stars に当該の Motor の停止コマンドを発行する。
+  相当する機能があるデバイスには必ず実装するべき
+
+virtual void SetSpeed( MSPEED /* speed */ ) {};
+virtual void SetHighSpeed( int /* speed */ ) {};
+virtual void SetMiddleSpeed( int /* speed */ ) {};
+virtual void SetLowSpeed( int /* speed */ ) {};
+  Stars にスピード設定のコマンドを発行する。
+virtual void AskHighSpeed( void ) {};
+virtual void AskMiddleSpeed( void ) {};
+virtual void AskLowSpeed( void ) {};
+  Stars に設定スピード問い合わせのコマンドを発行する。
+  応答を受ける slot と、そのスロットに対する connect は個別のユニット内で実装。
+  (各ユニットの内部で閉じた接続にできるので、上位の抽象化された unit (AMotor) で
+  　定義しておく必要がない)
+
+virtual void CloseShutter( bool /*close*/ ) {};
+virtual void GoMaxAbs( double /*start*/, double /*end*/, int /*steps*/ ) {};
+virtual void GoMaxRel( double /*width*/, int /*steps*/ ) {};
+  MStab を実行できる Unit ((AMotor*)MMStab に使われる可能性のある Unit)は
+  上記の関数を実装する。
+
+virtual void AssignDispCh( int /* ch */ ) {};  // ch : 0 - 3 --> 'A' -- 'D'
+virtual void SetTimingOutMode( int /* mode */ ) {};
+virtual void SetTimingOutStart( int /*startP*/ ) {};      // start pos. of timing out
+virtual void SetTimingOutEnd( int /*endP*/ ) {};          // end pos. of timing out
+virtual void SetTimingOutInterval( int /*interval*/ ) {}; // timing out interval
+virtual void SetTimingOutReady( int /*ready*/ ) {};       // timing out ready
+virtual int accRate( void ) { return 1; };                // 加減速レート
+virtual void setAccRate( int /*r*/ ) {};
+virtual int accRateNo( void ) { return 0; };              // 加減速レートのテーブル番号
+virtual void setAccRateNo( int /*n*/ ) {};
+  PM16C で QXafs を実行するための関数。
+  今のところ他の Motor で QXafs を行うことが無いのでこれでも良いが
+  実際にはもっと抽象化を進める必要があるはず。
+
+
+--------------------------------------------
+
+ASensor : に定義された virtual (全てダミー関数あり純粋仮想は無い)
+
+virtual void init0( void ) {};
+  追加でそのユニット特有の初期化処理を行う
+  init0 は Stars との接続ができた時(あるいは再接続された時)に呼ばれるので、
+  Stars 経由でデバイス側の初期化ができる。
+
+virtual bool InitSensor( void ) { return true; };
+  各ユニットに固有の初期化処理を行う。
+  一連の計測動作を行った後で、再び初期状態に戻るのに必要な処理を記述。
+  (Reset とか Clear とか)
+
+virtual double SetTime( double dtime ) { return dtime; };   // in sec
+  計測時間の設定。「計測時間」という概念がない場合(例えば、リング電流モニタ LSR)や
+  かならず一定の積分時間で計測して、ユーザー側に変更の余地が無いような場合には
+  実装不要。
+  
+virtual bool GetRange( void ) { return false; };
+　レンジ設定できるデバイスに対して、
+　Stars 経由で現在のレンジを問い合わせるコマンドを発行する。
+
+virtual void SetRange( int /* range */ ) {};
+　レンジ設定できるデバイスに対して、
+　Stars 経由でレンジを設定するコマンドを発行する。
+
+virtual bool isAutoRangeAvailable( void ) { return false; };
+　オートレンジが使用可能かどうかを返答する関数。
+　使えない場合は実装不要。
+　使える場合は return false を return true に変えたものを実装すれば良い。
+  
+　以下の関数は QXafs に対応したデバイスのみ実装すれば良い
+virtual bool QStart( void ) { return false; };
+virtual bool QRead( void ) { return false; };
+virtual bool QEnd( void ) { return false; };
+　それぞれ、QXafs のスタート(トリガ待状態に入る)、計測終了後に値の読み出し、
+　計測終了時に状態をリセットするためのコマンドを Stars 経由でデバイスに発行する。
+
+  以下の関数は、連続スキャンに対応したデバイスのみ実装すれば良い
+virtual bool Close( void ) { return false; };
+  連続スキャン終了時に呼ばれる。
+  連続スキャンのためにデバイスの状態を特殊な状態に変更した場合などは、
+  この関数内で通常の状態に戻す。

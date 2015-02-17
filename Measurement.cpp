@@ -177,7 +177,7 @@ void MainWindow::MeasSequence( void )
 	  if ( ! MCACanSaveAllOnMem )
 	    // 全部セーブできない時は、1スキャン終わったら
 	    // 次のスキャンに備えてメモリクリア (直近の1スキャン分だけ覚えておく)
-	    XafsMCAMap.New( MPSet.totalPoints, 1, MCALength, 19 );
+	    XafsMCAMap.New( MPSet.totalPoints, 1, MCALength, MaxSSDs );
                                // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
@@ -262,7 +262,7 @@ void MainWindow::SetDispMeasModes( void )
 
   MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
   MeasView->SetScaleType( DLC, I0TYPE );
-  MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+  MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
   MeasView->SetDG( DLC, DG++ );          // I0 は スケーリングのグループわけでは 0 
   DLC++;
   MUC++;
@@ -270,7 +270,7 @@ void MainWindow::SetDispMeasModes( void )
     MeasView->SetLLine( DLC );
     MeasView->SetLR( DLC, LEFT_AX );
     MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
     MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
     DLC++;
     MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -283,7 +283,7 @@ void MainWindow::SetDispMeasModes( void )
   if ( Use19chSSD->isChecked() ) {
     MeasView->SetLR( DLC, LEFT_AX );
     MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
     MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
     DLC++;
     for ( int j = 0; j < MaxSSDs; j++ ) {
@@ -301,7 +301,7 @@ void MainWindow::SetDispMeasModes( void )
       MeasView->SetLLine( DLC );
       MeasView->SetLR( DLC, LEFT_AX );                   // I1
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
       DLC++;
       MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -313,7 +313,7 @@ void MainWindow::SetDispMeasModes( void )
     } else {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
       MUC++;
@@ -325,7 +325,7 @@ void MainWindow::SetDispMeasModes( void )
       MeasView->SetLLine( DLC );
       MeasView->SetLR( DLC, LEFT_AX );                   // I1
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );   // 生の I1 の表示は独立スケール
       DLC++;
       MeasView->SetLR( DLC, LEFT_AX );                     // mu
@@ -337,7 +337,7 @@ void MainWindow::SetDispMeasModes( void )
     } else {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->getName() );
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
       MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
       MUC++;
@@ -381,7 +381,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     QVector<double> darks = SFluo->getDarkCountsInROI();
     sum = 0;
     for ( int j = 0; j < MaxSSDs; j++ ) {
-      double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
+      double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
       if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
 	sum += v;
       MeasView->NewPoint( DLC, GoToKeV, v );
@@ -466,7 +466,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
 	QVector<double> darks = SFluo->getDarkCountsInROI();
 	sum = 0;
 	for ( int j = 0; j < MaxSSDs; j++ ) {
-	  double v = ((double)vals[j] / SFluo->GetSetTime() - darks[j] ) / I0;
+	  double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
 	  if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
 	    sum += v;
 	  MeasView->NewPoint( DLC, GoToKeV, v );

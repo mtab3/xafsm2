@@ -55,8 +55,14 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   fdbase = new FluoDBase;
   u = new Units;
 
-  MMainTh = MDTh1 = EncMainTh = Enc2 = NULL;
-  SLS = SI0 = SI1 = SFluo = NULL;
+  MMainTh = NULL;
+  MDTh1 = NULL;
+  EncMainTh = NULL;
+  Enc2 = NULL;
+  SLS = NULL;
+  SI0 = NULL;
+  SI1 = NULL;
+  SFluo = NULL;
   MMStab = NULL;
 
   oldDeg = -100;
@@ -222,9 +228,9 @@ void MainWindow::SpecialMove( void )
 {
   smAm = NULL;
   for ( int i = 0; i < AMotors.count(); i++ ) {
-    AUnit *am = AMotors[i];
-    qDebug() << am->getID();
-    if ( ( am->getID() == "STAGEX" ) || ( am->getID() == "StageX" ) ){
+    AMotor *am = AMotors[i];
+    qDebug() << am->id();
+    if ( ( am->id() == "STAGEX" ) || ( am->id() == "StageX" ) ){
       smAm = am;
       break;
     }
@@ -246,15 +252,15 @@ void MainWindow::SpecialMoveCore( void )
 
   switch( smStage ) {
   case 0:
-    smAm->SetValue( smAm->value().toInt() + 2.5 / smAm->getUPP() );
+    smAm->SetValue( smAm->value().toInt() + 2.5 / smAm->upp() );
     smStage = 1;
     break;
   case 1:
-    smAm->SetValue( smAm->value().toInt() - 5.0 / smAm->getUPP() );
+    smAm->SetValue( smAm->value().toInt() - 5.0 / smAm->upp() );
     smStage = 2;
     break;
   case 2:
-    smAm->SetValue( smAm->value().toInt() + 5.0 / smAm->getUPP() );
+    smAm->SetValue( smAm->value().toInt() + 5.0 / smAm->upp() );
     smStage = 1;
     break;
   }
@@ -262,14 +268,14 @@ void MainWindow::SpecialMoveCore( void )
 
 void MainWindow::SetDXMPMC( void )
 {
-  int dP = MMainTh->value().toInt() - EncMainTh->value().toDouble() / MMainTh->getUPP();
+  int dP = MMainTh->value().toInt() - EncMainTh->value().toDouble() / MMainTh->upp();
   int oldCenter = MMainTh->getCenter();
 
   qDebug() << "dP " << dP
 	   << "Enc " << EncMainTh->value().toDouble()
-	   << "Enc " << EncMainTh->value().toDouble() / MMainTh->getUPP()
+	   << "Enc " << EncMainTh->value().toDouble() / MMainTh->upp()
 	   << "MTh " << MMainTh->value().toInt()
-	   << "recal " << ( MMainTh->value().toInt() - dP ) * MMainTh->getUPP();
+	   << "recal " << ( MMainTh->value().toInt() - dP ) * MMainTh->upp();
 
   MMainTh->setCenter( dP );
   MMainTh->GetValue();
@@ -304,7 +310,7 @@ void MainWindow::Initialize( void )
   SendListNodes();
   if ( SFluo != NULL ) {
     getMCASettings( MCACh->text().toInt() );
-    s->SendCMD2( "SetUpMCA", SFluo->getDriver(), "GetMCALength" );
+    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetMCALength" );
     for ( int i = 0; i < MCAGains.count(); i++ ) {
       SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
     }
@@ -333,32 +339,32 @@ void MainWindow::InitializeUnitsAgain( void )
 
 void MainWindow::InitAndIdentifyMotors( void )
 {
-  AUnit *am;
+  AMotor *am;
   for ( int i = 0; i < AMotors.count(); i++ ) {
     am = AMotors.value(i);
     am->Initialize( s );
-    if ( am->getID() == "THETA" ) {
+    if ( am->id() == "THETA" ) {
       if ( MMainTh != NULL ) {
-        disconnect( MMainTh, SIGNAL( newValue( QString ) ),
+        disconnect( MMainTh, SIGNAL( NewValue( QString ) ),
                     this, SLOT( ShowCurThPos() ) );
       }
-      MMainTh = am;
+      MMainTh = (AUnitPM*)am;
       //      iMMainTh = i;
-      connect( MMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
+      connect( MMainTh, SIGNAL( NewValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
     }
 
-    if ( am->getID() == "DTH1" ) {
+    if ( am->id() == "DTH1" ) {
       if ( MDTh1 != NULL ) {
-        disconnect( MDTh1, SIGNAL( newValue( QString ) ),
+        disconnect( MDTh1, SIGNAL( NewValue( QString ) ),
                     this, SLOT( ShowCurDTh1() ) );
       }
       MDTh1 = am;
-      connect( MDTh1, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurDTh1() ),
+      connect( MDTh1, SIGNAL( NewValue( QString ) ), this, SLOT( ShowCurDTh1() ),
 	       Qt::UniqueConnection );
     }
 
-    if ( MStabOk && ( MStabDelegate != "" ) && ( am->getUid() == MStabDelegate ) ) {
+    if ( MStabOk && ( MStabDelegate != "" ) && ( am->uid() == MStabDelegate ) ) {
       MMStab = am;
     }
   }
@@ -396,7 +402,7 @@ void MainWindow::SetMainThCenter( void )
 
 void MainWindow::InitAndIdentifySensors( void )
 {
-  AUnit *as;
+  ASensor *as;
 
   for ( int i = 0; i < ASensors.count(); i++ ) {
     as = ASensors.value(i);
@@ -409,10 +415,10 @@ void MainWindow::InitAndIdentifySensors( void )
 			 alarms, SLOT( chkAlarm( QString, QString ) ),
 			 Qt::UniqueConnection );
 #endif
-    if ( as->getID() == "I0" ) { SI0 = as; }
-    if ( as->getID() == "I1" ) { SI1 = as; }
-    if ( as->getID() == "TotalF" ) { SFluo = as; }
-    if ( as->getID() == "LS" ) {
+    if ( as->id() == "I0" ) { SI0 = as; }
+    if ( as->id() == "I1" ) { SI1 = as; }
+    if ( as->id() == "TotalF" ) { SFluo = (AUnitXMAP*)as; }
+    if ( as->id() == "LS" ) {
       if ( SLS != NULL ) {
 	disconnect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
 		    this, SLOT( ShowNewRingCurrent( QString, QStringList ) ) );
@@ -422,22 +428,22 @@ void MainWindow::InitAndIdentifySensors( void )
 	       this, SLOT( ShowNewRingCurrent( QString, QStringList ) ),
 	       Qt::UniqueConnection );
     }
-    if ( as->getID() == "ENCTH" ) {
+    if ( as->id() == "ENCTH" ) {
       if ( EncMainTh != NULL ) {
-	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
+	disconnect( EncMainTh, SIGNAL( NewValue( QString ) ),
 		    this, SLOT( ShowCurThPos() ) );
-	disconnect( EncMainTh, SIGNAL( newValue( QString ) ),
+	disconnect( EncMainTh, SIGNAL( NewValue( QString ) ),
 		    StatDisp, SLOT( newEncTh( QString ) ) );
       }
-      EncMainTh = as;
-      connect( EncMainTh, SIGNAL( newValue( QString ) ), this, SLOT( ShowCurThPos() ),
+      EncMainTh = (AUnitENC*)as;
+      connect( EncMainTh, SIGNAL( NewValue( QString ) ), this, SLOT( ShowCurThPos() ),
 	       Qt::UniqueConnection );
-      connect( EncMainTh, SIGNAL( newValue( QString ) ),
+      connect( EncMainTh, SIGNAL( NewValue( QString ) ),
 	       StatDisp, SLOT( newEncTh( QString ) ),
 	       Qt::UniqueConnection );
     }
-    if ( as->getID() == "ENCTH2" ) {
-      Enc2 = as;
+    if ( as->id() == "ENCTH2" ) {
+      Enc2 = (AUnitENC2*)as;
     }
   }
   
@@ -445,8 +451,8 @@ void MainWindow::InitAndIdentifySensors( void )
     SFluo->setROIs( ROIStart, ROIEnd );
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);
-      if (( as->getTheParent() == SFluo )&&( as != SFluo )) {
-	connect( SFluo, SIGNAL( newValue( QString ) ),
+      if (( as->theParent() == SFluo )&&( as != SFluo )) {
+	connect( SFluo, SIGNAL( NewValue( QString ) ),
 		 as, SLOT( getNewValue( QString ) ),
 		 Qt::UniqueConnection );
 	connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ),
@@ -490,11 +496,12 @@ void MainWindow::SomeDrvIsDisconnected( SMsg msg )
 
 void MainWindow::SetEnableOfUnits( QString drv, bool enable )
 {
-  AUnit *am, *as;
+  AMotor *am;
+  ASensor *as;
 
   for ( int j = 0; j < AMotors.count(); j++ ) {
     am = AMotors.value( j );
-    if ( am->getDriver() == drv ) {
+    if ( am->dev() == drv ) {
       am->setEnable( enable );
       if ( enable ) 
 	am->Initialize( s );
@@ -502,7 +509,7 @@ void MainWindow::SetEnableOfUnits( QString drv, bool enable )
   }
   for ( int j = 0; j < ASensors.count(); j++ ) {
     as = ASensors.value( j );
-    if ( as->getDriver() == drv ) {
+    if ( as->dev() == drv ) {
       as->setEnable( enable );
       if ( enable ) 
 	as->Initialize( s );
@@ -524,7 +531,7 @@ void MainWindow::ShowCurThPos( void )
   if ( SelThEncorder->isChecked() ) {
     deg = EncMainTh->value().toDouble();
   } else {
-    deg = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
+    deg = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->upp();
   }
   if ( deg != oldDeg ) {
     oldDeg = deg;
@@ -547,7 +554,7 @@ double MainWindow::SelectedCurPosDeg( ENCORPM EncOrPM )
     rv = EncMainTh->value().toDouble();
     break;
   case XPM:
-    rv = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->getUPP();
+    rv = ( MMainTh->value().toDouble() - MMainTh->getCenter() ) * MMainTh->upp();
     break;
   default:
     qDebug() << "Selected Enc or PM is wrong, anyway return Encorder !";
@@ -570,8 +577,8 @@ void MainWindow::SignalToStars( QString event )
 void MainWindow::RcvEvAll( SMsg msg )
 {
   for ( int i = 0; i < ASensors.count(); i++ ) {
-    if ( ASensors[i]->getDevCh() == msg.From() ) {
-      alarms->chkAlarm( ASensors[i]->getUid(),
+    if ( ASensors[i]->devCh() == msg.From() ) {
+      alarms->chkAlarm( ASensors[i]->uid(),
 	       QString( "%1 %2" ).arg( msg.Msg() ).arg( msg.Val() ) );
     }
   }

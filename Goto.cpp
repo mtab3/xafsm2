@@ -6,7 +6,7 @@ void MainWindow::MotorMove( void )
   // (動いているフラグが立ってるのに、busy で無くなってたら)
   // 表示を変えたり色々後始末
   int mNo = SPSMotorSelect->currentIndex();
-  AUnit *am = AMotors[ mNo ];
+  AMotor *am = AMotors[ mNo ];
 
   // GOMOTOR が使ってるユニットが
   if ( UUnits.user( am ) == GOMOTOR_ID ) {
@@ -15,9 +15,9 @@ void MainWindow::MotorMove( void )
       UUnits.removeAnUnit( GOMOTOR_ID, am );
       setGoBAsNotMoving();
       NewLogMsg( tr( "Setup: %1 : Reached at %2" )
-		 .arg( am->getName() ).arg( am->value() ) );
+		 .arg( am->name() ).arg( am->value() ) );
       statusbar->showMessage( tr( "Setup: %1 : Reached at %2" )
-			      .arg( am->getName() ).arg( am->value() ), 1000 );
+			      .arg( am->name() ).arg( am->value() ), 1000 );
     }
   }
 

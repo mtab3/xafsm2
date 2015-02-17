@@ -385,7 +385,7 @@ SENSOR CNT "S001" "I1" "Counter 1 (I1)" "simmotor" "SNScnt1" "count" YES "S000"
 #   "nct0801"        : Stars driver name
 #   "ch0"            : Node name in the stars driver
 #   "count"          : Name of the metric unit (only for display)
-#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   YES              : If the sensor has a parent (group leader) or not. YES or NO
 #   "S000"           : The identifier of the parent (group reader)
 
 #SENSOR CNT2 "S002" "GENERAL" "Counter 2 (I0 via KTL)" "nct0801" "ch2" "count" YES "S000" "S004" -2 -9
@@ -404,7 +404,7 @@ SENSOR CNT2 "S003" "GENERAL" "Counter 3 (I1 via KTL)" "simmotor" "SNScnt3" "coun
 #   "nct0801"        : Stars driver name
 #   "ch2"            : Node name in the stars driver
 #   "count"          : Name of the metric unit (only for display)
-#   YES              : If the sensor has a parente (group leader) or not. YES or NO
+#   YES              : If the sensor has a parent (group leader) or not. YES or NO
 #   "S000"             : The identifier of the parent (group reader)
 #   "S004"             : The identifier of the second driver (group reader)
 #   -2               : Upper range limit

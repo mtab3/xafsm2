@@ -230,7 +230,7 @@ void MainWindow::AutoSequence0( void )
       } else if ( FUNC == "SENS" ) {
 	int i;
 	for ( i = 0; i < ASensors.count(); i++ ) {
-	  if ( ASensors[i]->getUid() == VAL ) {
+	  if ( ASensors[i]->uid() == VAL ) {
 	    ASMUnits.addUnit( ASensors[i] );
 	    break;
 	  }
@@ -319,7 +319,7 @@ void MainWindow::AutoSequence0( void )
 	  case 0:
 	    ASMUnits.clearUnits();
 	    ASMUnits.addUnit( SFluo );
-	    SFluo->InitLocalStage();
+	    SFluo->initLocalStage();
 	    ASCMDii++;
 	    break;
 	  case 1:

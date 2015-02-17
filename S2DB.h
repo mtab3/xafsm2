@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <QTimer>
 
-#include "MCA.h"
+#include "AUnits/MCAMap.h"
 #include "S2DInfo.h"
 #include "MCAView.h"
 #include "KeV2Pix.h"
@@ -69,6 +69,7 @@ public slots:
     zmax->setText( max );
     zmin->setText( min );
   }
+  void print( QPrinter *p );
 
 private slots:
   void newInputZmax( void ) { CBar->newInputZmax( zmax->text().toDouble() ); };

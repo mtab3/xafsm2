@@ -398,7 +398,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 void MainWindow::WriteFLUOHeadSection( QTextStream &out,
 				       QVector<double>darks, double I0dark )
 {
-  out << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( 20, 2 ) << endl;
+  out << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( MaxSSDs + 1, 2 ) << endl;
   // I0 の位置を変えないといけないことが判明。なのでまた分離。
   out << "  Angle(c)  Angle(o)    time/s";
   // FLUO の時 mUnits の要素の並びは必ず I0, 19ch SSD になってるはず
@@ -454,7 +454,7 @@ void MainWindow::WriteInfoFile( void )
   out << "Version :" << " 1303" << endl;
   out << "Channel Names:";
   for ( int i = 0; i < Munits; i++ )
-    out << QString( " \"%1\"" ).arg( mMeasUnits.at(i)->getName() );
+    out << QString( " \"%1\"" ).arg( mMeasUnits.at(i)->name() );
   out << endl;
   
   out << "Select Button Names:";
@@ -469,7 +469,7 @@ void MainWindow::WriteInfoFile( void )
   
   if ( isSFluo ) {
     out << "Sum Up Channels: " << SFluoLine << " ";
-    for ( int i = 0; i < 19; i++ ) {
+    for ( int i = 0; i < MaxSSDs; i++ ) {
       out << " " << SFluoLine + i + 1;
     }
     out << endl;
@@ -490,7 +490,7 @@ void MainWindow::WriteInfoFile2( void )
 
   if ( isSFluo ) {
     out << "Finally Used SSD Channels:";
-    for ( int i = 0; i < 19; i++ ) {
+    for ( int i = 0; i < MaxSSDs; i++ ) {
       out << " " << i;
       if ( SSDbs2[i]->isChecked() == PBTrue ) {
         out << " 1";
@@ -638,7 +638,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       QVector<double> darks = SFluo->getDarkCountsInROI();
       // 19ch ROI
       for ( int j = 0; j < MaxSSDs; j++ ) {
-        buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
+        buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->getSetTime() ) ) );
         out << buf;
       }
       // I0
@@ -655,7 +655,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       QVector<double> icrs = SFluo->getICRs();
       // 19ch SSD  ICR ( per second )
       for ( int j = 0; j < MaxSSDs; j++ ) {
-        buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );
+        buf.sprintf(" %9d", (int)( icrs[j] * SFluo->getSetTime() ) );
         out << buf;
       }
       // Reset
@@ -665,7 +665,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( ( mMeasUnits.at(i) != SFluo ) && ( mMeasUnits.at(i) != SI0 ) ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->GetSetTime();
+              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->getSetTime();
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -680,7 +680,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( mMeasUnits.at(i) != SFluo ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->GetSetTime();
+              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->getSetTime();
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -694,7 +694,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
           QVector<quint64> vals = SFluo->getCountsInROI(); // vals は count
           QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps
           for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  in ROI
-            buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->GetSetTime() ) ) );
+            buf.sprintf(" %9d", (int)( vals[j] - ( darks[j] * SFluo->getSetTime() ) ) );
             out << buf;
           }
           if ( MeasFileType == FLUO ) {
@@ -710,7 +710,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
           }
           QVector<double> icrs = SFluo->getICRs();
           for ( int j = 0; j < MaxSSDs; j++ ) {   // 19ch SSD  ICR ( per second )
-            buf.sprintf(" %9d", (int)( icrs[j] * SFluo->GetSetTime() ) );
+            buf.sprintf(" %9d", (int)( icrs[j] * SFluo->getSetTime() ) );
             out << buf;
           }
           buf.sprintf(" %9d", 0 );           // リセット回数 : 0 にしてる

@@ -1,7 +1,9 @@
-#ifndef MCAHEAD_H
-#define MCAHEAD_H
+#ifndef XMAPHEAD_H
+#define XMAPHEAD_H
 
-class MCAHead {
+#define XMAPHEAD    ( 6 * 8 )              // 6 values * 8 bytes
+
+class XMAPHead {
  public:
   qint64 ch;
   qint64 stat;
@@ -10,7 +12,7 @@ class MCAHead {
   double liveTime;
   double icr;
 
-  MCAHead() {
+  XMAPHead() {
     ch = -1;
     stat = len = 0;
     realTime = liveTime = icr = 0;

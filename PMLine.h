@@ -4,12 +4,12 @@
 #include <QLabel>
 #include <QLineEdit>
 
-#include "AUnit.h"
+#include "AUnits/AMotor.h"
 
 class PMLine
 {
  public:
-  AUnit *am;
+  AMotor *am;
   
   QLabel *PMNo;
   QLabel *PMName;

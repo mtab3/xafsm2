@@ -1,6 +1,7 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include "AUnits/AUnits.h"
 #include "MainWindow.h"
 
 #define LN "\n"    // only for Qt on MacOS X
@@ -33,9 +34,12 @@ void MainWindow::ReadDef( QString fname )
   QString next;
   QString item;
   bool isMotor;
+  QString gType;
   QString type;
 
-  AUnit *NewUnit;
+  AUnit0 *NewUnit;
+  ASensor *NewSensor;
+  AMotor *NewMotor;
 
   QTextStream in( &f );
   while( !in.atEnd() ) {
@@ -44,48 +48,55 @@ void MainWindow::ReadDef( QString fname )
     if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
 //    next = nextItem( aline.simplified(), item );
       next = nextItem( aline, item );            // stop using 'simplified'
-      NewUnit = new AUnit;
-      if ( ( item == "MOTOR" ) || ( item == "SENSOR" ) ) {
-        if ( item == "MOTOR" ) { // Motor か
-          AMotors << NewUnit;
+      gType = item;
+      if ( ( gType == "MOTOR" ) || ( gType == "SENSOR" ) ) {
+        next = nextItem( next, item ); type = item;
+	NewUnit = NewNewUnit( type );
+
+        if ( gType == "MOTOR" ) { // Motor か
+	  NewMotor = (AMotor*)NewUnit;
+          AMotors << NewMotor;
           NewUnit->setGType( "MOTOR" );
           isMotor = true;
         } else {
-          ASensors << NewUnit;  // Sensor か
+	  NewSensor = (ASensor*)NewUnit;
+          ASensors << NewSensor;
           NewUnit->setGType( "SENSOR" );
           isMotor = false;
         }
         // 全 motor, sensor に共通の項目
+	NewUnit->setType( type );
         NewUnit->setALine( line );
-        next = nextItem( next, item ); NewUnit->setType( type = item );
         next = nextItem( next, item ); NewUnit->setUid( item );
         next = nextItem( next, item ); NewUnit->setID( item );
         next = nextItem( next, item ); NewUnit->setName( item );
-        next = nextItem( next, item ); NewUnit->setDriver( item ); DriverList << item;
+        next = nextItem( next, item ); NewUnit->setDev( item ); DriverList << item;
         next = nextItem( next, item ); NewUnit->setCh( item );
         next = nextItem( next, item ); NewUnit->setUnit( item );
-        NewUnit->setDevCh();
+	// NewUnit->setDevCh();
         // 名前の中の特殊文字の置換
-        NewUnit->setName( LocalizedName( NewUnit->getName() ) );
+        NewUnit->setName( LocalizedName( NewUnit->name() ) );
 
         // 以下、motor だけの項目
         if ( isMotor ) {
           // 全 motor 共通
-          next = nextItem( next, item ); NewUnit->setUPP( item );
-          next = nextItem( next, item ); NewUnit->setIsInt( item == "INT" );
-          // 各 motor 個別
+          next = nextItem( next, item ); NewMotor->setUPP( item );
+          next = nextItem( next, item ); NewMotor->setIsInt( item == "INT" );
           if (( type == "PM" )||( type == "SC" )) {
-            next = nextItem( next, item ); NewUnit->setCenter( item );
-          } else if (( type == "PZ" )||( type == "AIOo" )) {
-            next = nextItem( next, item ); NewUnit->setMinV( item );
-            next = nextItem( next, item ); NewUnit->setMaxV( item );
-          } else {
-            qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+	    next = nextItem( next, item ); NewMotor->setCenter( item );
+	  } else if ( type == "PZ" ) {
+	    next = nextItem( next, item ); ((AUnitPZ*)NewMotor)->setMinV( item );
+	    next = nextItem( next, item ); ((AUnitPZ*)NewMotor)->setMaxV( item );
+	  } else if ( type == "AIOo" ) {
+	    next = nextItem( next, item ); ((AUnitAIOo*)NewMotor)->setMinV( item );
+	    next = nextItem( next, item ); ((AUnitAIOo*)NewMotor)->setMaxV( item );
+	  } else {
+            qDebug() << tr( "A::Undefined Unit type [%1]" ).arg( type );
           }
         } else {  // 以下、sensor だけの項目
           // 全 sensor 共通
-          next = nextItem( next, item ); NewUnit->setHasParent( item == "YES" );
-          next = nextItem( next, item ); NewUnit->setParent( item );
+          next = nextItem( next, item ); NewSensor->setHasParent( item == "YES" );
+          next = nextItem( next, item ); NewSensor->setPUid( item );
           // 各 sensor 個別
           if ( type == "ENC" ) {
           } else if ( type == "ENC2" ) {
@@ -98,25 +109,25 @@ void MainWindow::ReadDef( QString fname )
           } else if (( type == "CNT2" )||( type == "OTC2" )) {
             next = nextItem( next, item );
             NewUnit->set2ndUid( item );             // 2nd ドライバの設定
-            NewUnit->setHas2ndDriver( true );       // 2nd ドライバフラグ
-            NewUnit->setRangeSelectable( true );    // レンジ設定可能のフラグ
+            NewUnit->setHas2ndDev( true );          // 2nd ドライバフラグ
+            NewSensor->setRangeSelectable( true );    // レンジ設定可能のフラグ
             next = nextItem( next, item );
-            NewUnit->setRangeU( item.toInt() );     // レンジ上限値
+            NewSensor->setRangeU( item.toInt() );     // レンジ上限値
             next = nextItem( next, item );
-            NewUnit->setRangeL( item.toInt() );     // レンジ下限値
+            NewSensor->setRangeL( item.toInt() );     // レンジ下限値
           } else if ( type == "SSDP" ) {
           } else if ( type == "SSD" ) {
           } else if ( type == "LSR" ) {
           } else if ( type == "DV" ) {
             next = nextItem( next, item );
-            NewUnit->setMaxIntTime( item.toDouble() );
+            ((AUnitDV*)NewUnit)->setMaxIntTime( item.toDouble() );
           } else if ( type == "DV2" ) {
           } else if ( type == "CCG" ) {
           } else if ( type == "AIOi" ) {
           } else if ( type == "FP23" ) {
 	  } else if ( type == "EPIC" ) {
           } else {
-            qDebug() << tr( "::Undefined Unit type [%1]" ).arg( type );
+            qDebug() << tr( "B::Undefined Unit type [%1]" ).arg( type );
           }
         }
         //	NewUnit->show();
@@ -249,7 +260,7 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "SPEEDS" ) {
         next = nextItem( next, item );
         for ( i = 0; i < AMotors.count(); i++ ) {
-          if ( AMotors[i]->getUid() == item )
+          if ( AMotors[i]->uid() == item )
             break;
         }
         if ( i < AMotors.count() ) {
@@ -325,34 +336,91 @@ void MainWindow::ReadDef( QString fname )
   for ( i = 0; i < ASensors.count(); i++ ) {
     if ( ASensors.at(i)->hasParent() ) {
       for ( j = 0; j < ASensors.count(); j++ ) {
-        if ( ASensors.at(i)->getPUid() == ASensors.at(j)->getUid() ) {
-          ASensors.at(i)->setTheParent( ASensors.at(j) );
+        if ( ASensors[i]->pUid() == ASensors[j]->uid() ) {
+          ASensors[i]->setTheParent( ASensors[j] );
           break;
         }
       }
       if ( j >= ASensors.count() ) {
-        qDebug() << "can not find a parent for " << ASensors.at(i)->getUid()
-                 << "the name is " << ASensors.at(i)->getPUid();
+        qDebug() << "can not find a parent for " << ASensors.at(i)->uid()
+                 << "the name is " << ASensors[i]->pUid();
       }
     }
-    if (( ASensors.at(i)->getType() == "CNT2" )
-        ||( ASensors.at(i)->getType() == "OTC2" )) {
+    if (( ASensors[i]->type() == "CNT2" )
+        ||( ASensors[i]->type() == "OTC2" )) {
       for ( j = 0; j < ASensors.count(); j++ ) {
-        if ( ASensors.at(i)->get2ndUid() == ASensors.at(j)->getUid() ) {
-          ASensors.at(i)->setThe2ndDriver( ASensors.at(j) );
-          ASensors.at(i)->set2ndDriver( ASensors.at(j)->getDriver() );
-          ASensors.at(i)->set2ndCh( ASensors.at(j)->getCh() );
-          ASensors.at(i)->set2ndDevCh();
+        if ( ASensors[i]->uid2() == ASensors[j]->uid() ) {
+          ASensors[i]->setThe2ndDev( ASensors[j] );
+          ASensors[i]->setDev2( ASensors[j]->dev() );
+          ASensors[i]->setCh2( ASensors[j]->ch() );
+	  //          ASensors[i]->set2ndDevCh();
           break;
         }
       }
       if ( j >= ASensors.count() ) {
-        qDebug() << "can not find a 2nd Driver for " << ASensors.at(i)->getUid()
-                 << "the name is " << ASensors.at(i)->get2ndUid();
+        qDebug() << "can not find a 2nd Driver for " << ASensors.at(i)->uid()
+                 << "the name is " << ASensors.at(i)->uid2();
       }
     }
   }
 }
+
+AUnit0 *MainWindow::NewNewUnit( QString type )
+{
+  AUnit0 *rv = NULL;
+
+  if ( type == "PM" )
+    rv = (AUnit0*)new AUnitPM;
+  if ( type == "PZ" )
+    rv = (AUnit0*)new AUnitPZ;
+  if ( type == "SC" )
+    rv = (AUnit0*)new AUnitSC;
+  if ( type == "AIOo" )
+    rv = (AUnit0*)new AUnitAIOo;
+
+  if ( type == "CNT" )
+    rv = (AUnit0*)new AUnitCNT;
+  if ( type == "PAM" )
+    rv = (AUnit0*)new AUnitPAM;
+  if ( type == "ENC" )
+    rv = (AUnit0*)new AUnitENC;
+  if ( type == "SSD" )
+    rv = (AUnit0*)new AUnitXMAP;
+  if ( type == "SSDP" )
+    rv = (AUnit0*)new AUnitXMAP2;
+  if ( type == "CNT2" )
+    rv = (AUnit0*)new AUnitOTC;
+  if ( type == "OTC" )
+    rv = (AUnit0*)new AUnitOTC;
+  if ( type == "OTC2" )
+    rv = (AUnit0*)new AUnitOTC2;
+  if ( type == "LSR" )
+    rv = (AUnit0*)new AUnitLSR;
+  if ( type == "DV" )
+    rv = (AUnit0*)new AUnitDV;
+  if ( type == "DV2" )
+    rv = (AUnit0*)new AUnitDV2;
+  if ( type == "ENC2" )
+    rv = (AUnit0*)new AUnitENC2;
+  if ( type == "PAM2" )
+    rv = (AUnit0*)new AUnitPAM2;
+  if ( type == "CCG" )
+    rv = (AUnit0*)new AUnitCCG;
+  if ( type == "AIOi" )
+    rv = (AUnit0*)new AUnitAIOi;
+  if ( type == "FP23" )
+    rv = (AUnit0*)new AUnitFP23;
+  if ( type == "EPIC" )
+    rv = (AUnit0*)new AUnitEPIC;
+
+  if ( rv == NULL ) {
+    rv = new AUnit0;
+    qDebug() << QString( "Error Unknown type name [%1]" ).arg( type );
+  }
+
+  return rv;
+}
+
 
 // Uid の重複チェック
 void MainWindow::CheckDuplicateUID( void )
@@ -360,14 +428,14 @@ void MainWindow::CheckDuplicateUID( void )
   for ( int i = 0; i < AMotors.count(); i++ ) {
     for ( int j = 0; j < AMotors.count(); j++ ) {
       if ( i != j ) {
-        if ( AMotors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
+        if ( AMotors.at(i)->uid() == AMotors.at(j)->uid() ) {
           // Uid がダブってると致命的なので止まらないとしかたない
           ExitByDuplicateUID( AMotors.at(i), AMotors.at(j) );
         }
       }
     }
     for ( int j = 0; j < ASensors.count(); j++ ) {
-      if ( AMotors.at(i)->getUid() == ASensors.at(j)->getUid() ) {
+      if ( AMotors.at(i)->uid() == ASensors.at(j)->uid() ) {
         ExitByDuplicateUID( AMotors.at(i), ASensors.at(j) );
       }
     }
@@ -375,28 +443,28 @@ void MainWindow::CheckDuplicateUID( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     for ( int j = 0; j < ASensors.count(); j++ ) {
       if ( i != j ) {
-        if ( ASensors.at(i)->getUid() == ASensors.at(j)->getUid() ) {
+        if ( ASensors.at(i)->uid() == ASensors.at(j)->uid() ) {
           ExitByDuplicateUID( ASensors.at(i), ASensors.at(j) );
         }
       }
     }
     for ( int j = 0; j < AMotors.count(); j++ ) {
-      if ( ASensors.at(i)->getUid() == AMotors.at(j)->getUid() ) {
+      if ( ASensors.at(i)->uid() == AMotors.at(j)->uid() ) {
         ExitByDuplicateUID( ASensors.at(i), AMotors.at(j) );
       }
     }
   }
 }
 
-void MainWindow::ExitByDuplicateUID( AUnit *a1, AUnit *a2 )
+void MainWindow::ExitByDuplicateUID( AUnit0 *a1, AUnit0 *a2 )
 {
   qDebug() << tr( "UIDs [%1](at line %2) and [%3](at line %4) are duplicated." )
-              .arg( a1->getUid() ).arg( a1->getALine() )
-              .arg( a2->getUid() ).arg( a2->getALine() );
+              .arg( a1->uid() ).arg( a1->aLine() )
+              .arg( a2->uid() ).arg( a2->aLine() );
   qDebug() << tr( "1st one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
-              .arg( a1->getType() ).arg( a1->getID() ).arg( a1->getDriver() ).arg( a1->getCh() );
+              .arg( a1->type() ).arg( a1->id() ).arg( a1->dev() ).arg( a1->ch() );
   qDebug() << tr( "2nd one is : Type[%1] Identifier[%2] Driver[%3] Node[%4]" )
-              .arg( a2->getType() ).arg( a2->getID() ).arg( a2->getDriver() ).arg( a2->getCh() );
+              .arg( a2->type() ).arg( a2->id() ).arg( a2->dev() ).arg( a2->ch() );
   exit( 0 );
 }
 
