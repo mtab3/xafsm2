@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 17 17:26:57 2015 +0900\n"\
+                "    after changing AUnitXMAP, the codes are stabilized anyway to make new branch\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 16:23:59 2015 +0900\n"\
                 "    expire SAVEMCACh from codes.   Only the MaxSSDs is used to give the magic number 19\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Feb 15 22:30:29 2015 +0900\n"\
                 "    nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Feb 15 21:40:49 2015 +0900\n"\
-                "    DLink for SSD is re-connectable when the Stars connection is up and down\n"\
 		"\n"\
                 ""
 #endif

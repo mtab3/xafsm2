@@ -9,7 +9,7 @@
 
 KeV2Pix::KeV2Pix( void ) : QObject()
 {
-  MakeUpAB( 19, 2 );    // 2次の最小自乗にした
+  //  MakeUpAB( 19, 2 );    // 2次の最小自乗にした
 }
 
 void KeV2Pix::setMCALen(int mcaLen )
@@ -17,7 +17,7 @@ void KeV2Pix::setMCALen(int mcaLen )
   MCALen = mcaLen;
 }
 
-void KeV2Pix::MakeUpAB( int MCAChs, int Dim )
+void KeV2Pix::MakeUpAB( int MCAChs, int Dim, QString fname )
 {
   if ( Dim > 0 )
     dim = Dim;
@@ -40,34 +40,36 @@ void KeV2Pix::MakeUpAB( int MCAChs, int Dim )
     ba[i][1] = 100;
   }
 
-  QFileInfo finfo( "KeV2MCApix.txt" );
-  QString fname = finfo.exists() ? "KeV2MCApix.txt" : ":KeV2MCApix.txt";
+  //  QFileInfo finfo( "KeV2MCApix.txt" );
+  QFileInfo finfo( fname );
+  if ( ! finfo.exists() )
+    fname = ":" + fname;
   QFile f( fname );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     qDebug() << "Can not open " << fname;
-    return;
-  }
-  QTextStream in( &f );
-
-  QVector<double> KeVs;
-  QVector<double> Chs[ MaxSSDs ];
-  QStringList items;
-
-  while( !in.atEnd() ) {
-    items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
-    if ( items.count() > 0 ) {
-      if ( items.at( 0 ).mid( 0, 1 ) == "#" ) continue;
-      if ( items.count() > MaxSSDs ) {       // == MaxSSDs + 1 (のはず)
-        KeVs << items.at( 0 ).toDouble();
-        for ( int i = 0; i < MaxSSDs; i++ ) {
-          Chs[ i ] << items.at( i + 1 ).toDouble();
-        }
+  } else {
+    QTextStream in( &f );
+    
+    QVector<double> KeVs;
+    QVector<double> Chs[ SSDChs ];
+    QStringList items;
+    
+    while( !in.atEnd() ) {
+      items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
+      if ( items.count() > 0 ) {
+	if ( items.at( 0 ).mid( 0, 1 ) == "#" ) continue;
+	if ( items.count() > SSDChs ) {       // == MaxSSDs + 1 (のはず)
+	  KeVs << items.at( 0 ).toDouble();
+	  for ( int i = 0; i < SSDChs; i++ ) {
+	    Chs[ i ] << items.at( i + 1 ).toDouble();
+	  }
+	}
       }
     }
   }
 
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+  for ( int i = 0; i < SSDChs; i++ ) {
     double ab0[ dim + 2 ];
     if ( !calcAB( Chs[ i ], KeVs, ab0 ) ) {       // MCApix -> keV に直す係数を求める
       qDebug() << "ab can not be calculated for " << i;

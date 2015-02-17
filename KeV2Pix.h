@@ -13,7 +13,7 @@ class KeV2Pix : public QObject
  public:
   KeV2Pix();
   
-  void MakeUpAB( int SSDChs, int dim );
+  void MakeUpAB( int SSDChs, int dim, QString fname );
   const QVector<double>& getAB( int i );
   int getDim( void ) { return dim; };
   double p2E( int ch, int p );

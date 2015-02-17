@@ -11,15 +11,11 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
 #define AXMAPBUF    ( XMAPHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
 #define XMAPBUFSIZE ( AXMAPBUF * 19 )       // AMCABUF * 19 ch
 
-const int MaxSSDs = 19;      // old val
-
 class AUnitXMAP : public ASensor
 {
   Q_OBJECT
 
   bool connectingDLink;
-
-  int MCALength;    // old val
 
   int SSDChs;
   quint64 McaLength;

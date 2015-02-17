@@ -5,7 +5,6 @@ AUnitXMAP::AUnitXMAP( void )
 {
   SSDChs = 19;
   McaLength = 2048;    // !!
-  MCALength = 2048;    // old val
 
   connectingDLink = false;   // new
   
