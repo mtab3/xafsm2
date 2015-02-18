@@ -417,66 +417,19 @@ void Data::showMCAData( QTextStream &in )
 
   KeV2Pix *k2p = theMCAView->keV2Pix();
   cMCACh = 0;
-#if 0
-  if ( theViewC->getNowDType() == NONDATA ) {
-    theViewC->setNowDType( MCASHOW );
-    theViewC->setNowVType( MCAVIEW );
-  }
-#endif
   theMCAView->makeValid( true );
-
+  
   MCADataIsValid = false;
   //  getNewMCAs( MCALength );
   //  aMCA.setSize( MCALength, MaxSSDs );
-  
+
   aMCA.load( in, "" );
   cMCA = theMCAView->setMCAdataPointer( aMCA.length() );
-#if 0  
-  while ( ! in.atEnd() ) {
-    vals = in.readLine().simplified().split( QRegExp( "\\s" ) );
-    if ( vals[0][0] != '#' ) {
-      int i = vals[0].toInt();
-      for ( int ch = 0; ch < MaxSSDs; ch++ ) {
-	double E = vals[ ch * 2 + 1 ].toDouble();
-	int count = vals[ ch * 2 + 2 ].toInt();
-	MCAEs[ch][i] = E;      // これは測定時にそのピクセルに対応していたエネルギー
-	MCAs0[ch][i] = count;
-      }
-    }
-  }
-#endif
-
   if ( ! aMCA.isValid() )
     return;
   aMCA.correctE( k2p );
-#if 0  
-  // 測定時のエネルギーとピクセルの関係は、
-  // 今のエネルギーとピクセルの関係とは違っている可能性があるので
-  // 今のピクセルに対応するエネルギーでのカウント数を線形補完で求めておく
-  for ( int i = 0; i < MCALength; i++ ) {
-    for ( int ch = 0; ch < MaxSSDs; ch++ ) {
-      double nowE = k2p->p2E( ch, i );
-      int j;
-      for ( j = 1; j < MCALength - 1; j++ ) {
-	if ( nowE < MCAEs[ch][j] ) {
-	  break;
-	}
-      }
-      MCAs[ch][i] = (int)(( nowE - MCAEs[ch][j-1] ) / ( MCAEs[ch][j] - MCAEs[ch][j-1] )
-			  * ( (int)MCAs0[ch][j] - (int)MCAs0[ch][j-1] )
-			  + MCAs0[ch][j-1] );
-    }
-  }
-#endif
-
   aMCA.copyCnt( cMCACh, cMCA );
-#if 0
-  for ( int i = 0; i < MCALength; i++ ) {
-    cMCA[i] = MCAs[cMCACh][i];
-  }
-#endif
 
-  emit setMCACh( cMCACh );
   theMCAView->SetMCACh( cMCACh );
   MCADataIsValid = true;
   theMCAView->update();

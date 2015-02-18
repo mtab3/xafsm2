@@ -92,20 +92,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   //           Qt::UniqueConnection );
   connect( MCARec, SIGNAL( clicked() ), this, SLOT( saveMCAData() ),
 	   Qt::UniqueConnection );
-  connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
-	   this, SLOT( ShowNewMCAStat( char * ) ),
-	   Qt::UniqueConnection);
-
-  connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
-	   this, SLOT( ShowNewMCARealTime( int ) ),
-	   Qt::UniqueConnection );
-  connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
-	   this, SLOT( ShowNewMCALiveTime( int ) ),
-	   Qt::UniqueConnection );
-
-  connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
-	   Qt::UniqueConnection );
-
+  
   inMCAMeas = false;
   validMCAData = false;
   MCAData = NULL;
@@ -492,6 +479,9 @@ void MainWindow::doPeakFit( void )
 
 void MainWindow::setAllROIs( void )
 {
+  if ( SFluo == NULL )
+    return;
+  
   int ch = MCACh->text().toInt();
   double startE = XMAPk2p->p2E( ch, ROIStart[ ch ].toDouble() );
   double endE = XMAPk2p->p2E( ch, ROIEnd[ ch ].toDouble() );
@@ -507,6 +497,9 @@ void MainWindow::setAllROIs( void )
 
 void MainWindow::saveMCAData( void )
 {
+  if ( SFluo == NULL )
+    return;
+  
   // MCA の画面は一つしか無いはずだけど
   XYView *view;   // 現在表示しているのが MCA画面だったらその画面がセーブの対象
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() == MCADATA ) {
@@ -538,31 +531,6 @@ void MainWindow::saveMCAData( void )
   set->save( MCARecFile->text(), "measured by SSD set up" );
   delete set;
 }
-
-#if 0
-void MainWindow::saveMCAData0( QString fname, aMCASet *set )
-{
-  if ( set == NULL )
-    return;
-
-  QFile f( fname );
-  if ( !f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-    statusbar->showMessage( tr( "The file [%1] can not open to record the data" )
-			    .arg( fname ),
-			    2000 );
-    return;
-  }
-  QTextStream out( &f );
-
-  out << FileIDs[ MCADATA ] << "\n";
-  out << "# " << set->date << "\n";
-
-  set->writeHead( out );
-  set->writeData( out );
-
-  f.close();
-}
-#endif
 
 void MainWindow::setSelectedMCAFName( const QString &fname )
 {
@@ -603,12 +571,12 @@ void MainWindow::SelSSDs20( void )
       if ( SSDbs2.at(i)->isChecked() == PBTrue ) {
 	SSDbs2.at(i)->setStyleSheet( SSDActive );
 	SSDbs2.at(i)->setToolTip( tr( "Active" ) );
-	SFluo->setSSDUsingCh( i, true );
+	if ( SFluo != NULL ) SFluo->setSSDUsingCh( i, true );
 	emit SelectedSSD( i, true );
       } else {
 	SSDbs2.at(i)->setStyleSheet( SSDnotActive );
 	SSDbs2.at(i)->setToolTip( tr( "Inactive" ) );
-	SFluo->setSSDUsingCh( i, false );
+	if ( SFluo != NULL ) SFluo->setSSDUsingCh( i, false );
 	emit SelectedSSD( i, false );
       }
     }
@@ -637,13 +605,15 @@ void MainWindow::SelSSDs( int ch )
 
 void MainWindow::getMCASettings( int ch )
 {
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetThreshold", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetCalibration", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetDynamicRange", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPreAMPGain", QString::number( ch ) );
-
-  SFluo->GetMCAs();
+  if ( SFluo != NULL ) {
+    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPeakingTime", QString::number( ch ) );
+    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetThreshold", QString::number( ch ) );
+    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetCalibration", QString::number( ch ) );
+    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetDynamicRange", QString::number( ch ) );
+    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPreAMPGain", QString::number( ch ) );
+    
+    SFluo->GetMCAs();
+  }
 }
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
@@ -651,11 +621,7 @@ void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ば�
   if ( MwSSDGotMCALen )
     return;
   MwSSDGotMCALen = true;
-#if 0
-  if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
-    MCALength = msg.Val().toInt();
-  }
-#endif
+
   ROIStart = new QString [ SFluo->chs() ];
   ROIEnd = new QString [ SFluo->chs() ];
   SFluo->setROIs( ROIStart, ROIEnd );
@@ -713,13 +679,14 @@ void MainWindow::MCAChSelected( int i )
 {
   if ( i == cMCACh )
     return;
+  if ( SFluo == NULL )
+    return;
 
   if ( i < 0 ) { MCACh->setValue( SFluo->chs() - 1 ); i = SFluo->chs() - 1; }
   if ( i >= SFluo->chs() ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
 
   emit NewMCACh( cMCACh );
-
   getMCASettings( cMCACh );
   ROIStartInput->setText( ROIStart[ cMCACh ] );
   ROIEndInput->setText( ROIEnd[ cMCACh ] );

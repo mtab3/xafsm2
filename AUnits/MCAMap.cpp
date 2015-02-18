@@ -111,7 +111,7 @@ void aMCASet::loadHeader( QTextStream &in )
       if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
 	RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
       }
-      if ( vals.count() >= 9 ) {
+      if ( vals.count() >= 7 ) {
 	int ch = vals[1].toInt();
 	int L = vals[3].toInt();
 	if ( ch > maxCh ) maxCh = ch;

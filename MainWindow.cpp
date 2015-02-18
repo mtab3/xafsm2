@@ -461,6 +461,19 @@ void MainWindow::InitAndIdentifySensors( void )
 		 Qt::UniqueConnection );
       }
     }
+    connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
+	     this, SLOT( ShowNewMCAStat( char * ) ),
+	     Qt::UniqueConnection);
+    
+    connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
+	     this, SLOT( ShowNewMCARealTime( int ) ),
+	     Qt::UniqueConnection );
+    connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
+	     this, SLOT( ShowNewMCALiveTime( int ) ),
+	     Qt::UniqueConnection );
+    
+    connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
+	     Qt::UniqueConnection );
   }
 
   if ( ! SensorsInited ) {
