@@ -1309,7 +1309,7 @@ void MainWindow::StartMeasurement( void )
       isSFluo = true;
       SFluoLine = GSBSs.count();
       aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
-      for ( int i = 0; i < MaxSSDs; i++ ) {
+      for ( int i = 0; i < SFluo->chs(); i++ ) {
         aGsb.stat = PBFalse;
         aGsb.label = QString::number( i );
         GSBSs << aGsb;
@@ -1517,7 +1517,7 @@ void MainWindow::StartMeasurement( void )
     MeasChNo = mMeasUnits.count();         // 測定のチャンネル数
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
     if ( Use19chSSD->isChecked() ) {
-      MeasChNo += ( MaxSSDs -1 );
+      MeasChNo += ( SFluo->chs() -1 );
     }
     if ( QXafsMode->isChecked() && ( Enc2 != NULL ) ) {
       MeasChNo -= 1;
@@ -1542,9 +1542,9 @@ void MainWindow::StartMeasurement( void )
       }
 #endif
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
-        XafsMCAMap.New( TotalPoints, SelRPT->value(), MCALength, MaxSSDs );
+        XafsMCAMap.New( TotalPoints, SelRPT->value(), SFluo->length(), SFluo->chs() );
       else                        // そうでなければ 1スキャン分だけメモリ上に
-        XafsMCAMap.New( TotalPoints, 1, MCALength, MaxSSDs );
+        XafsMCAMap.New( TotalPoints, 1, SFluo->length(), SFluo->chs() );
                                   // SelRPT->value() --> 1
     }
 
@@ -1895,7 +1895,7 @@ void MainWindow::MoveInMeasView( int ix, double )
 
   cnt = set->Ch[ cMCACh ].cnt;
 
-  for ( int i = 0; i < MCALength; i++ ) {
+  for ( int i = 0; i < SFluo->length(); i++ ) {
     MCAData[i] = cnt[i];
   }
 
@@ -1912,7 +1912,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
   QVector<double> darks = SFluo->getDarkCountsInROI();
   double I0, Vch;
   int DLC = ( MPSet.isI1 ) ? 3 : 1;   // display line count
-  int ML = cMCAView->getMCALength();
+  int ML = SFluo->length();
 
   QVector<double> dwells;
   for ( int b = 0; b < SBlocks; b++ ) {
@@ -1934,7 +1934,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
   
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {
     double Sum = 0;
-    for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+    for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
       quint32 sum = 0;
       Vch = 0;
       for ( int r = rs; r < re; r++ ) {
@@ -1995,7 +1995,7 @@ void MainWindow::AfterSaveXafs()
     statusbar->showMessage( tr( "No measurement has been done." ) );
     return;
   }
-  int ML = cMCAView->getMCALength();
+  int ML = SFluo->length();
   SetDFName0( MPSet.fname );
 
   for ( int r = 0; r < MPSet.rpt; r++ ) {
@@ -2057,7 +2057,7 @@ void MainWindow::AfterSaveXafs()
 	    // データ部分の先頭 19文字をコピー (角度、角度、時間, I0)
 	    aMCASet *set = XafsMCAMap.aPoint( i, r );
 	    if ( ( set != NULL ) && ( set->isValid() ) ) {  // 二度手間だけどまた計算
-	      for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+	      for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
 		quint32 sum = 0;
 		quint32 *cnt = set->Ch[ ch ].cnt;
 		int ROIs = ROIStart[ ch ].toInt();
@@ -2072,7 +2072,7 @@ void MainWindow::AfterSaveXafs()
 		buf.sprintf(" %9d", (int)( sum ) );  // dark ひかない
 		out << buf;
 	      }
-	      out << aline.mid( icrStart, 10 * ( MaxSSDs + 1 ) );  // ICR はコピー
+	      out << aline.mid( icrStart, 10 * ( SFluo->chs()< + 1 ) );  // ICR はコピー
 	      out << endl;
 	    }
 	  }

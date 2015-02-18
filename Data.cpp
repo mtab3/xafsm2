@@ -32,7 +32,6 @@ Data::Data( QWidget *p ) : QFrame( p )
   theXYView = NULL;
   XYLine0 = XYLines = 0;
   MCADataIsValid = false;
-  MCALength = 0;
   S2DI.valid = false;
 
   DColors << DColor01 << DColor02 << DColor03 << DColor04 << DColor05
@@ -425,13 +424,13 @@ void Data::showMCAData( QTextStream &in )
   }
 #endif
   theMCAView->makeValid( true );
-  cMCA = theMCAView->setMCAdataPointer( MCALength );
 
   MCADataIsValid = false;
   //  getNewMCAs( MCALength );
   //  aMCA.setSize( MCALength, MaxSSDs );
   
   aMCA.load( in, "" );
+  cMCA = theMCAView->setMCAdataPointer( aMCA.length() );
 #if 0  
   while ( ! in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s" ) );
@@ -536,6 +535,9 @@ void Data::showS2DData( QTextStream &in,
   QStringList HeadLine1, HeadLine2, vals;
   QString line;
 
+
+  
+  theS2DB = (S2DB*)(theViewC->getView());
   theS2DB = (S2DB*)(theViewC->getView());
   theS2DB->setLoadBHidden( false );
   theS2DView = (S2DView*)(theS2DB->getView());

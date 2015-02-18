@@ -168,7 +168,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
     break;
   case MCAVIEW:
     newView = (void *)(new MCAView( this ));
-    ((MCAView *)newView)->setKeV2Pix( kev2pix );
+    ((MCAView *)newView)->setKeV2Pix( XMAPk2p );
     ((MCAView *)newView)->setFDBase( fdbase );
     ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
     ((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
@@ -190,6 +190,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
     newView = (void *)(new S2DB( this ) );
     //    "Not Set Parent in MainWindow";
     //    ((S2DB*)newView)->setParent( this );
+    ((S2DB*)newView)->setK2P( XMAPk2p );
     break;
   default:
     break;
@@ -289,7 +290,7 @@ void MainWindow::getNewMCAView( void )
   cMCAView = (MCAView*)(cMCAViewC->getView());
   cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
   
-  MCAData = cMCAView->setMCAdataPointer( MCALength );
+  MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
   validMCAData = true;
   cMCAViewTabNo = ViewTab->currentIndex();
   cMCAView->setLog( SetDisplayLog->isChecked() );
@@ -298,6 +299,6 @@ void MainWindow::getNewMCAView( void )
   
   cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
   if ( StartResume == MCA_START )
-    for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
+    for ( int i = 0; i < SFluo->length(); i++ ) MCAData[i] = 0;
 }
 

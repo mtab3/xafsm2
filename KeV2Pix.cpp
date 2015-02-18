@@ -9,16 +9,15 @@
 
 KeV2Pix::KeV2Pix( void ) : QObject()
 {
+  valid = false;
   //  MakeUpAB( 19, 2 );    // 2次の最小自乗にした
 }
 
-void KeV2Pix::setMCALen(int mcaLen )
+void KeV2Pix::MakeUpAB( int len, int chs, int Dim, QString fname )
 {
-  MCALen = mcaLen;
-}
+  MCALen = len;
+  MCAChs = chs;
 
-void KeV2Pix::MakeUpAB( int MCAChs, int Dim, QString fname )
-{
   if ( Dim > 0 )
     dim = Dim;
   else 
@@ -46,14 +45,13 @@ void KeV2Pix::MakeUpAB( int MCAChs, int Dim, QString fname )
     fname = ":" + fname;
   QFile f( fname );
 
+  QVector<double> KeVs;
+  QVector< QVector<double> > Chs( MCAChs );
+  QStringList items;
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     qDebug() << "Can not open " << fname;
   } else {
     QTextStream in( &f );
-    
-    QVector<double> KeVs;
-    QVector<double> Chs[ MCAChs ];   // ************** Broken
-    QStringList items;
     
     while( !in.atEnd() ) {
       items = in.readLine().simplified().split( QRegExp( "\\s+" ) );
@@ -88,11 +86,12 @@ void KeV2Pix::MakeUpAB( int MCAChs, int Dim, QString fname )
       }
     }
   }
+  valid = true;
 }
 
 double KeV2Pix::p2E( int i, int p )
 {
-  if (( i < 0 )||( i >= MaxSSDs )) {
+  if (( i < 0 )||( i >= MCAChs )) {
     return p * 0.01;
   }
   double rv = 0;
@@ -106,7 +105,7 @@ double KeV2Pix::p2E( int i, int p )
 
 int KeV2Pix::E2p( int i, double E )
 {
-  if (( i < 0 )||( i >= MaxSSDs ))
+  if (( i < 0 )||( i >= MCAChs ))
     return E * 100;
 
   double rv = 0;

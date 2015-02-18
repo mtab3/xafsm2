@@ -5,3 +5,6 @@ QVector<double> MCACorrect     MasSSDs
 
 MCA data の load はチェックするべき
 KeV2Pix もかなり怪しい
+
+kev2pix の初期化は new の時ではなく SFluo が確定してからにした
+S2D に外から kev2pix を渡すようにした。

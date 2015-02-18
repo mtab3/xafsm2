@@ -145,7 +145,7 @@ bool AUnitXMAP::InitSensor( void )
   case 2:
     busy2On( Dev, "InitSensor-c2" );
     ROIs = ROIStart[0] + " " + ROIEnd[0];
-    for ( int i = 1; i < MaxSSDs; i++ ) {
+    for ( int i = 1; i < chs(); i++ ) {
       ROIs += " " + ROIStart[i] + " " + ROIEnd[i];
     }
     s->SendCMD2( "Init", Dev, "SetROIs", ROIs );
@@ -275,7 +275,7 @@ bool AUnitXMAP::GetMCAs( void )
 void AUnitXMAP::getMCALength( SMsg msg )
 {
   if ( msg.From() == Dev ) {  //   // Check !!!!! DevCh/Drv
-    MCALength = msg.Val().toInt();
+    McaLength = msg.Val().toInt();
   }
 }
 
@@ -399,7 +399,7 @@ double AUnitXMAP::liveTime( int ch )
 
 void AUnitXMAP::SetLowLimit( int ch, int llpix )
 {
-  if ( ch < MaxSSDs ) {
+  if ( ch < chs() ) {
     //    MCALowLimit[ ch ] = llpix;
     s->SendCMD2( "SSDSetting", Dev,
 		 QString( "SetLLimit %1 %2" ).arg( ch ).arg( llpix ) );
@@ -470,17 +470,17 @@ void AUnitXMAP::ReceiveValues( SMsg msg )
 
   if ( ( msg.From() == Dev ) && ( msg.Msgt() == GETVALUES ) ) { // Check !!!!! DevCh/Drv
     int sum = 0;
-    for ( int i = 0; i < MaxSSDs; i++ ) {
+    for ( int i = 0; i < length(); i++ ) {
       if ( SSDUsingCh[i] ) {
 	sum += msg.Vals().at( i + 1 ).toInt();
       }
     }
     Value = QString::number( sum );
-    for ( int i = 0; i < MaxSSDs; i++ ) {
+    for ( int i = 0; i < chs(); i++ ) {
       CountsInROI << msg.Vals().at( i + 1 ).toInt();
-      CountsAll   << msg.Vals().at( i + 1 + MaxSSDs ).toInt();
-      TotalEvents << msg.Vals().at( i + 1 + MaxSSDs * 2 ).toInt();
-      ICRs        << msg.Vals().at( i + 1 + MaxSSDs * 3 ).toDouble();
+      CountsAll   << msg.Vals().at( i + 1 + chs() ).toInt();
+      TotalEvents << msg.Vals().at( i + 1 + chs() * 2 ).toInt();
+      ICRs        << msg.Vals().at( i + 1 + chs() * 3 ).toDouble();
     }
     
     Values = msg.Vals();
@@ -534,10 +534,10 @@ void AUnitXMAP::receiveMCAs( void )
 
     quint64 sum = 0;
     quint64 countsAll, countsInROI;
-    for ( int i = 0; i < MaxSSDs; i++ ) {
+    for ( int i = 0; i < chs(); i++ ) {
       quint32 *aMCA = getAMCA( i );
       countsAll = countsInROI = 0;
-      for ( int j = 0; j < (int)MCALength; j++ ) {
+      for ( int j = 0; j < length(); j++ ) {
 	if ( ( j >= ROIStart[i].toInt() )&&( j <= ROIEnd[i].toInt() ) )
 	  countsInROI += aMCA[j];
 	countsAll += aMCA[j];
@@ -548,7 +548,7 @@ void AUnitXMAP::receiveMCAs( void )
     }
 
     Value = QString::number( sum );
-    for ( int i = 0; i < MaxSSDs; i++ ) {
+    for ( int i = 0; i < chs(); i++ ) {
       TotalEvents << 0;
       ICRs        << getAMCAHead( i ).icr;
     }

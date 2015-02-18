@@ -486,7 +486,7 @@ void MainWindow::S2DScanStart( void )
     }
 
     S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
-		     S2DI.ps[1]+1, MCALength, MaxSSDs );
+		     S2DI.ps[1]+1, SFluo->length(), SFluo->chs() );
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
@@ -791,11 +791,11 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set )
   set->RINGCurrent = ( ( SLS != NULL) ? SLS->value().toDouble() : -1 );
   set->I0 = ( ( SI0 != NULL ) ? SI0->value().toDouble() : -1 );
 
-  for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+  for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
     double *E = set->Ch[ ch ].E;
     quint32 *cnt = set->Ch[ ch ].cnt;
-    for ( int i = 0; i < MCALength; i++ ) {
-      E[i] = kev2pix->p2E( ch, i );
+    for ( int i = 0; i < SFluo->length(); i++ ) {
+      E[i] = XMAPk2p->p2E( ch, i );
       cnt[i] = SFluo->getAMCAdata( ch, i );
     }
     set->Heads[ ch ] = SFluo->getAMCAHead( ch );
@@ -958,14 +958,14 @@ double MainWindow::S2DReCalcAMapPoint( QString fname )
   double cnt, sum = 0;
   QVector<double> ss;
   QVector<double> es;
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+  for ( int i = 0; i < SFluo->chs(); i++ ) {
     ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
     es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
   }
   while( !in.atEnd() ) {
     vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
     if (( vals[0] != "#" )&&( vals.count() >= 36 )) {
-      for ( int i = 0; i < MaxSSDs; i++ ) {
+      for ( int i = 0; i < SFluo->chs(); i++ ) {
 	if ( SSDbs2[i]->isChecked() == PBTrue ) {
 	  eng = vals[i*2+1].toDouble();
 	  cnt = vals[i*2+2].toDouble();
@@ -986,18 +986,18 @@ double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map )
 
   QVector<double> ss;
   QVector<double> es;
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+  for ( int i = 0; i < SFluo->chs(); i++ ) {
     ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
     es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
   }
 
   aMCASet *set = map->aPoint( ix, iy );
   if ( ( set != NULL )&&( set->isValid() ) ) {
-    for ( int ch = 0; ch < MaxSSDs; ch++ ) {
+    for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
       if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
 	double *E = set->Ch[ ch ].E;
 	quint32 *cnt = set->Ch[ ch ].cnt;
-	for ( int i = 0; i < MCALength; i++ ) {
+	for ( int i = 0; i < SFluo->length(); i++ ) {
 	  if (( E[i] >= ss[ch] )&&( E[i] <= es[ch] )) {
 	    sum += cnt[i];
 	  }
@@ -1020,7 +1020,7 @@ void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
     cnt2 = set2->Ch[ cMCACh ].cnt;
 
   if ( cnt1 != NULL ) {
-    for ( int i = 0; i < MCALength; i++ ) {
+    for ( int i = 0; i < SFluo->length(); i++ ) {
       if ( cnt2 != NULL ) {
 	MCAData[i] = abs( cnt1[i] - cnt2[i] );
       } else {
@@ -1048,7 +1048,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy, aMCASet *set )
   cnt1 = set1->Ch[ cMCACh ].cnt;
 
   if ( S2DI.ScanMode == STEP ) {
-    for ( int i = 0; i < MCALength; i++ ) {
+    for ( int i = 0; i < SFluo->length(); i++ ) {
       MCAData[i] = cnt1[i];
     }
   } else {
@@ -1063,7 +1063,7 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy, aMCASet *set )
     // 往復スキャンなら、奇数行は最初の行の逆向けのスキャン
     dx = ( S2DI.startDir == FORWARD ) ? 1 : -1;
     if (( S2DI.ScanBothDir )&&( iy % 2 == 1 )) dx *= -1;
-    for ( int i = 0; i < MCALength; i++ ) {
+    for ( int i = 0; i < SFluo->length(); i++ ) {
       MCAData[i] = ( cnt2[i] - cnt1[i] ) * dx;
     }
   }
@@ -1077,9 +1077,9 @@ void MainWindow::S2DChangeMCACh( int dCh )
   int ch = cMCACh + dCh;
 
   while ( ch < 0 )
-    ch += MaxSSDs;
-  while ( ch >= MaxSSDs )
-    ch -= MaxSSDs;
+    ch += SFluo->chs();
+  while ( ch >= SFluo->chs() )
+    ch -= SFluo->chs();
 
   MCACh->setValue( ch );
 }
@@ -1099,7 +1099,7 @@ void MainWindow::S2DShowIntMCA( int ix, int iy, aMCASet *set )
     return;
   cnt = set->Ch[ cMCACh ].cnt;
 
-  for ( int i = 0; i < MCALength; i++ ) {
+  for ( int i = 0; i < SFluo->length(); i++ ) {
     MCAData[i] = cnt[i];
   }
 

@@ -177,7 +177,7 @@ void MainWindow::MeasSequence( void )
 	  if ( ! MCACanSaveAllOnMem )
 	    // 全部セーブできない時は、1スキャン終わったら
 	    // 次のスキャンに備えてメモリクリア (直近の1スキャン分だけ覚えておく)
-	    XafsMCAMap.New( MPSet.totalPoints, 1, MCALength, MaxSSDs );
+	    XafsMCAMap.New( MPSet.totalPoints, 1, SFluo->length(), SFluo->chs() );
                                // SelRPT->value() --> 1
         MeasStage = 2;
       } else {               // 終了
@@ -286,7 +286,7 @@ void MainWindow::SetDispMeasModes( void )
     MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
     MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
     DLC++;
-    for ( int j = 0; j < MaxSSDs; j++ ) {
+    for ( int j = 0; j < SFluo->chs(); j++ ) {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
       MeasView->SetLineName( DLC, QString( "SSD %1" ).arg( j ) );
@@ -380,7 +380,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     QVector<quint64> vals = SFluo->getCountsInROI();
     QVector<double> darks = SFluo->getDarkCountsInROI();
     sum = 0;
-    for ( int j = 0; j < MaxSSDs; j++ ) {
+    for ( int j = 0; j < SFluo->chs(); j++ ) {
       double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
       if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
 	sum += v;
@@ -465,7 +465,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
 	QVector<quint64> vals = SFluo->getCountsInROI();
 	QVector<double> darks = SFluo->getDarkCountsInROI();
 	sum = 0;
-	for ( int j = 0; j < MaxSSDs; j++ ) {
+	for ( int j = 0; j < SFluo->chs(); j++ ) {
 	  double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
 	  if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
 	    sum += v;
@@ -500,7 +500,7 @@ void MainWindow::ReCalcSSDTotal( int, bool )
     sum[i] = 0;
   }
 
-  for ( int l = 0; l < MaxSSDs; l++ ) {  // 選択し直された SSD の ch に関して
+  for ( int l = 0; l < SFluo->chs(); l++ ) {  // 選択し直された SSD の ch に関して
     if ( SSDbs2[l]->isChecked() == PBTrue ) {
       y = MeasView->GetYp( SFluoLine + 1 + l );
       for ( int i = 0; i < points; i++ ) {  // 合計をとりなおす

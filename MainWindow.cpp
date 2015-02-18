@@ -51,7 +51,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   isQXafsModeAvailable = false;
 
-  kev2pix = new KeV2Pix;
+  XMAPk2p = new KeV2Pix;
   fdbase = new FluoDBase;
   u = new Units;
 
@@ -448,6 +448,8 @@ void MainWindow::InitAndIdentifySensors( void )
   }
   
   if ( SFluo != NULL ) {
+    XMAPk2p->MakeUpAB( SFluo->length(), SFluo->chs(), 2, "KeV2MCApix.txt" );
+    S2DBase->setK2P( XMAPk2p );
     SFluo->setROIs( ROIStart, ROIEnd );
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);

@@ -138,12 +138,13 @@ private:
   
   /* MCA */
   bool MCAPreAMPGainHasSet;
-  KeV2Pix *kev2pix;
+  KeV2Pix *XMAPk2p;
   FluoDBase *fdbase;
   QVector<double> MCACorrect;
-  QVector<QString> ROIStart;
-  QVector<QString> ROIEnd;
-  int MCALength;
+  QString *ROIStart;
+  QString *ROIEnd;
+  bool MwSSDGotMCALen;
+
   bool inMCAMeas;
   bool validMCAData;
   int cMCACh;

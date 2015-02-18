@@ -8,7 +8,9 @@
 
 void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
 {
+  MwSSDGotMCALen = false;
   MCAStart->setStyleSheet( NormalEXECB );
+  ROIStart = ROIEnd = NULL;
 
   MaxMCAEnergyInput->setText( QString::number( MaxMCAEnergy ) );
   connect( MaxMCAEnergyInput, SIGNAL( editingFinished() ),
@@ -112,7 +114,6 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   //  oldMCACh = -1;
   StartResume = MCA_START;
   cMCAViewTabNo = -1;
-  MCALength = 2048;
 
   SelSSDs( 0 );
 
@@ -348,7 +349,7 @@ void MainWindow::ReadLowerLimitSetting( void )
     if ( cols.count() > 1 ) {
       if ( cols[0][0] != '#' ) {
 	SFluo->SetLowLimit( cols[0].toInt(),
-			    kev2pix->E2p( cols[0].toInt(), cols[1].toDouble()/1000. ) );
+			    XMAPk2p->E2p( cols[0].toInt(), cols[1].toDouble()/1000. ) );
       }
     }
   }
@@ -492,12 +493,12 @@ void MainWindow::doPeakFit( void )
 void MainWindow::setAllROIs( void )
 {
   int ch = MCACh->text().toInt();
-  double startE = kev2pix->p2E( ch, ROIStart[ ch ].toDouble() );
-  double endE = kev2pix->p2E( ch, ROIEnd[ ch ].toDouble() );
+  double startE = XMAPk2p->p2E( ch, ROIStart[ ch ].toDouble() );
+  double endE = XMAPk2p->p2E( ch, ROIEnd[ ch ].toDouble() );
 
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    ROIStart[ i ] = QString::number( kev2pix->E2p( i, startE ) );
-    ROIEnd[ i ] = QString::number( kev2pix->E2p( i, endE ) );
+  for ( int i = 0; i < SFluo->chs(); i++ ) {
+    ROIStart[ i ] = QString::number( XMAPk2p->E2p( i, startE ) );
+    ROIEnd[ i ] = QString::number( XMAPk2p->E2p( i, endE ) );
   }
   ReCalcXAFSWithMCA();
   ReCalcS2DMap();
@@ -531,7 +532,7 @@ void MainWindow::saveMCAData( void )
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
   aMCASet *set = new aMCASet;
-  set->setSize( MCALength, MaxSSDs );
+  set->setSize( SFluo->length(), SFluo->chs() );
   SaveMCADataOnMem( set );
   //  saveMCAData0( MCARecFile->text(), set );
   set->save( MCARecFile->text(), "measured by SSD set up" );
@@ -647,17 +648,24 @@ void MainWindow::getMCASettings( int ch )
 
 void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
 {
+  if ( MwSSDGotMCALen )
+    return;
+  MwSSDGotMCALen = true;
+#if 0
   if ( ( msg.From() == SFluo->dev() )&&( msg.ToCh() == "SetUpMCA" ) ) {
     MCALength = msg.Val().toInt();
   }
-  for ( int i = 0; i < MaxSSDs; i++ ) {
+#endif
+  ROIStart = new QString [ SFluo->chs() ];
+  ROIEnd = new QString [ SFluo->chs() ];
+  for ( int i = 0; i < SFluo->chs(); i++ ) {
     ROIStart[i] = "0";
-    ROIEnd[i] = QString::number( MCALength - 1 );
+    ROIEnd[i] = QString::number( SFluo->length() - 1 );
   }
   int ch = MCACh->text().toInt();
   ROIStartInput->setText( ROIStart[ ch ] );
   ROIEndInput->setText( ROIEnd[ ch ] );
-  kev2pix->setMCALen( MCALength );
+  //  kev2pix->setMCALen( MCALength );
   ReadLowerLimitSetting();
 }
 
@@ -705,8 +713,8 @@ void MainWindow::MCAChSelected( int i )
   if ( i == cMCACh )
     return;
 
-  if ( i < 0 ) { MCACh->setValue( MaxSSDs - 1 ); i = MaxSSDs - 1; }
-  if ( i >= MaxSSDs ) { MCACh->setValue( 0 ); i = 0; }
+  if ( i < 0 ) { MCACh->setValue( SFluo->chs() - 1 ); i = SFluo->chs() - 1; }
+  if ( i >= SFluo->chs() ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
 
   emit NewMCACh( cMCACh );
@@ -847,7 +855,7 @@ void MainWindow::MCASequence( void )
 
   if ( MCAClearRequest == true ) {
     MCAClearRequest = false;
-    for ( int i = 0; i < MCALength; i++ ) MCAData[i] = 0;
+    for ( int i = 0; i < SFluo->length(); i++ ) MCAData[i] = 0;
     StartResume = MCA_START;
     MCAStage = 0;
   }
@@ -897,7 +905,7 @@ void MainWindow::ShowNewMCAStat( char * )
 {
   if ( cMCAView != NULL ) {
     unsigned *aMca = SFluo->getAMCA( cMCACh );
-    for ( int i = 0; i < MCALength; i++ ) {
+    for ( int i = 0; i < SFluo->length(); i++ ) {
       MCAData[i] = aMca[i];
     }
     XMAPHead head = SFluo->getAMCAHead( cMCACh );
@@ -931,7 +939,7 @@ void MainWindow::clearMCA( void )
   } else {
     StartResume = MCA_START;
     if ( cMCAView != NULL ) {
-      for ( int i = 0; i < MCALength; i++ ) {
+      for ( int i = 0; i < SFluo->length(); i++ ) {
 	MCAData[i] = 0;
       }
       MCAStage = 0;

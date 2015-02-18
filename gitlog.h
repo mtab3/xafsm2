@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Feb 18 00:20:56 2015 +0900\n"\
+                "    Still broken\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 23:26:28 2015 +0900\n"\
                 "    merged with last newAUnit via master\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 16 17:03:01 2015 +0900\n"\
                 "    fixed the file-path of some header files in AUnits\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 16 16:44:40 2015 +0900\n"\
-                "    merged with origin/newAUnit\n"\
 		"\n"\
                 ""
 #endif

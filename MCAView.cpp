@@ -260,7 +260,7 @@ void MCAView::Draw( QPainter *p )
   QFont f;
   QRectF rec;
 
-  k2p->setMCALen( MCALen );
+  //  k2p->setMCALen( MCALen );
 
   int w = width();
   int h = height();

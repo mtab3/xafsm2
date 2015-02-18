@@ -101,5 +101,6 @@ void MainWindow::ansToGetNewMCAView( S2DB* s2db )
   //  if ( cMCAView == NULL ) {
   getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
   //  }
-  s2db->getNewMCAMap( MCALength, MaxSSDs );
+  //  s2db->getNewMCAMap( MCALength, MaxSSDs );
+  s2db->getNewMCAMap();
 }

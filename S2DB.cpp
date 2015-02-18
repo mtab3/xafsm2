@@ -5,8 +5,6 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
 {
   setupUi( this );
 
-  kev2pix = new KeV2Pix;
-  
   Read = false;
   CBar->setAutoScale( AutoScaleB->isChecked() );
   S2DV->setCBar( CBar );
@@ -65,7 +63,6 @@ S2DB::S2DB( QWidget *p ) : QFrame( p )
 
 S2DB::~S2DB( void )
 {
-  delete kev2pix;
   delete MCAsDirSel;
   delete mapSaveTimer;
   PopDialog->deleteLater();
@@ -113,14 +110,20 @@ void S2DB::LoadMCAs( const QString &name )
   emit askToGetNewMCAView( this );
 }
 
-void S2DB::getNewMCAMap( int length, int chs )
+void S2DB::getNewMCAMap( void )
 {
-  int iX = S2Di.ps[0] + ( (S2Di.ScanMode == STEP) ? 0 : 1 );
-  mcaMap.New( iX, S2Di.ps[1] + 1, length, chs );
-
   QDir dir( mcaMapDir );
   LoadMCAFList = dir.entryInfoList( QDir::Files, QDir::Name );
+  if ( LoadMCAFList.count() <= 0 )
+    return;
 
+  aMCASet set;
+  set.load( LoadMCAFList[0].absoluteFilePath(), "" );
+  mcaLen = set.length();
+  mcaChs = set.chs();
+  int iX = S2Di.ps[0] + ( (S2Di.ScanMode == STEP) ? 0 : 1 );
+  mcaMap.New( iX, S2Di.ps[1] + 1, mcaLen, mcaChs );
+  
   mapLoadTimer->setInterval( 10 );
   loadingAMCA = false;
   loadingMCAMap = true;
@@ -152,7 +155,7 @@ void S2DB::loadNextMap( void )
 		      500 );
     set->load( fi.absoluteFilePath(), "" );
     if ( set->isValid() )
-      set->correctE( kev2pix );
+      set->correctE( XMAPk2p );
   }
 
   loadingAMCA = false;
@@ -312,9 +315,9 @@ double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
 
   QVector<double> ss;
   QVector<double> es;
-  for ( int i = 0; i < MaxSSDs; i++ ) {
-    ss << kev2pix->p2E( i, RS[ i ].toDouble() );
-    es << kev2pix->p2E( i, RE[ i ].toDouble() );
+  for ( int i = 0; i < mcaChs; i++ ) {
+    ss << XMAPk2p->p2E( i, RS[ i ].toDouble() );
+    es << XMAPk2p->p2E( i, RE[ i ].toDouble() );
   }
 
   aMCASet *set = mcaMap.aPoint( ix, iy );

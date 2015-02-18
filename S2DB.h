@@ -19,11 +19,12 @@ class S2DB : public QFrame, private Ui::S2DB
   Q_OBJECT
 
   QWidget *parent;
-  KeV2Pix *kev2pix;
+  KeV2Pix *XMAPk2p;
   QFileDialog *MCAsDirSel;
   QString mcaMapDir;
   aMCAMap mcaMap;
   S2DInfo S2Di;
+  int mcaLen, mcaChs;
   bool Read;
 
   QTimer *mapLoadTimer;
@@ -45,11 +46,12 @@ class S2DB : public QFrame, private Ui::S2DB
   ~S2DB( void );
 
   S2DView *getView( void ) { return S2DV; };
+  void setK2P( KeV2Pix *k2p ) { XMAPk2p = k2p; };
   void setParent( QWidget *p );
   void setLoadBHidden( bool f ) { LoadMCAsBFrame->setHidden( f ); };
   void setRead( bool f ) { Read = f; };
   void setDataRoot( QString root ) { MCAsDirSel->setDirectory( root ); };
-  void getNewMCAMap( int length, int chs );
+  void getNewMCAMap( void );
   void setS2DI( S2DInfo s2di ) { S2Di = s2di; };
   void setLayout( QLayout *l ) { layout = l; };
 

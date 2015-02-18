@@ -12,15 +12,16 @@ class KeV2Pix : public QObject
 
  public:
   KeV2Pix();
-  
-  void MakeUpAB( int SSDChs, int dim, QString fname );
+
+  bool isValid( void ) { return valid; };
+  void MakeUpAB( int len, int chs, int dim, QString fname );
   const QVector<double>& getAB( int i );
   int getDim( void ) { return dim; };
   double p2E( int ch, int p );
   int E2p( int ch, double E );
-  void setMCALen( int mcaLen );
 
  private:
+  bool valid;
   int dim;
   int MCALen;
   int MCAChs;

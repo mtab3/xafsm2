@@ -45,7 +45,6 @@ class Data : public QFrame, private Ui::Data
   S2DB *theS2DB;
   int XYLine0, XYLines; 
 
-  int MCALength;
   bool MCADataIsValid;
   int cMCACh;
   quint32 *cMCA;
