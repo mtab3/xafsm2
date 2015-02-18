@@ -658,6 +658,7 @@ void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ば�
 #endif
   ROIStart = new QString [ SFluo->chs() ];
   ROIEnd = new QString [ SFluo->chs() ];
+  SFluo->setROIs( ROIStart, ROIEnd );
   for ( int i = 0; i < SFluo->chs(); i++ ) {
     ROIStart[i] = "0";
     ROIEnd[i] = QString::number( SFluo->length() - 1 );
