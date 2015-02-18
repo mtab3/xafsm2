@@ -165,6 +165,7 @@ void S2DB::loadNextMap( void )
 
 void S2DB::SaveMCAs( const QString &bfname )
 {
+  //  qDebug() << "S2Di pointer " << S2Di << this;
   qDebug() << "valid " << S2Di.valid;
   if (( ! S2Di.valid )||( ! S2Di.isSFluo )) {
     emit ShowMessage( tr( "Can not save MCA spectra for 2D scan." ), 2000 );

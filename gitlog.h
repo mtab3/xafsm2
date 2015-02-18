@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Feb 18 19:24:05 2015 +0900\n"\
+                "    MCA map of S2D can not be saved, since the S2Di.valid == false\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 17:56:23 2015 +0900\n"\
                 "    it works anyway\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 16:23:59 2015 +0900\n"\
                 "    expire SAVEMCACh from codes.   Only the MaxSSDs is used to give the magic number 19\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 16 23:52:25 2015 +0900\n"\
-                "    new WhatToDo\n"\
 		"\n"\
                 ""
 #endif

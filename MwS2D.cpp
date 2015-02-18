@@ -442,7 +442,6 @@ void MainWindow::S2DScanStart( void )
 
     // ここから先は return しない
 
-    S2DBase->setS2DI( S2DI );
     inS2D = true;
     if ( S2DI.Use3rdAx ) {
       NewLogMsg( QString( tr( "2D Scan Start (%1 %2 %3 (%4))" ) )
@@ -518,7 +517,8 @@ void MainWindow::S2DScanStart( void )
       return;
     }
     S2DI.valid = true;
-    qDebug() << "S2DI " << S2DI.valid;
+    S2DBase->setS2DI( S2DI );
+
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
