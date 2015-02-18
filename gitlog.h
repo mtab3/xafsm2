@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Feb 18 17:56:23 2015 +0900\n"\
+                "    it works anyway\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 17:48:41 2015 +0900\n"\
                 "    broken\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 16 23:52:25 2015 +0900\n"\
                 "    new WhatToDo\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 16 18:09:32 2015 +0900\n"\
-                "    new gitlog.h\n"\
 		"\n"\
                 ""
 #endif

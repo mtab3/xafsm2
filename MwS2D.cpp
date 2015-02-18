@@ -518,6 +518,7 @@ void MainWindow::S2DScanStart( void )
       return;
     }
     S2DI.valid = true;
+    qDebug() << "S2DI " << S2DI.valid;
     S2DTimer->start( 10 );
   } else {
     S2DStop0();

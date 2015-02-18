@@ -129,7 +129,6 @@ bool AUnitXMAP::InitSensor( void )
   bool rv = false;
 
   QString ROIs = "";
-  qDebug() << "ls" << LocalStage;
   switch( LocalStage ) {
   case 0:
     busy2On( Dev, "InitSensor-c0" );
@@ -144,7 +143,6 @@ bool AUnitXMAP::InitSensor( void )
     rv = true;
     break;
   case 2:
-    qDebug() << "ROI " << ROIStart << ROIEnd;
     busy2On( Dev, "InitSensor-c2" );
     ROIs = ROIStart[0] + " " + ROIEnd[0];
     for ( int i = 1; i < chs(); i++ ) {
@@ -155,7 +153,6 @@ bool AUnitXMAP::InitSensor( void )
     rv = false;
     break;
   }
-  qDebug() << "lse" << LocalStage;
 
   return rv;
 }

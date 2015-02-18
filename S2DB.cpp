@@ -165,12 +165,14 @@ void S2DB::loadNextMap( void )
 
 void S2DB::SaveMCAs( const QString &bfname )
 {
+  qDebug() << "valid " << S2Di.valid;
   if (( ! S2Di.valid )||( ! S2Di.isSFluo )) {
     emit ShowMessage( tr( "Can not save MCA spectra for 2D scan." ), 2000 );
     return;
   }
   if ( bfname.simplified().isEmpty() ) {
     emit ShowMessage( tr( "No file name was selected" ), 2000 );
+    qDebug() << "ee";
     return;
   }
   
