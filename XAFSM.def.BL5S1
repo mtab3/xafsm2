@@ -46,8 +46,8 @@
 # For example, "Keithley 6485" can not be writtern Keithley 6485.
 #
 
-XAFSName  "XafsM2-bsd2"
-XAFSKey   "XafsM2"
+XAFSName  "XafsM2-bsd2"  # the name used on Stars.  The key-file for kernel should be prepared with this name.
+XAFSKey   "XafsM2"       # the name of the key file which is locally read and compared with that the Stars-serper is keeping."
 XAFSTitle "XafsM2-BL5S1"
 
 #
@@ -603,6 +603,10 @@ SENSOR EPIC "S060" "GENERAL" "BPM V12" "epicsbridge_caget" "S_BPM_V_12_AVG_MON" 
 SENSOR EPIC "S061" "GENERAL" "BPM H13" "epicsbridge_caget" "S_BPM_H_13_AVG_MON" "mm" NO ""
 SENSOR EPIC "S062" "GENERAL" "BPM V13" "epicsbridge_caget" "S_BPM_V_13_AVG_MON" "mm" NO ""
 
+SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
+
 ALARM "S046" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
 ALARM "S046" "_EvRangeMax 1" "_EvRangeMaxOff 1" "I1 Range Over"
 ALARM "S046" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
+
+ALARM "S063" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
