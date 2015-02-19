@@ -6,7 +6,8 @@
 
 #include "MCAMap.h"
 
-#define COMMONTITLE "XafsM2 MCA Data"
+#define COMMONTITLE_0 "XafsM2 MCA Data"
+#define COMMONTITLE   "XafsM2 MCA Ver. 1" // '...Data Ver.1' とすると _0 にも一致する
 
 void aMCASet::save( QString fname, QString title )
 {
@@ -23,10 +24,8 @@ void aMCASet::save( QString fname, QString title )
   }
 }
 
-#define RINGCURRENT "Ring Current"
-#define I0VALUE     "I0          "
-
-void aMCASet::writeHead( QTextStream &out )
+#if 0
+void aMCASet::writeHead0( QTextStream &out )
 {
   out << "# " << RINGCURRENT << " : " << RINGCurrent << "\n";
   out << "# " << I0VALUE     << " : " << I0 << "\n";
@@ -40,6 +39,37 @@ void aMCASet::writeHead( QTextStream &out )
   out << "# Selected elements list\n";
   for ( int i = 0; i < Elms.count(); i++ ) {
     out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
+  }
+  out << "\n";
+}
+#endif
+
+#define RINGCURRENT "Ring Current"
+#define I0VALUE     "I0          "
+#define MCALENGTH   "MCA Length  "
+#define MCACHS      "MCA Channels"
+#define MCACHINFO   "MCA Ch Info "
+#define NUMOFELMS   "Sel. Elems. "
+#define ELEMENT     "A Element   "
+
+void aMCASet::writeHead( QTextStream &out )
+{
+  out << "# " << RINGCURRENT << " : " << RINGCurrent << "\n";
+  out << "# " << I0VALUE     << " : " << I0 << "\n";
+  out << "# " << MCALENGTH << " : " << Length << "\n";
+  out << "# " << MCACHS    << " : " << CHs    << "\n";
+  out << "## Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
+  for ( int i = 0; i < CHs; i++ ) {
+    XMAPHead head = Heads[i];
+    out << "# " << MCACHINFO << " : "
+	<< head.ch << "\t" << head.stat << "\t" << head.len << "\t"
+	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
+	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
+  }
+  out << "## Selected elements list\n";
+  out << "# " << NUMOFELMS << " : " << Elms.count() << "\n";
+  for ( int i = 0; i < Elms.count(); i++ ) {
+    out << "# " << ELEMENT << " : " << i << Elms[i] << "\n";
   }
   out << "\n";
 }
@@ -68,18 +98,20 @@ void aMCASet::load( QString fname, QString title )
 
 void aMCASet::load( QTextStream &in, QString title )
 {
-  bool endf = false;
   valid = false;
-  
+
+  int hType = 0;
   if  ( !in.atEnd() ) {
     QString line = in.readLine();
-    QString Title = QString( "%1 %2" ).arg( COMMONTITLE ).arg( title );
-    Title = Title.simplified();
-    if ( line.mid( 2, QString( Title ).length() ) != QString( Title ) ) {
-      return;
-    }
+    if ( fc.CheckHeadLine( COMMONTITLE_0, title, line, 2 ) ) hType = 1;   // old
+    if ( fc.CheckHeadLine( COMMONTITLE,   title, line, 2 ) ) hType = 2;   // new
   }
-  loadHeader( in );
+  switch( hType ) {
+  case 0: return;
+  case 1: loadHeader0( in ); break;
+  case 2: loadHeader( in ); break;
+  default: return;
+  }
   int lc = 0;
   while ( !in.atEnd() ) {
     QString line = in.readLine();
@@ -97,8 +129,60 @@ void aMCASet::load( QTextStream &in, QString title )
     valid = true;
 }
 
+
+#define MCALENGTH   "MCA Length  "
+#define MCACHS      "MCA Channels"
+#define MCAINFO     "MCA Ch Info "
+#define NUMOFELMS   "Sel. Elems. "
+#define ELEMENT     "A Element   "
+
 void aMCASet::loadHeader( QTextStream &in )
 {
+  int Elements = 0;
+  int length = 0;
+  int chs = 0;
+  Elms.clear();
+  while ( !in.atEnd() ) {
+    QString line = in.readLine();
+    QString val;
+    if ( ( line.count() > 0 ) && ( line[0] == '#' ) ) {
+      if ( fc.CheckItem( RINGCURRENT, line, 2, val ) ) RINGCurrent = val.toDouble();
+      if ( fc.CheckItem( I0VALUE,     line, 2, val ) ) I0          = val.toDouble();
+      if ( fc.CheckItem( MCALENGTH,   line, 2, val ) ) length      = val.toInt();
+      if ( fc.CheckItem( MCACHS,      line, 2, val ) ) chs         = val.toInt();
+      if ( fc.CheckItem( MCAINFO,     line, 2, val ) ) {
+	QStringList vals = val.simplified().split( QRegExp( "\\s+" ) );
+	if ( vals.count() >= 7 ) {
+	  int ch = vals[0].toInt();
+	  Heads[ ch ].ch = ch;
+	  Heads[ ch ].len = vals[1].toInt();
+	  Heads[ ch ].realTime = vals[2].toDouble();
+	  Heads[ ch ].liveTime = vals[3].toDouble();
+	  Heads[ ch ].icr = vals[4].toDouble();
+	  ROIStart[ ch ] = vals[5];
+	  ROIEnd[ ch ] = vals[6];
+	}
+      }
+      if ( fc.CheckItem( NUMOFELMS,   line, 2, val ) ) Elements    = val.toInt();
+      if ( fc.CheckItem( ELEMENT,     line, 2, val ) ) {
+	QStringList vals = val.simplified().split( QRegExp( "\\s+" ) );
+	if ( vals.count() >= 2 ) { Elms << vals[1]; }
+      }
+      // length と chs が確定した時点で即 setSize を呼ぶ
+      // これを呼んでおかないと、ROI とか、MCA 個別の情報を入れる配列が無い
+      // or 後から呼ぶと情報をセットした配列が消される。
+      if (( length > 0 )&&( chs > 0 )) {
+	setSize( length, chs );
+      }
+    } else {
+      return;
+    }
+  }
+}
+
+void aMCASet::loadHeader0( QTextStream &in )
+{
+  qDebug() << "MCA File of old type";
   int maxCh = 0;
   int maxL = 0;
   while ( !in.atEnd() ) {
@@ -109,7 +193,7 @@ void aMCASet::loadHeader( QTextStream &in )
 	RINGCurrent = line.mid( 2 + QString( RINGCURRENT ).length() + 3 ).toDouble();
       }
       if ( line.mid( 2, QString( I0VALUE ).length() ) == QString( I0VALUE ) ) {
-	RINGCurrent = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
+	I0 = line.mid( 2 + QString( I0VALUE ).length() + 3 ).toDouble();
       }
       if ( vals.count() >= 7 ) {
 	int ch = vals[1].toInt();

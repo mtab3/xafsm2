@@ -142,6 +142,8 @@ void Data::CheckFileType( const QString &fname )
     DataType->setText( DataTypeNames[ dataType = MONSHOW ] );
   } else if ( aline.left( FileIDs[ MCADATA ].length() ) == FileIDs[ MCADATA ] ) {
     DataType->setText( DataTypeNames[ dataType = MCASHOW ] );
+  } else if ( aline.left( FileIDs[ MCADATA2 ].length() ) == FileIDs[ MCADATA2 ] ) {
+    DataType->setText( DataTypeNames[ dataType = MCASHOW ] );
   } else if ( aline.left( FileIDs[ S2DDATA ].length() ) == FileIDs[ S2DDATA ] ) {
     DataType->setText( DataTypeNames[ dataType = S2DSHOW ] );
   } else {

@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 19 01:00:02 2015 +0900\n"\
+                "    debugging\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 20:03:09 2015 +0900\n"\
                 "    it looks it is working\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 19:43:03 2015 +0900\n"\
                 "    broken codes by removing MCALength and MasSSDs\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 17:26:57 2015 +0900\n"\
-                "    after changing AUnitXMAP, the codes are stabilized anyway to make new branch\n"\
 		"\n"\
                 ""
 #endif

@@ -32,14 +32,15 @@ void global_init( void )
     << "  9809     AichiSR"         // XAFSDATA
     << "# XafsM2 Scan Data"         // SCANDATA
     << "# XafsM2 Monitor Data"      // MONDATA
-    << "# XafsM2 MCA Data"          // MCADATA
+    << "# XafsM2 MCA Ver. 1"        // MCADATA    // new type
     << "# 1306 Aichi SR 2D Scan"    // S2DDATA
     << " 1304     AichiSR QXAFS base file"  // QXAFSBASEDATA
     << "  9809     AichiSR"         // XAFSSHOW
     << "# XafsM2 Scan Data"         // SCANSHOW
     << "# XafsM2 Monitor Data"      // MONSHOW
-    << "# XafsM2 MCA Data"          // MCASHOW
+    << "# XafsM2 MCA Data"          // MCASHOW    // old type
     << "# 1306 Aichi SR 2D Scan"    // S2DSHOW
+    << "# XafsM2 MCA Ver. 1"        // MCADATA2   // new type
     << " 1304     AichiSR QXAFS base file"  // QXAFSBASESHOW
     << "";                          // NONDATA
 
@@ -58,6 +59,7 @@ void global_init( void )
     << "MCA"
     << "S2D"
     << "QBASE"
+    << "MCA"
     << "";
 
   // DATATYPE と一対一対応
@@ -75,6 +77,7 @@ void global_init( void )
     << "D-MCA"
     << "D-S2D"
     << "D-QBASE"
+    << "D-MCA"
     << "";
 
   for ( int i = 0; i < FileIDs.count(); i++ )
