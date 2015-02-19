@@ -59,6 +59,8 @@ class AUnitXMAP : public ASensor
   void RunStart( void );
   void RunStop( void );
   void RunResume( void );
+  void setLength( int len ) { McaLength = len; };
+  void setChs( int chs ) { SSDChs = chs; };
   int length( void ) { return McaLength; };
   int chs( void ) { return SSDChs; };
 

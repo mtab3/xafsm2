@@ -38,10 +38,10 @@ void global_init( void )
     << "  9809     AichiSR"         // XAFSSHOW
     << "# XafsM2 Scan Data"         // SCANSHOW
     << "# XafsM2 Monitor Data"      // MONSHOW
-    << "# XafsM2 MCA Data"          // MCASHOW    // old type
+    << "# XafsM2 MCA Data"          // MCASHOW1   // old type
     << "# 1306 Aichi SR 2D Scan"    // S2DSHOW
-    << "# XafsM2 MCA Ver. 1"        // MCADATA2   // new type
     << " 1304     AichiSR QXAFS base file"  // QXAFSBASESHOW
+    << "# XafsM2 MCA Ver. 1"        // MCADATA2   // new type
     << "";                          // NONDATA
 
   // DATATYPE と一対一対応

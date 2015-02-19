@@ -117,6 +117,10 @@ void MainWindow::ReadDef( QString fname )
             NewSensor->setRangeL( item.toInt() );     // レンジ下限値
           } else if ( type == "SSDP" ) {
           } else if ( type == "SSD" ) {
+	    next = nextItem( next, item );
+	    if ( item.toInt() > 0 ) ((AUnitXMAP*)NewUnit)->setChs( item.toInt() );
+	    next = nextItem( next, item );
+	    if ( item.toInt() > 0 ) ((AUnitXMAP*)NewUnit)->setLength( item.toInt() );
           } else if ( type == "LSR" ) {
           } else if ( type == "DV" ) {
             next = nextItem( next, item );

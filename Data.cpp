@@ -134,17 +134,17 @@ void Data::CheckFileType( const QString &fname )
   QString aline = in.readLine();
   f.close();
 
-  if ( aline.left( FileIDs[ MEASDATA ].length() ) == FileIDs[ MEASDATA ] ) {
+  if ( aline.left( FileIDs[ MEASSHOW ].length() ) == FileIDs[ MEASSHOW ] ) {
     DataType->setText( DataTypeNames[ dataType = MEASSHOW ] );
-  } else if ( aline.left( FileIDs[ SCANDATA ].length() ) == FileIDs[ SCANDATA ] ) {
+  } else if ( aline.left( FileIDs[ SCANSHOW ].length() ) == FileIDs[ SCANSHOW ] ) {
     DataType->setText( DataTypeNames[ dataType = SCANSHOW ] );
-  } else if ( aline.left( FileIDs[ MONDATA ].length() ) == FileIDs[ MONDATA ] ) {
+  } else if ( aline.left( FileIDs[ MONSHOW ].length() ) == FileIDs[ MONSHOW ] ) {
     DataType->setText( DataTypeNames[ dataType = MONSHOW ] );
-  } else if ( aline.left( FileIDs[ MCADATA ].length() ) == FileIDs[ MCADATA ] ) {
-    DataType->setText( DataTypeNames[ dataType = MCASHOW ] );
-  } else if ( aline.left( FileIDs[ MCADATA2 ].length() ) == FileIDs[ MCADATA2 ] ) {
-    DataType->setText( DataTypeNames[ dataType = MCASHOW ] );
-  } else if ( aline.left( FileIDs[ S2DDATA ].length() ) == FileIDs[ S2DDATA ] ) {
+  } else if ( aline.left( FileIDs[ MCASHOW1 ].length() ) == FileIDs[ MCASHOW1 ] ) {
+    DataType->setText( DataTypeNames[ dataType = MCASHOW1 ] );
+  } else if ( aline.left( FileIDs[ MCASHOW2 ].length() ) == FileIDs[ MCASHOW2 ] ) {
+    DataType->setText( DataTypeNames[ dataType = MCASHOW2 ] );
+  } else if ( aline.left( FileIDs[ S2DSHOW ].length() ) == FileIDs[ S2DSHOW ] ) {
     DataType->setText( DataTypeNames[ dataType = S2DSHOW ] );
   } else {
     DataType->setText( DataTypeNames[ dataType = NONDATA ] );
@@ -172,7 +172,8 @@ void Data::GotNewView( ViewCTRL *viewC,
 #endif
   case MONSHOW:  showMonData( in, ASensors );  break;
   case SCANSHOW: showScanData( in, AMotors, ASensors ); break;
-  case MCASHOW:  showMCAData( in );  break;
+  case MCASHOW1:
+  case MCASHOW2: showMCAData( in );  break;
   case S2DSHOW:  showS2DData( in, AMotors, ASensors );  break;
   default: break;
   }
@@ -306,7 +307,7 @@ void Data::showScanData( QTextStream &in,
 
   ScanInfo si = theXYView->getSInfo();
   si.load( in, AMotors, ASensors );
-  si.show();
+  //  si.show();
   
   theXYView->SetLineName( L0, si.asName );
   theXYView->SetLR( L0, RIGHT_AX ); theXYView->SetScaleType( 0, FULLSCALE );
@@ -345,6 +346,9 @@ void Data::showScanData( QTextStream &in,
   
   theXYView->makeValid( true );
   theXYView->update();
+
+  qDebug() << "bb";
+
 }
 
 void Data::showMonData( QTextStream &in, QVector<ASensor*> &ASensors )

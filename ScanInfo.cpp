@@ -146,7 +146,7 @@ void ScanInfo::show( void )
 {
   qDebug() << "---- Stat of Scan Info ----";
   qDebug() << "valid" << valid;
-  qDebug() << "motor" << am->uid() << amName;
+  if ( am != NULL ) qDebug() << "motor" << am->uid() << amName;
   qDebug() << "speed" << speed;
   qDebug() << "showUnit" << showUnit;
   qDebug() << "upp" << upp;

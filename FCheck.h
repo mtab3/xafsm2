@@ -6,7 +6,6 @@ struct FileCheck {
   {
     QString Head = QString( "%1 %2" ).arg( main ).arg( sub );
     Head = Head.simplified();
-    qDebug() << QString( "head check : [%1] : [%2]" ).arg( Head ).arg( line.mid( skip, QString( Head ).length() ) );
     return ( line.mid( skip, QString( Head ).length() ) == QString( Head ) );
   }
   

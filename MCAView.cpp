@@ -774,24 +774,24 @@ void MCAView::Draw( QPainter *p )
 
   // ROI 内の積分値
   titles << tr( " Count : " );
-  vals  << QString::number( (double)sum, 'g', 2 );
+  vals  << QString::number( (double)sum, 'g', 4 );
 
   // ROI 内の積分値を LiveTime で割った cps
   titles << tr( "   CPS : " );
-  vals << QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'g', 2 );
+  vals << QString::number( sum / (( realTime == 0 )? 1 : realTime ), 'g', 4 );
 
   // Real Time
   titles << tr( "Real Time : " );
-  vals << QString::number( realTime, 'f', 2 );
+  vals << QString::number( realTime, 'f', 3 );
 
   // Live Time
   titles << tr( "Live Time : " );
-  vals << QString::number( liveTime, 'f', 2 );
+  vals << QString::number( liveTime, 'f', 3 );
 
   // デッドタイム
   double dt = ( realTime != 0 ) ? ( realTime - liveTime )/realTime * 100: 0;
   titles << tr( "Dead Time : " );
-  vals << QString::number( dt, 'f', 2 );
+  vals << QString::number( dt, 'f', 3 );
 
   rec.setRect( dLM,   TM+dVW, dLM * 4, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, titles );

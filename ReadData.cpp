@@ -69,14 +69,14 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANSHOW:
-    qDebug() << "getScanShow";
     viewC = SetUpNewView( XYVIEW, SCANSHOW );
-    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-SCAN" ) );
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
-  case MCASHOW:
-    viewC = SetUpNewView( MCAVIEW, MCASHOW );
-    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MCA" ) );
+  case MCASHOW1:
+    viewC = SetUpNewView( MCAVIEW, MCASHOW1 );
+    break;
+  case MCASHOW2:
+    viewC = SetUpNewView( MCAVIEW, MCASHOW2 );
     break;
   case S2DSHOW:
     viewC = SetUpNewView( S2DVIEW, S2DSHOW );

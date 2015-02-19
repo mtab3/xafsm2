@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Feb 19 13:59:05 2015 +0900\n"\
+                "    MCA-data-file is improved and the version is set to be 1\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 19 01:00:02 2015 +0900\n"\
                 "    debugging\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 23:22:03 2015 +0900\n"\
                 "    brush up AMotor, AUnitPM for MMainTh\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 19:43:03 2015 +0900\n"\
-                "    broken codes by removing MCALength and MasSSDs\n"\
 		"\n"\
                 ""
 #endif

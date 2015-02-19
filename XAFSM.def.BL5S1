@@ -34,6 +34,7 @@
 # 2014/11/11 add 'SAVE_EACH_MCA_SPECTRUM' line
 # 2014/12/04 a sensor EPIC is supported
 # 2015/02/02 add 'ALARM'       line to define an alarm
+# 2015/02/19 add 2 parameters to the SSD line
 
 #
 # In this definition file,
@@ -415,7 +416,7 @@ SENSOR PAM "S005" "I01" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006"
+SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006" 19 2014
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
 SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"
