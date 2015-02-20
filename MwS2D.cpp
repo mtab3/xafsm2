@@ -9,6 +9,8 @@
 
 void MainWindow::setupScan2DArea( void )
 {
+  Special->setEnabled( false );
+
   S2Dview = S2DBase->getView();
   S2DBase->setLoadBHidden( true );
   S2DBase->setParent( this );
