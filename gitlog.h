@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 20 01:03:30 2015 +0900\n"\
+                "    nochange but the XAFSM.def.BL5S1\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Feb 19 16:51:37 2015 +0900\n"\
                 "    bug fix on data-reading and define new MCA-data file\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 23:26:28 2015 +0900\n"\
                 "    merged with last newAUnit via master\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 23:24:26 2015 +0900\n"\
-                "    merged with final change of newAUnit\n"\
 		"\n"\
                 ""
 #endif
