@@ -83,9 +83,9 @@ void S2DB::setParent( QWidget *p )
   connect( this, SIGNAL( ShowMCASpectrum( aMCASet *, aMCASet * ) ), 
 	   parent, SLOT( ShowMCASpectrum( aMCASet *, aMCASet * ) ), Qt::UniqueConnection );
   connect( parent,
-	   SIGNAL( ReCalcS2DMap0( QString *, QString *, QVector<QPushButton*>& ) ),
+	   SIGNAL( ReCalcS2DMap0( QString *, QString *, SelectCh * ) ),
 	   this,
-	   SLOT( ReCalcMap( QString *, QString *, QVector<QPushButton*>& ) ), 
+	   SLOT( ReCalcMap( QString *, QString *, SelectCh * ) ), 
 	   Qt::UniqueConnection );
 
   connect( this, SIGNAL( ShowMessage( QString, int ) ),
@@ -247,7 +247,7 @@ void S2DB::ShowIntMCA( void )
   emit ShowMCASpectrum( mcaMap.lastP(), NULL );
 }
 
-void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
+void S2DB::ReCalcMap( QString *RS, QString *RE, SelectCh *SelChs )
 {
   if ( ! S2Di.valid )
     return;
@@ -260,7 +260,7 @@ void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
     for ( int i = 0; i <= S2Di.ps[1]; i++ ) {
       for ( int j = 0; j < S2Di.ps[0]; j++ ) {
 	if ( mcaMap.valid( j, i ) ) {
-	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	  sum = ReCalcAMapPointOnMem( j, i, RS, RE, SelChs );
 	} else {
 	  sum = 0;
 	}
@@ -276,13 +276,13 @@ void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
     for ( int i = 0; i <= S2Di.ps[1]; i++ ) {
       if (( S2Di.ScanBothDir ) && (( i % 2 ) == 1 )) {
 	if ( mcaMap.valid( S2Di.ps[0], i ) ) {
-	  lastsum = ReCalcAMapPointOnMem( S2Di.ps[0], i, RS, RE, ssdbs2 );
+	  lastsum = ReCalcAMapPointOnMem( S2Di.ps[0], i, RS, RE, SelChs );
 	} else {
 	  lastsum = 0;
 	}
 	for ( int j = S2Di.ps[0]-1; j >= 0; j-- ) {
 	  if ( mcaMap.valid( j, i ) ) {
-	    sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	    sum = ReCalcAMapPointOnMem( j, i, RS, RE, SelChs );
 	  } else {
 	    sum = lastsum;
 	  }
@@ -291,13 +291,13 @@ void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
 	}
       } else {
 	if ( mcaMap.valid( 0, i ) ) {
-	  lastsum = ReCalcAMapPointOnMem( 0, i, RS, RE, ssdbs2 );
+	  lastsum = ReCalcAMapPointOnMem( 0, i, RS, RE, SelChs );
 	} else {
 	  lastsum = 0;
 	}
 	for ( int j = 1; j <= S2Di.ps[0]; j++ ) {
 	  if ( mcaMap.valid( j, i ) ) {
-	    sum = ReCalcAMapPointOnMem( j, i, RS, RE, ssdbs2 );
+	    sum = ReCalcAMapPointOnMem( j, i, RS, RE, SelChs );
 	  } else {
 	    sum = lastsum;
 	  }
@@ -312,7 +312,7 @@ void S2DB::ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 )
 
 double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
 				   QString *RS, QString *RE,
-				   QVector<QPushButton*> &ssdbs2 )
+				   SelectCh *SelChs )
 {
   double sum = 0;
 
@@ -326,7 +326,7 @@ double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
   aMCASet *set = mcaMap.aPoint( ix, iy );
   if ( ( set != NULL )&&( set->isValid() ) ) {
     for ( int ch = 0; ch < set->chs(); ch++ ) {
-      if ( ssdbs2[ ch ]->isChecked() == PBTrue ) {
+      if ( SelChs->isSelected( ch ) ) {
 	double *E = set->Ch[ ch ].E;
 	quint32 *cnt = set->Ch[ ch ].cnt;
 	for ( int i = 0; i < set->length(); i++ ) {

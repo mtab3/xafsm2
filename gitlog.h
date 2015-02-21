@@ -2,8 +2,16 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "newXMAP" )
+#define BRANCH_NAME ( "newMwSSD" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 20 20:40:59 2015 +0900\n"\
+                "    merged with master\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 20 20:38:27 2015 +0900\n"\
+                "    the Special butten made to be deisabled\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 20 01:03:30 2015 +0900\n"\
                 "    nochange but the XAFSM.def.BL5S1\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 17:48:41 2015 +0900\n"\
                 "    broken\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 18 00:20:56 2015 +0900\n"\
-                "    Still broken\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 23:26:28 2015 +0900\n"\
-                "    merged with last newAUnit via master\n"\
 		"\n"\
                 ""
 #endif

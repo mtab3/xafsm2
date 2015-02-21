@@ -498,7 +498,7 @@ void MainWindow::WriteInfoFile2( void )
     out << "Finally Used SSD Channels:";
     for ( int i = 0; i < CHs; i++ ) {
       out << " " << i;
-      if ( SSDbs2[i]->isChecked() == PBTrue ) {
+      if ( SELBs2->isSelected(i) ) {
         out << " 1";
       } else {
         out << " 0";

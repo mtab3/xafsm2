@@ -401,7 +401,6 @@ private:
   QVector<QLabel *> BLKlabels;
 
   QVector<QPushButton *> SSDbs;
-  QVector<QPushButton *> SSDbs2;
   QVector<QPushButton *> GSBs;
   //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
@@ -450,7 +449,7 @@ private:
   void WriteBF( void );
   DarkTable *darkTable;
 
-  void SelSSDs( int i );
+  //  void SelSSDs( int i );
   //  void SetSSDactive( bool active );
 
   QVector<int> ChModes;
@@ -743,8 +742,8 @@ private slots:
   void SelectedRBFN( const QString &fname );
 
   void setPreAMPGains( void );
-  void SelSSDs0( void );
-  void SelSSDs20( void );
+  //  void SelSSDs0( void );
+  //  void SelSSDs20( void );
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
   void setAllROIs( void );
@@ -772,7 +771,7 @@ private slots:
   void RangeSelOK( void );
   void onMeasFinishWorks( void );
   void SelectAGB( bool f );
-  void ReCalcSSDTotal( int i, bool f );
+  void newSSDChSelection( int i, bool f );  //ReCalcSSDTotal( int i, bool f );
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
@@ -902,7 +901,7 @@ private slots:
   void SignalMCAViewShowAlwaysSelElm( bool f );
   void SignalMCAViewShowElmEnergy( bool f );
 
-  void ReCalcS2DMap0( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
+  void ReCalcS2DMap0( QString *RS, QString *RE, SelectCh *ssdbs );
 };
 
 #endif

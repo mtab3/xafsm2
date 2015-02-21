@@ -236,8 +236,8 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasView = NULL;
 
-  connect( this, SIGNAL( SelectedSSD( int, bool ) ),
-	   this, SLOT( ReCalcSSDTotal( int, bool ) ),
+  connect( SELBs2, SIGNAL( selectedACh( int, bool ) ),
+	   this, SLOT( newSSDChSelection( int, bool ) ), //ReCalcSSDTotal( int, bool ) ),
 	   Qt::UniqueConnection );
 
   darkTable = new DarkTable;
@@ -1959,7 +1959,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 	}
       }
       MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
-      if ( SSDbs2[ch]->isChecked() == PBTrue ) {
+      if ( SELBs2->isSelected(ch) ) {
 	Sum += Vch;
       }
     }

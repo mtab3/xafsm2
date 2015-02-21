@@ -5,7 +5,7 @@
     <name>AUnit</name>
     <message>
         <source> TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11] </source>
-        <translation>TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11]</translation>
+        <translation type="vanished">TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11]</translation>
     </message>
 </context>
 <context>
@@ -923,15 +923,15 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Down</source>
-        <translation>下流</translation>
+        <translation type="vanished">下流</translation>
     </message>
     <message>
         <source>Stream</source>
-        <translation> </translation>
+        <translation type="vanished"> </translation>
     </message>
     <message>
         <source>Up</source>
-        <translation>上流</translation>
+        <translation type="vanished">上流</translation>
     </message>
     <message>
         <source>Show Energy</source>
@@ -1345,7 +1345,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Select a SSD ch (MCA spectrum)</source>
-        <translation>SSD選択(MCAスペクトル)</translation>
+        <translation type="vanished">SSD選択(MCAスペクトル)</translation>
     </message>
     <message>
         <source>Select SSD channels (XAFS meas.)</source>
@@ -1906,7 +1906,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>::Undefined Unit type [%1]</source>
-        <translation>::Undefined Unit type [%1]</translation>
+        <translation type="vanished">::Undefined Unit type [%1]</translation>
     </message>
     <message>
         <source>Undefined Key word [%1]</source>
@@ -3116,6 +3116,22 @@ Aio64が連続チューニングモードになっている場合機能しませ
         <source>At least 1 sensor should be selected for the monitor</source>
         <translation>「モニタ」動作のためには少なくとも１つの検出器を指定して下さい。</translation>
     </message>
+    <message>
+        <source>Although the &apos;Additional&apos; button is checked, the monitoring process is running.</source>
+        <translation>「追加」の検出器が「モニタ」に使用されています。</translation>
+    </message>
+    <message>
+        <source>The monitoring sensors might used for scanning, as &apos;Additonal&apos; button is checked.</source>
+        <translation>「モニタ」使用としていいる検出器が「スキャン」に使われています。</translation>
+    </message>
+    <message>
+        <source>Select a SSD channel (MCA spectrum)</source>
+        <translation>SSD選択(表示MCAスペクトル)</translation>
+    </message>
+    <message>
+        <source>Undefined Unit type [%1]</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>PMConditions</name>
@@ -3868,6 +3884,113 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Mono: Cnaged to %1 (%2 A)</source>
         <translation>分光結晶: 変更 %1 (%2 A)</translation>
+    </message>
+</context>
+<context>
+    <name>SelectCh</name>
+    <message>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation>0</translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation>4</translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation>5</translation>
+    </message>
+    <message>
+        <source>6</source>
+        <translation>6</translation>
+    </message>
+    <message>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <source>8</source>
+        <translation>8</translation>
+    </message>
+    <message>
+        <source>9</source>
+        <translation>9</translation>
+    </message>
+    <message>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <source>11</source>
+        <translation>11</translation>
+    </message>
+    <message>
+        <source>12</source>
+        <translation>12</translation>
+    </message>
+    <message>
+        <source>13</source>
+        <translation>13</translation>
+    </message>
+    <message>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <source>15</source>
+        <translation>15</translation>
+    </message>
+    <message>
+        <source>16</source>
+        <translation>16</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <source>17</source>
+        <translation>17</translation>
+    </message>
+    <message>
+        <source>18</source>
+        <translation>18</translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <source>Select SSD channels (XAFS meas.)</source>
+        <translation>複数SSD選択(積算/本測定対象)</translation>
+    </message>
+    <message>
+        <source>Down</source>
+        <translation>下流</translation>
+    </message>
+    <message>
+        <source>Stream</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <source>Up</source>
+        <translation>上流</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>アクティブ</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation>インアクティブ</translation>
     </message>
 </context>
 <context>

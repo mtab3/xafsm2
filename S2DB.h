@@ -10,6 +10,7 @@
 #include "MCAView.h"
 #include "KeV2Pix.h"
 #include "S2DInfo.h"
+#include "SelectCh.h"
 
 #include "ui_S2DB.h"
 
@@ -61,7 +62,7 @@ class S2DB : public QFrame, private Ui::S2DB
 
   double ReCalcAMapPointOnMem( int ix, int iy,
 			       QString *RS, QString *RE,
-			       QVector<QPushButton *> &ssdbs2 );
+			       SelectCh *SelChs );
 
   void SaveMCAs( const QString &fname );
   
@@ -79,7 +80,7 @@ private slots:
   void LoadMCAs( const QString &fname );
   void ShowInfoAtNewPosition( int ix, int iy );
   void ShowIntMCA( void );
-  void ReCalcMap( QString *RS, QString *RE, QVector<QPushButton*> &ssdbs2 );
+  void ReCalcMap( QString *RS, QString *RE, SelectCh *SelChs );
   void loadNextMap( void );
   void saveNextMap( void );
   void PopUp( void );
