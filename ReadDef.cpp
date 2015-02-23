@@ -91,7 +91,7 @@ void MainWindow::ReadDef( QString fname )
 	    next = nextItem( next, item ); ((AUnitAIOo*)NewMotor)->setMinV( item );
 	    next = nextItem( next, item ); ((AUnitAIOo*)NewMotor)->setMaxV( item );
 	  } else {
-            qDebug() << tr( "A::Undefined Unit type [%1]" ).arg( type );
+            qDebug() << tr( "Undefined Unit type [%1]" ).arg( type );
           }
         } else {  // 以下、sensor だけの項目
           // 全 sensor 共通
@@ -131,7 +131,7 @@ void MainWindow::ReadDef( QString fname )
           } else if ( type == "FP23" ) {
 	  } else if ( type == "EPIC" ) {
           } else {
-            qDebug() << tr( "B::Undefined Unit type [%1]" ).arg( type );
+            qDebug() << tr( "Undefined Unit type [%1]" ).arg( type );
           }
         }
         //	NewUnit->show();

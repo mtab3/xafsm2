@@ -16,14 +16,11 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   connect( MaxMCAEnergyInput, SIGNAL( editingFinished() ),
 	   this, SLOT( newMaxMCAEnergy() ), Qt::UniqueConnection );
 
+#if 0
   SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
         << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
         << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
         << SSDE16 << SSDE17 << SSDE18 << SSDE19;
-  SSDbs2 << SSDE01_2 << SSDE02_2 << SSDE03_2 << SSDE04_2 << SSDE05_2
-	 << SSDE06_2 << SSDE07_2 << SSDE08_2 << SSDE09_2 << SSDE10_2
-	 << SSDE11_2 << SSDE12_2 << SSDE13_2 << SSDE14_2 << SSDE15_2
-	 << SSDE16_2 << SSDE17_2 << SSDE18_2 << SSDE19_2;
   
   for ( int i = 0; i < SSDbs.count(); i++ ) {
     SSDbs[i]->setStyleSheet( SSDActive );
@@ -31,15 +28,25 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
     connect( SSDbs[i],  SIGNAL( clicked() ), this, SLOT( SelSSDs0() ),
 	     Qt::UniqueConnection );
   }
+#endif
 
-  for ( int i = 0; i < SSDbs2.count(); i++ ) {
-    SSDbs2[i]->setStyleSheet( SSDActive );
-    SSDbs2[i]->setToolTip( tr( "Active" ) );
-    SSDbs2[i]->setChecked( PBTrue );
-    connect( SSDbs2[i], SIGNAL( clicked() ), this, SLOT( SelSSDs20() ),
-	     Qt::UniqueConnection );
-  }
+  SELBs1->setTitle( tr( "Select a SSD channel (MCA spectrum)" ) );
+  SELBs1->setExcl( true );
+  SELBs1->setType( SSD19CH );   // デフォルトは 19ch SSD 型
+  if ( SFluo->chs() == 7 )
+    SELBs1->setType( SDD7CH );
 
+  connect( SELBs1, SIGNAL( selectedSingleCh( int ) ), MCACh, SLOT( setValue( int ) ),
+	   Qt::UniqueConnection );
+  connect( SELBs1, SIGNAL( selectedSingleCh( int ) ), this, SLOT( MCAChSelected( int ) ),
+	   Qt::UniqueConnection );
+
+
+  SELBs2->setTitle( tr( "Select SSD channels (XAFS meas.)" ) );
+  SELBs2->setType( SSD19CH );   // デフォルトは 19ch SSD 型
+  if ( SFluo->chs() == 7 )
+    SELBs2->setType( SDD7CH );
+  
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
 	   this, SLOT( showPeakingTime( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -102,7 +109,7 @@ void MainWindow::setupSetupSSDArea( void )   /* 測定エリア */
   StartResume = MCA_START;
   cMCAViewTabNo = -1;
 
-  SelSSDs( 0 );
+  //  SelSSDs( 0 );
 
   NonSelC = "#ccccaa";
   SelectC = "#ffffdd";
@@ -554,6 +561,7 @@ void MainWindow::LiveTimeIsSelected( void )
   }
 }
 
+#if 0
 void MainWindow::SelSSDs0( void )
 {
   for ( int i = 0; i < SSDbs.count(); i++ ) {
@@ -563,7 +571,9 @@ void MainWindow::SelSSDs0( void )
     }
   }
 }
+#endif
 
+#if 0
 void MainWindow::SelSSDs20( void )
 {
   for ( int i = 0; i < SSDbs2.count(); i++ ) {
@@ -585,7 +595,9 @@ void MainWindow::SelSSDs20( void )
   //  S2DReCalcMap0();     !!!!!!!!!!!!!!!!!!!!!!!
   ReCalcS2DMap();
 }
+#endif
 
+#if 0
 void MainWindow::SelSSDs( int ch )
 {
   for ( int i = 0; i < SSDbs.count(); i++ ) {
@@ -602,6 +614,7 @@ void MainWindow::SelSSDs( int ch )
     }
   }
 }
+#endif
 
 void MainWindow::getMCASettings( int ch )
 {
@@ -682,8 +695,14 @@ void MainWindow::MCAChSelected( int i )
   if ( SFluo == NULL )
     return;
 
-  if ( i < 0 ) { MCACh->setValue( SFluo->chs() - 1 ); i = SFluo->chs() - 1; }
-  if ( i >= SFluo->chs() ) { MCACh->setValue( 0 ); i = 0; }
+  int MaxChs = SFluo->chs();
+  if ( SFluo->chs() > SELBs1->chs() )
+    MaxChs = SELBs1->chs();
+  if ( i < 0 ) {
+    MCACh->setValue( MaxChs - 1 );
+    i = MaxChs - 1;
+  }
+  if ( i >= MaxChs ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
 
   emit NewMCACh( cMCACh );
@@ -696,7 +715,7 @@ void MainWindow::MCAChSelected( int i )
     SFluo->GetRealTime( cMCACh );
     SFluo->GetLiveTime( cMCACh );
   }
-  SelSSDs( cMCACh );
+  SELBs1->selACh( cMCACh );
 }
 
 void MainWindow::showPeakingTime( SMsg msg )
@@ -990,5 +1009,5 @@ void MainWindow::ReCalcS2DMap( void )
     return;
   }
   S2DBase->setS2DI( S2DI );
-  emit ReCalcS2DMap0( ROIStart, ROIEnd, SSDbs2 );
+  emit ReCalcS2DMap0( ROIStart, ROIEnd, SELBs2 );
 }
