@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Feb 20 20:38:27 2015 +0900\n"\
+                "    the Special butten made to be deisabled\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 19:24:05 2015 +0900\n"\
                 "    MCA map of S2D can not be saved, since the S2Di.valid == false\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 17:26:57 2015 +0900\n"\
                 "    after changing AUnitXMAP, the codes are stabilized anyway to make new branch\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 16:23:59 2015 +0900\n"\
-                "    expire SAVEMCACh from codes.   Only the MaxSSDs is used to give the magic number 19\n"\
 		"\n"\
                 ""
 #endif

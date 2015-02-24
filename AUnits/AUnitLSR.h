@@ -11,6 +11,7 @@ class AUnitLSR : public ASensor
  public:
   AUnitLSR( void );
   void init0( void );
+  bool GetValue( void );
 
  private slots:
   void OnReportCurrent( SMsg msg );
