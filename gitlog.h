@@ -5,6 +5,7 @@
 #define BRANCH_NAME ( "newMwSSD" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+<<<<<<< HEAD
                 "Date        : Fri Feb 20 20:40:59 2015 +0900\n"\
                 "    merged with master\n"\
 		"\n"\
@@ -36,6 +37,11 @@
                 "Date        : Wed Feb 18 20:03:09 2015 +0900\n"\
                 "    it looks it is working\n"\
 		"\n"\
+=======
+                "Date        : Fri Feb 20 20:38:27 2015 +0900\n"\
+                "    the Special butten made to be deisabled\n"\
+		"\n"\
+>>>>>>> master
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
 <<<<<<< HEAD
 =======
@@ -80,6 +86,7 @@
                 "Date        : Tue Feb 17 17:26:57 2015 +0900\n"\
                 "    after changing AUnitXMAP, the codes are stabilized anyway to make new branch\n"\
 		"\n"\
+<<<<<<< HEAD
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 16:23:59 2015 +0900\n"\
                 "    expire SAVEMCACh from codes.   Only the MaxSSDs is used to give the magic number 19\n"\
@@ -87,5 +94,7 @@
 >>>>>>> 50449c1b7cc7fe8479183f8cb2a3ea736e75a329
 =======
 >>>>>>> 9684affd2caf735e8bd73abe35475411aea749ef
+=======
+>>>>>>> master
                 ""
 #endif

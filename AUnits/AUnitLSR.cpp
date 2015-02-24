@@ -35,3 +35,10 @@ void AUnitLSR::OnReportInjection( SMsg msg )
     emit NewValue( Value );
   }
 }
+
+// LSR は、積極的に値を聞きに行くことは無い。
+// Eventで垂れ流されている値を溜めておいて value() に対して返答するだけ
+bool AUnitLSR::GetValue( void )
+{
+  return false;
+}
