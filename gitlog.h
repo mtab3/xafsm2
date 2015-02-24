@@ -2,10 +2,17 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "newMwSSD" )
+#define BRANCH_NAME ( "newXMAP" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                "Date        : Sun Feb 22 02:05:45 2015 +0900\n"\
+                "    Now SSD Channel selection is a class, and the 'SENSOR SSD' line in the definition file also defines the type of the fluorescence detector by setting the number of the channels\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+>>>>>>> 556b42cedd12aec01fdf3629de82b630e1cf1229
                 "Date        : Fri Feb 20 20:40:59 2015 +0900\n"\
                 "    merged with master\n"\
 		"\n"\
@@ -55,6 +62,7 @@
                 "Date        : Wed Feb 18 17:56:23 2015 +0900\n"\
                 "    it works anyway\n"\
 		"\n"\
+<<<<<<< HEAD
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 17:48:41 2015 +0900\n"\
                 "    broken\n"\
@@ -96,5 +104,7 @@
 >>>>>>> 9684affd2caf735e8bd73abe35475411aea749ef
 =======
 >>>>>>> master
+=======
+>>>>>>> 556b42cedd12aec01fdf3629de82b630e1cf1229
                 ""
 #endif
