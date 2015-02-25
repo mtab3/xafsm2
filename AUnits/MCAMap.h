@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QStringList>
 
+#include "../FCheck.h"
 #include "XMAPHead.h"
 #include "KeV2Pix.h"
 
@@ -13,7 +14,7 @@ struct aCH
   int Length;
   double *E;
   quint32 *cnt;
-    
+
   aCH( void ) {
     Length = 0;
     E = NULL;
@@ -35,6 +36,7 @@ struct aCH
 
 struct aMCASet {
   bool valid;
+  FileCheck fc;
 
   int Length, CHs;
   
@@ -91,11 +93,13 @@ struct aMCASet {
   void setValid( bool f ) { valid = f; };
   bool isValid( void ) { return valid; };
   void save( QString fname, QString title );
-  void writeHead( QTextStream &out );
+  //  void writeHead0( QTextStream &out );  // old
+  void writeHead( QTextStream &out );  // new
   void writeData( QTextStream &out );
   void load( QString fname, QString title );
   void load( QTextStream &in, QString title );
-  void loadHeader( QTextStream &in );
+  void loadHeader( QTextStream &in );   // new
+  void loadHeader0( QTextStream &in );  // old 
   void correctE( KeV2Pix *k2p );
   void copyCnt( int ch, quint32 *cnt );
 };
