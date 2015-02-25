@@ -4,6 +4,18 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 24 21:01:24 2015 +0900\n"\
+                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 24 21:01:09 2015 +0900\n"\
+                "    debugged on FP23, LSR, and CCG\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Feb 24 20:51:36 2015 +0900\n"\
+                "    new XAFSM.def.BL5S1\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 20 20:38:27 2015 +0900\n"\
                 "    the Special butten made to be deisabled\n"\
@@ -31,18 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 17 23:24:26 2015 +0900\n"\
                 "    merged with final change of newAUnit\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 23:22:03 2015 +0900\n"\
-                "    brush up AMotor, AUnitPM for MMainTh\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 19:43:03 2015 +0900\n"\
-                "    broken codes by removing MCALength and MasSSDs\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 17:26:57 2015 +0900\n"\
-                "    after changing AUnitXMAP, the codes are stabilized anyway to make new branch\n"\
 		"\n"\
                 ""
 #endif

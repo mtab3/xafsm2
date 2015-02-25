@@ -429,7 +429,7 @@ SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006"
+SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006" 19 2048
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
 SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"
