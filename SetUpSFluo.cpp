@@ -14,6 +14,7 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   MCATimer = new QTimer;
   fdbase = NULL;
 
+  mcaView->setHidden( true );
   mcaView->setKeV2Pix( k2p );
   
   MCAClearRequest = false;
@@ -574,7 +575,7 @@ void SetUpSFluo::StartMCA( void )
 {
   if ( !inMCAMeas ) {
     if ( ! SFluo0->isEnable() ) {
-      QString msg = QString( tr( "Scan cannot Start : SSD is disabled" ) );
+      QString msg = QString( tr( "SSD is disabled" ) );
       emit ShowMessage( msg, 2000 );
       return;
     }

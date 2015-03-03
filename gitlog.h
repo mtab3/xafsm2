@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2Test" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Mar 3 21:26:41 2015 +0900\n"\
+                "    the codes can be compiled anyway !\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Mar 3 11:45:56 2015 +0900\n"\
                 "    UI changed.\n"\
 		"\n"\
@@ -38,10 +42,6 @@
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Feb 23 12:42:55 2015 +0900\n"\
-                "    ok\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Feb 23 12:41:44 2015 +0900\n"\
                 "    ok\n"\
 		"\n"\
                 ""

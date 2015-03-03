@@ -264,11 +264,14 @@ void AUnitSFluo::RunResume( void )
 
 bool AUnitSFluo::GetMCAs( void )
 {
+  if ( s == NULL )
+    return false;
+  
   busy2On( Dev2, "GetMCAs" );
   // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
   //        data-link 経由で完全なデータをもらった時に消す
   s->SendCMD2( Uid, DevCh, QString( "GetMCAs" ) );
-
+    
   return false;
 }
 
@@ -399,6 +402,9 @@ double AUnitSFluo::liveTime( int ch )
 
 void AUnitSFluo::SetLowLimit( int ch, int llpix )
 {
+  if ( s == NULL )
+    return;
+  
   if ( ch < chs() ) {
     //    MCALowLimit[ ch ] = llpix;
     s->SendCMD2( "SSDSetting", Dev,

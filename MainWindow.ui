@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>10</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -4327,8 +4327,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>290</width>
-                     <height>155</height>
+                     <width>144</width>
+                     <height>137</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -5722,31 +5722,6 @@ Though, other parameters are fixed at the value on starting.</string>
            </widget>
           </item>
          </layout>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="SSDTab">
-       <attribute name="title">
-        <string>Set up SSD</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_35">
-        <property name="leftMargin">
-         <number>3</number>
-        </property>
-        <property name="topMargin">
-         <number>3</number>
-        </property>
-        <property name="rightMargin">
-         <number>3</number>
-        </property>
-        <property name="bottomMargin">
-         <number>3</number>
-        </property>
-        <property name="spacing">
-         <number>3</number>
-        </property>
-        <item row="0" column="1">
-         <widget class="SetUpSFluo" name="SSFluo0" native="true"/>
         </item>
        </layout>
       </widget>
@@ -8420,12 +8395,6 @@ Though, other parameters are fixed at the value on starting.</string>
    <class>S2DB</class>
    <extends>QFrame</extends>
    <header>S2DB.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SetUpSFluo</class>
-   <extends>QWidget</extends>
-   <header>SetUpSFluo.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

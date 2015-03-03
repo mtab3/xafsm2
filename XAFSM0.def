@@ -34,6 +34,7 @@
 # 2014/12/04 a sensor EPIC is supported
 # 2015/02/02 add 'ALARM'       line to define an alarm
 # 2015/02/19 add 2 parameters to the SSD line
+# 2015/03/03 delete MAX_MCA_ENERGY line
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -76,9 +77,10 @@ MCA_CAN_SAVE_ALL 0
 SAVE_EACH_MCA_SPECTRUM 1
 #SAVE_EACH_MCA_SPECTRUM 0
 
-# Set maximum energy [keV] in MCAView (MCA display)
-# Default (without the line) is 20 [keV]
-MAX_MCA_ENERGY  20
+## Set maximum energy [keV] in MCAView (MCA display)
+## Default (without the line) is 20 [keV]
+#MAX_MCA_ENERGY  20
+# the MAX_MCA_ENERGY line is obsoleted
 
 #
 # Define if Quick-Xafs Mode is available or not
@@ -432,7 +434,7 @@ SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006" 19 2048
+SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006" 19 2048 20.0
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
 SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"

@@ -18,6 +18,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
+  SSFluo0 = NULL;
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
@@ -108,8 +109,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   if ( SFluo != NULL ) {
     SSFluo0->setupSetupSFluo( s, &FSTATMsgs );
     setupSFluoRelated();
-  } else {
-    MainTab->removeTab( MainTab->indexOf( SSDTab ) );
   }
   setupChangerArea();
   setupQXafsMode();

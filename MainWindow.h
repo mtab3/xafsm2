@@ -50,6 +50,7 @@
 #include "MonLine.h"
 #include "Alarm.h"
 #include "MonInfo.h"
+#include "SetUpSFluo.h"
 #include "enums.h"
 
 #define MEAS_ID "XAFS Measurement"
@@ -89,6 +90,8 @@ private:
   QTime *T;
   Status* StatDisp;
 
+  SetUpSFluo *SSFluo0;
+  
   TuningTable *TTable;
   int OldDTh1;
 

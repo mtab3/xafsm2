@@ -41,17 +41,25 @@ void MainWindow::ReadDef( QString fname )
   ASensor *NewSensor;
   AMotor *NewMotor;
 
+  qDebug() << "000";
   QTextStream in( &f );
   while( !in.atEnd() ) {
+    qDebug() << "001";
     aline = in.readLine();
     line++;
     if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
 //    next = nextItem( aline.simplified(), item );
+      qDebug() << "002";
       next = nextItem( aline, item );            // stop using 'simplified'
+      qDebug() << "003";
       gType = item;
+      qDebug() << "004" << gType;
       if ( ( gType == "MOTOR" ) || ( gType == "SENSOR" ) ) {
+	qDebug() << "005";
         next = nextItem( next, item ); type = item;
+	qDebug() << "aa000";
 	NewUnit = NewNewUnit( type );
+	qDebug() << "aa001";
 
         if ( gType == "MOTOR" ) { // Motor か
 	  NewMotor = (AMotor*)NewUnit;
@@ -121,6 +129,11 @@ void MainWindow::ReadDef( QString fname )
 	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setChs( item.toInt() );
 	    next = nextItem( next, item );
 	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setLength( item.toInt() );
+	    next = nextItem( next, item );
+	    // if ( item.toDouble() > 0 )
+	    //    ((AUnitSFluo*)NewUnit)->setMaxMCAEnergy( item.toDouble() );
+	    if ( item.toDouble() > 0 )
+	      SSFluo0->setMaxMCAEnergy( item.toDouble() );
           } else if ( type == "LSR" ) {
           } else if ( type == "DV" ) {
             next = nextItem( next, item );
@@ -296,11 +309,13 @@ void MainWindow::ReadDef( QString fname )
         if ( item != "" ) {
           MCACanSaveAllOnMem = ( item.toInt() != 0 );
         }
+#if 0
       } else if ( item == "MAX_MCA_ENERGY" ) {  // define the maximum MCA display energy
         next = nextItem( next, item );
         if ( item != "" ) {
           SSFluo0->setMaxMCAEnergy( item.toDouble() );
         }
+#endif
       } else if ( item == "MSTAB" ) {  // define driver for monochromator controller via PEZ
         next = nextItem( next, item );
         MStabOk = true;
@@ -388,8 +403,15 @@ AUnit0 *MainWindow::NewNewUnit( QString type )
     rv = (AUnit0*)new AUnitPAM;
   if ( type == "ENC" )
     rv = (AUnit0*)new AUnitENC;
-  if ( type == "SSD" )
-    rv = (AUnit0*)new AUnitSFluo;
+  if ( type == "SSD" ) {
+    qDebug() << "aaa";
+    SSFluo0 = new SetUpSFluo( this );
+    qDebug() << "aaab";
+    MainTab->insertTab( 2, SSFluo0, "Set up SSD" );
+    qDebug() << "aaac";
+    rv = SSFluo0->sFluo();
+    qDebug() << "aaad";
+  }
   if ( type == "SSDP" )
     rv = (AUnit0*)new AUnitSFluo2;
   if ( type == "CNT2" )
