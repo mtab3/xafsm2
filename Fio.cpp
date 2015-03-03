@@ -498,7 +498,7 @@ void MainWindow::WriteInfoFile2( void )
     out << "Finally Used SSD Channels:";
     for ( int i = 0; i < CHs; i++ ) {
       out << " " << i;
-      if ( SELBs2->isSelected(i) ) {
+      if ( SSFluo0->selBs2()->isSelected(i) ) {
         out << " 1";
       } else {
         out << " 0";
@@ -581,7 +581,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
     int mcaSaveP = 0;
     if ( MCACanSaveAllOnMem )
       mcaSaveP = MeasR;
-    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, mcaSaveP ) );  // MeasA は無視
+    SaveMCADataOnMem( XafsMCAMap.aPoint( MeasP, mcaSaveP ), SSFluo0 );  // MeasA は無視
 
     if ( conds->isRecordEachMCASpectrum() ) {
       QDir newDir;

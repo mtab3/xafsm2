@@ -781,33 +781,36 @@ void MainWindow::S2DWriteBody2( int ix, int iy )
 	||( iy < 0 )||( iy > S2DI.ps[1] ))
       return;
 
-    SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ) );        // iz は無視
+    SaveMCADataOnMem( S2DBase->mapAPoint( ix, iy ), SSFluo0 );        // iz は無視
   }
 }
 
-void MainWindow::SaveMCADataOnMem( aMCASet *set )
+void MainWindow::SaveMCADataOnMem( aMCASet *set, SetUpSFluo *sSFluo )
 {
   if ( set == NULL )
     return;
 
+  AUnitSFluo *sFluo = sSFluo->sFluo();
+  KeV2Pix *k2p = sSFluo->K2P();
+  
   set->date = QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
   set->RINGCurrent = ( ( SLS != NULL) ? SLS->value().toDouble() : -1 );
   set->I0 = ( ( SI0 != NULL ) ? SI0->value().toDouble() : -1 );
 
-  for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
+  for ( int ch = 0; ch < sFluo->chs(); ch++ ) {
     double *E = set->Ch[ ch ].E;
     quint32 *cnt = set->Ch[ ch ].cnt;
-    for ( int i = 0; i < SFluo->length(); i++ ) {
-      E[i] = XMAPk2p->p2E( ch, i );
-      cnt[i] = SFluo->getAMCAdata( ch, i );
+    for ( int i = 0; i < sFluo->length(); i++ ) {
+      E[i] = k2p->p2E( ch, i );
+      cnt[i] = sFluo->getAMCAdata( ch, i );
     }
-    set->Heads[ ch ] = SFluo->getAMCAHead( ch );
-    set->ROIStart[ ch ] = ROIStart[ ch ];
-    set->ROIEnd[ ch ] = ROIEnd[ ch ];
+    set->Heads[ ch ] = sFluo->getAMCAHead( ch );
+    set->ROIStart[ ch ] = sSFluo->roiStart()[ ch ];
+    set->ROIEnd[ ch ] = sSFluo->roiEnd()[ ch ];
   }
-  if ( cMCAView != NULL ) {
-    if ( ShowAlwaysSelElm->isChecked() ) {
-      set->Elms = cMCAView->getSelectedElms();
+  if ( sSFluo->McaView() != NULL ) {
+    if ( SSFluo0->B_ShowAlwaysSelElm()->isChecked() ) {
+      set->Elms = sSFluo->McaView()->getSelectedElms();
     }
   }
   set->setValid( true );
@@ -895,8 +898,8 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
 
 void MainWindow::S2DSetROIs( void )
 {
-  if ( AutoROIsetAll->isChecked() )
-    setAllROIs();
+  if ( SSFluo0->B_AutoROIsetAll()->isChecked() )
+    SSFluo0->setAllROIs();
 }
 
 #if 0
@@ -1018,19 +1021,19 @@ void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
   quint32 *cnt1 = NULL;
   quint32 *cnt2 = NULL;
   if ( ( set1 != NULL )&&( set1->isValid() ) )
-    cnt1 = set1->Ch[ cMCACh ].cnt;
+    cnt1 = set1->Ch[ SSFluo0->cCh() ].cnt;
   if ( ( set2 != NULL )&&( set2->isValid() ) )
-    cnt2 = set2->Ch[ cMCACh ].cnt;
+    cnt2 = set2->Ch[ SSFluo0->cCh() ].cnt;
 
   if ( cnt1 != NULL ) {
     for ( int i = 0; i < SFluo->length(); i++ ) {
       if ( cnt2 != NULL ) {
-	MCAData[i] = abs( cnt1[i] - cnt2[i] );
+	SSFluo0->McaData()[i] = abs( cnt1[i] - cnt2[i] );
       } else {
-	MCAData[i] = cnt1[i];
+	SSFluo0->McaData()[i] = cnt1[i];
       }
     }
-    cMCAView->update();
+    SSFluo0->McaView()->update();
   }
 }
 
@@ -1077,14 +1080,18 @@ void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy, aMCASet *set )
 
 void MainWindow::S2DChangeMCACh( int dCh )
 {
-  int ch = cMCACh + dCh;
+  AUnit0 *as = S2DOkSensors.value( SelectS2DSensor->currentIndex() );
+  if ( as != SFluo )
+    return;
+  
+  int ch = SSFluo0->cCh() + dCh;
 
   while ( ch < 0 )
     ch += SFluo->chs();
   while ( ch >= SFluo->chs() )
     ch -= SFluo->chs();
 
-  MCACh->setValue( ch );
+  SSFluo0->setMCACh( ch );
 }
 
 #if 0

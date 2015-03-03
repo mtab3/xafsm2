@@ -102,6 +102,7 @@ public:
   MCAView( QWidget *parent = NULL );
   ~MCAView( void );
 
+  QWidget *parent( void ) { return Parent; };
   void setLayout( QLayout *l ) { layout = l; };
   void setKeV2Pix( KeV2Pix *K2P ) { k2p = K2P; };
   void setFDBase( FluoDBase *FDBase ) { fdbase = FDBase; };

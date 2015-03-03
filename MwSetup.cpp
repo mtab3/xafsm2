@@ -262,8 +262,6 @@ void MainWindow::newDataRoot( const QString &dataRoot )
 
   if ( EditDFName != NULL )
     EditDFName->setText( QFileInfo( dataRoot, EditDFName->text() ).filePath() );
-  if ( MCAFSel != NULL )
-    MCAFSel->setDirectory( dataRoot );
   if ( scanFSel != NULL )
     scanFSel->setDirectory( dataRoot );
   if ( monFSel != NULL )
@@ -281,6 +279,7 @@ void MainWindow::newDataRoot( const QString &dataRoot )
   if ( SelLFND != NULL )
     SelLFND->setDirectory( dataRoot );
 
+  SSFluo0->setDirectory( dataRoot );
   for ( int i = 0; i < Datas.count(); i++ ) {
     Datas[i]->setDataRoot( dataRoot );
   }

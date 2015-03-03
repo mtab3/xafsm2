@@ -40,8 +40,10 @@ void MainWindow::onViewTabClosed( int i )
        && ( ViewCtrls[i]->getVType() != NONVIEW )
        && ( ViewCtrls[i]->isDeletable() ) ) {
 
-    if ( ViewCtrls[i]->getDType() == MCADATA )
-      cMCAViewTabNo = -1;
+    if ( ViewCtrls[i]->getDType() == MCADATA ) {
+      ((SetUpSFluo*)(((MCAView*)(ViewCtrls[i]->getView()))->parent()))
+	->setCViewTabNo( -1 );
+    }
     ViewTab->removeTab( i );
     ViewCtrls[i]->deleteView();
     ViewCtrls.removeAt( i );
@@ -93,10 +95,8 @@ void MainWindow::NoticeSelectedStats( int tab )
 {
   if ( ViewCtrls[ tab ]->getVType() == MCAVIEW ) {
     MCAView *view = (MCAView*)(ViewCtrls[ tab ]->getView());
-    view->setLog( SetDisplayLog->isChecked() );
-    view->setShowElements( DispElmNames->isChecked() );
-    view->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
-    view->setShowElementsEnergy( ShowElmEnergy->isChecked() );
+    SetUpSFluo *ssfluo = (SetUpSFluo*)view->parent();
+    ssfluo->setViewStats();
   }
 }
 

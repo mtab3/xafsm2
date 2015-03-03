@@ -12,9 +12,13 @@ class AUnit0 : public QObject
   Q_OBJECT
 
  protected:
+  QObject *ParentObject;
   Stars *s;
   bool Enable;          // if the unit is enable on Stars server or not
   int ALine;            // the line number where the definition appears in .def file
+
+  bool Using;
+  QString UserName;
 
   int LocalStage;
 
@@ -54,7 +58,7 @@ class AUnit0 : public QObject
   AUnit0 *The2ndDev;
   
 public:
-  AUnit0( QObject *parent = 0 );
+  AUnit0( QObject *parent = NULL );
 
   void Initialize( Stars *s );
   virtual void init( void ) {};
@@ -65,6 +69,12 @@ public:
   int aLine( void ) { return ALine; };
   bool isEnable( void ) { return Enable; };
 
+  bool isUsing( void ) { return Using; };
+  QString userName( void ) { return UserName; };
+  void setUsing( bool f ) { Using = f; };
+  void setUserName( QString name ) { UserName = name; };
+  
+  QObject *parentObj( void ) { return ParentObject; };
   Stars *getStars( void ) { return s; };
   QString gType( void ) { return GType; };        // Motor, Sensor
   QString type( void ) { return Type; };          // PM, PZ, ENC, ...

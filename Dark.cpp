@@ -35,8 +35,9 @@ bool MainWindow::MeasureDark( void )
   if ( UseI1->isChecked() )
     dUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
   if ( Use19chSSD->isChecked() ) {
-    if ( inMCAMeas ) {
-      QString msg = tr( "MCA measurement is going on" );
+    if ( SSFluo0->isInMeas() ) {
+      QString msg = tr( "MCA measurement is going on with %1" )
+	.arg( SSFluo0->sFluo()->name() );
       statusbar->showMessage( msg, 2000 );
       NewLogMsg( msg );
       return false;

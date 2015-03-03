@@ -236,7 +236,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasView = NULL;
 
-  connect( SELBs2, SIGNAL( selectedACh( int, bool ) ),
+  connect( SSFluo0->selBs2(), SIGNAL( selectedACh( int, bool ) ),
 	   this, SLOT( newSSDChSelection( int, bool ) ), //ReCalcSSDTotal( int, bool ) ),
 	   Qt::UniqueConnection );
 
@@ -1217,7 +1217,7 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
-      if ( inMCAMeas ) {
+      if ( SSFluo0->isInMeas() ) {
         QString msg = tr( "Meas cannot Start : in MCA measurement" );
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
@@ -1282,8 +1282,8 @@ void MainWindow::StartMeasurement( void )
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
-    SvSelRealTime = SelRealTime->isChecked();
-    SvSelLiveTime = SelLiveTime->isChecked();
+    SvSelRealTime = SSFluo0->B_SelRealTime()->isChecked();
+    SvSelLiveTime = SSFluo0->B_SelLiveTime()->isChecked();
     SvSelExtPattern = SelExtPattern->isChecked();
 
     MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
@@ -1315,8 +1315,8 @@ void MainWindow::StartMeasurement( void )
         GSBSs << aGsb;
       }
       SFluo->setSSDPresetType( "REAL" );   // SSD を使った XAFS 測定は強制的に Real Time
-      SelRealTime->setChecked( true );
-      SelLiveTime->setChecked( false );
+      SSFluo0->B_SelRealTime()->setChecked( true );
+      SSFluo0->B_SelLiveTime()->setChecked( false );
     }
     if ( UseAux1->isChecked() ) {
       // 0 以外は全部 TRANS。ちょっと荒っぽい
@@ -1880,7 +1880,7 @@ bool MainWindow::ParseAutoMode( void )
 void MainWindow::MoveInMeasView( int ix, double )
 {
   if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo
-       ||( cMCAView == NULL )||( MCAData== NULL ) )
+       ||( SSFluo0->McaView() == NULL )||( SSFluo0->McaData() == NULL ) )
     return;
   
   aMCASet *set;
@@ -1893,20 +1893,21 @@ void MainWindow::MoveInMeasView( int ix, double )
   if (( set == NULL ) || (! set->isValid() ))
     return;
 
-  cnt = set->Ch[ cMCACh ].cnt;
+  cnt = set->Ch[ SSFluo0->cCh() ].cnt;
 
-  for ( int i = 0; i < SFluo->length(); i++ ) {
-    MCAData[i] = cnt[i];
+  for ( int i = 0; i < SSFluo0->length(); i++ ) {
+    SSFluo0->McaData()[i] = cnt[i];
   }
 
-  cMCAView->update();
+  SSFluo0->McaView()->update();
 }
 
 
 void MainWindow::ReCalcXAFSWithMCA( void )
 {
   if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo 
-       ||( cMCAView == NULL )||( MCAData== NULL )||( MeasView == NULL ) )
+       ||( SSFluo0->McaView() == NULL )
+       ||( SSFluo0->McaData()== NULL )||( MeasView == NULL ) )
     return;
 
   QVector<double> darks = SFluo->getDarkCountsInROI();
@@ -1944,8 +1945,8 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 	  aMCASet *set = XafsMCAMap.aPoint( i, r );
 	  if ( ( set != NULL )&&( set->isValid() ) ) {
 	    quint32 *cnt = set->Ch[ ch ].cnt;
-	    int ROIs = ROIStart[ ch ].toInt();
-	    int ROIe = ROIEnd[ ch ].toInt();
+	    int ROIs = SSFluo0->roiStart()[ ch ].toInt();
+	    int ROIe = SSFluo0->roiEnd()[ ch ].toInt();
 	    if ( ROIs < 0 ) ROIs = 0;
 	    if ( ROIe < 0 ) ROIe = 0;
 	    if ( ROIs >= ML ) ROIs = ML - 1;
@@ -1959,7 +1960,7 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 	}
       }
       MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
-      if ( SELBs2->isSelected(ch) ) {
+      if ( SSFluo0->selBs2()->isSelected(ch) ) {
 	Sum += Vch;
       }
     }
@@ -1987,7 +1988,7 @@ void MainWindow::AfterSaveXafs()
 {
   QString buf;
 
-  if ( cMCAView == NULL ) {
+  if ( SSFluo0->McaView() == NULL ) {
     statusbar->showMessage( tr( "No valid measured data." ) );
     return;
   }
@@ -2060,8 +2061,8 @@ void MainWindow::AfterSaveXafs()
 	      for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
 		quint32 sum = 0;
 		quint32 *cnt = set->Ch[ ch ].cnt;
-		int ROIs = ROIStart[ ch ].toInt();
-		int ROIe = ROIEnd[ ch ].toInt();
+		int ROIs = SSFluo0->roiStart()[ ch ].toInt();
+		int ROIe = SSFluo0->roiEnd()[ ch ].toInt();
 		if ( ROIs < 0 ) ROIs = 0;
 		if ( ROIe < 0 ) ROIe = 0;
 		if ( ROIs >= ML ) ROIs = ML - 1;

@@ -2,10 +2,14 @@
 
 AUnit0::AUnit0( QObject *parent ) : QObject( parent )
 {
+  ParentObject = parent;
   s = NULL;
   Enable = false;
   ALine = -1;
 
+  Using = false;
+  UserName = "";
+  
   GType = "";
   Type = "";
   ID = "";
@@ -136,7 +140,7 @@ void AUnit0::setEnable( bool enable )
   Enable = enable;
   IsBusy = false;
   LastFunc = "";
-  _setEnable( enable );    // AUnit0 を継承したクラスでの処理用 // AUnitXMAP が呼んでる
+  _setEnable( enable );    // AUnit0 を継承したクラスでの処理用 // AUnitSFluo が呼んでる
   emit Enabled( Dev, enable );
   emit ChangedIsBusy1( Dev );
   busy2Off( "" );

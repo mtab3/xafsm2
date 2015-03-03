@@ -118,9 +118,9 @@ void MainWindow::ReadDef( QString fname )
           } else if ( type == "SSDP" ) {
           } else if ( type == "SSD" ) {
 	    next = nextItem( next, item );
-	    if ( item.toInt() > 0 ) ((AUnitXMAP*)NewUnit)->setChs( item.toInt() );
+	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setChs( item.toInt() );
 	    next = nextItem( next, item );
-	    if ( item.toInt() > 0 ) ((AUnitXMAP*)NewUnit)->setLength( item.toInt() );
+	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setLength( item.toInt() );
           } else if ( type == "LSR" ) {
           } else if ( type == "DV" ) {
             next = nextItem( next, item );
@@ -299,7 +299,7 @@ void MainWindow::ReadDef( QString fname )
       } else if ( item == "MAX_MCA_ENERGY" ) {  // define the maximum MCA display energy
         next = nextItem( next, item );
         if ( item != "" ) {
-          MaxMCAEnergy = item.toDouble();
+          SSFluo0->setMaxMCAEnergy( item.toDouble() );
         }
       } else if ( item == "MSTAB" ) {  // define driver for monochromator controller via PEZ
         next = nextItem( next, item );
@@ -389,9 +389,9 @@ AUnit0 *MainWindow::NewNewUnit( QString type )
   if ( type == "ENC" )
     rv = (AUnit0*)new AUnitENC;
   if ( type == "SSD" )
-    rv = (AUnit0*)new AUnitXMAP;
+    rv = (AUnit0*)new AUnitSFluo;
   if ( type == "SSDP" )
-    rv = (AUnit0*)new AUnitXMAP2;
+    rv = (AUnit0*)new AUnitSFluo2;
   if ( type == "CNT2" )
     rv = (AUnit0*)new AUnitOTC;
   if ( type == "OTC" )

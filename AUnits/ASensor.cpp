@@ -1,7 +1,7 @@
 
 #include "ASensor.h"
 
-ASensor::ASensor( void )
+ASensor::ASensor( QObject *p ) : AUnit0( p )
 {
   setTime = 1;       // Actually set time;
   setDarkTime = 1;   // Actually set time;

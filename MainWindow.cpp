@@ -22,8 +22,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
   MCACanSaveAllOnMem = false;
-  MCAPreAMPGainHasSet = false;
-  MaxMCAEnergy = 20;
+  //  MCAPreAMPGainHasSet = false;
   MStabOk = false;
   MStabDelegate = "";
 
@@ -32,27 +31,28 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   AutoShutter->setEnabled( false );  // 使えなくしておく
 #endif
 
-  MCAFSel = scanFSel = monFSel = S2DFileSel
+  scanFSel = monFSel = S2DFileSel
     = SelDFND = SelWBFND = SelRBFND = SelLFND = NULL;
 
   // Monitor の中で SSD の強度を別ファイルに書き出すときの時間を測るため
   T = new QTime;
   T->start();
 
-  FSTATMsgs[0][0] = tr( "Both the name and the data is old." );
-  FSTATMsgs[0][1] = tr( "The name is new, but the data is old." );
-  FSTATMsgs[1][0] = tr( "The data is new, but the name is old." );
-  FSTATMsgs[1][1] = tr( "The data and the name is new, but not saved." );
+  QStringList m0, m1;
+  m0 << tr( "Both the name and the data is old." );           // 0, 0
+  m0 << tr( "The name is new, but the data is old." );        // 0, 1
+  m1 << tr( "The data is new, but the name is old." );        // 1, 0
+  m1 << tr( "The data and the name is new, but not saved." ); // 1, 1
+  FSTATMsgs << m0 << m1;
   MeasDataStat = MeasNameStat = OLD;
   ScanDataStat = ScanNameStat = OLD;
   MonDataStat = MonNameStat = OLD;
-  MCADataStat = MCANameStat = OLD;
   S2DDataStat = S2DNameStat = OLD;
 
   isQXafsModeAvailable = false;
 
-  XMAPk2p = new KeV2Pix;
-  fdbase = new FluoDBase;
+  //  XMAPk2p = new KeV2Pix;
+  //  fdbase = new FluoDBase;
   u = new Units;
 
   MMainTh = NULL;
@@ -106,7 +106,8 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupCommonArea();
   setupSetupArea();     // AUnit 関係の Initialize 後でないとだめ
   if ( SFluo != NULL ) {
-    setupSetupSSDArea();
+    SSFluo0->setupSetupSFluo( s, &FSTATMsgs );
+    setupSFluoRelated();
   } else {
     MainTab->removeTab( MainTab->indexOf( SSDTab ) );
   }
@@ -184,15 +185,13 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   }
 
   GoTimer = new QTimer;
-  MCATimer = new QTimer;
+  //  MCATimer = new QTimer;
   ScanTimer = new QTimer;
   MonTimer = new QTimer;
   MeasTimer = new QTimer;
   MeasDarkTimer = new QTimer;
 
   connect( GoTimer, SIGNAL( timeout() ), this, SLOT( MotorMove() ),
-	   Qt::UniqueConnection );
-  connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ),
 	   Qt::UniqueConnection );
   connect( ScanTimer, SIGNAL( timeout() ), this, SLOT( ScanSequence() ),
 	   Qt::UniqueConnection );
@@ -309,7 +308,7 @@ void MainWindow::Initialize( void )
   resize( 1, 1 );
   SendListNodes();
   if ( SFluo != NULL ) {
-    getMCASettings( MCACh->text().toInt() );
+    SSFluo0->getMCASettings( SSFluo0->mcaCh() );
     s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetMCALength" );
     for ( int i = 0; i < MCAGains.count(); i++ ) {
       SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
@@ -417,7 +416,7 @@ void MainWindow::InitAndIdentifySensors( void )
 #endif
     if ( as->id() == "I0" ) { SI0 = as; }
     if ( as->id() == "I1" ) { SI1 = as; }
-    if ( as->id() == "TotalF" ) { SFluo = (AUnitXMAP*)as; }
+    if ( as->id() == "TotalF" ) { SFluo = (AUnitSFluo*)as; }
     if ( as->id() == "LS" ) {
       if ( SLS != NULL ) {
 	disconnect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
@@ -448,9 +447,9 @@ void MainWindow::InitAndIdentifySensors( void )
   }
   
   if ( SFluo != NULL ) {
-    XMAPk2p->MakeUpAB( SFluo->length(), SFluo->chs(), 2, "KeV2MCApix.txt" );
-    S2DBase->setK2P( XMAPk2p );
-    SFluo->setROIs( ROIStart, ROIEnd );
+    SSFluo0->K2P()->MakeUpAB( SFluo->length(), SFluo->chs(), 2, "KeV2MCApix.txt" );
+    S2DBase->setK2P( SSFluo0->K2P() );
+    //    SFluo->setROIs( ROIStart, ROIEnd );
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);
       if (( as->theParent() == SFluo )&&( as != SFluo )) {
@@ -472,7 +471,7 @@ void MainWindow::InitAndIdentifySensors( void )
 	     this, SLOT( ShowNewMCALiveTime( int ) ),
 	     Qt::UniqueConnection );
     
-    connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
+    connect( SSFluo0->B_ROIsetAll(), SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
 	     Qt::UniqueConnection );
   }
 

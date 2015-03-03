@@ -1,3 +1,11 @@
+◯ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
+　実際にはその時使う検出器の k2p にしないとダメ
+    S2DBase->setK2P( SSFluo0->K2P() );
+◯ ViewCtrl.cpp で MCAView の準備をするとき、k2p や fluoDbase のセットは
+   SetUpSFluo の中でやることにしてしまったけど、これでは ReadData できなくなる。
+   データファイル中の情報で SFluo をセットできるようにしないとダメ
+   ViewCtrl.cpp はダメなところがいっぱい
+
 ○ MStab の実装がダメな可能性大 実際に使うと多分落ちる
 ○ ENC2 の InitSensor で GetValue しているのはおかしいのでは？
 　なしにしても良いかどうか、現場で確認

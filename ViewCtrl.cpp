@@ -167,30 +167,37 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype )
     ((TYView*)newView)->setMovingAvr( MovingAvr->text().toInt() );
     break;
   case MCAVIEW:
-    newView = (void *)(new MCAView( this ));
-    ((MCAView *)newView)->setKeV2Pix( XMAPk2p );
-    ((MCAView *)newView)->setFDBase( fdbase );
-    ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
-    ((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
-    ((MCAView *)newView)->setShowElementsEnergy( ShowElmEnergy->isChecked() );
-    ((MCAView *)newView)->setLimitPSEnergy( LimitPSEnergy->isChecked() );
-    ((MCAView *)newView)->setShowDiff( ShowDiff->isChecked() );
-    ((MCAView *)newView)->setShowSmoothed( ShowSmoothed->isChecked() );
-    ((MCAView *)newView)->setPeakSearch( MCAPeakSearch->isChecked() );
-    ((MCAView *)newView)->setFitToRaw( FitToRaw->isChecked() );
-    ((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
-    ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
-    ((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
-    ((MCAView *)newView)->setMaxLoop( MaxLoop->text().toInt() );
-    ((MCAView *)newView)->setDampFact( DampFact->text().toDouble() );
-    ((MCAView *)newView)->setPrec1( Prec1->text().toDouble() );
-    ((MCAView *)newView)->setPrec2( Prec2->text().toDouble() );
+    if ( dtype == MCADATA ) {
+      // その場で測定する場合(データファイルの読み込みだと MCASHOW )
+      newView = SSFluo0->McaView();
+    } else {
+      newView = (void *)(new MCAView( this ));
+      ((MCAView *)newView)->setKeV2Pix( SSFluo0->K2P() );  // ReadData がだめ
+      ((MCAView *)newView)->setFDBase( fdbase );
+#if 0      // この辺をちゃんとしないと ReadData がだめ。
+      ((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
+      ((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
+      ((MCAView *)newView)->setShowElementsEnergy( ShowElmEnergy->isChecked() );
+      ((MCAView *)newView)->setLimitPSEnergy( LimitPSEnergy->isChecked() );
+      ((MCAView *)newView)->setShowDiff( ShowDiff->isChecked() );
+      ((MCAView *)newView)->setShowSmoothed( ShowSmoothed->isChecked() );
+      ((MCAView *)newView)->setPeakSearch( MCAPeakSearch->isChecked() );
+      ((MCAView *)newView)->setFitToRaw( FitToRaw->isChecked() );
+      ((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
+      ((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
+      ((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
+      ((MCAView *)newView)->setMaxLoop( MaxLoop->text().toInt() );
+      ((MCAView *)newView)->setDampFact( DampFact->text().toDouble() );
+      ((MCAView *)newView)->setPrec1( Prec1->text().toDouble() );
+      ((MCAView *)newView)->setPrec2( Prec2->text().toDouble() );
+#endif
+    }
     break;
   case S2DVIEW:
     newView = (void *)(new S2DB( this ) );
     //    "Not Set Parent in MainWindow";
     //    ((S2DB*)newView)->setParent( this );
-    ((S2DB*)newView)->setK2P( XMAPk2p );
+    ((S2DB*)newView)->setK2P( SSFluo0->K2P() );   // これもホントはだめ
     break;
   default:
     break;
@@ -278,27 +285,35 @@ ReadData.cpp:  getNewMCAView();
 
 void MainWindow::getNewMCAView( void )
 {
+#if 0    // とりあえず
   if ( cMCAViewTabNo >= 0 )
     if ( ViewCtrls[ cMCAViewTabNo ]->getDType() == MCADATA )
       return;
-
+#endif
+  
   if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA ) ) == NULL ) 
     return;
   // 他のタイプの View は ViewCTRL 内で付けた名前を使ってる
   ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
   // cMCAViewC->setNowDType( MCADATA );
-  cMCAView = (MCAView*)(cMCAViewC->getView());
-  cMCAView->setSelectedAtoms( PT2->getSelectedAtoms() );
+  MCAView *view = (MCAView*)(cMCAViewC->getView());
+  //  view->setSelectedAtoms( PT2->getSelectedAtoms() );
   
-  MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
-  validMCAData = true;
-  cMCAViewTabNo = ViewTab->currentIndex();
-  cMCAView->setLog( SetDisplayLog->isChecked() );
-  cMCAView->SetMCACh( cMCACh );
-  cMCAView->makeValid( true );
+  //  MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
+  //  validMCAData = true;
+  SSFluo0->setCViewTabNo( ViewTab->currentIndex() );
+  SSFluo0->setViewStats();
+  //McaView->setLog( SetDisplayLog->isChecked() );
+  //  view->SetMCACh( cMCACh );
+  view->makeValid( true );
   
-  cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-  if ( StartResume == MCA_START )
-    for ( int i = 0; i < SFluo->length(); i++ ) MCAData[i] = 0;
+  //  view->setROI( SSFluo0->ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+  // SSFluo0 に付属の view を使う限りここで改めて ROI を設定する必要は無いはず
+#if 0   // このメモリクリアの操作をここでやる必要があるかどうか不明
+  if ( StartResume == MCA_START ) {
+    quint32 *mcaData = SSFluo0->mcaData();
+    for ( int i = 0; i < SFluo->length(); i++ ) mcaData[i] = 0;
+  }
+#endif
 }
 

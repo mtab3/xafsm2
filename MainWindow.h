@@ -57,7 +57,7 @@
 #define GOKEV_ID "Monochromator Motion"
 #define SCAN_ID "Scan"
 #define MONITOR_ID "Monitor"
-#define MCA_ID  "MCA Monitor"
+//#define MCA_ID  "MCA Monitor"
 #define S2D_ID  "2D Scan"
 
 #define XAFS_M_START   "StartMeas"
@@ -136,35 +136,34 @@ private:
 
   //  bool isAnyOtherProcess( void );
   
-  /* MCA */
-  bool MCAPreAMPGainHasSet;
-  KeV2Pix *XMAPk2p;
   FluoDBase *fdbase;
+  /* MCA */
+  //  bool MCAPreAMPGainHasSet;
+  //  KeV2Pix *XMAPk2p;
   QVector<double> MCACorrect;
-  QString *ROIStart;
-  QString *ROIEnd;
-  bool MwSSDGotMCALen;
+  //  QString *ROIStart;
+  //  QString *ROIEnd;
+  //  bool MwSSDGotMCALen;
 
-  bool inMCAMeas;
-  bool validMCAData;
-  int cMCACh;
+  //  bool inMCAMeas;
+  //  bool validMCAData;
+  //  int cMCACh;
   //  int oldMCACh;
-  int MCAStage;
+  //  int MCAStage;
   ViewCTRL *cMCAViewC;
-  MCAView *cMCAView;
-  int cMCAViewTabNo;
-  quint32 *MCAData;
-  MCASTARTRESUME StartResume;
-  bool MCAClearRequest;
+  //  MCAView *cMCAView;
+  //  int cMCAViewTabNo;
+  //  quint32 *MCAData;
+  //  MCASTARTRESUME StartResume;
+  //  bool MCAClearRequest;
   bool MCACanSaveAllOnMem;
-  double MaxMCAEnergy;
-  QFileDialog *MCAFSel;
-  PeriodicTable *PT2;
-  QString NonSelC, SelectC;
+  //  double MaxMCAEnergy;
+  //  QFileDialog *MCAFSel;
+  //  PeriodicTable *PT2;
+  //  QString NonSelC, SelectC;
   QDir mcaDir;
   QFileInfo BaseFile;
   QVector<MCAGain*> MCAGains;
-  QVector<MCAPeak> *MCAPeaks;
   QStringList SSDCalibEnergys;
   //  double AttenDx, AttenDy;
   AMotor *movingSC1, *movingSC2;
@@ -177,7 +176,7 @@ private:
   AMotor *MMainTh;          // main Th ax
   AMotor *MDTh1;             // Delta Theta 1 ax
   ASensor *SI0, *SI1, *SLS;  // I0, I1, and Fluorescence, LS
-  AUnitXMAP *SFluo;
+  AUnitSFluo *SFluo;
   ASensor *EncMainTh, *Enc2;
   AMotor *MMStab;
   //  int iMMainTh;
@@ -197,7 +196,8 @@ private:
   void InitAndIdentifySensors( void );
 
   QTimer *GoTimer;
-  QTimer *MCATimer, *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
+  //  QTimer *MCATimer;
+  QTimer *ScanTimer, *MonTimer, *MeasTimer, *MeasDarkTimer;
   QTimer *S2DTimer, *S2DTimer2;
 
   Stars *s;
@@ -225,7 +225,8 @@ private:
   void setupCommonArea( void );
   void setupSetupArea( void );
   void setupChangerArea( void );
-  void setupSetupSSDArea( void );
+  void setupSFluoRelated( void );
+  //  void setupSetupSSDArea( void );
   void setupMeasArea( void );
   void setupScan2DArea( void );
   void setupWebView( void );
@@ -265,15 +266,13 @@ private:
 
   /***********************************************/
 
-  QString FSTATMsgs[2][2];
+  QVector<QStringList> FSTATMsgs;
   OLDNEW MeasDataStat;
   OLDNEW MeasNameStat;
   OLDNEW ScanDataStat;
   OLDNEW ScanNameStat;
   OLDNEW MonDataStat;
   OLDNEW MonNameStat;
-  OLDNEW MCADataStat;
-  OLDNEW MCANameStat;
   OLDNEW S2DDataStat;
   OLDNEW S2DNameStat;
 
@@ -390,7 +389,6 @@ private:
   double S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map );
   //  void S2DSaveMCAData( int ix, int iy, int iz );
   void S2DFileCheck( void );
-  void SaveMCADataOnMem( aMCASet *set );
   
   QVector<ASensor*> SensWithRange;
 
@@ -586,8 +584,9 @@ private:
   /* Special !!!! */
   AMotor *smAm;
   int smStage;
-				     
+  
 private slots:
+
   // Main Part
   void Print( QPrinter *p );
   void newDataRoot( const QString &dataroot );
@@ -652,6 +651,7 @@ private slots:
   void ShowMB( void );
   void CheckNewMeasFileName( void );
   void ReCalcXAFSWithMCA( void );
+  //  void ReCalcS2DMap( AUnitSFluo *sfluo );
   void AfterSaveXafs( void );
 
   void GetNewGos( void );
@@ -669,33 +669,36 @@ private slots:
   void newVs( QString v );
   void setSelectedMonFName( const QString &fname );
   void setSelectedScanFName( const QString &fname );
-  void setSelectedMCAFName( const QString &fname );
-  void newGain( void );
+//  void setSelectedMCAFName( const QString &fname );
+//  void newGain( void );
   void PopChangeMonLines( bool f );
   void PopDownMonLines( void );
   void newMovingAvr( void );
 
-  void ShowNewMCAStat( char *MCAs );
-  void ShowNewMCARealTime( int ch );
-  void ShowNewMCALiveTime( int ch );
+//  void ShowNewMCAStat( char *MCAs );
+//  void ShowNewMCARealTime( int ch );
+//  void ShowNewMCALiveTime( int ch );
   void saveMonData( void );
   void SaveMonInfo( MonInfo *set );
-  void gotNewPeakList( QVector<MCAPeak>* );
-  void newPSSens( void );
-  void SelectedShowDiff( bool f );
-  void SelectedPeakSearch( bool f );
-  void SelectedShowSmoothed( bool f );
-  void SelectedFitToRaw( bool f);
-  void PushedReFit( void );
-  void PushedClearMCAPeaks( void );
-  void SelectedLimitPSEnergy( bool f );
+//  void gotNewPeakList( QVector<MCAPeak>* );
+//  void newPSSens( void );
+//  void SelectedShowDiff( bool f );
+//  void SelectedPeakSearch( bool f );
+//  void SelectedShowSmoothed( bool f );
+//  void SelectedFitToRaw( bool f);
+//  void PushedReFit( void );
+//  void PushedClearMCAPeaks( void );
+//  void SelectedLimitPSEnergy( bool f );
   void newCalibration( void );
-  void newMaxLoop( void );
-  void newDampFact( void );
-  void newPrec1( void );
-  void newPrec2( void );
+//  void newMaxLoop( void );
+//  void newDampFact( void );
+//  void newPrec1( void );
+//  void newPrec2( void );
   void SaveS2DMCAs( void );
   //  void S2DMCAWriteNext( void );
+  void SaveMCADataOnMem( aMCASet *set, SetUpSFluo *sSFluo );
+  void addAnUsingUnit( QString id, AUnit0 *unit );
+  void removeUsingUnits( QString id, AUnit0 *unit );
 
   void newSensSelected( int );
   void newRangeSelected( int );
@@ -710,23 +713,23 @@ private slots:
   void NewDarkChSelected( int i );
   void AskedToSetDark( void );
 
-  void StartMCA( void );
-  void MCAChSelected( int i );
-  void showPeakingTime( SMsg mag );
-  void showThreshold( SMsg mas );
-  void showCalibration( SMsg mas );
-  void showDynamicRange( SMsg msg );
-  void showPreAMPGain( SMsg msg );
-  void getMCALen( SMsg msg );
-  void getMCASettings( int ch );
-  void newROIStart( const QString &newv );
-  void newROIEnd( const QString &newv );
-  void showCurrentValues( int, int );
-  void setNewROI( int, int );
-  void clearMCA( void );
-  void RealTimeIsSelected( void );
-  void LiveTimeIsSelected( void );
-  void saveMCAData( void );
+//  void StartMCA( void );
+//  void MCAChSelected( int i );
+//  void showPeakingTime( SMsg mag );
+//  void showThreshold( SMsg mas );
+//  void showCalibration( SMsg mas );
+//  void showDynamicRange( SMsg msg );
+//  void showPreAMPGain( SMsg msg );
+//  void getMCALen( SMsg msg );
+//  void getMCASettings( int ch );
+//  void newROIStart( const QString &newv );
+//  void newROIEnd( const QString &newv );
+//  void showCurrentValues( int, int );
+//  void setNewROI( int, int );
+//  void clearMCA( void );
+//  void RealTimeIsSelected( void );
+//  void LiveTimeIsSelected( void );
+//  void saveMCAData( void );
   //  void saveMCAData0( QString fname, aMCASet *set );
   //  void WriteMCAHead( QTextStream &out, aMCASet *set );
   //  void WriteMCAData( QTextStream &out, aMCASet *set );
@@ -741,13 +744,13 @@ private slots:
   void SelectedWBFN( const QString &fname );
   void SelectedRBFN( const QString &fname );
 
-  void setPreAMPGains( void );
+//  void setPreAMPGains( void );
   //  void SelSSDs0( void );
   //  void SelSSDs20( void );
   void SelectedNDFN( const QString &fname );
   void NewRpt( void );
-  void setAllROIs( void );
-  void newMaxMCAEnergy( void );
+//  void setAllROIs( void );
+//  void newMaxMCAEnergy( void );
 
   void newSensSelectedForI0( int index );
   void newSensSelectedForI1( int index );
@@ -775,7 +778,7 @@ private slots:
   void moveToATab( int tab );
   void NoticeSelectedStats( int tab );
   //  void doPeakFit( void );
-  void ReadLowerLimitSetting( void );
+//  void ReadLowerLimitSetting( void );
   void DTAutoCalibStart( void );
   void SSDEngAutoCalibStart( void );
   void MoveToNewCaribEnergy( void );
@@ -798,7 +801,7 @@ private slots:
   void MeasSequence( void );
   void ScanSequence( void );
   void MonSequence( void );
-  void MCASequence( void );
+//  void MCASequence( void );
   void MeasDarkSequence( void );
 
   void TryToNoticeCurrentView( void );
@@ -810,7 +813,7 @@ private slots:
   void setEncNewTh( QString orig, QString newv );
   void SetNewGases( void );
   //  void showMCAs( void );
-  void nowFitStat( QString &stat );
+//  void nowFitStat( QString &stat );
 
   // QXafs
   void ToggleQXafsMode( bool f );
@@ -858,7 +861,7 @@ private slots:
   void S2DSetROIs( void );
   //  void S2DReCalcMap0( void );
   void ansToGetNewMCAView( S2DB *s2db );
-  void ReCalcS2DMap( void );
+  void ReCalcS2DMap( SetUpSFluo *ssfluo );
 
   /* AutoSequence */
   void AutoSequence0( void );
@@ -881,8 +884,9 @@ private slots:
   void RcvEvAll( SMsg msg );
   void alarmOn( void );
   void alarmOff( void );
+
   
- signals:
+signals:
   void SelectedSSD( int i, bool f );
   void SelectedAGB( int i, bool f );
   //  void GiveNewView( QObject *to, ViewCTRL *view );

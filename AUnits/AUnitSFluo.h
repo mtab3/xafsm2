@@ -1,6 +1,6 @@
 
-#ifndef AUNITXMAP_H
-#define AUNITXMAP_H
+#ifndef AUNITSFLUO_H
+#define AUNITSFLUO_H
 
 #include "ASensor.h"
 #include "XMAPHead.h"
@@ -11,7 +11,7 @@ enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGE
 #define AXMAPBUF    ( XMAPHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
 #define XMAPBUFSIZE ( AXMAPBUF * 19 )       // AMCABUF * 19 ch
 
-class AUnitXMAP : public ASensor
+class AUnitSFluo : public ASensor
 {
   Q_OBJECT
 
@@ -47,12 +47,12 @@ class AUnitXMAP : public ASensor
   void resetVectors( int chs );
   
  public:
-  AUnitXMAP( void );
+  AUnitSFluo( QObject *p = NULL );
 
   bool InitSensor( void );
   void init0( void );
   void _setEnable( bool enable );
-  void ConnectToXMAPDataLinkServer( QString host, qint16 port );
+  void ConnectToSFluoDataLinkServer( QString host, qint16 port );
 
   bool GetValue0( void );
   bool GetValue02( void );

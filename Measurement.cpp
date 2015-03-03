@@ -227,8 +227,8 @@ void MainWindow::onMeasFinishWorks( void )
 {
   MPSet.finalRpt = MeasR + 1;
   MPSet.finalPnt = MeasP;
-  SelRealTime->setChecked( SvSelRealTime );
-  SelLiveTime->setChecked( SvSelLiveTime );
+  SSFluo0->B_SelRealTime()->setChecked( SvSelRealTime );
+  SSFluo0->B_SelLiveTime()->setChecked( SvSelLiveTime );
   MeasPause->setEnabled( false );
   MeasViewC->setDeletable( true );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
@@ -382,7 +382,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     sum = 0;
     for ( int j = 0; j < SFluo->chs(); j++ ) {
       double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
-      if ( SELBs2->isSelected(j) ) // 和を取るのは選択された SSD だけ
+      if ( SSFluo0->selBs2()->isSelected(j) ) // 和を取るのは選択された SSD だけ
 	sum += v;
       MeasView->NewPoint( DLC, GoToKeV, v );
       DLC++;
@@ -491,7 +491,7 @@ void MainWindow::newSSDChSelection( int ch, bool f )
 
   if ( SFluo != NULL ) SFluo->setSSDUsingCh( ch, f );
   ReCalcXAFSWithMCA();
-  ReCalcS2DMap();
+  ReCalcS2DMap( SSFluo0 );
   
   if ( SFluoLine < 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;
@@ -505,7 +505,7 @@ void MainWindow::newSSDChSelection( int ch, bool f )
   }
 
   for ( int l = 0; l < SFluo->chs(); l++ ) {  // 選択し直された SSD の ch に関して
-    if ( SELBs2->isSelected(l) ) {
+    if ( SSFluo0->selBs2()->isSelected(l) ) {
       y = MeasView->GetYp( SFluoLine + 1 + l );
       for ( int i = 0; i < points; i++ ) {  // 合計をとりなおす
 	sum[i] += y[i];

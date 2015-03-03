@@ -1,7 +1,7 @@
 
-#include "AUnitXMAP2.h"
+#include "AUnitSFluo2.h"
 
-void AUnitXMAP2::init0( void )
+void AUnitSFluo2::init0( void )
 {
   connect( s, SIGNAL( AnsSetPresetValue( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -10,22 +10,22 @@ void AUnitXMAP2::init0( void )
   s->SendCMD2( "Init", "System", "flgon", DevCh );
 }
 
-double AUnitXMAP2::stat( STATELM i )
+double AUnitSFluo2::stat( STATELM i )
 {
-  return ((AUnitXMAP*)TheParent)->stat( Ch.toInt(), i );
+  return ((AUnitSFluo*)TheParent)->stat( Ch.toInt(), i );
 }
 
-void AUnitXMAP2::getNewValue( QString )
+void AUnitSFluo2::getNewValue( QString )
 {
-  Value = QString::number( ((AUnitXMAP*)TheParent)->getCountsInROI().at( Ch.toInt() ) );
+  Value = QString::number( ((AUnitSFluo*)TheParent)->getCountsInROI().at( Ch.toInt() ) );
 }
 
-void AUnitXMAP2::getNewDark( double )
+void AUnitSFluo2::getNewDark( double )
 {
-  Dark = ((AUnitXMAP*)TheParent)->getDarkCountsInROI().at( Ch.toInt() );
+  Dark = ((AUnitSFluo*)TheParent)->getDarkCountsInROI().at( Ch.toInt() );
 }
 
-double AUnitXMAP2::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
+double AUnitSFluo2::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   busy2On( Dev, "SetTime" );
   s->SendCMD2( Uid, Dev, "RunStop" );   // $B%3%^%s%IO"B3H/9T2DG=$+(B? $B$$$A$*$&$$$1$F$k(B
@@ -35,7 +35,7 @@ double AUnitXMAP2::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%
   return setTime;
 }
 
-bool AUnitXMAP2::SetRealTime( double val )
+bool AUnitSFluo2::SetRealTime( double val )
 {
   bool rv = false;
 

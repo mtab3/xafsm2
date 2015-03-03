@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector>
 
-#include "AUnits/AUnitXMAP.h"
+#include "AUnits/AUnitSFluo.h"
 
 class KeV2Pix : public QObject
 {

@@ -1,7 +1,7 @@
 
-#include "AUnitXMAP.h"
+#include "AUnitSFluo.h"
 
-AUnitXMAP::AUnitXMAP( void )
+AUnitSFluo::AUnitSFluo( QObject *p ) : ASensor( p )
 {
   SSDChs = 19;
   McaLength = 2048;    // !!
@@ -26,7 +26,7 @@ AUnitXMAP::AUnitXMAP( void )
   MCAStats.clear();
 }
 
-void AUnitXMAP::resetVectors( int chs )
+void AUnitSFluo::resetVectors( int chs )
 {
   MCARealTime.clear();
   MCALiveTime.clear();
@@ -54,13 +54,13 @@ void AUnitXMAP::resetVectors( int chs )
   }
 }
 
-void AUnitXMAP::_setEnable( bool /*enable*/ )
+void AUnitSFluo::_setEnable( bool /*enable*/ )
 {
   connectingDLink = false;    
   // $B$3$N(B setEnable $B$KB3$$$F(B init0 $B$,8F$P$l$k$O$:$J$N$G!"$3$3$G$d$i$J$/$F$bNI$$$O$:(B
 }
 
-void AUnitXMAP::init0( void )
+void AUnitSFluo::init0( void )
 {
   connect( s, SIGNAL( AnsSetPresetType( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -91,20 +91,20 @@ void AUnitXMAP::init0( void )
   s->SendCMD2( "Init", Dev, "GetDataLinkCh" );
 }
 
-void AUnitXMAP::ReactGetDataLinkCh( SMsg msg )
+void AUnitSFluo::ReactGetDataLinkCh( SMsg msg )
 {
   if ( msg.From() == Dev ) {
     if ( msg.Vals().count() == 2 ) {
       busy2Off( Dev );
       DataLinkHostName = msg.Vals().at(0);
       DataLinkHostPort = msg.Vals().at(1).toInt();
-      ConnectToXMAPDataLinkServer( DataLinkHostName, DataLinkHostPort );
+      ConnectToSFluoDataLinkServer( DataLinkHostName, DataLinkHostPort );
       qDebug() << "Connecting to SSD server" << DataLinkHostName << DataLinkHostPort;
     }
   }
 }
 
-void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
+void AUnitSFluo::ConnectToSFluoDataLinkServer( QString host, qint16 port )
 {
   if ( !connectingDLink ) {
     connectingDLink = true;                          // new
@@ -124,7 +124,7 @@ void AUnitXMAP::ConnectToXMAPDataLinkServer( QString host, qint16 port )
   }
 }
 
-bool AUnitXMAP::InitSensor( void )
+bool AUnitSFluo::InitSensor( void )
 {
   bool rv = false;
 
@@ -157,7 +157,7 @@ bool AUnitXMAP::InitSensor( void )
   return rv;
 }
 
-double AUnitXMAP::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
+double AUnitSFluo::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   busy2On( Dev, "SetTime" );
   s->SendCMD2( Uid, Dev, "RunStop" );   // $B%3%^%s%IO"B3H/9T2DG=$+(B? $B$$$A$*$&$$$1$F$k(B
@@ -167,7 +167,7 @@ double AUnitXMAP::SetTime( double dtime ) // in sec, $B$3$N4X?t$O!"J#?t%9%F%C%W
   return setTime;
 }
 
-bool AUnitXMAP::GetValue( void )
+bool AUnitSFluo::GetValue( void )
 {
   busy2On( Dev, "GetValue" );
   // $BJQB'(B : $B$3$N(B IsBusy2 $B$O(B @GetMCAs Ok: $B$r<u$1$F$b>C$5$J$$(B
@@ -178,7 +178,7 @@ bool AUnitXMAP::GetValue( void )
   return false;
 }
 
-bool AUnitXMAP::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
+bool AUnitSFluo::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
 {
   bool rv = false;
 
@@ -206,7 +206,7 @@ bool AUnitXMAP::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%
 // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
 // $BJL%P!<%8%g%s!"(BpresetTime $BEy$N=*N;>r7oL5$7$K$7$F$"$k(B
 // $BO"B3%9%-%c%s(B ($B:9J,$GCM$r8+$k(B)$B%b!<%IMQ(B
-bool AUnitXMAP::GetValue02( void )
+bool AUnitSFluo::GetValue02( void )
 {
   bool rv = false;
 
@@ -238,7 +238,7 @@ bool AUnitXMAP::GetValue02( void )
 
 /* $BO"B3%9%-%c%sBP1~(B */
 // $BO"B3%9%-%c%s$N8e$K%N!<%^%k%b!<%I$KLa$9(B
-bool AUnitXMAP::Close( void )
+bool AUnitSFluo::Close( void )
 {
   busy2On( Dev, "GetValue0c0" );
   s->SendCMD2( Uid, Dev, "RunStop" );
@@ -247,22 +247,22 @@ bool AUnitXMAP::Close( void )
 }
 
 
-void AUnitXMAP::RunStart( void )
+void AUnitSFluo::RunStart( void )
 {
   s->SendCMD2( Uid, Dev, "RunStart" );
 }
 
-void AUnitXMAP::RunStop( void )
+void AUnitSFluo::RunStop( void )
 {
   s->SendCMD2( Uid, Dev, "RunStop" );
 }
 
-void AUnitXMAP::RunResume( void )
+void AUnitSFluo::RunResume( void )
 {
   s->SendCMD2( Uid, Dev, "Resume" );
 }
 
-bool AUnitXMAP::GetMCAs( void )
+bool AUnitSFluo::GetMCAs( void )
 {
   busy2On( Dev2, "GetMCAs" );
   // $BJQB'(B : $B$3$N(B IsBusy2 $B$O(B @GetMCAs Ok: $B$r<u$1$F$b>C$5$J$$(B
@@ -272,14 +272,14 @@ bool AUnitXMAP::GetMCAs( void )
   return false;
 }
 
-void AUnitXMAP::getMCALength( SMsg msg )
+void AUnitSFluo::getMCALength( SMsg msg )
 {
   if ( msg.From() == Dev ) {  //   // Check !!!!! DevCh/Drv
     McaLength = msg.Val().toInt();
   }
 }
 
-bool AUnitXMAP::GetStat( void )
+bool AUnitSFluo::GetStat( void )
 {
   bool rv = false;
 
@@ -289,7 +289,7 @@ bool AUnitXMAP::GetStat( void )
   return rv;
 }
 
-void AUnitXMAP::ReactGetStat( SMsg msg )
+void AUnitSFluo::ReactGetStat( SMsg msg )
 {
   if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {  // Check !!!!! DevCh/Drv
     busy2Off( Dev );
@@ -297,7 +297,7 @@ void AUnitXMAP::ReactGetStat( SMsg msg )
   }
 }
 
-double AUnitXMAP::stat( int ch, STATELM i )
+double AUnitSFluo::stat( int ch, STATELM i )
 {
   double rv = 0;
 
@@ -308,7 +308,7 @@ double AUnitXMAP::stat( int ch, STATELM i )
   return rv;
 }
 
-bool AUnitXMAP::SetRealTime( int ch, double val )
+bool AUnitSFluo::SetRealTime( int ch, double val )
 {
   bool rv = false;
 
@@ -319,7 +319,7 @@ bool AUnitXMAP::SetRealTime( int ch, double val )
   return rv;
 }
 
-bool AUnitXMAP::GetRealTime( int ch )
+bool AUnitSFluo::GetRealTime( int ch )
 {
   bool rv = false;
 
@@ -329,7 +329,7 @@ bool AUnitXMAP::GetRealTime( int ch )
   return rv;
 }
 
-void AUnitXMAP::ReactGetRealTime( SMsg msg )
+void AUnitSFluo::ReactGetRealTime( SMsg msg )
 {
   int ch;
 
@@ -340,13 +340,13 @@ void AUnitXMAP::ReactGetRealTime( SMsg msg )
   }
 }
 
-double AUnitXMAP::realTime( int ch )
+double AUnitSFluo::realTime( int ch )
 {
   return MCARealTime[ ch ];
 }
 
 #if 0
-bool AUnitXMAP::SetLiveTime( double val )
+bool AUnitSFluo::SetLiveTime( double val )
 {
   bool rv = false;
 
@@ -360,7 +360,7 @@ bool AUnitXMAP::SetLiveTime( double val )
 }
 #endif
 
-bool AUnitXMAP::SetLiveTime( int ch, double val )
+bool AUnitSFluo::SetLiveTime( int ch, double val )
 {
   bool rv = false;
 
@@ -371,7 +371,7 @@ bool AUnitXMAP::SetLiveTime( int ch, double val )
   return rv;
 }
 
-bool AUnitXMAP::GetLiveTime( int ch )
+bool AUnitSFluo::GetLiveTime( int ch )
 {
   bool rv = false;
 
@@ -381,7 +381,7 @@ bool AUnitXMAP::GetLiveTime( int ch )
   return rv;
 }
 
-void AUnitXMAP::ReactGetLiveTime( SMsg msg )
+void AUnitSFluo::ReactGetLiveTime( SMsg msg )
 {
   int ch;
 
@@ -392,12 +392,12 @@ void AUnitXMAP::ReactGetLiveTime( SMsg msg )
   }
 }
 
-double AUnitXMAP::liveTime( int ch )
+double AUnitSFluo::liveTime( int ch )
 {
   return MCALiveTime[ ch ];
 }
 
-void AUnitXMAP::SetLowLimit( int ch, int llpix )
+void AUnitSFluo::SetLowLimit( int ch, int llpix )
 {
   if ( ch < chs() ) {
     //    MCALowLimit[ ch ] = llpix;
@@ -408,7 +408,7 @@ void AUnitXMAP::SetLowLimit( int ch, int llpix )
   }
 }
 
-void AUnitXMAP::setDark( void )
+void AUnitSFluo::setDark( void )
 {
   Dark = Value.toDouble() / ( ( setTime != 0 ) ? setTime : 1 );
   DarkCountsInROI.clear();
@@ -425,21 +425,21 @@ void AUnitXMAP::setDark( void )
 }
 
 
-quint32 AUnitXMAP::getAMCAdata( int ch, int pixel )
+quint32 AUnitSFluo::getAMCAdata( int ch, int pixel )
 {
   if ( !MCAsReady )
     return 0;
   return *((quint32 *)( MCAs + AXMAPBUF * ch + XMAPHEAD ) + pixel );
 }
 
-quint32 *AUnitXMAP::getAMCA( int ch )
+quint32 *AUnitSFluo::getAMCA( int ch )
 {
   if ( !MCAsReady )
     return NULL;
   return (quint32 *)( MCAs + AXMAPBUF * ch + XMAPHEAD );
 }
 
-XMAPHead AUnitXMAP::getAMCAHead( int ch )
+XMAPHead AUnitSFluo::getAMCAHead( int ch )
 {
   XMAPHead rv;
 
@@ -454,12 +454,12 @@ XMAPHead AUnitXMAP::getAMCAHead( int ch )
   return rv;
 }
 
-void AUnitXMAP::setGain( int ch, double gain )
+void AUnitSFluo::setGain( int ch, double gain )
 {
   s->SendCMD2( Uid, Dev, QString( "SetPreAMPGain %1 %2" ).arg( ch ).arg( gain ) );
 }
 
-void AUnitXMAP::ReceiveValues( SMsg msg )
+void AUnitSFluo::ReceiveValues( SMsg msg )
 {
   QString buf;
 
@@ -490,7 +490,7 @@ void AUnitXMAP::ReceiveValues( SMsg msg )
   }
 }
 
-void AUnitXMAP::SetIsBusyByMsg( SMsg msg )
+void AUnitSFluo::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == Dev )
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
@@ -503,7 +503,7 @@ void AUnitXMAP::SetIsBusyByMsg( SMsg msg )
   }
 }
 
-void AUnitXMAP::receiveMCAs( void )
+void AUnitSFluo::receiveMCAs( void )
 {
   uint bytes0, bytes;
 

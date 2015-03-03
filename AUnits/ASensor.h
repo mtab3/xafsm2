@@ -20,7 +20,7 @@ class ASensor : public AUnit0
   int SelectedRange;
 
  public:
-  ASensor( void );
+  ASensor( QObject *p = NULL );
 
   void init( void );
   virtual void init0( void ) {};

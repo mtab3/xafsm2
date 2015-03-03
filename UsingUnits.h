@@ -14,6 +14,7 @@ class UsingUnit : public QObject
  public:
   UsingUnit( QString user, AUnit0 *unit ) { User = user; Unit = unit; };
 
+  AUnit0 *unit( void ) { return Unit; };
   bool isUnit( AUnit0 *unit ) { return ( Unit == unit ); };
   bool isParentUnit( AUnit0 *unit )
   {
@@ -57,6 +58,8 @@ class UsingUnits : public QObject
 	return false;
     }
     uUnits << new UsingUnit( user, unit );
+    unit->setUsing( true );
+    unit->setUserName( user );
     return true;
   };
 
@@ -64,6 +67,8 @@ class UsingUnits : public QObject
     for ( int i = 0; i < uUnits.count(); i++ ) {
       if ( uUnits[i]->isUniq( user, unit ) ) {
 	uUnits.remove( i );
+	unit->setUsing( false );
+	unit->setUserName( "" );
 	return true;
       }
     }
@@ -73,11 +78,23 @@ class UsingUnits : public QObject
   void removeUnits( QString user ) {
     for ( int i = uUnits.count() - 1; i >= 0; i-- ) {
       if ( uUnits[i]->user() == user ) {
+	uUnits[i]->unit()->setUsing( false );
+	uUnits[i]->unit()->setUserName( "" );
+	uUnits.remove( i );
+      }
+    }
+  }
+  void removeUnits( QString user, AUnit0 *unit ) {
+    for ( int i = uUnits.count() - 1; i >= 0; i-- ) {
+      if (( uUnits[i]->user() == user )&&( uUnits[i]->unit() == unit )) {
+	uUnits[i]->unit()->setUsing( false );
+	uUnits[i]->unit()->setUserName( "" );
 	uUnits.remove( i );
       }
     }
   }
 
+  
   bool isAnyOneUsedBy( QString user ) {
     for ( int i = 0; i < uUnits.count(); i++ ) {
       if ( uUnits[i]->user() == user )
