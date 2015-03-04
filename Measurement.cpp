@@ -509,13 +509,13 @@ void MainWindow::newSSDChSelection( int ch, bool f )
     if ( SSFluos[dNo]->selBs2() == sender() ) 
       break;
   }
-  if ( dNo < SFluos.count() ) {
-    SFluos[dNo]->setSSDUsingCh( ch, f );
-    ReCalcS2DMap( SSFluos[dNo] );
-  }
+  if ( dNo < SFluos.count() )
+    return;
+  SFluos[dNo]->setSSDUsingCh( ch, f );
+  ReCalcS2DMap( SSFluos[dNo] );
   ReCalcXAFSWithMCA();
   
-  if ( SFluoLine < 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
+  if ( ! isUseSFluo() )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;
   if ( MeasView == NULL )                // View が割り振られてなければ何もしない
     return;
@@ -526,15 +526,15 @@ void MainWindow::newSSDChSelection( int ch, bool f )
     sum[i] = 0;
   }
 
-  for ( int l = 0; l < SFluo->chs(); l++ ) {  // 選択し直された SSD の ch に関して
-    if ( SSFluo0->selBs2()->isSelected(l) ) {
-      y = MeasView->GetYp( SFluoLine + 1 + l );
+  for ( int l = 0; l < SFluos[dNo]->chs(); l++ ) {  // 選択し直された SSD の ch に関して
+    if ( SSFluos[dNo]->selBs2()->isSelected(l) ) {
+      y = MeasView->GetYp( SFluoDispLines[dNo] + 1 + l );
       for ( int i = 0; i < points; i++ ) {  // 合計をとりなおす
 	sum[i] += y[i];
       }
     }
   }
-  y = MeasView->GetYp( SFluoLine );
+  y = MeasView->GetYp( SFluoDispLines[dNo] );
   for ( int i = 0; i < points; i++ ) {
     y[i] = sum[i];
   }
@@ -543,9 +543,9 @@ void MainWindow::newSSDChSelection( int ch, bool f )
 
 void MainWindow::SaveI0inMPSet( void )
 {
-  if ( ! MPSet.isSFluo )
+  if ( MPSet.isNoSFluo )
     return;
-
+  
   double *i0 = new double [ MPSet.totalPoints ];
 
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {

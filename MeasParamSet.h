@@ -12,6 +12,7 @@ struct MeasPSet {
   QString fname00;
   bool isI1;
   QVector<bool> isSFluos;
+  bool isNoSFluo;
   int totalPoints;
   int rpt;
   int finalRpt;

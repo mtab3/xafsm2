@@ -55,6 +55,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   QString *ROIEnd;
 
   QString NonSelC, SelectC;
+  bool svRT, svLT;
 
  public:
   SetUpSFluo( QWidget *p = NULL );
@@ -73,6 +74,10 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   //  QPushButton *B_ROIsetAll( void ) { return ROIsetAll; };
   QRadioButton *B_SelRealTime( void ) { return SelRealTime; };
   QRadioButton *B_SelLiveTime( void ) { return SelLiveTime; };
+  void saveTimeModes( void )
+  { svRT = SelRealTime->isChecked(); svLT = SelLiveTime->isChecked(); };
+  void recoverTimeModes( void )
+  { SelRealTime->setChecked( svRT ); SelLiveTime->setChecked( svLT ); };
   QRadioButton *B_ShowAlwaysSelElm( void ) { return ShowAlwaysSelElm; };
   QRadioButton *B_AutoROIsetAll( void ) { return AutoROIsetAll; };
   bool isInMeas( void ) { return inMCAMeas; };

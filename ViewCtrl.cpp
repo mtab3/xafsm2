@@ -286,14 +286,14 @@ MwSSDSetUp.cpp:    getNewMCAView();
 ReadData.cpp:  getNewMCAView();
 ********************************************************/
 
-void MainWindow::getNewMCAView( void )
+void MainWindow::getNewMCAView( SetUpSFluo *ssfluo )
 {
 #if 0    // とりあえず
   if ( cMCAViewTabNo >= 0 )
     if ( ViewCtrls[ cMCAViewTabNo ]->getDType() == MCADATA )
       return;
 #endif
-  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA ) ) == NULL ) 
+  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView() ) ) == NULL ) 
     return;
   // 他のタイプの View は ViewCTRL 内で付けた名前を使ってる
   ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
@@ -303,8 +303,8 @@ void MainWindow::getNewMCAView( void )
   
   //  MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
   //  validMCAData = true;
-  SSFluo0->setCViewTabNo( ViewTab->currentIndex() );
-  SSFluo0->setViewStats();
+  ssfluo->setCViewTabNo( ViewTab->currentIndex() );
+  ssfluo->setViewStats();
   //McaView->setLog( SetDisplayLog->isChecked() );
   //  view->SetMCACh( cMCACh );
   view->makeValid( true );

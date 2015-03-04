@@ -53,26 +53,29 @@ void MainWindow::MonSequence( void )
     MonitorView->update();
 
     if ( conds->isRecordAllSSDChs() ) {
-      if ( SFluo != NULL ) {
-	QFile f( "ssd.dat" );
-	f.open( QIODevice::Append | QIODevice::Text );
-	QTextStream out( &f );
-	QVector<quint64> CinROI = SFluo->getCountsInROI();
-	QVector<quint64> CAll =  SFluo->getCountsAll();
-	QVector<quint64> TotalE = SFluo->getCountsAll();
-	QVector<double> ICRs = SFluo->getICRs();
-	QString buf;
-	out << T->elapsed();
-	for ( int i = 0; i < CinROI.count(); i++ )
-	  buf += QString( " %1" ).arg( CinROI[i] );
-	for ( int i = 0; i < CAll.count(); i++ )
-	  buf += QString( " %1" ).arg( CAll[i] );
-	for ( int i = 0; i < TotalE.count(); i++ )
-	  buf += QString( " %1" ).arg( TotalE[i] );
-	for ( int i = 0; i < ICRs.count(); i++ )
-	  buf += QString( " %1" ).arg( ICRs[i] );
-	out << buf << "\n";
-	f.close();
+      for ( int i = 0; i < mMonUnits.count(); i++ ) {
+	int dNo = 0;
+	if ( ( dNo = whichSFluoUnit( mMonUnits.at(i) ) ) >= 0 ) {
+	  QFile f( QString( "ssd%1.dat" ).arg( dNo ) );
+	  f.open( QIODevice::Append | QIODevice::Text );
+	  QTextStream out( &f );
+	  QVector<quint64> CinROI = SFluos[dNo]->getCountsInROI();
+	  QVector<quint64> CAll =  SFluos[dNo]->getCountsAll();
+	  QVector<quint64> TotalE = SFluos[dNo]->getCountsAll();
+	  QVector<double> ICRs = SFluos[dNo]->getICRs();
+	  QString buf;
+	  out << T->elapsed();
+	  for ( int i = 0; i < CinROI.count(); i++ )
+	    buf += QString( " %1" ).arg( CinROI[i] );
+	  for ( int i = 0; i < CAll.count(); i++ )
+	    buf += QString( " %1" ).arg( CAll[i] );
+	  for ( int i = 0; i < TotalE.count(); i++ )
+	    buf += QString( " %1" ).arg( TotalE[i] );
+	  for ( int i = 0; i < ICRs.count(); i++ )
+	    buf += QString( " %1" ).arg( ICRs[i] );
+	  out << buf << "\n";
+	  f.close();
+	}
       }
     }
 

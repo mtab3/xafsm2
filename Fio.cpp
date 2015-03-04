@@ -523,7 +523,8 @@ void MainWindow::WriteInfoFile( void )
   for ( int i = 0; i < GSBs.count(); i++ )
     out << QString( " \"%1\"" ).arg( GSBs[i]->isChecked() );
   out << endl;
-  
+
+#if 0                    // 何を記録したかったのか謎
   if ( isUseSFluo() ) {
     int CHs = SFluoCHs();
     out << "Sum Up Channels: " << SFluoLine << " ";
@@ -532,7 +533,8 @@ void MainWindow::WriteInfoFile( void )
     }
     out << endl;
   }
-
+#endif
+  
   f.close();
 }
 
@@ -546,7 +548,7 @@ void MainWindow::WriteInfoFile2( void )
     return;
   QTextStream out( &f );
 
-  if ( isSFluo ) {
+  if ( isUseSFluo() ) {
     out << "Finally Used SSD Channels:";
     for ( int i = 0; i < UseSFluos.count(); i++ ) {
       if ( UseSFluos[i]->isChecked() ) {

@@ -237,6 +237,7 @@ private:
   void SetUpSensorComboBoxes( void );
   bool isUseSFluo( void );
   bool isASFluoUnit( AUnit0 *unit );
+  int whichSFluoUnit( AUnit0 *unit );
   int SFluoCHs( void );
   
   QStringList DriverList;
@@ -320,8 +321,8 @@ private:
   ViewCTRL *ScanViewC;
   XYView *ScanView;
   QFileDialog *scanFSel;
-  int SFluoLine;
-  bool isSI1, isSFluo;
+  QVector<int> SFluoDispLines;
+  bool isSI1;
   //  bool useFixedDelta;
   double SettingMainTh;
   void SetMainThCenter( void );
@@ -579,7 +580,7 @@ private:
   bool theSensorIsAvailable( ASensor *as );
   void ShowQTime( double dtime, double WidthInPuls );
 
-  void getNewMCAView( void );
+  void getNewMCAView( SetUpSFluo *ssfluo );
 
   /* Auto Sequence */
   void setupAutoSequence( void );

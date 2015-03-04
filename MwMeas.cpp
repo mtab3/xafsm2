@@ -248,9 +248,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasView = NULL;
 
-  connect( SSFluo0->selBs2(), SIGNAL( selectedACh( int, bool ) ),
-	   this, SLOT( newSSDChSelection( int, bool ) ), //ReCalcSSDTotal( int, bool ) ),
-	   Qt::UniqueConnection );
+  for ( int i = 0; i < SSFluos.count(); i++ ) {
+    connect( SSFluos[i]->selBs2(), SIGNAL( selectedACh( int, bool ) ),
+	     this, SLOT( newSSDChSelection( int, bool ) ),
+	     Qt::UniqueConnection );
+  }
 
   darkTable = new DarkTable;
   connect( ShowMeasuredBack, SIGNAL( clicked() ), this, SLOT( ShowMB() ),
@@ -320,6 +322,18 @@ int MainWindow::SFluoCHs( void )
   return ch;
 }
 
+int MainWindow::whichSFluoUnit( AUnit0 *unit )
+{
+  int rv;
+  for ( rv = 0; rv < SFluos.count(); rv++ ) {
+    if ( SFluos[rv] == unit )
+      break;
+  }
+  if ( rv < SFluos.count() )
+    return rv;
+  return -1;
+}
+
 void MainWindow::ShowOtherOptions( void )
 {
   MainTab->setCurrentIndex( MainTab->indexOf( StatTab ) );
@@ -382,10 +396,10 @@ void MainWindow::SetUpSensorComboBoxes( void )
       
       SelectI0->addItem( name );  I0Sensors << ASensors[i];
       SelectI1->addItem( name );  I1Sensors << ASensors[i];
-      if ( ASensors.at(i) != SFluo ) {
+      if ( ! isASFluoUnit( ASensors.at(i) ) ) {
 	SelectAux1->addItem( name );   A1Sensors << ASensors[i];
       }
-      if ( ASensors.at(i) != SFluo ) {
+      if ( ! isASFluoUnit( ASensors.at(i) ) ) {
 	SelectAux2->addItem( name );   A2Sensors << ASensors[i];
       }
       
@@ -1115,8 +1129,8 @@ bool MainWindow::CheckDetectorSelection( void )
     NoOfSelectedSens++;
     TransModeIs = true;
   }
-  if ( Use19chSSD->isChecked() ) {
-    NoOfSelectedSens++;
+  if ( isUseSFluo() ) {
+    NoOfSelectedSens += SFluoCHs();
     FluoModeIs = true;
   }
   if ( UseAux1->isChecked() ) {
@@ -1144,7 +1158,7 @@ bool MainWindow::CheckDetectorSelection( void )
     if ( UseI1->isChecked() ) {
       MeasFileType = TRANS;  // I1 を使ってれば常に Trans にしてしまう。
     }
-    if ( Use19chSSD->isChecked() ) {
+    if ( isUseSFluo() ) {
       MeasFileType = FLUO;
     }
     if ( UseAux1->isChecked() ) {
@@ -1162,7 +1176,7 @@ bool MainWindow::CheckDetectorSelection( void )
       }
     }
   }
-  
+
   // MeasFileType = 5 には、「2つ以上検出器を使ってる」
   // という意味も含まれてしまってるので
   // これはとりあえず保存して、別途 MeasFileType2 を作り
@@ -1222,8 +1236,8 @@ void MainWindow::StartMeasurement( void )
 
   if ( !inMeas ) {           // 既に測定が進行中でなければ
     EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
-    SFluoLine = -1;
-    isSFluo = isSI1 = false;
+    SFluoDispLines.clear();
+    isSI1 = false;
 
     QString User;
     if ( ( User = UUnits.user( MMainTh ) ) != "" ) {
@@ -1256,12 +1270,15 @@ void MainWindow::StartMeasurement( void )
     if ( CheckDetectorSelection() == false ) { // I0 以外に一つは選ばれてないとダメ
       return;
     }
-    if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
-      if ( SSFluo0->isInMeas() ) {
-        QString msg = tr( "Meas cannot Start : in MCA measurement" );
-        statusbar->showMessage( msg, 2000 );
-        NewLogMsg( msg );
-        return;
+    for ( int i = 0; i < UseSFluos.count(); i++ ) { // SSD系を使うときはMCAの測定中はダメ
+      if ( UseSFluos[i]->isChecked() ) {
+	if ( SSFluos[i]->isInMeas() ) {
+	  QString msg = tr( "Meas cannot Start : %1 is in MCA measurement" )
+	    .arg( SFluos[i]->name() );
+	  statusbar->showMessage( msg, 2000 );
+	  NewLogMsg( msg );
+	  return;
+	}
       }
     }
 
@@ -1281,8 +1298,8 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
         return;
       }
-      if ( Use19chSSD->isChecked() ) {     // 今 QXafs は透過専用なので、SSDは使えない
-        statusbar->showMessage( tr( "19ch SSD can not be used for QXAFS" ), 2000 );
+      if ( isUseSFluo() ) {     // 今 QXafs は透過専用なので、SSDは使えない
+        statusbar->showMessage( tr( "SSD/SDD can not be used for QXAFS" ), 2000 );
         return;
       }
       // Check dwell time per point
@@ -1322,8 +1339,15 @@ void MainWindow::StartMeasurement( void )
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
-    SvSelRealTime = SSFluo0->B_SelRealTime()->isChecked();
-    SvSelLiveTime = SSFluo0->B_SelLiveTime()->isChecked();
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      if ( UseSFluos[i]->isChecked() ) {
+	SSFluos[i]->saveTimeModes();
+#if 0
+	SvSelRealTime = SSFluo0->B_SelRealTime()->isChecked();
+	SvSelLiveTime = SSFluo0->B_SelLiveTime()->isChecked();
+#endif
+      }
+    }
     SvSelExtPattern = SelExtPattern->isChecked();
 
     MeasDispMode[ LC ] = I0;        // I0 にモードはないのでダミー
@@ -1341,22 +1365,27 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBFalse; aGsb.label = tr( "I1" ); GSBSs << aGsb;
       aGsb.stat = PBTrue;  aGsb.label = tr( "mu" ); GSBSs << aGsb;
     }
-    if ( Use19chSSD->isChecked() ) {
-      MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
-      MeasDispPol[ LC ] = 1;          // polarity +
-      mMeasUnits.addUnit( SFluo );
-      LC++;
-      isSFluo = true;
-      SFluoLine = GSBSs.count();
-      aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
-      for ( int i = 0; i < SFluo->chs(); i++ ) {
-        aGsb.stat = PBFalse;
-        aGsb.label = QString::number( i );
-        GSBSs << aGsb;
+    SFluoDispLines.clear();
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      if ( UseSFluos[i]->isChecked() ) {
+	MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
+	MeasDispPol[ LC ] = 1;          // polarity +
+	mMeasUnits.addUnit( SFluos[i] );
+	LC++;
+	SFluoDispLines << GSBSs.count();
+	aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
+	for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
+	  aGsb.stat = PBFalse;
+	  aGsb.label = QString( "%1:%1" ).arg( i ).arg( j );
+	  GSBSs << aGsb;
+	}
+	SFluos[i]->setSSDPresetType( "REAL" );
+	// SSD を使った XAFS 測定は強制的に Real Time
+	SSFluos[i]->B_SelRealTime()->setChecked( true );
+	SSFluos[i]->B_SelLiveTime()->setChecked( false );
+      } else {
+	SFluoDispLines << -1;
       }
-      SFluo->setSSDPresetType( "REAL" );   // SSD を使った XAFS 測定は強制的に Real Time
-      SSFluo0->B_SelRealTime()->setChecked( true );
-      SSFluo0->B_SelLiveTime()->setChecked( false );
     }
     if ( UseAux1->isChecked() ) {
       // 0 以外は全部 TRANS。ちょっと荒っぽい
@@ -1556,8 +1585,10 @@ void MainWindow::StartMeasurement( void )
 
     MeasChNo = mMeasUnits.count();         // 測定のチャンネル数
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
-    if ( Use19chSSD->isChecked() ) {
-      MeasChNo += ( SFluo->chs() -1 );
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      if ( UseSFluos[i]->isChecked() ) {
+	MeasChNo += ( SFluos[i]->chs() -1 );
+      }
     }
     if ( QXafsMode->isChecked() && ( Enc2 != NULL ) ) {
       MeasChNo -= 1;
@@ -1572,20 +1603,15 @@ void MainWindow::StartMeasurement( void )
     else
       FixedPositionMode = false;
 
-    if ( isSFluo ) {
-      //      if ( cMCAView == NULL ) {
-      getNewMCAView();
-      //      }
-#if 0
-      else {                     // その場しのぎ。もっと本質的なやり方があるはず
-	cMCAView = (MCAView*)(cMCAViewC->getView());
-      }
-#endif
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      if ( UseSFluos[i]->isChecked() ) 
+	getNewMCAView( SSFluos[i] );
       if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
-        XafsMCAMap.New( TotalPoints, SelRPT->value(), SFluo->length(), SFluo->chs() );
+        XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
+			    SFluos[i]->length(), SFluos[i]->chs() );
       else                        // そうでなければ 1スキャン分だけメモリ上に
-        XafsMCAMap.New( TotalPoints, 1, SFluo->length(), SFluo->chs() );
-                                  // SelRPT->value() --> 1
+        XafsMCAMaps[i].New( TotalPoints, 1, SFluos[i]->length(), SFluos[i]->chs() );
+      // SelRPT->value() --> 1
     }
 
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
@@ -1660,7 +1686,12 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
     ttp += BLKpoints[i]->text().toInt();
   }
   aSet->isI1 = UseI1->isChecked();
-  aSet->isSFluo = (( Use19chSSD->isChecked() )&&( SFluo != NULL ));
+  aSet->isNoSFluo = true;;
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+    aSet->isSFluos << UseSFluos[i]->isChecked();
+    if ( UseSFluos[i] )
+      aSet->isNoSFluo = false;
+  }
   aSet->totalPoints = ttp;
   aSet->rpt = SelRPT->value();
 
@@ -1919,8 +1950,7 @@ bool MainWindow::ParseAutoMode( void )
 
 void MainWindow::MoveInMeasView( int ix, double )
 {
-  if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo
-       ||( SSFluo0->McaView() == NULL )||( SSFluo0->McaData() == NULL ) )
+  if ( inMeas || ! MPSet.valid || MPSet.isNoSFluo )
     return;
   
   aMCASet *set;
@@ -1929,25 +1959,27 @@ void MainWindow::MoveInMeasView( int ix, double )
   if ( rpt < 0 )
     rpt = 0;
 
-  set = XafsMCAMap.aPoint( ix, SelRPT->value() - 1 );
-  if (( set == NULL ) || (! set->isValid() ))
-    return;
-
-  cnt = set->Ch[ SSFluo0->cCh() ].cnt;
-
-  for ( int i = 0; i < SSFluo0->length(); i++ ) {
-    SSFluo0->McaData()[i] = cnt[i];
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+    if ( UseSFluos[i]->isChecked() ) {
+      set = XafsMCAMaps[i].aPoint( ix, SelRPT->value() - 1 );
+      if (( set == NULL ) || (! set->isValid() ))
+	return;
+      
+      cnt = set->Ch[ SSFluos[i]->cCh() ].cnt;
+      
+      for ( int i = 0; i < SSFluos[i]->length(); i++ ) {
+	SSFluos[i]->McaData()[i] = cnt[i];
+      }
+      
+      SSFluos[i]->McaView()->update();
+    }
   }
-
-  SSFluo0->McaView()->update();
 }
 
 
 void MainWindow::ReCalcXAFSWithMCA( void )
 {
-  if ( inMeas || ! MPSet.valid || ! MPSet.isSFluo 
-       ||( SSFluo0->McaView() == NULL )
-       ||( SSFluo0->McaData()== NULL )||( MeasView == NULL ) )
+  if ( inMeas || ! MPSet.valid || MPSet.isNoSFluo ||( MeasView == NULL ) )
     return;
 
   QVector<double> darks = SFluo->getDarkCountsInROI();

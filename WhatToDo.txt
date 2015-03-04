@@ -6,7 +6,6 @@
 ○ MainWindow.cpp で S2DB に SFluos[0] の k2p を決め打ちで渡してるのをやめて
    QVector<AUnitSFluos*> SFluos を渡してる。
 
-
 ○ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
 　実際にはその時使う検出器の k2p にしないとダメ
     S2DBase->setK2P( SSFluo0->K2P() );
