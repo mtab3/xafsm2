@@ -99,7 +99,7 @@ private:
   MouseC m;
 
 public:
-  MCAView( QWidget *parent = NULL );
+  MCAView( QWidget *p = NULL, QWidget *Parent = NULL );
   ~MCAView( void );
 
   QWidget *parent( void ) { return Parent; };

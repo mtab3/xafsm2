@@ -14,6 +14,9 @@ void MainWindow::setupSFluoRelated( void )
 	   this, SLOT( addAnUsingUnit( QString, AUnit0 * ) ), Qt::UniqueConnection );
   connect( SSFluo0, SIGNAL( removeUsingUnits( QString, AUnit0 * ) ),
 	   this, SLOT( removeUsingUnits( QString, AUnit0 * ) ), Qt::UniqueConnection );
+  connect( SSFluo0, SIGNAL( newCalibration() ), this, SLOT( newCalibration() ),
+	   Qt::UniqueConnection );
+
   SSFluo0->setFDBase( fdbase );
   
   // Calibration Tab
@@ -52,6 +55,8 @@ void MainWindow::setupSFluoRelated( void )
 	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
+
+  SSFluo0->setupSetupSFluo( s, &FSTATMsgs );
 }
 
 void MainWindow::addAnUsingUnit( QString id, AUnit0 *unit )

@@ -9,14 +9,28 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
 
   s = NULL;
   SFluo0 = new AUnitSFluo( this );
-  mcaView = new MCAView( this );
+  mcaView = new MCAView( NULL, this );
   k2p = new KeV2Pix;
   MCATimer = new QTimer;
   fdbase = NULL;
 
-  mcaView->setHidden( true );
   mcaView->setKeV2Pix( k2p );
-  
+  mcaView->setShowElements( DispElmNames->isChecked() );
+  mcaView->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
+  mcaView->setShowElementsEnergy( ShowElmEnergy->isChecked() );
+  mcaView->setShowDiff( ShowDiff->isChecked() );
+  mcaView->setShowSmoothed( ShowSmoothed->isChecked() );
+  mcaView->setFitToRaw( FitToRaw->isChecked() );
+  mcaView->setLog( SetDisplayLog->isChecked() );
+  mcaView->setMaxEnergy( MaxMCAEnergy );
+  mcaView->setMaxLoop( MaxLoop->text().toInt() );
+  mcaView->setDampFact( DampFact->text().toDouble() );
+  mcaView->setPrec1( Prec1->text().toDouble() );
+  mcaView->setPrec2( Prec2->text().toDouble() );
+  //  mcaView->setNewPSSens( PeakSearchSensitivity->text() );
+  //  mcaView->setPeakSearch( MCAPeakSearch->isChecked() );
+  //  mcaView->setLimitPSEnergy( LimitPSEnergy->isChecked() );
+
   MCAClearRequest = false;
   MCADataStat = MCANameStat = OLD;
   MaxMCAEnergy = 20;
@@ -25,6 +39,13 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
 
   connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ),
 	   Qt::UniqueConnection );
+  connect( mcaView, SIGNAL( newROIinEng( double, double ) ),
+	   p, SLOT( S2DSetROIs( void ) ),
+	   Qt::UniqueConnection );
+  connect( p, SIGNAL( NewEnergy( double ) ), mcaView, SLOT( NewEnergy( double ) ),
+	   Qt::UniqueConnection );
+  connect( this, SIGNAL( showMyMCAView( MCAView * ) ),
+	   p, SLOT( showOnesMCAView( MCAView * ) ), Qt::UniqueConnection );
 }
 
 void SetUpSFluo::setFDBase( FluoDBase *fb )
@@ -65,6 +86,11 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   if ( SFluo0->chs() == 7 )
     SELBs1->setType( SDD7CH );
 
+  MCAData = mcaView->setMCAdataPointer( SFluo0->length() );
+  for ( int i = 0; i < SFluo0->length(); i++ ) MCAData[i] = 0;
+  
+  qDebug() << "mcadata " << MCAData;
+  
   connect( SELBs1, SIGNAL( selectedSingleCh( int ) ), MCACh, SLOT( setValue( int ) ),
 	   Qt::UniqueConnection );
   connect( SELBs1, SIGNAL( selectedSingleCh( int ) ), this, SLOT( MCAChSelected( int ) ),
@@ -131,7 +157,6 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   
   inMCAMeas = false;
   //  validMCAData = false;
-  MCAData = NULL;
   cMCACh = 0;
   //  oldMCACh = -1;
   StartResume = MCA_START;
@@ -193,7 +218,7 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 	   this, SLOT( SelectedFitToRaw( bool ) ),
 	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
-	   this, SLOT( newCalibration() ),
+	   this, SIGNAL( newCalibration() ),
 	   Qt::UniqueConnection );
   connect( MaxLoop, SIGNAL( editingFinished() ), this, SLOT( newMaxLoop() ),
 	   Qt::UniqueConnection );
@@ -204,6 +229,17 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   connect( Prec2, SIGNAL( editingFinished() ), this, SLOT( newPrec2() ),
 	   Qt::UniqueConnection );
   
+  connect( SFluo0, SIGNAL( NewMCAsAvailable( char * ) ),
+	   this, SLOT( ShowNewMCAStat( char * ) ),
+	   Qt::UniqueConnection);
+  connect( SFluo0, SIGNAL( ReceivedNewMCARealTime( int ) ),
+	   this, SLOT( ShowNewMCARealTime( int ) ),
+	   Qt::UniqueConnection );
+  connect( SFluo0, SIGNAL( ReceivedNewMCALiveTime( int ) ),
+	   this, SLOT( ShowNewMCALiveTime( int ) ),
+	   Qt::UniqueConnection );
+  connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
+	   Qt::UniqueConnection );
 }
 
 void SetUpSFluo::newMaxMCAEnergy( void )
@@ -595,6 +631,8 @@ void SetUpSFluo::StartMCA( void )
 
     inMCAMeas = true;
 
+    emit showMyMCAView( mcaView );
+    
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
     MCARecFile->setToolTip( FSTATMsgs->at( MCADataStat )[ MCANameStat ] );

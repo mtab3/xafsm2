@@ -22,7 +22,6 @@ AUnitSFluo::AUnitSFluo( QObject *p ) : ASensor( p )
   SSDPresetType = "REAL";   // for MCA/SSD
   ROIStart = ROIEnd = NULL;
 
-
   MCAStats.clear();
 }
 
@@ -84,6 +83,8 @@ void AUnitSFluo::init0( void )
 	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
 	   Qt::UniqueConnection );
 
+  qDebug() << "SFluo asking";
+  
   s->SendCMD2( "Init", DevCh, "IsBusy" );
   s->SendCMD2( "Init", Dev, "RunStop" );
 

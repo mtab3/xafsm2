@@ -53,7 +53,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   isQXafsModeAvailable = false;
 
   //  XMAPk2p = new KeV2Pix;
-  //  fdbase = new FluoDBase;
+  fdbase = new FluoDBase;
   u = new Units;
 
   MMainTh = NULL;
@@ -107,7 +107,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   setupCommonArea();
   setupSetupArea();     // AUnit 関係の Initialize 後でないとだめ
   if ( SFluo != NULL ) {
-    SSFluo0->setupSetupSFluo( s, &FSTATMsgs );
     setupSFluoRelated();
   }
   setupChangerArea();
@@ -459,19 +458,6 @@ void MainWindow::InitAndIdentifySensors( void )
 		 Qt::UniqueConnection );
       }
     }
-    connect( SFluo, SIGNAL( NewMCAsAvailable( char * ) ),
-	     this, SLOT( ShowNewMCAStat( char * ) ),
-	     Qt::UniqueConnection);
-    
-    connect( SFluo, SIGNAL( ReceivedNewMCARealTime( int ) ),
-	     this, SLOT( ShowNewMCARealTime( int ) ),
-	     Qt::UniqueConnection );
-    connect( SFluo, SIGNAL( ReceivedNewMCALiveTime( int ) ),
-	     this, SLOT( ShowNewMCALiveTime( int ) ),
-	     Qt::UniqueConnection );
-    
-    connect( SSFluo0->B_ROIsetAll(), SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
-	     Qt::UniqueConnection );
   }
 
   if ( ! SensorsInited ) {

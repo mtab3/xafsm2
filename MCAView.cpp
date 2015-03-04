@@ -23,7 +23,7 @@
 #define NEAR2 ( 10 )    // 据え置きカーソルに近いと判断する距離
 #define NEAR3 ( 3 )     // 蛍光ピーク位置が近いと判断する距離
 
-MCAView::MCAView( QWidget *parent ) : QFrame( parent )
+MCAView::MCAView( QWidget *p, QWidget *parent ) : QFrame( p )
 {
   setupUi( this );
 
@@ -114,15 +114,19 @@ MCAView::MCAView( QWidget *parent ) : QFrame( parent )
   connect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ),
 	   Qt::UniqueConnection );
+#if 0
   connect( this, SIGNAL( newROIinEng( double, double ) ),
 	   Parent, SLOT( S2DSetROIs( void ) ),
 	   Qt::UniqueConnection );
+#endif
   connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ),
 	   Qt::UniqueConnection );
+#if 0
   connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
-
+#endif
+  
   connect( Parent, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
 	   this, SLOT( setLog( bool ) ),
 	   Qt::UniqueConnection );

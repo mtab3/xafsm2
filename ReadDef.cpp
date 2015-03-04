@@ -41,25 +41,17 @@ void MainWindow::ReadDef( QString fname )
   ASensor *NewSensor;
   AMotor *NewMotor;
 
-  qDebug() << "000";
   QTextStream in( &f );
   while( !in.atEnd() ) {
-    qDebug() << "001";
     aline = in.readLine();
     line++;
     if ( !aline.isEmpty() && ( aline.at(0) != QChar( '#' ) ) ) {
 //    next = nextItem( aline.simplified(), item );
-      qDebug() << "002";
       next = nextItem( aline, item );            // stop using 'simplified'
-      qDebug() << "003";
       gType = item;
-      qDebug() << "004" << gType;
       if ( ( gType == "MOTOR" ) || ( gType == "SENSOR" ) ) {
-	qDebug() << "005";
         next = nextItem( next, item ); type = item;
-	qDebug() << "aa000";
 	NewUnit = NewNewUnit( type );
-	qDebug() << "aa001";
 
         if ( gType == "MOTOR" ) { // Motor か
 	  NewMotor = (AMotor*)NewUnit;
@@ -404,13 +396,10 @@ AUnit0 *MainWindow::NewNewUnit( QString type )
   if ( type == "ENC" )
     rv = (AUnit0*)new AUnitENC;
   if ( type == "SSD" ) {
-    qDebug() << "aaa";
     SSFluo0 = new SetUpSFluo( this );
-    qDebug() << "aaab";
     MainTab->insertTab( 2, SSFluo0, "Set up SSD" );
-    qDebug() << "aaac";
     rv = SSFluo0->sFluo();
-    qDebug() << "aaad";
+    qDebug() << "SFluo" << rv;
   }
   if ( type == "SSDP" )
     rv = (AUnit0*)new AUnitSFluo2;

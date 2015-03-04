@@ -70,7 +70,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   int cCh( void ) { return cMCACh; };
   int length( void ) { return SFluo0->length(); };
   void setMCACh( int ch ) { MCACh->setValue( ch ); };
-  QPushButton *B_ROIsetAll( void ) { return ROIsetAll; };
+  //  QPushButton *B_ROIsetAll( void ) { return ROIsetAll; };
   QRadioButton *B_SelRealTime( void ) { return SelRealTime; };
   QRadioButton *B_SelLiveTime( void ) { return SelLiveTime; };
   QRadioButton *B_ShowAlwaysSelElm( void ) { return ShowAlwaysSelElm; };
@@ -89,7 +89,6 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
     mcaView->setShowElementsEnergy( ShowElmEnergy->isChecked() );
   }
   void setFDBase( FluoDBase *fb );
-  void setAllROIs( void );
   void setDirectory( QString root ) { if ( MCAFSel != NULL ) MCAFSel->setDirectory( root ); };
   void setMaxMCAEnergy( double e ) { MaxMCAEnergy = e; };
   
@@ -140,6 +139,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
 
 public slots:
   void getMCASettings( int ch );
+  void setAllROIs( void );
 
  signals:
   void ReCalcXAFSWithMCA( void );
@@ -149,6 +149,14 @@ public slots:
   void NewMCACh( int ch );
   void addAnUsingUnit( QString id, AUnit0 *sfluo );
   void removeUsingUnits( QString id, AUnit0 *sfluo );
+
+  void SignalMCAViewSetDisplayLog( bool f );
+  void SignalMCAViewSetShowElements( bool f );
+  void SignalMCAViewShowAlwaysSelElm( bool f );
+  void SignalMCAViewShowElmEnergy( bool f );
+  void newCalibration( void );
+
+  void showMyMCAView( MCAView *view );
 };
 
 #endif

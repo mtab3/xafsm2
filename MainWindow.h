@@ -478,7 +478,7 @@ private:
   bool MakingSureOfRangeSelect;
   bool haveMeasuredDark;
   bool NoticingHaveNotMeasDark;
-  ViewCTRL *SetUpNewView( VTYPE vtype, DATATYPE dtype );
+  ViewCTRL *SetUpNewView( VTYPE vtype, DATATYPE dtype, void *view = NULL );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
   void SetDFName( int rpt, int rptMax, QString ext = "" );
@@ -678,6 +678,7 @@ private slots:
   void PopDownMonLines( void );
   void newMovingAvr( void );
 
+  void showOnesMCAView( MCAView *view );
 //  void ShowNewMCAStat( char *MCAs );
 //  void ShowNewMCARealTime( int ch );
 //  void ShowNewMCALiveTime( int ch );
