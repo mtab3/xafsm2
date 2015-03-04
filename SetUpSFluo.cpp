@@ -66,20 +66,6 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   connect( MaxMCAEnergyInput, SIGNAL( editingFinished() ),
 	   this, SLOT( newMaxMCAEnergy() ), Qt::UniqueConnection );
 
-#if 0
-  SSDbs << SSDE01 << SSDE02 << SSDE03 << SSDE04 << SSDE05
-        << SSDE06 << SSDE07 << SSDE08 << SSDE09 << SSDE10
-        << SSDE11 << SSDE12 << SSDE13 << SSDE14 << SSDE15
-        << SSDE16 << SSDE17 << SSDE18 << SSDE19;
-  
-  for ( int i = 0; i < SSDbs.count(); i++ ) {
-    SSDbs[i]->setStyleSheet( SSDActive );
-    SSDbs[i]->setToolTip( tr( "Active" ) );
-    connect( SSDbs[i],  SIGNAL( clicked() ), this, SLOT( SelSSDs0() ),
-	     Qt::UniqueConnection );
-  }
-#endif
-
   SELBs1->setTitle( tr( "Select a SSD channel (MCA spectrum)" ) );
   SELBs1->setExcl( true );
   SELBs1->setType( SSD19CH );   // デフォルトは 19ch SSD 型

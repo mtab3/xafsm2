@@ -35,6 +35,7 @@
 # 2015/02/02 add 'ALARM'       line to define an alarm
 # 2015/02/19 add 2 parameters to the SSD line
 # 2015/03/03 delete MAX_MCA_ENERGY line
+# 2015/03/04 definition of MCAGAIN is changed
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -59,9 +60,9 @@ RW_DXMCENTER_CFG  1  DXMCenterTest.cfg    # read/write DXMCenterTest.cfg
 #
 # Preset gains of MCA channels
 #
-# MCAGAIN ch gain
+# MCAGAIN ch gain SFluo-No 
 #
-#MCAGAIN 5 0.768
+#MCAGAIN  5 0.768     0
 
 # Can save all MCA datas on memory.
 # Default (without the line) is 0
@@ -434,7 +435,7 @@ SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD (19ch all)" "QtXmapSSD" ""   "count" YES "S006" 19 2048 20.0
+SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD" ""   "count" YES "S006" 19 2048 20.0
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
 SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"
@@ -637,4 +638,4 @@ ALARM "S056" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
 
 
 
-SENSOR SSD  "S063" "GENERAL"  "SDD (7ch all)" "QtXmapSSD" ""   "count" YES "S063" 7 2048 20.0
+SENSOR SSD  "S063" "GENERAL"  "SDD(7ch)" "QtXmapSSD" ""   "count" YES "S063" 7 2048 20.0

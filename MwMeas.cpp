@@ -18,12 +18,24 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasStart->setStyleSheet( NormalEXECB );
 
+  UseSFluos << UseSFluo0 << UseSFluo1 << UseSFluo2 << UseSFluo3 << UseSFluo4;
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+    if ( i < SFluos.count() ) {
+      UseSFluos[i]->setText( SFluos[i]->name() );
+    } else {
+      UseSFluos[i]->setChecked( false );
+      UseSFluos[i]->setEnabled( false );
+      UseSFluos[i]->setHidden( true );
+    }
+  }
+#if 0
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
     AfterShowType->setEnabled( false );
     AfterSave->setEnabled( false );
     //    RecordMCAs->setEnabled( false );
   }
+#endif
   if ( ! MCACanSaveAllOnMem )
     AfterShowType->removeItem( 1 );
   if ( ! MStabOk ) {
@@ -278,6 +290,34 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	   Qt::UniqueConnection );
 
 //  getGassAbsTable();
+}
+
+bool MainWindow::isUseSFluo( void )
+{
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+    if ( UseSFluos[i]->isChecked() )
+      return true;
+  }
+  return false;
+}
+
+bool MainWindow::isASFluoUnit( AUnit0 *unit )
+{
+  for ( int i = 0; i < SFluos.count(); i++ ) {
+    if ( SFluos[i] == unit )
+      return true;
+  }
+  return false;
+}
+
+int MainWindow::SFluoCHs( void )
+{
+  int ch = 0;
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+    if ( UseSFluos[i]->isChecked() )
+      ch += SFluos[i]->chs();
+  }
+  return ch;
 }
 
 void MainWindow::ShowOtherOptions( void )

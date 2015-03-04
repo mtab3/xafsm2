@@ -90,8 +90,6 @@ private:
   QTime *T;
   Status* StatDisp;
 
-  SetUpSFluo *SSFluo0;
-  
   TuningTable *TTable;
   int OldDTh1;
 
@@ -179,11 +177,14 @@ private:
   AMotor *MMainTh;          // main Th ax
   AMotor *MDTh1;             // Delta Theta 1 ax
   ASensor *SI0, *SI1, *SLS;  // I0, I1, and Fluorescence, LS
-  AUnitSFluo *SFluo;
   ASensor *EncMainTh, *Enc2;
   AMotor *MMStab;
-  //  int iMMainTh;
 
+  QVector<QRadioButton*> UseSFluos;
+  QVector<AUnitSFluo*> SFluos;
+  QVector<SetUpSFluo*> SSFluos;
+  QVector<aMCAMap> XafsMCAMaps;
+  
   bool MStabOk;
   QString MStabDrv;
   QString MStabDelegate;
@@ -234,7 +235,10 @@ private:
   void setupScan2DArea( void );
   void setupWebView( void );
   void SetUpSensorComboBoxes( void );
-
+  bool isUseSFluo( void );
+  bool isASFluoUnit( AUnit0 *unit );
+  int SFluoCHs( void );
+  
   QStringList DriverList;
 
   MUnits mMeasUnits, mMonUnits, mScanUnits, mS2DUnits;
@@ -372,7 +376,7 @@ private:
   bool S2DInfoIsValid;
   S2DInfo S2DI;
   //  aMCAMap S2DMCAMap;
-  aMCAMap XafsMCAMap;
+  //  aMCAMap XafsMCAMap;
   double S2DVals[ 10 ], S2DCPSs[ 10 ];
   double S2DLastV;
 
@@ -504,7 +508,8 @@ private:
   void WriteHeader2( int Rpt );
   void WriteHeaderCore( bool SnotN );
   void WriteHeaderCore2( void );
-  void WriteFLUOHeadSection( QTextStream &out, QVector<double>darks, double I0dark );
+  //  void WriteFLUOHeadSection( QTextStream &out, QVector<double>darks, double I0dark );
+  void WriteFLUOHeadSection( QTextStream &out, double I0dark );
   void SetDispMeasModes( void );
   void DispMeasDatas( void );
   void RecordData( void );

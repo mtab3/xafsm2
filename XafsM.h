@@ -116,6 +116,7 @@ struct IonChLength {
 };
 
 struct MCAGain {
+  int dNo;
   int ch;
   double gain;
 };

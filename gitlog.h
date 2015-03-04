@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2Test" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Mar 4 14:14:33 2015 +0900\n"\
+                "    not so far from the goal, but the data reading\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Mar 4 00:30:38 2015 +0900\n"\
                 "    step by step\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 24 20:51:36 2015 +0900\n"\
                 "    new XAFSM.def.BL5S1\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 20:48:26 2015 +0900\n"\
-                "    alarm works again\n"\
 		"\n"\
                 ""
 #endif

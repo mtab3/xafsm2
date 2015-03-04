@@ -18,7 +18,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
-  SSFluo0 = NULL;
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
   DXMCenterFile = DXMCENTERFILE0;
@@ -63,8 +62,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   SLS = NULL;
   SI0 = NULL;
   SI1 = NULL;
-  SFluo = NULL;
   MMStab = NULL;
+  SFluos.clear();
+  SSFluos.clear();
 
   oldDeg = -100;
   AllInited = MotorsInited = SensorsInited = false;
@@ -101,14 +101,13 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   TTable = new TuningTable;
   pmConds = new PMConditions;
+  XafsMCAMaps.resize( SSFluos.count() );
 
   Initialize();
   setupView();
   setupCommonArea();
   setupSetupArea();     // AUnit 関係の Initialize 後でないとだめ
-  if ( SFluo != NULL ) {
-    setupSFluoRelated();
-  }
+  setupSFluoRelated();
   setupChangerArea();
   setupQXafsMode();
   setupMeasArea();
@@ -305,13 +304,12 @@ void MainWindow::Initialize( void )
   }
   resize( 1, 1 );
   SendListNodes();
-  if ( SFluo != NULL ) {
-    SSFluo0->getMCASettings( SSFluo0->mcaCh() );
-    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetMCALength" );
-    for ( int i = 0; i < MCAGains.count(); i++ ) {
-      SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
-    }
-    //    setPreAMPGains();
+  for ( int i = 0; i < SFluos.count(); i++ ) {
+    SSFluos[i]->getMCASettings( SSFluos[i]->mcaCh() );
+    s->SendCMD2( "SetUpMCA", SFluos[i]->dev(), "GetMCALength" );
+  }
+  for ( int i = 0; i < MCAGains.count(); i++ ) {
+    SFluos[ MCAGains[i]->dNo ]->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
   }
   for ( int i = 0; i < DriverList.count(); i++ ) {
     s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
@@ -414,7 +412,7 @@ void MainWindow::InitAndIdentifySensors( void )
 #endif
     if ( as->id() == "I0" ) { SI0 = as; }
     if ( as->id() == "I1" ) { SI1 = as; }
-    if ( as->id() == "TotalF" ) { SFluo = (AUnitSFluo*)as; }
+    //    if ( as->id() == "TotalF" ) { SFluo = (AUnitSFluo*)as; }
     if ( as->id() == "LS" ) {
       if ( SLS != NULL ) {
 	disconnect( SLS, SIGNAL( NewRingCurrent( QString, QStringList ) ),
@@ -444,17 +442,21 @@ void MainWindow::InitAndIdentifySensors( void )
     }
   }
   
-  if ( SFluo != NULL ) {
-    SSFluo0->K2P()->MakeUpAB( SFluo->length(), SFluo->chs(), 2, "KeV2MCApix.txt" );
-    S2DBase->setK2P( SSFluo0->K2P() );
+
+  if ( SFluos.count() > 0 )
+    S2DBase->setSSFluos( SSFluos );     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  for ( int i = 0; i < SFluos.count(); i++ ) {
+    SSFluos[i]->K2P()
+      ->MakeUpAB( SFluos[i]->length(), SFluos[i]->chs(), 2, "KeV2MCApix.txt" );
     //    SFluo->setROIs( ROIStart, ROIEnd );
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);
-      if (( as->theParent() == SFluo )&&( as != SFluo )) {
-	connect( SFluo, SIGNAL( NewValue( QString ) ),
+      if ( isASFluoUnit( as->theParent() ) && ( ! isASFluoUnit( as ) ) ) {
+	connect( as->theParent(), SIGNAL( NewValue( QString ) ),
 		 as, SLOT( getNewValue( QString ) ),
 		 Qt::UniqueConnection );
-	connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ),
+	connect( as->theParent(), SIGNAL( newDark( double ) ),
+		 as, SLOT( getNewDark( double ) ),
 		 Qt::UniqueConnection );
       }
     }

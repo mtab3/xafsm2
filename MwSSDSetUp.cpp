@@ -3,22 +3,26 @@
 
 void MainWindow::setupSFluoRelated( void )
 {
-  connect( SSFluo0, SIGNAL( ReCalcXAFSWithMCA() ), this, SLOT( ReCalcXAFSWithMCA() ),
-	   Qt::UniqueConnection );
-  connect( SSFluo0, SIGNAL( ReCalcS2DMap( SetUpSFluo * ) ),
-	   this, SLOT( ReCalcS2DMap( SetUpSFluo * ) ),
-	   Qt::UniqueConnection );
-  connect( SSFluo0, SIGNAL( ShowMessage( QString, int ) ),
-	   statusbar, SLOT( showMessage( QString, int ) ), Qt::UniqueConnection );
-  connect( SSFluo0, SIGNAL( addAnUsingUnit( QString, AUnit0 * ) ),
-	   this, SLOT( addAnUsingUnit( QString, AUnit0 * ) ), Qt::UniqueConnection );
-  connect( SSFluo0, SIGNAL( removeUsingUnits( QString, AUnit0 * ) ),
-	   this, SLOT( removeUsingUnits( QString, AUnit0 * ) ), Qt::UniqueConnection );
-  connect( SSFluo0, SIGNAL( newCalibration() ), this, SLOT( newCalibration() ),
-	   Qt::UniqueConnection );
+  for ( int i = 0; i < SSFluos.count(); i++ ) {
+    connect( SSFluos[i], SIGNAL( ReCalcXAFSWithMCA() ), this, SLOT( ReCalcXAFSWithMCA() ),
+	     Qt::UniqueConnection );
+    connect( SSFluos[i], SIGNAL( ReCalcS2DMap( SetUpSFluo * ) ),
+	     this, SLOT( ReCalcS2DMap( SetUpSFluo * ) ),
+	     Qt::UniqueConnection );
+    connect( SSFluos[i], SIGNAL( ShowMessage( QString, int ) ),
+	     statusbar, SLOT( showMessage( QString, int ) ), Qt::UniqueConnection );
+    connect( SSFluos[i], SIGNAL( addAnUsingUnit( QString, AUnit0 * ) ),
+	     this, SLOT( addAnUsingUnit( QString, AUnit0 * ) ), Qt::UniqueConnection );
+    connect( SSFluos[i], SIGNAL( removeUsingUnits( QString, AUnit0 * ) ),
+	     this, SLOT( removeUsingUnits( QString, AUnit0 * ) ), Qt::UniqueConnection );
 
-  SSFluo0->setFDBase( fdbase );
-  
+    // これは本当にここでいいか?? newCalibration が複数の SFluo を区別できるか?
+    connect( SSFluos[i], SIGNAL( newCalibration() ), this, SLOT( newCalibration() ),
+	     Qt::UniqueConnection );
+    
+    SSFluos[i]->setFDBase( fdbase );
+    SSFluos[i]->setupSetupSFluo( s, &FSTATMsgs );
+  }
   // Calibration Tab
   // D.T. Calib.
   if ( SChangers.count() > 0 ) {
@@ -55,8 +59,6 @@ void MainWindow::setupSFluoRelated( void )
 	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
-
-  SSFluo0->setupSetupSFluo( s, &FSTATMsgs );
 }
 
 void MainWindow::addAnUsingUnit( QString id, AUnit0 *unit )

@@ -34,15 +34,17 @@ bool MainWindow::MeasureDark( void )
   dUnits.addUnit( I0Sensors[ SelectI0->currentIndex() ] );
   if ( UseI1->isChecked() )
     dUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
-  if ( Use19chSSD->isChecked() ) {
-    if ( SSFluo0->isInMeas() ) {
-      QString msg = tr( "MCA measurement is going on with %1" )
-	.arg( SSFluo0->sFluo()->name() );
-      statusbar->showMessage( msg, 2000 );
-      NewLogMsg( msg );
-      return false;
+  for ( int i = 0; i < SSFluos.count(); i++ ) {
+    if ( UseSFluos[i]->isChecked() ) {
+      if ( SSFluos[i]->isInMeas() ) {
+	QString msg = tr( "MCA measurement is going on with %1" )
+	  .arg( SFluos[i]->name() );
+	statusbar->showMessage( msg, 2000 );
+	NewLogMsg( msg );
+	return false;
+      }
+      dUnits.addUnit( SFluos[i] );
     }
-    dUnits.addUnit( SFluo );
   }
   if ( UseAux1->isChecked() )
     dUnits.addUnit( A1Sensors[ SelectAux1->currentIndex() ] );
@@ -156,8 +158,10 @@ void MainWindow::MeasDarkSequence( void )
 			 .arg( setTime ).arg( dUnits.at(i)->name() ), 2000 );
 	dUnits.at(i)->setDark( MeasVals[i] );
       }
-      if ( dUnits.at(i) == SFluo ) {
-	SFluo->setDark();      // 19ch 分のダークを内部空間に保存
+      for ( int j = 0; j < SFluos.count(); j++ ) {
+	if ( dUnits.at(i) == SFluos[j] ) {
+	  SFluos[j]->setDark();      // 19ch 分のダークを内部空間に保存
+	}
       }
     }
     if ( !UseAutoShutter ) {

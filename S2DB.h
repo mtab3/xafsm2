@@ -11,6 +11,7 @@
 #include "KeV2Pix.h"
 #include "S2DInfo.h"
 #include "SelectCh.h"
+#include "SetUpSFluo.h"
 
 #include "ui_S2DB.h"
 
@@ -20,7 +21,7 @@ class S2DB : public QFrame, private Ui::S2DB
   Q_OBJECT
 
   QWidget *parent;
-  KeV2Pix *XMAPk2p;
+  QVector<SetUpSFluo*> SSFluos;
   QFileDialog *MCAsDirSel;
   QString mcaMapDir;
   aMCAMap mcaMap;
@@ -47,7 +48,7 @@ class S2DB : public QFrame, private Ui::S2DB
   ~S2DB( void );
 
   S2DView *getView( void ) { return S2DV; };
-  void setK2P( KeV2Pix *k2p ) { XMAPk2p = k2p; };
+  void setSSFluos( QVector<SetUpSFluo*> ssfluos ) { SSFluos = ssfluos; };
   void setParent( QWidget *p );
   void setLoadBHidden( bool f ) { LoadMCAsBFrame->setHidden( f ); };
   void setRead( bool f ) { Read = f; };

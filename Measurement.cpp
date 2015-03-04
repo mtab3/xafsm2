@@ -173,12 +173,16 @@ void MainWindow::MeasSequence( void )
 	} else {
 	  CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	}
-	if ( MPSet.isSFluo ) 
-	  if ( ! MCACanSaveAllOnMem )
-	    // 全部セーブできない時は、1スキャン終わったら
-	    // 次のスキャンに備えてメモリクリア (直近の1スキャン分だけ覚えておく)
-	    XafsMCAMap.New( MPSet.totalPoints, 1, SFluo->length(), SFluo->chs() );
-                               // SelRPT->value() --> 1
+	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	  if ( MPSet.isSFluos[i] ) 
+	    if ( ! MCACanSaveAllOnMem ) {
+	      // 全部セーブできない時は、1スキャン終わったら
+	      // 次のスキャンに備えてメモリクリア (直近の1スキャン分だけ覚えておく)
+	      XafsMCAMaps[i].New( MPSet.totalPoints, 1,
+				  SFluos[i]->length(), SFluos[i]->chs() );
+	      // SelRPT->value() --> 1
+	    }
+	}
         MeasStage = 2;
       } else {               // 終了
 	clearUUnits();
@@ -227,8 +231,12 @@ void MainWindow::onMeasFinishWorks( void )
 {
   MPSet.finalRpt = MeasR + 1;
   MPSet.finalPnt = MeasP;
-  SSFluo0->B_SelRealTime()->setChecked( SvSelRealTime );
-  SSFluo0->B_SelLiveTime()->setChecked( SvSelLiveTime );
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
+      SSFluos[i]->B_SelRealTime()->setChecked( SvSelRealTime );
+      SSFluos[i]->B_SelLiveTime()->setChecked( SvSelLiveTime );
+    }
+  }
   MeasPause->setEnabled( false );
   MeasViewC->setDeletable( true );
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
@@ -280,20 +288,22 @@ void MainWindow::SetDispMeasModes( void )
     DLC++;
     MUC++;
   }
-  if ( Use19chSSD->isChecked() ) {
-    MeasView->SetLR( DLC, LEFT_AX );
-    MeasView->SetScaleType( DLC, FULLSCALE );
-    MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
-    MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
-    DLC++;
-    for ( int j = 0; j < SFluo->chs(); j++ ) {
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+    if ( UseSFluos[i]->isChecked() ) {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
-      MeasView->SetLineName( DLC, QString( "SSD %1" ).arg( j ) );
-      MeasView->SetDG( DLC, DG );    // SSD の各チャンネルだけ同一スケールグループ
+      MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
+      MeasView->SetDG( DLC, DG++ );    // ステップの時、基本的には各線は独立スケール
       DLC++;
+      for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
+	MeasView->SetLR( DLC, LEFT_AX );
+	MeasView->SetScaleType( DLC, FULLSCALE );
+	MeasView->SetLineName( DLC, QString( "SSD %1" ).arg( j ) );
+	MeasView->SetDG( DLC, DG );    // SSD の各チャンネルだけ同一スケールグループ
+	DLC++;
+      }
+      MUC++;
     }
-    MUC++;
   }
   if ( UseAux1->isChecked() ) {
     qDebug() << "meas-disp-mode for Aux1 " << DLC << MeasDispMode[ DLC ];
@@ -372,20 +382,25 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     DLC++;
     MUC++;
   }
-  if ( Use19chSSD->isChecked() ) {
-    if ( I0 < 1e-20 )
-      I0 = 1e-20;
-    DLC0 = DLC;     // 合計表示は後回しにして、先に個別チャンネルの表示
-    DLC++;
-    QVector<quint64> vals = SFluo->getCountsInROI();
-    QVector<double> darks = SFluo->getDarkCountsInROI();
+  if ( isUseSFluo() ) {
     sum = 0;
-    for ( int j = 0; j < SFluo->chs(); j++ ) {
-      double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
-      if ( SSFluo0->selBs2()->isSelected(j) ) // 和を取るのは選択された SSD だけ
-	sum += v;
-      MeasView->NewPoint( DLC, GoToKeV, v );
-      DLC++;
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      if ( UseSFluos[i]->isChecked() ) {
+	if ( I0 < 1e-20 ) {
+	  I0 = 1e-20;
+	}
+	DLC0 = DLC;     // 合計表示は後回しにして、先に個別チャンネルの表示
+	DLC++;
+	QVector<quint64> vals = SFluos[i]->getCountsInROI();
+	QVector<double> darks = SFluos[i]->getDarkCountsInROI();
+	for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
+	  double v = ((double)vals[j] / SFluos[i]->getSetTime() - darks[j] ) / I0;
+	  if ( SSFluos[i]->selBs2()->isSelected(j) ) // 和を取るのは選択された SSD だけ
+	    sum += v;
+	  MeasView->NewPoint( DLC, GoToKeV, v );
+	  DLC++;
+	}
+      }
     }
     MeasView->NewPoint( DLC0, GoToKeV, sum );
     MUC++;
@@ -489,9 +504,16 @@ void MainWindow::newSSDChSelection( int ch, bool f )
   double sum[ MAXPOINTS ];
   double *y;
 
-  if ( SFluo != NULL ) SFluo->setSSDUsingCh( ch, f );
+  int dNo = 0;
+  for ( dNo = 0; dNo < SFluos.count(); dNo++ ) {
+    if ( SSFluos[dNo]->selBs2() == sender() ) 
+      break;
+  }
+  if ( dNo < SFluos.count() ) {
+    SFluos[dNo]->setSSDUsingCh( ch, f );
+    ReCalcS2DMap( SSFluos[dNo] );
+  }
   ReCalcXAFSWithMCA();
-  ReCalcS2DMap( SSFluo0 );
   
   if ( SFluoLine < 0 )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;

@@ -2232,28 +2232,6 @@
              <property name="spacing">
               <number>1</number>
              </property>
-             <item row="4" column="0">
-              <widget class="QRadioButton" name="Use19chSSD">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>80</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>19ch SSD</string>
-               </property>
-               <property name="autoExclusive">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_92">
                <property name="text">
@@ -2546,6 +2524,72 @@
                 <string notr="true">background-color: rgb(255, 255, 255);</string>
                </property>
               </widget>
+             </item>
+             <item row="4" column="0" colspan="6">
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <item>
+                <widget class="QRadioButton" name="UseSFluo0">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>19ch SSD</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="UseSFluo1">
+                 <property name="text">
+                  <string>SFluo1</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="UseSFluo2">
+                 <property name="text">
+                  <string>SFluo2</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="UseSFluo3">
+                 <property name="text">
+                  <string>SFluo3</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="UseSFluo4">
+                 <property name="text">
+                  <string>SFluo4</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -4327,8 +4371,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>144</width>
-                     <height>137</height>
+                     <width>290</width>
+                     <height>155</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -8471,7 +8515,6 @@ Though, other parameters are fixed at the value on starting.</string>
   <tabstop>UseI1</tabstop>
   <tabstop>SelectI1</tabstop>
   <tabstop>I1Range</tabstop>
-  <tabstop>Use19chSSD</tabstop>
   <tabstop>UseAux1</tabstop>
   <tabstop>ModeA1</tabstop>
   <tabstop>SelectAux1</tabstop>

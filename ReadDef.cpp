@@ -117,15 +117,18 @@ void MainWindow::ReadDef( QString fname )
             NewSensor->setRangeL( item.toInt() );     // レンジ下限値
           } else if ( type == "SSDP" ) {
           } else if ( type == "SSD" ) {
+	    SetUpSFluo *newSSFluo = (SetUpSFluo*)(((AUnitSFluo*)NewUnit)->parentObj());
 	    next = nextItem( next, item );
 	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setChs( item.toInt() );
 	    next = nextItem( next, item );
 	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setLength( item.toInt() );
 	    next = nextItem( next, item );
-	    // if ( item.toDouble() > 0 )
-	    //    ((AUnitSFluo*)NewUnit)->setMaxMCAEnergy( item.toDouble() );
 	    if ( item.toDouble() > 0 )
-	      SSFluo0->setMaxMCAEnergy( item.toDouble() );
+	      newSSFluo->setMaxMCAEnergy( item.toDouble() );
+	    SSFluos << newSSFluo;
+	    SFluos << (AUnitSFluo*)NewUnit;
+	    MainTab->insertTab( 1 + SFluos.count(), newSSFluo,
+				tr( "SetUp %1" ).arg( ((AUnitSFluo*)NewUnit)->name() ) );
           } else if ( type == "LSR" ) {
           } else if ( type == "DV" ) {
             next = nextItem( next, item );
@@ -203,6 +206,7 @@ void MainWindow::ReadDef( QString fname )
         MCAGain *mcaGain = new MCAGain;
         next = nextItem( next, item ); mcaGain->ch = item.toInt();
         next = nextItem( next, item ); mcaGain->gain = item.toDouble();
+	next = nextItem( next, item ); mcaGain->dNo = item.toInt();
         MCAGains << mcaGain;
       } else if ( item == "CHANGER" ) {
         Changer *newChanger = new Changer;
@@ -332,6 +336,10 @@ void MainWindow::ReadDef( QString fname )
     }
   }
 
+  if ( SFluos.count() > 0 ) {
+    SFluo = SFluos[0];
+    SSFluo0 = SSFluos[0];
+  }
   //  qDebug() << DefUReals;
 
   DriverList.removeDuplicates();
@@ -396,10 +404,9 @@ AUnit0 *MainWindow::NewNewUnit( QString type )
   if ( type == "ENC" )
     rv = (AUnit0*)new AUnitENC;
   if ( type == "SSD" ) {
-    SSFluo0 = new SetUpSFluo( this );
-    MainTab->insertTab( 2, SSFluo0, "Set up SSD" );
-    rv = SSFluo0->sFluo();
-    qDebug() << "SFluo" << rv;
+    SetUpSFluo *newSSFluo = new SetUpSFluo( this );
+    rv = newSSFluo->sFluo();
+    //    MainTab->insertTab( 2, newSSFluo, tr( "Set up" ) );
   }
   if ( type == "SSDP" )
     rv = (AUnit0*)new AUnitSFluo2;

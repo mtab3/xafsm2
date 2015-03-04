@@ -312,52 +312,52 @@ void MainWindow::AutoSequence0( void )
 	qDebug() << "Wrong file mode " << VAL << FUNC;
       }
     } else if ( CMD == "MEASSSD" ) {
-      if ( ( SFluo != NULL )||( ( VAL != "REAL" )&&( VAL != "LIVE" ) ) ) {
+      if ( ( SFluos.count() > 0 )||( ( VAL != "REAL" )&&( VAL != "LIVE" ) ) ) {
 	if ( FUNC == "MEAS" ) {
 	  progress = false;
 	  switch( ASCMDii ) {
 	  case 0:
 	    ASMUnits.clearUnits();
-	    ASMUnits.addUnit( SFluo );
-	    SFluo->initLocalStage();
+	    ASMUnits.addUnit( SFluos[0] );
+	    SFluos[0]->initLocalStage();
 	    ASCMDii++;
 	    break;
 	  case 1:
 	    qDebug() << "set preset type";
-	    SFluo->setSSDPresetType( VAL );
+	    SFluos[0]->setSSDPresetType( VAL );
 	    ASCMDii++;
 	    break;
 	  case 2:
-	    SFluo->SetTime( VAL2.toDouble() );
+	    SFluos[0]->SetTime( VAL2.toDouble() );
 	    ASCMDii++;
 	    break;
 	  case 3:
 	    qDebug() << "try to init sensor and go";
-	    if ( SFluo->InitSensor() == false ) {  // true :: initializing
-	      SFluo->setIsBusy( true );
-	      SFluo->RunStart();
+	    if ( SFluos[0]->InitSensor() == false ) {  // true :: initializing
+	      SFluos[0]->setIsBusy( true );
+	      SFluos[0]->RunStart();
 	      ASCMDii++;
 	    }
 	    break;
 	  case 4:
-	    SFluo->GetMCAs();
+	    SFluos[0]->GetMCAs();
 	    ASCMDii = 0;
 	    progress = true;
 	    break;
 	  }
 	} else if ( FUNC == "MODE" ) {
-	  SFluo->setSSDPresetType( VAL );
-	  CheckMUnits.add( SFluo, true, true );
+	  SFluos[0]->setSSDPresetType( VAL );
+	  CheckMUnits.add( SFluos[0], true, true );
 	} else if ( FUNC == "RECORD" ) {
 	  VAL.remove( QChar( '"' ) );
 	  aMCASet *set = new aMCASet;
-	  SaveMCADataOnMem( set, SSFluo0 );
+	  SaveMCADataOnMem( set, SSFluos[0] );
 	  set->save( VAL, "measured by auto Sequence" );
 	  //	  saveMCAData0( VAL, set );
 	  delete set;
 	}
       } else {
-	if ( SFluo == NULL ) qDebug() << "MEASSSD: SSD is not available";
+	if ( SFluos[0] == NULL ) qDebug() << "MEASSSD: SSD is not available";
 	if (( VAL != "REAL" )&&( VAL != "LIVE" ))
 	  qDebug() << "MEASSSD: only REAL or LIVE is availabe";
       }

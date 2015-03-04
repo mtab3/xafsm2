@@ -1,7 +1,16 @@
-◯ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
+○ AutoSequence では SFluos[0] だけを使うようになってる
+○ Use19chSSD  -->  UseSFluo0, UseSFluo1, UseSFluo2,...
+○ UseSFluos が MeasInfo に入っていなくて、XAFS 測定中直に参照されている !!
+○ XAFS 測定の .info ファイルの "Sum Up Channels:" は嘘くさい
+     SFluoLine がそもそもおかしい
+○ MainWindow.cpp で S2DB に SFluos[0] の k2p を決め打ちで渡してるのをやめて
+   QVector<AUnitSFluos*> SFluos を渡してる。
+
+
+○ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
 　実際にはその時使う検出器の k2p にしないとダメ
     S2DBase->setK2P( SSFluo0->K2P() );
-◯ ViewCtrl.cpp で MCAView の準備をするとき、k2p や fluoDbase のセットは
+○ ViewCtrl.cpp で MCAView の準備をするとき、k2p や fluoDbase のセットは
    SetUpSFluo の中でやることにしてしまったけど、これでは ReadData できなくなる。
    データファイル中の情報で SFluo をセットできるようにしないとダメ
    ViewCtrl.cpp はダメなところがいっぱい
