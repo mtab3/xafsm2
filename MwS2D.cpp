@@ -418,10 +418,12 @@ void MainWindow::S2DScanStart( void )
     }
 
     S2DI.isSFluo = false;
-    if ( as == SFluo ) {
+    int dNo = whichSFluoUnit( as );
+    if ( dNo >= 0 ) {
       S2DI.isSFluo = true;
       //      if ( cMCAView == NULL ) {
-      getNewMCAView();   // ここで確実に MCAData が有効になる
+      getNewMCAView( SSFluos[dNo] );
+		     // ここで確実に MCAData が有効になる
       cMCAViewC->setDeletable( false );
     }
     switch( S2DI.ScanMode ) {
@@ -487,7 +489,7 @@ void MainWindow::S2DScanStart( void )
     }
 
     S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
-		     S2DI.ps[1]+1, SFluo->length(), SFluo->chs() );
+		     S2DI.ps[1]+1, SFluos[dNo]->length(), SFluos[dNo]->chs() );
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
@@ -599,6 +601,8 @@ void MainWindow::SetupS2DParams( void )
   if ( S2DRealContScan->isChecked() )
     S2DI.ScanMode = RCONT;
 
+  S2DI.as = S2DOkSensors.value( Select
+				S2DSensor->currentIndex() );
   S2DI.ScanBothDir = S2DScanBothDir->isChecked();
   S2DI.Use3rdAx = S2DUse3rdAxF->isChecked();
   S2DI.Dwell = S2DTime1->text().toDouble();

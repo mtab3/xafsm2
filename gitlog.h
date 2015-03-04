@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2Test" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Mar 4 21:21:09 2015 +0900\n"\
+                "    working working working\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Mar 4 18:51:09 2015 +0900\n"\
                 "    working slowly ahead\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 24 21:01:24 2015 +0900\n"\
                 "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 21:01:09 2015 +0900\n"\
-                "    debugged on FP23, LSR, and CCG\n"\
 		"\n"\
                 ""
 #endif

@@ -5,6 +5,11 @@
      SFluoLine がそもそもおかしい
 ○ MainWindow.cpp で S2DB に SFluos[0] の k2p を決め打ちで渡してるのをやめて
    QVector<AUnitSFluos*> SFluos を渡してる。
+○ 要確認 !!!! void MainWindow::ReCalcXAFSWithMCA( void )
+○ これもだめ void MainWindow::AfterSaveXafs()
+
+
+
 
 ○ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
 　実際にはその時使う検出器の k2p にしないとダメ

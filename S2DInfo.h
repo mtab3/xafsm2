@@ -5,6 +5,7 @@
 
 #include "XafsM.h"
 #include "AUnits/AMotor.h"
+#include "AUnits/ASensor.h"
 
 enum DIRECTION { FORWARD, BACKWARD };
 enum SCANMODE { STEP, QCONT, RCONT };
@@ -19,7 +20,8 @@ class S2DInfo
   bool Use3rdAx;
   bool ScanBothDir;
   bool isSFluo;
-  DIRECTION startDir; 
+  DIRECTION startDir;
+  ASensor *as;
   QVector<AMotor*> unit;
   QVector<bool> used;
   QVector<int> now;

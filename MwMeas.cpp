@@ -1981,11 +1981,9 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 {
   if ( inMeas || ! MPSet.valid || MPSet.isNoSFluo ||( MeasView == NULL ) )
     return;
-
-  QVector<double> darks = SFluo->getDarkCountsInROI();
-  double I0, Vch;
-  int DLC = ( MPSet.isI1 ) ? 3 : 1;   // display line count
-  int ML = SFluo->length();
+  int rs, re;
+  if ( ! setRsRe( rs, re ) )
+    return;
 
   QVector<double> dwells;
   for ( int b = 0; b < SBlocks; b++ ) {
@@ -2001,39 +1999,44 @@ void MainWindow::ReCalcXAFSWithMCA( void )
     }
   }
 
-  int rs, re;
-  if ( ! setRsRe( rs, re ) )
-    return;
-  
-  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
+  int DLC = ( MPSet.isI1 ) ? 3 : 1;   // display line count
+  double I0, Vch;
+
+  for ( int i = 0; i < MPSet.totalPoints; i++ ) {    // 正しいか???
     double Sum = 0;
-    for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
-      quint32 sum = 0;
-      Vch = 0;
-      for ( int r = rs; r < re; r++ ) {
-	if ( r < MPSet.i0s.count() ) {
-	  I0 = MPSet.i0s[r][i];
-	  if ( I0 < 1e-20 ) I0 = 1e-20;
-	  aMCASet *set = XafsMCAMap.aPoint( i, r );
-	  if ( ( set != NULL )&&( set->isValid() ) ) {
-	    quint32 *cnt = set->Ch[ ch ].cnt;
-	    int ROIs = SSFluo0->roiStart()[ ch ].toInt();
-	    int ROIe = SSFluo0->roiEnd()[ ch ].toInt();
-	    if ( ROIs < 0 ) ROIs = 0;
-	    if ( ROIe < 0 ) ROIe = 0;
-	    if ( ROIs >= ML ) ROIs = ML - 1;
-	    if ( ROIe >= ML ) ROIe = ML - 1;
-	    for ( int p = ROIs; p < ROIe; p++ ) {
-	      sum += cnt[ p ];
+    for ( int j = 0; j < UseSFluos.count(); j++ ) {
+      if ( UseSFluos[j]->isChecked() ) {
+	QVector<double> darks = SFluos[j]->getDarkCountsInROI();
+	int ML = SFluos[j]->length();
+	for ( int ch = 0; ch < SFluos[j]->chs(); ch++ ) {
+	  quint32 sum = 0;
+	  Vch = 0;
+	  for ( int r = rs; r < re; r++ ) {
+	    if ( r < MPSet.i0s.count() ) {
+	      I0 = MPSet.i0s[r][i];
+	      if ( I0 < 1e-20 ) I0 = 1e-20;
+	      aMCASet *set = XafsMCAMaps[j].aPoint( i, r );
+	      if ( ( set != NULL )&&( set->isValid() ) ) {
+		quint32 *cnt = set->Ch[ ch ].cnt;
+		int ROIs = SSFluos[j]->roiStart()[ ch ].toInt();
+		int ROIe = SSFluos[j]->roiEnd()[ ch ].toInt();
+		if ( ROIs < 0 ) ROIs = 0;
+		if ( ROIe < 0 ) ROIe = 0;
+		if ( ROIs >= ML ) ROIs = ML - 1;
+		if ( ROIe >= ML ) ROIe = ML - 1;
+		for ( int p = ROIs; p < ROIe; p++ ) {
+		  sum += cnt[ p ];
+		}
+		qDebug() << sum << dwells[i] << darks[ch] << I0;
+		Vch += ( ( sum / dwells[i] ) - darks[ch] ) / I0;
+	      }
 	    }
-	    qDebug() << sum << dwells[i] << darks[ch] << I0;
-	    Vch += ( ( sum / dwells[i] ) - darks[ch] ) / I0;
+	  }
+	  MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
+	  if ( SSFluos[j]->selBs2()->isSelected(ch) ) {
+	    Sum += Vch;
 	  }
 	}
-      }
-      MeasView->ReNewPoint( DLC + ch + 1, i, Vch );
-      if ( SSFluo0->selBs2()->isSelected(ch) ) {
-	Sum += Vch;
       }
     }
     MeasView->ReNewPoint( DLC, i, Sum );
@@ -2060,15 +2063,19 @@ void MainWindow::AfterSaveXafs()
 {
   QString buf;
 
+#if 0   // comment out all 
+  
+#if 0
   if ( SSFluo0->McaView() == NULL ) {
     statusbar->showMessage( tr( "No valid measured data." ) );
     return;
   }
+#endif
   if ( ! MPSet.valid ) {
     statusbar->showMessage( tr( "No measurement has been done." ) );
     return;
   }
-  int ML = SFluo->length();
+  //  int ML = SFluo->length();
   SetDFName0( MPSet.fname );
 
   for ( int r = 0; r < MPSet.rpt; r++ ) {
@@ -2153,4 +2160,5 @@ void MainWindow::AfterSaveXafs()
       }
     }
   }
+#endif
 }
