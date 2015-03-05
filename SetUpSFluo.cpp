@@ -39,7 +39,8 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
 
   connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ),
 	   Qt::UniqueConnection );
-  connect( mcaView, SIGNAL( newROIinEng( double, double ) ), this, SLOT( SetROIs( void ) ), Qt::UniqueConnection );
+  connect( mcaView, SIGNAL( newROIinEng( double, double ) ),
+	   this, SLOT( setROIs( void ) ), Qt::UniqueConnection );
   connect( p, SIGNAL( NewEnergy( double ) ), mcaView, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
   connect( this, SIGNAL( showMyMCAView( SetUpSFluo * ) ),
@@ -686,6 +687,8 @@ void SetUpSFluo::MCASequence( void )
     MCAStage = 0;
   }
 
+  qDebug() << "MCAStage" << MCAStage;
+  
   switch( MCAStage ) {
   case 0:
     SFluo0->initLocalStage();

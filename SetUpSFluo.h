@@ -141,8 +141,8 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void gotNewPeakList( QVector<MCAPeak> *peaks );
   void setPreAMPGains( void );
   void nowFitStat( QString &stat );
-  void setROIs( void );
   void newCalibration( void );
+  void setROIs( void );
 
 public slots:
   void getMCASettings( int ch );

@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2Test" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Mar 5 19:27:58 2015 +0900\n"\
+                "    the codes can compile anyway.   But the reading-data-files for MCA and S2D with MCA must be broken\n"\
+		"\n"\
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Mar 5 15:34:53 2015 +0900\n"\
                 "    working\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Mar 2 16:42:15 2015 +0900\n"\
                 "    new new MwSSD\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 21:04:45 2015 +0900\n"\
-                "    merged\n"\
 		"\n"\
                 ""
 #endif
