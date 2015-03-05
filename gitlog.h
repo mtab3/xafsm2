@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "newMwSSD2Test" )
 #define GITLOGS ""\
+                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Mar 5 15:34:53 2015 +0900\n"\
+                "    working\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Mar 5 00:10:48 2015 +0900\n"\
+                "    working MwS2D and S2DInfo(save/load)\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Mar 4 21:21:09 2015 +0900\n"\
                 "    working working working\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 24 21:04:45 2015 +0900\n"\
                 "    merged\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 21:03:35 2015 +0900\n"\
-                "    debugged FP23, LSR, and CCG, and merged with master\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 21:01:24 2015 +0900\n"\
-                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
 		"\n"\
                 ""
 #endif

@@ -34,7 +34,7 @@ class S2DInfo
   
   S2DInfo( void );
   void save( QTextStream &out );
-  void load( QTextStream &in, QVector<AMotor*> &AMotors );
+  void load( QTextStream &in, QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
 };
 
 #endif

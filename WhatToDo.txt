@@ -8,8 +8,16 @@
 ○ 要確認 !!!! void MainWindow::ReCalcXAFSWithMCA( void )
 ○ これもだめ void MainWindow::AfterSaveXafs()
 
-
-
+◯ ReadData.cpp の中の TryToGiveNewView で
+    viewC = SetUpNewView( MCAVIEW, MCASHOW2, NULL );
+    viewC = SetUpNewView( S2DVIEW, S2DSHOW, NULL );
+　としてしまってる。ホントはこれは NULL ではだめ !!!!
+◯ ViewCtrl.cpp の中の SetUpNewView で
+   ((S2DB*)newView)->setK2P( SSFluos[0]->K2P() );
+   としてしまっているがこれもダメ
+    ---> そもそもこれをやめた S2DB の中で正しく k2p をセットするべき
+         (自信の測定に使う/使った AUnit0 がわかっていてそれが
+	 　SFluo だったら、セットできるはず)
 
 ○ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
 　実際にはその時使う検出器の k2p にしないとダメ

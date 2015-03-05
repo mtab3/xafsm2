@@ -171,8 +171,10 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
     case MCAVIEW:
       if ( dtype == MCADATA ) {
 	// その場で測定する場合(データファイルの読み込みだと MCASHOW )
-	newView = SSFluo0->McaView();
+	// かならず newView をパラメータとして持ち込むはずなのでここは通らない
+	// newView = SSFluo0->McaView();
       } else {
+	// ここも通らないようにしないといけない (Read の時でも SetUpSFluo に関連付ける)
 	newView = (void *)(new MCAView( this ));
 #if 0  // 本当はここをちゃんとしないと ReadData がダメなはず
 	((MCAView *)newView)->setKeV2Pix( SSFluo0->K2P() );
@@ -198,8 +200,8 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
     case S2DVIEW:
       newView = (void *)(new S2DB( this ) );
       //    "Not Set Parent in MainWindow";
-      //    ((S2DB*)newView)->setParent( this );
-      ((S2DB*)newView)->setK2P( SSFluo0->K2P() );   // これもホントはだめ
+      // // ((S2DB*)newView)->setParent( this );
+      // ((S2DB*)newView)->setK2P( SSFluos[0]->K2P() );   // これもホントはだめ
       break;
     default:
       break;
@@ -313,9 +315,9 @@ void MainWindow::getNewMCAView( SetUpSFluo *ssfluo )
   // SSFluo0 に付属の view を使う限りここで改めて ROI を設定する必要は無いはず
 }
 
-void MainWindow::showOnesMCAView( MCAView *view )
+void MainWindow::showOnesMCAView( SetUpSFluo *ssfluo )
 {
-  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA, view ) ) == NULL ) 
+  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView() ) ) == NULL ) 
     return;
   ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
 
@@ -324,11 +326,11 @@ void MainWindow::showOnesMCAView( MCAView *view )
   
   // MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
   // validMCAData = true;
-  SSFluo0->setCViewTabNo( ViewTab->currentIndex() );
-  SSFluo0->setViewStats();
+  ssfluo->setCViewTabNo( ViewTab->currentIndex() );
+  ssfluo->setViewStats();
   //McaView->setLog( SetDisplayLog->isChecked() );
   //  view->SetMCACh( cMCACh );
-  view->makeValid( true );
+  ssfluo->McaView()->makeValid( true );
   
   //  view->setROI( SSFluo0->ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
   // SSFluo0 に付属の view を使う限りここで改めて ROI を設定する必要は無いはず

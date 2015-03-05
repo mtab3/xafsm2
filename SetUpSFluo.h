@@ -81,11 +81,11 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   QRadioButton *B_ShowAlwaysSelElm( void ) { return ShowAlwaysSelElm; };
   QRadioButton *B_AutoROIsetAll( void ) { return AutoROIsetAll; };
   bool isInMeas( void ) { return inMCAMeas; };
-  double currentPeakE( void ) { return (*MCAPeaks)[ MCAPeakList->currentIndex() ].BinE; };
-  double calibE( void ) { return PeakCalibrate->text().toDouble(); };
-  void clearCalibE( void ) { PeakCalibrate->setText( "" ); };
+  // double currentPeakE( void ) { return (*MCAPeaks)[ MCAPeakList->currentIndex() ].BinE; };
+  // double calibE( void ) { return PeakCalibrate->text().toDouble(); };
+  // void clearCalibE( void ) { PeakCalibrate->setText( "" ); };
   void setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs );
-  double gain( void ) { return GainInput->text().toDouble(); };
+  //  double gain( void ) { return GainInput->text().toDouble(); };
   void setCViewTabNo( int i ) { cMCAViewTabNo = i; };
   void setViewStats( void ) {
     mcaView->setLog( SetDisplayLog->isChecked() );
@@ -142,6 +142,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void setPreAMPGains( void );
   void nowFitStat( QString &stat );
   void setROIs( void );
+  void newCalibration( void );
 
 public slots:
   void getMCASettings( int ch );
@@ -160,9 +161,8 @@ public slots:
   void SignalMCAViewSetShowElements( bool f );
   void SignalMCAViewShowAlwaysSelElm( bool f );
   void SignalMCAViewShowElmEnergy( bool f );
-  void newCalibration( void );
 
-  void showMyMCAView( MCAView *view );
+  void showMyMCAView( SetUpSFluo *ssfluo );
 };
 
 #endif

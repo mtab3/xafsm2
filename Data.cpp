@@ -489,12 +489,10 @@ void Data::SelectedNewMCACh( int ch )
 }
 
 void Data::showS2DData( QTextStream &in,
-			QVector<AMotor*> &AMotors, QVector<ASensor*> & /* ASensors */ )
+			QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors )
 {
   QStringList HeadLine1, HeadLine2, vals;
   QString line;
-
-
   
   theS2DB = (S2DB*)(theViewC->getView());
   theS2DB = (S2DB*)(theViewC->getView());
@@ -510,7 +508,7 @@ void Data::showS2DData( QTextStream &in,
   theS2DView->setRatioType( AS_SCREEN );
 
   S2DInfo s2di;
-  s2di.load( in, AMotors );
+  s2di.load( in, AMotors, ASensors );
   theS2DB->setS2DI( s2di );
   theS2DView->setRange( s2di.sx[0], s2di.sx[1] - s2di.dx[1] / 2,
 			s2di.dx[0], s2di.dx[1],

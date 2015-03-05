@@ -17,8 +17,10 @@ void MainWindow::setupSFluoRelated( void )
 	     this, SLOT( removeUsingUnits( QString, AUnit0 * ) ), Qt::UniqueConnection );
 
     // これは本当にここでいいか?? newCalibration が複数の SFluo を区別できるか?
+#if 0
     connect( SSFluos[i], SIGNAL( newCalibration() ), this, SLOT( newCalibration() ),
 	     Qt::UniqueConnection );
+#endif
     
     SSFluos[i]->setFDBase( fdbase );
     SSFluos[i]->setupSetupSFluo( s, &FSTATMsgs );
@@ -119,33 +121,3 @@ void MainWindow::NewAttenCh( int att )
   }
 }
 
-#if 0
-void MainWindow::newCalibration( void )
-{
-  if ( SSFluo0->isInMeas() )
-    return;
-  if ( SFluo == NULL )
-    return;
-
-  MCAView *view;   // ここでは view は直接使わないが、MCAPeaks は view 内部へのポインタ
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getVType() == MCAVIEW ) {
-    if ( ( view = (MCAView*)ViewCtrls[ ViewTab->currentIndex() ]->getView() ) != NULL ) {
-      //(*(SSFluo0->peaks()))[ MCAPeakList->currentIndex() ].BinE;
-      double oldE = SSFluo0->currentPeakE();
-      if ( oldE <= 0 ) return;
-      // 新旧の エネルギー比
-      double ratio = SSFluo0->calibE() / oldE;
-      if ( ratio <= 0 ) return;
-      // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
-      // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
-      // PeakCalibrate->setText( "" );
-      SSFluo0->clearCalibE();
-      // gain の設定は何故か逆
-      SFluo->setGain( SSFluo0->mcaCh(), SSFluo0->gain() / ratio );
-      // 設定したゲインの読み出し
-      s->SendCMD2( "SetUpMCA", SFluo->dev(),
-		   "GetPreAMPGain", QString::number( SSFluo0->mcaCh() ) );
-    }
-  }
-}
-#endif

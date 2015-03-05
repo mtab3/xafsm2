@@ -53,6 +53,7 @@ class AUnitSFluo : public ASensor
   void init0( void );
   void _setEnable( bool enable );
   void ConnectToSFluoDataLinkServer( QString host, qint16 port );
+  bool isSFluo( void ) { return true; };
 
   bool GetValue0( void );
   bool GetValue02( void );

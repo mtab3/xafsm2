@@ -818,31 +818,6 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set, SetUpSFluo *sSFluo )
   set->setValid( true );
 }
 
-#if 0
-QFileInfo MainWindow::S2DGenerateMCAFileName( int i1, int i2, int i3 )
-{
-  QFileInfo BaseFile( S2DI.MCAFile );
-  QFileInfo mcaFile;
-
-  if ( S2DI.Use3rdAx ) {
-    mcaFile = QFileInfo( mcaDir,
-			 QString( "%1-%2-%3-%4.dat" )
-			 .arg( BaseFile.baseName() )
-			 .arg( i1, 4, 10, QChar( '0' ) )
-			 .arg( i2, 4, 10, QChar( '0' ) )
-			 .arg( i3, 4, 10, QChar( '0' ) ) );
-  } else {
-    mcaFile = QFileInfo( mcaDir,
-			 QString( "%1-%2-%3.dat" )
-			 .arg( BaseFile.baseName() )
-			 .arg( i1, 4, 10, QChar( '0' ) )
-			 .arg( i2, 4, 10, QChar( '0' ) ) );
-  }
-
-  return mcaFile;
-}
-#endif
-
 void MainWindow::S2DWriteBlankLine( void )
 {
   if ( S2DI.SaveFile.simplified().isEmpty() )
@@ -880,142 +855,27 @@ void MainWindow::S2DWriteTail( void )  // 終了時の時間と I0 だけ記録 (ファイル末
   f.close();
 }
  
- void MainWindow::S2DMoveToPointedPosition( int ix, int iy )
- {
-   if (( ! S2DI.valid )||( inS2D ))
-     return;
-
-   double x = S2DI.sx[0] + S2DI.dx[0] * ( ix + 0.5 );
-   double y = S2DI.sx[1] + S2DI.dx[1] * iy;
-
-   S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highestSpeed() );
-   S2DI.unit[0]->SetSpeed( HIGH );
-   S2DI.unit[1]->SetHighSpeed( S2DI.unit[1]->highestSpeed() );
-   S2DI.unit[1]->SetSpeed( HIGH );
-
-   S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( x ) );
-   S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( y ) );
- }
-
-
-#if 0
-void MainWindow::S2DReCalcMap0( void )
+void MainWindow::S2DMoveToPointedPosition( int ix, int iy )
 {
-  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
+  if (( ! S2DI.valid )||( inS2D ))
     return;
-  }
-
-  QFileInfo mcaFile;
-  double sum = 0;
-  double lastsum = 0;
-
-  if ( S2DI.ScanMode == STEP ) {
-    for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
-      for ( int j = 0; j < S2DI.ps[0]; j++ ) {
-	sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
-	if ( sum > 0 ) {
-	  S2Dview->setData( j, i, sum );
-	} else {
-	  return;
-	}
-	lastsum = sum;
-      }
-    }
-  } else {
-    for ( int i = 0; i <= S2DI.ps[1]; i++ ) {
-      if (( S2DI.ScanBothDir ) && (( i % 2 ) == 1 )) {
-	for ( int j = S2DI.ps[0]; j >= 0; j-- ) {
-	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
-	  if ( ( sum > 0 ) && ( j < S2DI.ps[0] ) ) {
-	    S2Dview->setData( j, i, sum - lastsum );
-	  }
-	  if ( sum < 0 )
-	    return;
-	  lastsum = sum;
-	}
-      } else {
-	for ( int j = 0; j <= S2DI.ps[0]; j++ ) {
-	  sum = S2DReCalcAMapPointOnMem( j, i, S2DBase->getMCAMap() );
-	  if ( ( sum > 0 ) && ( j > 0 ) ) {
-	    S2Dview->setData( j - 1, i, sum - lastsum );
-	  }
-	  if ( sum < 0 )
-	    return;
-	  lastsum = sum;
-	}
-      }
-    }
-  }
+  
+  double x = S2DI.sx[0] + S2DI.dx[0] * ( ix + 0.5 );
+  double y = S2DI.sx[1] + S2DI.dx[1] * iy;
+  
+  S2DI.unit[0]->SetHighSpeed( S2DI.unit[0]->highestSpeed() );
+  S2DI.unit[0]->SetSpeed( HIGH );
+  S2DI.unit[1]->SetHighSpeed( S2DI.unit[1]->highestSpeed() );
+  S2DI.unit[1]->SetSpeed( HIGH );
+  
+  S2DI.unit[0]->SetValue( S2DI.unit[0]->u2p( x ) );
+  S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( y ) );
 }
 
-double MainWindow::S2DReCalcAMapPoint( QString fname )
-{
-  QStringList vals;
-  QFile f( fname );
-  if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) )
-    return -1.;
-
-  QTextStream in( &f );
-  double eng;
-  double cnt, sum = 0;
-  QVector<double> ss;
-  QVector<double> es;
-  for ( int i = 0; i < SFluo->chs(); i++ ) {
-    ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
-    es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
-  }
-  while( !in.atEnd() ) {
-    vals = in.readLine().simplified().split( QRegExp( "\\s+" ) );
-    if (( vals[0] != "#" )&&( vals.count() >= 36 )) {
-      for ( int i = 0; i < SFluo->chs(); i++ ) {
-	if ( SSDbs2[i]->isChecked() == PBTrue ) {
-	  eng = vals[i*2+1].toDouble();
-	  cnt = vals[i*2+2].toDouble();
-	  if (( eng >= ss[i] )&&( eng <= es[i] )) {
-	    sum += cnt;
-	  }
-	}
-      }
-    }
-  }
-  f.close();
-  return sum;
-}
-
-double MainWindow::S2DReCalcAMapPointOnMem( int ix, int iy, aMCAMap *map )
-{
-  double sum = 0;
-
-  QVector<double> ss;
-  QVector<double> es;
-  for ( int i = 0; i < SFluo->chs(); i++ ) {
-    ss << kev2pix->p2E( i, ROIStart[ i ].toDouble() );
-    es << kev2pix->p2E( i, ROIEnd[ i ].toDouble() );
-  }
-
-  aMCASet *set = map->aPoint( ix, iy );
-  if ( ( set != NULL )&&( set->isValid() ) ) {
-    for ( int ch = 0; ch < SFluo->chs(); ch++ ) {
-      if ( SSDbs2[ ch ]->isChecked() == PBTrue ) {
-	double *E = set->Ch[ ch ].E;
-	quint32 *cnt = set->Ch[ ch ].cnt;
-	for ( int i = 0; i < SFluo->length(); i++ ) {
-	  if (( E[i] >= ss[ch] )&&( E[i] <= es[ch] )) {
-	    sum += cnt[i];
-	  }
-	}
-      }
-    }
-  }
-
-  return sum;
-}
-#endif
-
-void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
+void MainWindow::ShowMCASpectrum( S2DInfo s2di, aMCASet *set1, aMCASet *set2 )
 {
   int dNo;
-  if ( ( ! S2DI.valid )||( ( dNo = whichSFluoUnit( S2DI.as ) ) < 0 ) )
+  if ( ( ! s2di.valid )||( ( dNo = whichSFluoUnit( s2di.as ) ) < 0 ) )
     return;
 
   quint32 *cnt1 = NULL;
@@ -1037,52 +897,10 @@ void MainWindow::ShowMCASpectrum( aMCASet *set1, aMCASet *set2 )
   }
 }
 
-#if 0
-void MainWindow::S2DShowInfoAtNewPosition( int ix, int iy, aMCASet *set )
-{
-  if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
-      ||( cMCAView == NULL )||( MCAData== NULL ))
-    return;
-
-  int dx;
-  aMCASet *set1, *set2;
-  quint32 *cnt1, *cnt2;
-
-  set1 = map->aPoint( ix, iy );
-  if ( ( set1 == NULL ) || ( ! set1->isValid() ) )
-    return;
-  cnt1 = set1->Ch[ cMCACh ].cnt;
-
-  if ( S2DI.ScanMode == STEP ) {
-    for ( int i = 0; i < SFluo->length(); i++ ) {
-      MCAData[i] = cnt1[i];
-    }
-  } else {
-    set2 = map->aPoint( ix+1, iy );
-    if ( ( set2 == NULL ) || ( ! set2->isValid() ) )
-      return;
-    cnt2 = set2->Ch[ cMCACh ].cnt;
-
-    // 前進で測定しているときは val(ix+1, iy) - val(ix, iy)
-    // 後進で測定しているときは val(ix, iy) - val(ix+1, iy)
-    // 片道スキャンなら、最初の行が前進ならずっと前進、後進ならずっと後進
-    // 往復スキャンなら、奇数行は最初の行の逆向けのスキャン
-    dx = ( S2DI.startDir == FORWARD ) ? 1 : -1;
-    if (( S2DI.ScanBothDir )&&( iy % 2 == 1 )) dx *= -1;
-    for ( int i = 0; i < SFluo->length(); i++ ) {
-      MCAData[i] = ( cnt2[i] - cnt1[i] ) * dx;
-    }
-  }
-  
-  cMCAView->update();
-}
-#endif
-
-void MainWindow::S2DChangeMCACh( int dCh )
+void MainWindow::S2DChangeMCACh( S2DInfo s2di, int dCh )
 {
   int dNo;
-  AUnit0 *as = S2DOkSensors.value( SelectS2DSensor->currentIndex() );
-  if ( ( dNo = whichSFluoUnit( as ) ) < 0 )
+  if ( ( dNo = whichSFluoUnit( s2di.as ) ) < 0 )
     return;
   
   int ch = SSFluos[dNo]->cCh() + dCh;
@@ -1095,25 +913,3 @@ void MainWindow::S2DChangeMCACh( int dCh )
   SSFluos[dNo]->setMCACh( ch );
 }
 
-#if 0
-void MainWindow::S2DShowIntMCA( int ix, int iy, aMCASet *set )
-{
-  if (( ! S2DI.valid )||( inS2D )||( ! S2DI.isSFluo )
-      ||( cMCAView == NULL )||( MCAData== NULL ))
-    return;
-
-  //  aMCASet *set;
-  quint32 *cnt;
-
-  set = map->aPoint( ix, iy );
-  if ( ( set == NULL ) || ( ! set->isValid() ) )
-    return;
-  cnt = set->Ch[ cMCACh ].cnt;
-
-  for ( int i = 0; i < SFluo->length(); i++ ) {
-    MCAData[i] = cnt[i];
-  }
-
-  cMCAView->update();
-}
-#endif

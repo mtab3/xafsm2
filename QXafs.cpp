@@ -128,13 +128,17 @@ void MainWindow::ToggleQXafsMode( bool )
     HideBLKs( true );
     QConditionBox->setHidden( false );
 
-    SaveUse19ChSSD = Use19chSSD->isChecked();
+    SaveUseSFluos.clear();
+    for ( int i = 0; i < UseSFluos.count(); i++ )
+      SaveUseSFluos << UseSFluos[i]->isChecked();
     SaveUseAux1 = UseAux1->isChecked();
     SaveUseAux2 = UseAux2->isChecked();
-    Use19chSSD->setChecked( false );
+    for ( int i = 0; i < UseSFluos.count(); i++ )
+      UseSFluos[i]->setChecked( false );
     UseAux1->setChecked( false );
     UseAux2->setChecked( false );
-    Use19chSSD->setEnabled( false );
+    for ( int i = 0; i < UseSFluos.count(); i++ )
+      UseSFluos[i]->setEnabled( false );
     UseAux1->setEnabled( true );       // QXafs で使えることにする
     UseAux2->setEnabled( false );      // やっぱこっちは使えないまま
 
@@ -170,10 +174,12 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
-    Use19chSSD->setChecked( SaveUse19ChSSD );
+    for ( int i = 0; i < UseSFluos.count(); i++ ) 
+      UseSFluos[i]->setChecked( SaveUseSFluos[i] );
     UseAux1->setChecked( SaveUseAux1 );
     UseAux2->setChecked( SaveUseAux1 );
-    Use19chSSD->setEnabled( true );
+    for ( int i = 0; i < UseSFluos.count(); i++ ) 
+      UseSFluos[i]->setEnabled( true );
     UseAux1->setEnabled( true );
     UseAux2->setEnabled( true );
 

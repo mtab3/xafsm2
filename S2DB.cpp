@@ -155,7 +155,8 @@ void S2DB::loadNextMap( void )
 		      500 );
     set->load( fi.absoluteFilePath(), "" );
     if ( set->isValid() )
-      set->correctE( XMAPk2p );
+      if (( S2Di.as != NULL )&&( S2Di.isSFluo ))
+	set->correctE( ((SetUpSFluo*)(S2Di.as->parentObj()))->K2P() );
   }
 
   loadingAMCA = false;
@@ -314,13 +315,17 @@ double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
 				   QString *RS, QString *RE,
 				   SelectCh *SelChs )
 {
+  if ( ( S2Di.as == NULL )||( ! S2Di.isSFluo ) )
+    return 0;
+
+  KeV2Pix *k2p = ((SetUpSFluo*)(S2Di.as->parentObj()))->K2P();
   double sum = 0;
 
   QVector<double> ss;
   QVector<double> es;
   for ( int i = 0; i < mcaChs; i++ ) {
-    ss << XMAPk2p->p2E( i, RS[ i ].toDouble() );
-    es << XMAPk2p->p2E( i, RE[ i ].toDouble() );
+    ss << k2p->p2E( i, RS[ i ].toDouble() );
+    es << k2p->p2E( i, RE[ i ].toDouble() );
   }
 
   aMCASet *set = mcaMap.aPoint( ix, iy );

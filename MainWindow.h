@@ -483,7 +483,7 @@ private:
   bool MakingSureOfRangeSelect;
   bool haveMeasuredDark;
   bool NoticingHaveNotMeasDark;
-  ViewCTRL *SetUpNewView( VTYPE vtype, DATATYPE dtype, void *view = NULL );
+  ViewCTRL *SetUpNewView( VTYPE vtype, DATATYPE dtype, void *view );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
   void SetDFName( int rpt, int rptMax, QString ext = "" );
@@ -539,7 +539,8 @@ private:
   QStringList QXafsOk, NXafsOk, CScanOk;
   bool isQXafsModeAvailable;
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
-  bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
+  QVector<bool> SaveUseSFluos;
+  bool SaveUseAux1, SaveUseAux2;
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
   double RunUpRate, RunUpTime, QXafsDwellTime;
@@ -684,7 +685,7 @@ private slots:
   void PopDownMonLines( void );
   void newMovingAvr( void );
 
-  void showOnesMCAView( MCAView *view );
+  void showOnesMCAView( SetUpSFluo *ssfluo );
 //  void ShowNewMCAStat( char *MCAs );
 //  void ShowNewMCARealTime( int ch );
 //  void ShowNewMCALiveTime( int ch );
@@ -865,12 +866,12 @@ private slots:
 
   //  void S2DShowInfoAtNewPosition( int x, int y, aMCASet *set );
   //  void S2DShowIntMCA( int x, int y, aMCASet *set );
-  void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
+  void ShowMCASpectrum( S2DInfo s2di, aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
     
-  void S2DChangeMCACh( int dCh );
+  void S2DChangeMCACh( S2DInfo s2di, int dCh );
   //  void S2DSetROIs( void );
   //  void S2DReCalcMap0( void );
-  void ansToGetNewMCAView( S2DB *s2db );
+  //  void ansToGetNewMCAView( S2DB *s2db );
   void ReCalcS2DMap( SetUpSFluo *ssfluo );
 
   /* AutoSequence */

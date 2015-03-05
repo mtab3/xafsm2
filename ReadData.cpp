@@ -65,23 +65,27 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     break;
 #endif
   case MONSHOW:
-    viewC = SetUpNewView( TYVIEW, MONSHOW );
+    viewC = SetUpNewView( TYVIEW, MONSHOW, NULL );
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANSHOW:
-    viewC = SetUpNewView( XYVIEW, SCANSHOW );
+    viewC = SetUpNewView( XYVIEW, SCANSHOW, NULL );
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
   case MCASHOW1:
-    viewC = SetUpNewView( MCAVIEW, MCASHOW1 );
+    viewC = SetUpNewView( MCAVIEW, MCASHOW1, SSFluos[0]->McaView() );
+    // MCA の旧データ形式は、検出器が何かの情報を持っていないので
+    // 「1台目の多チャンネル蛍光検出器」ということにしておく
     break;
   case MCASHOW2:
-    viewC = SetUpNewView( MCAVIEW, MCASHOW2 );
+    viewC = SetUpNewView( MCAVIEW, MCASHOW2, NULL );
     break;
   case S2DSHOW:
-    viewC = SetUpNewView( S2DVIEW, S2DSHOW );
+    viewC = SetUpNewView( S2DVIEW, S2DSHOW, NULL );
+#if 0
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );
+#endif
     ((S2DB*)(viewC->getView()))->setParent( this );
     ((S2DB*)(viewC->getView()))->setRead( true );
     ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? conds->dataRoot() : dir );
@@ -96,11 +100,11 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     ((Data*)from)->GotNewView( viewC, AMotors, ASensors );
 }
 
+#if 0
 void MainWindow::ansToGetNewMCAView( S2DB* s2db )
 {
-  //  if ( cMCAView == NULL ) {
   getNewMCAView();    // S2DView は、MwMeas が使う MCAView (cMCAView) を共有する
-  //  }
-  //  s2db->getNewMCAMap( MCALength, MaxSSDs );
   s2db->getNewMCAMap();
 }
+#endif
+

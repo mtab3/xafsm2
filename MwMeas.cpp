@@ -1531,7 +1531,7 @@ void MainWindow::StartMeasurement( void )
         return;
     }
 
-    if ( ( MeasViewC = SetUpNewView( XYVIEW, MEASDATA ) ) == NULL ) {
+    if ( ( MeasViewC = SetUpNewView( XYVIEW, MEASDATA, NULL ) ) == NULL ) {
       // グラフ表示領域が確保できないとダメ
       return;
     }

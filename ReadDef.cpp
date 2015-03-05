@@ -335,13 +335,6 @@ void MainWindow::ReadDef( QString fname )
       }
     }
   }
-
-  if ( SFluos.count() > 0 ) {
-    SFluo = SFluos[0];
-    SSFluo0 = SSFluos[0];
-  }
-  //  qDebug() << DefUReals;
-
   DriverList.removeDuplicates();
   f.close();
 

@@ -42,13 +42,13 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   connect( mcaView, SIGNAL( newROIinEng( double, double ) ), this, SLOT( SetROIs( void ) ), Qt::UniqueConnection );
   connect( p, SIGNAL( NewEnergy( double ) ), mcaView, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
-  connect( this, SIGNAL( showMyMCAView( MCAView * ) ),
-	   p, SLOT( showOnesMCAView( MCAView * ) ), Qt::UniqueConnection );
+  connect( this, SIGNAL( showMyMCAView( SetUpSFluo * ) ),
+	   p, SLOT( showOnesMCAView( SetUpSFluo * ) ), Qt::UniqueConnection );
 }
 
 void SetUpSFluo::setROIs( void )
 {
-  if ( AutoROIsetAll()->isChecked() )
+  if ( AutoROIsetAll->isChecked() )
     setAllROIs();
 }
 
@@ -208,7 +208,7 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 	   this, SLOT( SelectedFitToRaw( bool ) ),
 	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
-	   this, SIGNAL( newCalibration() ),
+	   this, SLOT( newCalibration() ),
 	   Qt::UniqueConnection );
   connect( MaxLoop, SIGNAL( editingFinished() ), this, SLOT( newMaxLoop() ),
 	   Qt::UniqueConnection );
@@ -621,7 +621,7 @@ void SetUpSFluo::StartMCA( void )
 
     inMCAMeas = true;
 
-    emit showMyMCAView( mcaView );
+    emit showMyMCAView( this );
     
     MCADataStat = NEW;
     MCARecFile->setStyleSheet( FSTATCOLORS[ MCADataStat ][ MCANameStat ] );
@@ -835,21 +835,18 @@ void SetUpSFluo::newCalibration( void )
   if ( inMCAMeas )
     return;
 
-  double oldE = MCAPeaks[ MCAPeakList->currentIndex() ].BinE;
-  if ( oldE <= 0 ) return;  *******************************
+  double oldE = (*MCAPeaks)[ MCAPeakList->currentIndex() ].BinE;
+  if ( oldE <= 0 ) return;
   // 新旧の エネルギー比
-      double ratio = SSFluo0->calibE() / oldE;
-      if ( ratio <= 0 ) return;
-      // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
-      // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
-      // PeakCalibrate->setText( "" );
-      SSFluo0->clearCalibE();
-      // gain の設定は何故か逆
-      SFluo->setGain( SSFluo0->mcaCh(), SSFluo0->gain() / ratio );
-      // 設定したゲインの読み出し
-      s->SendCMD2( "SetUpMCA", SFluo->dev(),
-		   "GetPreAMPGain", QString::number( SSFluo0->mcaCh() ) );
-    }
-  }
+  double ratio = PeakCalibrate->text().toDouble() / oldE;
+  if ( ratio <= 0 ) return;
+  // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
+  // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
+  PeakCalibrate->setText( "" );
+  // gain の設定は何故か逆
+  SFluo0->setGain( MCACh->text().toInt(), GainInput->text().toDouble() / ratio );
+  // 設定したゲインの読み出し
+  s->SendCMD2( "SetUpMCA", SFluo0->dev(),
+	       "GetPreAMPGain", QString::number( MCACh->text().toInt() ) );
 }
 
