@@ -5,6 +5,7 @@ S2DInfo::S2DInfo( void )
 {
   valid = false;
 
+  as = NULL;
   motors = 3;
   ScanBothDir = false;
   Use3rdAx = false;
@@ -20,6 +21,7 @@ S2DInfo::S2DInfo( void )
   ScanMode = STEP;
 }
 
+#define SENSOR    "Used Sensor"
 #define SCANMODE  "Scan Mode"
 #define SCANDIR   "Scan dir"
 #define AXIS      "Axis"
@@ -45,6 +47,7 @@ S2DInfo::S2DInfo( void )
 
 void S2DInfo::save( QTextStream &out )
 {
+  out << "# " << SENSOR << " : " << as->getUid() << QString( "\"%1\"" ).arg( as->name() );
   out << "# " << SCANMODE << " : ";
   switch( ScanMode ) {
   case STEP: out << STEPSCAN << endl; break;
@@ -88,7 +91,7 @@ void S2DInfo::save( QTextStream &out )
   out << "#" << endl << endl;
 }
 
-void S2DInfo::load( QTextStream &in, QVector<AMotor*> &AMotors )
+void S2DInfo::load( QTextStream &in, QVector<ASensor*> &Sensors, QVector<AMotor*> &AMotors )
 {
   while( ! in.atEnd() ) {
     QString line = in.readLine().simplified();
@@ -103,6 +106,17 @@ void S2DInfo::load( QTextStream &in, QVector<AMotor*> &AMotors )
       val = line.mid( cp + 2 );
     QStringList vals = val.simplified().split( QRegExp( "\\s+" ) );
     
+    if ( line.mid( 2, QString( SENSOR ).lenght() ) == QString( SENSOR ) ) {
+      if ( vals.count() >= 1 ) {
+	for ( int i = 0; i < Sensors.count(); i++ ) {
+	  if ( Sensors[i]->name() == vals[0] ) {
+	    as = Sensors[i];
+	    valid = true;
+	    breka;
+	  }
+	}
+      }
+    }
     if ( line.mid( 2, QString( SCANMODE ).length() ) == QString( SCANMODE ) ) {
       if ( val.left( QString( STEPSCAN  ).length() ) == STEPSCAN  ) ScanMode = STEP;
       if ( val.left( QString( QUASICONT ).length() ) == QUASICONT ) ScanMode = QCONT;

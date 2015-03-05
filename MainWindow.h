@@ -699,7 +699,7 @@ private slots:
 //  void PushedReFit( void );
 //  void PushedClearMCAPeaks( void );
 //  void SelectedLimitPSEnergy( bool f );
-  void newCalibration( void );
+//  void newCalibration( void );
 //  void newMaxLoop( void );
 //  void newDampFact( void );
 //  void newPrec1( void );
@@ -868,7 +868,7 @@ private slots:
   void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
     
   void S2DChangeMCACh( int dCh );
-  void S2DSetROIs( void );
+  //  void S2DSetROIs( void );
   //  void S2DReCalcMap0( void );
   void ansToGetNewMCAView( S2DB *s2db );
   void ReCalcS2DMap( SetUpSFluo *ssfluo );

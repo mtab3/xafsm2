@@ -278,8 +278,9 @@ void MainWindow::newDataRoot( const QString &dataRoot )
     SelRBFND->setDirectory( dataRoot );
   if ( SelLFND != NULL )
     SelLFND->setDirectory( dataRoot );
-
-  SSFluo0->setDirectory( dataRoot );
+  for ( int i = 0; i < SSFluos.count(); i++ ) {
+    SSFluos[i]->setDirectory( dataRoot );
+  }
   for ( int i = 0; i < Datas.count(); i++ ) {
     Datas[i]->setDataRoot( dataRoot );
   }

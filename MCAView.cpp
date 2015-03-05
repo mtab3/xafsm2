@@ -114,19 +114,9 @@ MCAView::MCAView( QWidget *p, QWidget *parent ) : QFrame( p )
   connect( this, SIGNAL( newROI( int, int ) ),
 	   Parent, SLOT( setNewROI( int, int ) ),
 	   Qt::UniqueConnection );
-#if 0
-  connect( this, SIGNAL( newROIinEng( double, double ) ),
-	   Parent, SLOT( S2DSetROIs( void ) ),
-	   Qt::UniqueConnection );
-#endif
   connect( this, SIGNAL( newPeakList( QVector<MCAPeak>* ) ),
 	   Parent, SLOT( gotNewPeakList( QVector<MCAPeak>* ) ),
 	   Qt::UniqueConnection );
-#if 0
-  connect( Parent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
-	   Qt::UniqueConnection );
-#endif
-  
   connect( Parent, SIGNAL( SignalMCAViewSetDisplayLog( bool ) ),
 	   this, SLOT( setLog( bool ) ),
 	   Qt::UniqueConnection );

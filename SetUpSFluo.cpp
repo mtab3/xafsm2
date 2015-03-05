@@ -39,13 +39,17 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
 
   connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ),
 	   Qt::UniqueConnection );
-  connect( mcaView, SIGNAL( newROIinEng( double, double ) ),
-	   p, SLOT( S2DSetROIs( void ) ),
-	   Qt::UniqueConnection );
+  connect( mcaView, SIGNAL( newROIinEng( double, double ) ), this, SLOT( SetROIs( void ) ), Qt::UniqueConnection );
   connect( p, SIGNAL( NewEnergy( double ) ), mcaView, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
   connect( this, SIGNAL( showMyMCAView( MCAView * ) ),
 	   p, SLOT( showOnesMCAView( MCAView * ) ), Qt::UniqueConnection );
+}
+
+void SetUpSFluo::setROIs( void )
+{
+  if ( AutoROIsetAll()->isChecked() )
+    setAllROIs();
 }
 
 void SetUpSFluo::setFDBase( FluoDBase *fb )
@@ -826,4 +830,26 @@ void SetUpSFluo::nowFitStat( QString &stat )
 #endif
 }
 
+void SetUpSFluo::newCalibration( void )
+{
+  if ( inMCAMeas )
+    return;
+
+  double oldE = MCAPeaks[ MCAPeakList->currentIndex() ].BinE;
+  if ( oldE <= 0 ) return;  *******************************
+  // 新旧の エネルギー比
+      double ratio = SSFluo0->calibE() / oldE;
+      if ( ratio <= 0 ) return;
+      // 一回の入力で、このルーチンに複数回入ってくるとおかしくなるので
+      // ある数値で一旦設定したら、入力欄自体をクリアしてしまう
+      // PeakCalibrate->setText( "" );
+      SSFluo0->clearCalibE();
+      // gain の設定は何故か逆
+      SFluo->setGain( SSFluo0->mcaCh(), SSFluo0->gain() / ratio );
+      // 設定したゲインの読み出し
+      s->SendCMD2( "SetUpMCA", SFluo->dev(),
+		   "GetPreAMPGain", QString::number( SSFluo0->mcaCh() ) );
+    }
+  }
+}
 

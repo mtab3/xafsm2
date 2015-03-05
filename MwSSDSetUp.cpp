@@ -119,6 +119,7 @@ void MainWindow::NewAttenCh( int att )
   }
 }
 
+#if 0
 void MainWindow::newCalibration( void )
 {
   if ( SSFluo0->isInMeas() )
@@ -147,3 +148,4 @@ void MainWindow::newCalibration( void )
     }
   }
 }
+#endif
