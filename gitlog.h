@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2Test" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Mar 6 18:28:32 2015 +0900\n"\
+                "    a bug in MwMeas is fixed\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Mar 5 21:12:35 2015 +0900\n"\
                 "    Yes, it works with 2 QtXmapSSDs, but there left problems\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Mar 3 21:26:41 2015 +0900\n"\
                 "    the codes can be compiled anyway !\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Mar 3 11:45:56 2015 +0900\n"\
-                "    UI changed.\n"\
 		"\n"\
                 ""
 #endif

@@ -530,7 +530,7 @@ void MainWindow::saveScanData( void )
     view = (XYView*)findAView( SCANDATA );
   }
   ScanInfo si = view->getSInfo();
-  
+
   if ( view == NULL ) {
     statusbar->showMessage( tr( "Scan data is not valid" ), 2000 );
     return;
@@ -561,7 +561,7 @@ void MainWindow::saveScanData( void )
 
   view->getSInfo().save( out );
 
-  int points = view->GetPoints( 1 );
+  int points = view->GetPoints( 0 );
 
   for ( int i = 0; i < points; i++ ) {
     out << view->GetX( 0, i );
