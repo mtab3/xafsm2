@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Feb 25 11:54:36 2015 +0900\n"\
+                "    new MCAMap is imported from newXAMP branch\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 25 11:40:23 2015 +0900\n"\
                 "    trouble in S2D map read (not solved)\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 00:20:56 2015 +0900\n"\
                 "    Still broken\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 17 23:26:28 2015 +0900\n"\
-                "    merged with last newAUnit via master\n"\
 		"\n"\
                 ""
 #endif
