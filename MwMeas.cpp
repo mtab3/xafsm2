@@ -1233,7 +1233,7 @@ void MainWindow::StartMeasurement( void )
   // 将来の変更
   // ノーマル XAFS の時、使用する検出器には ノーマル XAFS OK のフラグが立ってるもの
   // だけが選べるようにする。
-
+  
   if ( !inMeas ) {           // 既に測定が進行中でなければ
     EncOrPM = ( ( SelThEncorder->isChecked() ) ? XENC : XPM );
     SFluoDispLines.clear();
@@ -1523,7 +1523,7 @@ void MainWindow::StartMeasurement( void )
 	NoticingHaveNotMeasDark = false;
       }
     }
-
+    
     MakingSureOfRangeSelect = false;
 
     if ( MeasBackBeforeMeas->isChecked() ) {// 測定前にバックグラウンド測定指定があった
@@ -1603,22 +1603,33 @@ void MainWindow::StartMeasurement( void )
     else
       FixedPositionMode = false;
 
+    qDebug() << "j";
+
     for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      qDebug() << "j1";
       if ( UseSFluos[i]->isChecked() ) 
 	getNewMCAView( SSFluos[i] );
-      if ( MCACanSaveAllOnMem )   // 'Can save all' なら全スキャン分メモリ確保
+      qDebug() << "j2";
+      if ( MCACanSaveAllOnMem ) {  // 'Can save all' なら全スキャン分メモリ確保
+	qDebug() << "j3";
         XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
 			    SFluos[i]->length(), SFluos[i]->chs() );
-      else                        // そうでなければ 1スキャン分だけメモリ上に
-        XafsMCAMaps[i].New( TotalPoints, 1, SFluos[i]->length(), SFluos[i]->chs() );
-      // SelRPT->value() --> 1
+      } else {                        // そうでなければ 1スキャン分だけメモリ上に
+	qDebug() << "j4" << XafsMCAMaps.count() << i;
+	XafsMCAMaps[i].New( TotalPoints, 1, SFluos[i]->length(), SFluos[i]->chs() );
+	// SelRPT->value() --> 1
+      }
+      qDebug() << "j5";
     }
-
+	
+    qDebug() << "j6";
+    
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()
                           .addSecs( EstimatedMeasurementTimeInSec )
                           .toString("yy.MM.dd hh:mm:ss") );
+    qDebug() << "k";
 
     // 測定に使う MaitnTh と検出器の登録。
     // *************************************************************************

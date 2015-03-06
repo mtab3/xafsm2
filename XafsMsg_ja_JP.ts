@@ -935,7 +935,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Show Energy</source>
-        <translation>エネルギー表示</translation>
+        <translation type="vanished">エネルギー表示</translation>
     </message>
     <message>
         <source>ROI changeable even while the XAFS measurements</source>
@@ -1205,15 +1205,15 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Set up SSD</source>
-        <translation>SSD設定</translation>
+        <translation type="vanished">SSD設定</translation>
     </message>
     <message>
         <source>At Cursor</source>
-        <translation>カーソル点</translation>
+        <translation type="vanished">カーソル点</translation>
     </message>
     <message>
         <source>Log  </source>
-        <translation>Log </translation>
+        <translation type="vanished">Log </translation>
     </message>
     <message>
         <source>eV  Gain</source>
@@ -1221,15 +1221,15 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Clear</source>
-        <translation>クリア</translation>
+        <translation type="vanished">クリア</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>ライブ</translation>
+        <translation type="vanished">ライブ</translation>
     </message>
     <message>
         <source>Real</source>
-        <translation>リアル</translation>
+        <translation type="vanished">リアル</translation>
     </message>
     <message>
         <source>Preset:</source>
@@ -1245,23 +1245,23 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>u-sec</source>
-        <translation>μs</translation>
+        <translation type="vanished">μs</translation>
     </message>
     <message>
         <source>eV</source>
-        <translation>eV</translation>
+        <translation type="vanished">eV</translation>
     </message>
     <message>
         <source>mV/keV</source>
-        <translation>mV/keV</translation>
+        <translation type="vanished">mV/keV</translation>
     </message>
     <message>
         <source>ROI  Start</source>
-        <translation>積分始点</translation>
+        <translation type="vanished">積分始点</translation>
     </message>
     <message>
         <source>Peak. T.</source>
-        <translation>ピーキング時間</translation>
+        <translation type="vanished">ピーキング時間</translation>
     </message>
     <message>
         <source>eV  Carib.</source>
@@ -1273,15 +1273,15 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Thresh.</source>
-        <translation>閾値</translation>
+        <translation type="vanished">閾値</translation>
     </message>
     <message>
         <source>Dyn. Range</source>
-        <translation>ダイナミックレンジ</translation>
+        <translation type="vanished">ダイナミックレンジ</translation>
     </message>
     <message>
         <source>SSD No.</source>
-        <translation>SSD チャンネル</translation>
+        <translation type="vanished">SSD チャンネル</translation>
     </message>
     <message>
         <source>8</source>
@@ -1305,7 +1305,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Set Up a SSD Channel</source>
-        <translation>SSDの各チャンネルの設定</translation>
+        <translation type="vanished">SSDの各チャンネルの設定</translation>
     </message>
     <message>
         <source>10</source>
@@ -1349,7 +1349,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Select SSD channels (XAFS meas.)</source>
-        <translation>複数SSD選択(積算/本測定対象)</translation>
+        <translation type="vanished">複数SSD選択(積算/本測定対象)</translation>
     </message>
     <message>
         <source>I                 </source>
@@ -1413,27 +1413,27 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Disp. Elm. Names</source>
-        <translation>元素名表示</translation>
+        <translation type="vanished">元素名表示</translation>
     </message>
     <message>
         <source>Select Elms.</source>
-        <translation>表示元素選択</translation>
+        <translation type="vanished">表示元素選択</translation>
     </message>
     <message>
         <source>Show Always</source>
-        <translation>選択した元素を常に表示</translation>
+        <translation type="vanished">選択した元素を常に表示</translation>
     </message>
     <message>
         <source>eV        Gain</source>
-        <translation>eV       ゲイン</translation>
+        <translation type="vanished">eV       ゲイン</translation>
     </message>
     <message>
         <source>      ROI end</source>
-        <translation>     積分終点</translation>
+        <translation type="vanished">     積分終点</translation>
     </message>
     <message>
         <source>         In ROI</source>
-        <translation>       積分値</translation>
+        <translation type="vanished">       積分値</translation>
     </message>
     <message>
         <source>eV       Carib.</source>
@@ -1441,7 +1441,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Set All</source>
-        <translation>Set All</translation>
+        <translation type="vanished">Set All</translation>
     </message>
     <message>
         <source>Read Data</source>
@@ -1629,7 +1629,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Meas cannot Start : in MCA measurement</source>
-        <translation>MCA 測定中のため XAFS 測定を開始できません</translation>
+        <translation type="vanished">MCA 測定中のため XAFS 測定を開始できません</translation>
     </message>
     <message>
         <source>Measured points are too many.  It should be less than 9990 in QXAFS mode.</source>
@@ -1645,7 +1645,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>19ch SSD can not be used for QXAFS</source>
-        <translation>Q-XAFS では 19素子SSDは使えません。</translation>
+        <translation type="vanished">Q-XAFS では 19素子SSDは使えません。</translation>
     </message>
     <message>
         <source>Aux1 and 2 can not be used for QXAFS</source>
@@ -1713,7 +1713,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>MCA measurement is going on</source>
-        <translation>MCA測定中</translation>
+        <translation type="vanished">MCA測定中</translation>
     </message>
     <message>
         <source>Scan cannot Start : (%1) is disabled</source>
@@ -1810,11 +1810,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Active</source>
-        <translation>アクティブ</translation>
+        <translation type="vanished">アクティブ</translation>
     </message>
     <message>
         <source>MCA data is not valid</source>
-        <translation>正しいMCAデータがありません。</translation>
+        <translation type="vanished">正しいMCAデータがありません。</translation>
     </message>
     <message>
         <source>Save file name is not selected</source>
@@ -1826,15 +1826,15 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Inactive</source>
-        <translation>インアクティブ</translation>
+        <translation type="vanished">インアクティブ</translation>
     </message>
     <message>
         <source>ROI cannot change while the XAFS measurements</source>
-        <translation>XAFS測定中はROIを変更できません</translation>
+        <translation type="vanished">XAFS測定中はROIを変更できません</translation>
     </message>
     <message>
         <source>Scan cannot Start : SSD is disabled</source>
-        <translation>SSD が disable なので測定が開始できません。</translation>
+        <translation type="vanished">SSD が disable なので測定が開始できません。</translation>
     </message>
     <message>
         <source>Scan data is not valid</source>
@@ -2036,11 +2036,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>  Peak List: </source>
-        <translation>ピークリスト</translation>
+        <translation type="vanished">ピークリスト</translation>
     </message>
     <message>
         <source>Calibrate as: </source>
-        <translation>較正:</translation>
+        <translation type="vanished">較正:</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2056,11 +2056,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Show Diff.</source>
-        <translation>微分表示</translation>
+        <translation type="vanished">微分表示</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Last X [Lines] will be displayed, and for the lines older than the &apos;X&apos;, lines measured at every Y [periods] will be displayed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2089,19 +2089,19 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>  Preset:</source>
-        <translation>  プリセット: </translation>
+        <translation type="vanished">  プリセット: </translation>
     </message>
     <message>
         <source>Integration</source>
-        <translation>積算</translation>
+        <translation type="vanished">積算</translation>
     </message>
     <message>
         <source>Disp. Elm.</source>
-        <translation>元素表示</translation>
+        <translation type="vanished">元素表示</translation>
     </message>
     <message>
         <source>[keV] </source>
-        <translation>[keV]</translation>
+        <translation type="vanished">[keV]</translation>
     </message>
     <message>
         <source>Peak Search</source>
@@ -2113,7 +2113,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Parameters</source>
-        <translation>パラメータ</translation>
+        <translation type="vanished">パラメータ</translation>
     </message>
     <message>
         <source>Intervals:   at Start</source>
@@ -2487,7 +2487,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>eV       Calib.</source>
-        <translation>eV      較正</translation>
+        <translation type="vanished">eV      較正</translation>
     </message>
     <message>
         <source>Both Dir.</source>
@@ -2499,7 +2499,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Cannot open [%1]</source>
-        <translation>[%1]が開けません</translation>
+        <translation type="vanished">[%1]が開けません</translation>
     </message>
     <message>
         <source>Q. Cnt.Scn.</source>
@@ -2778,7 +2778,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Auto Set All</source>
-        <translation>自動Set All</translation>
+        <translation type="vanished">自動Set All</translation>
     </message>
     <message>
         <source>Show each scan</source>
@@ -2847,11 +2847,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Set Max MCA Energy</source>
-        <translation>MCA最大エネルギー設定</translation>
+        <translation type="vanished">MCA最大エネルギー設定</translation>
     </message>
     <message>
         <source>Max MCA Energy </source>
-        <translation>MCA最大エネルギー</translation>
+        <translation type="vanished">MCA最大エネルギー</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delta-Theta 1 is tuned at each 1 step of XAFS measurement.&lt;/p&gt;&lt;p&gt;When Aio64 is working continuous tuning mode, this function conflict with it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2932,7 +2932,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Peak Fit</source>
-        <translation>ピークフィット</translation>
+        <translation type="vanished">ピークフィット</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2940,15 +2940,15 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Clr. Peaks</source>
-        <translation>ピーククリア</translation>
+        <translation type="vanished">ピーククリア</translation>
     </message>
     <message>
         <source>Show Smoothed</source>
-        <translation>平滑化表示</translation>
+        <translation type="vanished">平滑化表示</translation>
     </message>
     <message>
         <source>Fit to raw</source>
-        <translation>生データにフィット</translation>
+        <translation type="vanished">生データにフィット</translation>
     </message>
     <message>
         <source>Peak Search (obsolete)</source>
@@ -2956,15 +2956,15 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them in the ROI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとROIの範囲内でピークフィットが行われます。</translation>
+        <translation type="vanished">ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとROIの範囲内でピークフィットが行われます。</translation>
     </message>
     <message>
         <source>%1: %2 [keV] (%3 pix), Height %4 Width %5[keV](%6 pix), Area %7</source>
-        <translation>%1: %2[keV] (%3 pix), 高さ %4, 幅 %5[keV] (%6 pix), 面積 %7</translation>
+        <translation type="vanished">%1: %2[keV] (%3 pix), 高さ %4, 幅 %5[keV] (%6 pix), 面積 %7</translation>
     </message>
     <message>
         <source>Find Max</source>
-        <translation>ピーク探索</translation>
+        <translation type="vanished">ピーク探索</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change.  Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2975,7 +2975,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Max Loop</source>
-        <translation>最大ループ</translation>
+        <translation type="vanished">最大ループ</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2986,31 +2986,23 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Damp. Fact.</source>
-        <translation>制動係数</translation>
+        <translation type="vanished">制動係数</translation>
     </message>
     <message>
         <source>ReFit</source>
-        <translation>再フィット</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40, &apos;Damp. Fact.&apos; is 0.5, and &apos;Prec.&apos; is 1e-6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation type="vanished">再フィット</translation>
     </message>
     <message>
         <source>RF</source>
-        <translation>残差</translation>
+        <translation type="vanished">残差</translation>
     </message>
     <message>
         <source>RFCR</source>
-        <translation>変化率</translation>
+        <translation type="vanished">変化率</translation>
     </message>
     <message>
         <source>40</source>
         <translation type="vanished">40</translation>
-    </message>
-    <message>
-        <source>1e-6</source>
-        <translation></translation>
     </message>
     <message>
         <source>Moving Average</source>
@@ -3018,11 +3010,11 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>1000</source>
-        <translation>1000</translation>
+        <translation type="vanished">1000</translation>
     </message>
     <message>
         <source>0.05</source>
-        <translation>0.05</translation>
+        <translation type="vanished">0.05</translation>
     </message>
     <message>
         <source>Special</source>
@@ -3086,7 +3078,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>SSD Start</source>
-        <translation>SSD計測開始</translation>
+        <translation type="vanished">SSD計測開始</translation>
     </message>
     <message>
         <source>S2D Start</source>
@@ -3126,11 +3118,51 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Select a SSD channel (MCA spectrum)</source>
-        <translation>SSD選択(表示MCAスペクトル)</translation>
+        <translation type="vanished">SSD選択(表示MCAスペクトル)</translation>
     </message>
     <message>
         <source>Undefined Unit type [%1]</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>SFluo1</source>
+        <translation>蛍光検出器1</translation>
+    </message>
+    <message>
+        <source>SFluo2</source>
+        <translation>蛍光検出器2</translation>
+    </message>
+    <message>
+        <source>SFluo3</source>
+        <translation>蛍光検出器3</translation>
+    </message>
+    <message>
+        <source>SFluo4</source>
+        <translation>蛍光検出器4</translation>
+    </message>
+    <message>
+        <source>Additional Functions</source>
+        <translation>その他</translation>
+    </message>
+    <message>
+        <source>MCA measurement is going on with %1</source>
+        <translation>蛍光検出器[%1]を使った別の測定が行われています。</translation>
+    </message>
+    <message>
+        <source>Meas cannot Start : %1 is in MCA measurement</source>
+        <translation>蛍光検出器[%1]を使った別の測定が行われているため測定を開始できません。</translation>
+    </message>
+    <message>
+        <source>SSD/SDD can not be used for QXAFS</source>
+        <translation>SSDやSDDはQXAFSに使用できません</translation>
+    </message>
+    <message>
+        <source>SetUp %1</source>
+        <translation>%1設定</translation>
+    </message>
+    <message>
+        <source>ROI cannot be change while XAFS or S2D measurements</source>
+        <translation>XAFSやマッピング測定中はROIを変更できません。</translation>
     </message>
 </context>
 <context>
@@ -3991,6 +4023,289 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Inactive</source>
         <translation>インアクティブ</translation>
+    </message>
+</context>
+<context>
+    <name>SetUpSFluo</name>
+    <message>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <source>  Preset:</source>
+        <translation>  プリセット: </translation>
+    </message>
+    <message>
+        <source>Real</source>
+        <translation>リアル</translation>
+    </message>
+    <message>
+        <source>Live</source>
+        <translation>ライブ</translation>
+    </message>
+    <message>
+        <source>sec</source>
+        <translation>秒</translation>
+    </message>
+    <message>
+        <source>Integration</source>
+        <translation>積算</translation>
+    </message>
+    <message>
+        <source>Peak. T.</source>
+        <translation>ピーキング時間</translation>
+    </message>
+    <message>
+        <source>u-sec</source>
+        <translation>μs</translation>
+    </message>
+    <message>
+        <source>Thresh.</source>
+        <translation>閾値</translation>
+    </message>
+    <message>
+        <source>eV       Calib.</source>
+        <translation>eV      較正</translation>
+    </message>
+    <message>
+        <source>eV</source>
+        <translation>eV</translation>
+    </message>
+    <message>
+        <source>Dyn. Range</source>
+        <translation>ダイナミックレンジ</translation>
+    </message>
+    <message>
+        <source>eV        Gain</source>
+        <translation>eV       ゲイン</translation>
+    </message>
+    <message>
+        <source>mV/keV</source>
+        <translation>mV/keV</translation>
+    </message>
+    <message>
+        <source>ROI  Start</source>
+        <translation>積分始点</translation>
+    </message>
+    <message>
+        <source>      ROI end</source>
+        <translation>     積分終点</translation>
+    </message>
+    <message>
+        <source>Set All</source>
+        <translation>Set All</translation>
+    </message>
+    <message>
+        <source>At Cursor</source>
+        <translation>カーソル点</translation>
+    </message>
+    <message>
+        <source>         In ROI</source>
+        <translation>       積分値</translation>
+    </message>
+    <message>
+        <source>Parameters</source>
+        <translation>パラメータ</translation>
+    </message>
+    <message>
+        <source>Auto Set All</source>
+        <translation>自動Set All</translation>
+    </message>
+    <message>
+        <source>Set Up a SSD Channel</source>
+        <translation>SSDの各チャンネルの設定</translation>
+    </message>
+    <message>
+        <source>SSD No.</source>
+        <translation>SSD チャンネル</translation>
+    </message>
+    <message>
+        <source>Log  </source>
+        <translation>Log </translation>
+    </message>
+    <message>
+        <source>SSD Start</source>
+        <translation>SSD計測開始</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>クリア</translation>
+    </message>
+    <message>
+        <source>Disp. Elm. Names</source>
+        <translation>元素名表示</translation>
+    </message>
+    <message>
+        <source>Select Elms.</source>
+        <translation>表示元素選択</translation>
+    </message>
+    <message>
+        <source>Show Always</source>
+        <translation>選択した元素を常に表示</translation>
+    </message>
+    <message>
+        <source>Show Energy</source>
+        <translation>エネルギー表示</translation>
+    </message>
+    <message>
+        <source>Disp. Elm.</source>
+        <translation>元素表示</translation>
+    </message>
+    <message>
+        <source>Save:</source>
+        <translation>保存ファイル:</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>選択</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them in the ROI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとROIの範囲内でピークフィットが行われます。</translation>
+    </message>
+    <message>
+        <source>Clr. Peaks</source>
+        <translation>ピーククリア</translation>
+    </message>
+    <message>
+        <source>  Peak List: </source>
+        <translation>ピークリスト</translation>
+    </message>
+    <message>
+        <source>Calibrate as: </source>
+        <translation>較正:</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通常、0.5。大きくするとピークを見つけにくくなり、小さくするとノイズなども誤ってピークと判断しやすくなる。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>[keV] </source>
+        <translation>[keV]</translation>
+    </message>
+    <message>
+        <source>ReFit</source>
+        <translation>再フィット</translation>
+    </message>
+    <message>
+        <source>Show Smoothed</source>
+        <translation>平滑化表示</translation>
+    </message>
+    <message>
+        <source>Fit to raw</source>
+        <translation>生データにフィット</translation>
+    </message>
+    <message>
+        <source>Find Max</source>
+        <translation>ピーク探索</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Show Diff.</source>
+        <translation>微分表示</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40, &apos;Damp. Fact.&apos; is 0.5, and &apos;Prec.&apos; is 1e-6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通常変更する必要はありません。最大ループ数 40、制動係数 0.5、精度 1e-6 がデフォルト値です&lt;/p&gt;&lt;/body&gt;&lt;/heml&gt;</translation>
+    </message>
+    <message>
+        <source>Max Loop</source>
+        <translation>最大ループ</translation>
+    </message>
+    <message>
+        <source>1000</source>
+        <translation>1000</translation>
+    </message>
+    <message>
+        <source>Damp. Fact.</source>
+        <translation>制動係数</translation>
+    </message>
+    <message>
+        <source>0.5</source>
+        <translation>0.5</translation>
+    </message>
+    <message>
+        <source>RF</source>
+        <translation>残差</translation>
+    </message>
+    <message>
+        <source>0.05</source>
+        <translation>0.05</translation>
+    </message>
+    <message>
+        <source>RFCR</source>
+        <translation>変化率</translation>
+    </message>
+    <message>
+        <source>1e-6</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Max MCA Energy </source>
+        <translation>MCA最大エネルギー</translation>
+    </message>
+    <message>
+        <source>keV</source>
+        <translation>keV</translation>
+    </message>
+    <message>
+        <source>Select a SSD channel (MCA spectrum)</source>
+        <translation>チャンネル選択(表示スペクトル)</translation>
+    </message>
+    <message>
+        <source>Select SSD channels (XAFS meas.)</source>
+        <translation>複数チャンネル選択(積算/本測定対象)</translation>
+    </message>
+    <message>
+        <source>Cannot open [%1]</source>
+        <translation>[%1]が開けません</translation>
+    </message>
+    <message>
+        <source>MCA data is not valid</source>
+        <translation>正しいMCAデータがありません。</translation>
+    </message>
+    <message>
+        <source>Save file name is not selected</source>
+        <translation>ファイル名が選択されていません。</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>アクティブ</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation>インアクティブ</translation>
+    </message>
+    <message>
+        <source>SSD is disabled</source>
+        <translation>蛍光検出器が利用可能になっていません。</translation>
+    </message>
+    <message>
+        <source>The Sensor [%1] is used by the process %2!</source>
+        <translation>検出器[%1]は[%2]に使われています。</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>中止</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>開始</translation>
+    </message>
+    <message>
+        <source>%1: %2 [keV] (%3 pix), Height %4 Width %5[keV](%6 pix), Area %7</source>
+        <translation>%1: %2[keV] (%3 pix), 高さ %4, 幅 %5[keV] (%6 pix), 面積 %7</translation>
+    </message>
+    <message>
+        <source>Error cannot open [%1].</source>
+        <translation>Error cannot open [%1].</translation>
     </message>
 </context>
 <context>

@@ -75,9 +75,12 @@ void MainWindow::removeUsingUnits( QString id, AUnit0 *unit )
 
 void MainWindow::ReCalcS2DMap( SetUpSFluo *ssfluo )
 {
-  //  if ( ( ! S2DI.valid ) || inMeas || inMCAMeas || inS2D ) {
-  if ( inMeas || inS2D || ssfluo->isInMeas() ) {
-    statusbar->showMessage( tr( "ROI cannot change while XAFS, S2D or MCA measurements" ), 2000 );
+  // 対象の MCA が単純な蛍光スペクトル測定以外(XAFS, S2D)に使われていてたら
+  // ROI の変更を認めない
+  if (( ssfluo->isInMeas() )&&( ssfluo->sFluo()->userName() != MCA_ID )) {
+    statusbar
+      ->showMessage( tr( "ROI cannot be change while XAFS or S2D measurements" ), 2000 );
+    return;
   }
   S2DBase->setS2DI( S2DI );
   emit ReCalcS2DMap0( ssfluo->roiStart(), ssfluo->roiEnd(), ssfluo->selBs2() );
