@@ -1417,7 +1417,7 @@ void MainWindow::StartMeasurement( void )
 	MeasDispPol[ LC ] = -1;
       mMeasUnits.addUnit( A2Sensors[ SelectAux2->currentIndex() ] );
       LC++;
-      aGsb.stat = PBFalse; aGsb.label = "A2";     GSBSs << aGsb;
+      aGsb.stat = PBFalse; aGsb.label = "A2"; GSBSs << aGsb;
       aGsb.stat = PBTrue;  aGsb.label = "mu3"; GSBSs << aGsb;
     }
     if ( QXafsMode->isChecked() ) {
@@ -1622,7 +1622,6 @@ void MainWindow::StartMeasurement( void )
     EndTimeDisp->setText( QDateTime::currentDateTime()
                           .addSecs( EstimatedMeasurementTimeInSec )
                           .toString("yy.MM.dd hh:mm:ss") );
-    qDebug() << "k";
 
     // 測定に使う MaitnTh と検出器の登録。
     // *************************************************************************
@@ -1691,6 +1690,7 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   }
   aSet->isI1 = UseI1->isChecked();
   aSet->isNoSFluo = true;;
+  aSet->isSFluos.clear();
   for ( int i = 0; i < UseSFluos.count(); i++ ) {
     aSet->isSFluos << UseSFluos[i]->isChecked();
     if ( UseSFluos[i] )
@@ -1956,7 +1956,7 @@ void MainWindow::MoveInMeasView( int ix, double )
 {
   if ( inMeas || ! MPSet.valid || MPSet.isNoSFluo )
     return;
-  
+
   aMCASet *set;
   quint32 *cnt;
   int rpt = SelRPT->value() - 1;
@@ -1968,13 +1968,10 @@ void MainWindow::MoveInMeasView( int ix, double )
       set = XafsMCAMaps[i].aPoint( ix, SelRPT->value() - 1 );
       if (( set == NULL ) || (! set->isValid() ))
 	return;
-      
       cnt = set->Ch[ SSFluos[i]->cCh() ].cnt;
-      
       for ( int i = 0; i < SSFluos[i]->length(); i++ ) {
 	SSFluos[i]->McaData()[i] = cnt[i];
       }
-      
       SSFluos[i]->McaView()->update();
     }
   }

@@ -234,97 +234,97 @@ void LA::solveUV(299,5226
 LocalizedName.cpp,40
 QString MainWindow::LocalizedName(3,25
 
-MCAView.cpp,1760
+MCAView.cpp,1759
 #define PEAKSEARCH12,143
 #define NEAR1 22,548
 #define NEAR2 23,637
 #define NEAR3 24,719
 MCAView::MCAView(26,799
-MCAView::~MCAView(144,4791
-quint32 *MCAView::setMCAdataPointer(MCAView::setMCAdataPointer177,5647
-void MCAView::paintEvent(191,5998
-void MCAView::print(198,6099
-double LOGS[LOGS204,6174
-#define SMOOTHINGRANGE 220,6609
-double SWeight[SWeight221,6639
-#define DIFFOFFSET 222,6725
-#define DIFFRANGE 223,6784
-double DWeight[DWeight224,6810
-double DiffNorm 225,6892
-#define SMOOTHINGRANGE 229,6990
-double SWeight[SWeight230,7020
-#define DIFFOFFSET 231,7072
-#define DIFFRANGE 232,7131
-double DWeight[DWeight233,7157
-double DiffNorm 234,7239
-#define SMOOTHINGRANGE 238,7343
-double SWeight[SWeight239,7373
-#define DIFFOFFSET 240,7434
-#define DIFFRANGE 241,7493
-double DWeight[DWeight242,7518
-double DiffNorm 243,7569
-#define SMOOTHINGRANGE 247,7648
-double SWeight[SWeight248,7678
-#define DIFFOFFSET 249,7730
-#define DIFFRANGE 250,7789
-double DWeight[DWeight251,7814
-double DiffNorm 252,7865
-#define DELOFFSET 255,7895
-#define DELRANGE 256,7958
-double DelWeight[DelWeight257,7982
-void MCAView::Draw(259,8027
-void MCAView::PeakSearch(830,27557
-void MCAView::mouseMoveEvent(968,31880
-void MCAView::mousePressEvent(1004,32558
-void MCAView::mouseReleaseEvent(1060,34421
-void MCAView::mouseDoubleClickEvent(1089,35066
-void MCAView::setROI(1093,35124
-void MCAView::wheelEvent(1099,35247
-void MCAView::setNewPSSens(1129,36061
-QStringList MCAView::getSelectedElms(1139,36197
-void MCAView::setFittedLines(1155,36587
-void MCAView::doPeakFitWCPoints(1176,37103
-void MCAView::newFit(1235,38470
-void MCAView::setMCAPeaksByFit(1247,38721
-void MCAView::clearMCAPeaks(1270,39458
-void MCAView::PopUp(1277,39571
+MCAView::~MCAView(134,4523
+quint32 *MCAView::setMCAdataPointer(MCAView::setMCAdataPointer167,5379
+void MCAView::paintEvent(181,5730
+void MCAView::print(188,5831
+double LOGS[LOGS194,5906
+#define SMOOTHINGRANGE 210,6341
+double SWeight[SWeight211,6371
+#define DIFFOFFSET 212,6457
+#define DIFFRANGE 213,6516
+double DWeight[DWeight214,6542
+double DiffNorm 215,6624
+#define SMOOTHINGRANGE 219,6722
+double SWeight[SWeight220,6752
+#define DIFFOFFSET 221,6804
+#define DIFFRANGE 222,6863
+double DWeight[DWeight223,6889
+double DiffNorm 224,6971
+#define SMOOTHINGRANGE 228,7075
+double SWeight[SWeight229,7105
+#define DIFFOFFSET 230,7166
+#define DIFFRANGE 231,7225
+double DWeight[DWeight232,7250
+double DiffNorm 233,7301
+#define SMOOTHINGRANGE 237,7380
+double SWeight[SWeight238,7410
+#define DIFFOFFSET 239,7462
+#define DIFFRANGE 240,7521
+double DWeight[DWeight241,7546
+double DiffNorm 242,7597
+#define DELOFFSET 245,7627
+#define DELRANGE 246,7690
+double DelWeight[DelWeight247,7714
+void MCAView::Draw(249,7759
+void MCAView::PeakSearch(820,27289
+void MCAView::mouseMoveEvent(958,31612
+void MCAView::mousePressEvent(994,32290
+void MCAView::mouseReleaseEvent(1050,34153
+void MCAView::mouseDoubleClickEvent(1079,34798
+void MCAView::setROI(1083,34856
+void MCAView::wheelEvent(1089,34979
+void MCAView::setNewPSSens(1119,35793
+QStringList MCAView::getSelectedElms(1129,35929
+void MCAView::setFittedLines(1145,36319
+void MCAView::doPeakFitWCPoints(1166,36835
+void MCAView::newFit(1225,38202
+void MCAView::setMCAPeaksByFit(1237,38453
+void MCAView::clearMCAPeaks(1260,39190
+void MCAView::PopUp(1267,39303
 
 MainWindow.cpp,1054
 const QString CMode[CMode9,104
 MainWindow::MainWindow(17,224
-void MainWindow::SpecialMove(223,7493
-void MainWindow::SpecialMoveCore(244,7953
-void MainWindow::SetDXMPMC(265,8371
-void MainWindow::Initialize(294,9355
-void MainWindow::SendListNodes(320,10221
-void MainWindow::ShowMessageOnSBar(325,10319
-void MainWindow::InitializeUnitsAgain(330,10423
-void MainWindow::InitAndIdentifyMotors(335,10497
-void MainWindow::SetMainThCenter(379,11719
-void MainWindow::InitAndIdentifySensors(398,12114
-void MainWindow::setEncNewTh(473,14687
-void MainWindow::RcvListNodes(481,14903
-void MainWindow::SomeDrvIsConnected(488,15053
-void MainWindow::SomeDrvIsDisconnected(493,15146
-void MainWindow::SetEnableOfUnits(498,15243
-void MainWindow::ShowCurDTh1(521,15724
-void MainWindow::ShowCurThPos(527,15830
-double MainWindow::SelectedCurPosDeg(549,16444
-void MainWindow::ShowNewRingCurrent(568,16862
-void MainWindow::SignalToStars(573,16962
-void MainWindow::RcvEvAll(578,17040
-void MainWindow::alarmOn(588,17298
-void MainWindow::alarmOff(593,17376
+void MainWindow::SpecialMove(222,7452
+void MainWindow::SpecialMoveCore(243,7912
+void MainWindow::SetDXMPMC(264,8330
+void MainWindow::Initialize(293,9314
+void MainWindow::SendListNodes(319,10180
+void MainWindow::ShowMessageOnSBar(324,10278
+void MainWindow::InitializeUnitsAgain(329,10382
+void MainWindow::InitAndIdentifyMotors(334,10456
+void MainWindow::SetMainThCenter(378,11678
+void MainWindow::InitAndIdentifySensors(397,12073
+void MainWindow::setEncNewTh(472,14646
+void MainWindow::RcvListNodes(480,14862
+void MainWindow::SomeDrvIsConnected(487,15012
+void MainWindow::SomeDrvIsDisconnected(492,15105
+void MainWindow::SetEnableOfUnits(497,15202
+void MainWindow::ShowCurDTh1(520,15683
+void MainWindow::ShowCurThPos(526,15789
+double MainWindow::SelectedCurPosDeg(548,16403
+void MainWindow::ShowNewRingCurrent(567,16821
+void MainWindow::SignalToStars(572,16921
+void MainWindow::RcvEvAll(577,16999
+void MainWindow::alarmOn(587,17257
+void MainWindow::alarmOff(592,17335
 
 Measurement.cpp,339
 void MainWindow::MeasSequence(3,25
 void MainWindow::clearUUnits(215,6881
 void MainWindow::onMeasFinishWorks(230,7137
-bool MainWindow::isBusyMotorInMeas(254,7842
-void MainWindow::SetDispMeasModes(262,8032
-void MainWindow::DispMeasDatas(358,12071
-void MainWindow::newSSDChSelection(502,16251
-void MainWindow::SaveI0inMPSet(544,17382
+bool MainWindow::isBusyMotorInMeas(261,8063
+void MainWindow::SetDispMeasModes(269,8253
+void MainWindow::DispMeasDatas(365,12292
+void MainWindow::newSSDChSelection(509,16472
+void MainWindow::SaveI0inMPSet(551,17603
 
 MonInfo.cpp,159
 MonInfo::MonInfo(5,41
@@ -387,26 +387,26 @@ void MainWindow::SChangerReached(191,6745
 void MainWindow::NewChangerSelected(206,7198
 void MainWindow::ShowChangerPosition(233,8175
 
-MwCommon.cpp,705
+MwCommon.cpp,706
 void MainWindow::setupCommonArea(4,26
-void MainWindow::InitSize(70,2360
-void MainWindow::saveGSBs(82,2567
-void MainWindow::loadGSBs(89,2715
-void MainWindow::clearGSBs(97,2925
-void MainWindow::SetGSBFlags(105,3078
-void MainWindow::SetGSBLabels(112,3219
-void MainWindow::SelectAGB(119,3356
-void MainWindow::HideT(134,3746
-void MainWindow::HideB(144,3878
-void MainWindow::NewSelA(157,4067
-void MainWindow::NewSelE(202,5655
-void MainWindow::ShowTAE(214,5954
-void MainWindow::ManSelTEdeg(227,6341
-void MainWindow::ManSelTEkeV(239,6662
-void MainWindow::OpenPT(248,6843
-void MainWindow::MoveCurThPosKeV(253,6894
-void MainWindow::TuneDTh1(279,7690
-void MainWindow::AddNewDTh1TunePoint(293,7980
+void MainWindow::InitSize(78,2708
+void MainWindow::saveGSBs(92,2971
+void MainWindow::loadGSBs(99,3119
+void MainWindow::clearGSBs(121,3680
+void MainWindow::SetGSBFlags(133,3943
+void MainWindow::SetGSBLabels(140,4084
+void MainWindow::SelectAGB(147,4221
+void MainWindow::HideT(162,4611
+void MainWindow::HideB(172,4743
+void MainWindow::NewSelA(187,4992
+void MainWindow::NewSelE(232,6580
+void MainWindow::ShowTAE(244,6879
+void MainWindow::ManSelTEdeg(257,7266
+void MainWindow::ManSelTEkeV(269,7587
+void MainWindow::OpenPT(278,7768
+void MainWindow::MoveCurThPosKeV(283,7819
+void MainWindow::TuneDTh1(309,8615
+void MainWindow::AddNewDTh1TunePoint(323,8905
 
 MwLog.cpp,222
 void MainWindow::setupLogArea(4,26
@@ -418,61 +418,61 @@ void MainWindow::AddLogComment(64,1765
 
 MwMeas.cpp,2318
 void MainWindow::setupMeasArea(5,46
-bool MainWindow::isUseSFluo(297,11397
-bool MainWindow::isASFluoUnit(306,11564
-int MainWindow::SFluoCHs(315,11730
-int MainWindow::whichSFluoUnit(325,11916
-void MainWindow::ShowOtherOptions(337,12128
-void MainWindow::CheckNewMeasFileName(343,12263
-void MainWindow::ShowMeasFileStatus(349,12427
-void MainWindow::SetUpSensorComboBoxes(359,12808
-void MainWindow::newSensSelectedForI0(428,14903
-void MainWindow::newSensSelectedForI1(451,15563
-void MainWindow::newSensSelectedForA1(474,16232
-void MainWindow::newSensSelectedForA2(497,16901
-void MainWindow::newI0Range(520,17570
-void MainWindow::newI1Range(529,17824
-void MainWindow::newA1Range(538,18078
-void MainWindow::newA2Range(547,18336
-void MainWindow::getGassAbsTable(556,18594
-void MainWindow::SetNewGases(575,19218
-void MainWindow::ShowMB(624,20702
-void MainWindow::ChangeBLKUnit(641,21202
-void MainWindow::ChangeBLKs(664,21720
-void MainWindow::SetStdEXAFSBLKs(686,22310
-void MainWindow::SetStdXAFSBLKs(758,24778
-void MainWindow::SetStdXANESBLKs(834,27401
-void MainWindow::ShowBLKs(896,29446
-void MainWindow::NewRpt(951,31169
-void MainWindow::ShowTotal(957,31244
-void MainWindow::ChangeBLKparams(992,32632
-void MainWindow::ChangeBLKpoints(998,32744
-void MainWindow::SetDwells(1025,33451
-void MainWindow::SelectedNDFN(1034,33646
-void MainWindow::SelectedWBFN(1044,33934
-void MainWindow::SelectedRBFN(1069,34790
-void MainWindow::ClearXViewScreenForMeas(1111,36047
-bool MainWindow::CheckDetectorSelection(1121,36302
-void MainWindow::StartMeasurement(1215,39285
-void MainWindow::SetupMPSet(1662,57410
-bool MainWindow::CheckOkList(1707,58681
-bool MainWindow::theSensorIsAvailable(1721,59037
-void MainWindow::SurelyStop(1731,59272
-void MainWindow::GoingOn(1767,60483
-void MainWindow::CpBlock2SBlock(1790,61296
-bool MainWindow::CheckBlockRange(1813,62064
-void MainWindow::PauseMeasurement(1830,62596
-void MainWindow::OkOverWrite(1853,63434
-void MainWindow::OkHaveNotMeasDark(1858,63503
-void MainWindow::RangeSelOK(1863,63586
-void MainWindow::ShowItemsForAutoMode(1869,63663
-bool MainWindow::ParseAutoMode(1875,63807
-void MainWindow::MoveInMeasView(1951,66261
-void MainWindow::ReCalcXAFSWithMCA(1980,66907
-bool MainWindow::setRsRe(2047,68943
-void MainWindow::AfterSaveXafs(2062,69232
+bool MainWindow::isUseSFluo(298,11440
+bool MainWindow::isASFluoUnit(307,11607
+int MainWindow::SFluoCHs(316,11773
+int MainWindow::whichSFluoUnit(326,11959
+void MainWindow::ShowOtherOptions(338,12171
+void MainWindow::CheckNewMeasFileName(344,12306
+void MainWindow::ShowMeasFileStatus(350,12470
+void MainWindow::SetUpSensorComboBoxes(360,12851
+void MainWindow::newSensSelectedForI0(429,14946
+void MainWindow::newSensSelectedForI1(452,15606
+void MainWindow::newSensSelectedForA1(475,16275
+void MainWindow::newSensSelectedForA2(498,16944
+void MainWindow::newI0Range(521,17613
+void MainWindow::newI1Range(530,17867
+void MainWindow::newA1Range(539,18121
+void MainWindow::newA2Range(548,18379
+void MainWindow::getGassAbsTable(557,18637
+void MainWindow::SetNewGases(576,19261
+void MainWindow::ShowMB(625,20745
+void MainWindow::ChangeBLKUnit(642,21245
+void MainWindow::ChangeBLKs(665,21763
+void MainWindow::SetStdEXAFSBLKs(687,22353
+void MainWindow::SetStdXAFSBLKs(759,24821
+void MainWindow::SetStdXANESBLKs(835,27444
+void MainWindow::ShowBLKs(897,29489
+void MainWindow::NewRpt(952,31212
+void MainWindow::ShowTotal(958,31287
+void MainWindow::ChangeBLKparams(993,32675
+void MainWindow::ChangeBLKpoints(999,32787
+void MainWindow::SetDwells(1026,33494
+void MainWindow::SelectedNDFN(1035,33689
+void MainWindow::SelectedWBFN(1045,33977
+void MainWindow::SelectedRBFN(1070,34833
+void MainWindow::ClearXViewScreenForMeas(1112,36090
+bool MainWindow::CheckDetectorSelection(1122,36345
+void MainWindow::StartMeasurement(1216,39328
+void MainWindow::SetupMPSet(1665,57457
+bool MainWindow::CheckOkList(1711,58754
+bool MainWindow::theSensorIsAvailable(1725,59110
+void MainWindow::SurelyStop(1735,59345
+void MainWindow::GoingOn(1771,60556
+void MainWindow::CpBlock2SBlock(1794,61369
+bool MainWindow::CheckBlockRange(1817,62137
+void MainWindow::PauseMeasurement(1834,62669
+void MainWindow::OkOverWrite(1857,63507
+void MainWindow::OkHaveNotMeasDark(1862,63576
+void MainWindow::RangeSelOK(1867,63659
+void MainWindow::ShowItemsForAutoMode(1873,63736
+bool MainWindow::ParseAutoMode(1879,63880
+void MainWindow::MoveInMeasView(1955,66334
+void MainWindow::ReCalcXAFSWithMCA(1981,66957
+bool MainWindow::setRsRe(2048,68993
+void MainWindow::AfterSaveXafs(2063,69282
 
-MwS2D.cpp,556
+MwS2D.cpp,1370
 #define LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN 8,84
 void MainWindow::setupScan2DArea(10,146
 void MainWindow::S2DSetUseChangers(160,5895
@@ -486,71 +486,89 @@ void MainWindow::S2DOkOverWrite2(285,9079
 void MainWindow::newS2DFileSelected(291,9184
 void MainWindow::showS2DNewAxValue(309,9771
 void MainWindow::S2DScanStart(322,10099
+void MainWindow::S2DFileCheck(533,16187
+void MainWindow::S2DOkOverWrite(546,16492
+void MainWindow::S2DScanNotStart(551,16567
+void MainWindow::CheckS2DDwellTime(557,16657
+void MainWindow::SetupS2DParams(595,17863
+void MainWindow::S2DStop0(654,19811
+void MainWindow::S2DStop00(666,20111
+void MainWindow::SaveS2DResult(677,20425
+void MainWindow::S2DWriteHead0 720,21598
+void MainWindow::S2DWriteHead(739,21911
+void MainWindow::S2DWriteHead2(750,22288
+void MainWindow::S2DWriteBody(758,22581
+void MainWindow::S2DWriteBody2(780,23084
+void MainWindow::SaveMCADataOnMem(792,23400
+void MainWindow::S2DWriteBlankLine(821,24336
+void MainWindow::S2DWriteTail(838,24690
+void MainWindow::S2DMoveToPointedPosition(858,25222
+void MainWindow::ShowMCASpectrum(875,25735
+void MainWindow::S2DChangeMCACh(900,26428
 
-MwSSDSetUp.cpp,329
+MwSSDSetUp.cpp,287
 void MainWindow::setupSFluoRelated(4,26
-void MainWindow::addAnUsingUnit(64,2598
-void MainWindow::removeUsingUnits(69,2695
-void MainWindow::ReCalcS2DMap(74,2796
-void MainWindow::MoveToNewCaribEnergy(84,3177
-void MainWindow::NewAttenPos(89,3289
-void MainWindow::NewAttenCh(112,4061
-void MainWindow::newCalibration(122,4270
+void MainWindow::addAnUsingUnit(66,2611
+void MainWindow::removeUsingUnits(71,2708
+void MainWindow::ReCalcS2DMap(76,2809
+void MainWindow::MoveToNewCaribEnergy(89,3306
+void MainWindow::NewAttenPos(94,3418
+void MainWindow::NewAttenCh(117,4190
 
 MwSetup.cpp,2193
 void MainWindow::setupSetupArea(5,46
 void MainWindow::newDataRoot(259,9173
-void MainWindow::NewMotor(288,10083
-bool MainWindow::LoadScanInfo(309,10606
-void MainWindow::SaveScanInfo(333,11505
-void MainWindow::SaveMonInfo(371,12766
-bool MainWindow::UseDefUReal(393,13255
-void MainWindow::ToggleGoToButtons(407,13466
-void MainWindow::GoToPosKeV(422,13822
-void MainWindow::newSensSelected(441,14318
-void MainWindow::SetAutoRangeMode(449,14549
-void MainWindow::SelAutoRange(465,14983
-void MainWindow::newRangeSelected(480,15518
-void MainWindow::askNowRange(494,15983
-void MainWindow::askNowRanges(499,16094
-void MainWindow::askSetRange(506,16234
-void MainWindow::GotNowRange(512,16379
-void MainWindow::saveScanData(523,16710
-void MainWindow::setSelectedMonFName(576,18367
-void MainWindow::setSelectedScanFName(584,18653
-void MainWindow::SetGoMSpeedH(592,18960
-void MainWindow::SetGoMSpeedM(599,19069
-void MainWindow::SetGoMSpeedL(606,19182
-void MainWindow::ShowGoMSpeed(613,19289
-void MainWindow::ShowCurMotorPos(620,19555
-void MainWindow::GetNewGos(659,20664
-void MainWindow::ShowAllGos(666,20763
-void MainWindow::ShowGo(673,20861
-void MainWindow::GetNewGo(682,21067
-void MainWindow::SetNewGos(688,21207
-void MainWindow::SetAllGoUnits(699,21474
-void MainWindow::NewMMRelAbs(707,21612
-void MainWindow::NewGoMotorPosPuls(716,21805
-void MainWindow::NewGoMotorPosUnit(729,22191
-void MainWindow::GoMAtP(742,22574
-void MainWindow::GoMAtPuls(754,22879
-void MainWindow::setGoBAsMoving(793,24018
-void MainWindow::setGoBAsNotMoving(808,24446
-void MainWindow::GoMStop(835,25090
-void MainWindow::GoMStop0(857,25842
-void MainWindow::SelectedAPointInScanArea(870,26094
-void MainWindow::ScanStart(882,26418
-void MainWindow::ClearXViewScreenForScan(1037,31956
-void MainWindow::ScanStop0(1043,32062
-void MainWindow::Monitor(1048,32120
-void MainWindow::PauseMonitor(1228,37704
-void MainWindow::saveMonData(1241,37979
-void MainWindow::newVs(1301,39717
-void MainWindow::TYVUpScale(1310,39961
-void MainWindow::TYVDownScale(1321,40196
-void MainWindow::PopDownMonLines(1332,40423
-void MainWindow::PopChangeMonLines(1337,40505
-void MainWindow::newMovingAvr(1348,40752
+void MainWindow::NewMotor(289,10139
+bool MainWindow::LoadScanInfo(310,10662
+void MainWindow::SaveScanInfo(334,11561
+void MainWindow::SaveMonInfo(372,12822
+bool MainWindow::UseDefUReal(394,13311
+void MainWindow::ToggleGoToButtons(408,13522
+void MainWindow::GoToPosKeV(423,13878
+void MainWindow::newSensSelected(442,14374
+void MainWindow::SetAutoRangeMode(450,14605
+void MainWindow::SelAutoRange(466,15039
+void MainWindow::newRangeSelected(481,15574
+void MainWindow::askNowRange(495,16039
+void MainWindow::askNowRanges(500,16150
+void MainWindow::askSetRange(507,16290
+void MainWindow::GotNowRange(513,16435
+void MainWindow::saveScanData(524,16766
+void MainWindow::setSelectedMonFName(577,18421
+void MainWindow::setSelectedScanFName(585,18707
+void MainWindow::SetGoMSpeedH(593,19014
+void MainWindow::SetGoMSpeedM(600,19123
+void MainWindow::SetGoMSpeedL(607,19236
+void MainWindow::ShowGoMSpeed(614,19343
+void MainWindow::ShowCurMotorPos(621,19609
+void MainWindow::GetNewGos(660,20718
+void MainWindow::ShowAllGos(667,20817
+void MainWindow::ShowGo(674,20915
+void MainWindow::GetNewGo(683,21121
+void MainWindow::SetNewGos(689,21261
+void MainWindow::SetAllGoUnits(700,21528
+void MainWindow::NewMMRelAbs(708,21666
+void MainWindow::NewGoMotorPosPuls(717,21859
+void MainWindow::NewGoMotorPosUnit(730,22245
+void MainWindow::GoMAtP(743,22628
+void MainWindow::GoMAtPuls(755,22933
+void MainWindow::setGoBAsMoving(794,24072
+void MainWindow::setGoBAsNotMoving(809,24500
+void MainWindow::GoMStop(836,25144
+void MainWindow::GoMStop0(858,25896
+void MainWindow::SelectedAPointInScanArea(871,26148
+void MainWindow::ScanStart(883,26472
+void MainWindow::ClearXViewScreenForScan(1038,32016
+void MainWindow::ScanStop0(1044,32122
+void MainWindow::Monitor(1049,32180
+void MainWindow::PauseMonitor(1229,37770
+void MainWindow::saveMonData(1242,38045
+void MainWindow::newVs(1302,39783
+void MainWindow::TYVUpScale(1311,40027
+void MainWindow::TYVDownScale(1322,40262
+void MainWindow::PopDownMonLines(1333,40489
+void MainWindow::PopChangeMonLines(1338,40571
+void MainWindow::newMovingAvr(1349,40818
 
 MwView.cpp,346
 void MainWindow::setupView(4,26
@@ -613,35 +631,35 @@ void MainWindow::QIntervalTimeout1(39,1432
 void MainWindow::QIntervalTimeout2(45,1534
 void MainWindow::SetNewRPTLimit(51,1636
 void MainWindow::ToggleQXafsMode(71,2146
-void MainWindow::HideBLKs(184,6102
-#define MIN_INTEGRAL 200,6496
-#define INTEGRAL_INTERVAL_RATIO 202,6697
-#define MIN_INTERVAL 203,6738
-void MainWindow::CheckQXafsParams(205,6804
-void MainWindow::ShowDeltaAtRefPoint(248,8428
-void MainWindow::ShowQTime(258,8911
-void MainWindow::GetPM16CParamsForQXAFS(309,10465
-void MainWindow::QXafsMeasSequence(378,13645
-void MainWindow::QXafsFinish0(658,24267
-void MainWindow::QXafsFinish(667,24642
-void MainWindow::DispQSpectrum(683,25103
-void MainWindow::ShowQXafsProgress(794,27989
+void MainWindow::HideBLKs(190,6403
+#define MIN_INTEGRAL 206,6797
+#define INTEGRAL_INTERVAL_RATIO 208,6998
+#define MIN_INTERVAL 209,7039
+void MainWindow::CheckQXafsParams(211,7105
+void MainWindow::ShowDeltaAtRefPoint(254,8729
+void MainWindow::ShowQTime(264,9212
+void MainWindow::GetPM16CParamsForQXAFS(315,10766
+void MainWindow::QXafsMeasSequence(384,13946
+void MainWindow::QXafsFinish0(664,24568
+void MainWindow::QXafsFinish(673,24943
+void MainWindow::DispQSpectrum(689,25404
+void MainWindow::ShowQXafsProgress(800,28290
 
-ReadData.cpp,218
+ReadData.cpp,219
 void MainWindow::setupReadDataArea(4,26
 void MainWindow::TryToNoticeCurrentView(36,1376
 void MainWindow::DeleteTheView(42,1523
 void MainWindow::TryToGiveNewView(50,1741
-void MainWindow::ansToGetNewMCAView(99,3363
+void MainWindow::ansToGetNewMCAView(104,3609
 
 ReadDef.cpp,266
 #define LN 7,91
 #define BS 8,136
 void MainWindow::ReadDef(10,183
-AUnit0 *MainWindow::NewNewUnit(MainWindow::NewNewUnit387,16135
-void MainWindow::CheckDuplicateUID(448,17656
-void MainWindow::ExitByDuplicateUID(481,18717
-QString MainWindow::nextItem(493,19305
+AUnit0 *MainWindow::NewNewUnit(MainWindow::NewNewUnit380,16021
+void MainWindow::CheckDuplicateUID(441,17542
+void MainWindow::ExitByDuplicateUID(474,18603
+QString MainWindow::nextItem(486,19191
 
 RelAbs.cpp,101
 RelAbs::RelAbs(5,40
@@ -657,38 +675,39 @@ void S2DB::PopUp(95,3534
 void S2DB::LoadMCAs(107,3741
 void S2DB::getNewMCAMap(113,3844
 void S2DB::loadNextMap(133,4356
-#define S2DMCAFILETITLE 164,5071
-void S2DB::SaveMCAs(166,5118
-void S2DB::saveNextMap(203,6252
-void S2DB::ShowInfoAtNewPosition(232,6961
-void S2DB::ShowIntMCA(245,7343
-void S2DB::ReCalcMap(250,7426
-double S2DB::ReCalcAMapPointOnMem(313,8829
-void S2DB::print(344,9548
+#define S2DMCAFILETITLE 165,5152
+void S2DB::SaveMCAs(167,5199
+void S2DB::saveNextMap(204,6333
+void S2DB::ShowInfoAtNewPosition(233,7042
+void S2DB::ShowIntMCA(246,7424
+void S2DB::ReCalcMap(251,7507
+double S2DB::ReCalcAMapPointOnMem(314,8910
+void S2DB::print(349,9748
 
-S2DInfo.cpp,520
+S2DInfo.cpp,543
 S2DInfo::S2DInfo(4,23
-#define SCANMODE 23,357
-#define SCANDIR 24,387
-#define AXIS 25,416
-#define DWELLTIME 26,441
-#define MOTORS 27,472
-#define USE3RDAX 28,499
-#define ISSFLUO 29,530
-#define UNITS 30,562
-#define USED 31,588
-#define STEPSCAN 33,621
-#define QUASICONT 34,651
-#define REALCONT 35,693
-#define SCANBOTH 37,735
-#define SCANSINGLE 38,761
-#define YES 40,790
-#define NO 41,810
-#define NONE 42,829
-#define TRUE 43,850
-#define FALSE 44,868
-void S2DInfo::save(46,887
-void S2DInfo::load(91,2256
+#define SENSOR 24,370
+#define SCANMODE 25,402
+#define SCANDIR 26,432
+#define AXIS 27,461
+#define DWELLTIME 28,486
+#define MOTORS 29,517
+#define USE3RDAX 30,544
+#define ISSFLUO 31,575
+#define UNITS 32,607
+#define USED 33,633
+#define STEPSCAN 35,666
+#define QUASICONT 36,696
+#define REALCONT 37,738
+#define SCANBOTH 39,780
+#define SCANSINGLE 40,806
+#define YES 42,835
+#define NO 43,855
+#define NONE 44,874
+#define TRUE 45,895
+#define FALSE 46,913
+void S2DInfo::save(48,932
+void S2DInfo::load(94,2389
 
 S2DMCAFile.cpp,35
 void MainWindow::SaveS2DMCAs(4,26
@@ -751,53 +770,55 @@ bool SelectCh::isSelected(52,1204
 void SelectCh::clicked(59,1387
 void SelectCh::selACh(67,1518
 
-SetUpSFluo.cpp,1919
+SetUpSFluo.cpp,1996
 SetUpSFluo::SetUpSFluo(6,47
-void SetUpSFluo::setFDBase(51,1715
-void SetUpSFluo::setupSetupSFluo(57,1811
-void SetUpSFluo::newMaxMCAEnergy(231,8529
-void SetUpSFluo::newMaxLoop(243,8816
-void SetUpSFluo::newDampFact(255,9048
-void SetUpSFluo::newPrec1(261,9166
-void SetUpSFluo::newPrec2(267,9275
-void SetUpSFluo::ReadLowerLimitSetting(274,9385
-void SetUpSFluo::SelectedLimitPSEnergy(305,10100
-void SetUpSFluo::SelectedShowDiff(310,10188
-void SetUpSFluo::SelectedPeakSearch(315,10266
-void SetUpSFluo::SelectedShowSmoothed(320,10348
-void SetUpSFluo::SelectedFitToRaw(325,10434
-void SetUpSFluo::PushedReFit(330,10512
-void SetUpSFluo::PushedClearMCAPeaks(335,10586
-void SetUpSFluo::newGain(340,10664
-void SetUpSFluo::setAllROIs(348,10801
-void SetUpSFluo::saveMCAData(363,11280
-void SetUpSFluo::setSelectedMCAFName(392,12283
-void SetUpSFluo::RealTimeIsSelected(401,12579
-void SetUpSFluo::LiveTimeIsSelected(408,12706
-void SetUpSFluo::SelSSDs0(416,12839
-void SetUpSFluo::SelSSDs20(428,13017
-void SetUpSFluo::SelSSDs(452,13700
-void SetUpSFluo::getMCASettings(470,14153
-void SetUpSFluo::getMCALen(484,14681
-void SetUpSFluo::newROIStart(504,15265
-void SetUpSFluo::newROIEnd(519,15613
-void SetUpSFluo::MCAChSelected(533,15950
-void SetUpSFluo::showPeakingTime(561,16626
-void SetUpSFluo::showThreshold(568,16797
-void SetUpSFluo::showCalibration(575,16964
-void SetUpSFluo::showDynamicRange(582,17135
-void SetUpSFluo::showPreAMPGain(589,17308
-void SetUpSFluo::StartMCA(596,17471
-void SetUpSFluo::showCurrentValues(648,19059
-void SetUpSFluo::setNewROI(656,19320
-void SetUpSFluo::MCASequence(669,19775
-void SetUpSFluo::ShowNewMCAStat(726,21083
-void SetUpSFluo::ShowNewMCARealTime(738,21407
-void SetUpSFluo::ShowNewMCALiveTime(744,21536
-void SetUpSFluo::clearMCA(750,21665
-void SetUpSFluo::gotNewPeakList(764,21917
-void SetUpSFluo::setPreAMPGains(786,22562
-void SetUpSFluo::nowFitStat(817,23246
+void SetUpSFluo::setROIs(50,1717
+void SetUpSFluo::setFDBase(56,1809
+void SetUpSFluo::setupSetupSFluo(62,1905
+void SetUpSFluo::newMaxMCAEnergy(236,8621
+void SetUpSFluo::newMaxLoop(248,8908
+void SetUpSFluo::newDampFact(260,9140
+void SetUpSFluo::newPrec1(266,9258
+void SetUpSFluo::newPrec2(272,9367
+void SetUpSFluo::ReadLowerLimitSetting(279,9477
+void SetUpSFluo::SelectedLimitPSEnergy(310,10192
+void SetUpSFluo::SelectedShowDiff(315,10280
+void SetUpSFluo::SelectedPeakSearch(320,10358
+void SetUpSFluo::SelectedShowSmoothed(325,10440
+void SetUpSFluo::SelectedFitToRaw(330,10526
+void SetUpSFluo::PushedReFit(335,10604
+void SetUpSFluo::PushedClearMCAPeaks(340,10678
+void SetUpSFluo::newGain(345,10756
+void SetUpSFluo::setAllROIs(353,10893
+void SetUpSFluo::saveMCAData(368,11372
+void SetUpSFluo::setSelectedMCAFName(397,12375
+void SetUpSFluo::RealTimeIsSelected(406,12671
+void SetUpSFluo::LiveTimeIsSelected(413,12798
+void SetUpSFluo::SelSSDs0(421,12931
+void SetUpSFluo::SelSSDs20(433,13109
+void SetUpSFluo::SelSSDs(457,13792
+void SetUpSFluo::getMCASettings(475,14245
+void SetUpSFluo::getMCALen(489,14773
+void SetUpSFluo::newROIStart(509,15357
+void SetUpSFluo::newROIEnd(524,15705
+void SetUpSFluo::MCAChSelected(538,16042
+void SetUpSFluo::showPeakingTime(566,16718
+void SetUpSFluo::showThreshold(573,16889
+void SetUpSFluo::showCalibration(580,17056
+void SetUpSFluo::showDynamicRange(587,17227
+void SetUpSFluo::showPreAMPGain(594,17400
+void SetUpSFluo::StartMCA(601,17563
+void SetUpSFluo::showCurrentValues(653,19148
+void SetUpSFluo::setNewROI(661,19409
+void SetUpSFluo::MCASequence(674,19864
+void SetUpSFluo::ShowNewMCAStat(733,21213
+void SetUpSFluo::ShowNewMCARealTime(745,21537
+void SetUpSFluo::ShowNewMCALiveTime(751,21666
+void SetUpSFluo::clearMCA(757,21795
+void SetUpSFluo::gotNewPeakList(771,22047
+void SetUpSFluo::setPreAMPGains(793,22692
+void SetUpSFluo::nowFitStat(824,23376
+void SetUpSFluo::newCalibration(836,23620
 
 Sounds.cpp,113
 void MainWindow::PlayEndingSound(5,44
@@ -889,8 +910,8 @@ QStringList ViewCTRL::getGSBLabels(109,2178
 QVector<bool> ViewCTRL::getGSBFlags(119,2319
 void ViewCTRL::setGSBStat(128,2456
 ViewCTRL *MainWindow::SetUpNewView(MainWindow::SetUpNewView155,3417
-void MainWindow::getNewMCAView(289,8394
-void MainWindow::showOnesMCAView(316,9461
+void MainWindow::getNewMCAView(291,8613
+void MainWindow::showOnesMCAView(318,9680
 
 XYView.cpp,778
 XYView::XYView(8,85
@@ -1553,41 +1574,41 @@ struct qt_meta_stringdata_MainWindow_t 22,796
     char stringdata[qt_meta_stringdata_MainWindow_t::stringdata24,867
 #define QT_MOC_LITERAL(26,897
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow 31,1127
-#undef QT_MOC_LITERAL407,13812
-static const uint qt_meta_data_MainWindow[qt_meta_data_MainWindow409,13835
-void MainWindow::qt_static_metacall(843,31334
-            typedef void (MainWindow:MainWindow1132,48987
-            typedef void (MainWindow:MainWindow1138,49201
-            typedef void (MainWindow:MainWindow1144,49415
-            typedef void (MainWindow:MainWindow1150,49623
-            typedef void (MainWindow:MainWindow1156,49826
-            typedef void (MainWindow:MainWindow1162,50034
-            typedef void (MainWindow:MainWindow1168,50238
-            typedef void (MainWindow:MainWindow1174,50442
-            typedef void (MainWindow:MainWindow1180,50646
-            typedef void (MainWindow:MainWindow1186,50858
-            typedef void (MainWindow:MainWindow1192,51081
-            typedef void (MainWindow:MainWindow1198,51307
-            typedef void (MainWindow:MainWindow1204,51534
-            typedef void (MainWindow:MainWindow1210,51758
-const QMetaObject MainWindow::staticMetaObject 1218,51998
-const QMetaObject *MainWindow::metaObject(MainWindow::metaObject1224,52186
-void *MainWindow::qt_metacast(MainWindow::qt_metacast1229,52338
-int MainWindow::qt_metacall(1237,52603
-void MainWindow::SelectedSSD(1255,53101
-void MainWindow::SelectedAGB(1262,53361
-void MainWindow::NewEnergy(1269,53621
-void MainWindow::ChangerNext(1276,53816
-void MainWindow::NewROI(1282,53922
-void MainWindow::NewDiff1(1289,54176
-void MainWindow::NewDiff2(1296,54367
-void MainWindow::NewMCACh(1303,54558
-void MainWindow::AutoSequenceFinished(1310,54749
-void MainWindow::SignalMCAViewSetDisplayLog(1316,54864
-void MainWindow::SignalMCAViewSetShowElements(1323,55075
-void MainWindow::SignalMCAViewShowAlwaysSelElm(1330,55289
-void MainWindow::SignalMCAViewShowElmEnergy(1337,55504
-void MainWindow::ReCalcS2DMap0(1344,55716
+#undef QT_MOC_LITERAL400,13583
+static const uint qt_meta_data_MainWindow[qt_meta_data_MainWindow402,13606
+void MainWindow::qt_static_metacall(830,30922
+            typedef void (MainWindow:MainWindow1109,48207
+            typedef void (MainWindow:MainWindow1115,48421
+            typedef void (MainWindow:MainWindow1121,48635
+            typedef void (MainWindow:MainWindow1127,48843
+            typedef void (MainWindow:MainWindow1133,49046
+            typedef void (MainWindow:MainWindow1139,49254
+            typedef void (MainWindow:MainWindow1145,49458
+            typedef void (MainWindow:MainWindow1151,49662
+            typedef void (MainWindow:MainWindow1157,49866
+            typedef void (MainWindow:MainWindow1163,50078
+            typedef void (MainWindow:MainWindow1169,50301
+            typedef void (MainWindow:MainWindow1175,50527
+            typedef void (MainWindow:MainWindow1181,50754
+            typedef void (MainWindow:MainWindow1187,50978
+const QMetaObject MainWindow::staticMetaObject 1195,51218
+const QMetaObject *MainWindow::metaObject(MainWindow::metaObject1201,51406
+void *MainWindow::qt_metacast(MainWindow::qt_metacast1206,51558
+int MainWindow::qt_metacall(1214,51823
+void MainWindow::SelectedSSD(1232,52321
+void MainWindow::SelectedAGB(1239,52581
+void MainWindow::NewEnergy(1246,52841
+void MainWindow::ChangerNext(1253,53036
+void MainWindow::NewROI(1259,53142
+void MainWindow::NewDiff1(1266,53396
+void MainWindow::NewDiff2(1273,53587
+void MainWindow::NewMCACh(1280,53778
+void MainWindow::AutoSequenceFinished(1287,53969
+void MainWindow::SignalMCAViewSetDisplayLog(1293,54084
+void MainWindow::SignalMCAViewSetShowElements(1300,54295
+void MainWindow::SignalMCAViewShowAlwaysSelElm(1307,54509
+void MainWindow::SignalMCAViewShowElmEnergy(1314,54724
+void MainWindow::ReCalcS2DMap0(1321,54936
 
 moc_MonLine.cpp,642
 struct qt_meta_stringdata_MonLine_t 21,761
@@ -1763,45 +1784,43 @@ int SelectCh::qt_metacall(122,3864
 void SelectCh::selectedACh(140,4346
 void SelectCh::selectedSingleCh(147,4604
 
-moc_SetUpSFluo.cpp,2069
+moc_SetUpSFluo.cpp,1967
 struct qt_meta_stringdata_SetUpSFluo_t 22,796
     QByteArrayData data[qt_meta_stringdata_SetUpSFluo_t::data23,837
     char stringdata[qt_meta_stringdata_SetUpSFluo_t::stringdata24,866
-#define QT_MOC_LITERAL(26,896
-static const qt_meta_stringdata_SetUpSFluo_t qt_meta_stringdata_SetUpSFluo 31,1126
-#undef QT_MOC_LITERAL145,4822
-static const uint qt_meta_data_SetUpSFluo[qt_meta_data_SetUpSFluo147,4845
-void SetUpSFluo::qt_static_metacall(277,9908
-            typedef void (SetUpSFluo:SetUpSFluo380,15859
-            typedef void (SetUpSFluo:SetUpSFluo386,16068
-            typedef void (SetUpSFluo:SetUpSFluo392,16285
-            typedef void (SetUpSFluo:SetUpSFluo398,16502
-            typedef void (SetUpSFluo:SetUpSFluo404,16735
-            typedef void (SetUpSFluo:SetUpSFluo410,16939
-            typedef void (SetUpSFluo:SetUpSFluo416,17164
-            typedef void (SetUpSFluo:SetUpSFluo422,17391
-            typedef void (SetUpSFluo:SetUpSFluo428,17614
-            typedef void (SetUpSFluo:SetUpSFluo434,17839
-            typedef void (SetUpSFluo:SetUpSFluo440,18065
-            typedef void (SetUpSFluo:SetUpSFluo446,18289
-            typedef void (SetUpSFluo:SetUpSFluo452,18496
-const QMetaObject SetUpSFluo::staticMetaObject 460,18711
-const QMetaObject *SetUpSFluo::metaObject(SetUpSFluo::metaObject466,18895
-void *SetUpSFluo::qt_metacast(SetUpSFluo::qt_metacast471,19047
-int SetUpSFluo::qt_metacall(479,19308
-void SetUpSFluo::ReCalcXAFSWithMCA(497,19798
-void SetUpSFluo::ReCalcS2DMap(503,19910
-void SetUpSFluo::ShowMessage(510,20114
-void SetUpSFluo::SaveMCADataOnMem(517,20377
-void SetUpSFluo::NewMCACh(524,20656
-void SetUpSFluo::addAnUsingUnit(531,20847
-void SetUpSFluo::removeUsingUnits(538,21118
-void SetUpSFluo::SignalMCAViewSetDisplayLog(545,21391
-void SetUpSFluo::SignalMCAViewSetShowElements(552,21601
-void SetUpSFluo::SignalMCAViewShowAlwaysSelElm(559,21813
-void SetUpSFluo::SignalMCAViewShowElmEnergy(566,22027
-void SetUpSFluo::newCalibration(573,22239
-void SetUpSFluo::showMyMCAView(579,22350
+#define QT_MOC_LITERAL(26,895
+static const qt_meta_stringdata_SetUpSFluo_t qt_meta_stringdata_SetUpSFluo 31,1125
+#undef QT_MOC_LITERAL143,4779
+static const uint qt_meta_data_SetUpSFluo[qt_meta_data_SetUpSFluo145,4802
+void SetUpSFluo::qt_static_metacall(277,9934
+            typedef void (SetUpSFluo:SetUpSFluo381,15930
+            typedef void (SetUpSFluo:SetUpSFluo387,16139
+            typedef void (SetUpSFluo:SetUpSFluo393,16356
+            typedef void (SetUpSFluo:SetUpSFluo399,16573
+            typedef void (SetUpSFluo:SetUpSFluo405,16806
+            typedef void (SetUpSFluo:SetUpSFluo411,17010
+            typedef void (SetUpSFluo:SetUpSFluo417,17235
+            typedef void (SetUpSFluo:SetUpSFluo423,17462
+            typedef void (SetUpSFluo:SetUpSFluo429,17685
+            typedef void (SetUpSFluo:SetUpSFluo435,17910
+            typedef void (SetUpSFluo:SetUpSFluo441,18136
+            typedef void (SetUpSFluo:SetUpSFluo447,18360
+const QMetaObject SetUpSFluo::staticMetaObject 455,18578
+const QMetaObject *SetUpSFluo::metaObject(SetUpSFluo::metaObject461,18762
+void *SetUpSFluo::qt_metacast(SetUpSFluo::qt_metacast466,18914
+int SetUpSFluo::qt_metacall(474,19175
+void SetUpSFluo::ReCalcXAFSWithMCA(492,19665
+void SetUpSFluo::ReCalcS2DMap(498,19777
+void SetUpSFluo::ShowMessage(505,19981
+void SetUpSFluo::SaveMCADataOnMem(512,20244
+void SetUpSFluo::NewMCACh(519,20523
+void SetUpSFluo::addAnUsingUnit(526,20714
+void SetUpSFluo::removeUsingUnits(533,20985
+void SetUpSFluo::SignalMCAViewSetDisplayLog(540,21258
+void SetUpSFluo::SignalMCAViewSetShowElements(547,21468
+void SetUpSFluo::SignalMCAViewShowAlwaysSelElm(554,21680
+void SetUpSFluo::SignalMCAViewShowElmEnergy(561,21894
+void SetUpSFluo::showMyMCAView(568,22106
 
 moc_SpecChanger.cpp,1365
 struct qt_meta_stringdata_SpecName_t 21,773
@@ -2233,10 +2252,10 @@ void cBar::newScale(165,5386
 
 qrc_XafsM.cpp,302
 static const unsigned char qt_resource_data[qt_resource_data11,331
-static const unsigned char qt_resource_name[qt_resource_name29310,2367412
-static const unsigned char qt_resource_struct[qt_resource_struct29412,2370855
-int QT_MANGLE_NAMESPACE(29467,2372888
-Q_CONSTRUCTOR_FUNCTION(29474,2373075
+static const unsigned char qt_resource_name[qt_resource_name29400,2374439
+static const unsigned char qt_resource_struct[qt_resource_struct29502,2377882
+int QT_MANGLE_NAMESPACE(29557,2379917
+Q_CONSTRUCTOR_FUNCTION(29564,2380104
 
 Alarm.h,500
 #define ALARM_H2,16
@@ -2835,7 +2854,7 @@ class MCAView 19,311
   void setShowElementsEnergy(MCAView::setShowElementsEnergy147,4471
   void NewEnergy(MCAView::NewEnergy149,4585
 
-MainWindow.h,18179
+MainWindow.h,18260
 #define MAINWIN_H2,18
 #define MEAS_ID 56,1085
 #define GOMOTOR_ID 57,1120
@@ -3033,129 +3052,131 @@ class MainWindow 81,1708
   QVector<QLabel *> BLKlabels;MainWindow::BLKlabels407,10119
   QVector<QPushButton *> SSDbs;MainWindow::SSDbs409,10151
   QVector<QPushButton *> GSBs;MainWindow::GSBs410,10183
-  QFileDialog *SelDFND;MainWindow::SelDFND412,10239
-  QFileDialog *SelWBFND;MainWindow::SelWBFND413,10263
-  QFileDialog *SelRBFND;MainWindow::SelRBFND414,10288
-  QFileDialog *SelLFND;MainWindow::SelLFND415,10313
-  QString SelectedOrgName;MainWindow::SelectedOrgName416,10337
-  UNIT BLKUnit;MainWindow::BLKUnit418,10365
-  int Blocks;MainWindow::Blocks419,10381
-  BlockInfo NXAFSBInfo,MainWindow::NXAFSBInfo424,10514
-  BlockInfo NXAFSBInfo, QXAFSBInfo;MainWindow::QXAFSBInfo424,10514
-  bool SMeasInDeg;MainWindow::SMeasInDeg426,10551
-  UNIT SBLKUnit;MainWindow::SBLKUnit427,10570
-  int SBlocks;MainWindow::SBlocks428,10587
-  double SBlockStartAsDisp[MainWindow::SBlockStartAsDisp429,10602
-  double SBlockStepAsDisp[MainWindow::SBlockStepAsDisp430,10645
-  double SBlockStartInDeg[MainWindow::SBlockStartInDeg431,10687
-  double SBlockStepInDeg[MainWindow::SBlockStepInDeg432,10729
-  double SBlockDwell[MainWindow::SBlockDwell433,10770
-  int SBlockPoints[MainWindow::SBlockPoints434,10807
-  int SensorUseF[MainWindow::SensorUseF435,10842
-  int EstimatedMeasurementTimeInSec;MainWindow::EstimatedMeasurementTimeInSec436,10912
-  bool SvSelRealTime,MainWindow::SvSelRealTime437,10949
-  bool SvSelRealTime, SvSelLiveTime;MainWindow::SvSelLiveTime437,10949
-  bool SvSelExtPattern;MainWindow::SvSelExtPattern438,10986
-  bool SvSaveQDataAsStepScan;MainWindow::SvSaveQDataAsStepScan439,11010
-  QString defaultFileName;MainWindow::defaultFileName440,11040
-  bool NBlockPisValid;MainWindow::NBlockPisValid441,11067
-  bool NMeasInDeg;MainWindow::NMeasInDeg443,11091
-  int NBlocks;MainWindow::NBlocks444,11110
-  UNIT NBLKUnit;MainWindow::NBLKUnit445,11125
-  double NBlockStartAsDisp[MainWindow::NBlockStartAsDisp446,11142
-  double NBlockStepAsDisp[MainWindow::NBlockStepAsDisp447,11185
-  double NBlockStartInDeg[MainWindow::NBlockStartInDeg448,11227
-  double NBlockStepInDeg[MainWindow::NBlockStepInDeg449,11269
-  double NBlockDwell[MainWindow::NBlockDwell450,11310
-  int NBlockPoints[MainWindow::NBlockPoints451,11347
-  DarkTable *darkTable;MainWindow::darkTable456,11462
-  QVector<int> ChModes;MainWindow::ChModes461,11557
-  QVector<ASensor*> I0Sensors,MainWindow::I0Sensors463,11582
-  QVector<ASensor*> I0Sensors, I1Sensors,MainWindow::I1Sensors463,11582
-  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors,MainWindow::A1Sensors463,11582
-  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors, A2Sensors;MainWindow::A2Sensors463,11582
-  QString DFName00,MainWindow::DFName00465,11682
-  QString DFName00, DFName0,MainWindow::DFName0465,11682
-  QString DFName00, DFName0, DFName;MainWindow::DFName465,11682
-  int TP;MainWindow::TP466,11719
-  double TT0;MainWindow::TT0467,11729
-  bool inMeas,MainWindow::inMeas468,11743
-  bool inMeas, inPause,MainWindow::inPause468,11743
-  bool inMeas, inPause, MinPause,MainWindow::MinPause468,11743
-  bool inMeas, inPause, MinPause, SinPause,MainWindow::SinPause468,11743
-  bool inMeas, inPause, MinPause, SinPause, inAutoSeq,MainWindow::inAutoSeq468,11743
-  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib,MainWindow::inDTAutoCalib468,11743
-  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;MainWindow::inSSDEngAutoCalib468,11743
-  bool FixedPositionMode;MainWindow::FixedPositionMode469,11832
-  int cMeasTab;MainWindow::cMeasTab470,11858
-  int inMoveTh;MainWindow::inMoveTh471,11944
-  ENCORPM EncOrPM;MainWindow::EncOrPM472,11960
-  int MeasStage,MainWindow::MeasStage473,12034
-  int MeasStage, SMeasStage;MainWindow::SMeasStage473,12034
-  int MeasR,MainWindow::MeasR474,12063
-  int MeasR, MeasB,MainWindow::MeasB474,12063
-  int MeasR, MeasB, MeasS,MainWindow::MeasS474,12063
-  int MeasR, MeasB, MeasS, MeasP;MainWindow::MeasP474,12063
-  double GoToKeV;MainWindow::GoToKeV475,12097
-  double InitialKeV;MainWindow::InitialKeV476,12115
-  double r[MainWindow::r477,12136
-  QMessageBox *StopP;MainWindow::StopP478,12155
-  QMessageBox *AskOverWrite;MainWindow::AskOverWrite479,12177
-  QMessageBox *MakeSureOfRangeSelect;MainWindow::MakeSureOfRangeSelect480,12206
-  QMessageBox *NoticeHaveNotMeasDark;MainWindow::NoticeHaveNotMeasDark481,12244
-  bool AskingOverwrite;MainWindow::AskingOverwrite482,12282
-  bool MakingSureOfRangeSelect;MainWindow::MakingSureOfRangeSelect483,12306
-  bool haveMeasuredDark;MainWindow::haveMeasuredDark484,12338
-  bool NoticingHaveNotMeasDark;MainWindow::NoticingHaveNotMeasDark485,12363
-  double MeasVals[MainWindow::MeasVals490,12614
-  double MeasCPSs[MainWindow::MeasCPSs491,12640
-  MEASMODE MeasDispMode[MainWindow::MeasDispMode492,12666
-  int MeasDispPol[MainWindow::MeasDispPol493,12698
-  double NowDwell;MainWindow::NowDwell494,12738
-  bool UseAutoShutter;MainWindow::UseAutoShutter495,12757
-  bool inMeasDark;MainWindow::inMeasDark496,12780
-  bool AskingShutterClose;MainWindow::AskingShutterClose497,12799
-  bool AskingShutterOpen;MainWindow::AskingShutterOpen498,12826
-  int MeasDarkStage;MainWindow::MeasDarkStage499,12852
-  int oldCurrentView;MainWindow::oldCurrentView520,13515
-  ViewCTRL *MeasViewC;MainWindow::MeasViewC521,13537
-  XYView *MeasView;MainWindow::MeasView522,13560
-  QStringList QXafsOk,MainWindow::QXafsOk539,13975
-  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk539,13975
-  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk539,13975
-  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable540,14016
-  int SaveNowBlocks,MainWindow::SaveNowBlocks541,14045
-  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0541,14045
-  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1541,14045
-  bool SaveUse19ChSSD,MainWindow::SaveUse19ChSSD542,14098
-  bool SaveUse19ChSSD, SaveUseAux1,MainWindow::SaveUseAux1542,14098
-  bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2542,14098
-  int OrigHSpeed,MainWindow::OrigHSpeed543,14147
-  int OrigHSpeed, HSpeed,MainWindow::HSpeed543,14147
-  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed543,14147
-  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed543,14147
-  int QXafsSP0,MainWindow::QXafsSP0544,14194
-  int QXafsSP0, QXafsSP,MainWindow::QXafsSP544,14194
-  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0544,14194
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP544,14194
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval544,14194
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints544,14194
-  double RunUpRate,MainWindow::RunUpRate545,14266
-  double RunUpRate, RunUpTime,MainWindow::RunUpTime545,14266
-  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime545,14266
-  QString EncValue0,MainWindow::EncValue0546,14313
-  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0546,14313
-  bool QIntervalBlock1,MainWindow::QIntervalBlock1547,14346
-  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2547,14346
-  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1548,14387
-  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2548,14387
-  bool AutoModeFirst;MainWindow::AutoModeFirst551,14448
-  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition552,14470
-  int MeasA;MainWindow::MeasA553,14504
-  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams554,14517
-  QString AutoModeComment;MainWindow::AutoModeComment556,14592
-  AMotor *smAm;MainWindow::smAm594,15905
-  int smStage;MainWindow::smStage595,15921
+  bool showGSB1,MainWindow::showGSB1411,10214
+  bool showGSB1, showGSB2;MainWindow::showGSB2411,10214
+  QFileDialog *SelDFND;MainWindow::SelDFND413,10266
+  QFileDialog *SelWBFND;MainWindow::SelWBFND414,10290
+  QFileDialog *SelRBFND;MainWindow::SelRBFND415,10315
+  QFileDialog *SelLFND;MainWindow::SelLFND416,10340
+  QString SelectedOrgName;MainWindow::SelectedOrgName417,10364
+  UNIT BLKUnit;MainWindow::BLKUnit419,10392
+  int Blocks;MainWindow::Blocks420,10408
+  BlockInfo NXAFSBInfo,MainWindow::NXAFSBInfo425,10541
+  BlockInfo NXAFSBInfo, QXAFSBInfo;MainWindow::QXAFSBInfo425,10541
+  bool SMeasInDeg;MainWindow::SMeasInDeg427,10578
+  UNIT SBLKUnit;MainWindow::SBLKUnit428,10597
+  int SBlocks;MainWindow::SBlocks429,10614
+  double SBlockStartAsDisp[MainWindow::SBlockStartAsDisp430,10629
+  double SBlockStepAsDisp[MainWindow::SBlockStepAsDisp431,10672
+  double SBlockStartInDeg[MainWindow::SBlockStartInDeg432,10714
+  double SBlockStepInDeg[MainWindow::SBlockStepInDeg433,10756
+  double SBlockDwell[MainWindow::SBlockDwell434,10797
+  int SBlockPoints[MainWindow::SBlockPoints435,10834
+  int SensorUseF[MainWindow::SensorUseF436,10869
+  int EstimatedMeasurementTimeInSec;MainWindow::EstimatedMeasurementTimeInSec437,10939
+  bool SvSelRealTime,MainWindow::SvSelRealTime438,10976
+  bool SvSelRealTime, SvSelLiveTime;MainWindow::SvSelLiveTime438,10976
+  bool SvSelExtPattern;MainWindow::SvSelExtPattern439,11013
+  bool SvSaveQDataAsStepScan;MainWindow::SvSaveQDataAsStepScan440,11037
+  QString defaultFileName;MainWindow::defaultFileName441,11067
+  bool NBlockPisValid;MainWindow::NBlockPisValid442,11094
+  bool NMeasInDeg;MainWindow::NMeasInDeg444,11118
+  int NBlocks;MainWindow::NBlocks445,11137
+  UNIT NBLKUnit;MainWindow::NBLKUnit446,11152
+  double NBlockStartAsDisp[MainWindow::NBlockStartAsDisp447,11169
+  double NBlockStepAsDisp[MainWindow::NBlockStepAsDisp448,11212
+  double NBlockStartInDeg[MainWindow::NBlockStartInDeg449,11254
+  double NBlockStepInDeg[MainWindow::NBlockStepInDeg450,11296
+  double NBlockDwell[MainWindow::NBlockDwell451,11337
+  int NBlockPoints[MainWindow::NBlockPoints452,11374
+  DarkTable *darkTable;MainWindow::darkTable457,11489
+  QVector<int> ChModes;MainWindow::ChModes462,11584
+  QVector<ASensor*> I0Sensors,MainWindow::I0Sensors464,11609
+  QVector<ASensor*> I0Sensors, I1Sensors,MainWindow::I1Sensors464,11609
+  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors,MainWindow::A1Sensors464,11609
+  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors, A2Sensors;MainWindow::A2Sensors464,11609
+  QString DFName00,MainWindow::DFName00466,11709
+  QString DFName00, DFName0,MainWindow::DFName0466,11709
+  QString DFName00, DFName0, DFName;MainWindow::DFName466,11709
+  int TP;MainWindow::TP467,11746
+  double TT0;MainWindow::TT0468,11756
+  bool inMeas,MainWindow::inMeas469,11770
+  bool inMeas, inPause,MainWindow::inPause469,11770
+  bool inMeas, inPause, MinPause,MainWindow::MinPause469,11770
+  bool inMeas, inPause, MinPause, SinPause,MainWindow::SinPause469,11770
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq,MainWindow::inAutoSeq469,11770
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib,MainWindow::inDTAutoCalib469,11770
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;MainWindow::inSSDEngAutoCalib469,11770
+  bool FixedPositionMode;MainWindow::FixedPositionMode470,11859
+  int cMeasTab;MainWindow::cMeasTab471,11885
+  int inMoveTh;MainWindow::inMoveTh472,11971
+  ENCORPM EncOrPM;MainWindow::EncOrPM473,11987
+  int MeasStage,MainWindow::MeasStage474,12061
+  int MeasStage, SMeasStage;MainWindow::SMeasStage474,12061
+  int MeasR,MainWindow::MeasR475,12090
+  int MeasR, MeasB,MainWindow::MeasB475,12090
+  int MeasR, MeasB, MeasS,MainWindow::MeasS475,12090
+  int MeasR, MeasB, MeasS, MeasP;MainWindow::MeasP475,12090
+  double GoToKeV;MainWindow::GoToKeV476,12124
+  double InitialKeV;MainWindow::InitialKeV477,12142
+  double r[MainWindow::r478,12163
+  QMessageBox *StopP;MainWindow::StopP479,12182
+  QMessageBox *AskOverWrite;MainWindow::AskOverWrite480,12204
+  QMessageBox *MakeSureOfRangeSelect;MainWindow::MakeSureOfRangeSelect481,12233
+  QMessageBox *NoticeHaveNotMeasDark;MainWindow::NoticeHaveNotMeasDark482,12271
+  bool AskingOverwrite;MainWindow::AskingOverwrite483,12309
+  bool MakingSureOfRangeSelect;MainWindow::MakingSureOfRangeSelect484,12333
+  bool haveMeasuredDark;MainWindow::haveMeasuredDark485,12365
+  bool NoticingHaveNotMeasDark;MainWindow::NoticingHaveNotMeasDark486,12390
+  double MeasVals[MainWindow::MeasVals491,12634
+  double MeasCPSs[MainWindow::MeasCPSs492,12660
+  MEASMODE MeasDispMode[MainWindow::MeasDispMode493,12686
+  int MeasDispPol[MainWindow::MeasDispPol494,12718
+  double NowDwell;MainWindow::NowDwell495,12758
+  bool UseAutoShutter;MainWindow::UseAutoShutter496,12777
+  bool inMeasDark;MainWindow::inMeasDark497,12800
+  bool AskingShutterClose;MainWindow::AskingShutterClose498,12819
+  bool AskingShutterOpen;MainWindow::AskingShutterOpen499,12846
+  int MeasDarkStage;MainWindow::MeasDarkStage500,12872
+  int oldCurrentView;MainWindow::oldCurrentView521,13535
+  ViewCTRL *MeasViewC;MainWindow::MeasViewC522,13557
+  XYView *MeasView;MainWindow::MeasView523,13580
+  QStringList QXafsOk,MainWindow::QXafsOk540,13995
+  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk540,13995
+  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk540,13995
+  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable541,14036
+  int SaveNowBlocks,MainWindow::SaveNowBlocks542,14065
+  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0542,14065
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1542,14065
+  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos543,14118
+  bool SaveUseAux1,MainWindow::SaveUseAux1544,14149
+  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2544,14149
+  int OrigHSpeed,MainWindow::OrigHSpeed545,14182
+  int OrigHSpeed, HSpeed,MainWindow::HSpeed545,14182
+  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed545,14182
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed545,14182
+  int QXafsSP0,MainWindow::QXafsSP0546,14229
+  int QXafsSP0, QXafsSP,MainWindow::QXafsSP546,14229
+  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0546,14229
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP546,14229
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval546,14229
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints546,14229
+  double RunUpRate,MainWindow::RunUpRate547,14301
+  double RunUpRate, RunUpTime,MainWindow::RunUpTime547,14301
+  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime547,14301
+  QString EncValue0,MainWindow::EncValue0548,14348
+  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0548,14348
+  bool QIntervalBlock1,MainWindow::QIntervalBlock1549,14381
+  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2549,14381
+  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1550,14422
+  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2550,14422
+  bool AutoModeFirst;MainWindow::AutoModeFirst553,14483
+  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition554,14505
+  int MeasA;MainWindow::MeasA555,14539
+  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams556,14552
+  QString AutoModeComment;MainWindow::AutoModeComment558,14627
+  AMotor *smAm;MainWindow::smAm596,15940
+  int smStage;MainWindow::smStage597,15956
 
 Mccd.h,276
 #define MCCD_H3,16
@@ -3471,35 +3492,36 @@ class S2DB 19,272
   void newInputZmax(S2DB::newInputZmax79,1792
   void newInputZmin(S2DB::newInputZmin80,1872
 
-S2DInfo.h,1064
+S2DInfo.h,1101
 #define S2DINFO_H2,18
-enum DIRECTION 9,104
-enum DIRECTION { FORWARD,9,104
-enum DIRECTION { FORWARD, BACKWARD 9,104
-enum SCANMODE 10,142
-enum SCANMODE { STEP,10,142
-enum SCANMODE { STEP, QCONT,10,142
-enum SCANMODE { STEP, QCONT, RCONT 10,142
-class S2DInfo12,181
-  bool valid;S2DInfo::valid16,207
-  SCANMODE ScanMode;S2DInfo::ScanMode17,221
-  int motors;S2DInfo::motors18,242
-  bool Use3rdAx;S2DInfo::Use3rdAx19,256
-  bool ScanBothDir;S2DInfo::ScanBothDir20,273
-  bool isSFluo;S2DInfo::isSFluo21,293
-  DIRECTION startDir;S2DInfo::startDir22,309
-  QVector<AMotor*> unit;S2DInfo::unit23,332
-  QVector<bool> used;S2DInfo::used24,357
-  QVector<int> now;S2DInfo::now25,379
-  QVector<int> i,S2DInfo::i26,399
-  QVector<int> i, ps;S2DInfo::ps26,399
-  QVector<double> sx,S2DInfo::sx27,421
-  QVector<double> sx, ex,S2DInfo::ex27,421
-  QVector<double> sx, ex, dx;S2DInfo::dx27,421
-  double Dwell;S2DInfo::Dwell28,451
-  QString MCAFile;S2DInfo::MCAFile29,467
-  QString SaveFile;S2DInfo::SaveFile30,486
-  int pps;S2DInfo::pps31,506
+enum DIRECTION 10,132
+enum DIRECTION { FORWARD,10,132
+enum DIRECTION { FORWARD, BACKWARD 10,132
+enum SCANMODE 11,170
+enum SCANMODE { STEP,11,170
+enum SCANMODE { STEP, QCONT,11,170
+enum SCANMODE { STEP, QCONT, RCONT 11,170
+class S2DInfo13,209
+  bool valid;S2DInfo::valid17,235
+  SCANMODE ScanMode;S2DInfo::ScanMode18,249
+  int motors;S2DInfo::motors19,270
+  bool Use3rdAx;S2DInfo::Use3rdAx20,284
+  bool ScanBothDir;S2DInfo::ScanBothDir21,301
+  bool isSFluo;S2DInfo::isSFluo22,321
+  DIRECTION startDir;S2DInfo::startDir23,337
+  ASensor *as;S2DInfo::as24,359
+  QVector<AMotor*> unit;S2DInfo::unit25,374
+  QVector<bool> used;S2DInfo::used26,399
+  QVector<int> now;S2DInfo::now27,421
+  QVector<int> i,S2DInfo::i28,441
+  QVector<int> i, ps;S2DInfo::ps28,441
+  QVector<double> sx,S2DInfo::sx29,463
+  QVector<double> sx, ex,S2DInfo::ex29,463
+  QVector<double> sx, ex, dx;S2DInfo::dx29,463
+  double Dwell;S2DInfo::Dwell30,493
+  QString MCAFile;S2DInfo::MCAFile31,509
+  QString SaveFile;S2DInfo::SaveFile32,528
+  int pps;S2DInfo::pps33,548
 
 S2DView.h,1700
 #define S2DVIEW_H2,18
@@ -3645,7 +3667,7 @@ class SelectCh 14,368
   void setTitle(SelectCh::setTitle30,673
   int chs(SelectCh::chs33,788
 
-SetUpSFluo.h,2812
+SetUpSFluo.h,2620
 #define SETUPSFLUO_H2,21
 #define MCA_ID 20,340
 class SetUpSFluo 22,371
@@ -3695,14 +3717,10 @@ class SetUpSFluo 22,371
   QRadioButton *B_ShowAlwaysSelElm(SetUpSFluo::B_ShowAlwaysSelElm81,2043
   QRadioButton *B_AutoROIsetAll(SetUpSFluo::B_AutoROIsetAll82,2116
   bool isInMeas(SetUpSFluo::isInMeas83,2183
-  double currentPeakE(SetUpSFluo::currentPeakE84,2230
-  double calibE(SetUpSFluo::calibE85,2321
-  void clearCalibE(SetUpSFluo::clearCalibE86,2391
-  double gain(SetUpSFluo::gain88,2522
-  void setCViewTabNo(SetUpSFluo::setCViewTabNo89,2586
-  void setViewStats(SetUpSFluo::setViewStats90,2640
-  void setDirectory(SetUpSFluo::setDirectory97,2954
-  void setMaxMCAEnergy(SetUpSFluo::setMaxMCAEnergy98,3049
+  void setCViewTabNo(SetUpSFluo::setCViewTabNo89,2599
+  void setViewStats(SetUpSFluo::setViewStats90,2653
+  void setDirectory(SetUpSFluo::setDirectory97,2967
+  void setMaxMCAEnergy(SetUpSFluo::setMaxMCAEnergy98,3062
 
 Smoothing.h,25
 #define SMOOTHING_H2,20
@@ -4185,7 +4203,7 @@ enum ASType { EACHSCAN, SUMUPOFSCANS 11,250
 gitlog.h,70
 #define GITLOG_H2,17
 #define BRANCH_NAME 5,36
-#define GITLOGS 6,76
+#define GITLOGS 6,72
 
 global.h,700
 #define GLOBAL_H3,18
@@ -4355,7 +4373,7 @@ class Ui_MCAView22,642
 namespace Ui 53,1564
     class MCAView:Ui::MCAView54,1579
 
-ui_MainWindow.h,29141
+ui_MainWindow.h,30364
 #define UI_MAINWINDOW_H10,387
 class Ui_MainWindow43,1283
     QAction *action_Quit;action_Quit46,1313
@@ -4365,614 +4383,644 @@ class Ui_MainWindow43,1283
     QAction *action_SetSSV;action_SetSSV50,1423
     QWidget *centralwidget;centralwidget51,1451
     QGridLayout *gridLayout_31;gridLayout_3152,1479
-    QFrame *GraphSwitchBox;GraphSwitchBox53,1511
-    QGridLayout *gridLayout_44;gridLayout_4454,1539
-    QPushButton *GSB26;GSB2655,1571
-    QPushButton *GSB12;GSB1256,1595
-    QPushButton *GSB11;GSB1157,1619
-    QPushButton *GSB10;GSB1058,1643
-    QPushButton *GSB09;GSB0959,1667
-    QPushButton *GSB08;GSB0860,1691
-    QPushButton *GSB07;GSB0761,1715
-    QPushButton *GSB06;GSB0662,1739
-    QPushButton *GSB05;GSB0563,1763
-    QPushButton *GSB24;GSB2464,1787
-    QPushButton *GSB01;GSB0165,1811
-    QPushButton *GSB04;GSB0466,1835
-    QPushButton *GSB20;GSB2067,1859
-    QPushButton *GSB21;GSB2168,1883
-    QPushButton *GSB23;GSB2369,1907
-    QPushButton *GSB02;GSB0270,1931
-    QPushButton *GSB22;GSB2271,1955
-    QPushButton *GSB19;GSB1972,1979
-    QPushButton *GSB18;GSB1873,2003
-    QPushButton *GSB15;GSB1574,2027
-    QPushButton *GSB14;GSB1475,2051
-    QPushButton *GSB17;GSB1776,2075
-    QPushButton *GSB16;GSB1677,2099
-    QPushButton *GSB13;GSB1378,2123
-    QPushButton *GSB03;GSB0379,2147
-    QSpacerItem *horizontalSpacer_7;horizontalSpacer_780,2171
-    QPushButton *GSB25;GSB2581,2208
-    QPushButton *GSB27;GSB2782,2232
-    QTabWidget *MainTab;MainTab83,2256
-    QWidget *MeasTab;MeasTab84,2281
-    QGridLayout *gridLayout_43;gridLayout_4385,2303
-    QFrame *frame_19;frame_1986,2335
-    QGridLayout *gridLayout_46;gridLayout_4687,2357
-    QLabel *NowTimeDisp;NowTimeDisp88,2389
-    QLabel *label_101;label_10189,2414
-    QLabel *StartTimeDisp;StartTimeDisp90,2437
-    QLabel *label_103;label_10391,2464
-    QLabel *label_105;label_10592,2487
-    QLabel *EndTimeDisp;EndTimeDisp93,2510
-    QFrame *frame_5;frame_594,2535
-    QHBoxLayout *horizontalLayout_11;horizontalLayout_1195,2556
-    QGridLayout *gridLayout_7;gridLayout_796,2594
-    QGridLayout *gridLayout_27;gridLayout_2797,2625
-    QLabel *BLKL03;BLKL0398,2657
-    QLineEdit *BLKs03;BLKs0399,2677
-    QLineEdit *BLKstep03;BLKstep03100,2700
-    QComboBox *SelBLKUnit;SelBLKUnit101,2726
-    QSpinBox *SelBLKs;SelBLKs102,2753
-    QLabel *label_69;label_69103,2776
-    QLabel *LDwellOrMeasureTime;LDwellOrMeasureTime104,2798
-    QLineEdit *BLKdwell01;BLKdwell01105,2831
-    QLineEdit *BLKdwell02;BLKdwell02106,2858
-    QLineEdit *BLKdwell03;BLKdwell03107,2885
-    QLineEdit *BLKdwell04;BLKdwell04108,2912
-    QLineEdit *BLKdwell05;BLKdwell05109,2939
-    QLineEdit *BLKdwell06;BLKdwell06110,2966
-    QLineEdit *DwellAll;DwellAll111,2993
-    QLineEdit *BLKs07;BLKs07112,3018
-    QLineEdit *BLKs01;BLKs01113,3041
-    QLabel *BLKL01;BLKL01114,3064
-    QLineEdit *BLKstep01;BLKstep01115,3084
-    QLabel *BLKL02;BLKL02116,3110
-    QLineEdit *BLKs02;BLKs02117,3130
-    QLineEdit *BLKstep02;BLKstep02118,3153
-    QLabel *BLKLAll;BLKLAll119,3179
-    QLineEdit *BLKpoints01;BLKpoints01120,3200
-    QLineEdit *BLKpoints02;BLKpoints02121,3228
-    QLineEdit *BLKpoints03;BLKpoints03122,3256
-    QLineEdit *BLKpoints04;BLKpoints04123,3284
-    QLineEdit *BLKpoints05;BLKpoints05124,3312
-    QLineEdit *BLKpoints06;BLKpoints06125,3340
-    QLabel *BLKL04;BLKL04126,3368
-    QLineEdit *BLKs04;BLKs04127,3388
-    QLineEdit *BLKstep04;BLKstep04128,3411
-    QLabel *BLKL05;BLKL05129,3437
-    QLineEdit *BLKs05;BLKs05130,3457
-    QLineEdit *BLKstep05;BLKstep05131,3480
-    QLineEdit *BLKstep06;BLKstep06132,3506
-    QLineEdit *BLKs06;BLKs06133,3532
-    QLabel *BLKL06;BLKL06134,3555
-    QLabel *BLKL09;BLKL09135,3575
-    QLineEdit *BLKs09;BLKs09136,3595
-    QLabel *LStartPoint;LStartPoint137,3618
-    QLabel *LStepOrEndPoint;LStepOrEndPoint138,3643
-    QLabel *LSteps;LSteps139,3672
-    QLineEdit *BLKstep07;BLKstep07140,3692
-    QLineEdit *BLKdwell07;BLKdwell07141,3718
-    QLineEdit *BLKpoints07;BLKpoints07142,3745
-    QLineEdit *BLKs08;BLKs08143,3773
-    QLineEdit *BLKstep08;BLKstep08144,3796
-    QLineEdit *BLKpoints08;BLKpoints08145,3822
-    QLineEdit *BLKdwell08;BLKdwell08146,3850
-    QLabel *BLKL07;BLKL07147,3877
-    QLabel *BLKL08;BLKL08148,3897
-    QLabel *label_8;label_8149,3917
-    QSpacerItem *verticalSpacer_8;verticalSpacer_8150,3938
-    QGridLayout *gridLayout_8;gridLayout_8151,3973
-    QPushButton *StdXANES;StdXANES152,4004
-    QPushButton *StdXAFS;StdXAFS153,4031
-    QPushButton *SaveBLKs;SaveBLKs154,4057
-    QPushButton *LoadBLKs;LoadBLKs155,4084
-    QPushButton *StdEXAFS;StdEXAFS156,4111
-    QLabel *label_67;label_67157,4138
-    QLabel *label_6;label_6158,4160
-    QSpacerItem *verticalSpacer_11;verticalSpacer_11159,4181
-    QFrame *QConditionBox;QConditionBox160,4217
-    QGridLayout *gridLayout_52;gridLayout_52161,4244
-    QGridLayout *gridLayout_63;gridLayout_63162,4276
-    QLabel *label_115;label_115163,4308
-    QLineEdit *QIntervalCycle;QIntervalCycle164,4331
-    QLabel *label_116;label_116165,4362
-    QLineEdit *QIntervalHalf;QIntervalHalf166,4385
-    QLabel *label_117;label_117167,4415
-    QFrame *QLimitedDisplayFrame;QLimitedDisplayFrame168,4438
-    QGridLayout *gridLayout_55;gridLayout_55169,4472
-    QLineEdit *QDispLinePeriod;QDispLinePeriod170,4504
-    QRadioButton *QLimitedDisplay;QLimitedDisplay171,4536
-    QSpinBox *QLastLines;QLastLines172,4571
-    QLabel *label_82;label_82173,4597
-    QLabel *label_83;label_83174,4619
-    QSpacerItem *horizontalSpacer_21;horizontalSpacer_21175,4641
-    QLabel *label_85;label_85176,4679
-    QRadioButton *SaveQDataAsStepScan;SaveQDataAsStepScan177,4701
-    QFrame *line_10;line_10178,4740
-    QFrame *QMinMaxBox;QMinMaxBox179,4761
-    QGridLayout *gridLayout_53;gridLayout_53180,4785
-    QRadioButton *QMinTime;QMinTime181,4817
-    QRadioButton *QMaxSpeed;QMaxSpeed182,4845
-    QSpacerItem *horizontalSpacer_20;horizontalSpacer_20183,4874
-    QLabel *label_110;label_110184,4912
-    QLabel *label_68;label_68185,4935
-    QLabel *DispQSpeedInDPS;DispQSpeedInDPS186,4957
-    QLabel *DispQSpeedInPPS;DispQSpeedInPPS187,4986
-    QLabel *label_113;label_113188,5015
-    QFrame *frame_23;frame_23189,5038
-    QGridLayout *gridLayout_54;gridLayout_54190,5060
-    QLabel *QDeltaAtRefPoint;QDeltaAtRefPoint191,5092
-    QLabel *label_123;label_123192,5122
-    QLineEdit *QRefPoint;QRefPoint193,5145
-    QLabel *label_126;label_126194,5171
-    QRadioButton *QMeasOnBackward;QMeasOnBackward195,5194
-    QSpacerItem *horizontalSpacer_19;horizontalSpacer_19196,5229
-    QLabel *label_130;label_130197,5267
-    QFrame *frame_7;frame_7198,5290
-    QGridLayout *gridLayout_42;gridLayout_42199,5311
-    QLabel *label_95;label_95200,5343
-    QLabel *TPoints;TPoints201,5365
-    QLabel *TTime;TTime202,5386
-    QFrame *frame_20;frame_20203,5405
-    QGridLayout *gridLayout_47;gridLayout_47204,5427
-    QLabel *label_16;label_16205,5459
-    QLabel *label_18;label_18206,5481
-    QLabel *CurrentRpt;CurrentRpt207,5503
-    QLabel *label_34;label_34208,5527
-    QLabel *CurrentPnt;CurrentPnt209,5549
-    QGridLayout *gridLayout_28;gridLayout_28210,5573
-    QSpacerItem *verticalSpacer_13;verticalSpacer_13211,5605
-    QFrame *frame_6;frame_6212,5641
-    QGridLayout *gridLayout_30;gridLayout_30213,5662
-    QLabel *label_92;label_92214,5694
-    QHBoxLayout *horizontalLayout_21;horizontalLayout_21215,5716
-    QLabel *label_111;label_111216,5754
-    QLabel *label_112;label_112217,5777
-    QComboBox *I0ChSelect;I0ChSelect218,5800
-    QComboBox *I0Recommend;I0Recommend219,5827
-    QComboBox *I1ChSelect;I1ChSelect220,5855
-    QComboBox *I1Recommend;I1Recommend221,5882
-    QComboBox *ModeA2;ModeA2222,5910
-    QRadioButton *UseI1;UseI1223,5933
-    QRadioButton *UseAux1;UseAux1224,5958
-    QRadioButton *UseAux2;UseAux2225,5985
-    QComboBox *ModeA1;ModeA1226,6012
-    QSpinBox *A1Range;A1Range227,6035
-    QComboBox *SelectAux1;SelectAux1228,6058
-    QComboBox *SelectI1;SelectI1229,6085
-    QComboBox *SelectI0;SelectI0230,6110
-    QSpinBox *I0Range;I0Range231,6135
-    QSpinBox *I1Range;I1Range232,6158
-    QComboBox *SelectAux2;SelectAux2233,6181
-    QSpinBox *A2Range;A2Range234,6208
-    QHBoxLayout *horizontalLayout_12;horizontalLayout_12235,6231
-    QRadioButton *UseSFluo0;UseSFluo0236,6269
-    QRadioButton *UseSFluo1;UseSFluo1237,6298
-    QRadioButton *UseSFluo2;UseSFluo2238,6327
-    QRadioButton *UseSFluo3;UseSFluo3239,6356
-    QRadioButton *UseSFluo4;UseSFluo4240,6385
-    QFrame *frame_15;frame_15241,6414
-    QGridLayout *gridLayout;gridLayout242,6436
-    QLabel *label_4;label_4243,6465
-    QHBoxLayout *horizontalLayout_15;horizontalLayout_15244,6486
-    QLabel *label_7;label_7245,6524
-    QLineEdit *MeasBackTime;MeasBackTime246,6545
-    QPushButton *ShowMeasuredBack;ShowMeasuredBack247,6574
-    QHBoxLayout *horizontalLayout_4;horizontalLayout_4248,6609
-    QSpacerItem *horizontalSpacer_12;horizontalSpacer_12249,6646
-    QRadioButton *AutoShutter;AutoShutter250,6684
-    QRadioButton *MeasBackBeforeMeas;MeasBackBeforeMeas251,6715
-    QRadioButton *UseMeasured;UseMeasured252,6753
-    QPushButton *MeasBackGround;MeasBackGround253,6784
-    QFrame *frame_8;frame_8254,6817
-    QGridLayout *gridLayout_29;gridLayout_29255,6838
-    QVBoxLayout *verticalLayout_2;verticalLayout_2256,6870
-    QHBoxLayout *horizontalLayout;horizontalLayout257,6905
-    QLabel *label;label258,6940
-    QLineEdit *EditDFName;EditDFName259,6959
-    QToolButton *SelDFName;SelDFName260,6986
-    QHBoxLayout *horizontalLayout_2;horizontalLayout_2261,7014
-    QLabel *label_2;label_2262,7051
-    QLineEdit *EditCMT;EditCMT263,7072
-    QLabel *label_55;label_55264,7096
-    QRadioButton *SelExtPattern;SelExtPattern265,7118
-    QFrame *ChangerBox;ChangerBox266,7151
-    QGridLayout *gridLayout_49;gridLayout_49267,7175
-    QLabel *label_27;label_27268,7207
-    QLineEdit *AutoMode;AutoMode269,7229
-    QRadioButton *AutoModeButton;AutoModeButton270,7254
-    QLabel *ItemsForAutoMode;ItemsForAutoMode271,7288
-    QLabel *label_86;label_86272,7318
-    QFrame *MeasStarting;MeasStarting273,7340
-    QGridLayout *gridLayout_40;gridLayout_40274,7366
-    QVBoxLayout *verticalLayout_7;verticalLayout_7275,7398
-    QLabel *label_10;label_10276,7433
-    QLabel *label_58;label_58277,7455
-    QVBoxLayout *verticalLayout_8;verticalLayout_8278,7477
-    QLabel *label_93;label_93279,7512
-    QSpinBox *SelRPT;SelRPT280,7534
-    QVBoxLayout *verticalLayout_9;verticalLayout_9281,7556
-    QLabel *label_94;label_94282,7591
-    QComboBox *OnFinishP;OnFinishP283,7613
-    QVBoxLayout *verticalLayout_10;verticalLayout_10284,7639
-    QRadioButton *QXafsMode;QXafsMode285,7675
-    QRadioButton *TuneAtEachStp;TuneAtEachStp286,7704
-    QVBoxLayout *verticalLayout_4;verticalLayout_4287,7737
-    QPushButton *MeasStart;MeasStart288,7772
-    QPushButton *MeasPause;MeasPause289,7800
-    QFrame *SaveAfterBox;SaveAfterBox290,7828
-    QGridLayout *gridLayout_81;gridLayout_81291,7854
-    QPushButton *OtherOptions;OtherOptions292,7886
-    QLabel *label_56;label_56293,7917
-    QFrame *line;line294,7939
-    QPushButton *AfterSave;AfterSave295,7957
-    QComboBox *AfterShowType;AfterShowType296,7985
-    QSpacerItem *horizontalSpacer_31;horizontalSpacer_31297,8015
-    QLabel *label_57;label_57298,8053
-    QLabel *label_59;label_59299,8075
-    QSpacerItem *horizontalSpacer_17;horizontalSpacer_17300,8097
-    QSpacerItem *verticalSpacer_7;verticalSpacer_7301,8135
-    QWidget *SetUpTab;SetUpTab302,8170
-    QGridLayout *gridLayout_10;gridLayout_10303,8193
-    QGridLayout *gridLayout_2;gridLayout_2304,8225
-    QFrame *frame_13;frame_13305,8256
-    QGridLayout *gridLayout_38;gridLayout_38306,8278
-    QLabel *label_76;label_76307,8310
-    QSpinBox *RangeSelect;RangeSelect308,8332
-    QComboBox *SelSensToSetRange;SelSensToSetRange309,8359
-    QLabel *label_81;label_81310,8393
-    QPushButton *GetRange;GetRange311,8415
-    QPushButton *GetAllRange;GetAllRange312,8442
-    QRadioButton *SelectAutoRange;SelectAutoRange313,8472
-    QPushButton *SetRange;SetRange314,8507
-    QFrame *frame_2;frame_2315,8534
-    QGridLayout *gridLayout_32;gridLayout_32316,8555
-    QComboBox *GoUnit4;GoUnit4317,8587
-    QPushButton *GoTo4;GoTo4318,8611
-    QComboBox *GoUnit1;GoUnit1319,8635
-    QPushButton *GoTo1;GoTo1320,8659
-    QLabel *label_30;label_30321,8683
-    QLineEdit *GoPos2;GoPos2322,8705
-    QComboBox *GoUnit2;GoUnit2323,8728
-    QPushButton *GoTo2;GoTo2324,8752
-    QLabel *label_31;label_31325,8776
-    QLineEdit *GoPos3;GoPos3326,8798
-    QComboBox *GoUnit3;GoUnit3327,8821
-    QPushButton *GoTo3;GoTo3328,8845
-    QLabel *label_32;label_32329,8869
-    QLineEdit *GoPos4;GoPos4330,8891
-    QWidget *widget;widget331,8914
-    QGridLayout *gridLayout_33;gridLayout_33332,8935
-    QWidget *widget_2;widget_2333,8967
-    QGridLayout *gridLayout_68;gridLayout_68334,8990
-    QPushButton *GoMSpeedH;GoMSpeedH335,9022
-    QComboBox *GoUnit0;GoUnit0336,9050
-    QLabel *label_97;label_97337,9074
-    QPushButton *GoMSpeedM;GoMSpeedM338,9096
-    QPushButton *GoMSpeedL;GoMSpeedL339,9124
-    QLabel *label_104;label_104340,9152
-    QLabel *label_53;label_53341,9175
-    QLabel *label_45;label_45342,9197
-    QLabel *label_11;label_11343,9219
-    QLineEdit *GoPos1;GoPos1344,9241
-    QFrame *frame_10;frame_10345,9264
-    QGridLayout *gridLayout_50;gridLayout_50346,9286
-    QLabel *label_49;label_49347,9318
-    QHBoxLayout *horizontalLayout_9;horizontalLayout_9348,9340
-    QLabel *label_62;label_62349,9377
-    QRadioButton *IsMonRec;IsMonRec350,9399
-    QLineEdit *MonRecFile;MonRecFile351,9427
-    QToolButton *SelMonRecFile;SelMonRecFile352,9454
-    QPushButton *SaveMonData;SaveMonData353,9486
-    QVBoxLayout *verticalLayout_11;verticalLayout_11354,9516
-    QLabel *label_51;label_51355,9552
-    QLineEdit *DwellT20;DwellT20356,9574
-    QComboBox *SelectScale;SelectScale357,9599
-    QLabel *label_64;label_64358,9627
-    QLineEdit *MovingAvr;MovingAvr359,9649
-    QSpacerItem *verticalSpacer_14;verticalSpacer_14360,9675
-    QPushButton *MStart;MStart361,9711
-    QPushButton *MPause;MPause362,9736
-    QFrame *MonLinesFrame;MonLinesFrame363,9761
-    QGridLayout *gridLayout_82;gridLayout_82364,9788
-    QScrollArea *MonLinesBase;MonLinesBase365,9820
-    QWidget *MonLinesGrid;MonLinesGrid366,9851
-    QGridLayout *gridLayout_69;gridLayout_69367,9878
-    QRadioButton *MonSel4;MonSel4368,9910
-    QComboBox *MonDev4;MonDev4369,9937
-    QLabel *MonV4;MonV4370,9961
-    QRadioButton *MonSel0;MonSel0371,9980
-    QComboBox *MonDev0;MonDev0372,10007
-    QLabel *MonV0;MonV0373,10031
-    QRadioButton *MonSel1;MonSel1374,10050
-    QComboBox *MonDev1;MonDev1375,10077
-    QLabel *MonV1;MonV1376,10101
-    QRadioButton *MonSel2;MonSel2377,10120
-    QComboBox *MonDev2;MonDev2378,10147
-    QLabel *MonV2;MonV2379,10171
-    QRadioButton *MonSel3;MonSel3380,10190
-    QComboBox *MonDev3;MonDev3381,10217
-    QLabel *MonV3;MonV3382,10241
-    QLabel *label_50;label_50383,10260
-    QRadioButton *MonLinesPop;MonLinesPop384,10282
-    QSpacerItem *horizontalSpacer_18;horizontalSpacer_18385,10313
-    QSpacerItem *verticalSpacer_4;verticalSpacer_4386,10351
-    QGridLayout *gridLayout_9;gridLayout_9387,10386
-    QFrame *frame_9;frame_9388,10417
-    QGridLayout *gridLayout_21;gridLayout_21389,10438
-    QComboBox *SPSUnitSelect;SPSUnitSelect390,10470
-    QLineEdit *SPSeP0;SPSeP0391,10500
-    QLineEdit *SPSdwell0;SPSdwell0392,10523
-    QPushButton *GoMotorB;GoMotorB393,10549
-    QLabel *label_71;label_71394,10576
-    QLabel *label_21;label_21395,10598
-    QComboBox *GoMotorS;GoMotorS396,10620
-    QLabel *label_41;label_41397,10645
-    QLabel *label_44;label_44398,10667
-    QLineEdit *GoMotorPosUnit;GoMotorPosUnit399,10689
-    QLabel *GoMotorUnit;GoMotorUnit400,10720
-    QLineEdit *GoMotorPosPuls;GoMotorPosPuls401,10745
-    QLabel *label_42;label_42402,10776
-    QFrame *line_2;line_2403,10798
-    QLabel *label_35;label_35404,10818
-    QComboBox *SPSSelectD1;SPSSelectD1405,10840
-    QLineEdit *SPSsP0;SPSsP0406,10868
-    QLabel *label_29;label_29407,10891
-    QPushButton *ScanRec;ScanRec408,10913
-    QLineEdit *ScanRecFileName;ScanRecFileName409,10939
-    QToolButton *SelScanRecFile;SelScanRecFile410,10971
-    QFrame *line_5;line_5411,11004
-    QLabel *label_37;label_37412,11024
-    QLineEdit *SPSstep0;SPSstep0413,11046
-    QFrame *MCurPosPulsF;MCurPosPulsF414,11071
-    QGridLayout *gridLayout_24;gridLayout_24415,11097
-    QLabel *MCurPosPuls;MCurPosPuls416,11129
-    QFrame *MCurPosUnitF;MCurPosUnitF417,11154
-    QGridLayout *gridLayout_25;gridLayout_25418,11180
-    QLabel *MCurPosUnit;MCurPosUnit419,11212
-    QPushButton *SPSScanB;SPSScanB420,11237
-    QLabel *label_43;label_43421,11264
-    QComboBox *SPSMotorSpeed;SPSMotorSpeed422,11286
-    QLabel *label_24;label_24423,11316
-    QLabel *label_36;label_36424,11338
-    QSplitter *splitter;splitter425,11360
-    QLabel *label_46;label_46426,11385
-    QComboBox *SPSMotorSelect;SPSMotorSelect427,11407
-    RelAbs *MMRelAbs;MMRelAbs428,11438
-    RelAbs *SPSRelAbsSelect;SPSRelAbsSelect429,11460
-    QHBoxLayout *horizontalLayout_8;horizontalLayout_8430,11489
-    QRadioButton *SPSNormalize;SPSNormalize431,11526
-    QComboBox *SPSSelectD10;SPSSelectD10432,11558
-    QRadioButton *SPSUseAdditionalSs;SPSUseAdditionalSs433,11587
-    QFrame *frame_16;frame_16434,11625
-    QGridLayout *gridLayout_6;gridLayout_6435,11647
-    QPushButton *SetDark;SetDark436,11678
-    QLabel *label_77;label_77437,11704
-    QComboBox *SelectD3;SelectD3438,11726
-    QLabel *label_52;label_52439,11751
-    QLabel *label_17;label_17440,11773
-    QLineEdit *InputDark;InputDark441,11795
-    QFrame *frame_27;frame_27442,11821
-    QGridLayout *gridLayout_59;gridLayout_59443,11843
-    QFrame *line_8;line_8444,11875
-    QLabel *label_106;label_106445,11895
-    QComboBox *ChangerSelect;ChangerSelect446,11918
-    QLabel *label_102;label_102447,11948
-    QLabel *label_107;label_107448,11971
-    QSpinBox *ChangerToGoHolderSelect;ChangerToGoHolderSelect449,11994
-    QPushButton *ChangerGo;ChangerGo450,12033
-    QGridLayout *gridLayout_60;gridLayout_60451,12061
-    QLineEdit *ChangerToGoFinePosition1;ChangerToGoFinePosition1452,12093
-    QLineEdit *ChangerToGoFinePosition2;ChangerToGoFinePosition2453,12134
-    QLabel *ChangerUnit1;ChangerUnit1454,12175
-    QLabel *ChangerUnit2;ChangerUnit2455,12201
-    QGridLayout *gridLayout_58;gridLayout_58456,12227
-    QLabel *label_108;label_108457,12259
-    QSpinBox *ChangerCurrentHolder;ChangerCurrentHolder458,12282
-    QSpacerItem *horizontalSpacer_23;horizontalSpacer_23459,12318
-    QPushButton *DatumChanger;DatumChanger460,12356
-    QPushButton *SetChangerCenter;SetChangerCenter461,12387
-    QWidget *S2DTab;S2DTab462,12422
-    QGridLayout *gridLayout_37;gridLayout_37463,12443
-    QPushButton *S2DPrintB;S2DPrintB464,12475
-    QSpacerItem *verticalSpacer_6;verticalSpacer_6465,12503
-    QPushButton *Special;Special466,12538
-    QFrame *frame_17;frame_17467,12564
-    QGridLayout *gridLayout_64;gridLayout_64468,12586
-    QLabel *S2DUnit3;S2DUnit3469,12618
-    QRadioButton *S2DUse3rdAxF;S2DUse3rdAxF470,12640
-    QLabel *label_128;label_128471,12672
-    QLabel *label_96;label_96472,12695
-    RelAbs *S2DRelAbs1;S2DRelAbs1473,12717
-    RelAbs *S2DRelAbs2;S2DRelAbs2474,12741
-    RelAbs *S2DRelAbs3;S2DRelAbs3475,12765
-    QLabel *label_114;label_114476,12789
-    QLabel *label_118;label_118477,12812
-    QLabel *label_28;label_28478,12835
-    QLabel *label_119;label_119479,12857
-    QLabel *label_120;label_120480,12880
-    QLabel *label_121;label_121481,12903
-    QComboBox *S2DAx1;S2DAx1482,12926
-    QLabel *S2DCurPos1;S2DCurPos1483,12949
-    QLabel *S2DUnit1;S2DUnit1484,12973
-    QLineEdit *S2DStartP1;S2DStartP1485,12995
-    QLineEdit *S2DEndP1;S2DEndP1486,13022
-    QLineEdit *S2DStep1;S2DStep1487,13047
-    QLineEdit *S2DTime1;S2DTime1488,13072
-    QComboBox *S2DAx2;S2DAx2489,13097
-    QLabel *S2DCurPos2;S2DCurPos2490,13120
-    QLabel *S2DUnit2;S2DUnit2491,13144
-    QLineEdit *S2DStartP2;S2DStartP2492,13166
-    QLineEdit *S2DEndP2;S2DEndP2493,13193
-    QLineEdit *S2DStep2;S2DStep2494,13218
-    QLineEdit *S2DPoints2;S2DPoints2495,13243
-    QComboBox *S2DAx3;S2DAx3496,13270
-    QLabel *S2DCurPos3;S2DCurPos3497,13293
-    QLineEdit *S2DStartP3;S2DStartP3498,13317
-    QLineEdit *S2DEndP3;S2DEndP3499,13344
-    QLineEdit *S2DStep3;S2DStep3500,13369
-    QLineEdit *S2DPoints3;S2DPoints3501,13394
-    QLabel *label_125;label_125502,13421
-    QLineEdit *S2DPoints1;S2DPoints1503,13444
-    QFrame *S2DVFrame;S2DVFrame504,13471
-    QGridLayout *gridLayout_39;gridLayout_39505,13494
-    S2DB *S2DBase;S2DBase506,13526
-    QFrame *frame_31;frame_31507,13545
-    QGridLayout *gridLayout_71;gridLayout_71508,13567
-    QRadioButton *S2DUseChanger;S2DUseChanger509,13599
-    QComboBox *S2DChangerSelect;S2DChangerSelect510,13632
-    QFrame *frame_29;frame_29511,13665
-    QGridLayout *gridLayout_65;gridLayout_65512,13687
-    QLabel *label_127;label_127513,13719
-    QComboBox *SelectS2DSensor;SelectS2DSensor514,13742
-    QSpinBox *SelectS2DRange;SelectS2DRange515,13774
-    QFrame *frame_30;frame_30516,13804
-    QGridLayout *gridLayout_67;gridLayout_67517,13826
-    QLabel *label_124;label_124518,13858
-    QLineEdit *S2DFileName0;S2DFileName0519,13881
-    QToolButton *S2DFileSelect;S2DFileSelect520,13910
-    QPushButton *S2DFileSave;S2DFileSave521,13942
-    QFrame *frame_35;frame_35522,13972
-    QGridLayout *gridLayout_70;gridLayout_70523,13994
-    QPushButton *S2DSaveMCAs;S2DSaveMCAs524,14026
-    QLabel *label_109;label_109525,14056
-    QFrame *frame_32;frame_32526,14079
-    QGridLayout *gridLayout_72;gridLayout_72527,14101
-    QPushButton *S2DStart;S2DStart528,14133
-    QRadioButton *S2DScanBothDir;S2DScanBothDir529,14160
-    QFrame *frame_33;frame_33530,14194
-    QGridLayout *gridLayout_62;gridLayout_62531,14216
-    QRadioButton *S2DStepScan;S2DStepScan532,14248
-    QRadioButton *S2DQuasiContScan;S2DQuasiContScan533,14279
-    QRadioButton *S2DRealContScan;S2DRealContScan534,14315
-    QFrame *line_9;line_9535,14350
-    QLabel *label_122;label_122536,14370
-    QWidget *SpacerTab;SpacerTab537,14393
-    QWidget *StatTab;StatTab538,14417
-    QGridLayout *gridLayout_36;gridLayout_36539,14439
-    QWidget *RingStatTab;RingStatTab540,14471
-    QGridLayout *gridLayout_61;gridLayout_61541,14497
-    QWebView *webView;webView542,14529
-    QWidget *LogTab;LogTab543,14552
-    QGridLayout *gridLayout_19;gridLayout_19544,14573
-    QHBoxLayout *horizontalLayout_7;horizontalLayout_7545,14605
-    QLabel *label_39;label_39546,14642
-    QLineEdit *LogFileName;LogFileName547,14664
-    QToolButton *LogFileSelect;LogFileSelect548,14692
-    QVBoxLayout *verticalLayout_5;verticalLayout_5549,14724
-    QTextEdit *LogMsgs;LogMsgs550,14759
-    QHBoxLayout *horizontalLayout_6;horizontalLayout_6551,14783
-    QLabel *label_40;label_40552,14820
-    QLineEdit *LogComment;LogComment553,14842
-    QSpacerItem *horizontalSpacer_6;horizontalSpacer_6554,14869
-    QWidget *SpacerTab2;SpacerTab2555,14906
-    QWidget *ReadDataTab;ReadDataTab556,14931
-    QGridLayout *gridLayout_5;gridLayout_5557,14957
-    QSpacerItem *horizontalSpacer_10;horizontalSpacer_10558,14988
-    Data *Data010;Data010559,15026
-    QSpacerItem *verticalSpacer_3;verticalSpacer_3560,15045
-    QSpacerItem *horizontalSpacer_9;horizontalSpacer_9561,15080
-    QSpacerItem *horizontalSpacer_8;horizontalSpacer_8562,15117
-    Data *Data006;Data006563,15154
-    Data *Data005;Data005564,15173
-    Data *Data008;Data008565,15192
-    Data *Data007;Data007566,15211
-    Data *Data001;Data001567,15230
-    Data *Data002;Data002568,15249
-    Data *Data009;Data009569,15268
-    Data *Data003;Data003570,15287
-    Data *Data004;Data004571,15306
-    QWidget *AddFuncs;AddFuncs572,15325
-    QGridLayout *gridLayout_11;gridLayout_11573,15348
-    QTabWidget *tabWidget;tabWidget574,15380
-    QWidget *tab_4;tab_4575,15407
-    QGridLayout *gridLayout_48;gridLayout_48576,15427
-    QFrame *frame_42;frame_42577,15459
-    QGridLayout *gridLayout_80;gridLayout_80578,15481
-    QLabel *label_161;label_161579,15513
-    QComboBox *AttChSelect;AttChSelect580,15536
-    QSpacerItem *horizontalSpacer_27;horizontalSpacer_27581,15564
-    QPushButton *AttenMoveTo;AttenMoveTo582,15602
-    QPushButton *DTAutoCalib;DTAutoCalib583,15632
-    QLabel *label_162;label_162584,15662
-    QComboBox *EnergySelect;EnergySelect585,15685
-    QPushButton *EnergyMoveTo;EnergyMoveTo586,15714
-    QPushButton *SSDEngAutoCalib;SSDEngAutoCalib587,15745
-    QSpacerItem *horizontalSpacer_5;horizontalSpacer_5588,15779
-    QSpacerItem *horizontalSpacer_28;horizontalSpacer_28589,15816
-    QLabel *label_164;label_164590,15854
-    QComboBox *AttenSelect;AttenSelect591,15877
-    QFrame *line_11;line_11592,15905
-    QHBoxLayout *horizontalLayout_10;horizontalLayout_10593,15926
-    QSpacerItem *horizontalSpacer_24;horizontalSpacer_24594,15964
-    QLabel *label_14;label_14595,16002
-    QLineEdit *AttDx;AttDx596,16024
-    QLabel *label_19;label_19597,16046
-    QLabel *label_38;label_38598,16068
-    QLineEdit *AttDy;AttDy599,16090
-    QLabel *label_20;label_20600,16112
-    QSpacerItem *horizontalSpacer_22;horizontalSpacer_22601,16134
-    QSpacerItem *verticalSpacer_10;verticalSpacer_10602,16172
-    QWidget *tab_3;tab_3603,16208
-    QGridLayout *gridLayout_34;gridLayout_34604,16228
-    QSpacerItem *verticalSpacer_2;verticalSpacer_2605,16260
-    QFrame *frame_41;frame_41606,16295
-    QGridLayout *gridLayout_79;gridLayout_79607,16317
-    QFrame *frame_12;frame_12608,16349
-    QGridLayout *gridLayout_83;gridLayout_83609,16371
-    QLineEdit *PeakSearchSensitivity;PeakSearchSensitivity610,16403
-    QRadioButton *MCAPeakSearch;MCAPeakSearch611,16441
-    QPushButton *MCAPeakFit;MCAPeakFit612,16474
-    QLabel *label_160;label_160613,16503
-    QRadioButton *LimitPSEnergy;LimitPSEnergy614,16526
-    QTabWidget *ViewTab;ViewTab615,16559
-    QGridLayout *gridLayout_26;gridLayout_26616,16584
-    QFrame *frame_4;frame_4617,16616
-    QGridLayout *gridLayout_3;gridLayout_3618,16637
-    QComboBox *SelectTA;SelectTA619,16668
-    QPushButton *ShowPT;ShowPT620,16693
-    QLabel *Select1;Select1621,16718
-    QLabel *label_48;label_48622,16739
-    QComboBox *SelectTE;SelectTE623,16761
-    QHBoxLayout *horizontalLayout_5;horizontalLayout_5624,16786
-    QLabel *label_3;label_3625,16823
-    QLineEdit *ManTEkeV;ManTEkeV626,16844
-    QLabel *label_15;label_15627,16869
-    QLineEdit *ManTEdeg;ManTEdeg628,16891
-    QLabel *label_13;label_13629,16916
-    QFrame *frame_3;frame_3630,16938
-    QGridLayout *gridLayout_4;gridLayout_4631,16959
-    QLabel *label_22;label_22632,16990
-    QHBoxLayout *horizontalLayout_3;horizontalLayout_3633,17012
-    QSpacerItem *horizontalSpacer_2;horizontalSpacer_2634,17049
-    QRadioButton *SelThEncorder;SelThEncorder635,17086
-    QRadioButton *SelThCalcPulse;SelThCalcPulse636,17119
-    QLabel *ShowCurrentEnergy;ShowCurrentEnergy637,17153
-    QLabel *label_25;label_25638,17184
-    QLabel *label_26;label_26639,17206
-    QLabel *ShowCurrentAngle;ShowCurrentAngle640,17228
-    QFrame *frame_18;frame_18641,17258
-    QGridLayout *gridLayout_45;gridLayout_45642,17280
-    QLabel *label_72;label_72643,17312
-    QLabel *label_5;label_5644,17334
-    QLabel *RingCurrent;RingCurrent645,17355
-    QVBoxLayout *verticalLayout;verticalLayout646,17380
-    QPushButton *HideCTRLPanel;HideCTRLPanel647,17413
-    QPushButton *HideGraphView;HideGraphView648,17445
-    QPushButton *PrintB;PrintB649,17477
-    QFrame *frame_28;frame_28650,17502
-    QGridLayout *gridLayout_74;gridLayout_74651,17524
-    QLabel *label_131;label_131652,17556
-    QLabel *DispDTh1;DispDTh1653,17579
-    QLabel *label_132;label_132654,17601
-    QPushButton *AddNewDTh1TPoint;AddNewDTh1TPoint655,17624
-    QStatusBar *statusbar;statusbar656,17659
-    void setupUi(658,17687
-    void retranslateUi(Ui_MainWindow::retranslateUi5061,212191
-namespace Ui 5621,256656
-    class MainWindow:Ui::MainWindow5622,256671
+    QFrame *GSBBox1;GSBBox153,1511
+    QGridLayout *gridLayout_44;gridLayout_4454,1532
+    QPushButton *GSB26;GSB2655,1564
+    QPushButton *GSB27;GSB2756,1588
+    QPushButton *GSB12;GSB1257,1612
+    QPushButton *GSB11;GSB1158,1636
+    QPushButton *GSB10;GSB1059,1660
+    QPushButton *GSB09;GSB0960,1684
+    QPushButton *GSB08;GSB0861,1708
+    QPushButton *GSB07;GSB0762,1732
+    QPushButton *GSB06;GSB0663,1756
+    QPushButton *GSB05;GSB0564,1780
+    QPushButton *GSB24;GSB2465,1804
+    QPushButton *GSB01;GSB0166,1828
+    QPushButton *GSB04;GSB0467,1852
+    QPushButton *GSB20;GSB2068,1876
+    QPushButton *GSB21;GSB2169,1900
+    QPushButton *GSB23;GSB2370,1924
+    QPushButton *GSB02;GSB0271,1948
+    QPushButton *GSB22;GSB2272,1972
+    QPushButton *GSB19;GSB1973,1996
+    QPushButton *GSB18;GSB1874,2020
+    QPushButton *GSB15;GSB1575,2044
+    QPushButton *GSB14;GSB1476,2068
+    QPushButton *GSB17;GSB1777,2092
+    QPushButton *GSB16;GSB1678,2116
+    QPushButton *GSB13;GSB1379,2140
+    QPushButton *GSB03;GSB0380,2164
+    QSpacerItem *horizontalSpacer_7;horizontalSpacer_781,2188
+    QPushButton *GSB25;GSB2582,2225
+    QTabWidget *MainTab;MainTab83,2249
+    QWidget *MeasTab;MeasTab84,2274
+    QGridLayout *gridLayout_43;gridLayout_4385,2296
+    QFrame *frame_19;frame_1986,2328
+    QGridLayout *gridLayout_46;gridLayout_4687,2350
+    QLabel *NowTimeDisp;NowTimeDisp88,2382
+    QLabel *label_101;label_10189,2407
+    QLabel *StartTimeDisp;StartTimeDisp90,2430
+    QLabel *label_103;label_10391,2457
+    QLabel *label_105;label_10592,2480
+    QLabel *EndTimeDisp;EndTimeDisp93,2503
+    QFrame *frame_5;frame_594,2528
+    QHBoxLayout *horizontalLayout_11;horizontalLayout_1195,2549
+    QGridLayout *gridLayout_7;gridLayout_796,2587
+    QGridLayout *gridLayout_27;gridLayout_2797,2618
+    QLabel *BLKL03;BLKL0398,2650
+    QLineEdit *BLKs03;BLKs0399,2670
+    QLineEdit *BLKstep03;BLKstep03100,2693
+    QComboBox *SelBLKUnit;SelBLKUnit101,2719
+    QSpinBox *SelBLKs;SelBLKs102,2746
+    QLabel *label_69;label_69103,2769
+    QLabel *LDwellOrMeasureTime;LDwellOrMeasureTime104,2791
+    QLineEdit *BLKdwell01;BLKdwell01105,2824
+    QLineEdit *BLKdwell02;BLKdwell02106,2851
+    QLineEdit *BLKdwell03;BLKdwell03107,2878
+    QLineEdit *BLKdwell04;BLKdwell04108,2905
+    QLineEdit *BLKdwell05;BLKdwell05109,2932
+    QLineEdit *BLKdwell06;BLKdwell06110,2959
+    QLineEdit *DwellAll;DwellAll111,2986
+    QLineEdit *BLKs07;BLKs07112,3011
+    QLineEdit *BLKs01;BLKs01113,3034
+    QLabel *BLKL01;BLKL01114,3057
+    QLineEdit *BLKstep01;BLKstep01115,3077
+    QLabel *BLKL02;BLKL02116,3103
+    QLineEdit *BLKs02;BLKs02117,3123
+    QLineEdit *BLKstep02;BLKstep02118,3146
+    QLabel *BLKLAll;BLKLAll119,3172
+    QLineEdit *BLKpoints01;BLKpoints01120,3193
+    QLineEdit *BLKpoints02;BLKpoints02121,3221
+    QLineEdit *BLKpoints03;BLKpoints03122,3249
+    QLineEdit *BLKpoints04;BLKpoints04123,3277
+    QLineEdit *BLKpoints05;BLKpoints05124,3305
+    QLineEdit *BLKpoints06;BLKpoints06125,3333
+    QLabel *BLKL04;BLKL04126,3361
+    QLineEdit *BLKs04;BLKs04127,3381
+    QLineEdit *BLKstep04;BLKstep04128,3404
+    QLabel *BLKL05;BLKL05129,3430
+    QLineEdit *BLKs05;BLKs05130,3450
+    QLineEdit *BLKstep05;BLKstep05131,3473
+    QLineEdit *BLKstep06;BLKstep06132,3499
+    QLineEdit *BLKs06;BLKs06133,3525
+    QLabel *BLKL06;BLKL06134,3548
+    QLabel *BLKL09;BLKL09135,3568
+    QLineEdit *BLKs09;BLKs09136,3588
+    QLabel *LStartPoint;LStartPoint137,3611
+    QLabel *LStepOrEndPoint;LStepOrEndPoint138,3636
+    QLabel *LSteps;LSteps139,3665
+    QLineEdit *BLKstep07;BLKstep07140,3685
+    QLineEdit *BLKdwell07;BLKdwell07141,3711
+    QLineEdit *BLKpoints07;BLKpoints07142,3738
+    QLineEdit *BLKs08;BLKs08143,3766
+    QLineEdit *BLKstep08;BLKstep08144,3789
+    QLineEdit *BLKpoints08;BLKpoints08145,3815
+    QLineEdit *BLKdwell08;BLKdwell08146,3843
+    QLabel *BLKL07;BLKL07147,3870
+    QLabel *BLKL08;BLKL08148,3890
+    QLabel *label_8;label_8149,3910
+    QSpacerItem *verticalSpacer_8;verticalSpacer_8150,3931
+    QGridLayout *gridLayout_8;gridLayout_8151,3966
+    QPushButton *StdXANES;StdXANES152,3997
+    QPushButton *StdXAFS;StdXAFS153,4024
+    QPushButton *SaveBLKs;SaveBLKs154,4050
+    QPushButton *LoadBLKs;LoadBLKs155,4077
+    QPushButton *StdEXAFS;StdEXAFS156,4104
+    QLabel *label_67;label_67157,4131
+    QLabel *label_6;label_6158,4153
+    QSpacerItem *verticalSpacer_11;verticalSpacer_11159,4174
+    QFrame *QConditionBox;QConditionBox160,4210
+    QGridLayout *gridLayout_52;gridLayout_52161,4237
+    QGridLayout *gridLayout_63;gridLayout_63162,4269
+    QLabel *label_115;label_115163,4301
+    QLineEdit *QIntervalCycle;QIntervalCycle164,4324
+    QLabel *label_116;label_116165,4355
+    QLineEdit *QIntervalHalf;QIntervalHalf166,4378
+    QLabel *label_117;label_117167,4408
+    QFrame *QLimitedDisplayFrame;QLimitedDisplayFrame168,4431
+    QGridLayout *gridLayout_55;gridLayout_55169,4465
+    QLineEdit *QDispLinePeriod;QDispLinePeriod170,4497
+    QRadioButton *QLimitedDisplay;QLimitedDisplay171,4529
+    QSpinBox *QLastLines;QLastLines172,4564
+    QLabel *label_82;label_82173,4590
+    QLabel *label_83;label_83174,4612
+    QSpacerItem *horizontalSpacer_21;horizontalSpacer_21175,4634
+    QLabel *label_85;label_85176,4672
+    QRadioButton *SaveQDataAsStepScan;SaveQDataAsStepScan177,4694
+    QFrame *line_10;line_10178,4733
+    QFrame *QMinMaxBox;QMinMaxBox179,4754
+    QGridLayout *gridLayout_53;gridLayout_53180,4778
+    QRadioButton *QMinTime;QMinTime181,4810
+    QRadioButton *QMaxSpeed;QMaxSpeed182,4838
+    QSpacerItem *horizontalSpacer_20;horizontalSpacer_20183,4867
+    QLabel *label_110;label_110184,4905
+    QLabel *label_68;label_68185,4928
+    QLabel *DispQSpeedInDPS;DispQSpeedInDPS186,4950
+    QLabel *DispQSpeedInPPS;DispQSpeedInPPS187,4979
+    QLabel *label_113;label_113188,5008
+    QFrame *frame_23;frame_23189,5031
+    QGridLayout *gridLayout_54;gridLayout_54190,5053
+    QLabel *QDeltaAtRefPoint;QDeltaAtRefPoint191,5085
+    QLabel *label_123;label_123192,5115
+    QLineEdit *QRefPoint;QRefPoint193,5138
+    QLabel *label_126;label_126194,5164
+    QRadioButton *QMeasOnBackward;QMeasOnBackward195,5187
+    QSpacerItem *horizontalSpacer_19;horizontalSpacer_19196,5222
+    QLabel *label_130;label_130197,5260
+    QFrame *frame_7;frame_7198,5283
+    QGridLayout *gridLayout_42;gridLayout_42199,5304
+    QLabel *label_95;label_95200,5336
+    QLabel *TPoints;TPoints201,5358
+    QLabel *TTime;TTime202,5379
+    QFrame *frame_20;frame_20203,5398
+    QGridLayout *gridLayout_47;gridLayout_47204,5420
+    QLabel *label_16;label_16205,5452
+    QLabel *label_18;label_18206,5474
+    QLabel *CurrentRpt;CurrentRpt207,5496
+    QLabel *label_34;label_34208,5520
+    QLabel *CurrentPnt;CurrentPnt209,5542
+    QGridLayout *gridLayout_28;gridLayout_28210,5566
+    QSpacerItem *verticalSpacer_13;verticalSpacer_13211,5598
+    QFrame *frame_6;frame_6212,5634
+    QGridLayout *gridLayout_30;gridLayout_30213,5655
+    QLabel *label_92;label_92214,5687
+    QHBoxLayout *horizontalLayout_21;horizontalLayout_21215,5709
+    QLabel *label_111;label_111216,5747
+    QLabel *label_112;label_112217,5770
+    QComboBox *I0ChSelect;I0ChSelect218,5793
+    QComboBox *I0Recommend;I0Recommend219,5820
+    QComboBox *I1ChSelect;I1ChSelect220,5848
+    QComboBox *I1Recommend;I1Recommend221,5875
+    QComboBox *ModeA2;ModeA2222,5903
+    QRadioButton *UseI1;UseI1223,5926
+    QRadioButton *UseAux1;UseAux1224,5951
+    QRadioButton *UseAux2;UseAux2225,5978
+    QComboBox *ModeA1;ModeA1226,6005
+    QSpinBox *A1Range;A1Range227,6028
+    QComboBox *SelectAux1;SelectAux1228,6051
+    QComboBox *SelectI1;SelectI1229,6078
+    QComboBox *SelectI0;SelectI0230,6103
+    QSpinBox *I0Range;I0Range231,6128
+    QSpinBox *I1Range;I1Range232,6151
+    QComboBox *SelectAux2;SelectAux2233,6174
+    QSpinBox *A2Range;A2Range234,6201
+    QHBoxLayout *horizontalLayout_12;horizontalLayout_12235,6224
+    QRadioButton *UseSFluo0;UseSFluo0236,6262
+    QRadioButton *UseSFluo1;UseSFluo1237,6291
+    QRadioButton *UseSFluo2;UseSFluo2238,6320
+    QRadioButton *UseSFluo3;UseSFluo3239,6349
+    QRadioButton *UseSFluo4;UseSFluo4240,6378
+    QFrame *frame_15;frame_15241,6407
+    QGridLayout *gridLayout;gridLayout242,6429
+    QLabel *label_4;label_4243,6458
+    QHBoxLayout *horizontalLayout_15;horizontalLayout_15244,6479
+    QLabel *label_7;label_7245,6517
+    QLineEdit *MeasBackTime;MeasBackTime246,6538
+    QPushButton *ShowMeasuredBack;ShowMeasuredBack247,6567
+    QHBoxLayout *horizontalLayout_4;horizontalLayout_4248,6602
+    QSpacerItem *horizontalSpacer_12;horizontalSpacer_12249,6639
+    QRadioButton *AutoShutter;AutoShutter250,6677
+    QRadioButton *MeasBackBeforeMeas;MeasBackBeforeMeas251,6708
+    QRadioButton *UseMeasured;UseMeasured252,6746
+    QPushButton *MeasBackGround;MeasBackGround253,6777
+    QFrame *frame_8;frame_8254,6810
+    QGridLayout *gridLayout_29;gridLayout_29255,6831
+    QVBoxLayout *verticalLayout_2;verticalLayout_2256,6863
+    QHBoxLayout *horizontalLayout;horizontalLayout257,6898
+    QLabel *label;label258,6933
+    QLineEdit *EditDFName;EditDFName259,6952
+    QToolButton *SelDFName;SelDFName260,6979
+    QHBoxLayout *horizontalLayout_2;horizontalLayout_2261,7007
+    QLabel *label_2;label_2262,7044
+    QLineEdit *EditCMT;EditCMT263,7065
+    QLabel *label_55;label_55264,7089
+    QRadioButton *SelExtPattern;SelExtPattern265,7111
+    QFrame *ChangerBox;ChangerBox266,7144
+    QGridLayout *gridLayout_49;gridLayout_49267,7168
+    QLabel *label_27;label_27268,7200
+    QLineEdit *AutoMode;AutoMode269,7222
+    QRadioButton *AutoModeButton;AutoModeButton270,7247
+    QLabel *ItemsForAutoMode;ItemsForAutoMode271,7281
+    QLabel *label_86;label_86272,7311
+    QFrame *MeasStarting;MeasStarting273,7333
+    QGridLayout *gridLayout_40;gridLayout_40274,7359
+    QVBoxLayout *verticalLayout_7;verticalLayout_7275,7391
+    QLabel *label_10;label_10276,7426
+    QLabel *label_58;label_58277,7448
+    QVBoxLayout *verticalLayout_8;verticalLayout_8278,7470
+    QLabel *label_93;label_93279,7505
+    QSpinBox *SelRPT;SelRPT280,7527
+    QVBoxLayout *verticalLayout_9;verticalLayout_9281,7549
+    QLabel *label_94;label_94282,7584
+    QComboBox *OnFinishP;OnFinishP283,7606
+    QVBoxLayout *verticalLayout_10;verticalLayout_10284,7632
+    QRadioButton *QXafsMode;QXafsMode285,7668
+    QRadioButton *TuneAtEachStp;TuneAtEachStp286,7697
+    QVBoxLayout *verticalLayout_4;verticalLayout_4287,7730
+    QPushButton *MeasStart;MeasStart288,7765
+    QPushButton *MeasPause;MeasPause289,7793
+    QFrame *SaveAfterBox;SaveAfterBox290,7821
+    QGridLayout *gridLayout_81;gridLayout_81291,7847
+    QPushButton *OtherOptions;OtherOptions292,7879
+    QLabel *label_56;label_56293,7910
+    QFrame *line;line294,7932
+    QPushButton *AfterSave;AfterSave295,7950
+    QComboBox *AfterShowType;AfterShowType296,7978
+    QSpacerItem *horizontalSpacer_31;horizontalSpacer_31297,8008
+    QLabel *label_57;label_57298,8046
+    QLabel *label_59;label_59299,8068
+    QSpacerItem *horizontalSpacer_17;horizontalSpacer_17300,8090
+    QSpacerItem *verticalSpacer_7;verticalSpacer_7301,8128
+    QWidget *SetUpTab;SetUpTab302,8163
+    QGridLayout *gridLayout_10;gridLayout_10303,8186
+    QGridLayout *gridLayout_2;gridLayout_2304,8218
+    QFrame *frame_13;frame_13305,8249
+    QGridLayout *gridLayout_38;gridLayout_38306,8271
+    QLabel *label_76;label_76307,8303
+    QSpinBox *RangeSelect;RangeSelect308,8325
+    QComboBox *SelSensToSetRange;SelSensToSetRange309,8352
+    QLabel *label_81;label_81310,8386
+    QPushButton *GetRange;GetRange311,8408
+    QPushButton *GetAllRange;GetAllRange312,8435
+    QRadioButton *SelectAutoRange;SelectAutoRange313,8465
+    QPushButton *SetRange;SetRange314,8500
+    QFrame *frame_2;frame_2315,8527
+    QGridLayout *gridLayout_32;gridLayout_32316,8548
+    QComboBox *GoUnit4;GoUnit4317,8580
+    QPushButton *GoTo4;GoTo4318,8604
+    QComboBox *GoUnit1;GoUnit1319,8628
+    QPushButton *GoTo1;GoTo1320,8652
+    QLabel *label_30;label_30321,8676
+    QLineEdit *GoPos2;GoPos2322,8698
+    QComboBox *GoUnit2;GoUnit2323,8721
+    QPushButton *GoTo2;GoTo2324,8745
+    QLabel *label_31;label_31325,8769
+    QLineEdit *GoPos3;GoPos3326,8791
+    QComboBox *GoUnit3;GoUnit3327,8814
+    QPushButton *GoTo3;GoTo3328,8838
+    QLabel *label_32;label_32329,8862
+    QLineEdit *GoPos4;GoPos4330,8884
+    QWidget *widget;widget331,8907
+    QGridLayout *gridLayout_33;gridLayout_33332,8928
+    QWidget *widget_2;widget_2333,8960
+    QGridLayout *gridLayout_68;gridLayout_68334,8983
+    QPushButton *GoMSpeedH;GoMSpeedH335,9015
+    QComboBox *GoUnit0;GoUnit0336,9043
+    QLabel *label_97;label_97337,9067
+    QPushButton *GoMSpeedM;GoMSpeedM338,9089
+    QPushButton *GoMSpeedL;GoMSpeedL339,9117
+    QLabel *label_104;label_104340,9145
+    QLabel *label_53;label_53341,9168
+    QLabel *label_45;label_45342,9190
+    QLabel *label_11;label_11343,9212
+    QLineEdit *GoPos1;GoPos1344,9234
+    QFrame *frame_10;frame_10345,9257
+    QGridLayout *gridLayout_50;gridLayout_50346,9279
+    QLabel *label_49;label_49347,9311
+    QHBoxLayout *horizontalLayout_9;horizontalLayout_9348,9333
+    QLabel *label_62;label_62349,9370
+    QRadioButton *IsMonRec;IsMonRec350,9392
+    QLineEdit *MonRecFile;MonRecFile351,9420
+    QToolButton *SelMonRecFile;SelMonRecFile352,9447
+    QPushButton *SaveMonData;SaveMonData353,9479
+    QVBoxLayout *verticalLayout_11;verticalLayout_11354,9509
+    QLabel *label_51;label_51355,9545
+    QLineEdit *DwellT20;DwellT20356,9567
+    QComboBox *SelectScale;SelectScale357,9592
+    QLabel *label_64;label_64358,9620
+    QLineEdit *MovingAvr;MovingAvr359,9642
+    QSpacerItem *verticalSpacer_14;verticalSpacer_14360,9668
+    QPushButton *MStart;MStart361,9704
+    QPushButton *MPause;MPause362,9729
+    QFrame *MonLinesFrame;MonLinesFrame363,9754
+    QGridLayout *gridLayout_82;gridLayout_82364,9781
+    QScrollArea *MonLinesBase;MonLinesBase365,9813
+    QWidget *MonLinesGrid;MonLinesGrid366,9844
+    QGridLayout *gridLayout_69;gridLayout_69367,9871
+    QRadioButton *MonSel4;MonSel4368,9903
+    QComboBox *MonDev4;MonDev4369,9930
+    QLabel *MonV4;MonV4370,9954
+    QRadioButton *MonSel0;MonSel0371,9973
+    QComboBox *MonDev0;MonDev0372,10000
+    QLabel *MonV0;MonV0373,10024
+    QRadioButton *MonSel1;MonSel1374,10043
+    QComboBox *MonDev1;MonDev1375,10070
+    QLabel *MonV1;MonV1376,10094
+    QRadioButton *MonSel2;MonSel2377,10113
+    QComboBox *MonDev2;MonDev2378,10140
+    QLabel *MonV2;MonV2379,10164
+    QRadioButton *MonSel3;MonSel3380,10183
+    QComboBox *MonDev3;MonDev3381,10210
+    QLabel *MonV3;MonV3382,10234
+    QLabel *label_50;label_50383,10253
+    QRadioButton *MonLinesPop;MonLinesPop384,10275
+    QSpacerItem *horizontalSpacer_18;horizontalSpacer_18385,10306
+    QSpacerItem *verticalSpacer_4;verticalSpacer_4386,10344
+    QGridLayout *gridLayout_9;gridLayout_9387,10379
+    QFrame *frame_9;frame_9388,10410
+    QGridLayout *gridLayout_21;gridLayout_21389,10431
+    QComboBox *SPSUnitSelect;SPSUnitSelect390,10463
+    QLineEdit *SPSeP0;SPSeP0391,10493
+    QLineEdit *SPSdwell0;SPSdwell0392,10516
+    QPushButton *GoMotorB;GoMotorB393,10542
+    QLabel *label_71;label_71394,10569
+    QLabel *label_21;label_21395,10591
+    QComboBox *GoMotorS;GoMotorS396,10613
+    QLabel *label_41;label_41397,10638
+    QLabel *label_44;label_44398,10660
+    QLineEdit *GoMotorPosUnit;GoMotorPosUnit399,10682
+    QLabel *GoMotorUnit;GoMotorUnit400,10713
+    QLineEdit *GoMotorPosPuls;GoMotorPosPuls401,10738
+    QLabel *label_42;label_42402,10769
+    QFrame *line_2;line_2403,10791
+    QLabel *label_35;label_35404,10811
+    QComboBox *SPSSelectD1;SPSSelectD1405,10833
+    QLineEdit *SPSsP0;SPSsP0406,10861
+    QLabel *label_29;label_29407,10884
+    QPushButton *ScanRec;ScanRec408,10906
+    QLineEdit *ScanRecFileName;ScanRecFileName409,10932
+    QToolButton *SelScanRecFile;SelScanRecFile410,10964
+    QFrame *line_5;line_5411,10997
+    QLabel *label_37;label_37412,11017
+    QLineEdit *SPSstep0;SPSstep0413,11039
+    QFrame *MCurPosPulsF;MCurPosPulsF414,11064
+    QGridLayout *gridLayout_24;gridLayout_24415,11090
+    QLabel *MCurPosPuls;MCurPosPuls416,11122
+    QFrame *MCurPosUnitF;MCurPosUnitF417,11147
+    QGridLayout *gridLayout_25;gridLayout_25418,11173
+    QLabel *MCurPosUnit;MCurPosUnit419,11205
+    QPushButton *SPSScanB;SPSScanB420,11230
+    QLabel *label_43;label_43421,11257
+    QComboBox *SPSMotorSpeed;SPSMotorSpeed422,11279
+    QLabel *label_24;label_24423,11309
+    QLabel *label_36;label_36424,11331
+    QSplitter *splitter;splitter425,11353
+    QLabel *label_46;label_46426,11378
+    QComboBox *SPSMotorSelect;SPSMotorSelect427,11400
+    RelAbs *MMRelAbs;MMRelAbs428,11431
+    RelAbs *SPSRelAbsSelect;SPSRelAbsSelect429,11453
+    QHBoxLayout *horizontalLayout_8;horizontalLayout_8430,11482
+    QRadioButton *SPSNormalize;SPSNormalize431,11519
+    QComboBox *SPSSelectD10;SPSSelectD10432,11551
+    QRadioButton *SPSUseAdditionalSs;SPSUseAdditionalSs433,11580
+    QFrame *frame_16;frame_16434,11618
+    QGridLayout *gridLayout_6;gridLayout_6435,11640
+    QPushButton *SetDark;SetDark436,11671
+    QLabel *label_77;label_77437,11697
+    QComboBox *SelectD3;SelectD3438,11719
+    QLabel *label_52;label_52439,11744
+    QLabel *label_17;label_17440,11766
+    QLineEdit *InputDark;InputDark441,11788
+    QFrame *frame_27;frame_27442,11814
+    QGridLayout *gridLayout_59;gridLayout_59443,11836
+    QFrame *line_8;line_8444,11868
+    QLabel *label_106;label_106445,11888
+    QComboBox *ChangerSelect;ChangerSelect446,11911
+    QLabel *label_102;label_102447,11941
+    QLabel *label_107;label_107448,11964
+    QSpinBox *ChangerToGoHolderSelect;ChangerToGoHolderSelect449,11987
+    QPushButton *ChangerGo;ChangerGo450,12026
+    QGridLayout *gridLayout_60;gridLayout_60451,12054
+    QLineEdit *ChangerToGoFinePosition1;ChangerToGoFinePosition1452,12086
+    QLineEdit *ChangerToGoFinePosition2;ChangerToGoFinePosition2453,12127
+    QLabel *ChangerUnit1;ChangerUnit1454,12168
+    QLabel *ChangerUnit2;ChangerUnit2455,12194
+    QGridLayout *gridLayout_58;gridLayout_58456,12220
+    QLabel *label_108;label_108457,12252
+    QSpinBox *ChangerCurrentHolder;ChangerCurrentHolder458,12275
+    QSpacerItem *horizontalSpacer_23;horizontalSpacer_23459,12311
+    QPushButton *DatumChanger;DatumChanger460,12349
+    QPushButton *SetChangerCenter;SetChangerCenter461,12380
+    QWidget *S2DTab;S2DTab462,12415
+    QGridLayout *gridLayout_37;gridLayout_37463,12436
+    QPushButton *S2DPrintB;S2DPrintB464,12468
+    QSpacerItem *verticalSpacer_6;verticalSpacer_6465,12496
+    QPushButton *Special;Special466,12531
+    QFrame *frame_17;frame_17467,12557
+    QGridLayout *gridLayout_64;gridLayout_64468,12579
+    QLabel *S2DUnit3;S2DUnit3469,12611
+    QRadioButton *S2DUse3rdAxF;S2DUse3rdAxF470,12633
+    QLabel *label_128;label_128471,12665
+    QLabel *label_96;label_96472,12688
+    RelAbs *S2DRelAbs1;S2DRelAbs1473,12710
+    RelAbs *S2DRelAbs2;S2DRelAbs2474,12734
+    RelAbs *S2DRelAbs3;S2DRelAbs3475,12758
+    QLabel *label_114;label_114476,12782
+    QLabel *label_118;label_118477,12805
+    QLabel *label_28;label_28478,12828
+    QLabel *label_119;label_119479,12850
+    QLabel *label_120;label_120480,12873
+    QLabel *label_121;label_121481,12896
+    QComboBox *S2DAx1;S2DAx1482,12919
+    QLabel *S2DCurPos1;S2DCurPos1483,12942
+    QLabel *S2DUnit1;S2DUnit1484,12966
+    QLineEdit *S2DStartP1;S2DStartP1485,12988
+    QLineEdit *S2DEndP1;S2DEndP1486,13015
+    QLineEdit *S2DStep1;S2DStep1487,13040
+    QLineEdit *S2DTime1;S2DTime1488,13065
+    QComboBox *S2DAx2;S2DAx2489,13090
+    QLabel *S2DCurPos2;S2DCurPos2490,13113
+    QLabel *S2DUnit2;S2DUnit2491,13137
+    QLineEdit *S2DStartP2;S2DStartP2492,13159
+    QLineEdit *S2DEndP2;S2DEndP2493,13186
+    QLineEdit *S2DStep2;S2DStep2494,13211
+    QLineEdit *S2DPoints2;S2DPoints2495,13236
+    QComboBox *S2DAx3;S2DAx3496,13263
+    QLabel *S2DCurPos3;S2DCurPos3497,13286
+    QLineEdit *S2DStartP3;S2DStartP3498,13310
+    QLineEdit *S2DEndP3;S2DEndP3499,13337
+    QLineEdit *S2DStep3;S2DStep3500,13362
+    QLineEdit *S2DPoints3;S2DPoints3501,13387
+    QLabel *label_125;label_125502,13414
+    QLineEdit *S2DPoints1;S2DPoints1503,13437
+    QFrame *S2DVFrame;S2DVFrame504,13464
+    QGridLayout *gridLayout_39;gridLayout_39505,13487
+    S2DB *S2DBase;S2DBase506,13519
+    QFrame *frame_31;frame_31507,13538
+    QGridLayout *gridLayout_71;gridLayout_71508,13560
+    QRadioButton *S2DUseChanger;S2DUseChanger509,13592
+    QComboBox *S2DChangerSelect;S2DChangerSelect510,13625
+    QFrame *frame_29;frame_29511,13658
+    QGridLayout *gridLayout_65;gridLayout_65512,13680
+    QLabel *label_127;label_127513,13712
+    QComboBox *SelectS2DSensor;SelectS2DSensor514,13735
+    QSpinBox *SelectS2DRange;SelectS2DRange515,13767
+    QFrame *frame_30;frame_30516,13797
+    QGridLayout *gridLayout_67;gridLayout_67517,13819
+    QLabel *label_124;label_124518,13851
+    QLineEdit *S2DFileName0;S2DFileName0519,13874
+    QToolButton *S2DFileSelect;S2DFileSelect520,13903
+    QPushButton *S2DFileSave;S2DFileSave521,13935
+    QFrame *frame_35;frame_35522,13965
+    QGridLayout *gridLayout_70;gridLayout_70523,13987
+    QPushButton *S2DSaveMCAs;S2DSaveMCAs524,14019
+    QLabel *label_109;label_109525,14049
+    QFrame *frame_32;frame_32526,14072
+    QGridLayout *gridLayout_72;gridLayout_72527,14094
+    QPushButton *S2DStart;S2DStart528,14126
+    QRadioButton *S2DScanBothDir;S2DScanBothDir529,14153
+    QFrame *frame_33;frame_33530,14187
+    QGridLayout *gridLayout_62;gridLayout_62531,14209
+    QRadioButton *S2DStepScan;S2DStepScan532,14241
+    QRadioButton *S2DQuasiContScan;S2DQuasiContScan533,14272
+    QRadioButton *S2DRealContScan;S2DRealContScan534,14308
+    QFrame *line_9;line_9535,14343
+    QLabel *label_122;label_122536,14363
+    QWidget *SpacerTab;SpacerTab537,14386
+    QWidget *StatTab;StatTab538,14410
+    QGridLayout *gridLayout_36;gridLayout_36539,14432
+    QWidget *RingStatTab;RingStatTab540,14464
+    QGridLayout *gridLayout_61;gridLayout_61541,14490
+    QWebView *webView;webView542,14522
+    QWidget *LogTab;LogTab543,14545
+    QGridLayout *gridLayout_19;gridLayout_19544,14566
+    QHBoxLayout *horizontalLayout_7;horizontalLayout_7545,14598
+    QLabel *label_39;label_39546,14635
+    QLineEdit *LogFileName;LogFileName547,14657
+    QToolButton *LogFileSelect;LogFileSelect548,14685
+    QVBoxLayout *verticalLayout_5;verticalLayout_5549,14717
+    QTextEdit *LogMsgs;LogMsgs550,14752
+    QHBoxLayout *horizontalLayout_6;horizontalLayout_6551,14776
+    QLabel *label_40;label_40552,14813
+    QLineEdit *LogComment;LogComment553,14835
+    QSpacerItem *horizontalSpacer_6;horizontalSpacer_6554,14862
+    QWidget *SpacerTab2;SpacerTab2555,14899
+    QWidget *ReadDataTab;ReadDataTab556,14924
+    QGridLayout *gridLayout_5;gridLayout_5557,14950
+    QSpacerItem *horizontalSpacer_10;horizontalSpacer_10558,14981
+    Data *Data010;Data010559,15019
+    QSpacerItem *verticalSpacer_3;verticalSpacer_3560,15038
+    QSpacerItem *horizontalSpacer_9;horizontalSpacer_9561,15073
+    QSpacerItem *horizontalSpacer_8;horizontalSpacer_8562,15110
+    Data *Data006;Data006563,15147
+    Data *Data005;Data005564,15166
+    Data *Data008;Data008565,15185
+    Data *Data007;Data007566,15204
+    Data *Data001;Data001567,15223
+    Data *Data002;Data002568,15242
+    Data *Data009;Data009569,15261
+    Data *Data003;Data003570,15280
+    Data *Data004;Data004571,15299
+    QWidget *AddFuncs;AddFuncs572,15318
+    QGridLayout *gridLayout_11;gridLayout_11573,15341
+    QTabWidget *tabWidget;tabWidget574,15373
+    QWidget *tab_4;tab_4575,15400
+    QGridLayout *gridLayout_48;gridLayout_48576,15420
+    QFrame *frame_42;frame_42577,15452
+    QGridLayout *gridLayout_80;gridLayout_80578,15474
+    QLabel *label_161;label_161579,15506
+    QComboBox *AttChSelect;AttChSelect580,15529
+    QSpacerItem *horizontalSpacer_27;horizontalSpacer_27581,15557
+    QPushButton *AttenMoveTo;AttenMoveTo582,15595
+    QPushButton *DTAutoCalib;DTAutoCalib583,15625
+    QLabel *label_162;label_162584,15655
+    QComboBox *EnergySelect;EnergySelect585,15678
+    QPushButton *EnergyMoveTo;EnergyMoveTo586,15707
+    QPushButton *SSDEngAutoCalib;SSDEngAutoCalib587,15738
+    QSpacerItem *horizontalSpacer_5;horizontalSpacer_5588,15772
+    QSpacerItem *horizontalSpacer_28;horizontalSpacer_28589,15809
+    QLabel *label_164;label_164590,15847
+    QComboBox *AttenSelect;AttenSelect591,15870
+    QFrame *line_11;line_11592,15898
+    QHBoxLayout *horizontalLayout_10;horizontalLayout_10593,15919
+    QSpacerItem *horizontalSpacer_24;horizontalSpacer_24594,15957
+    QLabel *label_14;label_14595,15995
+    QLineEdit *AttDx;AttDx596,16017
+    QLabel *label_19;label_19597,16039
+    QLabel *label_38;label_38598,16061
+    QLineEdit *AttDy;AttDy599,16083
+    QLabel *label_20;label_20600,16105
+    QSpacerItem *horizontalSpacer_22;horizontalSpacer_22601,16127
+    QSpacerItem *verticalSpacer_10;verticalSpacer_10602,16165
+    QWidget *tab_3;tab_3603,16201
+    QGridLayout *gridLayout_34;gridLayout_34604,16221
+    QSpacerItem *verticalSpacer_2;verticalSpacer_2605,16253
+    QFrame *frame_41;frame_41606,16288
+    QGridLayout *gridLayout_79;gridLayout_79607,16310
+    QFrame *frame_12;frame_12608,16342
+    QGridLayout *gridLayout_83;gridLayout_83609,16364
+    QLineEdit *PeakSearchSensitivity;PeakSearchSensitivity610,16396
+    QRadioButton *MCAPeakSearch;MCAPeakSearch611,16434
+    QPushButton *MCAPeakFit;MCAPeakFit612,16467
+    QLabel *label_160;label_160613,16496
+    QRadioButton *LimitPSEnergy;LimitPSEnergy614,16519
+    QTabWidget *ViewTab;ViewTab615,16552
+    QGridLayout *gridLayout_26;gridLayout_26616,16577
+    QFrame *frame_4;frame_4617,16609
+    QGridLayout *gridLayout_3;gridLayout_3618,16630
+    QComboBox *SelectTA;SelectTA619,16661
+    QPushButton *ShowPT;ShowPT620,16686
+    QLabel *Select1;Select1621,16711
+    QLabel *label_48;label_48622,16732
+    QComboBox *SelectTE;SelectTE623,16754
+    QHBoxLayout *horizontalLayout_5;horizontalLayout_5624,16779
+    QLabel *label_3;label_3625,16816
+    QLineEdit *ManTEkeV;ManTEkeV626,16837
+    QLabel *label_15;label_15627,16862
+    QLineEdit *ManTEdeg;ManTEdeg628,16884
+    QLabel *label_13;label_13629,16909
+    QFrame *frame_3;frame_3630,16931
+    QGridLayout *gridLayout_4;gridLayout_4631,16952
+    QLabel *label_22;label_22632,16983
+    QHBoxLayout *horizontalLayout_3;horizontalLayout_3633,17005
+    QSpacerItem *horizontalSpacer_2;horizontalSpacer_2634,17042
+    QRadioButton *SelThEncorder;SelThEncorder635,17079
+    QRadioButton *SelThCalcPulse;SelThCalcPulse636,17112
+    QLabel *ShowCurrentEnergy;ShowCurrentEnergy637,17146
+    QLabel *label_25;label_25638,17177
+    QLabel *label_26;label_26639,17199
+    QLabel *ShowCurrentAngle;ShowCurrentAngle640,17221
+    QFrame *frame_18;frame_18641,17251
+    QGridLayout *gridLayout_45;gridLayout_45642,17273
+    QLabel *label_72;label_72643,17305
+    QLabel *label_5;label_5644,17327
+    QLabel *RingCurrent;RingCurrent645,17348
+    QVBoxLayout *verticalLayout;verticalLayout646,17373
+    QPushButton *HideCTRLPanel;HideCTRLPanel647,17406
+    QPushButton *HideGraphView;HideGraphView648,17438
+    QPushButton *PrintB;PrintB649,17470
+    QFrame *frame_28;frame_28650,17495
+    QGridLayout *gridLayout_74;gridLayout_74651,17517
+    QLabel *label_131;label_131652,17549
+    QLabel *DispDTh1;DispDTh1653,17572
+    QLabel *label_132;label_132654,17594
+    QPushButton *AddNewDTh1TPoint;AddNewDTh1TPoint655,17617
+    QFrame *GSBBox2;GSBBox2656,17652
+    QGridLayout *gridLayout_56;gridLayout_56657,17673
+    QPushButton *GSB54;GSB54658,17705
+    QPushButton *GSB39;GSB39659,17729
+    QPushButton *GSB38;GSB38660,17753
+    QPushButton *GSB37;GSB37661,17777
+    QPushButton *GSB36;GSB36662,17801
+    QPushButton *GSB35;GSB35663,17825
+    QPushButton *GSB34;GSB34664,17849
+    QPushButton *GSB33;GSB33665,17873
+    QPushButton *GSB32;GSB32666,17897
+    QPushButton *GSB51;GSB51667,17921
+    QPushButton *GSB28;GSB28668,17945
+    QPushButton *GSB31;GSB31669,17969
+    QPushButton *GSB47;GSB47670,17993
+    QPushButton *GSB48;GSB48671,18017
+    QPushButton *GSB50;GSB50672,18041
+    QPushButton *GSB29;GSB29673,18065
+    QPushButton *GSB49;GSB49674,18089
+    QPushButton *GSB46;GSB46675,18113
+    QPushButton *GSB45;GSB45676,18137
+    QPushButton *GSB42;GSB42677,18161
+    QPushButton *GSB41;GSB41678,18185
+    QPushButton *GSB44;GSB44679,18209
+    QPushButton *GSB43;GSB43680,18233
+    QPushButton *GSB40;GSB40681,18257
+    QPushButton *GSB30;GSB30682,18281
+    QPushButton *GSB52;GSB52683,18305
+    QPushButton *GSB53;GSB53684,18329
+    QSpacerItem *horizontalSpacer;horizontalSpacer685,18353
+    QStatusBar *statusbar;statusbar686,18388
+    void setupUi(688,18416
+    void retranslateUi(Ui_MainWindow::retranslateUi5335,221168
+namespace Ui 5922,267577
+    class MainWindow:Ui::MainWindow5923,267592
 
 ui_PeriodicT.h,5413
 #define UI_PERIODICT_H10,385
@@ -5715,7 +5763,7 @@ class AMotor 20,292
 AUnits/AMotors.h,23
 #define AMOTORS_H3,19
 
-AUnits/ASensor.h,1516
+AUnits/ASensor.h,1565
 #define ASENSOR_H3,19
 class ASensor 7,59
   double setTime;ASensor::setTime12,115
@@ -5732,23 +5780,24 @@ class ASensor 7,59
   double getSetTime(ASensor::getSetTime30,695
   void setDark(ASensor::setDark31,765
   double getDark(ASensor::getDark32,835
-  virtual bool GetRange(ASensor::GetRange35,927
-  virtual void SetRange(ASensor::SetRange36,978
-  virtual bool isAutoRangeAvailable(ASensor::isAutoRangeAvailable37,1025
-  bool isAutoRange(ASensor::isAutoRange38,1088
-  void setAutoRange(ASensor::setAutoRange39,1138
-  int getRangeU(ASensor::getRangeU40,1190
-  int getRangeL(ASensor::getRangeL41,1234
-  int getRange(ASensor::getRange42,1278
-  void setRangeSelectable(ASensor::setRangeSelectable43,1328
-  bool isRangeSelectable(ASensor::isRangeSelectable44,1390
-  void setRange(ASensor::setRange45,1452
-  void setRangeU(ASensor::setRangeU46,1501
-  void setRangeL(ASensor::setRangeL47,1552
-  virtual bool QStart(ASensor::QStart50,1631
-  virtual bool QRead(ASensor::QRead51,1680
-  virtual bool QEnd(ASensor::QEnd52,1728
-  virtual bool Close(ASensor::Close55,1807
+  virtual bool isSFluo(ASensor::isSFluo33,878
+  virtual bool GetRange(ASensor::GetRange36,977
+  virtual void SetRange(ASensor::SetRange37,1028
+  virtual bool isAutoRangeAvailable(ASensor::isAutoRangeAvailable38,1075
+  bool isAutoRange(ASensor::isAutoRange39,1138
+  void setAutoRange(ASensor::setAutoRange40,1188
+  int getRangeU(ASensor::getRangeU41,1240
+  int getRangeL(ASensor::getRangeL42,1284
+  int getRange(ASensor::getRange43,1328
+  void setRangeSelectable(ASensor::setRangeSelectable44,1378
+  bool isRangeSelectable(ASensor::isRangeSelectable45,1440
+  void setRange(ASensor::setRange46,1502
+  void setRangeU(ASensor::setRangeU47,1551
+  void setRangeL(ASensor::setRangeL48,1602
+  virtual bool QStart(ASensor::QStart51,1681
+  virtual bool QRead(ASensor::QRead52,1730
+  virtual bool QEnd(ASensor::QEnd53,1778
+  virtual bool Close(ASensor::Close56,1857
 
 AUnits/ASensors.h,24
 #define ASENSORS_H3,20
@@ -5952,7 +6001,7 @@ AUnits/AUnitSC.h,43
 #define AUNITSC_H2,18
 class AUnitSC 6,58
 
-AUnits/AUnitSFluo.h,2946
+AUnits/AUnitSFluo.h,2991
 #define AUNITSFLUO_H3,22
 enum STATELM 8,88
 enum STATELM { STAT_REALTIME,8,88
@@ -5991,23 +6040,24 @@ class AUnitSFluo 14,357
   QVector<double> MCARealTime;AUnitSFluo::MCARealTime43,1098
   QVector<double> MCALiveTime;AUnitSFluo::MCALiveTime44,1129
   QVector<bool> SSDUsingCh;AUnitSFluo::SSDUsingCh45,1160
-  void setLength(AUnitSFluo::setLength62,1547
-  void setChs(AUnitSFluo::setChs63,1597
-  int length(AUnitSFluo::length64,1641
-  int chs(AUnitSFluo::chs65,1685
-  void setSSDPresetType(AUnitSFluo::setSSDPresetType67,1724
-  QString getSSDPresetType(AUnitSFluo::getSSDPresetType68,1791
-  QVector<quint64> getCountsInROI(AUnitSFluo::getCountsInROI82,2204
-  QVector<quint64> getCountsAll(AUnitSFluo::getCountsAll83,2271
-  QVector<quint64> getTotalEvents(AUnitSFluo::getTotalEvents84,2334
-  QVector<double> getICRs(AUnitSFluo::getICRs85,2401
-  QVector<double> getDarkCountsInROI(AUnitSFluo::getDarkCountsInROI86,2453
-  QVector<double> getDarkCountsAll(AUnitSFluo::getDarkCountsAll87,2527
-  QVector<double> getDarkTotalEvents(AUnitSFluo::getDarkTotalEvents88,2597
-  QVector<double> getDarkICRs(AUnitSFluo::getDarkICRs89,2671
-  void setROIs(AUnitSFluo::setROIs95,2881
-  void setSSDUsingCh(AUnitSFluo::setSSDUsingCh99,3021
-  bool getSSDUsingCh(AUnitSFluo::getSSDUsingCh101,3103
+  bool isSFluo(AUnitSFluo::isSFluo56,1418
+  void setLength(AUnitSFluo::setLength63,1588
+  void setChs(AUnitSFluo::setChs64,1638
+  int length(AUnitSFluo::length65,1682
+  int chs(AUnitSFluo::chs66,1726
+  void setSSDPresetType(AUnitSFluo::setSSDPresetType68,1765
+  QString getSSDPresetType(AUnitSFluo::getSSDPresetType69,1832
+  QVector<quint64> getCountsInROI(AUnitSFluo::getCountsInROI83,2245
+  QVector<quint64> getCountsAll(AUnitSFluo::getCountsAll84,2312
+  QVector<quint64> getTotalEvents(AUnitSFluo::getTotalEvents85,2375
+  QVector<double> getICRs(AUnitSFluo::getICRs86,2442
+  QVector<double> getDarkCountsInROI(AUnitSFluo::getDarkCountsInROI87,2494
+  QVector<double> getDarkCountsAll(AUnitSFluo::getDarkCountsAll88,2568
+  QVector<double> getDarkTotalEvents(AUnitSFluo::getDarkTotalEvents89,2638
+  QVector<double> getDarkICRs(AUnitSFluo::getDarkICRs90,2712
+  void setROIs(AUnitSFluo::setROIs96,2922
+  void setSSDUsingCh(AUnitSFluo::setSSDUsingCh100,3062
+  bool getSSDUsingCh(AUnitSFluo::getSSDUsingCh102,3144
 
 AUnits/AUnitSFluo2.h,99
 #define AUNITSFLUO2_H2,22
@@ -6077,5 +6127,3 @@ class XMAPHead 6,105
   double liveTime;XMAPHead::liveTime12,192
   double icr;XMAPHead::icr13,211
   XMAPHead(XMAPHead::XMAPHead15,226
-
-MPSlots.h,0

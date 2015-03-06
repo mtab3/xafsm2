@@ -408,6 +408,7 @@ private:
 
   QVector<QPushButton *> SSDbs;
   QVector<QPushButton *> GSBs;
+  bool showGSB1, showGSB2;
   //  MEASMODE MeasMode;
   QFileDialog *SelDFND;
   QFileDialog *SelWBFND;

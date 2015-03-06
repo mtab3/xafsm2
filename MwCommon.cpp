@@ -54,12 +54,20 @@ void MainWindow::setupCommonArea( void )   /* 共通エリア */
   connect( PrintD, SIGNAL( accepted( QPrinter * ) ), this, SLOT( Print( QPrinter * ) ),
 	   Qt::UniqueConnection );
 
+  showGSB1 = false;
+  showGSB2 = false;
   GSBs << GSB01 << GSB02 << GSB03 << GSB04 << GSB05
        << GSB06 << GSB07 << GSB08 << GSB09 << GSB10
        << GSB11 << GSB12 << GSB13 << GSB14 << GSB15
        << GSB16 << GSB17 << GSB18 << GSB19 << GSB20
        << GSB21 << GSB22 << GSB23 << GSB24 << GSB25
-       << GSB26 << GSB27;
+       << GSB26 << GSB27 << GSB28 << GSB29 << GSB30
+       << GSB31 << GSB32 << GSB33 << GSB34 << GSB35
+       << GSB36 << GSB37 << GSB38 << GSB39 << GSB40
+       << GSB41 << GSB42 << GSB43 << GSB44 << GSB45
+       << GSB46 << GSB47 << GSB48 << GSB49 << GSB50
+       << GSB51 << GSB52 << GSB53 << GSB54;
+  GSBBox2->setHidden( true );
 
   for ( int i = 0; i < GSBs.count(); i++ ) {
     connect( GSBs[i], SIGNAL( toggled( bool ) ), this, SLOT( SelectAGB( bool ) ),
@@ -71,11 +79,13 @@ void MainWindow::InitSize()
 {
   MainTab->hide();
   ViewTab->hide();
-  GraphSwitchBox->hide();
+  GSBBox1->hide();
+  GSBBox2->hide();
   this->resize( 1,1 );
   MainTab->show();
   ViewTab->show();
-  GraphSwitchBox->show();
+  GSBBox1->setHidden( !showGSB1 );
+  GSBBox2->setHidden( !showGSB2 );
   this->resize( 1,1 );
 }
 
@@ -88,9 +98,23 @@ void MainWindow::saveGSBs( int ch )
 
 void MainWindow::loadGSBs( int ch )
 {
-  for ( int i = 0; i < GSBs.count(); i++ ) {
-    GSBs[i]->setText( ViewCtrls[ch]->getAGSBSLabel( i ) );
+  int i;
+  for ( i = 0; i < GSBs.count(); i++ ) {
+    QString lbl = ViewCtrls[ch]->getAGSBSLabel( i );
+    if ( lbl == "" )
+      break;
+    GSBs[i]->setText( lbl );
     GSBs[i]->setChecked( ViewCtrls[ch]->getAGSBSStat( i ) );
+    GSBs[i]->setHidden( false );
+  }
+  showGSB1 = ! ( i < 1 );
+  showGSB2 = ! ( i < 27 );
+  GSBBox1->setHidden( !showGSB1 );
+  GSBBox2->setHidden( !showGSB2 );
+  for ( ; i < GSBs.count(); i++ ) {
+    GSBs[i]->setText( "" );
+    GSBs[i]->setChecked( true );
+    GSBs[i]->setHidden( true );
   }
 }
 
@@ -100,6 +124,10 @@ void MainWindow::clearGSBs( void )
     GSBs[i]->setText( "" );
     GSBs[i]->setChecked( PBFalse );
   }
+  showGSB1 = false;
+  showGSB2 = false;
+  GSBBox1->setHidden( !showGSB1 );
+  GSBBox2->setHidden( !showGSB2 );
 }
 
 void MainWindow::SetGSBFlags( QVector<bool> flgs )
@@ -145,10 +173,12 @@ void MainWindow::HideB( bool f )
 {
   if ( f ) {
     ViewTab->hide();
-    GraphSwitchBox->hide();
+    GSBBox1->hide();
+    GSBBox2->hide();
   } else {
     ViewTab->show();
-    GraphSwitchBox->show();
+    GSBBox1->setHidden( !showGSB1 );
+    GSBBox2->setHidden( !showGSB2 );
   }
   this->resize( 1,1 );
 }

@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "newMwSSD2Test" )
+#define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Mar 6 19:09:18 2015 +0900\n"\
+                "    small bug fix on gsb-display.  a bug which crash XafsM2 on the XAFS measurement but not fixed\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 18:48:57 2015 +0900\n"\
                 "    merged with newMwSSD2\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Mar 4 21:21:09 2015 +0900\n"\
                 "    working working working\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Mar 4 18:51:09 2015 +0900\n"\
-                "    working slowly ahead\n"\
 		"\n"\
                 ""
 #endif

@@ -40,7 +40,7 @@
      <number>3</number>
     </property>
     <item row="2" column="0">
-     <widget class="QFrame" name="GraphSwitchBox">
+     <widget class="QFrame" name="GSBBox1">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -79,6 +79,34 @@
          </property>
          <property name="text">
           <string>26</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="26">
+        <widget class="QPushButton" name="GSB27">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>27</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -588,34 +616,6 @@
          </property>
          <property name="text">
           <string>25</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="26">
-        <widget class="QPushButton" name="GSB27">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>27</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -4371,8 +4371,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>290</width>
-                     <height>155</height>
+                     <width>310</width>
+                     <height>160</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -7803,7 +7803,7 @@ Though, other parameters are fixed at the value on starting.</string>
       </widget>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <widget class="QTabWidget" name="ViewTab">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -8387,6 +8387,598 @@ Though, other parameters are fixed at the value on starting.</string>
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="3" column="0">
+     <widget class="QFrame" name="GSBBox2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_56">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>1</number>
+       </property>
+       <item row="0" column="27">
+        <widget class="QPushButton" name="GSB54">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>54</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="12">
+        <widget class="QPushButton" name="GSB39">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>39</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="11">
+        <widget class="QPushButton" name="GSB38">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>38</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="10">
+        <widget class="QPushButton" name="GSB37">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>37</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="9">
+        <widget class="QPushButton" name="GSB36">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>36</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="8">
+        <widget class="QPushButton" name="GSB35">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>35</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="7">
+        <widget class="QPushButton" name="GSB34">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>34</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="6">
+        <widget class="QPushButton" name="GSB33">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>33</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QPushButton" name="GSB32">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>32</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="24">
+        <widget class="QPushButton" name="GSB51">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>51</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="GSB28">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>28</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QPushButton" name="GSB31">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>31</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="20">
+        <widget class="QPushButton" name="GSB47">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>47</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="21">
+        <widget class="QPushButton" name="GSB48">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>48</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="23">
+        <widget class="QPushButton" name="GSB50">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>50</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="GSB29">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>29</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="22">
+        <widget class="QPushButton" name="GSB49">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>49</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="19">
+        <widget class="QPushButton" name="GSB46">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>46</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="18">
+        <widget class="QPushButton" name="GSB45">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>45</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="15">
+        <widget class="QPushButton" name="GSB42">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>42</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="14">
+        <widget class="QPushButton" name="GSB41">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>41</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="17">
+        <widget class="QPushButton" name="GSB44">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>44</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="16">
+        <widget class="QPushButton" name="GSB43">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>43</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="13">
+        <widget class="QPushButton" name="GSB40">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>40</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="GSB30">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>30</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="25">
+        <widget class="QPushButton" name="GSB52">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>52</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="26">
+        <widget class="QPushButton" name="GSB53">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>53</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
