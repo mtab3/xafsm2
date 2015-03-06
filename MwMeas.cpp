@@ -28,6 +28,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
       UseSFluos[i]->setHidden( true );
     }
   }
+  XafsMCAMaps.resize( UseSFluos.count() );
 #if 0
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
@@ -1376,7 +1377,7 @@ void MainWindow::StartMeasurement( void )
 	aGsb.stat = PBTrue;  aGsb.label = "FL"; GSBSs << aGsb;
 	for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	  aGsb.stat = PBFalse;
-	  aGsb.label = QString( "%1:%1" ).arg( i ).arg( j );
+	  aGsb.label = QString( "%1:%2" ).arg( i ).arg( j );
 	  GSBSs << aGsb;
 	}
 	SFluos[i]->setSSDPresetType( "REAL" );
@@ -1603,27 +1604,19 @@ void MainWindow::StartMeasurement( void )
     else
       FixedPositionMode = false;
 
-    qDebug() << "j";
-
     for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      qDebug() << "j1";
-      if ( UseSFluos[i]->isChecked() ) 
+      if ( UseSFluos[i]->isChecked() ) {
 	getNewMCAView( SSFluos[i] );
-      qDebug() << "j2";
-      if ( MCACanSaveAllOnMem ) {  // 'Can save all' なら全スキャン分メモリ確保
-	qDebug() << "j3";
-        XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
-			    SFluos[i]->length(), SFluos[i]->chs() );
-      } else {                        // そうでなければ 1スキャン分だけメモリ上に
-	qDebug() << "j4" << XafsMCAMaps.count() << i;
-	XafsMCAMaps[i].New( TotalPoints, 1, SFluos[i]->length(), SFluos[i]->chs() );
-	// SelRPT->value() --> 1
+	if ( MCACanSaveAllOnMem ) {  // 'Can save all' なら全スキャン分メモリ確保
+	  XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
+			      SFluos[i]->length(), SFluos[i]->chs() );
+	} else {                        // そうでなければ 1スキャン分だけメモリ上に
+	  XafsMCAMaps[i].New( TotalPoints, 1, SFluos[i]->length(), SFluos[i]->chs() );
+	  // SelRPT->value() --> 1
+	}
       }
-      qDebug() << "j5";
     }
-	
-    qDebug() << "j6";
-    
+
     StartTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
     EndTimeDisp->setText( QDateTime::currentDateTime()

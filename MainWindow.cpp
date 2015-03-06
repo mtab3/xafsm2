@@ -101,7 +101,6 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
   TTable = new TuningTable;
   pmConds = new PMConditions;
-  XafsMCAMaps.resize( UseSFluos.count() );
 
   Initialize();
   setupView();
