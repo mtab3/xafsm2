@@ -41,7 +41,6 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
 
   quint32 *MCAData;
   int cMCACh;
-  int cMCAViewTabNo;
 
   bool MwSSDGotMCALen;
   double MaxMCAEnergy;
@@ -86,7 +85,6 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   // void clearCalibE( void ) { PeakCalibrate->setText( "" ); };
   void setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs );
   //  double gain( void ) { return GainInput->text().toDouble(); };
-  void setCViewTabNo( int i ) { cMCAViewTabNo = i; };
   void setViewStats( void ) {
     mcaView->setLog( SetDisplayLog->isChecked() );
     mcaView->setShowElements( DispElmNames->isChecked() );

@@ -151,7 +151,6 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   cMCACh = 0;
   //  oldMCACh = -1;
   StartResume = MCA_START;
-  cMCAViewTabNo = -1;
 
   //  SelSSDs( 0 );
 

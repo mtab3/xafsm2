@@ -52,11 +52,13 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
   QObject *from = sender();
   ViewCTRL *viewC;
 
+  int vcn;
   switch( dtype ) {
 #if 0
   case MEASSHOW:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
     // ここは復活させるなら要再検討
-    viewC = ViewCtrls[ ViewTab->currentIndex() ];
+    vcn = ViewCtrls[ ViewTab->currentIndex() ];
+    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     if ( viewC->getNowDType() != dtype ) {
       viewC = SetUpNewView( XYVIEW );
       //      ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-XAFS" ) );
@@ -65,23 +67,28 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     break;
 #endif
   case MONSHOW:
-    viewC = SetUpNewView( TYVIEW, MONSHOW, NULL );
+    vcn = SetUpNewView( TYVIEW, MONSHOW, NULL );
+    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
   case SCANSHOW:
-    viewC = SetUpNewView( XYVIEW, SCANSHOW, NULL );
+    vcn = SetUpNewView( XYVIEW, SCANSHOW, NULL );
+    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
   case MCASHOW1:
-    viewC = SetUpNewView( MCAVIEW, MCASHOW1, SSFluos[0]->McaView() );
+    vcn = SetUpNewView( MCAVIEW, MCASHOW1, SSFluos[0]->McaView() );
+    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     // MCA の旧データ形式は、検出器が何かの情報を持っていないので
     // 「1台目の多チャンネル蛍光検出器」ということにしておく
     break;
   case MCASHOW2:
-    viewC = SetUpNewView( MCAVIEW, MCASHOW2, NULL );
+    vcn = SetUpNewView( MCAVIEW, MCASHOW2, NULL );
+    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     break;
   case S2DSHOW:
-    viewC = SetUpNewView( S2DVIEW, S2DSHOW, NULL );
+    vcn = SetUpNewView( S2DVIEW, S2DSHOW, NULL );
+    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
 #if 0
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
 	     this, SLOT( ansToGetNewMCAView( S2DB* ) ) );

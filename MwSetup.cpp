@@ -891,10 +891,12 @@ void MainWindow::ScanStart( void )
 				  "the monitoring process is running." ) );
       return;
     }
-    if ( ( ScanViewC = SetUpNewView( XYVIEW, SCANDATA, NULL ) ) == NULL ) {
+    int vcn;
+    if ( ( vcn = SetUpNewView( XYVIEW, SCANDATA, NULL ) ) < 0 ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
+    ScanViewC = ViewCtrls[ vcn ];
     ScanInfo si;
     SaveScanInfo( &si );
 
@@ -1067,10 +1069,12 @@ void MainWindow::Monitor( void )
 				  "as 'Additonal' button is checked." ) );
       return;
     }
-    if ( ( MonitorViewC = SetUpNewView( TYVIEW, MONDATA, NULL ) ) == NULL ) {
+    int vcn;
+    if ( ( vcn = SetUpNewView( TYVIEW, MONDATA, NULL ) ) < 0 ) {
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
+    MonitorViewC = ViewCtrls[ vcn ];
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "MON." ) );
     if ( IsMonRec->isChecked() ) {
       if ( MonRecFile->text().isEmpty() ) {

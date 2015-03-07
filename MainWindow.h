@@ -151,7 +151,7 @@ private:
   //  int cMCACh;
   //  int oldMCACh;
   //  int MCAStage;
-  ViewCTRL *cMCAViewC;
+  //  ViewCTRL *cMCAViewC;
   //  MCAView *cMCAView;
   //  int cMCAViewTabNo;
   //  quint32 *MCAData;
@@ -484,7 +484,7 @@ private:
   bool MakingSureOfRangeSelect;
   bool haveMeasuredDark;
   bool NoticingHaveNotMeasDark;
-  ViewCTRL *SetUpNewView( VTYPE vtype, DATATYPE dtype, void *view );
+  int SetUpNewView( VTYPE vtype, DATATYPE dtype, void *view );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
   void SetDFName( int rpt, int rptMax, QString ext = "" );
@@ -582,7 +582,7 @@ private:
   bool theSensorIsAvailable( ASensor *as );
   void ShowQTime( double dtime, double WidthInPuls );
 
-  void getNewMCAView( SetUpSFluo *ssfluo );
+  //  void getNewMCAView( SetUpSFluo *ssfluo );
 
   /* Auto Sequence */
   void setupAutoSequence( void );

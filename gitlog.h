@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Mar 7 00:02:27 2015 +0900\n"\
+                "    GSBs are of for many channels\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 19:09:18 2015 +0900\n"\
                 "    small bug fix on gsb-display.  a bug which crash XafsM2 on the XAFS measurement but not fixed\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Mar 5 00:10:48 2015 +0900\n"\
                 "    working MwS2D and S2DInfo(save/load)\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Mar 4 21:21:09 2015 +0900\n"\
-                "    working working working\n"\
 		"\n"\
                 ""
 #endif

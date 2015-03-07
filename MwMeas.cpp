@@ -1532,16 +1532,16 @@ void MainWindow::StartMeasurement( void )
         return;
     }
 
-    if ( ( MeasViewC = SetUpNewView( XYVIEW, MEASDATA, NULL ) ) == NULL ) {
+    int vcn;
+    if ( (  vcn = SetUpNewView( XYVIEW, MEASDATA, NULL ) ) < 0 ) {
       // グラフ表示領域が確保できないとダメ
       return;
     }
-#if 0
+    MeasViewC = ViewCtrls[ vcn ];
     if ( QXafsMode->isChecked() )
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "QXAFS" ) );
     else 
       ViewTab->setTabText( ViewTab->currentIndex(), tr( "XAFS" ) );
-#endif
     
     //    MeasViewC->setNowDType( MEASDATA );
     MeasView = (XYView*)(MeasViewC->getView());
@@ -1606,7 +1606,7 @@ void MainWindow::StartMeasurement( void )
 
     for ( int i = 0; i < UseSFluos.count(); i++ ) {
       if ( UseSFluos[i]->isChecked() ) {
-	getNewMCAView( SSFluos[i] );
+	showOnesMCAView( SSFluos[i] );
 	if ( MCACanSaveAllOnMem ) {  // 'Can save all' なら全スキャン分メモリ確保
 	  XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
 			      SFluos[i]->length(), SFluos[i]->chs() );

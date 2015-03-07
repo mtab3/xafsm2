@@ -151,9 +151,9 @@ ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 *******************/
 
-
-ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
+int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
 {
+  void *origView = newView;
   // まずは View の方を先に作っておいて
   if ( newView == NULL ) {
     switch( vtype ) {
@@ -212,7 +212,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
   
   if ( newView == NULL ) {
     qDebug() << "Can't setup new View";
-    return NULL;
+    return -1;
   }
 
   // ViewCTRL(ViewTab と一対一対応) に登録する
@@ -231,30 +231,34 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
     } else {
       // 登録できなかったら今作った View を消して NULL を返して終了
       statusbar->showMessage( tr( "No View is available!" ), 2000 );
-      switch( vtype ) {
-      case XYVIEW:
-	delete (XYView *)newView; break;
-      case TYVIEW:
-	delete (TYView *)newView; break;
-      case MCAVIEW:
-	delete (MCAView *)newView; break;
-      case S2DVIEW:
-	delete (S2DB *)newView; break;
-      default:
-	qDebug() << "Unknow vewType was passed to SetUpNewView";
+      if ( origView == NULL ) {
+	switch( vtype ) {
+	case XYVIEW:
+	  delete (XYView *)newView; break;
+	case TYVIEW:
+	  delete (TYView *)newView; break;
+	case MCAVIEW:
+	  delete (MCAView *)newView; break;
+	case S2DVIEW:
+	  delete (S2DB *)newView; break;
+	default:
+	  qDebug() << "Unknow vewType was passed to SetUpNewView";
+	}
       }
-      newView = NULL;
-      return NULL;
+      newView = origView;
+      return -1;
     }
   }
 
   // ViewTab まで確定した後の後始末
   switch( vtype ) {
   case MCAVIEW:
-    ((MCAView*)newView)->setLayout( ViewTab->widget( ViewTab->currentIndex() )->layout() );
+    ((MCAView*)newView)
+      ->setLayout( ViewTab->widget( ViewTab->currentIndex() )->layout() );
     break;
   case S2DVIEW:
-    ((S2DB*)newView)->setLayout( ViewTab->widget( ViewTab->currentIndex() )->layout() );
+    ((S2DB*)newView)
+      ->setLayout( ViewTab->widget( ViewTab->currentIndex() )->layout() );
     break;
   default:
     break;
@@ -273,7 +277,7 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
   ViewTab->setTabText( ViewTab->currentIndex(),
 		       QString( "%1(%2)" )
 		       .arg( ViewTypeNames[dtype] ).arg( ++viewCounts[dtype] ) );
-  return ViewCtrls[ ViewTab->currentIndex() ];
+  return ViewTab->currentIndex();
 }
 
 // これも MainWindow の関数だが MCAView の確保に使われる
@@ -282,56 +286,28 @@ ViewCTRL *MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
 // MCAView の確保には特別な手続きがある?
 // なんでだったっけ ??
 
-MwMeas.cpp:      getNewMCAView();
-MwS2D.cpp:      getNewMCAView();
-MwSSDSetUp.cpp:    getNewMCAView();
-ReadData.cpp:  getNewMCAView();
+// MwMeas.cpp:      getNewMCAView();
+// MwS2D.cpp:       getNewMCAView();
+// MwSSDSetUp.cpp:  getNewMCAView();
+// ReadData.cpp:    getNewMCAView();
 ********************************************************/
-
-void MainWindow::getNewMCAView( SetUpSFluo *ssfluo )
-{
-#if 0    // とりあえず
-  if ( cMCAViewTabNo >= 0 )
-    if ( ViewCtrls[ cMCAViewTabNo ]->getDType() == MCADATA )
-      return;
-#endif
-  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView() ) ) == NULL ) 
-    return;
-  // 他のタイプの View は ViewCTRL 内で付けた名前を使ってる
-  ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
-  // cMCAViewC->setNowDType( MCADATA );
-  MCAView *view = (MCAView*)(cMCAViewC->getView());
-  //  view->setSelectedAtoms( PT2->getSelectedAtoms() );
-  
-  //  MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
-  //  validMCAData = true;
-  ssfluo->setCViewTabNo( ViewTab->currentIndex() );
-  ssfluo->setViewStats();
-  //McaView->setLog( SetDisplayLog->isChecked() );
-  //  view->SetMCACh( cMCACh );
-  view->makeValid( true );
-  
-  //  view->setROI( SSFluo0->ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-  // SSFluo0 に付属の view を使う限りここで改めて ROI を設定する必要は無いはず
-}
 
 void MainWindow::showOnesMCAView( SetUpSFluo *ssfluo )
 {
-  if ( ( cMCAViewC = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView() ) ) == NULL ) 
-    return;
-  ViewTab->setTabText( ViewTab->currentIndex(), tr( "MCA" ) );
+  int i = 0;
+  // 与えられた ssfluo の view を持った tab が既にあるか
+  for ( ; i < ViewCtrls.count(); i++ ) {
+    if ( ViewCtrls[i]->getView() == ssfluo->McaView() )
+      break;
+  }
+  // 無ければ ssfluo が持つ view を標準の手順で tab に登録する
+  int vcn = i;
+  if ( i >= ViewCtrls.count() ) {
+    if ( ( vcn = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView() ) ) < 0 )
+      return;
+  }
 
-  // cMCAViewC->setNowDType( MCADATA );
-  // view->setSelectedAtoms( PT2->getSelectedAtoms() );
-  
-  // MCAData = cMCAView->setMCAdataPointer( SFluo->length() );
-  // validMCAData = true;
-  ssfluo->setCViewTabNo( ViewTab->currentIndex() );
+  ViewTab->setTabText( vcn, ssfluo->sFluo()->name() );
   ssfluo->setViewStats();
-  //McaView->setLog( SetDisplayLog->isChecked() );
-  //  view->SetMCACh( cMCACh );
   ssfluo->McaView()->makeValid( true );
-  
-  //  view->setROI( SSFluo0->ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-  // SSFluo0 に付属の view を使う限りここで改めて ROI を設定する必要は無いはず
 }

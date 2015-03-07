@@ -39,11 +39,6 @@ void MainWindow::onViewTabClosed( int i )
   if ( ( ViewTab->count() > 1 )
        && ( ViewCtrls[i]->getVType() != NONVIEW )
        && ( ViewCtrls[i]->isDeletable() ) ) {
-
-    if ( ViewCtrls[i]->getDType() == MCADATA ) {
-      ((SetUpSFluo*)(((MCAView*)(ViewCtrls[i]->getView()))->parent()))
-	->setCViewTabNo( -1 );
-    }
     ViewTab->removeTab( i );
     ViewCtrls[i]->deleteView();
     ViewCtrls.removeAt( i );
