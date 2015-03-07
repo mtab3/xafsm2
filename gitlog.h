@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Mar 7 21:28:37 2015 +0900\n"\
+                "    it looks it works basically, but not reading data\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 7 18:15:52 2015 +0900\n"\
                 "    checking the process to get ViewTabs for sfluos\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Mar 5 19:27:58 2015 +0900\n"\
                 "    the codes can compile anyway.   But the reading-data-files for MCA and S2D with MCA must be broken\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Mar 5 15:34:53 2015 +0900\n"\
-                "    working\n"\
 		"\n"\
                 ""
 #endif

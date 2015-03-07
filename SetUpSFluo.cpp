@@ -7,6 +7,9 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
 {
   setupUi( this );
 
+  k2pFile = "KeV2MCApix.txt";
+  llFile = "SSDLowLimit.txt";
+  pagFile = "SSDPreAMPGains.txt";
   s = NULL;
   SFluo0 = new AUnitSFluo( this );
   mcaView = new MCAView( NULL, this );
@@ -277,13 +280,11 @@ void SetUpSFluo::newPrec2( void )
 
 void SetUpSFluo::ReadLowerLimitSetting( void )
 {
-  QString fname;
-  QString basefname = "SSDLowLimits";
-  QFileInfo fi( basefname + ".txt" );
-  if ( fi.exists() )
-    fname = basefname + ".txt";
-  else 
-    fname = QString( ":" ) + basefname + "0.txt";
+  QString fname = llFile;
+  QFileInfo fi( fname );
+  if ( ! fi.exists() ) {
+    fname = QString( ":" ) + fi.baseName() + "0.txt";
+  }
 
   QFile file( fname );
   if ( !file.open( QIODevice::ReadOnly ) ) {
@@ -794,12 +795,13 @@ void SetUpSFluo::setPreAMPGains( void )
 
   MCAPreAMPGainHasSet = true;
 
-  QFile f( "SSDPreAMPGains.txt" );
-  if ( !f.exists() ) {
-    f.setFileName( ":/SSDPreAMPGains0.txt" );
-    if ( !f.exists() )
-      return;
+  QString fname = pagFile;
+  QFileInfo fi( fname );
+  if ( ! fi.exists() ) {
+    fname = QString( ":" ) + fi.baseName() + "0.txt";
   }
+
+  QFile f( fname );
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
     qDebug() << tr( "Error cannot open [%1]." ).arg( "SSDPreAMPGains" );
     return;

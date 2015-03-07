@@ -123,8 +123,13 @@ void MainWindow::ReadDef( QString fname )
 	    next = nextItem( next, item );
 	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setLength( item.toInt() );
 	    next = nextItem( next, item );
-	    if ( item.toDouble() > 0 )
-	      newSSFluo->setMaxMCAEnergy( item.toDouble() );
+	    if ( item.toDouble() > 0 )  newSSFluo->setMaxMCAEnergy( item.toDouble() );
+	    next = nextItem( next, item );
+	    if ( item != "" ) newSSFluo->setK2PFile( item );
+	    next = nextItem( next, item );
+	    if ( item != "" ) newSSFluo->setLLFile( item );
+	    next = nextItem( next, item );
+	    if ( item != "" ) newSSFluo->setPAGFile( item );
 	    SSFluos << newSSFluo;
 	    SFluos << (AUnitSFluo*)NewUnit;
 	    MainTab->insertTab( 1 + SFluos.count(), newSSFluo,

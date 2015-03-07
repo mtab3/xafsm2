@@ -302,19 +302,19 @@ void MainWindow::InitializeUnitsAgain(329,10382
 void MainWindow::InitAndIdentifyMotors(334,10456
 void MainWindow::SetMainThCenter(378,11678
 void MainWindow::InitAndIdentifySensors(397,12073
-void MainWindow::setEncNewTh(472,14646
-void MainWindow::RcvListNodes(480,14862
-void MainWindow::SomeDrvIsConnected(487,15012
-void MainWindow::SomeDrvIsDisconnected(492,15105
-void MainWindow::SetEnableOfUnits(497,15202
-void MainWindow::ShowCurDTh1(520,15683
-void MainWindow::ShowCurThPos(526,15789
-double MainWindow::SelectedCurPosDeg(548,16403
-void MainWindow::ShowNewRingCurrent(567,16821
-void MainWindow::SignalToStars(572,16921
-void MainWindow::RcvEvAll(577,16999
-void MainWindow::alarmOn(587,17257
-void MainWindow::alarmOff(592,17335
+void MainWindow::setEncNewTh(472,14651
+void MainWindow::RcvListNodes(480,14867
+void MainWindow::SomeDrvIsConnected(487,15017
+void MainWindow::SomeDrvIsDisconnected(492,15110
+void MainWindow::SetEnableOfUnits(497,15207
+void MainWindow::ShowCurDTh1(520,15688
+void MainWindow::ShowCurThPos(526,15794
+double MainWindow::SelectedCurPosDeg(548,16408
+void MainWindow::ShowNewRingCurrent(567,16826
+void MainWindow::SignalToStars(572,16926
+void MainWindow::RcvEvAll(577,17004
+void MainWindow::alarmOn(587,17262
+void MainWindow::alarmOff(592,17340
 
 Measurement.cpp,339
 void MainWindow::MeasSequence(3,25
@@ -656,10 +656,10 @@ ReadDef.cpp,266
 #define LN 7,91
 #define BS 8,136
 void MainWindow::ReadDef(10,183
-AUnit0 *MainWindow::NewNewUnit(MainWindow::NewNewUnit380,16021
-void MainWindow::CheckDuplicateUID(441,17542
-void MainWindow::ExitByDuplicateUID(474,18603
-QString MainWindow::nextItem(486,19191
+AUnit0 *MainWindow::NewNewUnit(MainWindow::NewNewUnit385,16284
+void MainWindow::CheckDuplicateUID(446,17805
+void MainWindow::ExitByDuplicateUID(479,18866
+QString MainWindow::nextItem(491,19454
 
 RelAbs.cpp,101
 RelAbs::RelAbs(5,40
@@ -772,53 +772,53 @@ void SelectCh::selACh(67,1518
 
 SetUpSFluo.cpp,1996
 SetUpSFluo::SetUpSFluo(6,47
-void SetUpSFluo::setROIs(50,1717
-void SetUpSFluo::setFDBase(56,1809
-void SetUpSFluo::setupSetupSFluo(62,1905
-void SetUpSFluo::newMaxMCAEnergy(235,8599
-void SetUpSFluo::newMaxLoop(247,8886
-void SetUpSFluo::newDampFact(259,9118
-void SetUpSFluo::newPrec1(265,9236
-void SetUpSFluo::newPrec2(271,9345
-void SetUpSFluo::ReadLowerLimitSetting(278,9455
-void SetUpSFluo::SelectedLimitPSEnergy(309,10170
-void SetUpSFluo::SelectedShowDiff(314,10258
-void SetUpSFluo::SelectedPeakSearch(319,10336
-void SetUpSFluo::SelectedShowSmoothed(324,10418
-void SetUpSFluo::SelectedFitToRaw(329,10504
-void SetUpSFluo::PushedReFit(334,10582
-void SetUpSFluo::PushedClearMCAPeaks(339,10656
-void SetUpSFluo::newGain(344,10734
-void SetUpSFluo::setAllROIs(352,10871
-void SetUpSFluo::saveMCAData(367,11350
-void SetUpSFluo::setSelectedMCAFName(396,12353
-void SetUpSFluo::RealTimeIsSelected(405,12649
-void SetUpSFluo::LiveTimeIsSelected(412,12776
-void SetUpSFluo::SelSSDs0(420,12909
-void SetUpSFluo::SelSSDs20(432,13087
-void SetUpSFluo::SelSSDs(456,13770
-void SetUpSFluo::getMCASettings(474,14223
-void SetUpSFluo::getMCALen(488,14751
-void SetUpSFluo::newROIStart(508,15335
-void SetUpSFluo::newROIEnd(523,15683
-void SetUpSFluo::MCAChSelected(537,16020
-void SetUpSFluo::showPeakingTime(565,16696
-void SetUpSFluo::showThreshold(572,16867
-void SetUpSFluo::showCalibration(579,17034
-void SetUpSFluo::showDynamicRange(586,17205
-void SetUpSFluo::showPreAMPGain(593,17378
-void SetUpSFluo::StartMCA(600,17541
-void SetUpSFluo::showCurrentValues(652,19126
-void SetUpSFluo::setNewROI(660,19387
-void SetUpSFluo::MCASequence(673,19842
-void SetUpSFluo::ShowNewMCAStat(730,21150
-void SetUpSFluo::ShowNewMCARealTime(742,21474
-void SetUpSFluo::ShowNewMCALiveTime(748,21603
-void SetUpSFluo::clearMCA(754,21732
-void SetUpSFluo::gotNewPeakList(768,21984
-void SetUpSFluo::setPreAMPGains(790,22629
-void SetUpSFluo::nowFitStat(821,23313
-void SetUpSFluo::newCalibration(833,23557
+void SetUpSFluo::setROIs(53,1811
+void SetUpSFluo::setFDBase(59,1903
+void SetUpSFluo::setupSetupSFluo(65,1999
+void SetUpSFluo::newMaxMCAEnergy(238,8693
+void SetUpSFluo::newMaxLoop(250,8980
+void SetUpSFluo::newDampFact(262,9212
+void SetUpSFluo::newPrec1(268,9330
+void SetUpSFluo::newPrec2(274,9439
+void SetUpSFluo::ReadLowerLimitSetting(281,9549
+void SetUpSFluo::SelectedLimitPSEnergy(310,10195
+void SetUpSFluo::SelectedShowDiff(315,10283
+void SetUpSFluo::SelectedPeakSearch(320,10361
+void SetUpSFluo::SelectedShowSmoothed(325,10443
+void SetUpSFluo::SelectedFitToRaw(330,10529
+void SetUpSFluo::PushedReFit(335,10607
+void SetUpSFluo::PushedClearMCAPeaks(340,10681
+void SetUpSFluo::newGain(345,10759
+void SetUpSFluo::setAllROIs(353,10896
+void SetUpSFluo::saveMCAData(368,11375
+void SetUpSFluo::setSelectedMCAFName(397,12378
+void SetUpSFluo::RealTimeIsSelected(406,12674
+void SetUpSFluo::LiveTimeIsSelected(413,12801
+void SetUpSFluo::SelSSDs0(421,12934
+void SetUpSFluo::SelSSDs20(433,13112
+void SetUpSFluo::SelSSDs(457,13795
+void SetUpSFluo::getMCASettings(475,14248
+void SetUpSFluo::getMCALen(489,14776
+void SetUpSFluo::newROIStart(509,15360
+void SetUpSFluo::newROIEnd(524,15708
+void SetUpSFluo::MCAChSelected(538,16045
+void SetUpSFluo::showPeakingTime(566,16721
+void SetUpSFluo::showThreshold(573,16892
+void SetUpSFluo::showCalibration(580,17059
+void SetUpSFluo::showDynamicRange(587,17230
+void SetUpSFluo::showPreAMPGain(594,17403
+void SetUpSFluo::StartMCA(601,17566
+void SetUpSFluo::showCurrentValues(653,19151
+void SetUpSFluo::setNewROI(661,19412
+void SetUpSFluo::MCASequence(674,19867
+void SetUpSFluo::ShowNewMCAStat(731,21175
+void SetUpSFluo::ShowNewMCARealTime(743,21499
+void SetUpSFluo::ShowNewMCALiveTime(749,21628
+void SetUpSFluo::clearMCA(755,21757
+void SetUpSFluo::gotNewPeakList(769,22009
+void SetUpSFluo::setPreAMPGains(791,22654
+void SetUpSFluo::nowFitStat(823,23350
+void SetUpSFluo::newCalibration(835,23594
 
 Sounds.cpp,113
 void MainWindow::PlayEndingSound(5,44
@@ -2251,10 +2251,10 @@ void cBar::newScale(165,5386
 
 qrc_XafsM.cpp,302
 static const unsigned char qt_resource_data[qt_resource_data11,331
-static const unsigned char qt_resource_name[qt_resource_name29400,2374439
-static const unsigned char qt_resource_struct[qt_resource_struct29502,2377882
-int QT_MANGLE_NAMESPACE(29557,2379917
-Q_CONSTRUCTOR_FUNCTION(29564,2380104
+static const unsigned char qt_resource_name[qt_resource_name29414,2375612
+static const unsigned char qt_resource_struct[qt_resource_struct29516,2379055
+int QT_MANGLE_NAMESPACE(29571,2381089
+Q_CONSTRUCTOR_FUNCTION(29578,2381276
 
 Alarm.h,500
 #define ALARM_H2,16
@@ -2714,14 +2714,14 @@ class Head9809 9,124
 KeV2Pix.h,366
 #define KEV2PIX_H2,18
 class KeV2Pix 9,108
-  bool isValid(KeV2Pix::isValid16,176
-  int getDim(KeV2Pix::getDim19,320
-  bool valid;KeV2Pix::valid24,431
-  int dim;KeV2Pix::dim25,445
-  int MCALen;KeV2Pix::MCALen26,456
-  int MCAChs;KeV2Pix::MCAChs27,470
-  QVector< QVector<double> > ab;KeV2Pix::ab28,484
-  QVector< QVector<double> > ba;KeV2Pix::ba29,570
+  bool isValid(KeV2Pix::isValid16,182
+  int getDim(KeV2Pix::getDim19,326
+  bool valid;KeV2Pix::valid24,437
+  int dim;KeV2Pix::dim25,451
+  int MCALen;KeV2Pix::MCALen26,462
+  int MCAChs;KeV2Pix::MCAChs27,476
+  QVector< QVector<double> > ab;KeV2Pix::ab28,490
+  QVector< QVector<double> > ba;KeV2Pix::ba29,576
 
 LinearA.h,37
 #define LINEARA_H2,18
@@ -3665,58 +3665,65 @@ class SelectCh 14,368
   void setTitle(SelectCh::setTitle30,673
   int chs(SelectCh::chs33,788
 
-SetUpSFluo.h,2509
+SetUpSFluo.h,2845
 #define SETUPSFLUO_H2,21
 #define MCA_ID 20,340
 class SetUpSFluo 22,371
-  AUnitSFluo *SFluo0;SetUpSFluo::SFluo026,443
-  Stars *s;SetUpSFluo::s27,465
-  PeriodicTable *PT2;SetUpSFluo::PT228,477
-  FluoDBase *fdbase;SetUpSFluo::fdbase29,499
-  MCAView *mcaView;SetUpSFluo::mcaView30,520
-  KeV2Pix *k2p;SetUpSFluo::k2p31,540
-  QVector<QStringList> *FSTATMsgs;SetUpSFluo::FSTATMsgs32,556
-  QVector<MCAPeak> *MCAPeaks;SetUpSFluo::MCAPeaks33,591
-  bool inMCAMeas;SetUpSFluo::inMCAMeas35,653
-  MCASTARTRESUME StartResume;SetUpSFluo::StartResume37,696
-  bool MCAClearRequest;SetUpSFluo::MCAClearRequest38,726
-  int MCAStage;SetUpSFluo::MCAStage39,750
-  QTimer *MCATimer;SetUpSFluo::MCATimer40,766
-  quint32 *MCAData;SetUpSFluo::MCAData42,787
-  int cMCACh;SetUpSFluo::cMCACh43,807
-  bool MwSSDGotMCALen;SetUpSFluo::MwSSDGotMCALen45,822
-  double MaxMCAEnergy;SetUpSFluo::MaxMCAEnergy46,845
-  bool MCAPreAMPGainHasSet;SetUpSFluo::MCAPreAMPGainHasSet47,868
-  QFileDialog *MCAFSel;SetUpSFluo::MCAFSel49,897
-  OLDNEW MCADataStat;SetUpSFluo::MCADataStat50,921
-  OLDNEW MCANameStat;SetUpSFluo::MCANameStat51,943
-  QString *ROIStart;SetUpSFluo::ROIStart53,968
-  QString *ROIEnd;SetUpSFluo::ROIEnd54,989
-  QString NonSelC,SetUpSFluo::NonSelC56,1009
-  QString NonSelC, SelectC;SetUpSFluo::SelectC56,1009
-  bool svRT,SetUpSFluo::svRT57,1037
-  bool svRT, svLT;SetUpSFluo::svLT57,1037
-  AUnitSFluo *sFluo(SetUpSFluo::sFluo62,1102
-  KeV2Pix *K2P(SetUpSFluo::K2P63,1150
-  SelectCh *selBs2(SetUpSFluo::selBs264,1190
-  MCAView *McaView(SetUpSFluo::McaView65,1237
-  quint32 *McaData(SetUpSFluo::McaData66,1285
-  QString *roiStart(SetUpSFluo::roiStart67,1333
-  QString *roiEnd(SetUpSFluo::roiEnd68,1383
-  int mcaCh(SetUpSFluo::mcaCh69,1429
-  int cCh(SetUpSFluo::cCh70,1484
-  int length(SetUpSFluo::length71,1522
-  void setMCACh(SetUpSFluo::setMCACh72,1573
-  QRadioButton *B_SelRealTime(SetUpSFluo::B_SelRealTime74,1689
-  QRadioButton *B_SelLiveTime(SetUpSFluo::B_SelLiveTime75,1752
-  void saveTimeModes(SetUpSFluo::saveTimeModes76,1815
-  void recoverTimeModes(SetUpSFluo::recoverTimeModes78,1917
-  QRadioButton *B_ShowAlwaysSelElm(SetUpSFluo::B_ShowAlwaysSelElm80,2022
-  QRadioButton *B_AutoROIsetAll(SetUpSFluo::B_AutoROIsetAll81,2095
-  bool isInMeas(SetUpSFluo::isInMeas82,2162
-  void setViewStats(SetUpSFluo::setViewStats88,2578
-  void setDirectory(SetUpSFluo::setDirectory95,2892
-  void setMaxMCAEnergy(SetUpSFluo::setMaxMCAEnergy96,2987
+  QString k2pFile;SetUpSFluo::k2pFile26,443
+  QString llFile;SetUpSFluo::llFile27,462
+  QString pagFile;SetUpSFluo::pagFile28,480
+  AUnitSFluo *SFluo0;SetUpSFluo::SFluo029,499
+  Stars *s;SetUpSFluo::s30,521
+  PeriodicTable *PT2;SetUpSFluo::PT231,533
+  FluoDBase *fdbase;SetUpSFluo::fdbase32,555
+  MCAView *mcaView;SetUpSFluo::mcaView33,576
+  KeV2Pix *k2p;SetUpSFluo::k2p34,596
+  QVector<QStringList> *FSTATMsgs;SetUpSFluo::FSTATMsgs35,612
+  QVector<MCAPeak> *MCAPeaks;SetUpSFluo::MCAPeaks36,647
+  bool inMCAMeas;SetUpSFluo::inMCAMeas38,709
+  MCASTARTRESUME StartResume;SetUpSFluo::StartResume40,752
+  bool MCAClearRequest;SetUpSFluo::MCAClearRequest41,782
+  int MCAStage;SetUpSFluo::MCAStage42,806
+  QTimer *MCATimer;SetUpSFluo::MCATimer43,822
+  quint32 *MCAData;SetUpSFluo::MCAData45,843
+  int cMCACh;SetUpSFluo::cMCACh46,863
+  bool MwSSDGotMCALen;SetUpSFluo::MwSSDGotMCALen48,878
+  double MaxMCAEnergy;SetUpSFluo::MaxMCAEnergy49,901
+  bool MCAPreAMPGainHasSet;SetUpSFluo::MCAPreAMPGainHasSet50,924
+  QFileDialog *MCAFSel;SetUpSFluo::MCAFSel52,953
+  OLDNEW MCADataStat;SetUpSFluo::MCADataStat53,977
+  OLDNEW MCANameStat;SetUpSFluo::MCANameStat54,999
+  QString *ROIStart;SetUpSFluo::ROIStart56,1024
+  QString *ROIEnd;SetUpSFluo::ROIEnd57,1045
+  QString NonSelC,SetUpSFluo::NonSelC59,1065
+  QString NonSelC, SelectC;SetUpSFluo::SelectC59,1065
+  bool svRT,SetUpSFluo::svRT60,1093
+  bool svRT, svLT;SetUpSFluo::svLT60,1093
+  void setK2PFile(SetUpSFluo::setK2PFile65,1158
+  void setLLFile(SetUpSFluo::setLLFile66,1213
+  void setPAGFile(SetUpSFluo::setPAGFile67,1266
+  AUnitSFluo *sFluo(SetUpSFluo::sFluo68,1321
+  KeV2Pix *K2P(SetUpSFluo::K2P69,1369
+  SelectCh *selBs2(SetUpSFluo::selBs270,1409
+  MCAView *McaView(SetUpSFluo::McaView71,1456
+  quint32 *McaData(SetUpSFluo::McaData72,1504
+  QString *roiStart(SetUpSFluo::roiStart73,1552
+  QString *roiEnd(SetUpSFluo::roiEnd74,1602
+  int mcaCh(SetUpSFluo::mcaCh75,1648
+  int cCh(SetUpSFluo::cCh76,1703
+  int length(SetUpSFluo::length77,1741
+  void setMCACh(SetUpSFluo::setMCACh78,1792
+  QRadioButton *B_SelRealTime(SetUpSFluo::B_SelRealTime80,1908
+  QRadioButton *B_SelLiveTime(SetUpSFluo::B_SelLiveTime81,1971
+  void saveTimeModes(SetUpSFluo::saveTimeModes82,2034
+  void recoverTimeModes(SetUpSFluo::recoverTimeModes84,2136
+  QRadioButton *B_ShowAlwaysSelElm(SetUpSFluo::B_ShowAlwaysSelElm86,2241
+  QRadioButton *B_AutoROIsetAll(SetUpSFluo::B_AutoROIsetAll87,2314
+  bool isInMeas(SetUpSFluo::isInMeas88,2381
+  void setViewStats(SetUpSFluo::setViewStats94,2797
+  void setDirectory(SetUpSFluo::setDirectory101,3111
+  void setMaxMCAEnergy(SetUpSFluo::setMaxMCAEnergy102,3206
+  QString K2PFile(SetUpSFluo::K2PFile103,3264
 
 Smoothing.h,25
 #define SMOOTHING_H2,20

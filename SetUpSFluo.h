@@ -23,6 +23,9 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
 {
   Q_OBJECT
 
+  QString k2pFile;
+  QString llFile;
+  QString pagFile;
   AUnitSFluo *SFluo0;
   Stars *s;
   PeriodicTable *PT2;
@@ -59,6 +62,9 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
  public:
   SetUpSFluo( QWidget *p = NULL );
 
+  void setK2PFile( QString name ) { k2pFile = name; };
+  void setLLFile( QString name ) { llFile = name; };
+  void setPAGFile( QString name ) { pagFile = name; };
   AUnitSFluo *sFluo( void ) { return SFluo0; };
   KeV2Pix *K2P( void ) { return k2p; };
   SelectCh *selBs2( void ) { return SELBs2; };
@@ -94,6 +100,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void setFDBase( FluoDBase *fb );
   void setDirectory( QString root ) { if ( MCAFSel != NULL ) MCAFSel->setDirectory( root ); };
   void setMaxMCAEnergy( double e ) { MaxMCAEnergy = e; };
+  QString K2PFile( void ) { return k2pFile; };
   
  private slots:
   void newMaxMCAEnergy( void );
@@ -164,8 +171,3 @@ public slots:
 };
 
 #endif
-
-
-
-
-

@@ -36,6 +36,7 @@
 # 2015/02/19 add 2 parameters to the SSD line
 # 2015/03/03 delete MAX_MCA_ENERGY line
 # 2015/03/04 definition of MCAGAIN is changed
+# 2015/03/07 definition of SSD is extended
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -435,7 +436,23 @@ SENSOR PAM "S005" "Aux2" "Keithley 6485-2" "simmotor" "SNSkth2" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD" ""   "count" YES "S006" 19 2048 20.0
+SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006" 19 2014 20.0 KeV2MCPpix.txt "" ""
+# SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006"
+#                         19 2014 20.0 KeV2MCPpix.txt SSDLowLimits.txt SSDPreAMPGain.txt
+
+# The parameters following the identifire 'SENSOR' are
+#   SSD     : Unit type SSD : MCA base devices like SSD or SDD
+#    "S006"      : Unique identifire of the sensor.  The identifire must be identical.
+#    "TotalF"    : It has no special meaning now
+#    "SSD(19ch)" : The name of the unit for display.
+#                : It should be simple, since the name is often shown in a small space.
+#    "QtXmapSSD" : Stars driver name
+#    ""          : Node name in the stars drive
+#    "count"     : Name of the metric unit (only for display)
+#    YES         : If the sensor has a parent (group leader) or not.
+#                : It should be 'YES' or 'NO'
+#    "S006"      : The identifire of the paretnt.
+
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"      "0"  "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"      "1"  "count" YES "S006"
 SENSOR SSDP "S009" "SingleF" "SSD-ch02"  "QtXmapSSD"      "2"  "count" YES "S006"

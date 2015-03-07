@@ -446,7 +446,7 @@ void MainWindow::InitAndIdentifySensors( void )
     S2DBase->setSSFluos( SSFluos );     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   for ( int i = 0; i < SFluos.count(); i++ ) {
     SSFluos[i]->K2P()
-      ->MakeUpAB( SFluos[i]->length(), SFluos[i]->chs(), 2, "KeV2MCApix.txt" );
+      ->MakeUpAB( SFluos[i]->length(), SFluos[i]->chs(), 2, SSFluos[i]->K2PFile() );
     //    SFluo->setROIs( ROIStart, ROIEnd );
     for ( int i = 0; i < ASensors.count(); i++ ) {  // SFluo が確定してから
       as = ASensors.value(i);

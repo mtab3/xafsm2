@@ -11,7 +11,7 @@ class KeV2Pix : public QObject
   Q_OBJECT
 
  public:
-  KeV2Pix();
+  KeV2Pix( void );
 
   bool isValid( void ) { return valid; };
   void MakeUpAB( int len, int chs, int dim, QString fname );
