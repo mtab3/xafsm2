@@ -686,8 +686,6 @@ void SetUpSFluo::MCASequence( void )
     MCAStage = 0;
   }
 
-  qDebug() << "MCAStage" << MCAStage;
-  
   switch( MCAStage ) {
   case 0:
     SFluo0->initLocalStage();

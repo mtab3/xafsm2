@@ -650,7 +650,7 @@ void MainWindow::setupReadDataArea(4,26
 void MainWindow::TryToNoticeCurrentView(36,1376
 void MainWindow::DeleteTheView(42,1523
 void MainWindow::TryToGiveNewView(50,1741
-void MainWindow::ansToGetNewMCAView(104,3609
+void MainWindow::ansToGetNewMCAView(111,3914
 
 ReadDef.cpp,266
 #define LN 7,91
@@ -775,50 +775,50 @@ SetUpSFluo::SetUpSFluo(6,47
 void SetUpSFluo::setROIs(50,1717
 void SetUpSFluo::setFDBase(56,1809
 void SetUpSFluo::setupSetupSFluo(62,1905
-void SetUpSFluo::newMaxMCAEnergy(236,8621
-void SetUpSFluo::newMaxLoop(248,8908
-void SetUpSFluo::newDampFact(260,9140
-void SetUpSFluo::newPrec1(266,9258
-void SetUpSFluo::newPrec2(272,9367
-void SetUpSFluo::ReadLowerLimitSetting(279,9477
-void SetUpSFluo::SelectedLimitPSEnergy(310,10192
-void SetUpSFluo::SelectedShowDiff(315,10280
-void SetUpSFluo::SelectedPeakSearch(320,10358
-void SetUpSFluo::SelectedShowSmoothed(325,10440
-void SetUpSFluo::SelectedFitToRaw(330,10526
-void SetUpSFluo::PushedReFit(335,10604
-void SetUpSFluo::PushedClearMCAPeaks(340,10678
-void SetUpSFluo::newGain(345,10756
-void SetUpSFluo::setAllROIs(353,10893
-void SetUpSFluo::saveMCAData(368,11372
-void SetUpSFluo::setSelectedMCAFName(397,12375
-void SetUpSFluo::RealTimeIsSelected(406,12671
-void SetUpSFluo::LiveTimeIsSelected(413,12798
-void SetUpSFluo::SelSSDs0(421,12931
-void SetUpSFluo::SelSSDs20(433,13109
-void SetUpSFluo::SelSSDs(457,13792
-void SetUpSFluo::getMCASettings(475,14245
-void SetUpSFluo::getMCALen(489,14773
-void SetUpSFluo::newROIStart(509,15357
-void SetUpSFluo::newROIEnd(524,15705
-void SetUpSFluo::MCAChSelected(538,16042
-void SetUpSFluo::showPeakingTime(566,16718
-void SetUpSFluo::showThreshold(573,16889
-void SetUpSFluo::showCalibration(580,17056
-void SetUpSFluo::showDynamicRange(587,17227
-void SetUpSFluo::showPreAMPGain(594,17400
-void SetUpSFluo::StartMCA(601,17563
-void SetUpSFluo::showCurrentValues(653,19148
-void SetUpSFluo::setNewROI(661,19409
-void SetUpSFluo::MCASequence(674,19864
-void SetUpSFluo::ShowNewMCAStat(733,21213
-void SetUpSFluo::ShowNewMCARealTime(745,21537
-void SetUpSFluo::ShowNewMCALiveTime(751,21666
-void SetUpSFluo::clearMCA(757,21795
-void SetUpSFluo::gotNewPeakList(771,22047
-void SetUpSFluo::setPreAMPGains(793,22692
-void SetUpSFluo::nowFitStat(824,23376
-void SetUpSFluo::newCalibration(836,23620
+void SetUpSFluo::newMaxMCAEnergy(235,8599
+void SetUpSFluo::newMaxLoop(247,8886
+void SetUpSFluo::newDampFact(259,9118
+void SetUpSFluo::newPrec1(265,9236
+void SetUpSFluo::newPrec2(271,9345
+void SetUpSFluo::ReadLowerLimitSetting(278,9455
+void SetUpSFluo::SelectedLimitPSEnergy(309,10170
+void SetUpSFluo::SelectedShowDiff(314,10258
+void SetUpSFluo::SelectedPeakSearch(319,10336
+void SetUpSFluo::SelectedShowSmoothed(324,10418
+void SetUpSFluo::SelectedFitToRaw(329,10504
+void SetUpSFluo::PushedReFit(334,10582
+void SetUpSFluo::PushedClearMCAPeaks(339,10656
+void SetUpSFluo::newGain(344,10734
+void SetUpSFluo::setAllROIs(352,10871
+void SetUpSFluo::saveMCAData(367,11350
+void SetUpSFluo::setSelectedMCAFName(396,12353
+void SetUpSFluo::RealTimeIsSelected(405,12649
+void SetUpSFluo::LiveTimeIsSelected(412,12776
+void SetUpSFluo::SelSSDs0(420,12909
+void SetUpSFluo::SelSSDs20(432,13087
+void SetUpSFluo::SelSSDs(456,13770
+void SetUpSFluo::getMCASettings(474,14223
+void SetUpSFluo::getMCALen(488,14751
+void SetUpSFluo::newROIStart(508,15335
+void SetUpSFluo::newROIEnd(523,15683
+void SetUpSFluo::MCAChSelected(537,16020
+void SetUpSFluo::showPeakingTime(565,16696
+void SetUpSFluo::showThreshold(572,16867
+void SetUpSFluo::showCalibration(579,17034
+void SetUpSFluo::showDynamicRange(586,17205
+void SetUpSFluo::showPreAMPGain(593,17378
+void SetUpSFluo::StartMCA(600,17541
+void SetUpSFluo::showCurrentValues(652,19126
+void SetUpSFluo::setNewROI(660,19387
+void SetUpSFluo::MCASequence(673,19842
+void SetUpSFluo::ShowNewMCAStat(730,21150
+void SetUpSFluo::ShowNewMCARealTime(742,21474
+void SetUpSFluo::ShowNewMCALiveTime(748,21603
+void SetUpSFluo::clearMCA(754,21732
+void SetUpSFluo::gotNewPeakList(768,21984
+void SetUpSFluo::setPreAMPGains(790,22629
+void SetUpSFluo::nowFitStat(821,23313
+void SetUpSFluo::newCalibration(833,23557
 
 Sounds.cpp,113
 void MainWindow::PlayEndingSound(5,44
@@ -901,16 +901,16 @@ static int vcount 5,48
 ViewCTRL::ViewCTRL(7,72
 ViewCTRL::~ViewCTRL(18,240
 bool ViewCTRL::setView(23,289
-bool ViewCTRL::deleteView(43,700
-void ViewCTRL::addAGSBStat(75,1535
-void ViewCTRL::setGSBStats(82,1658
-QString ViewCTRL::getAGSBSLabel(93,1936
-bool ViewCTRL::getAGSBSStat(101,2057
-QStringList ViewCTRL::getGSBLabels(109,2178
-QVector<bool> ViewCTRL::getGSBFlags(119,2319
-void ViewCTRL::setGSBStat(128,2456
-int MainWindow::SetUpNewView(154,3416
-void MainWindow::showOnesMCAView(295,8665
+bool ViewCTRL::deleteView(49,803
+void ViewCTRL::addAGSBStat(81,1638
+void ViewCTRL::setGSBStats(88,1761
+QString ViewCTRL::getAGSBSLabel(99,2039
+bool ViewCTRL::getAGSBSStat(107,2160
+QStringList ViewCTRL::getGSBLabels(115,2281
+QVector<bool> ViewCTRL::getGSBFlags(125,2422
+void ViewCTRL::setGSBStat(134,2559
+int MainWindow::SetUpNewView(160,3519
+void MainWindow::showOnesMCAView(302,8806
 
 XYView.cpp,778
 XYView::XYView(8,85
@@ -3126,55 +3126,55 @@ class MainWindow 81,1708
   bool MakingSureOfRangeSelect;MainWindow::MakingSureOfRangeSelect484,12337
   bool haveMeasuredDark;MainWindow::haveMeasuredDark485,12369
   bool NoticingHaveNotMeasDark;MainWindow::NoticingHaveNotMeasDark486,12394
-  double MeasVals[MainWindow::MeasVals491,12632
-  double MeasCPSs[MainWindow::MeasCPSs492,12658
-  MEASMODE MeasDispMode[MainWindow::MeasDispMode493,12684
-  int MeasDispPol[MainWindow::MeasDispPol494,12716
-  double NowDwell;MainWindow::NowDwell495,12756
-  bool UseAutoShutter;MainWindow::UseAutoShutter496,12775
-  bool inMeasDark;MainWindow::inMeasDark497,12798
-  bool AskingShutterClose;MainWindow::AskingShutterClose498,12817
-  bool AskingShutterOpen;MainWindow::AskingShutterOpen499,12844
-  int MeasDarkStage;MainWindow::MeasDarkStage500,12870
-  int oldCurrentView;MainWindow::oldCurrentView521,13533
-  ViewCTRL *MeasViewC;MainWindow::MeasViewC522,13555
-  XYView *MeasView;MainWindow::MeasView523,13578
-  QStringList QXafsOk,MainWindow::QXafsOk540,13993
-  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk540,13993
-  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk540,13993
-  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable541,14034
-  int SaveNowBlocks,MainWindow::SaveNowBlocks542,14063
-  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0542,14063
-  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1542,14063
-  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos543,14116
-  bool SaveUseAux1,MainWindow::SaveUseAux1544,14147
-  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2544,14147
-  int OrigHSpeed,MainWindow::OrigHSpeed545,14180
-  int OrigHSpeed, HSpeed,MainWindow::HSpeed545,14180
-  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed545,14180
-  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed545,14180
-  int QXafsSP0,MainWindow::QXafsSP0546,14227
-  int QXafsSP0, QXafsSP,MainWindow::QXafsSP546,14227
-  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0546,14227
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP546,14227
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval546,14227
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints546,14227
-  double RunUpRate,MainWindow::RunUpRate547,14299
-  double RunUpRate, RunUpTime,MainWindow::RunUpTime547,14299
-  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime547,14299
-  QString EncValue0,MainWindow::EncValue0548,14346
-  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0548,14346
-  bool QIntervalBlock1,MainWindow::QIntervalBlock1549,14379
-  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2549,14379
-  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1550,14420
-  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2550,14420
-  bool AutoModeFirst;MainWindow::AutoModeFirst553,14481
-  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition554,14503
-  int MeasA;MainWindow::MeasA555,14537
-  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams556,14550
-  QString AutoModeComment;MainWindow::AutoModeComment558,14625
-  AMotor *smAm;MainWindow::smAm596,15942
-  int smStage;MainWindow::smStage597,15958
+  double MeasVals[MainWindow::MeasVals491,12653
+  double MeasCPSs[MainWindow::MeasCPSs492,12679
+  MEASMODE MeasDispMode[MainWindow::MeasDispMode493,12705
+  int MeasDispPol[MainWindow::MeasDispPol494,12737
+  double NowDwell;MainWindow::NowDwell495,12777
+  bool UseAutoShutter;MainWindow::UseAutoShutter496,12796
+  bool inMeasDark;MainWindow::inMeasDark497,12819
+  bool AskingShutterClose;MainWindow::AskingShutterClose498,12838
+  bool AskingShutterOpen;MainWindow::AskingShutterOpen499,12865
+  int MeasDarkStage;MainWindow::MeasDarkStage500,12891
+  int oldCurrentView;MainWindow::oldCurrentView521,13554
+  ViewCTRL *MeasViewC;MainWindow::MeasViewC522,13576
+  XYView *MeasView;MainWindow::MeasView523,13599
+  QStringList QXafsOk,MainWindow::QXafsOk540,14014
+  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk540,14014
+  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk540,14014
+  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable541,14055
+  int SaveNowBlocks,MainWindow::SaveNowBlocks542,14084
+  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0542,14084
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1542,14084
+  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos543,14137
+  bool SaveUseAux1,MainWindow::SaveUseAux1544,14168
+  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2544,14168
+  int OrigHSpeed,MainWindow::OrigHSpeed545,14201
+  int OrigHSpeed, HSpeed,MainWindow::HSpeed545,14201
+  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed545,14201
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed545,14201
+  int QXafsSP0,MainWindow::QXafsSP0546,14248
+  int QXafsSP0, QXafsSP,MainWindow::QXafsSP546,14248
+  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0546,14248
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP546,14248
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval546,14248
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints546,14248
+  double RunUpRate,MainWindow::RunUpRate547,14320
+  double RunUpRate, RunUpTime,MainWindow::RunUpTime547,14320
+  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime547,14320
+  QString EncValue0,MainWindow::EncValue0548,14367
+  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0548,14367
+  bool QIntervalBlock1,MainWindow::QIntervalBlock1549,14400
+  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2549,14400
+  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1550,14441
+  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2550,14441
+  bool AutoModeFirst;MainWindow::AutoModeFirst553,14502
+  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition554,14524
+  int MeasA;MainWindow::MeasA555,14558
+  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams556,14571
+  QString AutoModeComment;MainWindow::AutoModeComment558,14646
+  AMotor *smAm;MainWindow::smAm596,15963
+  int smStage;MainWindow::smStage597,15979
 
 Mccd.h,276
 #define MCCD_H3,16
@@ -3946,12 +3946,12 @@ class ViewCTRL 18,297
   GSBStats *gsbStat;ViewCTRL::gsbStat27,438
   int VC;ViewCTRL::VC28,459
   void setViewBase(ViewCTRL::setViewBase34,521
-  void *getView(ViewCTRL::getView38,758
-  VTYPE getVType(ViewCTRL::getVType39,803
-  DATATYPE getDType(ViewCTRL::getDType40,850
-  bool isDeletable(ViewCTRL::isDeletable42,927
-  void setDeletable(ViewCTRL::setDeletable43,977
-  int vcnt(ViewCTRL::vcnt55,1506
+  void *getView(ViewCTRL::getView38,779
+  VTYPE getVType(ViewCTRL::getVType39,824
+  DATATYPE getDType(ViewCTRL::getDType40,871
+  bool isDeletable(ViewCTRL::isDeletable42,948
+  void setDeletable(ViewCTRL::setDeletable43,998
+  int vcnt(ViewCTRL::vcnt55,1527
 
 XYView.h,5028
 #define XYVIEW_H2,17

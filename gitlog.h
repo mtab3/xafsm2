@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Mar 7 18:15:52 2015 +0900\n"\
+                "    checking the process to get ViewTabs for sfluos\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 7 00:02:27 2015 +0900\n"\
                 "    GSBs are of for many channels\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Mar 5 15:34:53 2015 +0900\n"\
                 "    working\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Mar 5 00:10:48 2015 +0900\n"\
-                "    working MwS2D and S2DInfo(save/load)\n"\
 		"\n"\
                 ""
 #endif

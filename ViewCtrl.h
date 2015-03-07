@@ -34,7 +34,7 @@ class ViewCTRL : public QObject
   void setViewBase( QWidget *base ) { ViewBase = base; };
   //  void setNowView( void *nowv ) { nowView = nowv; };
   //  void setNowVType( VTYPE nvtype ) { nowVType = nvtype; };
-  bool setView( void *view, VTYPE vtype, DATATYPE dtype );
+  bool setView( void *view, VTYPE vtype, DATATYPE dtype, bool overlap = true );
   void *getView( void ) { return nowView; };
   VTYPE getVType( void ) { return nowVType; };
   DATATYPE getDType( void ) { return nowDType; };

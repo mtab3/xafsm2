@@ -1969,8 +1969,8 @@ void MainWindow::MoveInMeasView( int ix, double )
       if (( set == NULL ) || (! set->isValid() ))
 	return;
       cnt = set->Ch[ SSFluos[i]->cCh() ].cnt;
-      for ( int i = 0; i < SSFluos[i]->length(); i++ ) {
-	SSFluos[i]->McaData()[i] = cnt[i];
+      for ( int j = 0; j < SSFluos[i]->length(); j++ ) {
+	SSFluos[i]->McaData()[j] = cnt[j];
       }
       SSFluos[i]->McaView()->update();
     }

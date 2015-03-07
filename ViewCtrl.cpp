@@ -20,14 +20,20 @@ ViewCTRL::~ViewCTRL( void )
   deleteView();
 }
 
-bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype )
+bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype, bool overlap )
 {
-  if ( nowView != NULL ) {
-    if ( ( nowVType != vtype ) || ( nowDType != dtype ) ){
+  if ( overlap ) {
+    if ( nowView != NULL ) {
+      if ( ( nowVType != vtype ) || ( nowDType != dtype ) ){
+	return false;
+      }
+      if ( ! deleteView() )
+	return false;
+    }
+  } else {
+    if ( nowView != NULL ) {
       return false;
     }
-    if ( ! deleteView() )
-      return false;
   }
   nowView = view;
   nowVType = vtype;
@@ -151,7 +157,7 @@ ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 *******************/
 
-int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
+int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView, bool overlap )
 {
   void *origView = newView;
   // まずは View の方を先に作っておいて
@@ -217,11 +223,12 @@ int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView )
 
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK
-  if ( ! ViewCtrls[ ViewTab->currentIndex() ]->setView( newView, vtype, dtype ) ) {
+  if ( ! ViewCtrls[ ViewTab->currentIndex() ]
+       ->setView( newView, vtype, dtype, overlap ) ) {
     // 使えなかったら、若い番号の ViewTab から順番に登録できないか試してみる
     int i;
     for ( i = 0; i < ViewTab->count(); i++ ) {
-      if ( ViewCtrls[ i ]->setView( newView, vtype, dtype ) ) {
+      if ( ViewCtrls[ i ]->setView( newView, vtype, dtype, overlap ) ) {
 	break;
       }
     }
@@ -303,10 +310,9 @@ void MainWindow::showOnesMCAView( SetUpSFluo *ssfluo )
   // 無ければ ssfluo が持つ view を標準の手順で tab に登録する
   int vcn = i;
   if ( i >= ViewCtrls.count() ) {
-    if ( ( vcn = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView() ) ) < 0 )
+    if ( ( vcn = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView(), false ) ) < 0 )
       return;
   }
-
   ViewTab->setTabText( vcn, ssfluo->sFluo()->name() );
   ssfluo->setViewStats();
   ssfluo->McaView()->makeValid( true );
