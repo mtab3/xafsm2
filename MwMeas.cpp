@@ -18,17 +18,17 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   MeasStart->setStyleSheet( NormalEXECB );
 
-  UseSFluos << UseSFluo0 << UseSFluo1 << UseSFluo2 << UseSFluo3 << UseSFluo4;
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
+  UseSFluos << UseSFluo0 << UseSFluo1 << UseSFluo2 << UseSFluo3 << UseSFluo4; // OK
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {  // OK
     if ( i < SFluos.count() ) {
-      UseSFluos[i]->setText( SFluos[i]->name() );
+      UseSFluos[i]->setText( SFluos[i]->name() );  // OK
     } else {
-      UseSFluos[i]->setChecked( false );
-      UseSFluos[i]->setEnabled( false );
-      UseSFluos[i]->setHidden( true );
+      UseSFluos[i]->setChecked( false );  // OK
+      UseSFluos[i]->setEnabled( false );  // OK
+      UseSFluos[i]->setHidden( true );    // OK
     }
   }
-  XafsMCAMaps.resize( UseSFluos.count() );
+  XafsMCAMaps.resize( UseSFluos.count() );  // OK
 #if 0
   if ( SFluo == NULL ) {
     Use19chSSD->setEnabled( false );
@@ -295,10 +295,10 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 //  getGassAbsTable();
 }
 
-bool MainWindow::isUseSFluo( void )
+bool MainWindow::AUseSFluoIsChecked( void )
 {
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() )
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {  // OK
+    if ( UseSFluos[i]->isChecked() )               // OK
       return true;
   }
   return false;
@@ -313,11 +313,11 @@ bool MainWindow::isASFluoUnit( AUnit0 *unit )
   return false;
 }
 
-int MainWindow::SFluoCHs( void )
+int MainWindow::UsingSFluoCHs( void )
 {
   int ch = 0;
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() )
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {  // OK
+    if ( MPSet.isSFluos[i] )                            // OK
       ch += SFluos[i]->chs();
   }
   return ch;
@@ -1130,8 +1130,11 @@ bool MainWindow::CheckDetectorSelection( void )
     NoOfSelectedSens++;
     TransModeIs = true;
   }
-  if ( isUseSFluo() ) {
-    NoOfSelectedSens += SFluoCHs();
+  if ( AUseSFluoIsChecked() ) {
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {
+      if ( UseSFluos[i]->isChecked() )
+	NoOfSelectedSens += SFluos[i]->chs();
+    }
     FluoModeIs = true;
   }
   if ( UseAux1->isChecked() ) {
@@ -1159,7 +1162,7 @@ bool MainWindow::CheckDetectorSelection( void )
     if ( UseI1->isChecked() ) {
       MeasFileType = TRANS;  // I1 を使ってれば常に Trans にしてしまう。
     }
-    if ( isUseSFluo() ) {
+    if ( AUseSFluoIsChecked() ) {
       MeasFileType = FLUO;
     }
     if ( UseAux1->isChecked() ) {
@@ -1271,8 +1274,8 @@ void MainWindow::StartMeasurement( void )
     if ( CheckDetectorSelection() == false ) { // I0 以外に一つは選ばれてないとダメ
       return;
     }
-    for ( int i = 0; i < UseSFluos.count(); i++ ) { // SSD系を使うときはMCAの測定中はダメ
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < UseSFluos.count(); i++ ) { // OK : SSD系はMCAの測定中はダメ
+      if ( UseSFluos[i]->isChecked() ) {            // OK
 	if ( SSFluos[i]->isInMeas() ) {
 	  QString msg = tr( "Meas cannot Start : %1 is in MCA measurement" )
 	    .arg( SFluos[i]->name() );
@@ -1299,7 +1302,7 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "I1 must be selected for QXAFS" ), 2000 );
         return;
       }
-      if ( isUseSFluo() ) {     // 今 QXafs は透過専用なので、SSDは使えない
+      if ( AUseSFluoIsChecked() ) {     // 今 QXafs は透過専用なので、SSDは使えない
         statusbar->showMessage( tr( "SSD/SDD can not be used for QXAFS" ), 2000 );
         return;
       }
@@ -1340,8 +1343,8 @@ void MainWindow::StartMeasurement( void )
     aGSBS aGsb;
     QVector<aGSBS> GSBSs;
 
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {  // OK
+      if ( UseSFluos[i]->isChecked() ) {             // OK
 	SSFluos[i]->saveTimeModes();
 #if 0
 	SvSelRealTime = SSFluo0->B_SelRealTime()->isChecked();
@@ -1367,8 +1370,8 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBTrue;  aGsb.label = tr( "mu" ); GSBSs << aGsb;
     }
     SFluoDispLines.clear();
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < UseSFluos.count(); i++ ) { // OK
+      if ( UseSFluos[i]->isChecked() ) {            // OK
 	MeasDispMode[ LC ] = FLUO;      // SSD は FLUO に固定
 	MeasDispPol[ LC ] = 1;          // polarity +
 	mMeasUnits.addUnit( SFluos[i] );
@@ -1586,8 +1589,8 @@ void MainWindow::StartMeasurement( void )
 
     MeasChNo = mMeasUnits.count();         // 測定のチャンネル数
     // 19ch SSD を使う場合、上では 1つと数えているので 18 追加
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {  // OK
+      if ( UseSFluos[i]->isChecked() ) {             // OK
 	MeasChNo += ( SFluos[i]->chs() -1 );
       }
     }
@@ -1595,17 +1598,17 @@ void MainWindow::StartMeasurement( void )
       MeasChNo -= 1;
     }
 
-    SetDispMeasModes();
     CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
     SetupMPSet( &MPSet ); // これ以降に return してはいけない
+    SetDispMeasModes();
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
     if ( ( SBlocks == 1 ) && ( BLKpoints[0]->text().toInt() == 1 ) )
       FixedPositionMode = true;
     else
       FixedPositionMode = false;
 
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < UseSFluos.count(); i++ ) {  // OK
+      if ( UseSFluos[i]->isChecked() ) {             // OK
 	showOnesMCAView( SSFluos[i] );
 	if ( MCACanSaveAllOnMem ) {  // 'Can save all' なら全スキャン分メモリ確保
 	  XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
@@ -1691,9 +1694,9 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
   aSet->isI1 = UseI1->isChecked();
   aSet->isNoSFluo = true;;
   aSet->isSFluos.clear();
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    aSet->isSFluos << UseSFluos[i]->isChecked();
-    if ( UseSFluos[i] )
+  for ( int i = 0; i < UseSFluos.count(); i++ ) {  // OK
+    aSet->isSFluos << UseSFluos[i]->isChecked();   // OK
+    if ( UseSFluos[i] )  // OK
       aSet->isNoSFluo = false;
   }
   aSet->totalPoints = ttp;
@@ -1963,8 +1966,8 @@ void MainWindow::MoveInMeasView( int ix, double )
   if ( rpt < 0 )
     rpt = 0;
 
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       set = XafsMCAMaps[i].aPoint( ix, SelRPT->value() - 1 );
       if (( set == NULL ) || (! set->isValid() ))
 	return;
@@ -2005,8 +2008,8 @@ void MainWindow::ReCalcXAFSWithMCA( void )
 
   for ( int i = 0; i < MPSet.totalPoints; i++ ) {    // 正しいか???
     double Sum = 0;
-    for ( int j = 0; j < UseSFluos.count(); j++ ) {
-      if ( UseSFluos[j]->isChecked() ) {
+    for ( int j = 0; j < MPSet.isSFluos.count(); j++ ) {
+      if ( MPSet.isSFluos[j] ) {
 	QVector<double> darks = SFluos[j]->getDarkCountsInROI();
 	int ML = SFluos[j]->length();
 	for ( int ch = 0; ch < SFluos[j]->chs(); ch++ ) {

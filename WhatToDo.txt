@@ -1,10 +1,6 @@
-○ AutoSequence では SFluos[0] だけを使うようになってる
-○ Use19chSSD  -->  UseSFluo0, UseSFluo1, UseSFluo2,...
 ○ UseSFluos が MeasInfo に入っていなくて、XAFS 測定中直に参照されている !!
 ○ XAFS 測定の .info ファイルの "Sum Up Channels:" は嘘くさい
      SFluoLine がそもそもおかしい
-○ MainWindow.cpp で S2DB に SFluos[0] の k2p を決め打ちで渡してるのをやめて
-   QVector<AUnitSFluos*> SFluos を渡してる。
 ○ 要確認 !!!! void MainWindow::ReCalcXAFSWithMCA( void )
 ○ これもだめ void MainWindow::AfterSaveXafs()
 
@@ -18,6 +14,8 @@
     ---> そもそもこれをやめた S2DB の中で正しく k2p をセットするべき
          (自信の測定に使う/使った AUnit0 がわかっていてそれが
 	 　SFluo だったら、セットできるはず)
+
+○ K2P の読み込みは多分大丈夫。LowerLimit と PreAMPGain は要確認
 
 ○ S2DBase に SSFluo0 の k2p のポインタを渡してるが、
 　実際にはその時使う検出器の k2p にしないとダメ
@@ -205,6 +203,13 @@
 ○ umi と統合とかありえるか? 
 
 #########################################################################
+対処済み　2015.3
+◎ 大改造中 newXMAP -> newMwSSD2 : 以下は対処済み
+  ○ AutoSequence では SFluos[0] だけを使うようになってる
+  ○ Use19chSSD  -->  UseSFluo0, UseSFluo1, UseSFluo2,...
+  ○ MainWindow.cpp で S2DB に SFluos[0] の k2p を決め打ちで渡してるのをやめて
+     QVector<AUnitSFluos*> SFluos を渡してる。
+
 対処済み 2015.02
 ○ S2D で、MCA データ群の保存
 ○ S2D の「独立」ボタンを「独立」の枠内に入れる

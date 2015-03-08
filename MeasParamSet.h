@@ -33,6 +33,25 @@ struct MeasPSet {
     TuneAtEachStep = false;
     TuneESQuick = false;
   };
+  bool isUsingSFluo( void ) {
+    for ( int i = 0; i < isSFluos.count(); i++ ) {
+      if ( isSFluos[i] ) {
+	return true;
+      }
+    }
+    return false;
+  }
+#if 0
+  int selectedSFluoCHs( void ) {
+    int rv = 0;
+    for ( int i = 0; i < isSFluos.count(); i++ ) {
+      if ( isSFluos[i] ) {
+	rv += SFluos[i]->chs();
+      }
+    }
+    return rv;
+  }
+#endif
 };
 
 #endif

@@ -191,7 +191,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
   case FLUO:    // FLUO と EXTRA は一度は同じ(一つ)になったのに、
     // SSD only
-    if ( isUseSFluo() ) {
+    if ( MPSet.isUsingSFluo() ) {
       //      darks = SFluo->getDarkCountsInROI();
       //      WriteFLUOHeadSection( out, darks, mMeasUnits.at(0)->getDark() );
       WriteFLUOHeadSection( out, mMeasUnits.at(0)->getDark() );
@@ -251,13 +251,13 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
   case EXTRA:
     {
-      int CHs = SFluoCHs();
-      if ( isUseSFluo() && UseI1->isChecked() ) {
+      int CHs = UsingSFluoCHs();
+      if ( MPSet.isUsingSFluo() && MPSet.isI1 ) {
 	out << QString( " CAMAC( 1)     NDCH =%1" ).arg( MeasChNo, 2 ) << endl;
 	out << "  Angle(c)  Angle(o)    time/s";
 	cnt = 1;
-	for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	  if ( UseSFluos[i]->isChecked() ) {
+	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	  if ( MPSet.isSFluos[i] ) {
 	    for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	      out << QString( "%1" ).arg( cnt, 10 );  cnt++;
 	    }
@@ -267,8 +267,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	out << QString( "%1" ).arg( cnt, 10 );  cnt++;
 	// SFluo ICR
 	int cnt2 = 1;
-	for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	  if ( UseSFluos[i]->isChecked() ) {
+	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	  if ( MPSet.isSFluos[i] ) {
 	    for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	      out << QString( "%1" ).arg( cnt2, 10 );    cnt++; cnt2++;
 	    }
@@ -293,8 +293,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	// I0
 	out << QString( "%1" ).arg( I0, 10 );
 	// 19ch ICR
-	for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	  if ( UseSFluos[i]->isChecked() ) {
+	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	  if ( MPSet.isSFluos[i] ) {
 	    for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	      out << QString( "%1" ).arg( 103, 10 );
 	    }
@@ -315,8 +315,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	// SFluo ROI
 	//	QVector<double> darks;
 	//	darks = SFluo->getDarkCountsInROI();
-	for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	  if ( UseSFluos[i]->isChecked() ) {
+	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	  if ( MPSet.isSFluos[i] ) {
 	    for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	      out << QString( "%1" ).arg( SFluos[i]->getDarkCountsInROI()[j],
 					  10, 'f', 3 );
@@ -327,8 +327,8 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	out << QString( "%1" ).arg( SI0->getDark(), 10, 'f', 3 );
 	// 19ch ICR
 	//	darks = SFluo->getDarkICRs();
-	for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	  if ( UseSFluos[i]->isChecked() ) {
+	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	  if ( MPSet.isSFluos[i] ) {
 	    for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	      out << QString( "%1" ).arg( SFluos[i]->getDarkICRs()[j], 10, 'f', 3 );
 	    }
@@ -349,7 +349,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	out << "  Angle(c)  Angle(o)    time/s";
 	cnt = 1;
 	sfluop = 0;
-	while( ( ! UseSFluos[sfluop]->isChecked() )&&( sfluop < UseSFluos.count() ) )
+	while( ( ! MPSet.isSFluos[sfluop] )&&( sfluop < MPSet.isSFluos.count() ) )
 	  sfluop++;
 	for ( int i = 0; i < Munits; i++ ) {
 	  if ( ! isASFluoUnit( mMeasUnits.at(i) ) ) {
@@ -366,7 +366,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	      // ICR  19ch SSD の番号とそろえる
 	      cnt++;
 	    }
-	    while( ( ! UseSFluos[sfluop]->isChecked() )&&( sfluop < UseSFluos.count() ) )
+	    while( ( ! MPSet.isSFluos[sfluop] )&&( sfluop < MPSet.isSFluos.count() ) )
 	      sfluop++;
 	    cnt--;
 	  }
@@ -376,7 +376,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	
 	// Modes Line
 	sfluop = 0;
-	while( ( ! UseSFluos[sfluop]->isChecked() )&&( sfluop < UseSFluos.count() ) )
+	while( ( ! MPSet.isSFluos[sfluop] )&&( sfluop < MPSet.isSFluos.count() ) )
 	  sfluop++;
 	out << QString( "      Mode         0         0" );
 	for ( int i = 0; i < Munits; i++ ) {
@@ -391,14 +391,14 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	      out << QString( "%1" ).arg( 5, 10 );  // ICR
 	    }
 	    sfluop = 0;
-	    while( ( ! UseSFluos[sfluop]->isChecked() )&&( sfluop < UseSFluos.count() ) )
+	    while( ( ! MPSet.isSFluos[sfluop] )&&( sfluop < MPSet.isSFluos.count() ) )
 	      sfluop++;
 	  }
 	}
 	out << endl;
 	// Offsets Line (per second)
 	sfluop = 0;
-	while( ( ! UseSFluos[sfluop]->isChecked() )&&( sfluop < UseSFluos.count() ) )
+	while( ( ! MPSet.isSFluos[sfluop] )&&( sfluop < MPSet.isSFluos.count() ) )
 	  sfluop++;
 	out << QString( "    Offset         0         0" );
 	for ( int i = 0; i < Munits; i++ ) {
@@ -415,7 +415,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	    for ( int j = 0; j < SFluos[sfluop]->chs(); j++ ) {    // 19ch SSD -- ICR
 	      out << QString( "%1" ).arg( darks[j], 10, 'f', 3 );
 	    }
-	    while( ( ! UseSFluos[sfluop]->isChecked() )&&( sfluop < UseSFluos.count() ) )
+	    while( ( ! MPSet.isSFluos[sfluop] )&&( sfluop < MPSet.isSFluos.count() ) )
 	      sfluop++;
 	  }
 	}
@@ -432,22 +432,22 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
 void MainWindow::WriteFLUOHeadSection( QTextStream &out, double I0dark )
 {
-  int CHs = SFluoCHs();
+  int CHs = UsingSFluoCHs();
 
   out << " " << QString( "CAMAC( 1)     NDCH =%1" ).arg( CHs + 1, 2 ) << endl;
   // I0 の位置を変えないといけないことが判明。なのでまた分離。
   out << "  Angle(c)  Angle(o)    time/s";
   // FLUO の時 mUnits の要素の並びは必ず I0, 19ch SSD になってるはず
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	out << QString( "%1" ).arg( j+1, 10 );  // SSD のチャンネル分
       }
     }
   }
   out << QString( "%1" ).arg( CHs + 1, 10 );    // I0
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	// ICR  19ch SSD の番号とそろえる
 	out << QString( "%1" ).arg( j+1, 10 );
@@ -462,8 +462,8 @@ void MainWindow::WriteFLUOHeadSection( QTextStream &out, double I0dark )
     out << QString( "%1" ).arg( FLUO, 10 );  // Flurescence
   }
   out << QString( "%1" ).arg( 1, 10 );       // I0 : I0 は決め打ちで 1
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	out << QString( "%1" ).arg( FLUO + 100, 10 );  // ICR
       }
@@ -473,8 +473,8 @@ void MainWindow::WriteFLUOHeadSection( QTextStream &out, double I0dark )
   out << endl;
   
   out << QString( "    Offset         0         0" ); //Offsets Line(per socond)
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       for ( int j = 0; j < SFluos[i]->chs(); j++ ) {            // 19ch SSD -- in ROI
 	out << QString( "%1" ).arg( SFluos[i]->getDarkCountsInROI()[j],
 				    10, 'f', 3 );
@@ -483,8 +483,8 @@ void MainWindow::WriteFLUOHeadSection( QTextStream &out, double I0dark )
   }
   out << QString( "%1" ).arg( I0dark, 10, 'f', 3 ); // I0
   //  darks = SFluo->getDarkICRs();
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       for ( int j = 0; j < SFluos[i]->chs(); j++ ) {            // 19ch SSD -- ICR
 	out << QString( "%1" ).arg( SFluos[i]->getDarkICRs()[j], 10, 'f', 3 );
       }
@@ -525,7 +525,7 @@ void MainWindow::WriteInfoFile( void )
   out << endl;
 
 #if 0                    // 何を記録したかったのか謎
-  if ( isUseSFluo() ) {
+  if ( MPSet.isUsingSFluo() ) {
     int CHs = SFluoCHs();
     out << "Sum Up Channels: " << SFluoLine << " ";
     for ( int i = 0; i < CHs; i++ ) {
@@ -548,10 +548,10 @@ void MainWindow::WriteInfoFile2( void )
     return;
   QTextStream out( &f );
 
-  if ( isUseSFluo() ) {
+  if ( MPSet.isUsingSFluo() ) {
     out << "Finally Used SSD Channels:";
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+      if ( MPSet.isSFluos[i] ) {
 	for ( int j = 0; j < SFluos[i]->chs(); i++ ) {
 	  out << " " << j;
 	  if ( SSFluos[i]->selBs2()->isSelected(j) ) {
@@ -635,12 +635,12 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 // (dark 補正がかかっているのは Measurement で readValue するとき
 //  dark 補正のオプションを付けているから)
 {
-  if ( isUseSFluo() ) {
+  if ( MPSet.isUsingSFluo() ) {
     int mcaSaveP = 0;
     if ( MCACanSaveAllOnMem )
       mcaSaveP = MeasR;
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+      if ( MPSet.isSFluos[i] ) {
 	SaveMCADataOnMem( XafsMCAMaps[i].aPoint( MeasP, mcaSaveP ),
 			  SSFluos[i] );  // MeasA は無視
 
@@ -688,7 +688,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
     // FLUO の時は、I0 は SSD データの後ろ
     // if ( MeasFileType != FLUO ) {
     // SSD をつかっていれば、I0 は ROI　の後ろ
-    if ( ! isUseSFluo() ) {
+    if ( ! MPSet.isUsingSFluo() ) {
       // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
 	buf.sprintf( " %9d",                 // 整数 : %9d
@@ -701,7 +701,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
     }
     
     // その後に測定データの並び
-    if ( isUseSFluo() ) {
+    if ( MPSet.isUsingSFluo() ) {
 #if 0
       int CHs = SFluo->chs();
       // vals は count
@@ -710,8 +710,8 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       QVector<double> darks = SFluo->getDarkCountsInROI();
       // 19ch ROI
 #endif
-      for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	if ( UseSFluos[i]->isChecked() ) {
+      for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	if ( MPSet.isSFluos[i] ) {
 	  for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	    buf.sprintf(" %9d",
 			(int)( SFluos[i]->getCountsInROI()[j]
@@ -734,8 +734,8 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       // 19ch ICR
       //      QVector<double> icrs = SFluo->getICRs();
       // 19ch SSD  ICR ( per second )
-      for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	if ( UseSFluos[i]->isChecked() ) {
+      for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	if ( MPSet.isSFluos[i] ) {
 	  for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	    buf.sprintf(" %9d",
 			(int)( SFluos[i]->getICRs()[j] * SFluos[i]->getSetTime() ) );
@@ -781,8 +781,8 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
           QVector<quint64> vals = SFluo->getCountsInROI(); // vals は count
           QVector<double> darks = SFluo->getDarkCountsInROI();   // darks は cps
 #endif
-	  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	    if ( UseSFluos[i]->isChecked() ) {
+	  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	    if ( MPSet.isSFluos[i] ) {
 	      for ( int j = 0; j < SFluos[i]->chs(); j++ ) {   // 19ch SSD  in ROI
 		buf.sprintf(" %9d",
 			    (int)( SFluos[i]->getCountsInROI()[j]
@@ -804,8 +804,8 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
             out << buf;
           }
 	  //          QVector<double> icrs = SFluo->getICRs();
-	  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-	    if ( UseSFluos[i]->isChecked() ) {
+	  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+	    if ( MPSet.isSFluos[i] ) {
 	      for ( int j = 0; j < SFluos[i]->chs(); j++ ) { // 19ch SSD ICR (per sec)
 		buf.sprintf(" %9d", (int)( SFluos[i]->getICRs()[j]
 					   * SFluos[i]->getSetTime() ) );

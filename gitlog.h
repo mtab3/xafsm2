@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Mar 8 01:22:51 2015 +0900\n"\
+                "    working on k2p, ll, and pag\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 7 21:28:37 2015 +0900\n"\
                 "    it looks it works basically, but not reading data\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Mar 5 21:12:35 2015 +0900\n"\
                 "    Yes, it works with 2 QtXmapSSDs, but there left problems\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Mar 5 19:27:58 2015 +0900\n"\
-                "    the codes can compile anyway.   But the reading-data-files for MCA and S2D with MCA must be broken\n"\
 		"\n"\
                 ""
 #endif

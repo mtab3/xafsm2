@@ -295,8 +295,8 @@ void MainWindow::SetDispMeasModes( void )
     DLC++;
     MUC++;
   }
-  for ( int i = 0; i < UseSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+  for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+    if ( MPSet.isSFluos[i] ) {
       MeasView->SetLR( DLC, LEFT_AX );
       MeasView->SetScaleType( DLC, FULLSCALE );
       MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
@@ -389,10 +389,10 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     DLC++;
     MUC++;
   }
-  if ( isUseSFluo() ) {
+  if ( MPSet.isUsingSFluo() ) {
     sum = 0;
-    for ( int i = 0; i < UseSFluos.count(); i++ ) {
-      if ( UseSFluos[i]->isChecked() ) {
+    for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
+      if ( MPSet.isSFluos[i] ) {
 	if ( I0 < 1e-20 ) {
 	  I0 = 1e-20;
 	}
@@ -522,7 +522,7 @@ void MainWindow::newSSDChSelection( int ch, bool f )
   ReCalcS2DMap( SSFluos[dNo] );
   ReCalcXAFSWithMCA();
   
-  if ( ! isUseSFluo() )                  // 19ch SSD を使った蛍光測定の場合だけ
+  if ( ! MPSet.isUsingSFluo() )                  // 19ch SSD を使った蛍光測定の場合だけ
     return;
   if ( MeasView == NULL )                // View が割り振られてなければ何もしない
     return;

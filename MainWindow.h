@@ -235,10 +235,12 @@ private:
   void setupScan2DArea( void );
   void setupWebView( void );
   void SetUpSensorComboBoxes( void );
-  bool isUseSFluo( void );
+  // bool isUseSFluo( void );
+  bool AUseSFluoIsChecked( void );
   bool isASFluoUnit( AUnit0 *unit );
   int whichSFluoUnit( AUnit0 *unit );
-  int SFluoCHs( void );
+  //  int SFluoCHs( void );
+  int UsingSFluoCHs( void );
   
   QStringList DriverList;
 

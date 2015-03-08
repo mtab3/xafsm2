@@ -35,7 +35,8 @@ bool MainWindow::MeasureDark( void )
   if ( UseI1->isChecked() )
     dUnits.addUnit( I1Sensors[ SelectI1->currentIndex() ] );
   for ( int i = 0; i < SSFluos.count(); i++ ) {
-    if ( UseSFluos[i]->isChecked() ) {
+    if ( UseSFluos[i]->isChecked() ) {    // ここは UseSFluos のままでいい
+      // (測定前MPSetが設定されていない時でもここに来る可能性あり)
       if ( SSFluos[i]->isInMeas() ) {
 	QString msg = tr( "MCA measurement is going on with %1" )
 	  .arg( SFluos[i]->name() );
