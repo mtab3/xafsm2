@@ -1,4 +1,3 @@
-○ UseSFluos が MeasInfo に入っていなくて、XAFS 測定中直に参照されている !!
 ○ XAFS 測定の .info ファイルの "Sum Up Channels:" は嘘くさい
      SFluoLine がそもそもおかしい
 ○ 要確認 !!!! void MainWindow::ReCalcXAFSWithMCA( void )
@@ -209,6 +208,7 @@
   ○ Use19chSSD  -->  UseSFluo0, UseSFluo1, UseSFluo2,...
   ○ MainWindow.cpp で S2DB に SFluos[0] の k2p を決め打ちで渡してるのをやめて
      QVector<AUnitSFluos*> SFluos を渡してる。
+  ○ UseSFluos が MeasInfo に入っていなくて、XAFS 測定中直に参照されている !!
 
 対処済み 2015.02
 ○ S2D で、MCA データ群の保存

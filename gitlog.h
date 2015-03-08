@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Mar 8 19:38:26 2015 +0900\n"\
+                "    checked the usage of UseSFluos and MPSet.isSFluo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Mar 8 01:22:51 2015 +0900\n"\
                 "    working on k2p, ll, and pag\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 18:28:32 2015 +0900\n"\
                 "    a bug in MwMeas is fixed\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Mar 5 21:12:35 2015 +0900\n"\
-                "    Yes, it works with 2 QtXmapSSDs, but there left problems\n"\
 		"\n"\
                 ""
 #endif

@@ -151,13 +151,13 @@ void MainWindow::SetDFName(25,581
 QString MainWindow::fixS(42,982
 void MainWindow::WriteHeader(52,1110
 void MainWindow::WriteHeaderCore(59,1275
-void MainWindow::WriteFLUOHeadSection(433,13746
-void MainWindow::WriteInfoFile(497,16122
-void MainWindow::WriteInfoFile2(541,17230
-void MainWindow::WriteHeader2(571,17829
-void MainWindow::WriteHeaderCore2(579,18093
-void MainWindow::RecordData(632,19411
-void MainWindow::TouchDelegateFile(841,26909
+void MainWindow::WriteFLUOHeadSection(433,13751
+void MainWindow::WriteInfoFile(497,16132
+void MainWindow::WriteInfoFile2(541,17240
+void MainWindow::WriteHeader2(571,17839
+void MainWindow::WriteHeaderCore2(579,18103
+void MainWindow::RecordData(632,19421
+void MainWindow::TouchDelegateFile(841,26919
 
 FluoDBase.cpp,274
 FluoDBase::FluoDBase(9,124
@@ -416,61 +416,61 @@ void MainWindow::SelLFN(53,1581
 void MainWindow::SetNewLFName(59,1675
 void MainWindow::AddLogComment(64,1765
 
-MwMeas.cpp,2333
+MwMeas.cpp,2331
 void MainWindow::setupMeasArea(5,46
 bool MainWindow::AUseSFluoIsChecked(298,11490
 bool MainWindow::isASFluoUnit(307,11692
-int MainWindow::CheckedSFluoCHs(316,11858
-int MainWindow::whichSFluoUnit(326,12078
-void MainWindow::ShowOtherOptions(338,12290
-void MainWindow::CheckNewMeasFileName(344,12425
-void MainWindow::ShowMeasFileStatus(350,12589
-void MainWindow::SetUpSensorComboBoxes(360,12970
-void MainWindow::newSensSelectedForI0(429,15065
-void MainWindow::newSensSelectedForI1(452,15725
-void MainWindow::newSensSelectedForA1(475,16394
-void MainWindow::newSensSelectedForA2(498,17063
-void MainWindow::newI0Range(521,17732
-void MainWindow::newI1Range(530,17986
-void MainWindow::newA1Range(539,18240
-void MainWindow::newA2Range(548,18498
-void MainWindow::getGassAbsTable(557,18756
-void MainWindow::SetNewGases(576,19380
-void MainWindow::ShowMB(625,20864
-void MainWindow::ChangeBLKUnit(642,21364
-void MainWindow::ChangeBLKs(665,21882
-void MainWindow::SetStdEXAFSBLKs(687,22472
-void MainWindow::SetStdXAFSBLKs(759,24940
-void MainWindow::SetStdXANESBLKs(835,27563
-void MainWindow::ShowBLKs(897,29608
-void MainWindow::NewRpt(952,31331
-void MainWindow::ShowTotal(958,31406
-void MainWindow::ChangeBLKparams(993,32794
-void MainWindow::ChangeBLKpoints(999,32906
-void MainWindow::SetDwells(1026,33613
-void MainWindow::SelectedNDFN(1035,33808
-void MainWindow::SelectedWBFN(1045,34096
-void MainWindow::SelectedRBFN(1070,34952
-void MainWindow::ClearXViewScreenForMeas(1112,36209
-bool MainWindow::CheckDetectorSelection(1122,36464
-void MainWindow::StartMeasurement(1216,39463
-void MainWindow::SetupMPSet(1665,57732
-bool MainWindow::CheckOkList(1711,59051
-bool MainWindow::theSensorIsAvailable(1725,59407
-void MainWindow::SurelyStop(1735,59642
-void MainWindow::GoingOn(1771,60853
-void MainWindow::CpBlock2SBlock(1794,61666
-bool MainWindow::CheckBlockRange(1817,62434
-void MainWindow::PauseMeasurement(1834,62966
-void MainWindow::OkOverWrite(1857,63804
-void MainWindow::OkHaveNotMeasDark(1862,63873
-void MainWindow::RangeSelOK(1867,63956
-void MainWindow::ShowItemsForAutoMode(1873,64033
-bool MainWindow::ParseAutoMode(1879,64177
-void MainWindow::MoveInMeasView(1955,66631
-void MainWindow::ReCalcXAFSWithMCA(1981,67251
-bool MainWindow::setRsRe(2048,69284
-void MainWindow::AfterSaveXafs(2063,69573
+int MainWindow::UsingSFluoCHs(316,11858
+int MainWindow::whichSFluoUnit(326,12086
+void MainWindow::ShowOtherOptions(338,12298
+void MainWindow::CheckNewMeasFileName(344,12433
+void MainWindow::ShowMeasFileStatus(350,12597
+void MainWindow::SetUpSensorComboBoxes(360,12978
+void MainWindow::newSensSelectedForI0(429,15073
+void MainWindow::newSensSelectedForI1(452,15733
+void MainWindow::newSensSelectedForA1(475,16402
+void MainWindow::newSensSelectedForA2(498,17071
+void MainWindow::newI0Range(521,17740
+void MainWindow::newI1Range(530,17994
+void MainWindow::newA1Range(539,18248
+void MainWindow::newA2Range(548,18506
+void MainWindow::getGassAbsTable(557,18764
+void MainWindow::SetNewGases(576,19388
+void MainWindow::ShowMB(625,20872
+void MainWindow::ChangeBLKUnit(642,21372
+void MainWindow::ChangeBLKs(665,21890
+void MainWindow::SetStdEXAFSBLKs(687,22480
+void MainWindow::SetStdXAFSBLKs(759,24948
+void MainWindow::SetStdXANESBLKs(835,27571
+void MainWindow::ShowBLKs(897,29616
+void MainWindow::NewRpt(952,31339
+void MainWindow::ShowTotal(958,31414
+void MainWindow::ChangeBLKparams(993,32802
+void MainWindow::ChangeBLKpoints(999,32914
+void MainWindow::SetDwells(1026,33621
+void MainWindow::SelectedNDFN(1035,33816
+void MainWindow::SelectedWBFN(1045,34104
+void MainWindow::SelectedRBFN(1070,34960
+void MainWindow::ClearXViewScreenForMeas(1112,36217
+bool MainWindow::CheckDetectorSelection(1122,36472
+void MainWindow::StartMeasurement(1219,39571
+void MainWindow::SetupMPSet(1668,57840
+bool MainWindow::CheckOkList(1714,59159
+bool MainWindow::theSensorIsAvailable(1728,59515
+void MainWindow::SurelyStop(1738,59750
+void MainWindow::GoingOn(1774,60961
+void MainWindow::CpBlock2SBlock(1797,61774
+bool MainWindow::CheckBlockRange(1820,62542
+void MainWindow::PauseMeasurement(1837,63074
+void MainWindow::OkOverWrite(1860,63912
+void MainWindow::OkHaveNotMeasDark(1865,63981
+void MainWindow::RangeSelOK(1870,64064
+void MainWindow::ShowItemsForAutoMode(1876,64141
+bool MainWindow::ParseAutoMode(1882,64285
+void MainWindow::MoveInMeasView(1958,66739
+void MainWindow::ReCalcXAFSWithMCA(1984,67359
+bool MainWindow::setRsRe(2051,69392
+void MainWindow::AfterSaveXafs(2066,69681
 
 MwS2D.cpp,1370
 #define LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN 8,84
@@ -647,10 +647,10 @@ void MainWindow::ShowQXafsProgress(800,28395
 
 ReadData.cpp,219
 void MainWindow::setupReadDataArea(4,26
-void MainWindow::TryToNoticeCurrentView(36,1376
-void MainWindow::DeleteTheView(42,1523
-void MainWindow::TryToGiveNewView(50,1741
-void MainWindow::ansToGetNewMCAView(111,3914
+void MainWindow::TryToNoticeCurrentView(40,1419
+void MainWindow::DeleteTheView(46,1566
+void MainWindow::TryToGiveNewView(54,1784
+void MainWindow::ansToGetNewMCAView(115,3957
 
 ReadDef.cpp,266
 #define LN 7,91
@@ -2559,31 +2559,33 @@ class DarkTable 6,68
   void setItem(DarkTable::setItem18,314
   QTableWidgetItem* getItem(DarkTable::getItem20,407
 
-Data.h,949
+Data.h,1047
 #define DATA_H2,15
-class Data 22,310
-  Units *u;Data::u27,379
-  int SettingL;Data::SettingL29,392
-  QColor SettingC;Data::SettingC30,408
-  QFileDialog *FSDialog;Data::FSDialog31,427
-  QColorDialog *CSDialog;Data::CSDialog32,452
-  QVector<QPushButton*> DColors;Data::DColors33,478
-  DATATYPE dataType;Data::dataType36,558
-  QString FName;Data::FName38,605
-  ViewCTRL *theViewC;Data::theViewC40,623
-  XYView *theXYView;Data::theXYView41,645
-  TYView *theTYView;Data::theTYView42,666
-  MCAView *theMCAView;Data::theMCAView43,687
-  S2DView *theS2DView;Data::theS2DView44,710
-  S2DB *theS2DB;Data::theS2DB45,733
-  int XYLine0,Data::XYLine046,750
-  int XYLine0, XYLines;Data::XYLines46,750
-  bool MCADataIsValid;Data::MCADataIsValid48,776
-  int cMCACh;Data::cMCACh49,799
-  quint32 *cMCA;Data::cMCA50,813
-  aMCASet aMCA0,Data::aMCA053,899
-  aMCASet aMCA0, aMCA;Data::aMCA53,899
-  S2DInfo S2DI;Data::S2DI54,922
+class Data 23,334
+  Units *u;Data::u28,403
+  int SettingL;Data::SettingL30,416
+  QColor SettingC;Data::SettingC31,432
+  QFileDialog *FSDialog;Data::FSDialog32,451
+  QColorDialog *CSDialog;Data::CSDialog33,476
+  QVector<QPushButton*> DColors;Data::DColors34,502
+  QVector<SetUpSFluo*> *SSFluos;Data::SSFluos35,535
+  DATATYPE dataType;Data::dataType38,615
+  QString FName;Data::FName40,662
+  ViewCTRL *theViewC;Data::theViewC42,680
+  XYView *theXYView;Data::theXYView43,702
+  TYView *theTYView;Data::theTYView44,723
+  MCAView *theMCAView;Data::theMCAView45,744
+  S2DView *theS2DView;Data::theS2DView46,767
+  S2DB *theS2DB;Data::theS2DB47,790
+  int XYLine0,Data::XYLine048,807
+  int XYLine0, XYLines;Data::XYLines48,807
+  bool MCADataIsValid;Data::MCADataIsValid50,833
+  int cMCACh;Data::cMCACh51,856
+  quint32 *cMCA;Data::cMCA52,870
+  aMCASet aMCA0,Data::aMCA055,956
+  aMCASet aMCA0, aMCA;Data::aMCA55,956
+  S2DInfo S2DI;Data::S2DI56,979
+  void setSSFluos(Data::setSSFluos74,1616
 
 Diff.h,411
 #define DIFF_H2,15
@@ -2957,224 +2959,224 @@ class MainWindow 81,1708
   QVector<QComboBox*> monDevs;MainWindow::monDevs224,5120
   QVector<QLabel*> monVals;MainWindow::monVals225,5151
   QDialog *MonLinesDialog;MainWindow::MonLinesDialog226,5179
-  QStringList DriverList;MainWindow::DriverList245,5735
-  MUnits mMeasUnits,MainWindow::mMeasUnits247,5762
-  MUnits mMeasUnits, mMonUnits,MainWindow::mMonUnits247,5762
-  MUnits mMeasUnits, mMonUnits, mScanUnits,MainWindow::mScanUnits247,5762
-  MUnits mMeasUnits, mMonUnits, mScanUnits, mS2DUnits;MainWindow::mS2DUnits247,5762
-  MUnits dUnits;MainWindow::dUnits248,5817
-  QTimer *ASTimer;MainWindow::ASTimer251,5857
-  QFile ASFile;MainWindow::ASFile252,5876
-  QTextStream ASin;MainWindow::ASin253,5892
-  QVector<QStringList> ASCMDs;MainWindow::ASCMDs254,5912
-  int ASCMDi,MainWindow::ASCMDi255,5943
-  int ASCMDi, ASCMDii;MainWindow::ASCMDii255,5943
-  CheckUnits CheckMUnits,MainWindow::CheckMUnits256,5966
-  CheckUnits CheckMUnits, CheckSUnits;MainWindow::CheckSUnits256,5966
-  SpecChanger *ASSChanger;MainWindow::ASSChanger257,6005
-  double ASSCDx,MainWindow::ASSCDx258,6032
-  double ASSCDx, ASSCDy;MainWindow::ASSCDy258,6032
-  MUnits ASMUnits;MainWindow::ASMUnits259,6057
-  double ASMeasVals[MainWindow::ASMeasVals260,6076
-  double ASMeasCPSs[MainWindow::ASMeasCPSs261,6104
-  QMap<MainWindow::QMap262,6132
-  QMap<QString,QString> ASVals;MainWindow::ASVals262,6132
-  QMap<MainWindow::QMap263,6164
-  QMap<QString,int> ASLabels;MainWindow::ASLabels263,6164
-  QVector<QStringList> FSTATMsgs;MainWindow::FSTATMsgs279,6667
-  OLDNEW MeasDataStat;MainWindow::MeasDataStat280,6701
-  OLDNEW MeasNameStat;MainWindow::MeasNameStat281,6724
-  OLDNEW ScanDataStat;MainWindow::ScanDataStat282,6747
-  OLDNEW ScanNameStat;MainWindow::ScanNameStat283,6770
-  OLDNEW MonDataStat;MainWindow::MonDataStat284,6793
-  OLDNEW MonNameStat;MainWindow::MonNameStat285,6815
-  OLDNEW S2DDataStat;MainWindow::S2DDataStat286,6837
-  OLDNEW S2DNameStat;MainWindow::S2DNameStat287,6859
-  MSPEED GoMSpeed;MainWindow::GoMSpeed302,7214
-  bool RWDXMCenterF;MainWindow::RWDXMCenterF304,7234
-  QString DXMCenterFile;MainWindow::DXMCenterFile305,7255
-  int SPSLastSelectedM;MainWindow::SPSLastSelectedM309,7332
-  bool inSPSing;MainWindow::inSPSing315,7586
-  int ScanStage;MainWindow::ScanStage316,7603
-  QVector<ScanInfo*> ScanIFs;MainWindow::ScanIFs321,7755
-  int NowScanP;MainWindow::NowScanP322,7825
-  ViewCTRL *ScanViewC;MainWindow::ScanViewC323,7841
-  XYView *ScanView;MainWindow::ScanView324,7864
-  QFileDialog *scanFSel;MainWindow::scanFSel325,7884
-  QVector<int> SFluoDispLines;MainWindow::SFluoDispLines326,7909
-  bool isSI1;MainWindow::isSI1327,7940
-  double SettingMainTh;MainWindow::SettingMainTh329,7980
-  bool LastInIsPulsV;MainWindow::LastInIsPulsV334,8165
-  int MeasChNo;MainWindow::MeasChNo338,8231
-  bool setupMDispFirstTime;MainWindow::setupMDispFirstTime339,8247
-  QTime MonTime;MainWindow::MonTime341,8276
-  bool monRecF;MainWindow::monRecF342,8293
-  QFile MonFile;MainWindow::MonFile343,8309
-  QTextStream MonOut;MainWindow::MonOut344,8326
-  bool inMonitor;MainWindow::inMonitor345,8348
-  int MonStage;MainWindow::MonStage346,8366
-  int MonDev;MainWindow::MonDev347,8382
-  ViewCTRL *MonitorViewC;MainWindow::MonitorViewC348,8396
-  TYView *MonitorView;MainWindow::MonitorView349,8422
-  QFileDialog *monFSel;MainWindow::monFSel350,8445
-  DIRECTION S2DScanDir;MainWindow::S2DScanDir354,8512
-  QFileDialog *S2DFileSel;MainWindow::S2DFileSel355,8536
-  DIRECTION ReversedDir(MainWindow::ReversedDir356,8563
-  S2DView *S2Dview;MainWindow::S2Dview360,8716
-  bool S2DFileCheckIsReady;MainWindow::S2DFileCheckIsReady362,8737
-  QMessageBox *S2DAskOverWrite;MainWindow::S2DAskOverWrite363,8765
-  QMessageBox *S2DAskOverWrite2;MainWindow::S2DAskOverWrite2364,8797
-  QVector<QComboBox*> S2DAxis;MainWindow::S2DAxis365,8830
-  QVector<QLabel *> S2DCurPos;MainWindow::S2DCurPos366,8861
-  QVector<QLabel *> S2DUnits;MainWindow::S2DUnits367,8892
-  QVector<QLineEdit *> S2DStarts;MainWindow::S2DStarts368,8922
-  QVector<QLineEdit *> S2DEnds;MainWindow::S2DEnds369,8956
-  QVector<QLineEdit *> S2DSteps;MainWindow::S2DSteps370,8988
-  QVector<QLineEdit *> S2DPoints;MainWindow::S2DPoints371,9021
-  QVector<RelAbs *> S2DRelAbs;MainWindow::S2DRelAbs372,9055
-  QVector<ASensor*> S2DOkSensors;MainWindow::S2DOkSensors374,9119
-  QVector<AMotor*> S2DOkMotors;MainWindow::S2DOkMotors375,9153
-  QVector<AMotor*> S2DSelectedMotors;MainWindow::S2DSelectedMotors376,9185
-  bool inS2D;MainWindow::inS2D377,9223
-  int S2DStage;MainWindow::S2DStage378,9237
-  bool S2DInfoIsValid;MainWindow::S2DInfoIsValid379,9253
-  S2DInfo S2DI;MainWindow::S2DI380,9276
-  double S2DVals[MainWindow::S2DVals383,9343
-  double S2DVals[ 10 ], S2DCPSs[MainWindow::S2DCPSs383,9343
-  double S2DLastV;MainWindow::S2DLastV384,9382
-  QVector<ASensor*> SensWithRange;MainWindow::SensWithRange403,10028
-  QVector<QLineEdit *> BLKstart;MainWindow::BLKstart405,10064
-  QVector<QLineEdit *> BLKstep;MainWindow::BLKstep406,10097
-  QVector<QLineEdit *> BLKdwell;MainWindow::BLKdwell407,10129
-  QVector<QLineEdit *> BLKpoints;MainWindow::BLKpoints408,10162
-  QVector<QLabel *> BLKlabels;MainWindow::BLKlabels409,10196
-  QVector<QPushButton *> SSDbs;MainWindow::SSDbs411,10228
-  QVector<QPushButton *> GSBs;MainWindow::GSBs412,10260
-  bool showGSB1,MainWindow::showGSB1413,10291
-  bool showGSB1, showGSB2;MainWindow::showGSB2413,10291
-  QFileDialog *SelDFND;MainWindow::SelDFND415,10343
-  QFileDialog *SelWBFND;MainWindow::SelWBFND416,10367
-  QFileDialog *SelRBFND;MainWindow::SelRBFND417,10392
-  QFileDialog *SelLFND;MainWindow::SelLFND418,10417
-  QString SelectedOrgName;MainWindow::SelectedOrgName419,10441
-  UNIT BLKUnit;MainWindow::BLKUnit421,10469
-  int Blocks;MainWindow::Blocks422,10485
-  BlockInfo NXAFSBInfo,MainWindow::NXAFSBInfo427,10618
-  BlockInfo NXAFSBInfo, QXAFSBInfo;MainWindow::QXAFSBInfo427,10618
-  bool SMeasInDeg;MainWindow::SMeasInDeg429,10655
-  UNIT SBLKUnit;MainWindow::SBLKUnit430,10674
-  int SBlocks;MainWindow::SBlocks431,10691
-  double SBlockStartAsDisp[MainWindow::SBlockStartAsDisp432,10706
-  double SBlockStepAsDisp[MainWindow::SBlockStepAsDisp433,10749
-  double SBlockStartInDeg[MainWindow::SBlockStartInDeg434,10791
-  double SBlockStepInDeg[MainWindow::SBlockStepInDeg435,10833
-  double SBlockDwell[MainWindow::SBlockDwell436,10874
-  int SBlockPoints[MainWindow::SBlockPoints437,10911
-  int SensorUseF[MainWindow::SensorUseF438,10946
-  int EstimatedMeasurementTimeInSec;MainWindow::EstimatedMeasurementTimeInSec439,11016
-  bool SvSelRealTime,MainWindow::SvSelRealTime440,11053
-  bool SvSelRealTime, SvSelLiveTime;MainWindow::SvSelLiveTime440,11053
-  bool SvSelExtPattern;MainWindow::SvSelExtPattern441,11090
-  bool SvSaveQDataAsStepScan;MainWindow::SvSaveQDataAsStepScan442,11114
-  QString defaultFileName;MainWindow::defaultFileName443,11144
-  bool NBlockPisValid;MainWindow::NBlockPisValid444,11171
-  bool NMeasInDeg;MainWindow::NMeasInDeg446,11195
-  int NBlocks;MainWindow::NBlocks447,11214
-  UNIT NBLKUnit;MainWindow::NBLKUnit448,11229
-  double NBlockStartAsDisp[MainWindow::NBlockStartAsDisp449,11246
-  double NBlockStepAsDisp[MainWindow::NBlockStepAsDisp450,11289
-  double NBlockStartInDeg[MainWindow::NBlockStartInDeg451,11331
-  double NBlockStepInDeg[MainWindow::NBlockStepInDeg452,11373
-  double NBlockDwell[MainWindow::NBlockDwell453,11414
-  int NBlockPoints[MainWindow::NBlockPoints454,11451
-  DarkTable *darkTable;MainWindow::darkTable459,11566
-  QVector<int> ChModes;MainWindow::ChModes464,11661
-  QVector<ASensor*> I0Sensors,MainWindow::I0Sensors466,11686
-  QVector<ASensor*> I0Sensors, I1Sensors,MainWindow::I1Sensors466,11686
-  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors,MainWindow::A1Sensors466,11686
-  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors, A2Sensors;MainWindow::A2Sensors466,11686
-  QString DFName00,MainWindow::DFName00468,11786
-  QString DFName00, DFName0,MainWindow::DFName0468,11786
-  QString DFName00, DFName0, DFName;MainWindow::DFName468,11786
-  int TP;MainWindow::TP469,11823
-  double TT0;MainWindow::TT0470,11833
-  bool inMeas,MainWindow::inMeas471,11847
-  bool inMeas, inPause,MainWindow::inPause471,11847
-  bool inMeas, inPause, MinPause,MainWindow::MinPause471,11847
-  bool inMeas, inPause, MinPause, SinPause,MainWindow::SinPause471,11847
-  bool inMeas, inPause, MinPause, SinPause, inAutoSeq,MainWindow::inAutoSeq471,11847
-  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib,MainWindow::inDTAutoCalib471,11847
-  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;MainWindow::inSSDEngAutoCalib471,11847
-  bool FixedPositionMode;MainWindow::FixedPositionMode472,11936
-  int cMeasTab;MainWindow::cMeasTab473,11962
-  int inMoveTh;MainWindow::inMoveTh474,12048
-  ENCORPM EncOrPM;MainWindow::EncOrPM475,12064
-  int MeasStage,MainWindow::MeasStage476,12138
-  int MeasStage, SMeasStage;MainWindow::SMeasStage476,12138
-  int MeasR,MainWindow::MeasR477,12167
-  int MeasR, MeasB,MainWindow::MeasB477,12167
-  int MeasR, MeasB, MeasS,MainWindow::MeasS477,12167
-  int MeasR, MeasB, MeasS, MeasP;MainWindow::MeasP477,12167
-  double GoToKeV;MainWindow::GoToKeV478,12201
-  double InitialKeV;MainWindow::InitialKeV479,12219
-  double r[MainWindow::r480,12240
-  QMessageBox *StopP;MainWindow::StopP481,12259
-  QMessageBox *AskOverWrite;MainWindow::AskOverWrite482,12281
-  QMessageBox *MakeSureOfRangeSelect;MainWindow::MakeSureOfRangeSelect483,12310
-  QMessageBox *NoticeHaveNotMeasDark;MainWindow::NoticeHaveNotMeasDark484,12348
-  bool AskingOverwrite;MainWindow::AskingOverwrite485,12386
-  bool MakingSureOfRangeSelect;MainWindow::MakingSureOfRangeSelect486,12410
-  bool haveMeasuredDark;MainWindow::haveMeasuredDark487,12442
-  bool NoticingHaveNotMeasDark;MainWindow::NoticingHaveNotMeasDark488,12467
-  double MeasVals[MainWindow::MeasVals493,12726
-  double MeasCPSs[MainWindow::MeasCPSs494,12752
-  MEASMODE MeasDispMode[MainWindow::MeasDispMode495,12778
-  int MeasDispPol[MainWindow::MeasDispPol496,12810
-  double NowDwell;MainWindow::NowDwell497,12850
-  bool UseAutoShutter;MainWindow::UseAutoShutter498,12869
-  bool inMeasDark;MainWindow::inMeasDark499,12892
-  bool AskingShutterClose;MainWindow::AskingShutterClose500,12911
-  bool AskingShutterOpen;MainWindow::AskingShutterOpen501,12938
-  int MeasDarkStage;MainWindow::MeasDarkStage502,12964
-  int oldCurrentView;MainWindow::oldCurrentView523,13627
-  ViewCTRL *MeasViewC;MainWindow::MeasViewC524,13649
-  XYView *MeasView;MainWindow::MeasView525,13672
-  QStringList QXafsOk,MainWindow::QXafsOk542,14087
-  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk542,14087
-  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk542,14087
-  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable543,14128
-  int SaveNowBlocks,MainWindow::SaveNowBlocks544,14157
-  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0544,14157
-  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1544,14157
-  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos545,14210
-  bool SaveUseAux1,MainWindow::SaveUseAux1546,14241
-  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2546,14241
-  int OrigHSpeed,MainWindow::OrigHSpeed547,14274
-  int OrigHSpeed, HSpeed,MainWindow::HSpeed547,14274
-  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed547,14274
-  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed547,14274
-  int QXafsSP0,MainWindow::QXafsSP0548,14321
-  int QXafsSP0, QXafsSP,MainWindow::QXafsSP548,14321
-  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0548,14321
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP548,14321
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval548,14321
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints548,14321
-  double RunUpRate,MainWindow::RunUpRate549,14393
-  double RunUpRate, RunUpTime,MainWindow::RunUpTime549,14393
-  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime549,14393
-  QString EncValue0,MainWindow::EncValue0550,14440
-  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0550,14440
-  bool QIntervalBlock1,MainWindow::QIntervalBlock1551,14473
-  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2551,14473
-  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1552,14514
-  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2552,14514
-  bool AutoModeFirst;MainWindow::AutoModeFirst555,14575
-  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition556,14597
-  int MeasA;MainWindow::MeasA557,14631
-  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams558,14644
-  QString AutoModeComment;MainWindow::AutoModeComment560,14719
-  AMotor *smAm;MainWindow::smAm598,16036
-  int smStage;MainWindow::smStage599,16052
+  QStringList DriverList;MainWindow::DriverList245,5733
+  MUnits mMeasUnits,MainWindow::mMeasUnits247,5760
+  MUnits mMeasUnits, mMonUnits,MainWindow::mMonUnits247,5760
+  MUnits mMeasUnits, mMonUnits, mScanUnits,MainWindow::mScanUnits247,5760
+  MUnits mMeasUnits, mMonUnits, mScanUnits, mS2DUnits;MainWindow::mS2DUnits247,5760
+  MUnits dUnits;MainWindow::dUnits248,5815
+  QTimer *ASTimer;MainWindow::ASTimer251,5855
+  QFile ASFile;MainWindow::ASFile252,5874
+  QTextStream ASin;MainWindow::ASin253,5890
+  QVector<QStringList> ASCMDs;MainWindow::ASCMDs254,5910
+  int ASCMDi,MainWindow::ASCMDi255,5941
+  int ASCMDi, ASCMDii;MainWindow::ASCMDii255,5941
+  CheckUnits CheckMUnits,MainWindow::CheckMUnits256,5964
+  CheckUnits CheckMUnits, CheckSUnits;MainWindow::CheckSUnits256,5964
+  SpecChanger *ASSChanger;MainWindow::ASSChanger257,6003
+  double ASSCDx,MainWindow::ASSCDx258,6030
+  double ASSCDx, ASSCDy;MainWindow::ASSCDy258,6030
+  MUnits ASMUnits;MainWindow::ASMUnits259,6055
+  double ASMeasVals[MainWindow::ASMeasVals260,6074
+  double ASMeasCPSs[MainWindow::ASMeasCPSs261,6102
+  QMap<MainWindow::QMap262,6130
+  QMap<QString,QString> ASVals;MainWindow::ASVals262,6130
+  QMap<MainWindow::QMap263,6162
+  QMap<QString,int> ASLabels;MainWindow::ASLabels263,6162
+  QVector<QStringList> FSTATMsgs;MainWindow::FSTATMsgs279,6665
+  OLDNEW MeasDataStat;MainWindow::MeasDataStat280,6699
+  OLDNEW MeasNameStat;MainWindow::MeasNameStat281,6722
+  OLDNEW ScanDataStat;MainWindow::ScanDataStat282,6745
+  OLDNEW ScanNameStat;MainWindow::ScanNameStat283,6768
+  OLDNEW MonDataStat;MainWindow::MonDataStat284,6791
+  OLDNEW MonNameStat;MainWindow::MonNameStat285,6813
+  OLDNEW S2DDataStat;MainWindow::S2DDataStat286,6835
+  OLDNEW S2DNameStat;MainWindow::S2DNameStat287,6857
+  MSPEED GoMSpeed;MainWindow::GoMSpeed302,7212
+  bool RWDXMCenterF;MainWindow::RWDXMCenterF304,7232
+  QString DXMCenterFile;MainWindow::DXMCenterFile305,7253
+  int SPSLastSelectedM;MainWindow::SPSLastSelectedM309,7330
+  bool inSPSing;MainWindow::inSPSing315,7584
+  int ScanStage;MainWindow::ScanStage316,7601
+  QVector<ScanInfo*> ScanIFs;MainWindow::ScanIFs321,7753
+  int NowScanP;MainWindow::NowScanP322,7823
+  ViewCTRL *ScanViewC;MainWindow::ScanViewC323,7839
+  XYView *ScanView;MainWindow::ScanView324,7862
+  QFileDialog *scanFSel;MainWindow::scanFSel325,7882
+  QVector<int> SFluoDispLines;MainWindow::SFluoDispLines326,7907
+  bool isSI1;MainWindow::isSI1327,7938
+  double SettingMainTh;MainWindow::SettingMainTh329,7978
+  bool LastInIsPulsV;MainWindow::LastInIsPulsV334,8163
+  int MeasChNo;MainWindow::MeasChNo338,8229
+  bool setupMDispFirstTime;MainWindow::setupMDispFirstTime339,8245
+  QTime MonTime;MainWindow::MonTime341,8274
+  bool monRecF;MainWindow::monRecF342,8291
+  QFile MonFile;MainWindow::MonFile343,8307
+  QTextStream MonOut;MainWindow::MonOut344,8324
+  bool inMonitor;MainWindow::inMonitor345,8346
+  int MonStage;MainWindow::MonStage346,8364
+  int MonDev;MainWindow::MonDev347,8380
+  ViewCTRL *MonitorViewC;MainWindow::MonitorViewC348,8394
+  TYView *MonitorView;MainWindow::MonitorView349,8420
+  QFileDialog *monFSel;MainWindow::monFSel350,8443
+  DIRECTION S2DScanDir;MainWindow::S2DScanDir354,8510
+  QFileDialog *S2DFileSel;MainWindow::S2DFileSel355,8534
+  DIRECTION ReversedDir(MainWindow::ReversedDir356,8561
+  S2DView *S2Dview;MainWindow::S2Dview360,8714
+  bool S2DFileCheckIsReady;MainWindow::S2DFileCheckIsReady362,8735
+  QMessageBox *S2DAskOverWrite;MainWindow::S2DAskOverWrite363,8763
+  QMessageBox *S2DAskOverWrite2;MainWindow::S2DAskOverWrite2364,8795
+  QVector<QComboBox*> S2DAxis;MainWindow::S2DAxis365,8828
+  QVector<QLabel *> S2DCurPos;MainWindow::S2DCurPos366,8859
+  QVector<QLabel *> S2DUnits;MainWindow::S2DUnits367,8890
+  QVector<QLineEdit *> S2DStarts;MainWindow::S2DStarts368,8920
+  QVector<QLineEdit *> S2DEnds;MainWindow::S2DEnds369,8954
+  QVector<QLineEdit *> S2DSteps;MainWindow::S2DSteps370,8986
+  QVector<QLineEdit *> S2DPoints;MainWindow::S2DPoints371,9019
+  QVector<RelAbs *> S2DRelAbs;MainWindow::S2DRelAbs372,9053
+  QVector<ASensor*> S2DOkSensors;MainWindow::S2DOkSensors374,9117
+  QVector<AMotor*> S2DOkMotors;MainWindow::S2DOkMotors375,9151
+  QVector<AMotor*> S2DSelectedMotors;MainWindow::S2DSelectedMotors376,9183
+  bool inS2D;MainWindow::inS2D377,9221
+  int S2DStage;MainWindow::S2DStage378,9235
+  bool S2DInfoIsValid;MainWindow::S2DInfoIsValid379,9251
+  S2DInfo S2DI;MainWindow::S2DI380,9274
+  double S2DVals[MainWindow::S2DVals383,9341
+  double S2DVals[ 10 ], S2DCPSs[MainWindow::S2DCPSs383,9341
+  double S2DLastV;MainWindow::S2DLastV384,9380
+  QVector<ASensor*> SensWithRange;MainWindow::SensWithRange403,10026
+  QVector<QLineEdit *> BLKstart;MainWindow::BLKstart405,10062
+  QVector<QLineEdit *> BLKstep;MainWindow::BLKstep406,10095
+  QVector<QLineEdit *> BLKdwell;MainWindow::BLKdwell407,10127
+  QVector<QLineEdit *> BLKpoints;MainWindow::BLKpoints408,10160
+  QVector<QLabel *> BLKlabels;MainWindow::BLKlabels409,10194
+  QVector<QPushButton *> SSDbs;MainWindow::SSDbs411,10226
+  QVector<QPushButton *> GSBs;MainWindow::GSBs412,10258
+  bool showGSB1,MainWindow::showGSB1413,10289
+  bool showGSB1, showGSB2;MainWindow::showGSB2413,10289
+  QFileDialog *SelDFND;MainWindow::SelDFND415,10341
+  QFileDialog *SelWBFND;MainWindow::SelWBFND416,10365
+  QFileDialog *SelRBFND;MainWindow::SelRBFND417,10390
+  QFileDialog *SelLFND;MainWindow::SelLFND418,10415
+  QString SelectedOrgName;MainWindow::SelectedOrgName419,10439
+  UNIT BLKUnit;MainWindow::BLKUnit421,10467
+  int Blocks;MainWindow::Blocks422,10483
+  BlockInfo NXAFSBInfo,MainWindow::NXAFSBInfo427,10616
+  BlockInfo NXAFSBInfo, QXAFSBInfo;MainWindow::QXAFSBInfo427,10616
+  bool SMeasInDeg;MainWindow::SMeasInDeg429,10653
+  UNIT SBLKUnit;MainWindow::SBLKUnit430,10672
+  int SBlocks;MainWindow::SBlocks431,10689
+  double SBlockStartAsDisp[MainWindow::SBlockStartAsDisp432,10704
+  double SBlockStepAsDisp[MainWindow::SBlockStepAsDisp433,10747
+  double SBlockStartInDeg[MainWindow::SBlockStartInDeg434,10789
+  double SBlockStepInDeg[MainWindow::SBlockStepInDeg435,10831
+  double SBlockDwell[MainWindow::SBlockDwell436,10872
+  int SBlockPoints[MainWindow::SBlockPoints437,10909
+  int SensorUseF[MainWindow::SensorUseF438,10944
+  int EstimatedMeasurementTimeInSec;MainWindow::EstimatedMeasurementTimeInSec439,11014
+  bool SvSelRealTime,MainWindow::SvSelRealTime440,11051
+  bool SvSelRealTime, SvSelLiveTime;MainWindow::SvSelLiveTime440,11051
+  bool SvSelExtPattern;MainWindow::SvSelExtPattern441,11088
+  bool SvSaveQDataAsStepScan;MainWindow::SvSaveQDataAsStepScan442,11112
+  QString defaultFileName;MainWindow::defaultFileName443,11142
+  bool NBlockPisValid;MainWindow::NBlockPisValid444,11169
+  bool NMeasInDeg;MainWindow::NMeasInDeg446,11193
+  int NBlocks;MainWindow::NBlocks447,11212
+  UNIT NBLKUnit;MainWindow::NBLKUnit448,11227
+  double NBlockStartAsDisp[MainWindow::NBlockStartAsDisp449,11244
+  double NBlockStepAsDisp[MainWindow::NBlockStepAsDisp450,11287
+  double NBlockStartInDeg[MainWindow::NBlockStartInDeg451,11329
+  double NBlockStepInDeg[MainWindow::NBlockStepInDeg452,11371
+  double NBlockDwell[MainWindow::NBlockDwell453,11412
+  int NBlockPoints[MainWindow::NBlockPoints454,11449
+  DarkTable *darkTable;MainWindow::darkTable459,11564
+  QVector<int> ChModes;MainWindow::ChModes464,11659
+  QVector<ASensor*> I0Sensors,MainWindow::I0Sensors466,11684
+  QVector<ASensor*> I0Sensors, I1Sensors,MainWindow::I1Sensors466,11684
+  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors,MainWindow::A1Sensors466,11684
+  QVector<ASensor*> I0Sensors, I1Sensors, A1Sensors, A2Sensors;MainWindow::A2Sensors466,11684
+  QString DFName00,MainWindow::DFName00468,11784
+  QString DFName00, DFName0,MainWindow::DFName0468,11784
+  QString DFName00, DFName0, DFName;MainWindow::DFName468,11784
+  int TP;MainWindow::TP469,11821
+  double TT0;MainWindow::TT0470,11831
+  bool inMeas,MainWindow::inMeas471,11845
+  bool inMeas, inPause,MainWindow::inPause471,11845
+  bool inMeas, inPause, MinPause,MainWindow::MinPause471,11845
+  bool inMeas, inPause, MinPause, SinPause,MainWindow::SinPause471,11845
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq,MainWindow::inAutoSeq471,11845
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib,MainWindow::inDTAutoCalib471,11845
+  bool inMeas, inPause, MinPause, SinPause, inAutoSeq, inDTAutoCalib, inSSDEngAutoCalib;MainWindow::inSSDEngAutoCalib471,11845
+  bool FixedPositionMode;MainWindow::FixedPositionMode472,11934
+  int cMeasTab;MainWindow::cMeasTab473,11960
+  int inMoveTh;MainWindow::inMoveTh474,12046
+  ENCORPM EncOrPM;MainWindow::EncOrPM475,12062
+  int MeasStage,MainWindow::MeasStage476,12136
+  int MeasStage, SMeasStage;MainWindow::SMeasStage476,12136
+  int MeasR,MainWindow::MeasR477,12165
+  int MeasR, MeasB,MainWindow::MeasB477,12165
+  int MeasR, MeasB, MeasS,MainWindow::MeasS477,12165
+  int MeasR, MeasB, MeasS, MeasP;MainWindow::MeasP477,12165
+  double GoToKeV;MainWindow::GoToKeV478,12199
+  double InitialKeV;MainWindow::InitialKeV479,12217
+  double r[MainWindow::r480,12238
+  QMessageBox *StopP;MainWindow::StopP481,12257
+  QMessageBox *AskOverWrite;MainWindow::AskOverWrite482,12279
+  QMessageBox *MakeSureOfRangeSelect;MainWindow::MakeSureOfRangeSelect483,12308
+  QMessageBox *NoticeHaveNotMeasDark;MainWindow::NoticeHaveNotMeasDark484,12346
+  bool AskingOverwrite;MainWindow::AskingOverwrite485,12384
+  bool MakingSureOfRangeSelect;MainWindow::MakingSureOfRangeSelect486,12408
+  bool haveMeasuredDark;MainWindow::haveMeasuredDark487,12440
+  bool NoticingHaveNotMeasDark;MainWindow::NoticingHaveNotMeasDark488,12465
+  double MeasVals[MainWindow::MeasVals493,12724
+  double MeasCPSs[MainWindow::MeasCPSs494,12750
+  MEASMODE MeasDispMode[MainWindow::MeasDispMode495,12776
+  int MeasDispPol[MainWindow::MeasDispPol496,12808
+  double NowDwell;MainWindow::NowDwell497,12848
+  bool UseAutoShutter;MainWindow::UseAutoShutter498,12867
+  bool inMeasDark;MainWindow::inMeasDark499,12890
+  bool AskingShutterClose;MainWindow::AskingShutterClose500,12909
+  bool AskingShutterOpen;MainWindow::AskingShutterOpen501,12936
+  int MeasDarkStage;MainWindow::MeasDarkStage502,12962
+  int oldCurrentView;MainWindow::oldCurrentView523,13625
+  ViewCTRL *MeasViewC;MainWindow::MeasViewC524,13647
+  XYView *MeasView;MainWindow::MeasView525,13670
+  QStringList QXafsOk,MainWindow::QXafsOk542,14085
+  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk542,14085
+  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk542,14085
+  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable543,14126
+  int SaveNowBlocks,MainWindow::SaveNowBlocks544,14155
+  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0544,14155
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1544,14155
+  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos545,14208
+  bool SaveUseAux1,MainWindow::SaveUseAux1546,14239
+  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2546,14239
+  int OrigHSpeed,MainWindow::OrigHSpeed547,14272
+  int OrigHSpeed, HSpeed,MainWindow::HSpeed547,14272
+  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed547,14272
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed547,14272
+  int QXafsSP0,MainWindow::QXafsSP0548,14319
+  int QXafsSP0, QXafsSP,MainWindow::QXafsSP548,14319
+  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0548,14319
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP548,14319
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval548,14319
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints548,14319
+  double RunUpRate,MainWindow::RunUpRate549,14391
+  double RunUpRate, RunUpTime,MainWindow::RunUpTime549,14391
+  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime549,14391
+  QString EncValue0,MainWindow::EncValue0550,14438
+  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0550,14438
+  bool QIntervalBlock1,MainWindow::QIntervalBlock1551,14471
+  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2551,14471
+  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1552,14512
+  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2552,14512
+  bool AutoModeFirst;MainWindow::AutoModeFirst555,14573
+  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition556,14595
+  int MeasA;MainWindow::MeasA557,14629
+  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams558,14642
+  QString AutoModeComment;MainWindow::AutoModeComment560,14717
+  AMotor *smAm;MainWindow::smAm598,16034
+  int smStage;MainWindow::smStage599,16050
 
 Mccd.h,276
 #define MCCD_H3,16
@@ -3213,7 +3215,7 @@ struct MeasPSet 4,47
   double TuneESQuickTime;27,442
   MeasPSet(29,469
   bool isUsingSFluo(36,614
-  int selectedSFluoCHs(44,772
+  int selectedSFluoCHs(45,778
 
 MonInfo.h,338
 #define MONINFO_H2,18

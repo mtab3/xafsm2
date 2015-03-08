@@ -10,22 +10,26 @@ void MainWindow::setupReadDataArea( void )
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
   for ( int i = 0; i < Datas.count(); i++ ) {
-    connect( Datas.at(i), SIGNAL( AskToGetNewView( DATATYPE, QString ) ),
+    connect( Datas[i], SIGNAL( AskToGetNewView( DATATYPE, QString ) ),
 	     this, SLOT( TryToGiveNewView( DATATYPE, QString ) ),
 	     Qt::UniqueConnection );
     //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
-    //	     Datas.at(i), SLOT( GotNewView( QObject *, ViewCTRL * ) ),
+    //	     Datas[i], SLOT( GotNewView( QObject *, ViewCTRL * ) ),
     //       Qt::UniqueConnection );
-    connect( Datas.at(i), SIGNAL( showMessage( QString, int ) ),
+    connect( Datas[i], SIGNAL( showMessage( QString, int ) ),
 	     this, SLOT( ShowMessageOnSBar( QString, int ) ),
 	     Qt::UniqueConnection );
-    connect( Datas.at(i), SIGNAL( GiveMeCurrentView( void ) ),
+    connect( Datas[i], SIGNAL( GiveMeCurrentView( void ) ),
 	     this, SLOT( TryToNoticeCurrentView( void ) ),
 	     Qt::UniqueConnection );
+    
+#if 0
     connect( Datas[i], SIGNAL( setMCACh( int ) ), this, SLOT( MCAChSelected( int ) ),
 	     Qt::UniqueConnection );
     connect( this, SIGNAL( NewMCACh( int ) ), Datas[i], SLOT( SelectedNewMCACh( int ) ),
 	     Qt::UniqueConnection );
+    Datas[i]->setSSFluos( SSFluos );
+#endif
   }
 #if 0
   connect( CloseView, SIGNAL( clicked() ), this, SLOT( DeleteTheView() ),

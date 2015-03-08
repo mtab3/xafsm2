@@ -12,6 +12,7 @@
 #include "Units.h"
 #include "S2DInfo.h"
 #include "S2DB.h"
+#include "SetUpSFluo.h"
 
 class ViewCTRL;
 class XYView;
@@ -31,6 +32,7 @@ class Data : public QFrame, private Ui::Data
   QFileDialog *FSDialog;
   QColorDialog *CSDialog;
   QVector<QPushButton*> DColors;
+  QVector<SetUpSFluo*> *SSFluos;
 
   void CheckFileType( const QString &fname );
   DATATYPE dataType;
@@ -69,6 +71,7 @@ class Data : public QFrame, private Ui::Data
 		   QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
   void GotCurrentView( void *view );
   void setDataRoot( const QString &dataRoot );
+  void setSSFluos( QVector<SetUpSFluo*> *sSFluos ) { SSFluos = sSFluos; };
 
  private slots:
   void ShowFName( const QString &fname );
