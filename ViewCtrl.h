@@ -22,7 +22,8 @@ class ViewCTRL : public QObject
   QWidget* ViewBase;
   void* nowView;
   VTYPE nowVType;
-  DATATYPE nowDType;
+  D_TYPE nowDataType;
+  D_ORIG nowDataOrig;
   bool deletable;
   GSBStats *gsbStat;
   int VC;
@@ -34,10 +35,11 @@ class ViewCTRL : public QObject
   void setViewBase( QWidget *base ) { ViewBase = base; };
   //  void setNowView( void *nowv ) { nowView = nowv; };
   //  void setNowVType( VTYPE nvtype ) { nowVType = nvtype; };
-  bool setView( void *view, VTYPE vtype, DATATYPE dtype, bool overlap = true );
+  bool setView( void *view, VTYPE vtype, D_TYPE dType, D_ORIG dOrig, bool overlap = true );
   void *getView( void ) { return nowView; };
   VTYPE getVType( void ) { return nowVType; };
-  DATATYPE getDType( void ) { return nowDType; };
+  D_TYPE getDataType( void ) { return nowDataType; };
+  D_ORIG getDataOrig( void ) { return nowDataOrig; };
   bool deleteView( void );
   bool isDeletable( void ) { return deletable; };
   void setDeletable( bool Deletable ) { deletable = Deletable; };

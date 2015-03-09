@@ -1536,7 +1536,7 @@ void MainWindow::StartMeasurement( void )
     }
 
     int vcn;
-    if ( (  vcn = SetUpNewView( XYVIEW, MEASDATA, NULL ) ) < 0 ) {
+    if ( (  vcn = SetUpNewView( XYVIEW, MEASDATA, MEASUREDD, NULL ) ) < 0 ) {
       // グラフ表示領域が確保できないとダメ
       return;
     }
@@ -1611,9 +1611,14 @@ void MainWindow::StartMeasurement( void )
       if ( UseSFluos[i]->isChecked() ) {             // OK
 	showOnesMCAView( SSFluos[i] );
 	if ( MCACanSaveAllOnMem ) {  // 'Can save all' なら全スキャン分メモリ確保
+	  qDebug() << "1::: "
+		   << TotalPoints << SelRPT->value()
+		   << SFluos[i]->length() << SFluos[i]->chs();
 	  XafsMCAMaps[i].New( TotalPoints, SelRPT->value(),
 			      SFluos[i]->length(), SFluos[i]->chs() );
 	} else {                        // そうでなければ 1スキャン分だけメモリ上に
+	  qDebug() << "2::: "
+		   << TotalPoints << 1 << SFluos[i]->length() << SFluos[i]->chs();
 	  XafsMCAMaps[i].New( TotalPoints, 1, SFluos[i]->length(), SFluos[i]->chs() );
 	  // SelRPT->value() --> 1
 	}

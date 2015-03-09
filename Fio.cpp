@@ -552,7 +552,7 @@ void MainWindow::WriteInfoFile2( void )
     out << "Finally Used SSD Channels:";
     for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
       if ( MPSet.isSFluos[i] ) {
-	for ( int j = 0; j < SFluos[i]->chs(); i++ ) {
+	for ( int j = 0; j < SFluos[i]->chs(); j++ ) {
 	  out << " " << j;
 	  if ( SSFluos[i]->selBs2()->isSelected(j) ) {
 	    out << " 1";
@@ -657,6 +657,8 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 	  QFileInfo mcaf = QFileInfo( newDir.absolutePath(),
 				      f.baseName() + FnameExt );
 	  //      saveMCAData0( mcaf.filePath(), XafsMCAMap.aPoint( MeasP, mcaSaveP ) );
+	  qDebug() << "XAFS-MCA-Maps" << XafsMCAMaps.count()
+		   << MeasA << MeasR << MeasP << i;
 	  XafsMCAMaps[i].aPoint( MeasP, mcaSaveP )
 	    ->save( mcaf.filePath(), "measured while XAFS measurement" );
 	}

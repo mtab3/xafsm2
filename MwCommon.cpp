@@ -146,7 +146,7 @@ void MainWindow::SetGSBLabels( QStringList lbls )
 
 void MainWindow::SelectAGB( bool f )
 {
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() != MEASDATA )
+  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDataType() != MEASDATA )
     return;
   if ( ViewCtrls[ ViewTab->currentIndex() ]->getView() == NULL )
     return;

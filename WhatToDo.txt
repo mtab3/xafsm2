@@ -1,3 +1,6 @@
+○ ReadData.cpp の中の   case S2DDATA:   で、getNewMCAView しようとしているのは大事。
+　きちんと考えて対応するべき
+
 ○ XAFS 測定の .info ファイルの "Sum Up Channels:" は嘘くさい
      SFluoLine がそもそもおかしい
 ○ 要確認 !!!! void MainWindow::ReCalcXAFSWithMCA( void )

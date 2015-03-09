@@ -14,6 +14,9 @@ Data::Data( QWidget *p ) : QFrame( p )
 
   u = new Units;
 
+  DType = NODATA;
+  DVer = VER_00;
+  
   SettingL = 0;
   SettingC = QColor( 0, 0, 0 );
   FSDialog = new QFileDialog;
@@ -105,12 +108,12 @@ void Data::ShowFName( const QString &fname )
 
   SelectedFile->setText( dfname );
   CheckFileType( fname );
-  emit AskToGetNewView( dataType, FSDialog->directory().absolutePath() );
+  emit AskToGetNewView( DType, FSDialog->directory().absolutePath() );
 }
 
 void Data::StartToShowData( void )
 {
-  emit AskToGetNewView( dataType, "" );
+  emit AskToGetNewView( DType, "" );
 }
 
 void Data::CheckFileType( const QString &fname )
@@ -118,7 +121,7 @@ void Data::CheckFileType( const QString &fname )
   QFile f( fname );
   
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
-    DataType->setText( DataTypeNames[ dataType = NONDATA ] );
+    DataType->setText( DataTypeNames[ DType = NODATA ] );
     emit showMessage( tr( "Can not open the file %1." ).arg( fname ), 2000 );
     return;
   }
@@ -126,7 +129,7 @@ void Data::CheckFileType( const QString &fname )
   QTextStream in( &f );
   if ( in.atEnd() ) {
     f.close();
-    DataType->setText( DataTypeNames[ dataType = NONDATA ] );
+    DataType->setText( DataTypeNames[ DType = NODATA ] );
     emit showMessage( tr( "The file %1 is empty." ).arg( fname ), 2000 );
     return;
   }
@@ -134,20 +137,30 @@ void Data::CheckFileType( const QString &fname )
   QString aline = in.readLine();
   f.close();
 
-  if ( aline.left( FileIDs[ MEASSHOW ].length() ) == FileIDs[ MEASSHOW ] ) {
-    DataType->setText( DataTypeNames[ dataType = MEASSHOW ] );
-  } else if ( aline.left( FileIDs[ SCANSHOW ].length() ) == FileIDs[ SCANSHOW ] ) {
-    DataType->setText( DataTypeNames[ dataType = SCANSHOW ] );
-  } else if ( aline.left( FileIDs[ MONSHOW ].length() ) == FileIDs[ MONSHOW ] ) {
-    DataType->setText( DataTypeNames[ dataType = MONSHOW ] );
-  } else if ( aline.left( FileIDs[ MCASHOW1 ].length() ) == FileIDs[ MCASHOW1 ] ) {
-    DataType->setText( DataTypeNames[ dataType = MCASHOW1 ] );
-  } else if ( aline.left( FileIDs[ MCASHOW2 ].length() ) == FileIDs[ MCASHOW2 ] ) {
-    DataType->setText( DataTypeNames[ dataType = MCASHOW2 ] );
-  } else if ( aline.left( FileIDs[ S2DSHOW ].length() ) == FileIDs[ S2DSHOW ] ) {
-    DataType->setText( DataTypeNames[ dataType = S2DSHOW ] );
+  DVer = VER_00;
+  if ( aline.left( FileIDs[ MEASDATA ].length() ) == FileIDs[ MEASDATA ] ) {
+    DataType->setText( DataTypeNames[ DType = MEASDATA ] );
+  } else if ( aline.left( FileIDs[ SCANDATA ].length() ) == FileIDs[ SCANDATA ] ) {
+    DataType->setText( DataTypeNames[ DType = SCANDATA ] );
+  } else if ( aline.left( FileIDs[ MONDATA ].length() ) == FileIDs[ MONDATA ] ) {
+    DataType->setText( DataTypeNames[ DType = MONDATA ] );
+  } else if ( aline.left( FileIDs[ MCADATA ].length() ) == FileIDs[ MCADATA ] ) {
+    if ( aline.left( ( FileIDs[ MCADATA ] + " Data" ).length() )
+	 == ( FileIDs[ MCADATA ] + " Data" ) ) {
+      DVer = VER_00;
+      DataType->setText( DataTypeNames[ DType = MCADATA ] );
+    } else if ( aline.left( ( FileIDs[ MCADATA ] + " Ver. 1" ).length() )
+		== ( FileIDs[ MCADATA ] + " Ver. 1" ) ) {
+      DVer = VER_01;
+      DataType->setText( DataTypeNames[ DType = MCADATA ] );
+    } else {
+      DataType->setText( DataTypeNames[ DType = NODATA ] );
+      emit showMessage( tr( "The file %1 is not avaliable to show." ).arg( fname ), 2000 );
+    }
+  } else if ( aline.left( FileIDs[ S2DDATA ].length() ) == FileIDs[ S2DDATA ] ) {
+    DataType->setText( DataTypeNames[ DType = S2DDATA ] );
   } else {
-    DataType->setText( DataTypeNames[ dataType = NONDATA ] );
+    DataType->setText( DataTypeNames[ DType = NODATA ] );
     emit showMessage( tr( "The file %1 is not avaliable to show." ).arg( fname ), 2000 );
   }
 }
@@ -158,7 +171,7 @@ void Data::GotNewView( ViewCTRL *viewC,
   QFile f( FName );
 
   if ( !f.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
-    DataType->setText( DataTypeNames[ dataType = NONDATA ] );
+    DataType->setText( DataTypeNames[ DType = NODATA ] );
     emit showMessage( tr( "Can not open the file %1." ).arg( FName ), 2000 );
     return;
   }
@@ -166,15 +179,14 @@ void Data::GotNewView( ViewCTRL *viewC,
 
   QTextStream in( &f );
 
-  switch( dataType ) {
+  switch( DType ) {
 #if 0
-  case MEASSHOW: showMeasData( in ); break;
+  case MEASDATA: showMeasData( in ); break;
 #endif
-  case MONSHOW:  showMonData( in, ASensors );  break;
-  case SCANSHOW: showScanData( in, AMotors, ASensors ); break;
-  case MCASHOW1:
-  case MCASHOW2: showMCAData( in );  break;
-  case S2DSHOW:  showS2DData( in, AMotors, ASensors );  break;
+  case MONDATA:  showMonData( in, ASensors );  break;
+  case SCANDATA: showScanData( in, AMotors, ASensors ); break;
+  case MCADATA:  showMCAData( in, ASensors );  break;
+  case S2DDATA:  showS2DData( in, AMotors, ASensors );  break;
   default: break;
   }
 
@@ -414,7 +426,7 @@ void Data::showMonData( QTextStream &in, QVector<ASensor*> &ASensors )
   theTYView->update();
 }
 
-void Data::showMCAData( QTextStream &in )
+void Data::showMCAData( QTextStream &in, QVector<ASensor*> &ASensors )
 {
   //  MCALength = 2048;
 

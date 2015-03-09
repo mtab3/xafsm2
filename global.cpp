@@ -21,7 +21,7 @@ QString CheckFNameExt( QString fname, QString ext )
 
 QStringList FileIDs;
 QStringList DataTypeNames;
-QStringList ViewTypeNames;
+QVector<QStringList> ViewTypeNames;
 QVector<int> viewCounts;
 
 void global_init( void )
@@ -32,16 +32,9 @@ void global_init( void )
     << "  9809     AichiSR"         // XAFSDATA
     << "# XafsM2 Scan Data"         // SCANDATA
     << "# XafsM2 Monitor Data"      // MONDATA
-    << "# XafsM2 MCA Ver. 1"        // MCADATA    // new type
+    << "# XafsM2 MCA"               // MCADATA  Ver0 - "MCA Data", Ver1 - "MCA Ver. 1"
     << "# 1306 Aichi SR 2D Scan"    // S2DDATA
     << " 1304     AichiSR QXAFS base file"  // QXAFSBASEDATA
-    << "  9809     AichiSR"         // XAFSSHOW
-    << "# XafsM2 Scan Data"         // SCANSHOW
-    << "# XafsM2 Monitor Data"      // MONSHOW
-    << "# XafsM2 MCA Data"          // MCASHOW1   // old type
-    << "# 1306 Aichi SR 2D Scan"    // S2DSHOW
-    << " 1304     AichiSR QXAFS base file"  // QXAFSBASESHOW
-    << "# XafsM2 MCA Ver. 1"        // MCADATA2   // new type
     << "";                          // NONDATA
 
   // DATATYPE と一対一対応
@@ -53,33 +46,37 @@ void global_init( void )
     << "MCA"
     << "S2D"
     << "QBASE"
-    << "Measured"
-    << "Scaned"
-    << "Monitored"
-    << "MCA"
-    << "S2D"
-    << "QBASE"
-    << "MCA"
     << "";
 
   // DATATYPE と一対一対応
   ViewTypeNames.clear();
-  ViewTypeNames
+  QStringList names1, names2, names3;
+  names1                  // D_ORIG : MEASEDD に対応
     << "XAFS"
     << "SCAN"
     << "MON."
     << "MCA"
     << "S2D"
     << "QBASE"
+    << "";
+  names2                  // D_ORIG : READD に対応 (VER_00)
     << "D-XAFS"
     << "D-SCAN"
     << "D-MON."
     << "D-MCA"
     << "D-S2D"
     << "D-QBASE"
-    << "D-MCA"
     << "";
-
+  names3                  // D_ORIG : READD に対応 (VER_01)
+    << "D-XAFS1"
+    << "D-SCAN1"
+    << "D-MON.1"
+    << "D-MCA1"
+    << "D-S2D1"
+    << "D-QBASE1"
+    << "";
+  ViewTypeNames << names1 << names2 << names3;
+  
   for ( int i = 0; i < FileIDs.count(); i++ )
     viewCounts << 0;
 }

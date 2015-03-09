@@ -35,7 +35,9 @@ class Data : public QFrame, private Ui::Data
   QVector<SetUpSFluo*> *SSFluos;
 
   void CheckFileType( const QString &fname );
-  DATATYPE dataType;
+  //  DATATYPE dataType;
+  D_TYPE DType;
+  D_VER DVer;
   //  QStringList Checks;
   QString FName;
 
@@ -59,7 +61,7 @@ class Data : public QFrame, private Ui::Data
   void showScanData( QTextStream &in,
 		     QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
   void showMonData( QTextStream &in, QVector<ASensor*> &ASensors );
-  void showMCAData( QTextStream &in );
+  void showMCAData( QTextStream &in, QVector<ASensor*> &ASensors );
   void getNewMCAs( int length );
   void showS2DData( QTextStream &in,
 		    QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
@@ -84,7 +86,7 @@ class Data : public QFrame, private Ui::Data
   void SelectedNewMCACh( int ch );
 
  signals:
-  void AskToGetNewView( DATATYPE dtype, QString dir );
+  void AskToGetNewView( D_TYPE dType, QString dir );
   void showMessage( QString msg, int time );
   void GiveMeCurrentView( void );
   void setMCACh( int i );

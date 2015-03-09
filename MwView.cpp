@@ -45,14 +45,14 @@ void MainWindow::onViewTabClosed( int i )
   }
 }
 
-void *MainWindow::findAView( DATATYPE dtype )
+void *MainWindow::findAView( D_TYPE dtype, D_ORIG dorig )
 {
   void *rv = NULL;
   int vcnt = -1;
   
   for ( int i = 0; i < ViewCtrls.count(); i++ ) {
     ViewCTRL *vc = ViewCtrls[i];
-    if ( vc->getDType() == dtype ) {
+    if ( ( vc->getDataType() == dtype )&&( vc->getDataOrig() == dorig ) ) {
       if ( vc->vcnt() > vcnt ) {
 	rv = vc->getView();
 	vcnt = vc->vcnt();

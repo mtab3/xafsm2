@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Mar 8 23:48:08 2015 +0900\n"\
+                "    SSFluos is passed to Data\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Mar 8 19:38:26 2015 +0900\n"\
                 "    checked the usage of UseSFluos and MPSet.isSFluo\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 18:40:12 2015 +0900\n"\
                 "    small but severe bug was fixed in saving Scan data\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Mar 6 18:28:32 2015 +0900\n"\
-                "    a bug in MwMeas is fixed\n"\
 		"\n"\
                 ""
 #endif

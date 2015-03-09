@@ -141,8 +141,10 @@ void MainWindow::MeasSequence( void )
   case 7:
     mMeasUnits.readValue( MeasVals, MeasCPSs, true );  // true : correct dark
     DispMeasDatas();
-    RecordData();
-    MeasP++;
+    if ( ! conds->I0ShouldBeChecked() || ( MeasCPSs[0] >= conds->I0Threshold() ) ) {
+      RecordData();
+      MeasP++;
+    }
     CurrentPnt->setText( QString::number( MeasP + 1 ) );
     MeasStage = 10;
     if ( inPause ) {
@@ -215,36 +217,20 @@ void MainWindow::MeasSequence( void )
 void MainWindow::clearUUnits( void )
 {
   UUnits.removeUnits( MEAS_ID );
-#if 0
-  inMMoves[ iMMainTh ] = false;
-  inMMove0 = false;
-  for ( int i = 0; inMMoves.count(); i++ ) {
-    if ( inMMoves[i] ) {
-      inMMove0 = true;
-      break;
-    }
-  }
-#endif
 }
 
 void MainWindow::onMeasFinishWorks( void )
 {
-  qDebug() << "a";
   MPSet.finalRpt = MeasR + 1;
   MPSet.finalPnt = MeasP;
-  qDebug() << "b" << MPSet.isSFluos.count();
   for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
-    qDebug() << "c" << i << MPSet.isSFluos.count();
     if ( MPSet.isSFluos[i] ) {
-      qDebug() << "c1" << i << SSFluos.count();
       SSFluos[i]->B_SelRealTime()->setChecked( SvSelRealTime );
       SSFluos[i]->B_SelLiveTime()->setChecked( SvSelLiveTime );
     }
   }
-  qDebug() << "d";
   MeasPause->setEnabled( false );
   MeasViewC->setDeletable( true );
-  qDebug() << "e";
   if ( OnFinishP->currentIndex() == (int)RETURN ) {
     MoveCurThPosKeV( InitialKeV );
     if ( AutoModeButton->isChecked() ) {
@@ -255,7 +241,6 @@ void MainWindow::onMeasFinishWorks( void )
   } else {
     emit ChangerNext();
   }
-  qDebug() << "f";
 }
 
 bool MainWindow::isBusyMotorInMeas( void )

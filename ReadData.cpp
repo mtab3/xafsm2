@@ -51,7 +51,7 @@ void MainWindow::DeleteTheView( void )
 }
 #endif
 
-void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
+void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir )
 {
   QObject *from = sender();
   ViewCTRL *viewC;
@@ -70,28 +70,22 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     }
     break;
 #endif
-  case MONSHOW:
-    vcn = SetUpNewView( TYVIEW, MONSHOW, NULL );
+  case MONDATA:
+    vcn = SetUpNewView( TYVIEW, MONDATA, READD, NULL );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-MON." ) );
     break;
-  case SCANSHOW:
-    vcn = SetUpNewView( XYVIEW, SCANSHOW, NULL );
+  case SCANDATA:
+    vcn = SetUpNewView( XYVIEW, SCANDATA, READD, NULL );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
-  case MCASHOW1:
-    vcn = SetUpNewView( MCAVIEW, MCASHOW1, SSFluos[0]->McaView() );
-    viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
-    // MCA の旧データ形式は、検出器が何かの情報を持っていないので
-    // 「1台目の多チャンネル蛍光検出器」ということにしておく
-    break;
-  case MCASHOW2:
-    vcn = SetUpNewView( MCAVIEW, MCASHOW2, NULL );
+  case MCADATA:
+    vcn = SetUpNewView( MCAVIEW, MCADATA, READD, NULL );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     break;
-  case S2DSHOW:
-    vcn = SetUpNewView( S2DVIEW, S2DSHOW, NULL );
+  case S2DDATA:
+    vcn = SetUpNewView( S2DVIEW, S2DDATA, READD, NULL );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
 #if 0
     connect( (S2DB*)(viewC->getView() ), SIGNAL( askToGetNewMCAView( S2DB*) ),
@@ -100,7 +94,6 @@ void MainWindow::TryToGiveNewView( DATATYPE dtype, QString dir )
     ((S2DB*)(viewC->getView()))->setParent( this );
     ((S2DB*)(viewC->getView()))->setRead( true );
     ((S2DB*)(viewC->getView()))->setDataRoot( ( dir == "" ) ? conds->dataRoot() : dir );
-    //    ViewTab->setTabText( ViewTab->currentIndex(), tr( "D-S2D" ) );
     break;
   default:
     viewC = NULL;

@@ -11,6 +11,7 @@
 
 void aMCASet::save( QString fname, QString title )
 {
+  qDebug() << "000 " << fname << title;
   QFile f( fname );
   if ( f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
     QTextStream out( &f );
@@ -54,11 +55,13 @@ void aMCASet::writeHead0( QTextStream &out )
 
 void aMCASet::writeHead( QTextStream &out )
 {
+  qDebug() << "aaaA";
   out << "# " << RINGCURRENT << " : " << RINGCurrent << "\n";
   out << "# " << I0VALUE     << " : " << I0 << "\n";
   out << "# " << MCALENGTH << " : " << Length << "\n";
   out << "# " << MCACHS    << " : " << CHs    << "\n";
   out << "## Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
+  qDebug() << "aaaB" << CHs;
   for ( int i = 0; i < CHs; i++ ) {
     XMAPHead head = Heads[i];
     out << "# " << MCACHINFO << " : "
@@ -66,11 +69,13 @@ void aMCASet::writeHead( QTextStream &out )
 	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
 	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
   }
+  qDebug() << "aaaC" << Elms.count();
   out << "## Selected elements list\n";
   out << "# " << NUMOFELMS << " : " << Elms.count() << "\n";
   for ( int i = 0; i < Elms.count(); i++ ) {
     out << "# " << ELEMENT << " : " << i << Elms[i] << "\n";
   }
+  qDebug() << "aaaD";
   out << "\n";
 }
 
@@ -269,7 +274,7 @@ void aMCAMap::New( int ix, int iy, int length, int CHs )
 aMCASet *aMCAMap::aPoint( int ix, int iy )
 {
   int i = iy * iX + ix;
-  
+
   if ( ( i >= 0 )&&( i < MCASets.count() ) )
     return &(MCASets[ i ]);
   return NULL;

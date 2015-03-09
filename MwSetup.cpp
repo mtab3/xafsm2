@@ -524,10 +524,11 @@ void MainWindow::GotNowRange( int r ) // This function is pure SLOT as it used '
 void MainWindow::saveScanData( void )
 {
   XYView *view;   // 現在表示しているのがスキャン画面だったらその画面がセーブの対象
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() == SCANDATA ) {
+  if ( ( ViewCtrls[ ViewTab->currentIndex() ]->getDataType() == SCANDATA )
+       && ( ViewCtrls[ ViewTab->currentIndex() ]->getDataOrig() == MEASUREDD ) ) {
     view = (XYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView();
   } else {        // 違ったら、一番最近のスキャン結果がセーブの対象
-    view = (XYView*)findAView( SCANDATA );
+    view = (XYView*)findAView( SCANDATA, MEASUREDD );
   }
   ScanInfo si = view->getSInfo();
 
@@ -872,7 +873,8 @@ void MainWindow::SelectedAPointInScanArea( double x, double )
 {
   for ( int i = 0; i < ViewCtrls.count(); i++ ) {
     if ( sender() == ViewCtrls[i]->getView() ) {
-      if ( ViewCtrls[i]->getDType() == SCANDATA ) {
+      if ( ( ViewCtrls[i]->getDataType() == SCANDATA )
+	   && ( ViewCtrls[i]->getDataOrig() == MEASUREDD ) ) {
 	ScanInfo si = ((XYView*)(ViewCtrls[i]->getView()))->getSInfo();
 	si.am->SetValue( x );
       }
@@ -892,7 +894,7 @@ void MainWindow::ScanStart( void )
       return;
     }
     int vcn;
-    if ( ( vcn = SetUpNewView( XYVIEW, SCANDATA, NULL ) ) < 0 ) {
+    if ( ( vcn = SetUpNewView( XYVIEW, SCANDATA, MEASUREDD, NULL ) ) < 0 ) {
       statusbar->showMessage( tr( "No drawing screen is available" ), 2000 );
       return;
     }
@@ -1070,7 +1072,7 @@ void MainWindow::Monitor( void )
       return;
     }
     int vcn;
-    if ( ( vcn = SetUpNewView( TYVIEW, MONDATA, NULL ) ) < 0 ) {
+    if ( ( vcn = SetUpNewView( TYVIEW, MONDATA, MEASUREDD, NULL ) ) < 0 ) {
       statusbar->showMessage( tr( "No drawing area is avairable" ) );
       return;
     }
@@ -1246,10 +1248,11 @@ void MainWindow::PauseMonitor( void )
 void MainWindow::saveMonData( void )
 {
   TYView *view;   // 現在表示しているのがモニタ画面だったらその画面がセーブの対象
-  if ( ViewCtrls[ ViewTab->currentIndex() ]->getDType() == MONDATA ) {
+  if ( ( ViewCtrls[ ViewTab->currentIndex() ]->getDataType() == MONDATA )
+       && ( ViewCtrls[ ViewTab->currentIndex() ]->getDataOrig() == MEASUREDD ) ) {
     view = (TYView*)ViewCtrls[ ViewTab->currentIndex() ]->getView();
   } else {        // 違ったら、一番最近のモニタ結果がセーブの対象
-    view = (TYView*)findAView( MONDATA );
+    view = (TYView*)findAView( MONDATA, MEASUREDD );
   }
 
   if ( view == NULL ) {

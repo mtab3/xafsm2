@@ -9,7 +9,8 @@ ViewCTRL::ViewCTRL( void )
   ViewBase = NULL;
   nowView = NULL;
   nowVType = NONVIEW;
-  nowDType = NONDATA;
+  nowDataType = NODATA;
+  nowDataOrig = NOORIG;
   deletable = true;
   gsbStat = NULL;
   VC = vcount++;
@@ -20,13 +21,15 @@ ViewCTRL::~ViewCTRL( void )
   deleteView();
 }
 
-bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype, bool overlap )
+bool ViewCTRL::setView( void *view, VTYPE vtype, D_TYPE dtype, D_ORIG dorig, bool overlap )
 {
-  if ( overlap ) {
-    if ( nowView != NULL ) {
-      if ( ( nowVType != vtype ) || ( nowDType != dtype ) ){
+  if ( overlap ) {   // 上書きを許す場合
+    if ( nowView != NULL ) {   // 現在の View が空でない場合でも
+      // 表示しようとしているものと同タイプなら
+      if ( ( nowVType != vtype ) || ( nowDataType != dtype ) ){
 	return false;
       }
+      // 表示しようとしているものと同その View の内容を消してしまって上書きを許す
       if ( ! deleteView() )
 	return false;
     }
@@ -37,7 +40,8 @@ bool ViewCTRL::setView( void *view, VTYPE vtype, DATATYPE dtype, bool overlap )
   }
   nowView = view;
   nowVType = vtype;
-  nowDType = dtype;
+  nowDataType = dtype;
+  nowDataOrig = dorig;
   ViewBase->layout()->addWidget( (QWidget *)nowView );
 
   deletable = true;
@@ -58,7 +62,9 @@ bool ViewCTRL::deleteView( void )
     case TYVIEW:
       delete (TYView *)nowView; break;
     case MCAVIEW:
-      if ( nowDType != MCADATA ) 
+      // MCA の測定に使う View は SetUpSFluo が持っている固有の View で消してはいけない
+      // データ表示のための作った View ( orig == READD ) は消していい
+      if ( nowDataOrig == READD )
 	delete (MCAView *)nowView;
       break;
     case S2DVIEW:
@@ -68,7 +74,8 @@ bool ViewCTRL::deleteView( void )
     }
     nowView = (void *)NULL;
     nowVType = NONVIEW;
-    nowDType = NONDATA;
+    nowDataType = NODATA;
+    nowDataOrig = NOORIG;
     gsbStat->clear();
     delete gsbStat;
     gsbStat = NULL;
@@ -157,8 +164,9 @@ ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 *******************/
 
-int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView, bool overlap )
+int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *newView, bool overlap )
 {
+  qDebug() << "aa";
   void *origView = newView;
   // まずは View の方を先に作っておいて
   if ( newView == NULL ) {
@@ -215,20 +223,22 @@ int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView, bool o
   }
   // newView は ViewCTRL の中で作れば良さそうなものだが、
   // 上の操作にいっぱい MainWindow の持ち物が出てくるのでめんどくさい
+  qDebug() << "bb";
   
   if ( newView == NULL ) {
     qDebug() << "Can't setup new View";
     return -1;
   }
+  qDebug() << "cc";
 
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK
   if ( ! ViewCtrls[ ViewTab->currentIndex() ]
-       ->setView( newView, vtype, dtype, overlap ) ) {
+       ->setView( newView, vtype, dtype, dorig, overlap ) ) {
     // 使えなかったら、若い番号の ViewTab から順番に登録できないか試してみる
     int i;
     for ( i = 0; i < ViewTab->count(); i++ ) {
-      if ( ViewCtrls[ i ]->setView( newView, vtype, dtype, overlap ) ) {
+      if ( ViewCtrls[ i ]->setView( newView, vtype, dtype, dorig, overlap ) ) {
 	break;
       }
     }
@@ -257,6 +267,7 @@ int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView, bool o
     }
   }
 
+  qDebug() << "dd";
   // ViewTab まで確定した後の後始末
   switch( vtype ) {
   case MCAVIEW:
@@ -271,19 +282,24 @@ int MainWindow::SetUpNewView( VTYPE vtype, DATATYPE dtype, void *newView, bool o
     break;
   }
 
+  qDebug() << "ee";
   // 次に使える ViewTab が残っていなかったら一つ追加しておく
   int i;
   for ( i = 0; i < ViewCtrls.count(); i++ ) {
     if ( ViewCtrls[i]->getVType() == NONVIEW )
       break;
   }
+  qDebug() << "ee1";
   if ( i >= ViewCtrls.count() ) {
     addAView();
   }
+  qDebug() << "ee2" << dtype << dorig;
   // 正常時には確保した ViewCTRL を返して終了
   ViewTab->setTabText( ViewTab->currentIndex(),
 		       QString( "%1(%2)" )
-		       .arg( ViewTypeNames[dtype] ).arg( ++viewCounts[dtype] ) );
+		       .arg( ViewTypeNames[dorig][dtype] ).arg( ++viewCounts[dtype] ) );
+
+  qDebug() << "ff";
   return ViewTab->currentIndex();
 }
 
@@ -310,7 +326,8 @@ void MainWindow::showOnesMCAView( SetUpSFluo *ssfluo )
   // 無ければ ssfluo が持つ view を標準の手順で tab に登録する
   int vcn = i;
   if ( i >= ViewCtrls.count() ) {
-    if ( ( vcn = SetUpNewView( MCAVIEW, MCADATA, ssfluo->McaView(), false ) ) < 0 )
+    if ( ( vcn = SetUpNewView( MCAVIEW, MCADATA, MEASUREDD,
+			       ssfluo->McaView(), false ) ) < 0 )
       return;
   }
   ViewTab->setTabText( vcn, ssfluo->sFluo()->name() );

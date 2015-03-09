@@ -486,7 +486,8 @@ private:
   bool MakingSureOfRangeSelect;
   bool haveMeasuredDark;
   bool NoticingHaveNotMeasDark;
-  int SetUpNewView( VTYPE vtype, DATATYPE dtype, void *view, bool overlap = true );
+  int SetUpNewView( VTYPE vtype, D_TYPE dType, D_ORIG dOrig,
+		    void *view, bool overlap = true );
   void ClearXViewScreenForMeas( XYView *view );
   bool SetDFName0( QString fname );
   void SetDFName( int rpt, int rptMax, QString ext = "" );
@@ -819,7 +820,7 @@ private slots:
   void MeasDarkSequence( void );
 
   void TryToNoticeCurrentView( void );
-  void TryToGiveNewView( DATATYPE dtype, QString dir );
+  void TryToGiveNewView( D_TYPE dType, QString dir );  // D_ORIG は必ず READD
   //  void DeleteTheView( void );
   void ShowButtonsForCurrentTab( void );
   void ShowButtonsForATab( int i );
@@ -893,7 +894,7 @@ private slots:
 
   void onViewTabClosed( int i );
   void addAView( void );
-  void *findAView( DATATYPE dtype );
+  void *findAView( D_TYPE dType, D_ORIG dOrig );
 
   void RcvEvAll( SMsg msg );
   void alarmOn( void );
