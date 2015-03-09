@@ -166,7 +166,6 @@ ReadData.cpp:    viewC = ViewCtrls[ ViewTab->currentIndex() ];
 
 int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *newView, bool overlap )
 {
-  qDebug() << "aa";
   void *origView = newView;
   // まずは View の方を先に作っておいて
   if ( newView == NULL ) {
@@ -183,12 +182,11 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
       ((TYView*)newView)->setMovingAvr( MovingAvr->text().toInt() );
       break;
     case MCAVIEW:
-      if ( dtype == MCADATA ) {
-	// その場で測定する場合(データファイルの読み込みだと MCASHOW )
+      if ( dorig == MEASUREDD ) {
+	// その場で測定する場合(データファイルの読み込みだと READD )
 	// かならず newView をパラメータとして持ち込むはずなのでここは通らない
 	// newView = SSFluo0->McaView();
       } else {
-	// ここも通らないようにしないといけない (Read の時でも SetUpSFluo に関連付ける)
 	newView = (void *)(new MCAView( this ));
 #if 0  // 本当はここをちゃんとしないと ReadData がダメなはず
 	((MCAView *)newView)->setKeV2Pix( SSFluo0->K2P() );
@@ -223,13 +221,11 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
   }
   // newView は ViewCTRL の中で作れば良さそうなものだが、
   // 上の操作にいっぱい MainWindow の持ち物が出てくるのでめんどくさい
-  qDebug() << "bb";
-  
+
   if ( newView == NULL ) {
     qDebug() << "Can't setup new View";
     return -1;
   }
-  qDebug() << "cc";
 
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK
@@ -267,7 +263,6 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
     }
   }
 
-  qDebug() << "dd";
   // ViewTab まで確定した後の後始末
   switch( vtype ) {
   case MCAVIEW:
@@ -282,24 +277,20 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
     break;
   }
 
-  qDebug() << "ee";
   // 次に使える ViewTab が残っていなかったら一つ追加しておく
   int i;
   for ( i = 0; i < ViewCtrls.count(); i++ ) {
     if ( ViewCtrls[i]->getVType() == NONVIEW )
       break;
   }
-  qDebug() << "ee1";
   if ( i >= ViewCtrls.count() ) {
     addAView();
   }
-  qDebug() << "ee2" << dtype << dorig;
   // 正常時には確保した ViewCTRL を返して終了
   ViewTab->setTabText( ViewTab->currentIndex(),
 		       QString( "%1(%2)" )
 		       .arg( ViewTypeNames[dorig][dtype] ).arg( ++viewCounts[dtype] ) );
 
-  qDebug() << "ff";
   return ViewTab->currentIndex();
 }
 

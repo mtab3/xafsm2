@@ -32,7 +32,7 @@ class Data : public QFrame, private Ui::Data
   QFileDialog *FSDialog;
   QColorDialog *CSDialog;
   QVector<QPushButton*> DColors;
-  QVector<SetUpSFluo*> *SSFluos;
+  //  QVector<SetUpSFluo*> *SSFluos;
 
   void CheckFileType( const QString &fname );
   //  DATATYPE dataType;
@@ -73,7 +73,7 @@ class Data : public QFrame, private Ui::Data
 		   QVector<AMotor*> &AMotors, QVector<ASensor*> &ASensors );
   void GotCurrentView( void *view );
   void setDataRoot( const QString &dataRoot );
-  void setSSFluos( QVector<SetUpSFluo*> *sSFluos ) { SSFluos = sSFluos; };
+  //  void setSSFluos( QVector<SetUpSFluo*> *sSFluos ) { SSFluos = sSFluos; };
 
  private slots:
   void ShowFName( const QString &fname );
@@ -86,7 +86,7 @@ class Data : public QFrame, private Ui::Data
   void SelectedNewMCACh( int ch );
 
  signals:
-  void AskToGetNewView( D_TYPE dType, QString dir );
+  void AskToGetNewView( D_TYPE dType, QString dir, QString uid );
   void showMessage( QString msg, int time );
   void GiveMeCurrentView( void );
   void setMCACh( int i );

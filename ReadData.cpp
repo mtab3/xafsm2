@@ -10,8 +10,8 @@ void MainWindow::setupReadDataArea( void )
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
   for ( int i = 0; i < Datas.count(); i++ ) {
-    connect( Datas[i], SIGNAL( AskToGetNewView( DATATYPE, QString ) ),
-	     this, SLOT( TryToGiveNewView( DATATYPE, QString ) ),
+    connect( Datas[i], SIGNAL( AskToGetNewView( DATATYPE, QString, QString ) ),
+	     this, SLOT( TryToGiveNewView( DATATYPE, QString, QString ) ),
 	     Qt::UniqueConnection );
     //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
     //	     Datas[i], SLOT( GotNewView( QObject *, ViewCTRL * ) ),
@@ -28,7 +28,7 @@ void MainWindow::setupReadDataArea( void )
 	     Qt::UniqueConnection );
     connect( this, SIGNAL( NewMCACh( int ) ), Datas[i], SLOT( SelectedNewMCACh( int ) ),
 	     Qt::UniqueConnection );
-    Datas[i]->setSSFluos( SSFluos );
+    //    Datas[i]->setSSFluos( SSFluos );
 #endif
   }
 #if 0
@@ -51,7 +51,7 @@ void MainWindow::DeleteTheView( void )
 }
 #endif
 
-void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir )
+void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir, QString uid )
 {
   QObject *from = sender();
   ViewCTRL *viewC;

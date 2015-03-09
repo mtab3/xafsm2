@@ -101,6 +101,7 @@ void Data::GotCurrentView( void *view )
   }
 }
 
+// ファイル読み込み OK を押すとまずはここから話が始まる
 void Data::ShowFName( const QString &fname )
 {
   FName = fname;
@@ -108,12 +109,13 @@ void Data::ShowFName( const QString &fname )
 
   SelectedFile->setText( dfname );
   CheckFileType( fname );
-  emit AskToGetNewView( DType, FSDialog->directory().absolutePath() );
+  emit AskToGetNewView( DType, FSDialog->directory().absolutePath(), "" );
 }
 
+// ファイル名選択が済んでいて「表示」ボタンを押すとここからスタート
 void Data::StartToShowData( void )
 {
-  emit AskToGetNewView( DType, "" );
+  emit AskToGetNewView( DType, "", "" );
 }
 
 void Data::CheckFileType( const QString &fname )

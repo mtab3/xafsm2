@@ -820,7 +820,8 @@ private slots:
   void MeasDarkSequence( void );
 
   void TryToNoticeCurrentView( void );
-  void TryToGiveNewView( D_TYPE dType, QString dir );  // D_ORIG は必ず READD
+  // TryToGiveNewView 経由で View を確保するときは D_ORIG は必ず READD
+  void TryToGiveNewView( D_TYPE dType, QString dir, QString uid = "" );
   //  void DeleteTheView( void );
   void ShowButtonsForCurrentTab( void );
   void ShowButtonsForATab( int i );
