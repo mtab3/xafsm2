@@ -141,8 +141,10 @@ void MainWindow::MeasSequence( void )
   case 7:
     mMeasUnits.readValue( MeasVals, MeasCPSs, true );  // true : correct dark
     DispMeasDatas();
-    RecordData();
-    MeasP++;
+    if ( ! conds->I0ShouldBeChecked() || ( MeasCPSs[0] >= conds->I0Threshold() ) ) {
+      RecordData();
+      MeasP++;
+    }
     CurrentPnt->setText( QString::number( MeasP + 1 ) );
     MeasStage = 10;
     if ( inPause ) {

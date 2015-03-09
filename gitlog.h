@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Mar 6 18:40:12 2015 +0900\n"\
+                "    small but severe bug was fixed in saving Scan data\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 25 11:54:36 2015 +0900\n"\
                 "    new MCAMap is imported from newXAMP branch\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 17:48:41 2015 +0900\n"\
                 "    broken\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 18 00:20:56 2015 +0900\n"\
-                "    Still broken\n"\
 		"\n"\
                 ""
 #endif
