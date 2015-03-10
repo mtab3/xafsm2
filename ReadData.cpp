@@ -10,8 +10,8 @@ void MainWindow::setupReadDataArea( void )
         << Data006 << Data007 << Data008 << Data009 << Data010;
 
   for ( int i = 0; i < Datas.count(); i++ ) {
-    connect( Datas[i], SIGNAL( AskToGetNewView( DATATYPE, QString, QString ) ),
-	     this, SLOT( TryToGiveNewView( DATATYPE, QString, QString ) ),
+    connect( Datas[i], SIGNAL( AskToGetNewView( D_TYPE, QString, QString ) ),
+	     this, SLOT( TryToGiveNewView( D_TYPE, QString, QString ) ),
 	     Qt::UniqueConnection );
     //    connect( this, SIGNAL( GiveNewView( QObject *, ViewCTRL * ) ),
     //	     Datas[i], SLOT( GotNewView( QObject *, ViewCTRL * ) ),
@@ -54,9 +54,12 @@ void MainWindow::DeleteTheView( void )
 void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir, QString uid )
 {
   QObject *from = sender();
-  ViewCTRL *viewC;
+  ViewCTRL *viewC = NULL;
 
-  int vcn;
+  qDebug() << "1111"; 
+
+  int sfn = 0;
+  int vcn = 0;
   switch( dtype ) {
 #if 0
   case MEASSHOW:  // MEASDATA と SCANDATA は今表示されてるのが同タイプだったら重ね書き
@@ -81,7 +84,15 @@ void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir, QString uid )
     ClearXViewScreenForScan( (XYView*)(viewC->getView()) );
     break;
   case MCADATA:
-    vcn = SetUpNewView( MCAVIEW, MCADATA, READD, NULL );
+    if ( SFluos.count() <= 0 )
+      break;
+    for ( sfn = 0; sfn < SFluos.count(); sfn++ ) {
+      if ( SFluos[sfn]->uid() == uid )
+	break;
+    }
+    if ( sfn >= SFluos.count() )
+      sfn = 0;
+    vcn = SetUpNewView( MCAVIEW, MCADATA, READD, new MCAView( NULL, SSFluos[sfn] ) );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     break;
   case S2DDATA:

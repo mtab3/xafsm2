@@ -92,9 +92,9 @@ struct aMCASet {
   int chs( void ) { return CHs; };
   void setValid( bool f ) { valid = f; };
   bool isValid( void ) { return valid; };
-  void save( QString fname, QString title );
+  void save( QString fname, QString title, QString uid );
   //  void writeHead0( QTextStream &out );  // old
-  void writeHead( QTextStream &out );  // new
+  void writeHead( QTextStream &out, QString uid );  // new
   void writeData( QTextStream &out );
   void load( QString fname, QString title );
   void load( QTextStream &in, QString title );

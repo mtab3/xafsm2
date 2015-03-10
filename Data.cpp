@@ -14,6 +14,7 @@ Data::Data( QWidget *p ) : QFrame( p )
 
   u = new Units;
 
+  SFluoUid = "";
   DType = NODATA;
   DVer = VER_00;
   
@@ -106,16 +107,42 @@ void Data::ShowFName( const QString &fname )
 {
   FName = fname;
   QString dfname = fname;
-
+  
   SelectedFile->setText( dfname );
   CheckFileType( fname );
-  emit AskToGetNewView( DType, FSDialog->directory().absolutePath(), "" );
+  if ( DType == MCADATA ) {
+    CheckUid( fname, SFluoUid );
+  }
+  qDebug() << "000";
+  emit AskToGetNewView( DType, FSDialog->directory().absolutePath(), SFluoUid );
+}
+
+#define SENSORID    "# Sensor ID"
+
+void Data::CheckUid( const QString &fname, QString &uid )
+{
+  QFile f( fname );
+  if ( ! f.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    return;
+  QTextStream in( &f );
+
+  while( !in.atEnd() ) {
+    QString line = in.readLine().simplified();
+    if ( line.count() < 1 ) continue;
+    if ( line[0] != '#' ) return;
+    if ( line.left( QString( SENSORID ).length() ) == QString( SENSORID ) ) {
+      int p = line.indexOf( ':' );
+      if ( p < 0 ) return;
+      uid = line.mid( p + 1 ).simplified();
+      return;
+    }
+  }
 }
 
 // ファイル名選択が済んでいて「表示」ボタンを押すとここからスタート
 void Data::StartToShowData( void )
 {
-  emit AskToGetNewView( DType, "", "" );
+  emit AskToGetNewView( DType, "", SFluoUid );
 }
 
 void Data::CheckFileType( const QString &fname )

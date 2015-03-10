@@ -27,22 +27,29 @@ bool ViewCTRL::setView( void *view, VTYPE vtype, D_TYPE dtype, D_ORIG dorig, boo
     if ( nowView != NULL ) {   // 現在の View が空でない場合でも
       // 表示しようとしているものと同タイプなら
       if ( ( nowVType != vtype ) || ( nowDataType != dtype ) ){
+	qDebug() << "x"; 
 	return false;
       }
       // 表示しようとしているものと同その View の内容を消してしまって上書きを許す
-      if ( ! deleteView() )
+      if ( ! deleteView() ) {
+	qDebug() << "w"; 
 	return false;
+      }
     }
   } else {
     if ( nowView != NULL ) {
+      qDebug() << "z";
       return false;
     }
   }
+  qDebug() << "dd"; 
   nowView = view;
   nowVType = vtype;
   nowDataType = dtype;
   nowDataOrig = dorig;
   ViewBase->layout()->addWidget( (QWidget *)nowView );
+
+  qDebug() << "ee"; 
 
   deletable = true;
   gsbStat = new GSBStats;
@@ -168,7 +175,8 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
 {
   void *origView = newView;
   // まずは View の方を先に作っておいて
-  if ( newView == NULL ) {
+  if ( ( newView == NULL )
+       || ( ( dtype == MCADATA )&&( dorig == READD ) ) ) {
     switch( vtype ) {
     case XYVIEW:
       newView = (void *)(new XYView);
@@ -187,26 +195,27 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
 	// かならず newView をパラメータとして持ち込むはずなのでここは通らない
 	// newView = SSFluo0->McaView();
       } else {
-	newView = (void *)(new MCAView( this ));
-#if 0  // 本当はここをちゃんとしないと ReadData がダメなはず
-	((MCAView *)newView)->setKeV2Pix( SSFluo0->K2P() );
-	((MCAView *)newView)->setFDBase( fdbase );
-	((MCAView *)newView)->setShowElements( DispElmNames->isChecked() );
-	((MCAView *)newView)->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
-	((MCAView *)newView)->setShowElementsEnergy( ShowElmEnergy->isChecked() );
-	((MCAView *)newView)->setLimitPSEnergy( LimitPSEnergy->isChecked() );
-	((MCAView *)newView)->setShowDiff( ShowDiff->isChecked() );
-	((MCAView *)newView)->setShowSmoothed( ShowSmoothed->isChecked() );
-	((MCAView *)newView)->setPeakSearch( MCAPeakSearch->isChecked() );
-	((MCAView *)newView)->setFitToRaw( FitToRaw->isChecked() );
-	((MCAView *)newView)->setLog( SetDisplayLog->isChecked() );
-	((MCAView *)newView)->setNewPSSens( PeakSearchSensitivity->text() );
-	((MCAView *)newView)->setMaxEnergy( MaxMCAEnergy );
-	((MCAView *)newView)->setMaxLoop( MaxLoop->text().toInt() );
-	((MCAView *)newView)->setDampFact( DampFact->text().toDouble() );
-	((MCAView *)newView)->setPrec1( Prec1->text().toDouble() );
-	((MCAView *)newView)->setPrec2( Prec2->text().toDouble() );
-#endif
+	qDebug() << "Here!";
+	//newView = (void *)(new MCAView( this ));
+	MCAView *view = (MCAView*)newView;
+	SetUpSFluo *ssfluo = (SetUpSFluo*)(view->parent());
+	view->setKeV2Pix( ssfluo->K2P() );
+	view->setFDBase( fdbase );
+	view->setShowElements( ssfluo->DispElmNamesIsChecked() );
+	view->setShowElementsAlways( ssfluo->ShowAlwaysSelElmIsChecked() );
+	view->setShowElementsEnergy( ssfluo->ShowElmEnergyIsChecked() );
+	//	view->setLimitPSEnergy( LimitPSEnergy->isChecked() );
+	view->setShowDiff( ssfluo->ShowDiffIsChecked() );
+	view->setShowSmoothed( ssfluo->ShowSmoothedIsChecked() );
+	//	view->setPeakSearch( MCAPeakSearch->isChecked() );
+	view->setFitToRaw( ssfluo->FitToRawIsChecked() );
+	view->setLog( ssfluo->SetDisplayLogIsChecked() );
+	//	view->setNewPSSens( PeakSearchSensitivity->text() );
+	view->setMaxEnergy( ssfluo->maxMCAEnergy() );
+	view->setMaxLoop( ssfluo->maxLoop() );
+	view->setDampFact( ssfluo->dampFact() );
+	view->setPrec1( ssfluo->prec1() );
+	view->setPrec2( ssfluo->prec2() );
       }
       break;
     case S2DVIEW:
@@ -222,11 +231,13 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
   // newView は ViewCTRL の中で作れば良さそうなものだが、
   // 上の操作にいっぱい MainWindow の持ち物が出てくるのでめんどくさい
 
+  qDebug() << "aa00";
   if ( newView == NULL ) {
     qDebug() << "Can't setup new View";
     return -1;
   }
 
+  qDebug() << "a";
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK
   if ( ! ViewCtrls[ ViewTab->currentIndex() ]

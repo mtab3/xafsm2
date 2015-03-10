@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Mar 9 17:06:10 2015 +0900\n"\
+                "    Start to working on Read/Show MCA data again.  In the next step, check 'AskToGetNewView'\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Mar 9 16:07:20 2015 +0900\n"\
                 "    a bug is fixed that XafsM2 is crashed when 1) I0 is less than a setting value, 2) SFluo is used, since the measurement count MeasP increasing while the measurement is stopped at a point\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 18:48:57 2015 +0900\n"\
                 "    merged with newMwSSD2\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Mar 6 18:43:28 2015 +0900\n"\
-                "    merged with master\n"\
 		"\n"\
                 ""
 #endif

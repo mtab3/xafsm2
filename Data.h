@@ -27,6 +27,7 @@ class Data : public QFrame, private Ui::Data
  private:
   Units *u;
 
+  QString SFluoUid;
   int SettingL;
   QColor SettingC;
   QFileDialog *FSDialog;
@@ -35,6 +36,7 @@ class Data : public QFrame, private Ui::Data
   //  QVector<SetUpSFluo*> *SSFluos;
 
   void CheckFileType( const QString &fname );
+  void CheckUid( const QString &fname, QString &uid );
   //  DATATYPE dataType;
   D_TYPE DType;
   D_VER DVer;

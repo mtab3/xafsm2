@@ -97,6 +97,19 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
     mcaView->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
     mcaView->setShowElementsEnergy( ShowElmEnergy->isChecked() );
   }
+  bool DispElmNamesIsChecked( void ) { return DispElmNames->isChecked(); };
+  bool ShowAlwaysSelElmIsChecked( void ) { return ShowAlwaysSelElm->isChecked(); }
+  bool ShowElmEnergyIsChecked( void ) { return ShowElmEnergy->isChecked(); };
+  bool ShowDiffIsChecked( void ) { return ShowDiff->isChecked(); };
+  bool ShowSmoothedIsChecked( void ) { return ShowSmoothed->isChecked(); };
+  bool FitToRawIsChecked( void ) { return FitToRaw->isChecked(); };
+  bool SetDisplayLogIsChecked( void ) { return SetDisplayLog->isChecked(); }
+  double maxMCAEnergy( void ) { return MaxMCAEnergy; }
+  int maxLoop( void ) { return MaxLoop->text().toInt(); };
+  double dampFact( void ) { return DampFact->text().toDouble(); };
+  double prec1( void ) { return Prec1->text().toDouble(); };
+  double prec2( void ) { return Prec2->text().toDouble(); };
+
   void setFDBase( FluoDBase *fb );
   void setDirectory( QString root ) { if ( MCAFSel != NULL ) MCAFSel->setDirectory( root ); };
   void setMaxMCAEnergy( double e ) { MaxMCAEnergy = e; };

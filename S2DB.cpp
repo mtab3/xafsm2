@@ -224,7 +224,7 @@ void S2DB::saveNextMap( void )
     aMCASet *set = mapAPoint( x, y );
     if ( ( set != NULL ) && ( set->isValid() ) ) {
       emit ShowMessage( tr( "Wriging MCA File : [%1]" ).arg( wfname + ".dat" ), 500 );
-      set->save( wfname + ".dat", S2DMCAFILETITLE );
+      set->save( wfname + ".dat", S2DMCAFILETITLE, S2Di.as->uid() );
     }
   }
   savingAMCA = false;

@@ -9,42 +9,22 @@
 #define COMMONTITLE_0 "XafsM2 MCA Data"
 #define COMMONTITLE   "XafsM2 MCA Ver. 1" // '...Data Ver.1' とすると _0 にも一致する
 
-void aMCASet::save( QString fname, QString title )
+void aMCASet::save( QString fname, QString title, QString uid )
 {
-  qDebug() << "000 " << fname << title;
   QFile f( fname );
   if ( f.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
     QTextStream out( &f );
     out << QString( "# %1 %2\n" ).arg( COMMONTITLE ).arg( title );
     out << "# " << QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" ) << "\n";
-    
-    writeHead( out );
+
+    writeHead( out, uid );
     writeData( out );
 
     f.close();
   }
 }
 
-#if 0
-void aMCASet::writeHead0( QTextStream &out )
-{
-  out << "# " << RINGCURRENT << " : " << RINGCurrent << "\n";
-  out << "# " << I0VALUE     << " : " << I0 << "\n";
-  out << "# Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
-  for ( int i = 0; i < CHs; i++ ) {
-    XMAPHead head = Heads[i];
-    out << "# " << head.ch << "\t" << head.stat << "\t" << head.len << "\t"
-	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
-	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
-  }
-  out << "# Selected elements list\n";
-  for ( int i = 0; i < Elms.count(); i++ ) {
-    out << QString( "# Element %1 %2\n" ).arg( i ).arg( Elms[i] );
-  }
-  out << "\n";
-}
-#endif
-
+#define SFLUOID     "Sensor ID   "
 #define RINGCURRENT "Ring Current"
 #define I0VALUE     "I0          "
 #define MCALENGTH   "MCA Length  "
@@ -53,15 +33,14 @@ void aMCASet::writeHead0( QTextStream &out )
 #define NUMOFELMS   "Sel. Elems. "
 #define ELEMENT     "A Element   "
 
-void aMCASet::writeHead( QTextStream &out )
+void aMCASet::writeHead( QTextStream &out, QString uid )
 {
-  qDebug() << "aaaA";
+  out << "# " << SFLUOID     << " : " << uid << "\n";
   out << "# " << RINGCURRENT << " : " << RINGCurrent << "\n";
   out << "# " << I0VALUE     << " : " << I0 << "\n";
   out << "# " << MCALENGTH << " : " << Length << "\n";
   out << "# " << MCACHS    << " : " << CHs    << "\n";
   out << "## Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
-  qDebug() << "aaaB" << CHs;
   for ( int i = 0; i < CHs; i++ ) {
     XMAPHead head = Heads[i];
     out << "# " << MCACHINFO << " : "
@@ -69,13 +48,11 @@ void aMCASet::writeHead( QTextStream &out )
 	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"
 	<< ROIStart[i] << "\t" << ROIEnd[i] << "\n";
   }
-  qDebug() << "aaaC" << Elms.count();
   out << "## Selected elements list\n";
   out << "# " << NUMOFELMS << " : " << Elms.count() << "\n";
   for ( int i = 0; i < Elms.count(); i++ ) {
     out << "# " << ELEMENT << " : " << i << Elms[i] << "\n";
   }
-  qDebug() << "aaaD";
   out << "\n";
 }
 
@@ -134,13 +111,6 @@ void aMCASet::load( QTextStream &in, QString title )
     valid = true;
 }
 
-
-#define MCALENGTH   "MCA Length  "
-#define MCACHS      "MCA Channels"
-#define MCAINFO     "MCA Ch Info "
-#define NUMOFELMS   "Sel. Elems. "
-#define ELEMENT     "A Element   "
-
 void aMCASet::loadHeader( QTextStream &in )
 {
   int Elements = 0;
@@ -155,7 +125,7 @@ void aMCASet::loadHeader( QTextStream &in )
       if ( fc.CheckItem( I0VALUE,     line, 2, val ) ) I0          = val.toDouble();
       if ( fc.CheckItem( MCALENGTH,   line, 2, val ) ) length      = val.toInt();
       if ( fc.CheckItem( MCACHS,      line, 2, val ) ) chs         = val.toInt();
-      if ( fc.CheckItem( MCAINFO,     line, 2, val ) ) {
+      if ( fc.CheckItem( MCACHINFO,   line, 2, val ) ) {
 	QStringList vals = val.simplified().split( QRegExp( "\\s+" ) );
 	if ( vals.count() >= 7 ) {
 	  int ch = vals[0].toInt();
@@ -187,7 +157,6 @@ void aMCASet::loadHeader( QTextStream &in )
 
 void aMCASet::loadHeader0( QTextStream &in )
 {
-  qDebug() << "MCA File of old type";
   int maxCh = 0;
   int maxL = 0;
   while ( !in.atEnd() ) {

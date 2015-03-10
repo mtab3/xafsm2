@@ -390,7 +390,7 @@ void SetUpSFluo::saveMCAData( void )
   set->setSize( SFluo0->length(), SFluo0->chs() );
   SaveMCADataOnMem( set, this );
   //  saveMCAData0( MCARecFile->text(), set );
-  set->save( MCARecFile->text(), "measured by SSD set up" );
+  set->save( MCARecFile->text(), "measured by SSD set up", SFluo0->uid() );
   delete set;
 }
 

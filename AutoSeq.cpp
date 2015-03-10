@@ -352,7 +352,7 @@ void MainWindow::AutoSequence0( void )
 	  VAL.remove( QChar( '"' ) );
 	  aMCASet *set = new aMCASet;
 	  SaveMCADataOnMem( set, SSFluos[0] );
-	  set->save( VAL, "measured by auto Sequence" );
+	  set->save( VAL, "measured by auto Sequence", SFluos[0]->uid() );
 	  //	  saveMCAData0( VAL, set );
 	  delete set;
 	}

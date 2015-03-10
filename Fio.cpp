@@ -660,7 +660,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
 	  qDebug() << "XAFS-MCA-Maps" << XafsMCAMaps.count()
 		   << MeasA << MeasR << MeasP << i;
 	  XafsMCAMaps[i].aPoint( MeasP, mcaSaveP )
-	    ->save( mcaf.filePath(), "measured while XAFS measurement" );
+	    ->save( mcaf.filePath(), "measured while XAFS measurement", SFluos[i]->uid() );
 	}
       }
     }
