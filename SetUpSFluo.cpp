@@ -12,27 +12,12 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   pagFile = "SSDPreAMPGains.txt";
   s = NULL;
   SFluo0 = new AUnitSFluo( this );
-  mcaView = new MCAView( NULL, this );
+  mcaView = new MCAView( NULL, this, p );
   k2p = new KeV2Pix;
   MCATimer = new QTimer;
   fdbase = NULL;
 
-  mcaView->setKeV2Pix( k2p );
-  mcaView->setShowElements( DispElmNames->isChecked() );
-  mcaView->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
-  mcaView->setShowElementsEnergy( ShowElmEnergy->isChecked() );
-  mcaView->setShowDiff( ShowDiff->isChecked() );
-  mcaView->setShowSmoothed( ShowSmoothed->isChecked() );
-  mcaView->setFitToRaw( FitToRaw->isChecked() );
-  mcaView->setLog( SetDisplayLog->isChecked() );
-  mcaView->setMaxEnergy( MaxMCAEnergy );
-  mcaView->setMaxLoop( MaxLoop->text().toInt() );
-  mcaView->setDampFact( DampFact->text().toDouble() );
-  mcaView->setPrec1( Prec1->text().toDouble() );
-  mcaView->setPrec2( Prec2->text().toDouble() );
-  //  mcaView->setNewPSSens( PeakSearchSensitivity->text() );
-  //  mcaView->setPeakSearch( MCAPeakSearch->isChecked() );
-  //  mcaView->setLimitPSEnergy( LimitPSEnergy->isChecked() );
+  setUpMCAView( mcaView );
 
   MCAClearRequest = false;
   MCADataStat = MCANameStat = OLD;
@@ -42,12 +27,37 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
 
   connect( MCATimer, SIGNAL( timeout() ), this, SLOT( MCASequence() ),
 	   Qt::UniqueConnection );
+#if 0
   connect( mcaView, SIGNAL( newROIinEng( double, double ) ),
 	   this, SLOT( setROIs( void ) ), Qt::UniqueConnection );
   connect( p, SIGNAL( NewEnergy( double ) ), mcaView, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
+#endif
   connect( this, SIGNAL( showMyMCAView( SetUpSFluo * ) ),
 	   p, SLOT( showOnesMCAView( SetUpSFluo * ) ), Qt::UniqueConnection );
+}
+
+void SetUpSFluo::setUpMCAView( MCAView *view )
+{
+  view->setKeV2Pix( k2p );
+  view->setShowElements( DispElmNames->isChecked() );
+  view->setShowElementsAlways( ShowAlwaysSelElm->isChecked() );
+  view->setShowElementsEnergy( ShowElmEnergy->isChecked() );
+  view->setShowDiff( ShowDiff->isChecked() );
+  view->setShowSmoothed( ShowSmoothed->isChecked() );
+  view->setFitToRaw( FitToRaw->isChecked() );
+  view->setLog( SetDisplayLog->isChecked() );
+  view->setMaxMCAEnergy( MaxMCAEnergy );
+  view->setMaxLoop( MaxLoop->text().toInt() );
+  view->setDampFact( DampFact->text().toDouble() );
+  view->setPrec1( Prec1->text().toDouble() );
+  view->setPrec2( Prec2->text().toDouble() );
+  // 最初に SetUpSFluo のコンストラクタから呼ばれる時は fdbase は NULL だが、
+  // 以降、外部の MCAView を SetUpSFluo に結びつけるために呼ばれる時は、! NULL のはず
+  view->setFDBase( fdbase );
+  //  view->setNewPSSens( PeakSearchSensitivity->text() );
+  //  view->setPeakSearch( MCAPeakSearch->isChecked() );
+  //  view->setLimitPSEnergy( LimitPSEnergy->isChecked() );
 }
 
 void SetUpSFluo::setROIs( void )
@@ -59,7 +69,8 @@ void SetUpSFluo::setROIs( void )
 void SetUpSFluo::setFDBase( FluoDBase *fb )
 {
   fdbase = fb;
-  mcaView->setFDBase( fdbase );
+  emit askSetFDBase( fdbase ); 
+  //  mcaView->setFDBase( fdbase );
 }
 
 void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
@@ -187,7 +198,7 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 	   this, SIGNAL( SignalMCAViewShowElmEnergy( bool ) ),
 	   Qt::UniqueConnection );
 
-  connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SLOT( SelectedShowDiff( bool ) ),
+  connect( ShowDiff, SIGNAL( toggled( bool ) ), this, SIGNAL( askSetShowDiff( bool ) ),
 	   Qt::UniqueConnection );
 #if 0
   connect( PeakSearchSensitivity, SIGNAL( editingFinished() ), 
@@ -197,18 +208,18 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 	   this, SLOT( SelectedLimitPSEnergy( bool ) ),
 	   Qt::UniqueConnection );
   connect( MCAPeakSearch, SIGNAL( toggled( bool ) ),
-	   this, SLOT( SelectedPeakSearch( bool ) ),
+	   this, SIGNAL( askSetPeakSearch( bool ) ),
 	   Qt::UniqueConnection );
 #endif
   connect( ShowSmoothed, SIGNAL( toggled( bool ) ),
-	   this, SLOT( SelectedShowSmoothed( bool ) ),
+	   this, SIGNAL( askSetShowSmoothed( bool ) ),
 	   Qt::UniqueConnection );
-  connect( MCAReFit, SIGNAL( clicked() ), this, SLOT( PushedReFit() ),
+  connect( MCAReFit, SIGNAL( clicked() ), this, SIGNAL( askDoPeakFitWCPoints() ), 
 	   Qt::UniqueConnection );
-  connect( ClearMCAPeaks, SIGNAL( clicked() ), this, SLOT( PushedClearMCAPeaks() ),
+  connect( ClearMCAPeaks, SIGNAL( clicked() ), this, SIGNAL( askClearMCAPeaks() ),
 	   Qt::UniqueConnection );
   connect( FitToRaw, SIGNAL( toggled( bool ) ),
-	   this, SLOT( SelectedFitToRaw( bool ) ),
+	   this, SIGNAL( askSetFitToRaw( bool ) ),
 	   Qt::UniqueConnection );
   connect( PeakCalibrate, SIGNAL( editingFinished() ),
 	   this, SLOT( newCalibration() ),
@@ -243,8 +254,9 @@ void SetUpSFluo::newMaxMCAEnergy( void )
     MaxMCAEnergyInput->setText( QString::number( MaxMCAEnergy ) );
   }
 
-  mcaView->setMaxEnergy( MaxMCAEnergy );
-  mcaView->update();
+  emit askSetMaxMCAEnergy( MaxMCAEnergy );
+//  mcaView->setMaxEnergy( MaxMCAEnergy );
+//  mcaView->update();
 }
 
 void SetUpSFluo::newMaxLoop( void )
@@ -255,26 +267,26 @@ void SetUpSFluo::newMaxLoop( void )
   }
   MaxLoop->setText( QString::number( maxLoop ) );
 
-  mcaView->setMaxLoop( maxLoop );
-  mcaView->update();
+  emit askSetMaxLoop( maxLoop );
+//  mcaView->setMaxLoop( maxLoop );
 }
 
 void SetUpSFluo::newDampFact( void )
 {
-  mcaView->setDampFact( DampFact->text().toDouble() );
-  mcaView->update();
+  emit askSetDampFact( DampFact->text().toDouble() );
+//  mcaView->setDampFact( DampFact->text().toDouble() );
 }
 
 void SetUpSFluo::newPrec1( void )
 {
-  mcaView->setPrec1( Prec1->text().toDouble() );
-  mcaView->update();
+  emit askSetPrec1( Prec1->text().toDouble() );
+//  mcaView->setPrec1( Prec1->text().toDouble() );
 }
 
 void SetUpSFluo::newPrec2( void )
 {
-  mcaView->setPrec2( Prec2->text().toDouble() );
-  mcaView->update();
+  emit askSetPrec2( Prec2->text().toDouble() );
+//  mcaView->setPrec2( Prec2->text().toDouble() );
 }
 
 
@@ -309,38 +321,57 @@ void SetUpSFluo::ReadLowerLimitSetting( void )
 
 void SetUpSFluo::SelectedLimitPSEnergy( bool f )
 {
-  mcaView->setLimitPSEnergy( f );
+  emit askSetLimitPSEnergy( f );
+//  mcaView->setLimitPSEnergy( f );
 }
 
+#if 0
 void SetUpSFluo::SelectedShowDiff( bool f )
 {
-  mcaView->setShowDiff( f );
+  emit askSetShowDiff( f );
+//  mcaView->setShowDiff( f );
 }
+#endif
 
+#if 0				  
 void SetUpSFluo::SelectedPeakSearch( bool f )
 {
-  mcaView->setPeakSearch( f );
+  emit askSetPeakSearch( f )
+//  mcaView->setPeakSearch( f );
 }
+#endif
 
+#if 0			 
 void SetUpSFluo::SelectedShowSmoothed( bool f )
 {
-  mcaView->setShowSmoothed( f );
+  emit askSetShowSmoothed( f );
+//  mcaView->setShowSmoothed( f );
 }
+#endif
 
+#if 0		    
 void SetUpSFluo::SelectedFitToRaw( bool f )
 {
-  mcaView->setFitToRaw( f );
+  emit askSetFitToRaw( f );
+//  mcaView->setFitToRaw( f );
 }
+#endif
 
+#if 0	
 void SetUpSFluo::PushedReFit( void )
 {
-  mcaView->doPeakFitWCPoints();
+  emit askDoPeakFitWCPoints();
+//  mcaView->doPeakFitWCPoints();
 }
+#endif
 
+#if 0
 void SetUpSFluo::PushedClearMCAPeaks( void )
 {
-  mcaView->clearMCAPeaks();
+  emit askClearMCAPeaks();
+//  mcaView->clearMCAPeaks();
 }
+#endif
 
 void SetUpSFluo::newGain( void )
 {
@@ -510,8 +541,11 @@ void SetUpSFluo::newROIStart( const QString &newv )
 {
   ROIStart[ MCACh->text().toInt() ] = newv;
 
+  emit askSetROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+#if 0
   mcaView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
   mcaView->update();
+#endif
 
   if ( AutoROIsetAll->isChecked() )
     setAllROIs();
@@ -525,9 +559,12 @@ void SetUpSFluo::newROIEnd( const QString &newv )
 {
   ROIEnd[ MCACh->text().toInt() ] = newv;
 
+  emit askSetROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+#if 0
   mcaView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
   mcaView->update();
-
+#endif
+  
   if ( AutoROIsetAll->isChecked() )
     setAllROIs();
   emit ReCalcXAFSWithMCA();
@@ -555,8 +592,13 @@ void SetUpSFluo::MCAChSelected( int i )
   ROIStartInput->setText( ROIStart[ cMCACh ] );
   ROIEndInput->setText( ROIEnd[ cMCACh ] );
 
+  emit askSetMCACh( cMCACh );
+  emit askSetROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+#if 0
   mcaView->SetMCACh( cMCACh );
   mcaView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
+#endif
+  
   SFluo0->GetRealTime( cMCACh );
   SFluo0->GetLiveTime( cMCACh );
 
@@ -652,15 +694,16 @@ void SetUpSFluo::StartMCA( void )
 
 void SetUpSFluo::showCurrentValues( int atCur, int inROI )
 {
-  if ( sender() == mcaView ) {   // これが != になることは絶対ないはずだけど念の為
+  // これが != になることは絶対ないはずだけど念の為 --> 今はこれが != になることがある
+  //  if ( sender() == mcaView ) {
     ValAtCurDisp->setText( QString::number( atCur ) );
     ValInROIDisp->setText( QString::number( inROI ) );
-  }
+  //  }
 }
 
 void SetUpSFluo::setNewROI( int s, int e )
 {
-  if ( sender() == mcaView ) {   // これが != になることは絶対ないはずだけど念の為
+//  if ( sender() == mcaView ) {   // これが != になることは絶対ないはずだけど念の為
     ROIStartInput->setText( ROIStart[ MCACh->text().toInt() ] = QString::number( s ) );
     ROIEndInput->setText( ROIEnd[ MCACh->text().toInt() ] = QString::number( e ) );
     if ( AutoROIsetAll->isChecked() )
@@ -668,7 +711,7 @@ void SetUpSFluo::setNewROI( int s, int e )
     emit ReCalcXAFSWithMCA();
     emit ReCalcS2DMap( this );
     //      S2DReCalcMap0();
-  }
+//  }
 }
 
 void SetUpSFluo::MCASequence( void )
@@ -735,24 +778,24 @@ void SetUpSFluo::ShowNewMCAStat( char * )
     MCAData[i] = aMca[i];
   }
   XMAPHead head = SFluo0->getAMCAHead( cMCACh );
-  mcaView->SetRealTime( head.realTime );
+  mcaView->SetRealTime( head.realTime );  // これは自分の子供の MCAView にしか繋がない
   mcaView->SetLiveTime( head.liveTime );
   mcaView->update();
 }
 
 void SetUpSFluo::ShowNewMCARealTime( int ch )
 {
-  if ( ch == cMCACh )
+  if ( ch == cMCACh )   // これは自分の子供の MCAView にしか繋がない
     mcaView->SetRealTime( SFluo0->realTime( cMCACh ) );
 }
 
 void SetUpSFluo::ShowNewMCALiveTime( int ch )
 {
-  if ( ch == cMCACh )
+  if ( ch == cMCACh )   // これは自分の子供の MCAView にしか繋がない
     mcaView->SetLiveTime( SFluo0->liveTime( cMCACh ) );
 }
 
-void SetUpSFluo::clearMCA( void )
+void SetUpSFluo::clearMCA( void )  // これは自分の子供の MCAView にしか繋がない
 {
   if ( inMCAMeas ) {
     MCAClearRequest = true;

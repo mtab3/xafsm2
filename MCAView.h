@@ -22,6 +22,7 @@ class MCAView : public QFrame, private Ui::MCAView
 
 private:
   QWidget *Parent;
+  QWidget *gParent;
 
   //  PeakFit *PF;
   Gs *Fit;
@@ -99,33 +100,21 @@ private:
   MouseC m;
 
 public:
-  MCAView( QWidget *p = NULL, QWidget *Parent = NULL );
+  MCAView( QWidget *p, QWidget *Parent, QWidget *grandParent );
   ~MCAView( void );
 
   QWidget *parent( void ) { return Parent; };
   void setLayout( QLayout *l ) { layout = l; };
   void setKeV2Pix( KeV2Pix *K2P ) { k2p = K2P; };
-  void setFDBase( FluoDBase *FDBase ) { fdbase = FDBase; };
   quint32 *setMCAdataPointer( int length );
   void SetRealTime( double rt ) { realTime = rt; };
   void SetLiveTime( double lt ) { liveTime = lt; };
   void SetLowLimit( double LL ) { lowerLimit = LL; };
-  void SetMCACh( int i ) { MCACh = i; };
   void makeValid( bool v ) { valid = v; };
   double getRealTime( void ) { return realTime; };
   double getLiveTime( void ) { return liveTime; };
   void setSelectedAtoms( QStringList aList ) { selectedAtoms = aList; update(); };
   void setNewPSSens( QString newSens );
-  void setShowDiff( bool f ) { ShowDiff = f; update(); };
-  void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
-  void setShowSmoothed( bool f ) { ShowSmoothed = f; update(); };
-  void setFitToRaw( bool f ) { DoPeakFitToRaw = f; update(); };
-  void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
-  void setMaxEnergy( double e ) { MaxEnergy = e; };
-  void setMaxLoop( int L ) { fitMaxLoop = L; };
-  void setDampFact( double damp ) { fitDampFact = damp; };
-  void setPrec1( double prec1 ) { fitPrec1 = prec1; };
-  void setPrec2( double prec2 ) { fitPrec2 = prec2; };
   QStringList getSelectedElms( void );
   double *getMCAEnergys( void ) { return E; };
   void print( QPrinter *p );
@@ -134,22 +123,36 @@ public:
   QVector<MCAPeak> *getMCAPeaks( void ) { return &MCAPeaks; };
   int getMCALength( void ) { return MCALen; };
   double *getSMCA( void ) { return SMCA; };
-  void doPeakFitWCPoints( void );
   void newFit( int peaks );
   void setFittedLines( int peaks, double *E );
   void setMCAPeaksByFit( void );
 
 public slots:
-  void setROI( int s, int e );   // MCA pixel
   void setLog( bool f ) { dispLog = f; update(); };
   void setShowElements( bool show ) { showElements = show; update(); };
   void setShowElementsAlways( bool show ) { showElementsAlways = show; update(); };
   void setShowElementsEnergy( bool show ) { showElementsEnergy = show; update(); };
   //  void doPeakFit( void );
   void NewEnergy( double e ) { I0Energy = e; };
-  void clearMCAPeaks( void );
   void PopUp( void );
 
+  void setFDBase( FluoDBase *FDBase ) { fdbase = FDBase; update(); };
+  void setMaxMCAEnergy( double e ) { MaxEnergy = e; update(); };
+  void setMaxLoop( int L ) { fitMaxLoop = L; };
+  void setDampFact( double damp ) { fitDampFact = damp; };
+  void setPrec1( double prec1 ) { fitPrec1 = prec1; };
+  void setPrec2( double prec2 ) { fitPrec2 = prec2; };
+
+  void setLimitPSEnergy( bool f ) { LimitPSEnergy = f; update(); };
+  void setShowDiff( bool f ) { ShowDiff = f; update(); };
+  void setPeakSearch( bool f ) { DoPeakSearch = f; update(); };
+  void setShowSmoothed( bool f ) { ShowSmoothed = f; update(); };
+  void setFitToRaw( bool f ) { DoPeakFitToRaw = f; update(); };
+  void doPeakFitWCPoints( void );
+  void clearMCAPeaks( void );
+  void setROI( int s, int e );   // MCA pixel
+  void setMCACh( int i ) { MCACh = i; };
+  
 signals:
   void CurrentValues( int atCur, int inROI );
   void newROI( int ROIstart, int ROIend );

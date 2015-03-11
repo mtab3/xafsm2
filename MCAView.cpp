@@ -23,11 +23,12 @@
 #define NEAR2 ( 10 )    // 据え置きカーソルに近いと判断する距離
 #define NEAR3 ( 3 )     // 蛍光ピーク位置が近いと判断する距離
 
-MCAView::MCAView( QWidget *p, QWidget *parent ) : QFrame( p )
+MCAView::MCAView( QWidget *p, QWidget *parent, QWidget *grandParent ) : QFrame( p )
 {
   setupUi( this );
 
   Parent = parent;
+  gParent = grandParent;
   setToolTip( "" );
 
   k2p = NULL;
@@ -129,6 +130,28 @@ MCAView::MCAView( QWidget *p, QWidget *parent ) : QFrame( p )
   connect( Parent, SIGNAL( SignalMCAViewShowElmEnergy( bool ) ),
 	   this, SLOT( setShowElementsEnergy( bool ) ),
 	   Qt::UniqueConnection );
+
+
+  connect( this, SIGNAL( newROIinEng( double, double ) ),
+	   Parent, SLOT( setROIs( void ) ), Qt::UniqueConnection );
+  connect( gParent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
+	   Qt::UniqueConnection );
+
+  connect( Parent, SIGNAL( askSetFDBase( FluoDBase * ) ), this, SLOT( setFDBase( FluoDBase * ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetMaxMCAEnergy( double ) ), this, SLOT( setMaxMCAEnergy( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetMaxLoop( int ) ), this, SLOT( setMaxLoop( int ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetDampFact( double ) ), this, SLOT( setDampFact( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetPrec1( double ) ), this, SLOT( setPrec1( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetPrec2( double ) ), this, SLOT( setPrec2( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetLimitPSEnergy( bool ) ), this, SLOT( setLimitPSEnergy( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetShowDiff( bool ) ), this, SLOT( setShowDiff( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetPeakSearch( bool ) ), this, SLOT( setPeakSearch( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetShowSmoothed( bool ) ), this, SLOT( setShowSmoothed( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetFitToRaw( bool ) ), this, SLOT( setFitToRaw( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askDoPeakFitWCPoints() ), this, SLOT( doPeakFitWCPoints() ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askClearMCAPeaks() ), this, SLOT( clearMCAPeaks() ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetROI( int, int ) ), this, SLOT( setROI( int, int ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetMCACh( int ) ), this, SLOT( setMCACh( int ) ), Qt::UniqueConnection );
 }
 
 MCAView::~MCAView( void )

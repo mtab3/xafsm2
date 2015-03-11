@@ -92,7 +92,7 @@ void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir, QString uid )
     }
     if ( sfn >= SFluos.count() )
       sfn = 0;
-    vcn = SetUpNewView( MCAVIEW, MCADATA, READD, new MCAView( NULL, SSFluos[sfn] ) );
+    vcn = SetUpNewView( MCAVIEW, MCADATA, READD, new MCAView( NULL, SSFluos[sfn], this ) );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     break;
   case S2DDATA:

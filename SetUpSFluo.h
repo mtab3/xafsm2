@@ -62,6 +62,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
  public:
   SetUpSFluo( QWidget *p = NULL );
 
+  void setUpMCAView( MCAView *view );
   void setK2PFile( QString name ) { k2pFile = name; };
   void setLLFile( QString name ) { llFile = name; };
   void setPAGFile( QString name ) { pagFile = name; };
@@ -127,12 +128,12 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   //  void newCalibration( void );
   void ReadLowerLimitSetting( void );
   void SelectedLimitPSEnergy( bool f );
-  void SelectedShowDiff( bool f );
-  void SelectedPeakSearch( bool f );
-  void SelectedShowSmoothed( bool f );
-  void SelectedFitToRaw( bool f );
-  void PushedReFit( void );
-  void PushedClearMCAPeaks( void );
+  //  void SelectedShowDiff( bool f );
+  //  void SelectedPeakSearch( bool f );
+  //  void SelectedShowSmoothed( bool f );
+  //  void SelectedFitToRaw( bool f );
+  //  void PushedReFit( void );
+  //  void PushedClearMCAPeaks( void );
   //  void newPSSens( void );
   void newGain( void );
   void saveMCAData( void );
@@ -181,6 +182,22 @@ public slots:
   void SignalMCAViewShowElmEnergy( bool f );
 
   void showMyMCAView( SetUpSFluo *ssfluo );
+
+  void askSetFDBase( FluoDBase *fb );
+  void askSetMaxMCAEnergy( double maxe );
+  void askSetMaxLoop( int loop );
+  void askSetDampFact( double df );
+  void askSetPrec1( double p1 );
+  void askSetPrec2( double p2 );
+  void askSetLimitPSEnergy( bool f );
+  void askSetShowDiff( bool f );
+  void askSetPeakSearch( bool f );
+  void askSetShowSmoothed( bool f );
+  void askSetFitToRaw( bool f );
+  void askDoPeakFitWCPoints( void );
+  void askClearMCAPeaks( void );
+  void askSetROI( int rs, int re );
+  void askSetMCACh( int ch );
 };
 
 #endif

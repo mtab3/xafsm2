@@ -477,7 +477,7 @@ void Data::showMCAData( QTextStream &in, QVector<ASensor*> &ASensors )
   aMCA.correctE( k2p );
   aMCA.copyCnt( cMCACh, cMCA );
 
-  theMCAView->SetMCACh( cMCACh );
+  theMCAView->setMCACh( cMCACh );
   MCADataIsValid = true;
   theMCAView->update();
 }
@@ -525,7 +525,7 @@ void Data::SelectedNewMCACh( int ch )
     cMCA[i] = MCAs[ cMCACh ][i];
   }
 #endif
-  theMCAView->SetMCACh( cMCACh );
+  theMCAView->setMCACh( cMCACh );
   theMCAView->update();
 }
 

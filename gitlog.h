@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Mar 10 18:39:08 2015 +0900\n"\
+                "    read MCA is working\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Mar 9 17:06:10 2015 +0900\n"\
                 "    Start to working on Read/Show MCA data again.  In the next step, check 'AskToGetNewView'\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 19:09:18 2015 +0900\n"\
                 "    small bug fix on gsb-display.  a bug which crash XafsM2 on the XAFS measurement but not fixed\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Mar 6 18:48:57 2015 +0900\n"\
-                "    merged with newMwSSD2\n"\
 		"\n"\
                 ""
 #endif

@@ -199,6 +199,8 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
 	//newView = (void *)(new MCAView( this ));
 	MCAView *view = (MCAView*)newView;
 	SetUpSFluo *ssfluo = (SetUpSFluo*)(view->parent());
+	ssfluo->setUpMCAView( view );
+#if 0
 	view->setKeV2Pix( ssfluo->K2P() );
 	view->setFDBase( fdbase );
 	view->setShowElements( ssfluo->DispElmNamesIsChecked() );
@@ -216,6 +218,7 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
 	view->setDampFact( ssfluo->dampFact() );
 	view->setPrec1( ssfluo->prec1() );
 	view->setPrec2( ssfluo->prec2() );
+#endif
       }
       break;
     case S2DVIEW:
