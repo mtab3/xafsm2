@@ -171,8 +171,8 @@ public slots:
   void ReCalcXAFSWithMCA( void );
   void ReCalcS2DMap( SetUpSFluo *ssfluo );
   void ShowMessage( QString msg, int time );
-  void SaveMCADataOnMem( aMCASet *set, SetUpSFluo *sSFluo );
-  void NewMCACh( int ch );
+  void askToSaveMCAData( SetUpSFluo *ssfluo, QString fname );
+  //  void NewMCACh( int ch );
   void addAnUsingUnit( QString id, AUnit0 *sfluo );
   void removeUsingUnits( QString id, AUnit0 *sfluo );
 

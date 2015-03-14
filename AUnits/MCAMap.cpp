@@ -102,13 +102,10 @@ void aMCASet::load( QTextStream &in, QString title )
     QStringList vals = line.simplified().split( QRegExp( "\\s+" ) );
     if ( vals.count() >= ( CHs * 2 + 1 ) ) {
       int i = vals[0].toInt();
-      QString buf = "";
       for ( int j = 0; j < CHs; j++ ) {
         Ch[j].E[i] = vals[j * 2 + 1].toDouble();
         Ch[j].cnt[i] = vals[j * 2 + 2].toInt();
-        buf += QString( "[%1 %2] " ).arg( Ch[j].E[i] ).arg( Ch[j].cnt[i] );
       }
-      qDebug() << buf;
     }
     lc++;
   }

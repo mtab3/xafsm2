@@ -113,7 +113,6 @@ void Data::ShowFName( const QString &fname )
   if ( DType == MCADATA ) {
     CheckUid( fname, SFluoUid );
   }
-  qDebug() << "000";
   emit AskToGetNewView( DType, FSDialog->directory().absolutePath(), SFluoUid );
 }
 
@@ -207,6 +206,8 @@ void Data::GotNewView( ViewCTRL *viewC,
   theViewC = viewC;
 
   QTextStream in( &f );
+
+  disconnect( this, SLOT( SelectedNewMCACh( int ) ) );
 
   switch( DType ) {
 #if 0
@@ -461,7 +462,9 @@ void Data::showMCAData( QTextStream &in, QVector<ASensor*> &ASensors )
 
   QStringList vals;
   theMCAView = (MCAView*)theViewC->getView();
-
+  connect( ((SetUpSFluo*)(theMCAView->parent())), SIGNAL( askSetMCACh( int ) ),
+	   this, SLOT( SelectedNewMCACh( int ) ) );
+  
   KeV2Pix *k2p = theMCAView->keV2Pix();
   cMCACh = 0;
   theMCAView->makeValid( true );
@@ -520,11 +523,6 @@ void Data::SelectedNewMCACh( int ch )
 
   cMCACh = ch;
   aMCA.copyCnt( cMCACh, cMCA );
-#if 0
-  for ( int i = 0; i < MCALength; i++ ) {
-    cMCA[i] = MCAs[ cMCACh ][i];
-  }
-#endif
   theMCAView->setMCACh( cMCACh );
   theMCAView->update();
 }

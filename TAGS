@@ -24,9 +24,9 @@ void MainWindow::setupAutoSequence(93,2319
 void MainWindow::AutoSequence(104,2589
 bool MainWindow::AutoSequenceShouldBeLocked(123,2929
 void MainWindow::AutoSequence0(134,3149
-void MainWindow::AutoSequenceEnd(387,10374
-void MainWindow::ASReadSEQFile(395,10492
-bool MainWindow::ASReadNextLine(412,10805
+void MainWindow::AutoSequenceEnd(387,10392
+void MainWindow::ASReadSEQFile(395,10510
+bool MainWindow::ASReadNextLine(412,10823
 
 CColors.cpp,136
 CColors::CColors(6,42
@@ -113,25 +113,27 @@ DarkTable.cpp,62
 DarkTable::DarkTable(3,24
 void DarkTable::clearItems(12,210
 
-Data.cpp,584
+Data.cpp,641
 Data::Data(11,146
-Data::~Data(60,1750
-void Data::setDataRoot(67,1825
-void Data::callCSDialog(72,1918
-void Data::newColorSelected(84,2121
-void Data::GotCurrentView(91,2251
-void Data::ShowFName(101,2462
-void Data::StartToShowData(111,2691
-void Data::CheckFileType(116,2771
-void Data::GotNewView(155,4364
-void Data::SetColor(184,5115
-void Data::showMeasData(190,5239
-void Data::showScanData(296,8597
-void Data::showMonData(354,10216
-void Data::showMCAData(417,11862
-void Data::getNewMCAs(445,12455
-void Data::SelectedNewMCACh(476,13080
-void Data::showS2DData(491,13356
+Data::~Data(64,1805
+void Data::setDataRoot(71,1880
+void Data::callCSDialog(76,1973
+void Data::newColorSelected(88,2176
+void Data::GotCurrentView(95,2306
+void Data::ShowFName(106,2573
+#define SENSORID 119,2876
+void Data::CheckUid(121,2911
+void Data::StartToShowData(142,3510
+void Data::CheckFileType(147,3597
+void Data::GotNewView(196,5531
+void Data::SetColor(226,6324
+void Data::showMeasData(232,6448
+void Data::showScanData(338,9806
+void Data::showMonData(396,11425
+void Data::showMCAData(459,13071
+void Data::getNewMCAs(489,13820
+void Data::SelectedNewMCACh(520,14445
+void Data::showS2DData(530,14629
 
 Diff.cpp,190
 void Smooth(7,74
@@ -157,7 +159,7 @@ void MainWindow::WriteInfoFile2(541,17240
 void MainWindow::WriteHeader2(571,17839
 void MainWindow::WriteHeaderCore2(579,18103
 void MainWindow::RecordData(632,19421
-void MainWindow::TouchDelegateFile(841,26919
+void MainWindow::TouchDelegateFile(843,27029
 
 FluoDBase.cpp,274
 FluoDBase::FluoDBase(9,124
@@ -234,60 +236,60 @@ void LA::solveUV(299,5226
 LocalizedName.cpp,40
 QString MainWindow::LocalizedName(3,25
 
-MCAView.cpp,1759
-#define PEAKSEARCH12,143
-#define NEAR1 22,548
-#define NEAR2 23,637
-#define NEAR3 24,719
-MCAView::MCAView(26,799
-MCAView::~MCAView(134,4523
-quint32 *MCAView::setMCAdataPointer(MCAView::setMCAdataPointer167,5379
-void MCAView::paintEvent(181,5730
-void MCAView::print(188,5831
-double LOGS[LOGS194,5906
-#define SMOOTHINGRANGE 210,6341
-double SWeight[SWeight211,6371
-#define DIFFOFFSET 212,6457
-#define DIFFRANGE 213,6516
-double DWeight[DWeight214,6542
-double DiffNorm 215,6624
-#define SMOOTHINGRANGE 219,6722
-double SWeight[SWeight220,6752
-#define DIFFOFFSET 221,6804
-#define DIFFRANGE 222,6863
-double DWeight[DWeight223,6889
-double DiffNorm 224,6971
-#define SMOOTHINGRANGE 228,7075
-double SWeight[SWeight229,7105
-#define DIFFOFFSET 230,7166
-#define DIFFRANGE 231,7225
-double DWeight[DWeight232,7250
-double DiffNorm 233,7301
-#define SMOOTHINGRANGE 237,7380
-double SWeight[SWeight238,7410
-#define DIFFOFFSET 239,7462
-#define DIFFRANGE 240,7521
-double DWeight[DWeight241,7546
-double DiffNorm 242,7597
-#define DELOFFSET 245,7627
-#define DELRANGE 246,7690
-double DelWeight[DelWeight247,7714
-void MCAView::Draw(249,7759
-void MCAView::PeakSearch(820,27289
-void MCAView::mouseMoveEvent(958,31612
-void MCAView::mousePressEvent(994,32290
-void MCAView::mouseReleaseEvent(1050,34153
-void MCAView::mouseDoubleClickEvent(1079,34798
-void MCAView::setROI(1083,34856
-void MCAView::wheelEvent(1089,34979
-void MCAView::setNewPSSens(1119,35793
-QStringList MCAView::getSelectedElms(1129,35929
-void MCAView::setFittedLines(1145,36319
-void MCAView::doPeakFitWCPoints(1166,36835
-void MCAView::newFit(1225,38202
-void MCAView::setMCAPeaksByFit(1237,38453
-void MCAView::clearMCAPeaks(1260,39190
-void MCAView::PopUp(1267,39303
+MCAView.cpp,1760
+#define PEAKSEARCH13,167
+#define NEAR1 23,572
+#define NEAR2 24,661
+#define NEAR3 25,743
+MCAView::MCAView(27,823
+MCAView::~MCAView(172,6590
+quint32 *MCAView::setMCAdataPointer(MCAView::setMCAdataPointer205,7446
+void MCAView::paintEvent(219,7797
+void MCAView::print(226,7898
+double LOGS[LOGS232,7973
+#define SMOOTHINGRANGE 248,8408
+double SWeight[SWeight249,8438
+#define DIFFOFFSET 250,8524
+#define DIFFRANGE 251,8583
+double DWeight[DWeight252,8609
+double DiffNorm 253,8691
+#define SMOOTHINGRANGE 257,8789
+double SWeight[SWeight258,8819
+#define DIFFOFFSET 259,8871
+#define DIFFRANGE 260,8930
+double DWeight[DWeight261,8956
+double DiffNorm 262,9038
+#define SMOOTHINGRANGE 266,9142
+double SWeight[SWeight267,9172
+#define DIFFOFFSET 268,9233
+#define DIFFRANGE 269,9292
+double DWeight[DWeight270,9317
+double DiffNorm 271,9368
+#define SMOOTHINGRANGE 275,9447
+double SWeight[SWeight276,9477
+#define DIFFOFFSET 277,9529
+#define DIFFRANGE 278,9588
+double DWeight[DWeight279,9613
+double DiffNorm 280,9664
+#define DELOFFSET 283,9694
+#define DELRANGE 284,9757
+double DelWeight[DelWeight285,9781
+void MCAView::Draw(287,9826
+void MCAView::PeakSearch(860,29465
+void MCAView::mouseMoveEvent(998,33788
+void MCAView::mousePressEvent(1034,34466
+void MCAView::mouseReleaseEvent(1090,36329
+void MCAView::mouseDoubleClickEvent(1119,36974
+void MCAView::setROI(1123,37032
+void MCAView::wheelEvent(1129,37155
+void MCAView::setNewPSSens(1159,37969
+QStringList MCAView::getSelectedElms(1169,38105
+void MCAView::setFittedLines(1185,38495
+void MCAView::doPeakFitWCPoints(1206,39011
+void MCAView::newFit(1265,40378
+void MCAView::setMCAPeaksByFit(1277,40629
+void MCAView::clearMCAPeaks(1300,41366
+void MCAView::PopUp(1307,41479
 
 MainWindow.cpp,1054
 const QString CMode[CMode9,104
@@ -318,13 +320,13 @@ void MainWindow::alarmOff(592,17340
 
 Measurement.cpp,339
 void MainWindow::MeasSequence(3,25
-void MainWindow::clearUUnits(215,6881
-void MainWindow::onMeasFinishWorks(230,7137
-bool MainWindow::isBusyMotorInMeas(261,8063
-void MainWindow::SetDispMeasModes(269,8253
-void MainWindow::DispMeasDatas(365,12289
-void MainWindow::newSSDChSelection(509,16474
-void MainWindow::SaveI0inMPSet(551,17613
+void MainWindow::clearUUnits(217,6976
+void MainWindow::onMeasFinishWorks(222,7051
+bool MainWindow::isBusyMotorInMeas(246,7756
+void MainWindow::SetDispMeasModes(254,7946
+void MainWindow::DispMeasDatas(350,11982
+void MainWindow::newSSDChSelection(494,16167
+void MainWindow::SaveI0inMPSet(536,17306
 
 MonInfo.cpp,159
 MonInfo::MonInfo(5,41
@@ -396,17 +398,17 @@ void MainWindow::clearGSBs(121,3680
 void MainWindow::SetGSBFlags(133,3943
 void MainWindow::SetGSBLabels(140,4084
 void MainWindow::SelectAGB(147,4221
-void MainWindow::HideT(162,4611
-void MainWindow::HideB(172,4743
-void MainWindow::NewSelA(187,4992
-void MainWindow::NewSelE(232,6580
-void MainWindow::ShowTAE(244,6879
-void MainWindow::ManSelTEdeg(257,7266
-void MainWindow::ManSelTEkeV(269,7587
-void MainWindow::OpenPT(278,7768
-void MainWindow::MoveCurThPosKeV(283,7819
-void MainWindow::TuneDTh1(309,8615
-void MainWindow::AddNewDTh1TunePoint(323,8905
+void MainWindow::HideT(162,4614
+void MainWindow::HideB(172,4746
+void MainWindow::NewSelA(187,4995
+void MainWindow::NewSelE(232,6583
+void MainWindow::ShowTAE(244,6882
+void MainWindow::ManSelTEdeg(257,7269
+void MainWindow::ManSelTEkeV(269,7590
+void MainWindow::OpenPT(278,7771
+void MainWindow::MoveCurThPosKeV(283,7822
+void MainWindow::TuneDTh1(309,8618
+void MainWindow::AddNewDTh1TunePoint(323,8908
 
 MwLog.cpp,222
 void MainWindow::setupLogArea(4,26
@@ -454,23 +456,23 @@ void MainWindow::SelectedRBFN(1070,34960
 void MainWindow::ClearXViewScreenForMeas(1112,36217
 bool MainWindow::CheckDetectorSelection(1122,36472
 void MainWindow::StartMeasurement(1219,39571
-void MainWindow::SetupMPSet(1668,57840
-bool MainWindow::CheckOkList(1714,59159
-bool MainWindow::theSensorIsAvailable(1728,59515
-void MainWindow::SurelyStop(1738,59750
-void MainWindow::GoingOn(1774,60961
-void MainWindow::CpBlock2SBlock(1797,61774
-bool MainWindow::CheckBlockRange(1820,62542
-void MainWindow::PauseMeasurement(1837,63074
-void MainWindow::OkOverWrite(1860,63912
-void MainWindow::OkHaveNotMeasDark(1865,63981
-void MainWindow::RangeSelOK(1870,64064
-void MainWindow::ShowItemsForAutoMode(1876,64141
-bool MainWindow::ParseAutoMode(1882,64285
-void MainWindow::MoveInMeasView(1958,66739
-void MainWindow::ReCalcXAFSWithMCA(1984,67359
-bool MainWindow::setRsRe(2051,69392
-void MainWindow::AfterSaveXafs(2066,69681
+void MainWindow::SetupMPSet(1673,58054
+bool MainWindow::CheckOkList(1719,59373
+bool MainWindow::theSensorIsAvailable(1733,59729
+void MainWindow::SurelyStop(1743,59964
+void MainWindow::GoingOn(1779,61175
+void MainWindow::CpBlock2SBlock(1802,61988
+bool MainWindow::CheckBlockRange(1825,62756
+void MainWindow::PauseMeasurement(1842,63288
+void MainWindow::OkOverWrite(1865,64126
+void MainWindow::OkHaveNotMeasDark(1870,64195
+void MainWindow::RangeSelOK(1875,64278
+void MainWindow::ShowItemsForAutoMode(1881,64355
+bool MainWindow::ParseAutoMode(1887,64499
+void MainWindow::MoveInMeasView(1963,66953
+void MainWindow::ReCalcXAFSWithMCA(1989,67573
+bool MainWindow::setRsRe(2056,69606
+void MainWindow::AfterSaveXafs(2071,69895
 
 MwS2D.cpp,1370
 #define LOWER_LIMIT_OF_DWELL_TIME_IN_REAL_CONT_SCAN 8,84
@@ -500,20 +502,21 @@ void MainWindow::S2DWriteHead2(746,22129
 void MainWindow::S2DWriteBody(754,22422
 void MainWindow::S2DWriteBody2(776,22925
 void MainWindow::SaveMCADataOnMem(788,23241
-void MainWindow::S2DWriteBlankLine(817,24177
-void MainWindow::S2DWriteTail(834,24531
-void MainWindow::S2DMoveToPointedPosition(854,25063
-void MainWindow::ShowMCASpectrum(871,25576
-void MainWindow::S2DChangeMCACh(896,26269
+void MainWindow::S2DWriteBlankLine(817,24175
+void MainWindow::S2DWriteTail(834,24529
+void MainWindow::S2DMoveToPointedPosition(854,25061
+void MainWindow::ShowMCASpectrum(871,25574
+void MainWindow::S2DChangeMCACh(897,26276
 
-MwSSDSetUp.cpp,287
+MwSSDSetUp.cpp,327
 void MainWindow::setupSFluoRelated(4,26
-void MainWindow::addAnUsingUnit(66,2611
-void MainWindow::removeUsingUnits(71,2708
-void MainWindow::ReCalcS2DMap(76,2809
-void MainWindow::MoveToNewCaribEnergy(89,3306
-void MainWindow::NewAttenPos(94,3418
-void MainWindow::NewAttenCh(117,4190
+void MainWindow::saveMCAData(68,2771
+void MainWindow::addAnUsingUnit(79,3118
+void MainWindow::removeUsingUnits(84,3215
+void MainWindow::ReCalcS2DMap(89,3316
+void MainWindow::MoveToNewCaribEnergy(102,3813
+void MainWindow::NewAttenPos(107,3925
+void MainWindow::NewAttenCh(130,4697
 
 MwSetup.cpp,2193
 void MainWindow::setupSetupArea(5,46
@@ -534,51 +537,51 @@ void MainWindow::askNowRanges(500,16150
 void MainWindow::askSetRange(507,16290
 void MainWindow::GotNowRange(513,16435
 void MainWindow::saveScanData(524,16766
-void MainWindow::setSelectedMonFName(577,18421
-void MainWindow::setSelectedScanFName(585,18707
-void MainWindow::SetGoMSpeedH(593,19014
-void MainWindow::SetGoMSpeedM(600,19123
-void MainWindow::SetGoMSpeedL(607,19236
-void MainWindow::ShowGoMSpeed(614,19343
-void MainWindow::ShowCurMotorPos(621,19609
-void MainWindow::GetNewGos(660,20718
-void MainWindow::ShowAllGos(667,20817
-void MainWindow::ShowGo(674,20915
-void MainWindow::GetNewGo(683,21121
-void MainWindow::SetNewGos(689,21261
-void MainWindow::SetAllGoUnits(700,21528
-void MainWindow::NewMMRelAbs(708,21666
-void MainWindow::NewGoMotorPosPuls(717,21859
-void MainWindow::NewGoMotorPosUnit(730,22245
-void MainWindow::GoMAtP(743,22628
-void MainWindow::GoMAtPuls(755,22933
-void MainWindow::setGoBAsMoving(794,24072
-void MainWindow::setGoBAsNotMoving(809,24500
-void MainWindow::GoMStop(836,25144
-void MainWindow::GoMStop0(858,25896
-void MainWindow::SelectedAPointInScanArea(871,26148
-void MainWindow::ScanStart(883,26472
-void MainWindow::ClearXViewScreenForScan(1040,32053
-void MainWindow::ScanStop0(1046,32159
-void MainWindow::Monitor(1051,32217
-void MainWindow::PauseMonitor(1233,37844
-void MainWindow::saveMonData(1246,38119
-void MainWindow::newVs(1306,39857
-void MainWindow::TYVUpScale(1315,40101
-void MainWindow::TYVDownScale(1326,40336
-void MainWindow::PopDownMonLines(1337,40563
-void MainWindow::PopChangeMonLines(1342,40645
-void MainWindow::newMovingAvr(1353,40892
+void MainWindow::setSelectedMonFName(578,18518
+void MainWindow::setSelectedScanFName(586,18804
+void MainWindow::SetGoMSpeedH(594,19111
+void MainWindow::SetGoMSpeedM(601,19220
+void MainWindow::SetGoMSpeedL(608,19333
+void MainWindow::ShowGoMSpeed(615,19440
+void MainWindow::ShowCurMotorPos(622,19706
+void MainWindow::GetNewGos(661,20815
+void MainWindow::ShowAllGos(668,20914
+void MainWindow::ShowGo(675,21012
+void MainWindow::GetNewGo(684,21218
+void MainWindow::SetNewGos(690,21358
+void MainWindow::SetAllGoUnits(701,21625
+void MainWindow::NewMMRelAbs(709,21763
+void MainWindow::NewGoMotorPosPuls(718,21956
+void MainWindow::NewGoMotorPosUnit(731,22342
+void MainWindow::GoMAtP(744,22725
+void MainWindow::GoMAtPuls(756,23030
+void MainWindow::setGoBAsMoving(795,24169
+void MainWindow::setGoBAsNotMoving(810,24597
+void MainWindow::GoMStop(837,25241
+void MainWindow::GoMStop0(859,25993
+void MainWindow::SelectedAPointInScanArea(872,26245
+void MainWindow::ScanStart(885,26628
+void MainWindow::ClearXViewScreenForScan(1042,32220
+void MainWindow::ScanStop0(1048,32326
+void MainWindow::Monitor(1053,32384
+void MainWindow::PauseMonitor(1235,38022
+void MainWindow::saveMonData(1248,38297
+void MainWindow::newVs(1309,40132
+void MainWindow::TYVUpScale(1318,40376
+void MainWindow::TYVDownScale(1329,40611
+void MainWindow::PopDownMonLines(1340,40838
+void MainWindow::PopChangeMonLines(1345,40920
+void MainWindow::newMovingAvr(1356,41167
 
 MwView.cpp,346
 void MainWindow::setupView(4,26
 void MainWindow::addAView(25,551
 void MainWindow::onViewTabClosed(37,815
 void *MainWindow::findAView(MainWindow::findAView48,1084
-void MainWindow::moveToATab(66,1400
-void MainWindow::ShowButtonsForCurrentTab(72,1559
-void MainWindow::ShowButtonsForATab(78,1696
-void MainWindow::NoticeSelectedStats(89,1914
+void MainWindow::moveToATab(66,1451
+void MainWindow::ShowButtonsForCurrentTab(72,1610
+void MainWindow::ShowButtonsForATab(78,1747
+void MainWindow::NoticeSelectedStats(89,1965
 
 MwWeb.cpp,36
 void MainWindow::setupWebView(6,43
@@ -647,19 +650,19 @@ void MainWindow::ShowQXafsProgress(800,28395
 
 ReadData.cpp,219
 void MainWindow::setupReadDataArea(4,26
-void MainWindow::TryToNoticeCurrentView(40,1419
-void MainWindow::DeleteTheView(46,1566
-void MainWindow::TryToGiveNewView(54,1784
-void MainWindow::ansToGetNewMCAView(115,3957
+void MainWindow::TryToNoticeCurrentView(40,1439
+void MainWindow::DeleteTheView(46,1586
+void MainWindow::TryToGiveNewView(54,1804
+void MainWindow::ansToGetNewMCAView(117,3871
 
 ReadDef.cpp,266
 #define LN 7,91
 #define BS 8,136
 void MainWindow::ReadDef(10,183
-AUnit0 *MainWindow::NewNewUnit(MainWindow::NewNewUnit385,16284
-void MainWindow::CheckDuplicateUID(446,17805
-void MainWindow::ExitByDuplicateUID(479,18866
-QString MainWindow::nextItem(491,19454
+AUnit0 *MainWindow::NewNewUnit(MainWindow::NewNewUnit386,16338
+void MainWindow::CheckDuplicateUID(447,17859
+void MainWindow::ExitByDuplicateUID(480,18920
+QString MainWindow::nextItem(492,19508
 
 RelAbs.cpp,101
 RelAbs::RelAbs(5,40
@@ -667,22 +670,23 @@ void RelAbs::ToRel(15,300
 void RelAbs::ToAbs(21,356
 void RelAbs::Show(27,412
 
-S2DB.cpp,465
+S2DB.cpp,500
 S2DB::S2DB(4,20
 S2DB::~S2DB(64,2392
 void S2DB::setParent(71,2489
-void S2DB::PopUp(95,3534
-void S2DB::LoadMCAs(107,3741
-void S2DB::getNewMCAMap(113,3844
-void S2DB::loadNextMap(133,4356
-#define S2DMCAFILETITLE 165,5152
-void S2DB::SaveMCAs(167,5199
-void S2DB::saveNextMap(204,6333
-void S2DB::ShowInfoAtNewPosition(233,7042
-void S2DB::ShowIntMCA(246,7424
-void S2DB::ReCalcMap(251,7507
-double S2DB::ReCalcAMapPointOnMem(314,8910
-void S2DB::print(349,9748
+void S2DB::ChangeMCACh(100,3708
+void S2DB::PopUp(106,3790
+void S2DB::LoadMCAs(118,3997
+void S2DB::getNewMCAMap(124,4100
+void S2DB::loadNextMap(144,4612
+#define S2DMCAFILETITLE 176,5408
+void S2DB::SaveMCAs(178,5455
+void S2DB::saveNextMap(212,6478
+void S2DB::ShowInfoAtNewPosition(241,7203
+void S2DB::ShowIntMCA(254,7606
+void S2DB::ReCalcMap(259,7696
+double S2DB::ReCalcAMapPointOnMem(322,9099
+void S2DB::print(359,10011
 
 S2DInfo.cpp,543
 S2DInfo::S2DInfo(4,23
@@ -739,7 +743,7 @@ void S2DView::CheckIYBPush(358,10016
 void S2DView::mouseReleaseEvent(367,10150
 void S2DView::mouseDoubleClickEvent(376,10289
 void S2DView::wheelEvent(380,10347
-void S2DView::setNowPosition(386,10495
+void S2DView::setNowPosition(388,10508
 
 SMsg.cpp,108
 SMsg::SMsg(9,100
@@ -770,55 +774,56 @@ bool SelectCh::isSelected(52,1204
 void SelectCh::clicked(59,1387
 void SelectCh::selACh(67,1518
 
-SetUpSFluo.cpp,1996
+SetUpSFluo.cpp,2035
 SetUpSFluo::SetUpSFluo(6,47
-void SetUpSFluo::setROIs(53,1811
-void SetUpSFluo::setFDBase(59,1903
-void SetUpSFluo::setupSetupSFluo(65,1999
-void SetUpSFluo::newMaxMCAEnergy(238,8693
-void SetUpSFluo::newMaxLoop(250,8980
-void SetUpSFluo::newDampFact(262,9212
-void SetUpSFluo::newPrec1(268,9330
-void SetUpSFluo::newPrec2(274,9439
-void SetUpSFluo::ReadLowerLimitSetting(281,9549
-void SetUpSFluo::SelectedLimitPSEnergy(310,10194
-void SetUpSFluo::SelectedShowDiff(315,10282
-void SetUpSFluo::SelectedPeakSearch(320,10360
-void SetUpSFluo::SelectedShowSmoothed(325,10442
-void SetUpSFluo::SelectedFitToRaw(330,10528
-void SetUpSFluo::PushedReFit(335,10606
-void SetUpSFluo::PushedClearMCAPeaks(340,10680
-void SetUpSFluo::newGain(345,10758
-void SetUpSFluo::setAllROIs(353,10895
-void SetUpSFluo::saveMCAData(368,11374
-void SetUpSFluo::setSelectedMCAFName(397,12377
-void SetUpSFluo::RealTimeIsSelected(406,12673
-void SetUpSFluo::LiveTimeIsSelected(413,12800
-void SetUpSFluo::SelSSDs0(421,12933
-void SetUpSFluo::SelSSDs20(433,13111
-void SetUpSFluo::SelSSDs(457,13794
-void SetUpSFluo::getMCASettings(475,14247
-void SetUpSFluo::getMCALen(489,14775
-void SetUpSFluo::newROIStart(509,15359
-void SetUpSFluo::newROIEnd(524,15707
-void SetUpSFluo::MCAChSelected(538,16044
-void SetUpSFluo::showPeakingTime(566,16720
-void SetUpSFluo::showThreshold(573,16891
-void SetUpSFluo::showCalibration(580,17058
-void SetUpSFluo::showDynamicRange(587,17229
-void SetUpSFluo::showPreAMPGain(594,17402
-void SetUpSFluo::StartMCA(601,17565
-void SetUpSFluo::showCurrentValues(653,19150
-void SetUpSFluo::setNewROI(661,19411
-void SetUpSFluo::MCASequence(674,19866
-void SetUpSFluo::ShowNewMCAStat(731,21174
-void SetUpSFluo::ShowNewMCARealTime(743,21498
-void SetUpSFluo::ShowNewMCALiveTime(749,21627
-void SetUpSFluo::clearMCA(755,21756
-void SetUpSFluo::gotNewPeakList(769,22008
-void SetUpSFluo::setPreAMPGains(791,22653
-void SetUpSFluo::nowFitStat(823,23348
-void SetUpSFluo::newCalibration(835,23592
+void SetUpSFluo::setUpMCAView(40,1007
+void SetUpSFluo::setROIs(63,2058
+void SetUpSFluo::setFDBase(69,2150
+void SetUpSFluo::setupSetupSFluo(76,2282
+void SetUpSFluo::newMaxMCAEnergy(249,8972
+void SetUpSFluo::newMaxLoop(262,9306
+void SetUpSFluo::newDampFact(274,9552
+void SetUpSFluo::newPrec1(280,9705
+void SetUpSFluo::newPrec2(286,9843
+void SetUpSFluo::ReadLowerLimitSetting(293,9982
+void SetUpSFluo::SelectedLimitPSEnergy(322,10627
+void SetUpSFluo::SelectedShowDiff(329,10756
+void SetUpSFluo::SelectedPeakSearch(337,10883
+void SetUpSFluo::SelectedShowSmoothed(345,11013
+void SetUpSFluo::SelectedFitToRaw(353,11152
+void SetUpSFluo::PushedReFit(361,11274
+void SetUpSFluo::PushedClearMCAPeaks(369,11394
+void SetUpSFluo::newGain(376,11508
+void SetUpSFluo::setAllROIs(384,11645
+void SetUpSFluo::saveMCAData(399,12124
+void SetUpSFluo::setSelectedMCAFName(417,12829
+void SetUpSFluo::RealTimeIsSelected(426,13125
+void SetUpSFluo::LiveTimeIsSelected(433,13252
+void SetUpSFluo::SelSSDs0(441,13385
+void SetUpSFluo::SelSSDs20(453,13563
+void SetUpSFluo::SelSSDs(477,14246
+void SetUpSFluo::getMCASettings(495,14699
+void SetUpSFluo::setROILen(509,15227
+void SetUpSFluo::newROIStart(529,15768
+void SetUpSFluo::newROIEnd(547,16209
+void SetUpSFluo::MCAChSelected(564,16641
+void SetUpSFluo::showPeakingTime(592,17291
+void SetUpSFluo::showThreshold(599,17462
+void SetUpSFluo::showCalibration(606,17629
+void SetUpSFluo::showDynamicRange(613,17800
+void SetUpSFluo::showPreAMPGain(620,17973
+void SetUpSFluo::StartMCA(627,18136
+void SetUpSFluo::showCurrentValues(679,19721
+void SetUpSFluo::setNewROI(688,20025
+void SetUpSFluo::MCASequence(701,20484
+void SetUpSFluo::ShowNewMCAStat(758,21792
+void SetUpSFluo::ShowNewMCARealTime(770,22162
+void SetUpSFluo::ShowNewMCALiveTime(776,22338
+void SetUpSFluo::clearMCA(782,22514
+void SetUpSFluo::gotNewPeakList(796,22812
+void SetUpSFluo::setPreAMPGains(818,23457
+void SetUpSFluo::nowFitStat(850,24152
+void SetUpSFluo::newCalibration(862,24396
 
 Sounds.cpp,113
 void MainWindow::PlayEndingSound(5,44
@@ -896,21 +901,21 @@ int TuningTable::p(95,1837
 void TuningTable::ShowTuneTable(115,2278
 void TuningTable::EditedTuneTable(132,2778
 
-ViewCtrl.cpp,502
+ViewCtrl.cpp,504
 static int vcount 5,48
 ViewCTRL::ViewCTRL(7,72
-ViewCTRL::~ViewCTRL(18,240
-bool ViewCTRL::setView(23,289
-bool ViewCTRL::deleteView(49,803
-void ViewCTRL::addAGSBStat(81,1638
-void ViewCTRL::setGSBStats(88,1761
-QString ViewCTRL::getAGSBSLabel(99,2039
-bool ViewCTRL::getAGSBSStat(107,2160
-QStringList ViewCTRL::getGSBLabels(115,2281
-QVector<bool> ViewCTRL::getGSBFlags(125,2422
-void ViewCTRL::setGSBStat(134,2559
-int MainWindow::SetUpNewView(160,3519
-void MainWindow::showOnesMCAView(302,8806
+ViewCTRL::~ViewCTRL(19,266
+bool ViewCTRL::setView(24,315
+bool ViewCTRL::deleteView(54,1140
+void ViewCTRL::addAGSBStat(89,2204
+void ViewCTRL::setGSBStats(96,2327
+QString ViewCTRL::getAGSBSLabel(107,2605
+bool ViewCTRL::getAGSBSStat(115,2726
+QStringList ViewCTRL::getGSBLabels(123,2847
+QVector<bool> ViewCTRL::getGSBFlags(133,2988
+void ViewCTRL::setGSBStat(142,3125
+int MainWindow::SetUpNewView(168,4085
+void MainWindow::showOnesMCAView(314,9156
 
 XYView.cpp,778
 XYView::XYView(8,85
@@ -966,14 +971,15 @@ void cBar::newInputZmax(147,2980
 void cBar::newInputZmin(159,3163
 void cBar::showZZ(171,3346
 
-global.cpp,201
-double prec(7,62
-QString CheckFNameExt(13,154
-QStringList FileIDs;22,311
-QStringList DataTypeNames;23,332
-QStringList ViewTypeNames;24,359
-QVector<int> viewCounts;25,386
-void global_init(27,412
+global.cpp,227
+void dbg(8,85
+double prec(19,301
+QString CheckFNameExt(25,393
+QStringList FileIDs;34,550
+QStringList DataTypeNames;35,571
+QVector<QStringList> ViewTypeNames;36,598
+QVector<int> viewCounts;37,634
+void global_init(39,660
 
 moc_AMotor.cpp,628
 struct qt_meta_stringdata_AMotor_t 21,765
@@ -1455,21 +1461,21 @@ struct qt_meta_stringdata_Data_t 21,752
     char stringdata[qt_meta_stringdata_Data_t::stringdata23,816
 #define QT_MOC_LITERAL(25,845
 static const qt_meta_stringdata_Data_t qt_meta_stringdata_Data 30,1069
-#undef QT_MOC_LITERAL62,2004
-static const uint qt_meta_data_Data[qt_meta_data_Data64,2027
-void Data::qt_static_metacall(108,3436
-            typedef void (Data:Data129,4668
-            typedef void (Data:Data135,4882
-            typedef void (Data:Data141,5087
-            typedef void (Data:Data147,5284
-const QMetaObject Data::staticMetaObject 155,5475
-const QMetaObject *Data::metaObject(Data::metaObject161,5640
-void *Data::qt_metacast(Data::qt_metacast166,5786
-int Data::qt_metacall(174,6028
-void Data::AskToGetNewView(192,6509
-void Data::showMessage(199,6775
-void Data::GiveMeCurrentView(206,7032
-void Data::setMCACh(212,7138
+#undef QT_MOC_LITERAL63,2034
+static const uint qt_meta_data_Data[qt_meta_data_Data65,2057
+void Data::qt_static_metacall(109,3492
+            typedef void (Data:Data130,4762
+            typedef void (Data:Data136,4984
+            typedef void (Data:Data142,5189
+            typedef void (Data:Data148,5386
+const QMetaObject Data::staticMetaObject 156,5577
+const QMetaObject *Data::metaObject(Data::metaObject162,5742
+void *Data::qt_metacast(Data::qt_metacast167,5888
+int Data::qt_metacall(175,6130
+void Data::AskToGetNewView(193,6611
+void Data::showMessage(200,6944
+void Data::GiveMeCurrentView(207,7201
+void Data::setMCACh(213,7307
 
 moc_FluoDBase.cpp,670
 struct qt_meta_stringdata_FluoDBase_t 21,767
@@ -1543,29 +1549,29 @@ const QMetaObject *KeV2Pix::metaObject(KeV2Pix::metaObject68,1920
 void *KeV2Pix::qt_metacast(KeV2Pix::qt_metacast73,2069
 int KeV2Pix::qt_metacall(81,2321
 
-moc_MCAView.cpp,1076
+moc_MCAView.cpp,1083
 struct qt_meta_stringdata_MCAView_t 22,787
     QByteArrayData data[qt_meta_stringdata_MCAView_t::data23,825
     char stringdata[qt_meta_stringdata_MCAView_t::stringdata24,854
 #define QT_MOC_LITERAL(26,883
 static const qt_meta_stringdata_MCAView_t qt_meta_stringdata_MCAView 31,1110
-#undef QT_MOC_LITERAL65,2136
-static const uint qt_meta_data_MCAView[qt_meta_data_MCAView67,2159
-void MCAView::qt_static_metacall(117,3857
-            typedef void (MCAView:MCAView141,5334
-            typedef void (MCAView:MCAView147,5543
-            typedef void (MCAView:MCAView153,5745
-            typedef void (MCAView:MCAView159,5958
-            typedef void (MCAView:MCAView165,6174
-const QMetaObject MCAView::staticMetaObject 173,6362
-const QMetaObject *MCAView::metaObject(MCAView::metaObject179,6536
-void *MCAView::qt_metacast(MCAView::qt_metacast184,6685
-int MCAView::qt_metacall(192,6936
-void MCAView::CurrentValues(210,7420
-void MCAView::newROI(217,7678
-void MCAView::newROIinEng(224,7929
-void MCAView::newPeakList(231,8191
-void MCAView::pop(238,8397
+#undef QT_MOC_LITERAL91,2972
+static const uint qt_meta_data_MCAView[qt_meta_data_MCAView93,2995
+void MCAView::qt_static_metacall(169,5859
+            typedef void (MCAView:MCAView217,8790
+            typedef void (MCAView:MCAView223,8999
+            typedef void (MCAView:MCAView229,9201
+            typedef void (MCAView:MCAView235,9414
+            typedef void (MCAView:MCAView241,9630
+const QMetaObject MCAView::staticMetaObject 249,9818
+const QMetaObject *MCAView::metaObject(MCAView::metaObject255,9992
+void *MCAView::qt_metacast(MCAView::qt_metacast260,10141
+int MCAView::qt_metacall(268,10392
+void MCAView::CurrentValues(286,10878
+void MCAView::newROI(293,11136
+void MCAView::newROIinEng(300,11387
+void MCAView::newPeakList(307,11649
+void MCAView::pop(314,11855
 
 moc_MainWindow.cpp,2176
 struct qt_meta_stringdata_MainWindow_t 22,796
@@ -1573,41 +1579,41 @@ struct qt_meta_stringdata_MainWindow_t 22,796
     char stringdata[qt_meta_stringdata_MainWindow_t::stringdata24,867
 #define QT_MOC_LITERAL(26,897
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow 31,1127
-#undef QT_MOC_LITERAL400,13583
-static const uint qt_meta_data_MainWindow[qt_meta_data_MainWindow402,13606
-void MainWindow::qt_static_metacall(830,30922
-            typedef void (MainWindow:MainWindow1109,48207
-            typedef void (MainWindow:MainWindow1115,48421
-            typedef void (MainWindow:MainWindow1121,48635
-            typedef void (MainWindow:MainWindow1127,48843
-            typedef void (MainWindow:MainWindow1133,49046
-            typedef void (MainWindow:MainWindow1139,49254
-            typedef void (MainWindow:MainWindow1145,49458
-            typedef void (MainWindow:MainWindow1151,49662
-            typedef void (MainWindow:MainWindow1157,49866
-            typedef void (MainWindow:MainWindow1163,50078
-            typedef void (MainWindow:MainWindow1169,50301
-            typedef void (MainWindow:MainWindow1175,50527
-            typedef void (MainWindow:MainWindow1181,50754
-            typedef void (MainWindow:MainWindow1187,50978
-const QMetaObject MainWindow::staticMetaObject 1195,51218
-const QMetaObject *MainWindow::metaObject(MainWindow::metaObject1201,51406
-void *MainWindow::qt_metacast(MainWindow::qt_metacast1206,51558
-int MainWindow::qt_metacall(1214,51823
-void MainWindow::SelectedSSD(1232,52321
-void MainWindow::SelectedAGB(1239,52581
-void MainWindow::NewEnergy(1246,52841
-void MainWindow::ChangerNext(1253,53036
-void MainWindow::NewROI(1259,53142
-void MainWindow::NewDiff1(1266,53396
-void MainWindow::NewDiff2(1273,53587
-void MainWindow::NewMCACh(1280,53778
-void MainWindow::AutoSequenceFinished(1287,53969
-void MainWindow::SignalMCAViewSetDisplayLog(1293,54084
-void MainWindow::SignalMCAViewSetShowElements(1300,54295
-void MainWindow::SignalMCAViewShowAlwaysSelElm(1307,54509
-void MainWindow::SignalMCAViewShowElmEnergy(1314,54724
-void MainWindow::ReCalcS2DMap0(1321,54936
+#undef QT_MOC_LITERAL402,13654
+static const uint qt_meta_data_MainWindow[qt_meta_data_MainWindow404,13677
+void MainWindow::qt_static_metacall(834,31181
+            typedef void (MainWindow:MainWindow1121,48956
+            typedef void (MainWindow:MainWindow1127,49170
+            typedef void (MainWindow:MainWindow1133,49384
+            typedef void (MainWindow:MainWindow1139,49592
+            typedef void (MainWindow:MainWindow1145,49795
+            typedef void (MainWindow:MainWindow1151,50003
+            typedef void (MainWindow:MainWindow1157,50207
+            typedef void (MainWindow:MainWindow1163,50411
+            typedef void (MainWindow:MainWindow1169,50615
+            typedef void (MainWindow:MainWindow1175,50827
+            typedef void (MainWindow:MainWindow1181,51050
+            typedef void (MainWindow:MainWindow1187,51276
+            typedef void (MainWindow:MainWindow1193,51503
+            typedef void (MainWindow:MainWindow1199,51727
+const QMetaObject MainWindow::staticMetaObject 1207,51967
+const QMetaObject *MainWindow::metaObject(MainWindow::metaObject1213,52155
+void *MainWindow::qt_metacast(MainWindow::qt_metacast1218,52307
+int MainWindow::qt_metacall(1226,52572
+void MainWindow::SelectedSSD(1244,53070
+void MainWindow::SelectedAGB(1251,53330
+void MainWindow::NewEnergy(1258,53590
+void MainWindow::ChangerNext(1265,53785
+void MainWindow::NewROI(1271,53891
+void MainWindow::NewDiff1(1278,54145
+void MainWindow::NewDiff2(1285,54336
+void MainWindow::NewMCACh(1292,54527
+void MainWindow::AutoSequenceFinished(1299,54718
+void MainWindow::SignalMCAViewSetDisplayLog(1305,54833
+void MainWindow::SignalMCAViewSetShowElements(1312,55044
+void MainWindow::SignalMCAViewShowAlwaysSelElm(1319,55258
+void MainWindow::SignalMCAViewShowElmEnergy(1326,55473
+void MainWindow::ReCalcS2DMap0(1333,55685
 
 moc_MonLine.cpp,642
 struct qt_meta_stringdata_MonLine_t 21,761
@@ -1707,45 +1713,43 @@ struct qt_meta_stringdata_S2DB_t 21,752
     char stringdata[qt_meta_stringdata_S2DB_t::stringdata23,816
 #define QT_MOC_LITERAL(25,845
 static const qt_meta_stringdata_S2DB_t qt_meta_stringdata_S2DB 30,1069
-#undef QT_MOC_LITERAL77,2479
-static const uint qt_meta_data_S2DB[qt_meta_data_S2DB79,2502
-void S2DB::qt_static_metacall(131,4280
-            typedef void (S2DB:S2DB174,6539
-            typedef void (S2DB:S2DB180,6744
-            typedef void (S2DB:S2DB186,6961
-const QMetaObject S2DB::staticMetaObject 194,7165
-const QMetaObject *S2DB::metaObject(S2DB::metaObject200,7330
-void *S2DB::qt_metacast(S2DB::qt_metacast205,7476
-int S2DB::qt_metacall(213,7718
-void S2DB::askToGetNewMCAView(231,8201
-void S2DB::ShowMCASpectrum(238,8399
-void S2DB::ShowMessage(245,8668
+#undef QT_MOC_LITERAL79,2552
+static const uint qt_meta_data_S2DB[qt_meta_data_S2DB81,2575
+void S2DB::qt_static_metacall(133,4375
+            typedef void (S2DB:S2DB176,6675
+            typedef void (S2DB:S2DB182,6880
+            typedef void (S2DB:S2DB188,7109
+const QMetaObject S2DB::staticMetaObject 196,7313
+const QMetaObject *S2DB::metaObject(S2DB::metaObject202,7478
+void *S2DB::qt_metacast(S2DB::qt_metacast207,7624
+int S2DB::qt_metacall(215,7866
+void S2DB::askToGetNewMCAView(233,8349
+void S2DB::ShowMCASpectrum(240,8547
+void S2DB::ShowMessage(247,8887
 
-moc_S2DView.cpp,1216
+moc_S2DView.cpp,1122
 struct qt_meta_stringdata_S2DView_t 21,761
     QByteArrayData data[qt_meta_stringdata_S2DView_t::data22,799
     char stringdata[qt_meta_stringdata_S2DView_t::stringdata23,828
 #define QT_MOC_LITERAL(25,857
 static const qt_meta_stringdata_S2DView_t qt_meta_stringdata_S2DView 30,1084
-#undef QT_MOC_LITERAL58,1917
-static const uint qt_meta_data_S2DView[qt_meta_data_S2DView60,1940
-void S2DView::qt_static_metacall(102,3273
-            typedef void (S2DView:S2DView122,4456
-            typedef void (S2DView:S2DView128,4676
-            typedef void (S2DView:S2DView134,4897
-            typedef void (S2DView:S2DView140,5103
-            typedef void (S2DView:S2DView146,5309
-            typedef void (S2DView:S2DView152,5513
-const QMetaObject S2DView::staticMetaObject 160,5716
-const QMetaObject *S2DView::metaObject(S2DView::metaObject166,5890
-void *S2DView::qt_metacast(S2DView::qt_metacast171,6039
-int S2DView::qt_metacall(179,6290
-void S2DView::AskMoveToPointedPosition(197,6770
-void S2DView::PointerMovedToNewPosition(204,7039
-void S2DView::AskToChangeMCACh(211,7309
-void S2DView::PointerMovedOnIntMCA(218,7505
-void S2DView::newAutoZmax(224,7617
-void S2DView::newAutoZmin(231,7811
+#undef QT_MOC_LITERAL56,1837
+static const uint qt_meta_data_S2DView[qt_meta_data_S2DView58,1860
+void S2DView::qt_static_metacall(98,3103
+            typedef void (S2DView:S2DView117,4204
+            typedef void (S2DView:S2DView123,4424
+            typedef void (S2DView:S2DView129,4645
+            typedef void (S2DView:S2DView135,4851
+            typedef void (S2DView:S2DView141,5055
+const QMetaObject S2DView::staticMetaObject 149,5258
+const QMetaObject *S2DView::metaObject(S2DView::metaObject155,5432
+void *S2DView::qt_metacast(S2DView::qt_metacast160,5581
+int S2DView::qt_metacall(168,5832
+void S2DView::AskMoveToPointedPosition(186,6312
+void S2DView::PointerMovedToNewPosition(193,6581
+void S2DView::PointerMovedOnIntMCA(200,6851
+void S2DView::newAutoZmax(206,6963
+void S2DView::newAutoZmin(213,7157
 
 moc_SelMC2.cpp,806
 struct qt_meta_stringdata_SelMC2_t 21,758
@@ -1783,43 +1787,71 @@ int SelectCh::qt_metacall(122,3864
 void SelectCh::selectedACh(140,4346
 void SelectCh::selectedSingleCh(147,4604
 
-moc_SetUpSFluo.cpp,1967
+moc_SetUpSFluo.cpp,3408
 struct qt_meta_stringdata_SetUpSFluo_t 22,796
     QByteArrayData data[qt_meta_stringdata_SetUpSFluo_t::data23,837
     char stringdata[qt_meta_stringdata_SetUpSFluo_t::stringdata24,866
-#define QT_MOC_LITERAL(26,895
-static const qt_meta_stringdata_SetUpSFluo_t qt_meta_stringdata_SetUpSFluo 31,1125
-#undef QT_MOC_LITERAL143,4779
-static const uint qt_meta_data_SetUpSFluo[qt_meta_data_SetUpSFluo145,4802
-void SetUpSFluo::qt_static_metacall(277,9934
-            typedef void (SetUpSFluo:SetUpSFluo381,15930
-            typedef void (SetUpSFluo:SetUpSFluo387,16139
-            typedef void (SetUpSFluo:SetUpSFluo393,16356
-            typedef void (SetUpSFluo:SetUpSFluo399,16573
-            typedef void (SetUpSFluo:SetUpSFluo405,16806
-            typedef void (SetUpSFluo:SetUpSFluo411,17010
-            typedef void (SetUpSFluo:SetUpSFluo417,17235
-            typedef void (SetUpSFluo:SetUpSFluo423,17462
-            typedef void (SetUpSFluo:SetUpSFluo429,17685
-            typedef void (SetUpSFluo:SetUpSFluo435,17910
-            typedef void (SetUpSFluo:SetUpSFluo441,18136
-            typedef void (SetUpSFluo:SetUpSFluo447,18360
-const QMetaObject SetUpSFluo::staticMetaObject 455,18578
-const QMetaObject *SetUpSFluo::metaObject(SetUpSFluo::metaObject461,18762
-void *SetUpSFluo::qt_metacast(SetUpSFluo::qt_metacast466,18914
-int SetUpSFluo::qt_metacall(474,19175
-void SetUpSFluo::ReCalcXAFSWithMCA(492,19665
-void SetUpSFluo::ReCalcS2DMap(498,19777
-void SetUpSFluo::ShowMessage(505,19981
-void SetUpSFluo::SaveMCADataOnMem(512,20244
-void SetUpSFluo::NewMCACh(519,20523
-void SetUpSFluo::addAnUsingUnit(526,20714
-void SetUpSFluo::removeUsingUnits(533,20985
-void SetUpSFluo::SignalMCAViewSetDisplayLog(540,21258
-void SetUpSFluo::SignalMCAViewSetShowElements(547,21468
-void SetUpSFluo::SignalMCAViewShowAlwaysSelElm(554,21680
-void SetUpSFluo::SignalMCAViewShowElmEnergy(561,21894
-void SetUpSFluo::showMyMCAView(568,22106
+#define QT_MOC_LITERAL(26,896
+static const qt_meta_stringdata_SetUpSFluo_t qt_meta_stringdata_SetUpSFluo 31,1126
+#undef QT_MOC_LITERAL161,5369
+static const uint qt_meta_data_SetUpSFluo[qt_meta_data_SetUpSFluo163,5392
+void SetUpSFluo::qt_static_metacall(311,11254
+            typedef void (SetUpSFluo:SetUpSFluo430,18193
+            typedef void (SetUpSFluo:SetUpSFluo436,18402
+            typedef void (SetUpSFluo:SetUpSFluo442,18619
+            typedef void (SetUpSFluo:SetUpSFluo448,18836
+            typedef void (SetUpSFluo:SetUpSFluo454,19067
+            typedef void (SetUpSFluo:SetUpSFluo460,19292
+            typedef void (SetUpSFluo:SetUpSFluo466,19519
+            typedef void (SetUpSFluo:SetUpSFluo472,19742
+            typedef void (SetUpSFluo:SetUpSFluo478,19967
+            typedef void (SetUpSFluo:SetUpSFluo484,20193
+            typedef void (SetUpSFluo:SetUpSFluo490,20416
+            typedef void (SetUpSFluo:SetUpSFluo496,20635
+            typedef void (SetUpSFluo:SetUpSFluo502,20852
+            typedef void (SetUpSFluo:SetUpSFluo508,21070
+            typedef void (SetUpSFluo:SetUpSFluo514,21280
+            typedef void (SetUpSFluo:SetUpSFluo520,21494
+            typedef void (SetUpSFluo:SetUpSFluo526,21705
+            typedef void (SetUpSFluo:SetUpSFluo532,21916
+            typedef void (SetUpSFluo:SetUpSFluo538,22133
+            typedef void (SetUpSFluo:SetUpSFluo544,22345
+            typedef void (SetUpSFluo:SetUpSFluo550,22559
+            typedef void (SetUpSFluo:SetUpSFluo556,22775
+            typedef void (SetUpSFluo:SetUpSFluo562,22987
+            typedef void (SetUpSFluo:SetUpSFluo568,23200
+            typedef void (SetUpSFluo:SetUpSFluo574,23409
+            typedef void (SetUpSFluo:SetUpSFluo580,23621
+const QMetaObject SetUpSFluo::staticMetaObject 588,23828
+const QMetaObject *SetUpSFluo::metaObject(SetUpSFluo::metaObject594,24012
+void *SetUpSFluo::qt_metacast(SetUpSFluo::qt_metacast599,24164
+int SetUpSFluo::qt_metacall(607,24425
+void SetUpSFluo::ReCalcXAFSWithMCA(625,24915
+void SetUpSFluo::ReCalcS2DMap(631,25027
+void SetUpSFluo::ShowMessage(638,25231
+void SetUpSFluo::askToSaveMCAData(645,25494
+void SetUpSFluo::addAnUsingUnit(652,25771
+void SetUpSFluo::removeUsingUnits(659,26042
+void SetUpSFluo::SignalMCAViewSetDisplayLog(666,26315
+void SetUpSFluo::SignalMCAViewSetShowElements(673,26525
+void SetUpSFluo::SignalMCAViewShowAlwaysSelElm(680,26737
+void SetUpSFluo::SignalMCAViewShowElmEnergy(687,26950
+void SetUpSFluo::showMyMCAView(694,27161
+void SetUpSFluo::askSetFDBase(701,27368
+void SetUpSFluo::askSetMaxMCAEnergy(708,27573
+void SetUpSFluo::askSetMaxLoop(715,27779
+void SetUpSFluo::askSetDampFact(722,27977
+void SetUpSFluo::askSetPrec1(729,28179
+void SetUpSFluo::askSetPrec2(736,28378
+void SetUpSFluo::askSetLimitPSEnergy(743,28577
+void SetUpSFluo::askSetShowDiff(750,28782
+void SetUpSFluo::askSetPeakSearch(757,28982
+void SetUpSFluo::askSetShowSmoothed(764,29184
+void SetUpSFluo::askSetFitToRaw(771,29388
+void SetUpSFluo::askDoPeakFitWCPoints(778,29588
+void SetUpSFluo::askClearMCAPeaks(784,29705
+void SetUpSFluo::askSetROI(790,29818
+void SetUpSFluo::askSetMCACh(797,30077
 
 moc_SpecChanger.cpp,1365
 struct qt_meta_stringdata_SpecName_t 21,773
@@ -2251,10 +2283,10 @@ void cBar::newScale(165,5386
 
 qrc_XafsM.cpp,302
 static const unsigned char qt_resource_data[qt_resource_data11,331
-static const unsigned char qt_resource_name[qt_resource_name29414,2375612
-static const unsigned char qt_resource_struct[qt_resource_struct29516,2379055
-int QT_MANGLE_NAMESPACE(29571,2381089
-Q_CONSTRUCTOR_FUNCTION(29578,2381276
+static const unsigned char qt_resource_name[qt_resource_name29427,2376502
+static const unsigned char qt_resource_struct[qt_resource_struct29535,2380197
+int QT_MANGLE_NAMESPACE(29592,2382321
+Q_CONSTRUCTOR_FUNCTION(29599,2382508
 
 Alarm.h,500
 #define ALARM_H2,16
@@ -2559,33 +2591,33 @@ class DarkTable 6,68
   void setItem(DarkTable::setItem18,314
   QTableWidgetItem* getItem(DarkTable::getItem20,407
 
-Data.h,1047
+Data.h,1018
 #define DATA_H2,15
 class Data 23,334
   Units *u;Data::u28,403
-  int SettingL;Data::SettingL30,416
-  QColor SettingC;Data::SettingC31,432
-  QFileDialog *FSDialog;Data::FSDialog32,451
-  QColorDialog *CSDialog;Data::CSDialog33,476
-  QVector<QPushButton*> DColors;Data::DColors34,502
-  QVector<SetUpSFluo*> *SSFluos;Data::SSFluos35,535
-  DATATYPE dataType;Data::dataType38,615
-  QString FName;Data::FName40,662
-  ViewCTRL *theViewC;Data::theViewC42,680
-  XYView *theXYView;Data::theXYView43,702
-  TYView *theTYView;Data::theTYView44,723
-  MCAView *theMCAView;Data::theMCAView45,744
-  S2DView *theS2DView;Data::theS2DView46,767
-  S2DB *theS2DB;Data::theS2DB47,790
-  int XYLine0,Data::XYLine048,807
-  int XYLine0, XYLines;Data::XYLines48,807
-  bool MCADataIsValid;Data::MCADataIsValid50,833
-  int cMCACh;Data::cMCACh51,856
-  quint32 *cMCA;Data::cMCA52,870
-  aMCASet aMCA0,Data::aMCA055,956
-  aMCASet aMCA0, aMCA;Data::aMCA55,956
-  S2DInfo S2DI;Data::S2DI56,979
-  void setSSFluos(Data::setSSFluos74,1616
+  QString SFluoUid;Data::SFluoUid30,416
+  int SettingL;Data::SettingL31,436
+  QColor SettingC;Data::SettingC32,452
+  QFileDialog *FSDialog;Data::FSDialog33,471
+  QColorDialog *CSDialog;Data::CSDialog34,496
+  QVector<QPushButton*> DColors;Data::DColors35,522
+  D_TYPE DType;Data::DType41,719
+  D_VER DVer;Data::DVer42,735
+  QString FName;Data::FName44,775
+  ViewCTRL *theViewC;Data::theViewC46,793
+  XYView *theXYView;Data::theXYView47,815
+  TYView *theTYView;Data::theTYView48,836
+  MCAView *theMCAView;Data::theMCAView49,857
+  S2DView *theS2DView;Data::theS2DView50,880
+  S2DB *theS2DB;Data::theS2DB51,903
+  int XYLine0,Data::XYLine052,920
+  int XYLine0, XYLines;Data::XYLines52,920
+  bool MCADataIsValid;Data::MCADataIsValid54,946
+  int cMCACh;Data::cMCACh55,969
+  quint32 *cMCA;Data::cMCA56,983
+  aMCASet aMCA0,Data::aMCA059,1069
+  aMCASet aMCA0, aMCA;Data::aMCA59,1069
+  S2DInfo S2DI;Data::S2DI60,1092
 
 Diff.h,411
 #define DIFF_H2,15
@@ -2741,7 +2773,7 @@ struct MCAPeak 6,56
   double WinP;16,395
   double Area(18,438
 
-MCAView.h,5296
+MCAView.h,5348
 #define MCAVIEW_H2,18
 enum MMODE 17,262
 enum MMODE { M_ROI,17,262
@@ -2750,110 +2782,111 @@ enum MMODE { M_ROI, M_POINT, M_H_SHIFT,17,262
 enum MMODE { M_ROI, M_POINT, M_H_SHIFT, M_NO 17,262
 class MCAView 19,311
   QWidget *Parent;MCAView::Parent24,385
-  Gs *Fit;MCAView::Fit27,424
-  int fitMaxLoop;MCAView::fitMaxLoop28,435
-  double fitDampFact;MCAView::fitDampFact29,453
-  double fitPrec1,MCAView::fitPrec130,475
-  double fitPrec1, fitPrec2;MCAView::fitPrec230,475
-  QLayout *layout;MCAView::layout32,505
-  QDialog *PopDialog;MCAView::PopDialog33,524
-  bool popping;MCAView::popping34,546
-  int valid;MCAView::valid36,565
-  quint32 *MCA;MCAView::MCA38,606
-  double *rMCA;MCAView::rMCA39,622
-  double *SMCA;MCAView::SMCA40,638
-  double *DMCA,MCAView::DMCA41,707
-  double *DMCA, *DMCA2,MCAView::DMCA241,707
-  double *DMCA, *DMCA2, *DMCA3,MCAView::DMCA341,707
-  double *DMCA, *DMCA2, *DMCA3, *DMCA4;MCAView::DMCA441,707
-  double *dMCA;MCAView::dMCA42,766
-  double *E;MCAView::E43,823
-  QVector<double> FittedLine;MCAView::FittedLine44,836
-  QVector< QVector<double> > EachLine;MCAView::EachLine45,866
-  double MaxEnergy;MCAView::MaxEnergy47,906
-  int MCALen;MCAView::MCALen48,926
-  int MCACh;MCAView::MCACh49,940
-  double realTime;MCAView::realTime50,953
-  double liveTime;MCAView::liveTime51,972
-  double lowerLimit;MCAView::lowerLimit52,991
-  bool dispLog;MCAView::dispLog54,1013
-  FluoDBase *fdbase;MCAView::fdbase55,1029
-  KeV2Pix *k2p;MCAView::k2p56,1050
-  bool showElements;MCAView::showElements57,1066
-  bool showElementsAlways;MCAView::showElementsAlways58,1087
-  bool showElementsEnergy;MCAView::showElementsEnergy59,1114
-  bool popDock;MCAView::popDock61,1142
-  MMODE mMode;MCAView::mMode63,1159
-  ChCoord cc;MCAView::cc64,1174
-  double rROIsx,MCAView::rROIsx65,1188
-  double rROIsx, rROIex;MCAView::rROIex65,1188
-  double MinE,MCAView::MinE66,1232
-  double MinE, MaxE;MCAView::MaxE66,1232
-  QVector<double> cPoints;MCAView::cPoints67,1302
-  QStringList selectedAtoms;MCAView::selectedAtoms68,1363
-  double yRatio;MCAView::yRatio69,1392
-  bool ShowDiff;MCAView::ShowDiff71,1445
-  bool ShowSmoothed;MCAView::ShowSmoothed72,1462
-  bool DoPeakSearch;MCAView::DoPeakSearch73,1483
-  bool DoPeakFitToRaw;MCAView::DoPeakFitToRaw74,1504
-  bool LimitPSEnergy;MCAView::LimitPSEnergy75,1527
-  double I0Energy;MCAView::I0Energy76,1622
-  double PSSens;MCAView::PSSens77,1687
-  QVector<MCAPeak> MCAPeaks;MCAView::MCAPeaks78,1745
-  int nearX;MCAView::nearX80,1775
-  bool nearf;MCAView::nearf81,1788
-  QColor Black,MCAView::Black83,1803
-  QColor Black, White;MCAView::White83,1803
-  QColor ROIRangeC,MCAView::ROIRangeC84,1826
-  QColor ROIRangeC, ExROIRangeC,MCAView::ExROIRangeC84,1826
-  QColor ROIRangeC, ExROIRangeC, ROIEdgeC;MCAView::ROIEdgeC84,1826
-  QColor GridC,MCAView::GridC85,1869
-  QColor GridC, MCursorC,MCAView::MCursorC85,1869
-  QColor GridC, MCursorC, MCursorC2,MCAView::MCursorC285,1869
-  QColor GridC, MCursorC, MCursorC2, MCursorC3,MCAView::MCursorC385,1869
-  QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;MCAView::AListC85,1869
-  QColor SMCAC,MCAView::SMCAC86,1925
-  QColor SMCAC, DMCAC,MCAView::DMCAC86,1925
-  QColor SMCAC, DMCAC, DMCAC2,MCAView::DMCAC286,1925
-  QColor SMCAC, DMCAC, DMCAC2, DMCAC3;MCAView::DMCAC386,1925
-  QColor PEAKPOINTC,MCAView::PEAKPOINTC87,1964
-  QColor PEAKPOINTC, PEAKPOINTLC;MCAView::PEAKPOINTLC87,1964
-  QColor FLC,MCAView::FLC88,1998
-  QColor FLC, ELC,MCAView::ELC88,1998
-  QColor FLC, ELC, RLC;MCAView::RLC88,1998
-  MouseC m;MCAView::m99,2344
-  QWidget *parent(MCAView::parent105,2442
-  void setLayout(MCAView::setLayout106,2488
-  void setKeV2Pix(MCAView::setKeV2Pix107,2536
-  void setFDBase(MCAView::setFDBase108,2586
-  void SetRealTime(MCAView::SetRealTime110,2690
-  void SetLiveTime(MCAView::SetLiveTime111,2742
-  void SetLowLimit(MCAView::SetLowLimit112,2794
-  void SetMCACh(MCAView::SetMCACh113,2848
-  void makeValid(MCAView::makeValid114,2889
-  double getRealTime(MCAView::getRealTime115,2932
-  double getLiveTime(MCAView::getLiveTime116,2983
-  void setSelectedAtoms(MCAView::setSelectedAtoms117,3034
-  void setShowDiff(MCAView::setShowDiff119,3157
-  void setPeakSearch(MCAView::setPeakSearch120,3215
-  void setShowSmoothed(MCAView::setShowSmoothed121,3279
-  void setFitToRaw(MCAView::setFitToRaw122,3345
-  void setLimitPSEnergy(MCAView::setLimitPSEnergy123,3409
-  void setMaxEnergy(MCAView::setMaxEnergy124,3477
-  void setMaxLoop(MCAView::setMaxLoop125,3529
-  void setDampFact(MCAView::setDampFact126,3577
-  void setPrec1(MCAView::setPrec1127,3636
-  void setPrec2(MCAView::setPrec2128,3691
-  double *getMCAEnergys(MCAView::getMCAEnergys130,3785
-  KeV2Pix *keV2Pix(MCAView::keV2Pix132,3861
-  QVector<MCAPeak> *getMCAPeaks(MCAView::getMCAPeaks134,3906
-  int getMCALength(MCAView::getMCALength135,3969
-  double *getSMCA(MCAView::getSMCA136,4016
-  void setLog(MCAView::setLog144,4263
-  void setShowElements(MCAView::setShowElements145,4315
-  void setShowElementsAlways(MCAView::setShowElementsAlways146,4387
-  void setShowElementsEnergy(MCAView::setShowElementsEnergy147,4471
-  void NewEnergy(MCAView::NewEnergy149,4585
+  QWidget *gParent;MCAView::gParent25,404
+  Gs *Fit;MCAView::Fit28,444
+  int fitMaxLoop;MCAView::fitMaxLoop29,455
+  double fitDampFact;MCAView::fitDampFact30,473
+  double fitPrec1,MCAView::fitPrec131,495
+  double fitPrec1, fitPrec2;MCAView::fitPrec231,495
+  QLayout *layout;MCAView::layout33,525
+  QDialog *PopDialog;MCAView::PopDialog34,544
+  bool popping;MCAView::popping35,566
+  int valid;MCAView::valid37,585
+  quint32 *MCA;MCAView::MCA39,626
+  double *rMCA;MCAView::rMCA40,642
+  double *SMCA;MCAView::SMCA41,658
+  double *DMCA,MCAView::DMCA42,727
+  double *DMCA, *DMCA2,MCAView::DMCA242,727
+  double *DMCA, *DMCA2, *DMCA3,MCAView::DMCA342,727
+  double *DMCA, *DMCA2, *DMCA3, *DMCA4;MCAView::DMCA442,727
+  double *dMCA;MCAView::dMCA43,786
+  double *E;MCAView::E44,843
+  QVector<double> FittedLine;MCAView::FittedLine45,856
+  QVector< QVector<double> > EachLine;MCAView::EachLine46,886
+  double MaxEnergy;MCAView::MaxEnergy48,926
+  int MCALen;MCAView::MCALen49,946
+  int MCACh;MCAView::MCACh50,960
+  double realTime;MCAView::realTime51,973
+  double liveTime;MCAView::liveTime52,992
+  double lowerLimit;MCAView::lowerLimit53,1011
+  bool dispLog;MCAView::dispLog55,1033
+  FluoDBase *fdbase;MCAView::fdbase56,1049
+  KeV2Pix *k2p;MCAView::k2p57,1070
+  bool showElements;MCAView::showElements58,1086
+  bool showElementsAlways;MCAView::showElementsAlways59,1107
+  bool showElementsEnergy;MCAView::showElementsEnergy60,1134
+  bool popDock;MCAView::popDock62,1162
+  MMODE mMode;MCAView::mMode64,1179
+  ChCoord cc;MCAView::cc65,1194
+  double rROIsx,MCAView::rROIsx66,1208
+  double rROIsx, rROIex;MCAView::rROIex66,1208
+  double MinE,MCAView::MinE67,1252
+  double MinE, MaxE;MCAView::MaxE67,1252
+  QVector<double> cPoints;MCAView::cPoints68,1322
+  QStringList selectedAtoms;MCAView::selectedAtoms69,1383
+  double yRatio;MCAView::yRatio70,1412
+  bool ShowDiff;MCAView::ShowDiff72,1465
+  bool ShowSmoothed;MCAView::ShowSmoothed73,1482
+  bool DoPeakSearch;MCAView::DoPeakSearch74,1503
+  bool DoPeakFitToRaw;MCAView::DoPeakFitToRaw75,1524
+  bool LimitPSEnergy;MCAView::LimitPSEnergy76,1547
+  double I0Energy;MCAView::I0Energy77,1642
+  double PSSens;MCAView::PSSens78,1707
+  QVector<MCAPeak> MCAPeaks;MCAView::MCAPeaks79,1765
+  int nearX;MCAView::nearX81,1795
+  bool nearf;MCAView::nearf82,1808
+  QColor Black,MCAView::Black84,1823
+  QColor Black, White;MCAView::White84,1823
+  QColor ROIRangeC,MCAView::ROIRangeC85,1846
+  QColor ROIRangeC, ExROIRangeC,MCAView::ExROIRangeC85,1846
+  QColor ROIRangeC, ExROIRangeC, ROIEdgeC;MCAView::ROIEdgeC85,1846
+  QColor GridC,MCAView::GridC86,1889
+  QColor GridC, MCursorC,MCAView::MCursorC86,1889
+  QColor GridC, MCursorC, MCursorC2,MCAView::MCursorC286,1889
+  QColor GridC, MCursorC, MCursorC2, MCursorC3,MCAView::MCursorC386,1889
+  QColor GridC, MCursorC, MCursorC2, MCursorC3, AListC;MCAView::AListC86,1889
+  QColor SMCAC,MCAView::SMCAC87,1945
+  QColor SMCAC, DMCAC,MCAView::DMCAC87,1945
+  QColor SMCAC, DMCAC, DMCAC2,MCAView::DMCAC287,1945
+  QColor SMCAC, DMCAC, DMCAC2, DMCAC3;MCAView::DMCAC387,1945
+  QColor PEAKPOINTC,MCAView::PEAKPOINTC88,1984
+  QColor PEAKPOINTC, PEAKPOINTLC;MCAView::PEAKPOINTLC88,1984
+  QColor FLC,MCAView::FLC89,2018
+  QColor FLC, ELC,MCAView::ELC89,2018
+  QColor FLC, ELC, RLC;MCAView::RLC89,2018
+  MouseC m;MCAView::m100,2364
+  QWidget *parent(MCAView::parent106,2470
+  void setLayout(MCAView::setLayout107,2516
+  void setKeV2Pix(MCAView::setKeV2Pix108,2564
+  void SetRealTime(MCAView::SetRealTime110,2658
+  void SetLiveTime(MCAView::SetLiveTime111,2710
+  void SetLowLimit(MCAView::SetLowLimit112,2762
+  void makeValid(MCAView::makeValid113,2816
+  double getRealTime(MCAView::getRealTime114,2859
+  double getLiveTime(MCAView::getLiveTime115,2910
+  void setSelectedAtoms(MCAView::setSelectedAtoms116,2961
+  double *getMCAEnergys(MCAView::getMCAEnergys119,3123
+  KeV2Pix *keV2Pix(MCAView::keV2Pix121,3199
+  QVector<MCAPeak> *getMCAPeaks(MCAView::getMCAPeaks123,3244
+  int getMCALength(MCAView::getMCALength124,3307
+  double *getSMCA(MCAView::getSMCA125,3354
+  void setLog(MCAView::setLog131,3521
+  void setShowElements(MCAView::setShowElements132,3573
+  void setShowElementsAlways(MCAView::setShowElementsAlways133,3645
+  void setShowElementsEnergy(MCAView::setShowElementsEnergy134,3729
+  void NewEnergy(MCAView::NewEnergy136,3843
+  void setFDBase(MCAView::setFDBase139,3914
+  void setMaxMCAEnergy(MCAView::setMaxMCAEnergy140,3984
+  void setMaxLoop(MCAView::setMaxLoop141,4049
+  void setDampFact(MCAView::setDampFact142,4097
+  void setPrec1(MCAView::setPrec1143,4156
+  void setPrec2(MCAView::setPrec2144,4211
+  void setLimitPSEnergy(MCAView::setLimitPSEnergy146,4267
+  void setShowDiff(MCAView::setShowDiff147,4335
+  void setPeakSearch(MCAView::setPeakSearch148,4393
+  void setShowSmoothed(MCAView::setShowSmoothed149,4457
+  void setFitToRaw(MCAView::setFitToRaw150,4523
+  void setMCACh(MCAView::setMCACh154,4697
 
 MainWindow.h,18208
 #define MAINWIN_H2,18
@@ -3128,55 +3161,55 @@ class MainWindow 81,1708
   bool MakingSureOfRangeSelect;MainWindow::MakingSureOfRangeSelect486,12408
   bool haveMeasuredDark;MainWindow::haveMeasuredDark487,12440
   bool NoticingHaveNotMeasDark;MainWindow::NoticingHaveNotMeasDark488,12465
-  double MeasVals[MainWindow::MeasVals493,12724
-  double MeasCPSs[MainWindow::MeasCPSs494,12750
-  MEASMODE MeasDispMode[MainWindow::MeasDispMode495,12776
-  int MeasDispPol[MainWindow::MeasDispPol496,12808
-  double NowDwell;MainWindow::NowDwell497,12848
-  bool UseAutoShutter;MainWindow::UseAutoShutter498,12867
-  bool inMeasDark;MainWindow::inMeasDark499,12890
-  bool AskingShutterClose;MainWindow::AskingShutterClose500,12909
-  bool AskingShutterOpen;MainWindow::AskingShutterOpen501,12936
-  int MeasDarkStage;MainWindow::MeasDarkStage502,12962
-  int oldCurrentView;MainWindow::oldCurrentView523,13625
-  ViewCTRL *MeasViewC;MainWindow::MeasViewC524,13647
-  XYView *MeasView;MainWindow::MeasView525,13670
-  QStringList QXafsOk,MainWindow::QXafsOk542,14085
-  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk542,14085
-  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk542,14085
-  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable543,14126
-  int SaveNowBlocks,MainWindow::SaveNowBlocks544,14155
-  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0544,14155
-  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1544,14155
-  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos545,14208
-  bool SaveUseAux1,MainWindow::SaveUseAux1546,14239
-  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2546,14239
-  int OrigHSpeed,MainWindow::OrigHSpeed547,14272
-  int OrigHSpeed, HSpeed,MainWindow::HSpeed547,14272
-  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed547,14272
-  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed547,14272
-  int QXafsSP0,MainWindow::QXafsSP0548,14319
-  int QXafsSP0, QXafsSP,MainWindow::QXafsSP548,14319
-  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0548,14319
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP548,14319
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval548,14319
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints548,14319
-  double RunUpRate,MainWindow::RunUpRate549,14391
-  double RunUpRate, RunUpTime,MainWindow::RunUpTime549,14391
-  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime549,14391
-  QString EncValue0,MainWindow::EncValue0550,14438
-  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0550,14438
-  bool QIntervalBlock1,MainWindow::QIntervalBlock1551,14471
-  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2551,14471
-  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1552,14512
-  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2552,14512
-  bool AutoModeFirst;MainWindow::AutoModeFirst555,14573
-  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition556,14595
-  int MeasA;MainWindow::MeasA557,14629
-  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams558,14642
-  QString AutoModeComment;MainWindow::AutoModeComment560,14717
-  AMotor *smAm;MainWindow::smAm598,16034
-  int smStage;MainWindow::smStage599,16050
+  double MeasVals[MainWindow::MeasVals494,12742
+  double MeasCPSs[MainWindow::MeasCPSs495,12768
+  MEASMODE MeasDispMode[MainWindow::MeasDispMode496,12794
+  int MeasDispPol[MainWindow::MeasDispPol497,12826
+  double NowDwell;MainWindow::NowDwell498,12866
+  bool UseAutoShutter;MainWindow::UseAutoShutter499,12885
+  bool inMeasDark;MainWindow::inMeasDark500,12908
+  bool AskingShutterClose;MainWindow::AskingShutterClose501,12927
+  bool AskingShutterOpen;MainWindow::AskingShutterOpen502,12954
+  int MeasDarkStage;MainWindow::MeasDarkStage503,12980
+  int oldCurrentView;MainWindow::oldCurrentView524,13643
+  ViewCTRL *MeasViewC;MainWindow::MeasViewC525,13665
+  XYView *MeasView;MainWindow::MeasView526,13688
+  QStringList QXafsOk,MainWindow::QXafsOk543,14103
+  QStringList QXafsOk, NXafsOk,MainWindow::NXafsOk543,14103
+  QStringList QXafsOk, NXafsOk, CScanOk;MainWindow::CScanOk543,14103
+  bool isQXafsModeAvailable;MainWindow::isQXafsModeAvailable544,14144
+  int SaveNowBlocks,MainWindow::SaveNowBlocks545,14173
+  int SaveNowBlocks, SaveSelectedI0,MainWindow::SaveSelectedI0545,14173
+  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;MainWindow::SaveSelectedI1545,14173
+  QVector<bool> SaveUseSFluos;MainWindow::SaveUseSFluos546,14226
+  bool SaveUseAux1,MainWindow::SaveUseAux1547,14257
+  bool SaveUseAux1, SaveUseAux2;MainWindow::SaveUseAux2547,14257
+  int OrigHSpeed,MainWindow::OrigHSpeed548,14290
+  int OrigHSpeed, HSpeed,MainWindow::HSpeed548,14290
+  int OrigHSpeed, HSpeed, MaxHSpeed,MainWindow::MaxHSpeed548,14290
+  int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;MainWindow::LowSpeed548,14290
+  int QXafsSP0,MainWindow::QXafsSP0549,14337
+  int QXafsSP0, QXafsSP,MainWindow::QXafsSP549,14337
+  int QXafsSP0, QXafsSP, QXafsEP0,MainWindow::QXafsEP0549,14337
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP,MainWindow::QXafsEP549,14337
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval,MainWindow::QXafsInterval549,14337
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;MainWindow::QXafsPoints549,14337
+  double RunUpRate,MainWindow::RunUpRate550,14409
+  double RunUpRate, RunUpTime,MainWindow::RunUpTime550,14409
+  double RunUpRate, RunUpTime, QXafsDwellTime;MainWindow::QXafsDwellTime550,14409
+  QString EncValue0,MainWindow::EncValue0551,14456
+  QString EncValue0, Enc2Value0;MainWindow::Enc2Value0551,14456
+  bool QIntervalBlock1,MainWindow::QIntervalBlock1552,14489
+  bool QIntervalBlock1, QIntervalBlock2;MainWindow::QIntervalBlock2552,14489
+  QTimer *QIntervalTimer1,MainWindow::QIntervalTimer1553,14530
+  QTimer *QIntervalTimer1, *QIntervalTimer2;MainWindow::QIntervalTimer2553,14530
+  bool AutoModeFirst;MainWindow::AutoModeFirst556,14591
+  bool MovingToNewSamplePosition;MainWindow::MovingToNewSamplePosition557,14613
+  int MeasA;MainWindow::MeasA558,14647
+  QVector<AutoModeParam> AutoModeParams;MainWindow::AutoModeParams559,14660
+  QString AutoModeComment;MainWindow::AutoModeComment561,14735
+  AMotor *smAm;MainWindow::smAm599,16052
+  int smStage;MainWindow::smStage600,16068
 
 Mccd.h,276
 #define MCCD_H3,16
@@ -3669,7 +3702,7 @@ class SelectCh 14,368
   void setTitle(SelectCh::setTitle30,673
   int chs(SelectCh::chs33,788
 
-SetUpSFluo.h,2845
+SetUpSFluo.h,3588
 #define SETUPSFLUO_H2,21
 #define MCA_ID 20,340
 class SetUpSFluo 22,371
@@ -3703,31 +3736,43 @@ class SetUpSFluo 22,371
   QString NonSelC, SelectC;SetUpSFluo::SelectC59,1065
   bool svRT,SetUpSFluo::svRT60,1093
   bool svRT, svLT;SetUpSFluo::svLT60,1093
-  void setK2PFile(SetUpSFluo::setK2PFile65,1158
-  void setLLFile(SetUpSFluo::setLLFile66,1213
-  void setPAGFile(SetUpSFluo::setPAGFile67,1266
-  AUnitSFluo *sFluo(SetUpSFluo::sFluo68,1321
-  KeV2Pix *K2P(SetUpSFluo::K2P69,1369
-  SelectCh *selBs2(SetUpSFluo::selBs270,1409
-  MCAView *McaView(SetUpSFluo::McaView71,1456
-  quint32 *McaData(SetUpSFluo::McaData72,1504
-  QString *roiStart(SetUpSFluo::roiStart73,1552
-  QString *roiEnd(SetUpSFluo::roiEnd74,1602
-  int mcaCh(SetUpSFluo::mcaCh75,1648
-  int cCh(SetUpSFluo::cCh76,1703
-  int length(SetUpSFluo::length77,1741
-  void setMCACh(SetUpSFluo::setMCACh78,1792
-  QRadioButton *B_SelRealTime(SetUpSFluo::B_SelRealTime80,1908
-  QRadioButton *B_SelLiveTime(SetUpSFluo::B_SelLiveTime81,1971
-  void saveTimeModes(SetUpSFluo::saveTimeModes82,2034
-  void recoverTimeModes(SetUpSFluo::recoverTimeModes84,2136
-  QRadioButton *B_ShowAlwaysSelElm(SetUpSFluo::B_ShowAlwaysSelElm86,2241
-  QRadioButton *B_AutoROIsetAll(SetUpSFluo::B_AutoROIsetAll87,2314
-  bool isInMeas(SetUpSFluo::isInMeas88,2381
-  void setViewStats(SetUpSFluo::setViewStats94,2797
-  void setDirectory(SetUpSFluo::setDirectory101,3111
-  void setMaxMCAEnergy(SetUpSFluo::setMaxMCAEnergy102,3206
-  QString K2PFile(SetUpSFluo::K2PFile103,3264
+  void setK2PFile(SetUpSFluo::setK2PFile66,1196
+  void setLLFile(SetUpSFluo::setLLFile67,1251
+  void setPAGFile(SetUpSFluo::setPAGFile68,1304
+  AUnitSFluo *sFluo(SetUpSFluo::sFluo69,1359
+  KeV2Pix *K2P(SetUpSFluo::K2P70,1407
+  SelectCh *selBs2(SetUpSFluo::selBs271,1447
+  MCAView *McaView(SetUpSFluo::McaView72,1494
+  quint32 *McaData(SetUpSFluo::McaData73,1542
+  QString *roiStart(SetUpSFluo::roiStart74,1590
+  QString *roiEnd(SetUpSFluo::roiEnd75,1640
+  int mcaCh(SetUpSFluo::mcaCh76,1686
+  int cCh(SetUpSFluo::cCh77,1741
+  int length(SetUpSFluo::length78,1779
+  void setMCACh(SetUpSFluo::setMCACh79,1830
+  QRadioButton *B_SelRealTime(SetUpSFluo::B_SelRealTime81,1946
+  QRadioButton *B_SelLiveTime(SetUpSFluo::B_SelLiveTime82,2009
+  void saveTimeModes(SetUpSFluo::saveTimeModes83,2072
+  void recoverTimeModes(SetUpSFluo::recoverTimeModes85,2174
+  QRadioButton *B_ShowAlwaysSelElm(SetUpSFluo::B_ShowAlwaysSelElm87,2279
+  QRadioButton *B_AutoROIsetAll(SetUpSFluo::B_AutoROIsetAll88,2352
+  bool isInMeas(SetUpSFluo::isInMeas89,2419
+  void setViewStats(SetUpSFluo::setViewStats95,2835
+  bool DispElmNamesIsChecked(SetUpSFluo::DispElmNamesIsChecked101,3114
+  bool ShowAlwaysSelElmIsChecked(SetUpSFluo::ShowAlwaysSelElmIsChecked102,3190
+  bool ShowElmEnergyIsChecked(SetUpSFluo::ShowElmEnergyIsChecked103,3273
+  bool ShowDiffIsChecked(SetUpSFluo::ShowDiffIsChecked104,3351
+  bool ShowSmoothedIsChecked(SetUpSFluo::ShowSmoothedIsChecked105,3419
+  bool FitToRawIsChecked(SetUpSFluo::FitToRawIsChecked106,3495
+  bool SetDisplayLogIsChecked(SetUpSFluo::SetDisplayLogIsChecked107,3563
+  double maxMCAEnergy(SetUpSFluo::maxMCAEnergy108,3640
+  int maxLoop(SetUpSFluo::maxLoop109,3695
+  double dampFact(SetUpSFluo::dampFact110,3754
+  double prec1(SetUpSFluo::prec1111,3821
+  double prec2(SetUpSFluo::prec2112,3882
+  void setDirectory(SetUpSFluo::setDirectory115,3979
+  void setMaxMCAEnergy(SetUpSFluo::setMaxMCAEnergy116,4074
+  QString K2PFile(SetUpSFluo::K2PFile117,4132
 
 Smoothing.h,25
 #define SMOOTHING_H2,20
@@ -3940,7 +3985,7 @@ class UsingUnits 30,663
   void removeUnits(UsingUnits::removeUnits87,2033
   bool isAnyOneUsedBy(UsingUnits::isAnyOneUsedBy98,2333
 
-ViewCtrl.h,910
+ViewCtrl.h,1022
 #define VIEWCTRL_H2,19
 enum VTYPE 16,238
 enum VTYPE { XYVIEW,16,238
@@ -3952,17 +3997,19 @@ class ViewCTRL 18,297
   QWidget* ViewBase;ViewCTRL::ViewBase22,343
   void* nowView;ViewCTRL::nowView23,364
   VTYPE nowVType;ViewCTRL::nowVType24,381
-  DATATYPE nowDType;ViewCTRL::nowDType25,399
-  bool deletable;ViewCTRL::deletable26,420
-  GSBStats *gsbStat;ViewCTRL::gsbStat27,438
-  int VC;ViewCTRL::VC28,459
-  void setViewBase(ViewCTRL::setViewBase34,521
-  void *getView(ViewCTRL::getView38,779
-  VTYPE getVType(ViewCTRL::getVType39,824
-  DATATYPE getDType(ViewCTRL::getDType40,871
-  bool isDeletable(ViewCTRL::isDeletable42,948
-  void setDeletable(ViewCTRL::setDeletable43,998
-  int vcnt(ViewCTRL::vcnt55,1527
+  D_TYPE nowDataType;ViewCTRL::nowDataType25,399
+  D_ORIG nowDataOrig;ViewCTRL::nowDataOrig26,421
+  bool deletable;ViewCTRL::deletable27,443
+  GSBStats *gsbStat;ViewCTRL::gsbStat28,461
+  int VC;ViewCTRL::VC29,482
+  void setViewBase(ViewCTRL::setViewBase35,544
+  void *getView(ViewCTRL::getView39,814
+  VTYPE getVType(ViewCTRL::getVType40,859
+  D_TYPE getDataType(ViewCTRL::getDataType41,906
+  D_ORIG getDataOrig(ViewCTRL::getDataOrig42,960
+  bool isDeletable(ViewCTRL::isDeletable44,1041
+  void setDeletable(ViewCTRL::setDeletable45,1091
+  int vcnt(ViewCTRL::vcnt57,1620
 
 XYView.h,5028
 #define XYVIEW_H2,17
@@ -4212,23 +4259,40 @@ gitlog.h,70
 #define BRANCH_NAME 5,36
 #define GITLOGS 6,72
 
-global.h,700
+global.h,1467
 #define GLOBAL_H3,18
-enum DATATYPE 14,227
-enum DATATYPE { MEASDATA,14,227
-enum DATATYPE { MEASDATA, SCANDATA,14,227
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA,14,227
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,14,227
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA,14,227
-enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA, QXAFSBASEDATA,14,227
-		MEASSHOW,15,306
-		MEASSHOW, SCANSHOW,15,306
-		MEASSHOW, SCANSHOW, MONSHOW,15,306
-		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW1,15,306
-		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW1, S2DSHOW,15,306
-		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW1, S2DSHOW, QXAFSBASESHOW,15,306
-		MCASHOW2,16,371
-		MCASHOW2, NONDATA 16,371
+enum D_TYPE 14,236
+enum D_TYPE { MEASDATA,14,236
+enum D_TYPE { MEASDATA, SCANDATA,14,236
+enum D_TYPE { MEASDATA, SCANDATA, MONDATA,14,236
+enum D_TYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,14,236
+enum D_TYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA,14,236
+enum D_TYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA, QXAFSBASEDATA,14,236
+enum D_TYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA, QXAFSBASEDATA, NODATA 14,236
+enum D_ORIG 15,323
+enum D_ORIG { MEASUREDD,15,323
+enum D_ORIG { MEASUREDD, READD,15,323
+enum D_ORIG { MEASUREDD, READD, NOORIG 15,323
+enum D_VER 16,365
+enum D_VER  { VER_00,16,365
+enum D_VER  { VER_00, VER_01,16,365
+enum D_VER  { VER_00, VER_01, VER_02,16,365
+enum D_VER  { VER_00, VER_01, VER_02, VER_03 16,365
+enum DATATYPE 19,420
+enum DATATYPE { MEASDATA,19,420
+enum DATATYPE { MEASDATA, SCANDATA,19,420
+enum DATATYPE { MEASDATA, SCANDATA, MONDATA,19,420
+enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,19,420
+enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA,19,420
+enum DATATYPE { MEASDATA, SCANDATA, MONDATA, MCADATA,  S2DDATA, QXAFSBASEDATA,19,420
+		MEASSHOW,20,499
+		MEASSHOW, SCANSHOW,20,499
+		MEASSHOW, SCANSHOW, MONSHOW,20,499
+		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW1,20,499
+		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW1, S2DSHOW,20,499
+		MEASSHOW, SCANSHOW, MONSHOW, MCASHOW1, S2DSHOW, QXAFSBASESHOW,20,499
+		MCASHOW2,21,564
+		MCASHOW2, NONDATA 21,564
 
 ui_Conditions.h,3768
 #define UI_CONDITIONS_H10,387
@@ -5385,8 +5449,8 @@ class Ui_SetUpSFluo35,1052
     QSpacerItem *horizontalSpacer;horizontalSpacer142,3964
     void setupUi(144,4000
     void retranslateUi(Ui_SetUpSFluo::retranslateUi894,37642
-namespace Ui 983,44470
-    class SetUpSFluo:Ui::SetUpSFluo984,44485
+namespace Ui 984,44591
+    class SetUpSFluo:Ui::SetUpSFluo985,44606
 
 ui_StarsSV2.h,480
 #define UI_STARSSV2_H10,383
@@ -5631,40 +5695,40 @@ AUnitSFluo::AUnitSFluo(4,26
 void AUnitSFluo::resetVectors(28,446
 void AUnitSFluo::_setEnable(56,1024
 void AUnitSFluo::init0(62,1209
-void AUnitSFluo::ReactGetDataLinkCh(95,2558
-void AUnitSFluo::ConnectToSFluoDataLinkServer(108,2964
-bool AUnitSFluo::InitSensor(128,3667
-double AUnitSFluo::SetTime(161,4361
-bool AUnitSFluo::GetValue(171,4697
-bool AUnitSFluo::GetValue0(182,5031
-bool AUnitSFluo::GetValue02(210,5714
-bool AUnitSFluo::Close(242,6378
-void AUnitSFluo::RunStart(251,6503
-void AUnitSFluo::RunStop(256,6581
-void AUnitSFluo::RunResume(261,6657
-bool AUnitSFluo::GetMCAs(266,6734
-void AUnitSFluo::getMCALength(279,7063
-bool AUnitSFluo::GetStat(286,7209
-void AUnitSFluo::ReactGetStat(296,7354
-double AUnitSFluo::stat(304,7539
-bool AUnitSFluo::SetRealTime(315,7712
-bool AUnitSFluo::GetRealTime(326,7940
-void AUnitSFluo::ReactGetRealTime(336,8116
-double AUnitSFluo::realTime(347,8408
-bool AUnitSFluo::SetLiveTime(353,8485
-bool AUnitSFluo::SetLiveTime(367,8726
-bool AUnitSFluo::GetLiveTime(378,8954
-void AUnitSFluo::ReactGetLiveTime(388,9131
-double AUnitSFluo::liveTime(399,9423
-void AUnitSFluo::SetLowLimit(404,9494
-void AUnitSFluo::setDark(418,9817
-quint32 AUnitSFluo::getAMCAdata(435,10356
-quint32 *AUnitSFluo::getAMCA(AUnitSFluo::getAMCA442,10517
-XMAPHead AUnitSFluo::getAMCAHead(449,10655
-void AUnitSFluo::setGain(464,11109
-void AUnitSFluo::ReceiveValues(469,11245
-void AUnitSFluo::SetIsBusyByMsg(500,12042
-void AUnitSFluo::receiveMCAs(513,12353
+void AUnitSFluo::ReactGetDataLinkCh(93,2527
+void AUnitSFluo::ConnectToSFluoDataLinkServer(106,2933
+bool AUnitSFluo::InitSensor(126,3636
+double AUnitSFluo::SetTime(159,4330
+bool AUnitSFluo::GetValue(169,4666
+bool AUnitSFluo::GetValue0(180,5000
+bool AUnitSFluo::GetValue02(208,5683
+bool AUnitSFluo::Close(240,6347
+void AUnitSFluo::RunStart(249,6472
+void AUnitSFluo::RunStop(254,6550
+void AUnitSFluo::RunResume(259,6626
+bool AUnitSFluo::GetMCAs(264,6703
+void AUnitSFluo::getMCALength(277,7032
+bool AUnitSFluo::GetStat(284,7178
+void AUnitSFluo::ReactGetStat(294,7323
+double AUnitSFluo::stat(302,7508
+bool AUnitSFluo::SetRealTime(313,7681
+bool AUnitSFluo::GetRealTime(324,7909
+void AUnitSFluo::ReactGetRealTime(334,8085
+double AUnitSFluo::realTime(345,8377
+bool AUnitSFluo::SetLiveTime(351,8454
+bool AUnitSFluo::SetLiveTime(365,8695
+bool AUnitSFluo::GetLiveTime(376,8923
+void AUnitSFluo::ReactGetLiveTime(386,9100
+double AUnitSFluo::liveTime(397,9392
+void AUnitSFluo::SetLowLimit(402,9463
+void AUnitSFluo::setDark(416,9786
+quint32 AUnitSFluo::getAMCAdata(433,10325
+quint32 *AUnitSFluo::getAMCA(AUnitSFluo::getAMCA440,10486
+XMAPHead AUnitSFluo::getAMCAHead(447,10624
+void AUnitSFluo::setGain(462,11078
+void AUnitSFluo::ReceiveValues(467,11214
+void AUnitSFluo::SetIsBusyByMsg(498,12011
+void AUnitSFluo::receiveMCAs(511,12322
 
 AUnits/AUnitSFluo2.cpp,213
 void AUnitSFluo2::init0(4,27
@@ -5674,35 +5738,30 @@ void AUnitSFluo2::getNewDark(23,565
 double AUnitSFluo2::SetTime(28,683
 bool AUnitSFluo2::SetRealTime(38,1020
 
-AUnits/MCAMap.cpp,850
+AUnits/MCAMap.cpp,700
 #define COMMONTITLE_0 9,102
 #define COMMONTITLE 10,142
 void aMCASet::save(12,241
-void aMCASet::writeHead0(28,635
-#define RINGCURRENT 47,1318
-#define I0VALUE 48,1353
-#define MCALENGTH 49,1388
-#define MCACHS 50,1423
-#define MCACHINFO 51,1458
-#define NUMOFELMS 52,1493
-#define ELEMENT 53,1528
-void aMCASet::writeHead(55,1564
-void aMCASet::writeData(77,2429
-void aMCASet::load(89,2664
-void aMCASet::load(99,2867
-#define MCALENGTH 133,3721
-#define MCACHS 134,3756
-#define MCAINFO 135,3791
-#define NUMOFELMS 136,3826
-#define ELEMENT 137,3861
-void aMCASet::loadHeader(139,3897
-void aMCASet::loadHeader0(183,5525
-void aMCASet::correctE(211,6383
-void aMCASet::copyCnt(245,7359
-void aMCAMap::New(253,7482
-aMCASet *aMCAMap::aPoint(aMCAMap::aPoint269,7769
-bool aMCAMap::valid(278,7932
-aMCASet *aMCAMap::lastP(aMCAMap::lastP286,8068
+#define SFLUOID 27,643
+#define RINGCURRENT 28,678
+#define I0VALUE 29,713
+#define MCALENGTH 30,748
+#define MCACHS 31,783
+#define MCACHINFO 32,818
+#define NUMOFELMS 33,853
+#define ELEMENT 34,888
+void aMCASet::writeHead(36,924
+void aMCASet::writeData(59,1856
+void aMCASet::load(71,2091
+void aMCASet::load(81,2294
+void aMCASet::loadHeader(116,3163
+void aMCASet::loadHeader0(160,4791
+void aMCASet::correctE(187,5611
+void aMCASet::copyCnt(221,6587
+void aMCAMap::New(229,6710
+aMCASet *aMCAMap::aPoint(aMCAMap::aPoint245,6997
+bool aMCAMap::valid(254,7158
+aMCASet *aMCAMap::lastP(aMCAMap::lastP262,7294
 
 AUnits/AMotor.h,2697
 #define AMOTOR_H3,18
@@ -6104,24 +6163,24 @@ struct aMCASet 37,524
   void setValid(93,1658
   bool isValid(94,1700
   void save(95,1742
-  void writeHead(97,1838
-  void writeData(98,1884
-  void load(99,1922
-  void load(100,1967
-  void loadHeader(101,2014
-  void loadHeader0(102,2061
-  void correctE(103,2109
-  void copyCnt(104,2142
-struct aMCAMap 107,2186
-  int iX,108,2203
-  int iX, iY;108,2203
-  QVector<aMCASet> MCASets;109,2217
-  aMCAMap(111,2246
-  ~aMCAMap(112,2276
-  void New(114,2294
-  aMCASet *aPoint(aPoint115,2345
-  bool valid(116,2382
-  aMCASet *lastP(lastP117,2414
+  void writeHead(97,1851
+  void writeData(98,1910
+  void load(99,1948
+  void load(100,1993
+  void loadHeader(101,2040
+  void loadHeader0(102,2087
+  void correctE(103,2135
+  void copyCnt(104,2168
+struct aMCAMap 107,2212
+  int iX,108,2229
+  int iX, iY;108,2229
+  QVector<aMCASet> MCASets;109,2243
+  aMCAMap(111,2272
+  ~aMCAMap(112,2302
+  void New(114,2320
+  aMCASet *aPoint(aPoint115,2371
+  bool valid(116,2408
+  aMCASet *lastP(lastP117,2440
 
 AUnits/XMAPHead.h,335
 #define XMAPHEAD_H2,19

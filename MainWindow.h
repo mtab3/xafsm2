@@ -851,6 +851,7 @@ private slots:
   void SaveS2DResult0( void );
   void SaveS2DResult( void );
   //  void PopUpS2D( void );
+  void saveMCAData( SetUpSFluo *ssfluo, QString fname );
 
   void S2DOkOverWrite( void );
   void S2DOkOverWrite2( void );
@@ -871,9 +872,9 @@ private slots:
 
   //  void S2DShowInfoAtNewPosition( int x, int y, aMCASet *set );
   //  void S2DShowIntMCA( int x, int y, aMCASet *set );
-  void ShowMCASpectrum( S2DInfo s2di, aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
+  void ShowMCASpectrum( S2DInfo *s2di, aMCASet *set1, aMCASet *set2 ); // 上の2つの関数をこの一つで担う
     
-  void S2DChangeMCACh( S2DInfo s2di, int dCh );
+  //  void S2DChangeMCACh( S2DInfo s2di, int dCh );
   //  void S2DSetROIs( void );
   //  void S2DReCalcMap0( void );
   //  void ansToGetNewMCAView( S2DB *s2db );
@@ -900,7 +901,6 @@ private slots:
   void RcvEvAll( SMsg msg );
   void alarmOn( void );
   void alarmOff( void );
-
   
 signals:
   void SelectedSSD( int i, bool f );

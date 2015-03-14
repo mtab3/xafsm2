@@ -8,6 +8,7 @@
 #include "XafsM.h"
 #include "MCAView.h"
 #include "Diff.h"
+#include "SetUpSFluo.h"
 
 #define PEAKSEARCH
 
@@ -49,7 +50,7 @@ MCAView::MCAView( QWidget *p, QWidget *parent, QWidget *grandParent ) : QFrame( 
   fitPrec2 = 1e-3;
 
   MCALen = 0;
-  MCACh = -1;
+  MCACh = 0;
   realTime = 0;
   liveTime = 0;
   lowerLimit = 0;
@@ -131,27 +132,41 @@ MCAView::MCAView( QWidget *p, QWidget *parent, QWidget *grandParent ) : QFrame( 
 	   this, SLOT( setShowElementsEnergy( bool ) ),
 	   Qt::UniqueConnection );
 
-
   connect( this, SIGNAL( newROIinEng( double, double ) ),
 	   Parent, SLOT( setROIs( void ) ), Qt::UniqueConnection );
   connect( gParent, SIGNAL( NewEnergy( double ) ), this, SLOT( NewEnergy( double ) ),
 	   Qt::UniqueConnection );
 
-  connect( Parent, SIGNAL( askSetFDBase( FluoDBase * ) ), this, SLOT( setFDBase( FluoDBase * ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetMaxMCAEnergy( double ) ), this, SLOT( setMaxMCAEnergy( double ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetMaxLoop( int ) ), this, SLOT( setMaxLoop( int ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetDampFact( double ) ), this, SLOT( setDampFact( double ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetPrec1( double ) ), this, SLOT( setPrec1( double ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetPrec2( double ) ), this, SLOT( setPrec2( double ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetLimitPSEnergy( bool ) ), this, SLOT( setLimitPSEnergy( bool ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetShowDiff( bool ) ), this, SLOT( setShowDiff( bool ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetPeakSearch( bool ) ), this, SLOT( setPeakSearch( bool ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetShowSmoothed( bool ) ), this, SLOT( setShowSmoothed( bool ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetFitToRaw( bool ) ), this, SLOT( setFitToRaw( bool ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askDoPeakFitWCPoints() ), this, SLOT( doPeakFitWCPoints() ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askClearMCAPeaks() ), this, SLOT( clearMCAPeaks() ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetROI( int, int ) ), this, SLOT( setROI( int, int ) ), Qt::UniqueConnection );
-  connect( Parent, SIGNAL( askSetMCACh( int ) ), this, SLOT( setMCACh( int ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetFDBase( FluoDBase * ) ),
+	   this, SLOT( setFDBase( FluoDBase * ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetMaxMCAEnergy( double ) ),
+	   this, SLOT( setMaxMCAEnergy( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetMaxLoop( int ) ),
+	   this, SLOT( setMaxLoop( int ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetDampFact( double ) ),
+	   this, SLOT( setDampFact( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetPrec1( double ) ),
+	   this, SLOT( setPrec1( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetPrec2( double ) ),
+	   this, SLOT( setPrec2( double ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetLimitPSEnergy( bool ) ),
+	   this, SLOT( setLimitPSEnergy( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetShowDiff( bool ) ),
+	   this, SLOT( setShowDiff( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetPeakSearch( bool ) ),
+	   this, SLOT( setPeakSearch( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetShowSmoothed( bool ) ),
+	   this, SLOT( setShowSmoothed( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetFitToRaw( bool ) ),
+	   this, SLOT( setFitToRaw( bool ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askDoPeakFitWCPoints() ),
+	   this, SLOT( doPeakFitWCPoints() ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askClearMCAPeaks() ),
+	   this, SLOT( clearMCAPeaks() ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetROI( int, int ) ),
+	   this, SLOT( setROI( int, int ) ), Qt::UniqueConnection );
+  connect( Parent, SIGNAL( askSetMCACh( int ) ),
+	   this, SLOT( setMCACh( int ) ), Qt::UniqueConnection );
 }
 
 MCAView::~MCAView( void )
@@ -757,6 +772,8 @@ void MCAView::Draw( QPainter *p )
   p->setPen( Black );
 
   QStringList titles, vals;
+  titles << ((AUnitSFluo*)(((SetUpSFluo*)Parent)->sFluo()))->name() << "";
+  vals << "" << "";
   if ( MCACh >= 0 ) {   // MCA ch 番号
     titles << tr( "MCA Ch. : " );
     vals << QString::number( MCACh );
@@ -810,9 +827,9 @@ void MCAView::Draw( QPainter *p )
   titles << tr( "Dead Time : " );
   vals << QString::number( dt, 'f', 3 );
 
-  rec.setRect( dLM,   TM+dVW, dLM * 4, dVW );
+  rec.setRect( dLM,   TM /* +dVW */, dLM * 4, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, titles );
-  rec.setRect( dLM*5, TM+dVW, dLM * 4, dVW );
+  rec.setRect( dLM*5, TM /* +dVW */, dLM * 4, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, f, Qt::AlignRight | Qt::AlignVCenter, SCALESIZE, vals );
   
   //　　 青   ->  緑   ->  黄   -> オレンジ -> 赤　　にするとしたら？

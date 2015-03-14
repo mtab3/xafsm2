@@ -792,7 +792,7 @@ void MainWindow::SaveMCADataOnMem( aMCASet *set, SetUpSFluo *sSFluo )
 
   AUnitSFluo *sFluo = sSFluo->sFluo();
   KeV2Pix *k2p = sSFluo->K2P();
-  
+
   set->date = QDateTime::currentDateTime().toString( "yy/MM/dd hh:mm:ss" );
   set->RINGCurrent = ( ( SLS != NULL) ? SLS->value().toDouble() : -1 );
   set->I0 = ( ( SI0 != NULL ) ? SI0->value().toDouble() : -1 );
@@ -868,10 +868,10 @@ void MainWindow::S2DMoveToPointedPosition( int ix, int iy )
   S2DI.unit[1]->SetValue( S2DI.unit[1]->u2p( y ) );
 }
 
-void MainWindow::ShowMCASpectrum( S2DInfo s2di, aMCASet *set1, aMCASet *set2 )
+void MainWindow::ShowMCASpectrum( S2DInfo *s2di, aMCASet *set1, aMCASet *set2 )
 {
   int dNo;
-  if ( ( ! s2di.valid )||( ( dNo = whichSFluoUnit( s2di.as ) ) < 0 ) )
+  if ( ( ! s2di->valid )||( ( dNo = whichSFluoUnit( s2di->as ) ) < 0 ) )
     return;
 
   quint32 *cnt1 = NULL;
@@ -893,6 +893,7 @@ void MainWindow::ShowMCASpectrum( S2DInfo s2di, aMCASet *set1, aMCASet *set2 )
   }
 }
 
+#if 0
 void MainWindow::S2DChangeMCACh( S2DInfo s2di, int dCh )
 {
   int dNo;
@@ -908,4 +909,4 @@ void MainWindow::S2DChangeMCACh( S2DInfo s2di, int dCh )
 
   SSFluos[dNo]->setMCACh( ch );
 }
-
+#endif

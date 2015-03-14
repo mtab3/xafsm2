@@ -72,7 +72,7 @@ public slots:
  signals:
   void AskMoveToPointedPosition( int x, int y );
   void PointerMovedToNewPosition( int x, int y );
-  void AskToChangeMCACh( int dCh );
+//  void AskToChangeMCACh( int dCh );
   void PointerMovedOnIntMCA( void );
   void newAutoZmax( double max );
   void newAutoZmin( double min );

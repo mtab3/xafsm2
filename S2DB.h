@@ -85,13 +85,15 @@ private slots:
   void loadNextMap( void );
   void saveNextMap( void );
   void PopUp( void );
+  //  void ChangeMCACh( int ch );
 
 signals:
   void askToGetNewMCAView( S2DB *s2db );
   //  void PointerMovedToNewPosition( int ix, int iy, aMCAMap *map );
   //  void PointerMovedOnIntMCA( int ix, int iy, aMCAMap *map );
-  void ShowMCASpectrum( aMCASet *set1, aMCASet *set2 );
+  void ShowMCASpectrum( S2DInfo *s2di, aMCASet *set1, aMCASet *set2 );
   void ShowMessage( QString msg, int time );
+  //  void AskToChangeMCACh( S2DInfo s2di, int ch );
 #if 0
   void print( void );
   void popup( void );

@@ -74,14 +74,18 @@ void S2DB::setParent( QWidget *p )
   
   connect( S2DV, SIGNAL( AskMoveToPointedPosition( int, int ) ),
 	   parent, SLOT( S2DMoveToPointedPosition( int, int ) ), Qt::UniqueConnection );
+#if 0
   connect( S2DV, SIGNAL( AskToChangeMCACh( int ) ),
-	   parent, SLOT( S2DChangeMCACh( int ) ), Qt::UniqueConnection );
+	   this, SLOT( ChangeMCACh( int ) ), Qt::UniqueConnection );
+  connect( this, SIGNAL( AskToChangeMCACh( S2DInfo, int ) ), 
+	   parent, SLOT( S2DChangeMCACh( S2DInfo, int ) ), Qt::UniqueConnection );
+#endif
   connect( S2DV, SIGNAL( PointerMovedToNewPosition( int, int ) ),
 	   this, SLOT( ShowInfoAtNewPosition( int, int ) ), Qt::UniqueConnection );
   connect( S2DV, SIGNAL( PointerMovedOnIntMCA() ),
 	   this, SLOT( ShowIntMCA() ), Qt::UniqueConnection );
-  connect( this, SIGNAL( ShowMCASpectrum( aMCASet *, aMCASet * ) ), 
-	   parent, SLOT( ShowMCASpectrum( aMCASet *, aMCASet * ) ), Qt::UniqueConnection );
+  connect( this, SIGNAL( ShowMCASpectrum( S2DInfo *, aMCASet *, aMCASet * ) ), 
+	   parent, SLOT( ShowMCASpectrum( S2DInfo *, aMCASet *, aMCASet * ) ), Qt::UniqueConnection );
   connect( parent,
 	   SIGNAL( ReCalcS2DMap0( QString *, QString *, SelectCh * ) ),
 	   this,
@@ -91,6 +95,13 @@ void S2DB::setParent( QWidget *p )
   connect( this, SIGNAL( ShowMessage( QString, int ) ),
 	   parent, SLOT( ShowMessageOnSBar( QString, int ) ), Qt::UniqueConnection );
 }
+
+#if 0
+void S2DB::ChangeMCACh( int ch )
+{
+  emit AskToChangeMCACh( S2Di, ch );
+}
+#endif
 
 void S2DB::PopUp( void )
 {
@@ -166,15 +177,12 @@ void S2DB::loadNextMap( void )
 
 void S2DB::SaveMCAs( const QString &bfname )
 {
-  //  qDebug() << "S2Di pointer " << S2Di << this;
-  qDebug() << "valid " << S2Di.valid;
   if (( ! S2Di.valid )||( ! S2Di.isSFluo )) {
     emit ShowMessage( tr( "Can not save MCA spectra for 2D scan." ), 2000 );
     return;
   }
   if ( bfname.simplified().isEmpty() ) {
     emit ShowMessage( tr( "No file name was selected" ), 2000 );
-    qDebug() << "ee";
     return;
   }
   
@@ -233,19 +241,19 @@ void S2DB::saveNextMap( void )
 void S2DB::ShowInfoAtNewPosition( int ix, int iy )
 {
   if ( S2Di.ScanMode == STEP ) {
-    emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), NULL );
+    emit ShowMCASpectrum( &S2Di, mcaMap.aPoint( ix, iy ), NULL );
   } else {
     if ( mcaMap.valid( ix+1, iy ) ) {
-      emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix+1, iy ) );
+      emit ShowMCASpectrum( &S2Di, mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix+1, iy ) );
     } else {
-      emit ShowMCASpectrum( mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix, iy ) );
+      emit ShowMCASpectrum( &S2Di, mcaMap.aPoint( ix, iy ), mcaMap.aPoint( ix, iy ) );
     }
   }
 }
 
 void S2DB::ShowIntMCA( void )
 {
-  emit ShowMCASpectrum( mcaMap.lastP(), NULL );
+  emit ShowMCASpectrum( &S2Di, mcaMap.lastP(), NULL );
 }
 
 void S2DB::ReCalcMap( QString *RS, QString *RE, SelectCh *SelChs )
@@ -318,12 +326,14 @@ double S2DB::ReCalcAMapPointOnMem( int ix, int iy,
   if ( ( S2Di.as == NULL )||( ! S2Di.isSFluo ) )
     return 0;
 
-  KeV2Pix *k2p = ((SetUpSFluo*)(S2Di.as->parentObj()))->K2P();
+  SetUpSFluo *ssfluo = (SetUpSFluo*)(S2Di.as->parentObj());
+  AUnitSFluo *sfluo = ssfluo->sFluo();
+  KeV2Pix *k2p = ssfluo->K2P();
   double sum = 0;
 
   QVector<double> ss;
   QVector<double> es;
-  for ( int i = 0; i < mcaChs; i++ ) {
+  for ( int i = 0; i < sfluo->chs(); i++ ) {
     ss << k2p->p2E( i, RS[ i ].toDouble() );
     es << k2p->p2E( i, RE[ i ].toDouble() );
   }

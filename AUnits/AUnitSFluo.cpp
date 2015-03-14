@@ -82,8 +82,6 @@ void AUnitSFluo::init0( void )
   connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
 	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
 	   Qt::UniqueConnection );
-
-  qDebug() << "SFluo asking";
   
   s->SendCMD2( "Init", DevCh, "IsBusy" );
   s->SendCMD2( "Init", Dev, "RunStop" );

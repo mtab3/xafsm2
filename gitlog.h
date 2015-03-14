@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Mar 14 14:17:49 2015 +0900\n"\
+                "    small change\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Mar 11 13:46:08 2015 +0900\n"\
+                "    all of the connections between MCAView and SetUpSFluo are reconnected corretly\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Mar 10 18:39:08 2015 +0900\n"\
                 "    read MCA is working\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 7 18:15:52 2015 +0900\n"\
                 "    checking the process to get ViewTabs for sfluos\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Mar 7 00:02:27 2015 +0900\n"\
-                "    GSBs are of for many channels\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Mar 6 19:09:18 2015 +0900\n"\
-                "    small bug fix on gsb-display.  a bug which crash XafsM2 on the XAFS measurement but not fixed\n"\
 		"\n"\
                 ""
 #endif

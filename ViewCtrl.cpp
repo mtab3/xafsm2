@@ -27,29 +27,23 @@ bool ViewCTRL::setView( void *view, VTYPE vtype, D_TYPE dtype, D_ORIG dorig, boo
     if ( nowView != NULL ) {   // 現在の View が空でない場合でも
       // 表示しようとしているものと同タイプなら
       if ( ( nowVType != vtype ) || ( nowDataType != dtype ) ){
-	qDebug() << "x"; 
 	return false;
       }
       // 表示しようとしているものと同その View の内容を消してしまって上書きを許す
       if ( ! deleteView() ) {
-	qDebug() << "w"; 
 	return false;
       }
     }
   } else {
     if ( nowView != NULL ) {
-      qDebug() << "z";
       return false;
     }
   }
-  qDebug() << "dd"; 
   nowView = view;
   nowVType = vtype;
   nowDataType = dtype;
   nowDataOrig = dorig;
   ViewBase->layout()->addWidget( (QWidget *)nowView );
-
-  qDebug() << "ee"; 
 
   deletable = true;
   gsbStat = new GSBStats;
@@ -195,7 +189,6 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
 	// かならず newView をパラメータとして持ち込むはずなのでここは通らない
 	// newView = SSFluo0->McaView();
       } else {
-	qDebug() << "Here!";
 	//newView = (void *)(new MCAView( this ));
 	MCAView *view = (MCAView*)newView;
 	SetUpSFluo *ssfluo = (SetUpSFluo*)(view->parent());
@@ -234,13 +227,11 @@ int MainWindow::SetUpNewView( VTYPE vtype, D_TYPE dtype, D_ORIG dorig, void *new
   // newView は ViewCTRL の中で作れば良さそうなものだが、
   // 上の操作にいっぱい MainWindow の持ち物が出てくるのでめんどくさい
 
-  qDebug() << "aa00";
   if ( newView == NULL ) {
     qDebug() << "Can't setup new View";
     return -1;
   }
 
-  qDebug() << "a";
   // ViewCTRL(ViewTab と一対一対応) に登録する
   // 現在の ViewTab に対応する ViewCTRL が使えたらそれで OK
   if ( ! ViewCtrls[ ViewTab->currentIndex() ]

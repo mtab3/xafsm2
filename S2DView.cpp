@@ -379,8 +379,10 @@ void S2DView::mouseDoubleClickEvent( QMouseEvent * )
 
 void S2DView::wheelEvent( QWheelEvent *e )
 {
+#if 0
   int step = ( e->delta() / 8. ) / 15.;    // deg := e->delta / 8.
   emit AskToChangeMCACh( step );
+#endif
 }
 
 void S2DView::setNowPosition( int ax, double pos )

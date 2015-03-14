@@ -15,6 +15,8 @@ void MainWindow::setupSFluoRelated( void )
 	     this, SLOT( addAnUsingUnit( QString, AUnit0 * ) ), Qt::UniqueConnection );
     connect( SSFluos[i], SIGNAL( removeUsingUnits( QString, AUnit0 * ) ),
 	     this, SLOT( removeUsingUnits( QString, AUnit0 * ) ), Qt::UniqueConnection );
+    connect( SSFluos[i], SIGNAL( askToSaveMCAData( SetUpSFluo *, QString ) ),
+	     this, SLOT( saveMCAData( SetUpSFluo *, QString ) ), Qt::UniqueConnection );
 
     // これは本当にここでいいか?? newCalibration が複数の SFluo を区別できるか?
 #if 0
@@ -61,6 +63,17 @@ void MainWindow::setupSFluoRelated( void )
 	   this, SLOT( MoveToNewCaribEnergy() ), Qt::UniqueConnection );
   connect( SSDEngAutoCalib, SIGNAL( clicked() ), this, SLOT( SSDEngAutoCalibStart() ),
 	   Qt::UniqueConnection );
+}
+
+void MainWindow::saveMCAData( SetUpSFluo *ssfluo, QString fname )
+{
+  AUnitSFluo *sfluo = ssfluo->sFluo();
+  aMCASet *set = new aMCASet;
+  set->setSize( sfluo->length(), sfluo->chs() );
+  SaveMCADataOnMem( set, ssfluo );
+  //  saveMCAData0( MCARecFile->text(), set );
+  set->save( fname, "measured by SSD set up", sfluo->uid() );
+  delete set;
 }
 
 void MainWindow::addAnUsingUnit( QString id, AUnit0 *unit )

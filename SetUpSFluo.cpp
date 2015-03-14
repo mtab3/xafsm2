@@ -8,7 +8,7 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   setupUi( this );
 
   k2pFile = "KeV2MCApix.txt";
-  llFile = "SSDLowLimit.txt";
+  llFile = "SSDLowLimits.txt";
   pagFile = "SSDPreAMPGains.txt";
   s = NULL;
   SFluo0 = new AUnitSFluo( this );
@@ -17,7 +17,7 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   MCATimer = new QTimer;
   fdbase = NULL;
 
-  setUpMCAView( mcaView );
+  // setUpMCAView( mcaView );
 
   MCAClearRequest = false;
   MCADataStat = MCANameStat = OLD;
@@ -398,12 +398,6 @@ void SetUpSFluo::setAllROIs( void )
 
 void SetUpSFluo::saveMCAData( void )
 {
-#if 0
-  if ( !validMCAData ) {
-    emit ShowMessage( tr( "MCA data is not valid" ), 2000 );
-    return;
-  }
-#endif
   if ( MCARecFile->text().isEmpty() ) {
     emit ShowMessage( tr( "Save file name is not selected" ), 2000 );
     return;
@@ -417,12 +411,7 @@ void SetUpSFluo::saveMCAData( void )
 //    qDebug() << i;                     // i7 で 40 秒(0.04s/面)だった
 //    // ROI の積分を XafsM2 側でやるようにし、フルレンジ(0-2047)を ROI の範囲にした場合
 //    // 約 43 秒。ROI の積分時間は 最大 3ms 程度という事になる。
-  aMCASet *set = new aMCASet;
-  set->setSize( SFluo0->length(), SFluo0->chs() );
-  SaveMCADataOnMem( set, this );
-  //  saveMCAData0( MCARecFile->text(), set );
-  set->save( MCARecFile->text(), "measured by SSD set up", SFluo0->uid() );
-  delete set;
+  emit askToSaveMCAData( this, MCARecFile->text() );
 }
 
 void SetUpSFluo::setSelectedMCAFName( const QString &fname )
@@ -587,17 +576,12 @@ void SetUpSFluo::MCAChSelected( int i )
   if ( i >= MaxChs ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
 
-  emit NewMCACh( cMCACh );
   getMCASettings( cMCACh );
   ROIStartInput->setText( ROIStart[ cMCACh ] );
   ROIEndInput->setText( ROIEnd[ cMCACh ] );
 
   emit askSetMCACh( cMCACh );
   emit askSetROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-#if 0
-  mcaView->SetMCACh( cMCACh );
-  mcaView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
-#endif
   
   SFluo0->GetRealTime( cMCACh );
   SFluo0->GetLiveTime( cMCACh );

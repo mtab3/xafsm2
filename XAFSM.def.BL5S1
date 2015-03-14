@@ -420,9 +420,9 @@ SENSOR PAM "S005" "I01" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006" 19 2014 20.0 KeV2MCPpix.txt "" ""
+SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006" 19 2014 20.0 KeV2MCApix.txt "" ""
 # SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006"
-#                         19 2014 20.0 KeV2MCPpix.txt SSDLowLimits.txt SSDPreAMPGain.txt
+#                         19 2014 20.0 KeV2MCApix.txt SSDLowLimits.txt SSDPreAMPGain.txt
 
 # The parameters following the identifire 'SENSOR' are
 #   SSD     : Unit type SSD : MCA base devices like SSD or SDD

@@ -5,13 +5,15 @@
 
 #include "global.h"
 
-void dbg( QString msg )
+void dbg( QString /* msg */ )
 {
+#if 0
   QFile f( "/Users/tabuchi/Desktop/prog/XafsM2/dbg.dat" );
   f.open( QIODevice::Append | QIODevice::Text );
   QTextStream out( &f );
   out << msg << "\n";
   f.close();
+#endif
 }
 
 double prec( double x, int n )

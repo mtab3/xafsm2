@@ -130,6 +130,7 @@ void MainWindow::ReadDef( QString fname )
 	    if ( item != "" ) newSSFluo->setLLFile( item );
 	    next = nextItem( next, item );
 	    if ( item != "" ) newSSFluo->setPAGFile( item );
+	    newSSFluo->setUpMCAView( newSSFluo->McaView() );
 	    SSFluos << newSSFluo;
 	    SFluos << (AUnitSFluo*)NewUnit;
 	    MainTab->insertTab( 1 + SFluos.count(), newSSFluo,
