@@ -94,13 +94,10 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   MCAData = mcaView->setMCAdataPointer( SFluo0->length() );
   for ( int i = 0; i < SFluo0->length(); i++ ) MCAData[i] = 0;
   
-  qDebug() << "mcadata " << MCAData;
-  
   connect( SELBs1, SIGNAL( selectedSingleCh( int ) ), MCACh, SLOT( setValue( int ) ),
 	   Qt::UniqueConnection );
   connect( SELBs1, SIGNAL( selectedSingleCh( int ) ), this, SLOT( MCAChSelected( int ) ),
 	   Qt::UniqueConnection );
-
 
   SELBs2->setTitle( tr( "Select SSD channels (XAFS meas.)" ) );
   SELBs2->setType( SSD19CH );   // デフォルトは 19ch SSD 型
@@ -120,9 +117,12 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsGetPreAMPGain( SMsg ) ), this, SLOT( showPreAMPGain( SMsg ) ),
 	   Qt::UniqueConnection );
+#if 0
   connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALen( SMsg ) ),
 	   Qt::UniqueConnection );
-  
+#endif
+  setROILen();
+
   connect( MCAStart, SIGNAL( clicked() ), this, SLOT( StartMCA() ),
 	   Qt::UniqueConnection );
   connect( MCACh, SIGNAL( valueChanged( int ) ), this, SLOT( MCAChSelected( int ) ),
@@ -517,7 +517,7 @@ void SetUpSFluo::getMCASettings( int ch )
   SFluo0->GetMCAs();
 }
 
-void SetUpSFluo::getMCALen( SMsg )  // 初期化の時に一回しか呼ばれないと信じる
+void SetUpSFluo::setROILen( void )
 {
   if ( MwSSDGotMCALen )
     return;

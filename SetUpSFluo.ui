@@ -926,6 +926,9 @@
            <property name="styleSheet">
             <string notr="true">background-color: rgb(250, 255, 240);</string>
            </property>
+           <property name="text">
+            <string>/Users/tabuchi/Desktop/prog/XafsM2/mcaTest.dat</string>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>

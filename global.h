@@ -26,5 +26,6 @@ extern void global_init( void );
 extern double prec( double x, int n );
 extern QString CheckFNameExt( QString fname, QString ext );
 
+extern void dbg( QString msg );
 
 #endif

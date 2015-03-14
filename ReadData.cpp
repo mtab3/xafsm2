@@ -57,6 +57,7 @@ void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir, QString uid )
   ViewCTRL *viewC = NULL;
 
   qDebug() << "1111"; 
+  dbg( QString( "uid = %2" ).arg( uid ) );
 
   int sfn = 0;
   int vcn = 0;
@@ -92,6 +93,7 @@ void MainWindow::TryToGiveNewView( D_TYPE dtype, QString dir, QString uid )
     }
     if ( sfn >= SFluos.count() )
       sfn = 0;
+    dbg( QString( "sfn = %1" ).arg( sfn ) );
     vcn = SetUpNewView( MCAVIEW, MCADATA, READD, new MCAView( NULL, SSFluos[sfn], this ) );
     viewC = ( vcn < 0 ) ? NULL : ViewCtrls[ vcn ];
     break;

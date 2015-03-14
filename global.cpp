@@ -1,8 +1,18 @@
 
 #include <math.h>
 #include <QFileInfo>
+#include <QTextStream>
 
 #include "global.h"
+
+void dbg( QString msg )
+{
+  QFile f( "/Users/tabuchi/Desktop/prog/XafsM2/dbg.dat" );
+  f.open( QIODevice::Append | QIODevice::Text );
+  QTextStream out( &f );
+  out << msg << "\n";
+  f.close();
+}
 
 double prec( double x, int n )
 {

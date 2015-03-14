@@ -140,7 +140,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void setSelectedMCAFName( const QString &fname );
   void RealTimeIsSelected( void );
   void LiveTimeIsSelected( void );
-  void getMCALen( SMsg msg );  // 初期化の時に一回しか呼ばれないと信じる
+  void setROILen( void );  // 初期化の時に一回しか呼ばれないと信じる
   void newROIStart( const QString &newv );
   void newROIEnd( const QString &newv );
   void MCAChSelected( int i );
