@@ -488,25 +488,25 @@ void MainWindow::S2DOkOverWrite2(285,9079
 void MainWindow::newS2DFileSelected(291,9184
 void MainWindow::showS2DNewAxValue(309,9771
 void MainWindow::S2DScanStart(322,10099
-void MainWindow::S2DFileCheck(529,16028
-void MainWindow::S2DOkOverWrite(542,16333
-void MainWindow::S2DScanNotStart(547,16408
-void MainWindow::CheckS2DDwellTime(553,16498
-void MainWindow::SetupS2DParams(591,17704
-void MainWindow::S2DStop0(650,19652
-void MainWindow::S2DStop00(662,19952
-void MainWindow::SaveS2DResult(673,20266
-void MainWindow::S2DWriteHead0 716,21439
-void MainWindow::S2DWriteHead(735,21752
-void MainWindow::S2DWriteHead2(746,22129
-void MainWindow::S2DWriteBody(754,22422
-void MainWindow::S2DWriteBody2(776,22925
-void MainWindow::SaveMCADataOnMem(788,23241
-void MainWindow::S2DWriteBlankLine(817,24175
-void MainWindow::S2DWriteTail(834,24529
-void MainWindow::S2DMoveToPointedPosition(854,25061
-void MainWindow::ShowMCASpectrum(871,25574
-void MainWindow::S2DChangeMCACh(897,26276
+void MainWindow::S2DFileCheck(520,15793
+void MainWindow::S2DOkOverWrite(533,16098
+void MainWindow::S2DScanNotStart(538,16173
+void MainWindow::CheckS2DDwellTime(544,16263
+void MainWindow::SetupS2DParams(582,17469
+void MainWindow::S2DStop0(641,19417
+void MainWindow::S2DStop00(653,19717
+void MainWindow::SaveS2DResult(664,20031
+void MainWindow::S2DWriteHead0 707,21204
+void MainWindow::S2DWriteHead(726,21517
+void MainWindow::S2DWriteHead2(737,21894
+void MainWindow::S2DWriteBody(745,22187
+void MainWindow::S2DWriteBody2(767,22690
+void MainWindow::SaveMCADataOnMem(779,23006
+void MainWindow::S2DWriteBlankLine(808,23940
+void MainWindow::S2DWriteTail(825,24294
+void MainWindow::S2DMoveToPointedPosition(845,24826
+void MainWindow::ShowMCASpectrum(862,25339
+void MainWindow::S2DChangeMCACh(888,26041
 
 MwSSDSetUp.cpp,327
 void MainWindow::setupSFluoRelated(4,26
@@ -2283,10 +2283,10 @@ void cBar::newScale(165,5386
 
 qrc_XafsM.cpp,302
 static const unsigned char qt_resource_data[qt_resource_data11,331
-static const unsigned char qt_resource_name[qt_resource_name29427,2376502
-static const unsigned char qt_resource_struct[qt_resource_struct29535,2380197
-int QT_MANGLE_NAMESPACE(29592,2382321
-Q_CONSTRUCTOR_FUNCTION(29599,2382508
+static const unsigned char qt_resource_name[qt_resource_name29425,2376240
+static const unsigned char qt_resource_struct[qt_resource_struct29533,2379935
+int QT_MANGLE_NAMESPACE(29590,2382059
+Q_CONSTRUCTOR_FUNCTION(29597,2382246
 
 Alarm.h,500
 #define ALARM_H2,16

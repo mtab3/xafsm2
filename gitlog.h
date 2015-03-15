@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sat Mar 14 23:54:03 2015 +0900\n"\
+                "    debugging\n"\
+		"\n"\
                 "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 14 14:17:49 2015 +0900\n"\
                 "    small change\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 7 21:28:37 2015 +0900\n"\
                 "    it looks it works basically, but not reading data\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Mar 7 18:15:52 2015 +0900\n"\
-                "    checking the process to get ViewTabs for sfluos\n"\
 		"\n"\
                 ""
 #endif

@@ -323,23 +323,12 @@ void MainWindow::S2DScanStart( void )
 {
   ASensor *as = NULL;
 
+  // inMMove のチェック不要(後で UUnits のチェックがあるので...)
   if ( !inS2D ) {
-    S2DInfo oldInfo = S2DI;
     CheckS2DDwellTime();
+    S2DInfo oldInfo = S2DI; // Start プロセスが中断した時用に古いスキャンパラメータを保存
     SetupS2DParams();   // スキャンパラメータを GUI から内部変数にコピー
 
-    // inMMove のチェック不要(後で UUnits のチェックがあるので...)
-    // 他のチェックもいらないかも
-#if 0
-    // 自分自信が動いてるかどうかのチェックだけは必要だが
-    // 使用するUnitがダブっていなければ他の動作が並列で走っても構わないはず
-    if ( inMeas || inSPSing || inMonitor || inMCAMeas ) {
-      statusbar
-	->showMessage( tr( "Can't start 2D Scan. Othre Process is going on." ), 2000 );
-      S2DI = oldInfo;
-      return;
-    }
-#endif
     for ( int i = 0; i < S2DI.motors; i++ ) {
       if ( S2DI.used[i] && ( ! S2DI.unit[i]->isEnable() ) ) {
 	QString msg = tr( "2D Scan cannot Start : (%1) is disabled" )
@@ -385,7 +374,7 @@ void MainWindow::S2DScanStart( void )
 	}
 
 	if ( ( User = UUnits.user( S2DI.unit[i] ) ) != "" ) {
-	  // モーターが他のことに使われていたらダメ
+	  // このスキャンで使うつもりのモーターが他のことに使われていたらダメ
 	  statusbar->showMessage( tr( "The Motor [%1] is used by the process %2!" )
 				  .arg( S2DI.unit[i]->name() ).arg( User ), 2000 );
 	  S2DI = oldInfo;
@@ -484,9 +473,10 @@ void MainWindow::S2DScanStart( void )
     for ( int i = 0; i < mS2DUnits.count(); i++ ) {
       UUnits.addAnUnit( S2D_ID, mS2DUnits.at(i) );
     }
-
-    S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
-		     S2DI.ps[1]+1, SFluos[dNo]->length(), SFluos[dNo]->chs() );
+    if ( S2DI.isSFluo ) {
+      S2DBase->mapNew( S2DI.ps[0]+((S2DI.ScanMode == STEP)?0:1),
+		       S2DI.ps[1]+1, SFluos[dNo]->length(), SFluos[dNo]->chs() );
+    }
     S2DLastV = 0;
     S2DI.MCAFile = S2DI.SaveFile;
     if ( S2DI.MCAFile.isEmpty() )
