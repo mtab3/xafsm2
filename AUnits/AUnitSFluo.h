@@ -8,8 +8,8 @@
 enum STATELM { STAT_REALTIME, STAT_TRG_LIVETIME, STAT_ENGY_LIVETIME, STAT_TRIGGERS,
 	       STAT_EVENTS, STAT_ICR, STAT_OCR };
 
-#define AXMAPBUF    ( XMAPHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
-#define XMAPBUFSIZE ( AXMAPBUF * 19 )       // AMCABUF * 19 ch
+// #define AXMAPBUF    ( XMAPHEAD + 2048 * 4 ) // MCAHEAD + 2048 pixels * 4byte
+// #define XMAPBUFSIZE ( AXMAPBUF * 19 )       // AMCABUF * 19 ch
 
 class AUnitSFluo : public ASensor
 {
@@ -18,7 +18,9 @@ class AUnitSFluo : public ASensor
   bool connectingDLink;
 
   int SSDChs;
-  quint64 McaLength;
+  quint64 mcaLength;
+  int AChBufSize;
+  int AllChBufSize;
   
   QString DataLinkHostName;
   qint16 DataLinkHostPort;
@@ -45,6 +47,7 @@ class AUnitSFluo : public ASensor
   QVector<bool> SSDUsingCh;
 
   void resetVectors( int chs );
+  void setBufSize( void );
   
  public:
   AUnitSFluo( QObject *p = NULL );
@@ -60,9 +63,9 @@ class AUnitSFluo : public ASensor
   void RunStart( void );
   void RunStop( void );
   void RunResume( void );
-  void setLength( int len ) { McaLength = len; };
-  void setChs( int chs ) { SSDChs = chs; };
-  int length( void ) { return McaLength; };
+  void setLength( int len );
+  void setChs( int chs );
+  int length( void ) { return mcaLength; };
   int chs( void ) { return SSDChs; };
 
   void setSSDPresetType( QString type ) { SSDPresetType = type; };

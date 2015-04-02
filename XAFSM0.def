@@ -657,4 +657,4 @@ ALARM "S056" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
 
 
 
-SENSOR SSD  "S063" "GENERAL"  "SDD(7ch)" "QtXmapSSD2" ""   "count" YES "S063" 7 2048 20.0 KeV2MCApix.txt 7SDDLowLimits.txt ""
+SENSOR SSD  "S063" "GENERAL"  "SDD(7ch)" "QtTechAPSDD" ""   "count" YES "S063" 7 8192 20.0 KeV2MCApix2.txt 7SDDLowLimits.txt ""

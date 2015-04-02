@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Sun Mar 15 22:38:59 2015 +0900\n"\
+                "    working on s2d with new SetUpSFluo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 14 23:54:03 2015 +0900\n"\
                 "    debugging\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Mar 8 01:22:51 2015 +0900\n"\
                 "    working on k2p, ll, and pag\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Mar 7 21:28:37 2015 +0900\n"\
-                "    it looks it works basically, but not reading data\n"\
 		"\n"\
                 ""
 #endif

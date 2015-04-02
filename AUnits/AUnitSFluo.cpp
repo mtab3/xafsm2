@@ -4,7 +4,10 @@
 AUnitSFluo::AUnitSFluo( QObject *p ) : ASensor( p )
 {
   SSDChs = 19;
-  McaLength = 2048;    // !!
+  mcaLength = 2048;    // !!
+
+  AChBufSize = XMAPHEAD + mcaLength * 4;
+  AllChBufSize = AChBufSize * 19;
 
   connectingDLink = false;   // new
   
@@ -114,7 +117,7 @@ void AUnitSFluo::ConnectToSFluoDataLinkServer( QString host, qint16 port )
     dLinkStream = new QDataStream( dLink );
     if ( MCAs0 != NULL )
       delete [] MCAs0;
-    MCAs0 = new char [ XMAPBUFSIZE ];
+    MCAs0 = new char [ AllChBufSize ]; // [ XMAPBUFSIZE ];
     dLinkCount = 0;
     MCAsReady = false;  // MCAs のバッファに有効なデータが無い
     connect( dLink, SIGNAL( readyRead() ), this, SLOT( receiveMCAs() ),
@@ -277,8 +280,27 @@ bool AUnitSFluo::GetMCAs( void )
 void AUnitSFluo::getMCALength( SMsg msg )
 {
   if ( msg.From() == Dev ) {  //   // Check !!!!! DevCh/Drv
-    McaLength = msg.Val().toInt();
+    mcaLength = msg.Val().toInt();
+    setBufSize();
   }
+}
+
+void AUnitSFluo::setBufSize( void )
+{
+  AChBufSize = XMAPHEAD + mcaLength * 4;
+  AllChBufSize = AChBufSize * SSDChs;
+}
+
+void AUnitSFluo::setChs( int chs )
+{
+  SSDChs = chs;
+  setBufSize();
+}
+
+void AUnitSFluo::setLength( int len )
+{
+  mcaLength = len;
+  setBufSize();
 }
 
 bool AUnitSFluo::GetStat( void )
@@ -434,14 +456,14 @@ quint32 AUnitSFluo::getAMCAdata( int ch, int pixel )
 {
   if ( !MCAsReady )
     return 0;
-  return *((quint32 *)( MCAs + AXMAPBUF * ch + XMAPHEAD ) + pixel );
+  return *((quint32 *)( MCAs + /* AXMAPBUF */ AChBufSize * ch + XMAPHEAD ) + pixel );
 }
 
 quint32 *AUnitSFluo::getAMCA( int ch )
 {
   if ( !MCAsReady )
     return NULL;
-  return (quint32 *)( MCAs + AXMAPBUF * ch + XMAPHEAD );
+  return (quint32 *)( MCAs + /* AXMAPBUF */ AChBufSize * ch + XMAPHEAD );
 }
 
 XMAPHead AUnitSFluo::getAMCAHead( int ch )
@@ -450,12 +472,12 @@ XMAPHead AUnitSFluo::getAMCAHead( int ch )
 
   if ( !MCAsReady )
     return rv;
-  rv.ch       = *(qint64*)( MCAs + AXMAPBUF * ch +  0 );
-  rv.stat     = *(qint64*)( MCAs + AXMAPBUF * ch +  8 );
-  rv.len      = *(qint64*)( MCAs + AXMAPBUF * ch + 16 );
-  rv.realTime = *(double*)( MCAs + AXMAPBUF * ch + 24 );
-  rv.liveTime = *(double*)( MCAs + AXMAPBUF * ch + 32 );
-  rv.icr      = *(double*)( MCAs + AXMAPBUF * ch + 40 );
+  rv.ch       = *(qint64*)( MCAs + /* AXMAPBUF */ AChBufSize * ch +  0 );
+  rv.stat     = *(qint64*)( MCAs + /* AXMAPBUF */ AChBufSize * ch +  8 );
+  rv.len      = *(qint64*)( MCAs + /* AXMAPBUF */ AChBufSize * ch + 16 );
+  rv.realTime = *(double*)( MCAs + /* AXMAPBUF */ AChBufSize * ch + 24 );
+  rv.liveTime = *(double*)( MCAs + /* AXMAPBUF */ AChBufSize * ch + 32 );
+  rv.icr      = *(double*)( MCAs + /* AXMAPBUF */ AChBufSize * ch + 40 );
   return rv;
 }
 
@@ -512,23 +534,25 @@ void AUnitSFluo::receiveMCAs( void )
 {
   uint bytes0, bytes;
 
+  qDebug() << "McaLength" << mcaLength << AChBufSize << AllChBufSize;
+  
   bytes0 = dLink->bytesAvailable();
   // 今届いた分を全部読んでもバッファサイズより小さいなら
-  if ( dLinkCount + bytes0 <= XMAPBUFSIZE )
+  if ( dLinkCount + bytes0 <= /* XMAPBUFSIZE */ AllChBufSize )
     bytes = bytes0;                    // 全部読む
   else
-    bytes = XMAPBUFSIZE - dLinkCount;   // 大きいなら、読める分だけ読む
+    bytes = /* XMAPBUFSIZE */ AllChBufSize - dLinkCount;   // 大きいなら、読める分だけ読む
 
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
   dLinkCount += bytes;
 
-  if ( dLinkCount >= XMAPBUFSIZE ) {
+  if ( dLinkCount >= /* XMAPBUFSIZE */ AllChBufSize ) {
     busy2Off( Dev );
     dLinkCount = 0;
     if ( MCAs != NULL ) delete [] MCAs;
     MCAs = MCAs0;              // 読み込みが完成したバッファ(MCAs0)を
                                // 最新のデータが置かれたバッファ(MCAs)に移し
-    MCAs0 = new char [ XMAPBUFSIZE ];
+    MCAs0 = new char [ /* XMAPBUFSIZE */ AllChBufSize ];
                                // MCAs0 は次のデータを受けるために新しくする
     MCAsReady = true;          // MCAs のバッファに有効なデータがある
 
