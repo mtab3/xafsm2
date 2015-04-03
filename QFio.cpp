@@ -174,9 +174,11 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
     if ( num > vals[i][0].toInt() )
       num = vals[i][0].toInt();
   }
-  if ( num > valsEnc[0].toInt() )
-    num = valsEnc[0].toInt();
-
+  if ( Enc2 != NULL ) {
+    if ( num > valsEnc[0].toInt() )
+      num = valsEnc[0].toInt();
+  }
+  
   NewLogMsg( tr( "QXafs data points [%1]." )
              .arg( num ) );
 

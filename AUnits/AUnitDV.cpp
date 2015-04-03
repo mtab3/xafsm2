@@ -120,6 +120,8 @@ bool AUnitDV::QEnd( void )
 
 double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
+  qDebug() << "00 setting time in DV " << dtime;
+
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
   if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
@@ -128,6 +130,8 @@ double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W
     s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
   }
   setTime = dtime;
+
+  qDebug() << "setting time in DV " << dtime << setTime;
 
   return setTime;
 }

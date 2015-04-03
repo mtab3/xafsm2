@@ -716,9 +716,11 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     if ( num > vals[i][0].toInt() )
       num = vals[i][0].toInt();
   }
-  if ( num > valsEnc[0].toInt() )
-    num = valsEnc[0].toInt();
-
+  if ( Enc2 != NULL ) {
+    if ( num > valsEnc[0].toInt() )
+      num = valsEnc[0].toInt();
+  }
+  
   int p = QXafsSP0;
   int d = QXafsInterval;
   int c = MMainTh->getCenter();
@@ -756,7 +758,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 
   for ( int i = 0; i < num; i++ ) {
     if ( Enc2 == NULL ) {
-      deg2 = ( p - c ) * upp + d * i;
+      deg2 = ( p - c + d * i ) * upp;
     } else {
       deg2 = EncValue0.toDouble() + ( valsEnc[i+1].toInt() - Enc2Value0.toInt() ) * upp2;
     }

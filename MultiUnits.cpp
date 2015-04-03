@@ -163,6 +163,7 @@ void MUnits::setDwellTime( void )  // これもホントは返答を待つ形に
   for ( int i = 0; i < PUnits.count(); i++ ) {
     if ( ( rv = PUnits.at(i)->au->SetTime( PUnits.at(i)->dt ) ) != PUnits.at(i)->dt ) {
       // 設定しようとした値と実際に設定された値が違ってたら
+      qDebug() << "setting P time" << PUnits.at(i)->dt << PUnits.at(i)->au->name() << PUnits.at(i)->au->uid() << PUnits.at(i)->au->type();
       QMessageBox *msg1 = new QMessageBox;
       msg1->setModal( false );
       msg1->setText( tr( "Dwell time was set [%1] for [%2],"

@@ -1,5 +1,4 @@
 # XAFS-M setting file : Edited 2013/04/02
-
 # What is New
 # 2013/04/03 add 'ENERGYRANGE' line
 # 2013/04/03 add 'DEFAULTUNIT' line
@@ -49,7 +48,7 @@
 # For example, "Keithley 6485" can not be writtern Keithley 6485.
 #
 
-XAFSName  "XafsM2-bsd2"  # the name used on Stars.  The key-file for kernel should be prepared with this name.
+XAFSName  "XafsM2-bsd"  # the name used on Stars.  The key-file for kernel should be prepared with this name.
 XAFSKey   "XafsM2"       # the name of the key file which is locally read and compared with that the Stars-serper is keeping."
 XAFSTitle "XafsM2-BL5S1"
 
@@ -554,7 +553,8 @@ SENSOR DV2 "S039" "GENERAL" "Agilent34410-1" "a34410a-1" "" "V" NO ""
 SENSOR DV2 "S040" "GENERAL" "Agilent34410-2" "a34410a-2" "" "V" NO ""
 SENSOR DV2 "S041" "GENERAL" "Agilent34410-3" "a34410a-3" "" "V" NO ""
 
-SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# SENSOR ENC2 "S042" "ENCTH2" "Encoder Th2" "EIB741" "" "deg" NO "" 2.441406e-6
 
 # The parameters following the identifier 'SENSOR' are
 #   ENC2      : Unit type   ENC2 is an encorder with memory
@@ -624,6 +624,18 @@ SENSOR EPIC "S061" "GENERAL" "BPM H13" "epicsbridge_caget" "S_BPM_H_13_AVG_MON" 
 SENSOR EPIC "S062" "GENERAL" "BPM V13" "epicsbridge_caget" "S_BPM_V_13_AVG_MON" "mm" NO ""
 
 SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
+
+SENSOR CNT "S070" "GENERAL" "qct08 (I0)"        "qct08-1" "ch0" "count" YES "S070"
+SENSOR CNT "S071" "GENERAL" "qct08 (I1)"        "qct08-1" "ch1" "count" YES "S070"
+SENSOR CNT "S072" "GENERAL" "qct08 (I2)"        "qct08-1" "ch2" "count" YES "S070"
+SENSOR CNT "S073" "GENERAL" "qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S070"
+SENSOR CNT "S074" "GENERAL" "qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S070"
+SENSOR DV  "S075" "GENERAL" "Qct08 (I0)"        "qct08-1" "ch0" "count" YES "S075" 10.0
+SENSOR DV  "S076" "GENERAL" "Qct08 (I1)"        "qct08-1" "ch1" "count" YES "S075" 10.0
+SENSOR DV  "S077" "GENERAL" "Qct08 (I2)"        "qct08-1" "ch2" "count" YES "S075" 10.0
+SENSOR DV  "S078" "GENERAL" "Qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S075" 10.0
+SENSOR DV  "S079" "GENERAL" "Qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S075" 10.0
+
 
 ALARM "S063" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
 

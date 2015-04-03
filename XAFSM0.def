@@ -651,10 +651,19 @@ MSTAB "Aio64" "M021"
 #SENSOR AIOi "S056" "GENERAL" "ALARM Simulator" "Debugger" "AioDebug" "mV" NO ""
 SENSOR AIOi "S056" "GENERAL" "ALARM Simulator" "Debugger" "" "mV" NO ""
 
+SENSOR CNT "S070" "GENERAL" "qct08 (I0)"        "qct08-1" "ch0" "count" YES "S070"
+SENSOR CNT "S071" "GENERAL" "qct08 (I1)"        "qct08-1" "ch1" "count" YES "S070"
+SENSOR CNT "S072" "GENERAL" "qct08 (I2)"        "qct08-1" "ch2" "count" YES "S070"
+SENSOR CNT "S073" "GENERAL" "qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S070"
+SENSOR CNT "S074" "GENERAL" "qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S070"
+SENSOR DV  "S075" "GENERAL" "Qct08 (I0)"        "qct08-1" "ch0" "count" YES "S075" 10.0
+SENSOR DV  "S076" "GENERAL" "Qct08 (I1)"        "qct08-1" "ch1" "count" YES "S075" 10.0
+SENSOR DV  "S077" "GENERAL" "Qct08 (I2)"        "qct08-1" "ch2" "count" YES "S075" 10.0
+SENSOR DV  "S078" "GENERAL" "Qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S075" 10.0
+SENSOR DV  "S079" "GENERAL" "Qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S075" 10.0
+
 ALARM "S056" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
 ALARM "S056" "_EvRangeMax 1" "_EvRangeMaxOff 1" "I1 Range Over"
 ALARM "S056" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
-
-
 
 SENSOR SSD  "S063" "GENERAL"  "SDD(7ch)" "QtTechAPSDD" ""   "count" YES "S063" 7 8192 20.0 KeV2MCApix2.txt 7SDDLowLimits.txt ""
