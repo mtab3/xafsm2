@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 3 19:52:50 2015 +0900\n"\
+                "    debug the QXafs action without ENC2\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 2 13:00:14 2015 +0900\n"\
                 "    made sure it works with QtTechAPSDD but not with real SDD\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sun Mar 8 23:48:08 2015 +0900\n"\
                 "    SSFluos is passed to Data\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Mar 8 19:38:26 2015 +0900\n"\
-                "    checked the usage of UseSFluos and MPSet.isSFluo\n"\
 		"\n"\
                 ""
 #endif

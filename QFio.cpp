@@ -171,12 +171,37 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
     /* q34410a だけならこれでいいけど、他の計測器を使うようになったらダメ */
 
     qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
-    if ( num > vals[i][0].toInt() )
-      num = vals[i][0].toInt();
+    if ( vals[i].count() > 0 ) {
+      if ( num > vals[i][0].toInt() ) {
+	num = vals[i][0].toInt();
+      }
+    } else {
+      num = 0;
+    }
   }
+
   if ( Enc2 != NULL ) {
     if ( num > valsEnc[0].toInt() )
       num = valsEnc[0].toInt();
+  }
+
+  if ( num == 0 ) {
+    qDebug() << "not enough data";
+    return;
+  }
+  if ( vals.count() < Us ) {
+    qDebug() << "data line numbers are less than expected";
+    return;
+  }
+  for ( int i = 0; i < Us; i++ ) {
+    if ( vals[i].count() < num ) {
+      qDebug() << "data numbers are less than expected";
+      return;
+    }
+  }
+  if ( valsEnc.count() < num ) {
+    qDebug() << "encorder data numbers are less than expected";
+    return;
   }
   
   NewLogMsg( tr( "QXafs data points [%1]." )

@@ -5,6 +5,7 @@ void MainWindow::MeasSequence( void )
   double Delta;
   bool a1, a2;
 
+  qDebug() << "In";
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
   if ( NoticingHaveNotMeasDark ) return;
@@ -21,7 +22,9 @@ void MainWindow::MeasSequence( void )
   }
   NowTimeDisp->setText( QDateTime::currentDateTime().toString("yy.MM.dd hh:mm:ss") );
   if ( MPSet.qXafsMode ) {
+    qDebug() << "to QXAFS";
     QXafsMeasSequence();
+    qDebug() << "out QXAFS";
     return;
   }
   

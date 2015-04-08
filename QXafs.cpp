@@ -386,6 +386,7 @@ void MainWindow::QXafsMeasSequence( void )
   int g;
   double t1, t2;
 
+  qDebug() << "in qxafs " << MeasStage;
   switch( MeasStage ) {
   case 0:
     // PM16C のパラメータ決定
@@ -659,6 +660,7 @@ void MainWindow::QXafsMeasSequence( void )
     QXafsFinish();
     break;
   }
+  qDebug() << "out qxafs " << MeasStage;
 }
 
 void MainWindow::QXafsFinish0( void )
@@ -713,13 +715,20 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     dark << mMeasUnits.at(i)->getDark();   //  * QXafsDwellTime;  // 即席
     /* q34410a だけならこれでいいが、他の計測器を使う時はダメ */
 
-    if ( num > vals[i][0].toInt() )
-      num = vals[i][0].toInt();
+    if ( vals[i].count() > 0 ) {
+      if ( num > vals[i][0].toInt() )
+	num = vals[i][0].toInt();
+    } else {
+      num = 0;
+    }
   }
   if ( Enc2 != NULL ) {
     if ( num > valsEnc[0].toInt() )
       num = valsEnc[0].toInt();
   }
+
+  if ( num == 0 )
+    return;
   
   int p = QXafsSP0;
   int d = QXafsInterval;
