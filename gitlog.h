@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 17:22:48 2015 +0900\n"\
+                "    add DV3 for Q-XAFS using qct08\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
                 "    a bug is fixed, which happens when the qGetData returns no datas\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Feb 20 20:38:27 2015 +0900\n"\
                 "    the Special butten made to be deisabled\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 18 19:24:05 2015 +0900\n"\
-                "    MCA map of S2D can not be saved, since the S2Di.valid == false\n"\
 		"\n"\
                 ""
 #endif
