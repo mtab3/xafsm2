@@ -1,3 +1,5 @@
+/* DV/DV2 は DV の方が QXAFS 用で、DV2 が NORMAL 用 */
+/* DV3 */
 
 #include "AUnitDV.h"
 
@@ -93,8 +95,6 @@ void AUnitDV2::AskIsBusy( void )
 }
 #endif
 
-/* DV/DV2 は DV の方が QXAFS 用で、DV2 が NORMAL 用 */
-
 bool AUnitDV::QStart( void )
 {
   busy2On( Dev, "Start" );
@@ -121,19 +121,39 @@ bool AUnitDV::QEnd( void )
 double AUnitDV::SetTime( double dtime ) // in sec // この関数は、複数ステップ化できない
 {
   qDebug() << "00 setting time in DV " << dtime;
+  return _SetTime( dtime );
+}
 
+double AUnitDV::_SetTime( double dtime )
+{
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
   if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
-  if ( Type == "DV2" ) {   // DV の場合、ここでは内部変数 setTime に値を設定するだけ。
-    busy2On( Dev, "SetAperture" );
-    s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
-  }
   setTime = dtime;
 
   qDebug() << "setting time in DV " << dtime << setTime;
 
   return setTime;
+}
+
+double AUnitDV2::_SetTime( double dtime )
+{
+  if ( dtime < 0.0001 ) dtime = 0.0001;
+  if ( dtime > 1.0 ) dtime = 1.0;
+  if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
+
+  busy2On( Dev, "SetAperture" );
+  s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
+  setTime = dtime;
+
+  return setTime;
+}
+
+double AUnitDV3::_SetTime( double dtime )
+{
+  busy2On( Dev, "SetTimerPreset" );
+  s->SendCMD2( Uid, DevCh, "SetTimerPreset", QString( "%1" ).arg( dtime ) );
+  setTime = dtime;
 }
 
 void AUnitDV::SetTriggerDelay( double time )  // 使っていない
@@ -202,4 +222,29 @@ void AUnitDV::RcvQGetData( SMsg msg )
     emit NewQData();
     busy2Off( Dev );
   }
+}
+
+bool AUnitDV3::GetValue0( void )  // 値読み出しコマンドの前に何か必要なタイプの場合
+{
+  bool rv = false;
+
+  switch( LocalStage ) {
+  case 0:
+    busy2On( Dev, "GetValue0c0" );
+    s->SendCMD2( Uid, Dev, "CounterReset" );
+    LocalStage++;
+    rv = true;
+    break;
+  case 1:
+    busy2On( Dev, "GetValue0c1" );
+    IsBusy = true;
+    LastFunc = "GetValue0c1";
+    emit ChangedIsBusy1( Dev );
+    s->SendCMD2( Uid, Dev, "CountStart" );
+    LocalStage++;
+    rv = false;
+    break;
+  }
+
+  return rv;
 }

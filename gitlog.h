@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Apr 8 16:09:30 2015 +0900\n"\
+                "    debugged with qct08\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 3 19:52:50 2015 +0900\n"\
                 "    debug the QXafs action without ENC2\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Mar 9 16:07:20 2015 +0900\n"\
                 "    a bug is fixed that XafsM2 is crashed when 1) I0 is less than a setting value, 2) SFluo is used, since the measurement count MeasP increasing while the measurement is stopped at a point\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sun Mar 8 23:48:08 2015 +0900\n"\
-                "    SSFluos is passed to Data\n"\
 		"\n"\
                 ""
 #endif
