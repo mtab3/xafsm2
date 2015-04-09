@@ -166,16 +166,23 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
-
     dark << mMeasUnits.at(i)->getDark();          //  * QXafsDwellTime;  // 即席
     /* q34410a だけならこれでいいけど、他の計測器を使うようになったらダメ */
 
     qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
-    if ( num > vals[i][0].toInt() )
-      num = vals[i][0].toInt();
+    if ( vals[i].count() > 0 ) {
+      if ( num > vals[i][0].toInt() )
+	num = vals[i][0].toInt();
+    } else {
+      num = 0;
+    }
   }
-  if ( num > valsEnc[0].toInt() )
-    num = valsEnc[0].toInt();
+  if ( Enc2 != NULL ) {
+    if ( num > valsEnc[0].toInt() )
+      num = valsEnc[0].toInt();
+  }
+  if ( num <= 0 )
+    return;
 
   NewLogMsg( tr( "QXafs data points [%1]." )
              .arg( num ) );
@@ -247,11 +254,19 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
     vals << mMeasUnits.at(i)->values();
     dark << mMeasUnits.at(i)->getDark() * QXafsDwellTime;
     qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
-    if ( num > vals[i][0].toInt() )
-      num = vals[i][0].toInt();
+    if ( vals[i].count() > 0 ) {
+      if ( num > vals[i][0].toInt() )
+	num = vals[i][0].toInt();
+    } else {
+      num = 0;
+    }
   }
-  if ( num > valsEnc[0].toInt() )
-    num = valsEnc[0].toInt();
+  if ( Enc2 != NULL ) {
+    if ( num > valsEnc[0].toInt() )
+      num = valsEnc[0].toInt();
+  }
+  if ( num <= 0 )
+    return;
 
   QFile file( DFName );
   if ( !file.open( QIODevice::Append | QIODevice::Text ) ) {

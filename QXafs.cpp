@@ -703,15 +703,21 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
-
     dark << mMeasUnits.at(i)->getDark();   //  * QXafsDwellTime;  // 即席
     /* q34410a だけならこれでいいが、他の計測器を使う時はダメ */
-
-    if ( num > vals[i][0].toInt() )
-      num = vals[i][0].toInt();
+    if ( vals[i].count() > 0 ) {
+      if ( num > vals[i][0].toInt() )
+	num = vals[i][0].toInt();
+    } else {
+      num = 0;
+    }
   }
-  if ( num > valsEnc[0].toInt() )
-    num = valsEnc[0].toInt();
+  if ( Enc2 != NULL ) {
+    if ( num > valsEnc[0].toInt() )
+      num = valsEnc[0].toInt();
+  }
+  if ( num <= 0 )
+    return;
 
   int p = QXafsSP0;
   int d = QXafsInterval;

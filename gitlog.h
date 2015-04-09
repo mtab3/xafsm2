@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Mar 9 16:13:21 2015 +0900\n"\
+                "    a bug which happens when I0 is less than setting value is fixed\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 18:40:12 2015 +0900\n"\
                 "    small but severe bug was fixed in saving Scan data\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 17:56:23 2015 +0900\n"\
                 "    it works anyway\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 18 17:48:41 2015 +0900\n"\
-                "    broken\n"\
 		"\n"\
                 ""
 #endif
