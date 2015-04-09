@@ -30,7 +30,7 @@ class ASensor : public AUnit0
   double getSetTime( void ) { return setTime; };   // actual set time
   void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
   double getDark( void ) { return Dark; };
-
+  
   /* AutoRange 可能なデバイスでは true */
   virtual bool GetRange( void ) { return false; };
   virtual void SetRange( int /* range */ ) {};

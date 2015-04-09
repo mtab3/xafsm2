@@ -26,6 +26,7 @@ void AUnitDV::init00( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsQFinalize( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
+  init000();
 }
 
 void AUnitDV2::init00( void )
@@ -36,14 +37,29 @@ void AUnitDV2::init00( void )
 	   Qt::UniqueConnection );
 }
 
+void AUnitDV3::init000( void )
+{
+  connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
+	   Qt::UniqueConnection );
+}
+
 bool AUnitDV::InitSensor( void )
+{
+  return _InitSensor();
+}
+
+bool AUnitDV::_InitSensor( void )
 {
   busy2On( Dev, "InitSensor-c0" );
   s->SendCMD2( "Scan", DevCh, "Reset", "" );
   return false;
 }
 
-bool AUnitDV2::InitSensor( void )
+bool AUnitDV2::_InitSensor( void )
 {
   bool rv = false;
   
@@ -72,23 +88,18 @@ void AUnitDV2::AskIsBusy( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
-#if 0
-//void AUnitDV::SetIsBusyByMsg( SMsg msg ) // DV, DV2
+void AUnitDV3::SetIsBusyByMsg( SMsg msg )
 {
-  // $BK\Ev$O(B DV $B$O!"%G%P%$%9$K%A%c%s%M%k$OL5$$$N$G!"(BDev $B$G$$$$(B
-  // $B%7%_%e%l!<%7%g%s;~$K(B simmotor $B$N#1$D$N%A%c%s%M%k$K$7$F%7%_%e%l!<%7%g%s$9$k$N$G(B
-  // DevCh $B$r3NG'$7$F$$$k(B
-  if ( ( msg.From() == DevCh )
+  if ( ( msg.From() == Dev )   // Check !!!!! DevCh/Drv
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
     IsBusy = ( msg.Val().toInt() == 1 );
     if ( IsBusy )
       LastFunc = "SetIsBusyByMsg";
     else
       LastFunc = "";
-    emit ChangedIsBusy1( DevCh );
+    emit ChangedIsBusy1( Dev );
   }
 }
-#endif
 
 bool AUnitDV::QStart( void )
 {
@@ -113,7 +124,7 @@ bool AUnitDV::QEnd( void )
   return false;
 }
 
-double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
+double AUnitDV::_SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
@@ -123,7 +134,7 @@ double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W
   return setTime;
 }
 
-double AUnitDV2::SetTime( double dtime )
+double AUnitDV2::_SetTime( double dtime )
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
@@ -136,12 +147,14 @@ double AUnitDV2::SetTime( double dtime )
   return setTime;
 }
 
-double AUnitDV3::SetTime( double dtime )
+double AUnitDV3::_SetTime( double dtime )
 {
-  qDebug() << "Sending setTime dv3";
   busy2On( Dev, "SetTimerPreset" );
-  s->SendCMD2( Uid, DevCh, "SetTimerPreset", QString( "%1" ).arg( dtime * 1e8 ) );
+  long int ltime = dtime * 1e6;
+  s->SendCMD2( Uid, Dev, "SetTimerPreset", QString( "%1" ).arg( ltime ) );
   setTime = dtime;
+
+  return setTime;
 }
 
 void AUnitDV::SetTriggerDelay( double time )  // $B;H$C$F$$$J$$(B
@@ -212,11 +225,11 @@ void AUnitDV::RcvQGetData( SMsg msg )
   }
 }
 
-bool AUnitDV3::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
+bool AUnitDV3::_GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W$N>l9g(B
 {
   bool rv = false;
 
-  qDebug() << "in getValue0 of DV3";
+  qDebug() << "in getValue0 of DV3" << LocalStage;
   
   switch( LocalStage ) {
   case 0:
