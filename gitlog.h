@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
+                "    a bug is fixed, which happens when the qGetData returns no datas\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Mar 9 16:13:21 2015 +0900\n"\
                 "    a bug which happens when I0 is less than setting value is fixed\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 18 19:24:05 2015 +0900\n"\
                 "    MCA map of S2D can not be saved, since the S2Di.valid == false\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 18 17:56:23 2015 +0900\n"\
-                "    it works anyway\n"\
 		"\n"\
                 ""
 #endif
