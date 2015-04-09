@@ -38,17 +38,12 @@ void AUnitDV2::init00( void )
 
 bool AUnitDV::InitSensor( void )
 {
-  return _InitSensor();
-}
-
-bool AUnitDV::_InitSensor( void )
-{
   busy2On( Dev, "InitSensor-c0" );
   s->SendCMD2( "Scan", DevCh, "Reset", "" );
   return false;
 }
 
-bool AUnitDV2::_InitSensor( void )
+bool AUnitDV2::InitSensor( void )
 {
   bool rv = false;
   
@@ -118,13 +113,7 @@ bool AUnitDV::QEnd( void )
   return false;
 }
 
-double AUnitDV::SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
-{
-  qDebug() << "00 setting time in DV " << dtime;
-  return _SetTime( dtime );
-}
-
-double AUnitDV::_SetTime( double dtime )
+double AUnitDV::SetTime( double dtime )
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
@@ -136,7 +125,7 @@ double AUnitDV::_SetTime( double dtime )
   return setTime;
 }
 
-double AUnitDV2::_SetTime( double dtime )
+double AUnitDV2::SetTime( double dtime )
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
   if ( dtime > 1.0 ) dtime = 1.0;
@@ -149,10 +138,11 @@ double AUnitDV2::_SetTime( double dtime )
   return setTime;
 }
 
-double AUnitDV3::_SetTime( double dtime )
+double AUnitDV3::SetTime( double dtime )
 {
+  qDebug() << "Sending setTime dv3";
   busy2On( Dev, "SetTimerPreset" );
-  s->SendCMD2( Uid, DevCh, "SetTimerPreset", QString( "%1" ).arg( dtime ) );
+  s->SendCMD2( Uid, DevCh, "SetTimerPreset", QString( "%1" ).arg( dtime * 1e8 ) );
   setTime = dtime;
 }
 
@@ -228,6 +218,8 @@ bool AUnitDV3::GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%W
 {
   bool rv = false;
 
+  qDebug() << "in getValue0 of DV3";
+  
   switch( LocalStage ) {
   case 0:
     busy2On( Dev, "GetValue0c0" );

@@ -17,11 +17,9 @@ class AUnitDV : public ASensor
   AUnitDV( void );
   void init0( void );
   virtual void init00( void );
-  bool InitSensor( void );
-  virtual bool _InitSensor( void );
+  virtual bool InitSensor( void );
   
-  double SetTime( double dtime );
-  virtual double _SetTime( double dtime );
+  virtual double SetTime( double dtime );
 
   bool hasMaxIntTime( void ) { return HasMaxIntTime; };
   double maxIntTime( void ) { return MaxIntTime; };
@@ -53,8 +51,8 @@ class AUnitDV2 : public AUnitDV
  public:
   AUnitDV2( void ) {};
   void init00( void );
-  bool _InitSensor( void );
-  double _SetTime( double dtime );
+  bool InitSensor( void );
+  double SetTime( double dtime );
 
   void AskIsBusy( void );
 };
@@ -67,7 +65,7 @@ class AUnitDV3 : public AUnitDV
   AUnitDV3( void ) {};
 
   bool GetValue0( void );
-  double _SetTime( double dtime );
+  double SetTime( double dtime );
 };
 
 #endif

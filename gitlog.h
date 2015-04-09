@@ -5,6 +5,18 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 17:41:35 2015 +0900\n"\
+                "    checking if the new AUnitDV3 works, but not\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 17:22:48 2015 +0900\n"\
+                "    add DV3 for Q-XAFS using qct08\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
+                "    a bug is fixed, which happens when the qGetData returns no datas\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Apr 8 16:09:30 2015 +0900\n"\
                 "    debugged with qct08\n"\
 		"\n"\
@@ -31,18 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Mar 11 13:46:08 2015 +0900\n"\
                 "    all of the connections between MCAView and SetUpSFluo are reconnected corretly\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Mar 10 18:39:08 2015 +0900\n"\
-                "    read MCA is working\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Mar 9 17:06:10 2015 +0900\n"\
-                "    Start to working on Read/Show MCA data again.  In the next step, check 'AskToGetNewView'\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Mar 9 16:07:20 2015 +0900\n"\
-                "    a bug is fixed that XafsM2 is crashed when 1) I0 is less than a setting value, 2) SFluo is used, since the measurement count MeasP increasing while the measurement is stopped at a point\n"\
 		"\n"\
                 ""
 #endif
