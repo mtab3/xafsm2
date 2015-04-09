@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 18:54:04 2015 +0900\n"\
+                "    working\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 18:49:17 2015 +0900\n"\
+                "    new DV3\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 17:41:35 2015 +0900\n"\
                 "    checking if the new AUnitDV3 works, but not\n"\
 		"\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Sat Mar 14 23:54:03 2015 +0900\n"\
                 "    debugging\n"\
-		"\n"\
-                "Author      : Masao Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Sat Mar 14 14:17:49 2015 +0900\n"\
-                "    small change\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Mar 11 13:46:08 2015 +0900\n"\
-                "    all of the connections between MCAView and SetUpSFluo are reconnected corretly\n"\
 		"\n"\
                 ""
 #endif

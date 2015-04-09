@@ -103,7 +103,7 @@ QXAFSMODE 1 1000 3000 100 1.0
 # Detectors which can be used for Q-Xafs : QXAFSOK
 # Detectors which can be used for Normal Xafs : NORMALOK
 #
-QXAFSOK DV ENC2
+QXAFSOK DV ENC2 DV3
 NORMALOK CNT PAM SSD SSDP CNT2 OTC OTC2 DV2 ENC CCG FP23 LSR EPIC
 CONTOK SSD CNT
 
@@ -623,7 +623,6 @@ SENSOR EPIC "S060" "GENERAL" "BPM V12" "epicsbridge_caget" "S_BPM_V_12_AVG_MON" 
 SENSOR EPIC "S061" "GENERAL" "BPM H13" "epicsbridge_caget" "S_BPM_H_13_AVG_MON" "mm" NO ""
 SENSOR EPIC "S062" "GENERAL" "BPM V13" "epicsbridge_caget" "S_BPM_V_13_AVG_MON" "mm" NO ""
 
-SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
 
 SENSOR CNT "S070" "GENERAL" "qct08 (I0)"        "qct08-1" "ch0" "count" YES "S070"
 SENSOR CNT "S071" "GENERAL" "qct08 (I1)"        "qct08-1" "ch1" "count" YES "S070"
@@ -636,9 +635,9 @@ SENSOR DV  "S077" "GENERAL" "Qct08 (I2)"        "qct08-1" "ch2" "count" YES "S07
 SENSOR DV  "S078" "GENERAL" "Qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S075" 10.0
 SENSOR DV  "S079" "GENERAL" "Qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S075" 10.0
 
+SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
 
 ALARM "S063" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
-
 ALARM "S046" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
 ALARM "S047" "_EvRangeMax 1" "_EvRangeMaxOff 1" "I1 Range Over"
 ALARM "S048" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"

@@ -209,6 +209,7 @@ bool MUnits::getValue0( void )
 {
   bool ff = false;
 
+  qDebug() << "mUnits getValue0 " << PUnits.count();
   for ( int i = 0; i < PUnits.count(); i++ ) {
     ff |= PUnits.at(i)->au->GetValue0();
   }

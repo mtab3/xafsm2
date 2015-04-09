@@ -136,7 +136,7 @@ void MainWindow::ReadDef( QString fname )
 	    MainTab->insertTab( 1 + SFluos.count(), newSSFluo,
 				tr( "SetUp %1" ).arg( ((AUnitSFluo*)NewUnit)->name() ) );
           } else if ( type == "LSR" ) {
-          } else if ( type == "DV" ) {
+          } else if (( type == "DV" )||( type == "DV3" )) {
             next = nextItem( next, item );
             ((AUnitDV*)NewUnit)->setMaxIntTime( item.toDouble() );
           } else if ( type == "DV2" ) {
@@ -421,6 +421,8 @@ AUnit0 *MainWindow::NewNewUnit( QString type )
     rv = (AUnit0*)new AUnitDV;
   if ( type == "DV2" )
     rv = (AUnit0*)new AUnitDV2;
+  if ( type == "DV3" )
+    rv = (AUnit0*)new AUnitDV3;
   if ( type == "ENC2" )
     rv = (AUnit0*)new AUnitENC2;
   if ( type == "PAM2" )
