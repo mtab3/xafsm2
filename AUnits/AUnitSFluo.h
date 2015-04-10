@@ -81,7 +81,7 @@ class AUnitSFluo : public ASensor
   bool GetRealTime( int ch );
   bool GetLiveTime( int ch );
 
-  void setDark( void );
+  void SetDark( double val, double dtime );
   
   QVector<quint64> getCountsInROI( void ) { return CountsInROI; };
   QVector<quint64> getCountsAll( void ) { return CountsAll; };

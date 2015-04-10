@@ -7,6 +7,7 @@ AUnitEPIC::AUnitEPIC( void )
 
 void AUnitEPIC::init0( void )
 {
+  setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
   s->SendCMD2( "Init", DevCh, "IsBusy" );
 }
 

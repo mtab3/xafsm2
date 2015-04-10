@@ -138,7 +138,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
       monLines[j]->addItem( ASensors.value(i)->name() );
     }
     SelectD3->addItem( ASensors.value(i)->name() );
-    connect( ASensors.value(i), SIGNAL( newDark( double ) ),
+    connect( ASensors.value(i), SIGNAL( NewDark( double ) ),
 	     this, SLOT( ShowNewDark( double ) ),
 	     Qt::UniqueConnection );
     if ( ASensors.at(i)->isRangeSelectable() ) {
@@ -175,7 +175,7 @@ void MainWindow::setupSetupArea( void )   /* 設定エリア */
 	   Qt::UniqueConnection );
 
   InputDark
-    ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->getDark() ) );
+    ->setText( QString::number( ASensors.at( SelectD3->currentIndex() )->GetDark( 1.0 ) ) );
   connect( SelectD3, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( NewDarkChSelected( int ) ),
 	   Qt::UniqueConnection );

@@ -454,7 +454,7 @@ void MainWindow::InitAndIdentifySensors( void )
 	connect( as->theParent(), SIGNAL( NewValue( QString ) ),
 		 as, SLOT( getNewValue( QString ) ),
 		 Qt::UniqueConnection );
-	connect( as->theParent(), SIGNAL( newDark( double ) ),
+	connect( as->theParent(), SIGNAL( NewDark( double ) ),
 		 as, SLOT( getNewDark( double ) ),
 		 Qt::UniqueConnection );
       }

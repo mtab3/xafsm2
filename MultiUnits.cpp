@@ -264,7 +264,7 @@ void MUnits::readValue( double *rvs, double *cps, bool correctBack )
     as = Units.at(i)->au;
     rvs[i] = as->value().toDouble();
     if ( correctBack )
-      rvs[i] -= as->getDark() * as->getSetTime();
-    cps[i] = rvs[i] / as->getSetTime();
+      rvs[i] -= as->GetDark( as->getSetTime() );
+    cps[i] = as->convert2perTime( rvs[i], as->getSetTime() );
   }
 }

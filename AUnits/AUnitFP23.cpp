@@ -7,6 +7,7 @@ AUnitFP23::AUnitFP23( void )
 
 void AUnitFP23::init0( void )
 {
+  setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
   s->SendCMD2( "Init", Dev, "flgon", Ch );
   s->SendCMD2( "Init", "System", "flgon", Dev );
 

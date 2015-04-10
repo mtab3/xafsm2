@@ -435,7 +435,7 @@ void AUnitSFluo::SetLowLimit( int ch, int llpix )
   }
 }
 
-void AUnitSFluo::setDark( void )
+void AUnitXMAP::SetDark( double /* val */, double /* time */ )
 {
   Dark = Value.toDouble() / ( ( setTime != 0 ) ? setTime : 1 );
   DarkCountsInROI.clear();
@@ -448,9 +448,8 @@ void AUnitSFluo::setDark( void )
   }
   DarkICRs = ICRs;
   setDarkTime = setTime;
-  emit newDark( Dark );
+  emit NewDark( Dark );
 }
-
 
 quint32 AUnitSFluo::getAMCAdata( int ch, int pixel )
 {

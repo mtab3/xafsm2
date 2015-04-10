@@ -166,10 +166,13 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
-    dark << mMeasUnits.at(i)->getDark();          //  * QXafsDwellTime;  // 即席
+    dark << mMeasUnits.at(i)->GetDark( QXafsDwellTime );
     /* q34410a だけならこれでいいけど、他の計測器を使うようになったらダメ */
+    // setDark( val ), getDark( void ) をやめて
+    // SetDark( val, time ), GetDark( time ) として、
+    // AUnit 側で、測定値と測定時間から「Dark」を計算し(SetDark)、
+    // 別の時間測定した時の期待「Dark」もAUnit側で計算する(GetDark)様にした。
 
-    qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
     if ( vals[i].count() > 0 ) {
       if ( num > vals[i][0].toInt() ) {
 	num = vals[i][0].toInt();
@@ -271,8 +274,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
-    dark << mMeasUnits.at(i)->getDark() * QXafsDwellTime;
-    qDebug() << "dark " << mMeasUnits.at(i)->getDark() << QXafsDwellTime;
+    dark << mMeasUnits.at(i)->GetDark( QXafsDwellTime );
     if ( vals[i].count() > 0 ) {
       if ( num > vals[i][0].toInt() )
 	num = vals[i][0].toInt();

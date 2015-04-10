@@ -3,6 +3,7 @@
 
 void AUnitPAM::init0( void )
 {
+  setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
   connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsSetAutoRange( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),

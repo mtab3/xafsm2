@@ -150,18 +150,20 @@ void MainWindow::MeasDarkSequence( void )
     for ( int i = 0; i < dUnits.count(); i++ ) {
       setTime = dUnits.at(i)->getSetTime();
       if ( setTime > 0 ) {
-	dUnits.at(i)->setDark( MeasVals[i] / setTime );
+	dUnits.at(i)->SetDark( MeasVals[i], setTime );
       } else {
 	statusbar
 	  ->showMessage( tr( "Invalid dwell time [%1] was set for [%2]."
 			     "However, the background was set "
 			     "as if the time was set at 1sec." )
 			 .arg( setTime ).arg( dUnits.at(i)->name() ), 2000 );
-	dUnits.at(i)->setDark( MeasVals[i] );
+	dUnits.at(i)->SetDark( MeasVals[i], 1.0 );
       }
       for ( int j = 0; j < SFluos.count(); j++ ) {
 	if ( dUnits.at(i) == SFluos[j] ) {
-	  SFluos[j]->setDark();      // 19ch 分のダークを内部空間に保存
+	  SFluos[j]->SetDark( 1.0, 1.0 );
+	  // 19ch 分のダークを内部空間に保存
+	  // SFluo の SetDark のパラメータはダミー
 	}
       }
     }
@@ -199,10 +201,10 @@ void MainWindow::ShowNewDark( double dark )
 void MainWindow::NewDarkChSelected( int i )
 {
   InputDark
-    ->setText( QString::number( ASensors.at( i )->getDark() ) );
+    ->setText( QString::number( ASensors.at( i )->GetDark( 1.0 ) ) );
 }
 
 void MainWindow::AskedToSetDark( void )
 {
-  ASensors.at( SelectD3->currentIndex() )->setDark( InputDark->text().toDouble() );
+  ASensors.at( SelectD3->currentIndex() )->SetDark( InputDark->text().toDouble(), 1.0 );
 }

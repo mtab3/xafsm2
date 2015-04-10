@@ -183,7 +183,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
     out << "    Offset         0         0";
     for ( int i = 0; i < MeasChNo; i++ ) {
-      out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
+      out << QString( "%1" ).arg( mMeasUnits.at(i)->GetDark( 1.0 ), 10, 'f', 3 );
       // For QXAFS with DMM in microV?
     }
     out << endl;
@@ -194,7 +194,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
     if ( MPSet.isUsingSFluo() ) {
       //      darks = SFluo->getDarkCountsInROI();
       //      WriteFLUOHeadSection( out, darks, mMeasUnits.at(0)->getDark() );
-      WriteFLUOHeadSection( out, mMeasUnits.at(0)->getDark() );
+      WriteFLUOHeadSection( out, mMeasUnits.at(0)->GetDark( 1.0 ) );
       break;
     } else {
     // 基本的には Lytle 検出器を想定している
@@ -214,7 +214,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
       out << "    Offset         0         0";
       for ( int i = 0; i < MeasChNo; i++ ) {
-        out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
+        out << QString( "%1" ).arg( mMeasUnits.at(i)->GetDark( 1.0 ), 10, 'f', 3 );
       }
       out << endl;
       break;
@@ -324,7 +324,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	  }
 	}
 	// I0
-	out << QString( "%1" ).arg( SI0->getDark(), 10, 'f', 3 );
+	out << QString( "%1" ).arg( SI0->GetDark( 1.0 ), 10, 'f', 3 );
 	// 19ch ICR
 	//	darks = SFluo->getDarkICRs();
 	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
@@ -339,7 +339,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	// Others
 	for ( int i = 0; i < Munits; i++ ) {
 	  if ( ( ! isASFluoUnit( mMeasUnits.at(i) ) ) && ( mMeasUnits.at(i) != SI0 ) ) {
-	    out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
+	    out << QString( "%1" ).arg( mMeasUnits.at(i)->GetDark( 1.0 ), 10, 'f', 3 );
 	  }
 	}
 	out << endl;
@@ -403,7 +403,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 	out << QString( "    Offset         0         0" );
 	for ( int i = 0; i < Munits; i++ ) {
 	  if ( ! isASFluoUnit( mMeasUnits.at(i) ) ) {
-	    out << QString( "%1" ).arg( mMeasUnits.at(i)->getDark(), 10, 'f', 3 );
+	    out << QString( "%1" ).arg( mMeasUnits.at(i)->GetDark( 1.0 ), 10, 'f', 3 );
 	  } else {
 	    QVector<double> darks;
 	    darks = SFluos[sfluop]->getDarkCountsInROI();
@@ -752,7 +752,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( ( ! isASFluoUnit( mMeasUnits.at(i) ) )&& ( mMeasUnits.at(i) != SI0 ) ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->getSetTime();
+	    - mMeasUnits.at(i)->GetDark( mMeasUnits.at(i)->getSetTime() );
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -767,7 +767,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( ! isASFluoUnit( mMeasUnits.at(i) ) ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-              - mMeasUnits.at(i)->getDark() * mMeasUnits.at(i)->getSetTime();
+	    - mMeasUnits.at(i)->GetDark( mMeasUnits.at(i)->getSetTime() );
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {

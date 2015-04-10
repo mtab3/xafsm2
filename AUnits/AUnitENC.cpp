@@ -11,6 +11,7 @@ AUnitENC2::AUnitENC2( void )
 
 void AUnitENC::init0( void  )
 {
+  setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
   init00();
 }
 
