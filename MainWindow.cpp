@@ -457,7 +457,7 @@ void MainWindow::InitAndIdentifySensors( void )
 	connect( SFluo, SIGNAL( NewValue( QString ) ),
 		 as, SLOT( getNewValue( QString ) ),
 		 Qt::UniqueConnection );
-	connect( SFluo, SIGNAL( newDark( double ) ), as, SLOT( getNewDark( double ) ),
+	connect( SFluo, SIGNAL( NewDark( double ) ), as, SLOT( getNewDark( double ) ),
 		 Qt::UniqueConnection );
       }
     }

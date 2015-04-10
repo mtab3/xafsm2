@@ -577,7 +577,7 @@ void MainWindow::ShowMB( void )
   for ( int i = 0; i < ASensors.count(); i++ ) {
     item = new QTableWidgetItem ( ASensors.at( i )->name() );
     darkTable->setItem( i, 0, item );
-    item = new QTableWidgetItem ( QString::number( ASensors.at( i )->getDark() ) );
+    item = new QTableWidgetItem ( QString::number( ASensors.at( i )->GetDark( 1.0 ) ) );
     item->setTextAlignment( Qt::AlignRight | Qt::AlignVCenter );
     darkTable->setItem( i, 1, item );
   }
@@ -2049,7 +2049,7 @@ void MainWindow::AfterSaveXafs()
 	  }
 	  // SCALE, Angle, Mode, Offset の 4行作成/書き出し
 	  QVector<double> darks = SFluo->getDarkCountsInROI();
-	  WriteFLUOHeadSection( out, darks, mMeasUnits.at(0)->getDark() );
+	  WriteFLUOHeadSection( out, darks, mMeasUnits.at(0)->GetDark( 1.0 ) );
 	  
 	  for ( int i = 0; i < MPSet.totalPoints; i++ ) {
 	    aline = in.readLine();

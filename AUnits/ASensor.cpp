@@ -3,6 +3,8 @@
 
 ASensor::ASensor( void )
 {
+  measIntegral = true;  // 計測時間に比例して値が大きくなるタイプの
+                        // 計測器(カウンタ、SSD)がデフォルト
   setTime = 1;       // Actually set time;
   setDarkTime = 1;   // Actually set time;
   Dark = 0;          // back ground value normalized for 1 sec

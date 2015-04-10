@@ -7,6 +7,7 @@ AUnitLSR::AUnitLSR( void )
 
 void AUnitLSR::init0( void )
 {
+  setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
   connect( s, SIGNAL(EvReportCurrent( SMsg )), this, SLOT(OnReportCurrent( SMsg )),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL(EvReportInjection( SMsg )), this, SLOT(OnReportInjection( SMsg )),

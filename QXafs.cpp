@@ -703,8 +703,9 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
-    dark << mMeasUnits.at(i)->getDark();   //  * QXafsDwellTime;  // 即席
+    dark << mMeasUnits.at(i)->GetDark( QXafsDwellTime );
     /* q34410a だけならこれでいいが、他の計測器を使う時はダメ */
+    // 現在は OK (なぜ大丈夫かは QFio の同一箇所を参照)
     if ( vals[i].count() > 0 ) {
       if ( num > vals[i][0].toInt() )
 	num = vals[i][0].toInt();

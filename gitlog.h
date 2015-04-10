@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 20:17:17 2015 +0900\n"\
+                "    Dark measurement is ok for Qct08\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 18:49:17 2015 +0900\n"\
                 "    new DV3\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 24 21:01:09 2015 +0900\n"\
                 "    debugged on FP23, LSR, and CCG\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 20:51:36 2015 +0900\n"\
-                "    new XAFSM.def.BL5S1\n"\
 		"\n"\
                 ""
 #endif

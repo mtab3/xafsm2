@@ -408,7 +408,7 @@ void AUnitXMAP::SetLowLimit( int ch, int llpix )
   }
 }
 
-void AUnitXMAP::setDark( void )
+void AUnitXMAP::SetDark( double /* val */, double /* time */ )
 {
   Dark = Value.toDouble() / ( ( setTime != 0 ) ? setTime : 1 );
   DarkCountsInROI.clear();
@@ -421,7 +421,7 @@ void AUnitXMAP::setDark( void )
   }
   DarkICRs = ICRs;
   setDarkTime = setTime;
-  emit newDark( Dark );
+  emit NewDark( Dark );
 }
 
 

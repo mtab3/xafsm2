@@ -9,6 +9,7 @@ class ASensor : public AUnit0
   Q_OBJECT
 
  protected:
+  bool measIntegral;
   double setTime;       // Actually set time;
   double setDarkTime;   // Actually set time;
   double Dark;                 // back ground value normalized for 1 sec
@@ -28,8 +29,36 @@ class ASensor : public AUnit0
   virtual bool InitSensor( void ) { return true; };
   virtual double SetTime( double dtime ) { return dtime; };   // in sec
   double getSetTime( void ) { return setTime; };   // actual set time
-  void setDark( double dark ) { Dark = dark; emit newDark( Dark ); };
-  double getDark( void ) { return Dark; };
+
+  // 測定値の大きさが計測時間に比例するかしないか。true ならする
+  void setMeasIntegral( bool f ) { measIntegral = f; };
+  /* この virtual 3つは結構重要 !!!! */
+  // カウンタやSSDの様に、積分形の計測器で、計測時間が延びると
+  // 測定値が計測時間に比例して大きくなるタイプの計測器は、
+  // ここで書かれた Default の定義で OK
+  virtual void SetDark( double dark, double dtime )
+  { if ( measIntegral )
+      { Dark = dark / dtime; }
+    else
+      { Dark = dark; }
+    emit NewDark( Dark );
+  };
+  virtual double GetDark( double dtime )
+  { return ( measIntegral ) ? Dark * dtime : Dark; };
+  virtual double convert2perTime( double val, double time )
+  { return ( measIntegral ) ? val / time : val; };
+  // 電圧計や電流計の様に、計測時間が長くなっても
+  // 測定結果の信頼性は上がるが、値そのものは計測時間に直接依存しないタイプの
+  // 計測器は再定義の必要あり
+  // その際は
+#if 0     // Never turn on here !
+  void SetDark( double dark, double /* dtime */ ) { Dark = dark; emit NewDark( Dark ); };
+  double GetDark( double /* dtime */ ) { return Dark; };
+  double convert2perTime( double val, double /* time */ ) { return val; };
+#endif
+  // になるはず
+  // もしくは、そのタイプのユニットの初期化の中で setMeasIntegral( false );
+  // すれば良い
   
   /* AutoRange 可能なデバイスでは true */
   virtual bool GetRange( void ) { return false; };
@@ -55,7 +84,7 @@ class ASensor : public AUnit0
   virtual bool Close( void ) { return false; };
 
  signals:
-  void newDark( double dark );
+  void NewDark( double dark );
   void AskedNowRange( int r );
 };
 
