@@ -30,7 +30,7 @@ class ASensor : public AUnit0
   virtual double SetTime( double dtime ) { return dtime; };   // in sec
   double getSetTime( void ) { return setTime; };   // actual set time
 
-  virtural bool isSFluo( void ) { return false; };
+  virtual bool isSFluo( void ) { return false; };
 
   // 測定値の大きさが計測時間に比例するかしないか。true ならする
   void setMeasIntegral( bool f ) { measIntegral = f; };

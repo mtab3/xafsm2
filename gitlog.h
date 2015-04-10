@@ -4,6 +4,14 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 10 13:12:29 2015 +0900\n"\
+                "    merging master to solve the Dark problem\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 10 12:54:04 2015 +0900\n"\
+                "    the Dark proble is solved\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 20:24:11 2015 +0900\n"\
                 "    merged with master to use DV3\n"\
@@ -35,14 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Apr 8 16:09:30 2015 +0900\n"\
                 "    debugged with qct08\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Apr 3 19:52:50 2015 +0900\n"\
-                "    debug the QXafs action without ENC2\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 2 13:00:14 2015 +0900\n"\
-                "    made sure it works with QtTechAPSDD but not with real SDD\n"\
 		"\n"\
                 ""
 #endif

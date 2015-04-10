@@ -435,7 +435,7 @@ void AUnitSFluo::SetLowLimit( int ch, int llpix )
   }
 }
 
-void AUnitXMAP::SetDark( double /* val */, double /* time */ )
+void AUnitSFluo::SetDark( double /* val */, double /* time */ )
 {
   Dark = Value.toDouble() / ( ( setTime != 0 ) ? setTime : 1 );
   DarkCountsInROI.clear();
@@ -531,13 +531,13 @@ void AUnitSFluo::SetIsBusyByMsg( SMsg msg )
 
 void AUnitSFluo::receiveMCAs( void )
 {
-  uint bytes0, bytes;
+  quint32 bytes0, bytes;
 
   qDebug() << "McaLength" << mcaLength << AChBufSize << AllChBufSize;
   
   bytes0 = dLink->bytesAvailable();
   // 今届いた分を全部読んでもバッファサイズより小さいなら
-  if ( dLinkCount + bytes0 <= /* XMAPBUFSIZE */ AllChBufSize )
+  if ( dLinkCount + bytes0 <= /* XMAPBUFSIZE */ (quint32)AllChBufSize )
     bytes = bytes0;                    // 全部読む
   else
     bytes = /* XMAPBUFSIZE */ AllChBufSize - dLinkCount;   // 大きいなら、読める分だけ読む
