@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 10 13:35:44 2015 +0900\n"\
+                "    it can be compiled after fixing the Dark problem\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 10 13:12:29 2015 +0900\n"\
                 "    merging master to solve the Dark problem\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
                 "    a bug is fixed, which happens when the qGetData returns no datas\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Apr 8 16:09:30 2015 +0900\n"\
-                "    debugged with qct08\n"\
 		"\n"\
                 ""
 #endif
