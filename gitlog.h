@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Apr 15 18:03:23 2015 +0900\n"\
+                "    small change\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 10 13:35:44 2015 +0900\n"\
                 "    it can be compiled after fixing the Dark problem\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 17:22:48 2015 +0900\n"\
                 "    add DV3 for Q-XAFS using qct08\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
-                "    a bug is fixed, which happens when the qGetData returns no datas\n"\
 		"\n"\
                 ""
 #endif

@@ -10,7 +10,7 @@ class AUnitCCG : public ASensor
 
  public:
   AUnitCCG( void );
-  bool GetValue( void );
+  //  bool GetValue( void );
 
   void init0( void );
 
