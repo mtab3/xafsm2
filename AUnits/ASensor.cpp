@@ -14,6 +14,8 @@ ASensor::ASensor( void )
   RangeU = 0;           // Upper range limit
   RangeL = 0;           // Lower range limit
   SelectedRange = 0;
+  HasMaxIntTime = false; // 設定されていない
+  MaxIntTime = 100000.;  // 十分大きい
 }
 
 void ASensor::init( void )

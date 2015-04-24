@@ -6,8 +6,8 @@
 AUnitDV::AUnitDV( void )
 {
   points = 0;
-  HasMaxIntTime = false;
-  MaxIntTime = 1000000;   // 十分大きい
+  //  HasMaxIntTime = false;
+  //  MaxIntTime = 1000000;   // 十分大きい
 }
 
 void AUnitDV::init0( void )

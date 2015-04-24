@@ -10,8 +10,8 @@ class AUnitDV : public ASensor
 
  protected:
   int points;           // Measured Data Points : 34410
-  bool HasMaxIntTime;
-  double MaxIntTime;    // Maximum integration time
+  //  bool HasMaxIntTime;
+  //  double MaxIntTime;    // Maximum integration time
   
  public:
   AUnitDV( void );
@@ -26,10 +26,11 @@ class AUnitDV : public ASensor
   bool GetValue0( void ) { return _GetValue0(); };
   virtual bool _GetValue0( void ) { return false; };
 
+  int Points( void ) { return points; };
+
   bool hasMaxIntTime( void ) { return HasMaxIntTime; };
   double maxIntTime( void ) { return MaxIntTime; };
   void setMaxIntTime( double t ) { MaxIntTime = t; HasMaxIntTime = true; };
-  int Points( void ) { return points; };
   
   bool QStart( void );
   bool QRead( void );

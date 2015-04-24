@@ -522,9 +522,9 @@ SENSOR LSR "S035" "LS" "Ring Current Monitor" "LS" "Ring" "mA" NO ""
 #
 #    the last parameter 0.06 set maximum integration time
 #
-SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO "" 0.999
-SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO "" 0.999
-SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO "" 0.999
+SENSOR DV "S036" "QXAFS-I0" "QXAFS A34410-1" "q34410a-1" "" "V" NO "" 0.13
+SENSOR DV "S037" "QXAFS-I1" "QXAFS A34410-2" "q34410a-2" "" "V" NO "" 0.13
+SENSOR DV "S038" "QXAFS-I2" "QXAFS A34410-3" "q34410a-3" "" "V" NO "" 0.13
 
 #
 # the DV2 is Agilent34410 for normal measurement
@@ -607,11 +607,11 @@ SENSOR CNT "S071" "GENERAL" "qct08 (I1)"        "qct08-1" "ch1" "count" YES "S07
 SENSOR CNT "S072" "GENERAL" "qct08 (I2)"        "qct08-1" "ch2" "count" YES "S070"
 SENSOR CNT "S073" "GENERAL" "qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S070"
 SENSOR CNT "S074" "GENERAL" "qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S070"
-SENSOR DV3 "S075" "GENERAL" "Qct08 (I0)"        "qct08-1" "ch0" "count" YES "S075" 10.0
-SENSOR DV3 "S076" "GENERAL" "Qct08 (I1)"        "qct08-1" "ch1" "count" YES "S075" 10.0
-SENSOR DV3 "S077" "GENERAL" "Qct08 (I2)"        "qct08-1" "ch2" "count" YES "S075" 10.0
-SENSOR DV3 "S078" "GENERAL" "Qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S075" 10.0
-SENSOR DV3 "S079" "GENERAL" "Qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S075" 10.0
+SENSOR DV3 "S075" "GENERAL" "Qct08 (I0)"        "qct08-1" "ch0" "count" YES "S075" 100.0
+SENSOR DV3 "S076" "GENERAL" "Qct08 (I1)"        "qct08-1" "ch1" "count" YES "S075" 100.0
+SENSOR DV3 "S077" "GENERAL" "Qct08 (I2)"        "qct08-1" "ch2" "count" YES "S075" 100.0
+SENSOR DV3 "S078" "GENERAL" "Qct08 100MHz (I0)" "qct08-1" "ch6" "count" YES "S075" 100.0
+SENSOR DV3 "S079" "GENERAL" "Qct08 100MHz (I1)" "qct08-1" "ch7" "count" YES "S075" 100.0
 
 ALARM "S046" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
 ALARM "S047" "_EvRangeMax 1" "_EvRangeMaxOff 1" "I1 Range Over"

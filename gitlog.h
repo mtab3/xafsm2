@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 10 12:54:04 2015 +0900\n"\
+                "    the Dark proble is solved\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 20:17:17 2015 +0900\n"\
                 "    Dark measurement is ok for Qct08\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Feb 24 21:01:24 2015 +0900\n"\
                 "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 21:01:09 2015 +0900\n"\
-                "    debugged on FP23, LSR, and CCG\n"\
 		"\n"\
                 ""
 #endif
