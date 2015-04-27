@@ -11,7 +11,7 @@ class AUnitFP23 : public ASensor
  public:
   AUnitFP23( void );
   void init0( void );
-  bool GetValue( void );
+//  bool GetValue( void );
 
  private slots:
    void OnReportValue( SMsg msg );

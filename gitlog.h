@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Apr 27 18:29:50 2015 +0900\n"\
+                "    working on DV\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 24 14:38:18 2015 +0900\n"\
                 "    max limit of dwell time for QXAFS can be set for each devices in XAFSM.def\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 25 11:54:36 2015 +0900\n"\
                 "    new MCAMap is imported from newXAMP branch\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 25 11:40:23 2015 +0900\n"\
-                "    trouble in S2D map read (not solved)\n"\
 		"\n"\
                 ""
 #endif
