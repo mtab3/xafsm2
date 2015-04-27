@@ -29,7 +29,7 @@ class ASensor : public AUnit0
   void init( void );
   virtual void init0( void ) {};
 
-  virtual bool InitSensor( void ) { return true; };
+  virtual bool InitSensor( void ) { return false; };
   virtual double SetTime( double dtime ) { return dtime; };   // in sec
   double getSetTime( void ) { return setTime; };   // actual set time
   virtual bool isSFluo( void ) { return false; };

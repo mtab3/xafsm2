@@ -26,9 +26,11 @@ void AUnitFP23::OnReportValue( SMsg msg )
   }
 }
 
+#if 0
 // FP23 は、積極的に値を聞きに行くことは無い。
 // Eventで垂れ流されている値を溜めておいて value() に対して返答するだけ
 bool AUnitFP23::GetValue( void )
 {
   return false;
 }
+#endif

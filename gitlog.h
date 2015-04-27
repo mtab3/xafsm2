@@ -5,12 +5,24 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 24 14:42:40 2015 +0900\n"\
+                "    merged with origin/newMwSSD2\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 24 14:41:47 2015 +0900\n"\
+                "    merged with master\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 24 14:38:18 2015 +0900\n"\
+                "    max limit of dwell time for QXAFS can be set for each devices in XAFSM.def\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Apr 15 18:03:23 2015 +0900\n"\
                 "    small change\n"\
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Apr 10 13:35:44 2015 +0900\n"\
-                "    it can be compiled after fixing the Dark problem\n"\
+                "Date        : Wed Apr 15 14:32:30 2015 +0900\n"\
+                "    remove a qDebug line in mUnits\n"\
 		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 10 13:35:44 2015 +0900\n"\
@@ -32,28 +44,5 @@
                 "Date        : Thu Apr 9 20:17:17 2015 +0900\n"\
                 "    Dark measurement is ok for Qct08\n"\
 		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 18:54:04 2015 +0900\n"\
-                "    working\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 18:49:17 2015 +0900\n"\
-                "    new DV3\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 17:41:35 2015 +0900\n"\
-                "    checking if the new AUnitDV3 works, but not\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 17:22:48 2015 +0900\n"\
-                "    add DV3 for Q-XAFS using qct08\n"\
-		"\n"\
-<<<<<<< HEAD
-=======
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
-                "    a bug is fixed, which happens when the qGetData returns no datas\n"\
-		"\n"\
->>>>>>> d6c53120ce772577cca79969b6e9152e76f4fa4c
                 ""
 #endif
