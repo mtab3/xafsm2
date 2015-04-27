@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 24 14:38:18 2015 +0900\n"\
+                "    max limit of dwell time for QXAFS can be set for each devices in XAFSM.def\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 10 12:54:04 2015 +0900\n"\
                 "    the Dark proble is solved\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Feb 25 11:40:23 2015 +0900\n"\
                 "    trouble in S2D map read (not solved)\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Feb 24 21:01:24 2015 +0900\n"\
-                "    Merge branch 'master' of ssh://titan/git/Qt0/XAFS/XafsM2\n"\
 		"\n"\
                 ""
 #endif
