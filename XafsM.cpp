@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QTranslator>
 #include <QTextCodec>
+#include <QFileInfo>
 #include <QDebug>
 
 #include <stdio.h>
@@ -37,12 +38,18 @@ int main( int argc, char *argv[] )
   DefFileName = "XAFSM.def";
   newFluoMode = false;
 
+#if 0
   QString myname = QString( argv[0] )
     .section( "/", -1 )  // "/" を区切りに切り出したトークンの右から数えて1つめ
     .section( "\\", -1 ) // "\\" (エン記号)を区切りに、同上
                          // この 2つで、unix 系でも msdos 系でもファイル名が拾えるはず。
     .section( ".", 0, 0 );
     // 残ったファイル名に対して "." を区切りに切り出した最初のトークン
+#else
+  QFileInfo myFname( argv[0] );
+  QString myname = myFname.baseName();
+#endif
+  qDebug() << QString( "my Base Name [%1]" ).arg( myname );
 
   for ( int i = 1; i < argc; i++ ) {
     if ( QString( argv[i] ) == "-nF" ) { newFluoMode = true; };

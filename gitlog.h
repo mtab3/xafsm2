@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Apr 15 16:10:11 2015 +0900\n"\
+                "    setTabBarAutoHide is usede (feature of 5.4 and after) at the top of MainWindow.cpp\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Apr 15 14:32:30 2015 +0900\n"\
                 "    remove a qDebug line in mUnits\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 17:41:35 2015 +0900\n"\
                 "    checking if the new AUnitDV3 works, but not\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 17:22:48 2015 +0900\n"\
-                "    add DV3 for Q-XAFS using qct08\n"\
 		"\n"\
                 ""
 #endif

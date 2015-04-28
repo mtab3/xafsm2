@@ -18,7 +18,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 {
   setupUi( this );
 
-  ViewTab->setTabBarAutoHide( true );
+  //  ViewTab->setTabBarAutoHide( true );   // Qt 5.4 以上用
   
   MainTab->setCurrentIndex( 0 );
   RWDXMCenterF = false;
