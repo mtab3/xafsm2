@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Apr 27 18:56:15 2015 +0900\n"\
+                "    FP23 problem is solved. but for CC-10, it has not been checked\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Apr 27 18:29:50 2015 +0900\n"\
                 "    working on DV\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Mar 6 18:40:12 2015 +0900\n"\
                 "    small but severe bug was fixed in saving Scan data\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Feb 25 11:54:36 2015 +0900\n"\
-                "    new MCAMap is imported from newXAMP branch\n"\
 		"\n"\
                 ""
 #endif
