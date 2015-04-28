@@ -159,6 +159,9 @@ signals:
   void AnsGoMaxAbs( SMsg msg );
   void AnsShutterOff( SMsg msg );
 
+  void AskStart( SMsg msg );
+  void AskStop( SMsg msg );
+  
   void EvAll( SMsg msg );
   void EvConnected( SMsg msg );
   void EvDisconnected( SMsg msg );

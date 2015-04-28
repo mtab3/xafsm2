@@ -194,7 +194,7 @@ void Stars::ReceiveMessageFromStars( void )
       
       switch( smsg.ParseMsg( RBuf ) ) {
       case RES_MSG:
-//	qDebug() << "Stars >> " << RBuf;
+	//	qDebug() << "Stars >> " << RBuf;
 	emit AskRecord( tr( "Receive an answer from Stars [%1]" ).arg( RBuf.data() ) );
 	if ( smsg.Val() == "Er:" ) {
 	  emit ReceiveError( smsg ); break;
@@ -378,6 +378,12 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGoMaxRel( smsg ); break;
 	case SHUTTEROFF:
 	  emit AnsShutterOff( smsg ); break;
+
+	case RMT_START:
+	  emit AskStart( smsg ); break;
+	case RMT_STOP:
+	  emit AskStop( smsg ); break;
+	  
 	default:
 	  break;
 	}

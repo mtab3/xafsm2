@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -3070,9 +3070,12 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_58">
+                <widget class="QRadioButton" name="MeasBlockB">
                  <property name="text">
-                  <string/>
+                  <string>Block Meas.</string>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
@@ -4327,8 +4330,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>290</width>
-                     <height>155</height>
+                     <width>308</width>
+                     <height>158</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">
@@ -11147,7 +11150,6 @@ Though, other parameters are fixed at the value on starting.</string>
   <tabstop>GoMotorPosPuls</tabstop>
   <tabstop>GoMotorPosUnit</tabstop>
   <tabstop>GoMotorS</tabstop>
-  <tabstop>GoMotor</tabstop>
   <tabstop>SPSSelectD1</tabstop>
   <tabstop>SPSUnitSelect</tabstop>
   <tabstop>SPSMotorSpeed</tabstop>
@@ -11158,7 +11160,6 @@ Though, other parameters are fixed at the value on starting.</string>
   <tabstop>SPSeP0</tabstop>
   <tabstop>SPSstep0</tabstop>
   <tabstop>SPSdwell0</tabstop>
-  <tabstop>SPSScan</tabstop>
   <tabstop>ScanRecFileName</tabstop>
   <tabstop>SelScanRecFile</tabstop>
   <tabstop>ScanRec</tabstop>

@@ -414,7 +414,8 @@ void MainWindow::QXafsMeasSequence( void )
     // 計測器類の初期化ループ (「終了」ステータスになるまで、break して 再入 でループ)
     // 計測器類の内部ループカウンタクリア
     // R = 0 (repeat = 0)
-    if ( mMeasUnits.init() ) // D.V. は Reset だけ, ENC2 は GetValue だけ
+    // D.V. は Reset だけ, ENC2 は GetValue だけ
+    if ( mMeasUnits.init() )
       break;
     mMeasUnits.clearStage();
     MeasR = 0;    // Measurement Repeat count
@@ -440,6 +441,8 @@ void MainWindow::QXafsMeasSequence( void )
     MeasStage++;
     break;     // break 必要。分光器が止まっていないとトリガの設定ができない
   case 4:      // Repeat Point 1
+    if ( MeasBlockB->isChecked() )
+      break;
     // R++ (1回目の測定に入る前に R=1 になることに注意)
     // 終了判定 ---> 終了してれば stage = 99
     MeasR++;
