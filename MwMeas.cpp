@@ -1306,6 +1306,7 @@ void MainWindow::StartMeasurement( void )
         statusbar->showMessage( tr( "SSD/SDD can not be used for QXAFS" ), 2000 );
         return;
       }
+#if 0 // このチェックは、ユニットごとに別の場所でやる
       // Check dwell time per point
       // Limitation of Agilent 34410A?
       if ( BLKdwell[0]->text().toFloat() / BLKpoints[0]->text().toFloat() > 0.13 ) {
@@ -1314,7 +1315,7 @@ void MainWindow::StartMeasurement( void )
                                 2000 );
         return;
       }
-
+#endif
       // QXafs でステップスキャン型のデータファイル生成を選択している時は
       // ステップスキャンのブロックパラメータを正しく設定していないとダメ
       if ( SaveQDataAsStepScan->isChecked() && ( ! NBlockPisValid ) ) {
@@ -1424,6 +1425,20 @@ void MainWindow::StartMeasurement( void )
       aGsb.stat = PBTrue;  aGsb.label = "mu3"; GSBSs << aGsb;
     }
     if ( QXafsMode->isChecked() ) {
+      double dtime = BLKdwell[0]->text().toDouble() / BLKpoints[0]->text().toDouble();
+      for ( int i = 0; i < mMeasUnits.count(); i++ ) {
+	ASensor *as = mMeasUnits.at(i);
+	if ( as->hasMaxIntTime() ) {
+	  if ( as->maxIntTime() < dtime ) {
+	    statusbar
+	    ->showMessage( tr( "Too long acquisition time per point for [%1]. "
+			       "Decrease acquisition time or Increase data points." )
+			   .arg( as->name() ),
+			   2000 );
+	    return;
+	  }
+	}
+      }
       if ( Enc2 != NULL ) {
         mMeasUnits.addUnit( Enc2 );
       }

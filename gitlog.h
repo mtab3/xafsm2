@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Apr 28 20:06:28 2015 +0900\n"\
+                "    nothing\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Apr 15 16:10:11 2015 +0900\n"\
                 "    setTabBarAutoHide is usede (feature of 5.4 and after) at the top of MainWindow.cpp\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 18:49:17 2015 +0900\n"\
                 "    new DV3\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 17:41:35 2015 +0900\n"\
-                "    checking if the new AUnitDV3 works, but not\n"\
 		"\n"\
                 ""
 #endif

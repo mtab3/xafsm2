@@ -20,17 +20,23 @@ class ASensor : public AUnit0
   int RangeL;           // Lower range limit
   int SelectedRange;
 
+  bool HasMaxIntTime;   // for QXAFS devices (default should be false)
+  double MaxIntTime;    // Maximum integration time
+
  public:
   ASensor( QObject *p = NULL );
 
   void init( void );
   virtual void init0( void ) {};
 
-  virtual bool InitSensor( void ) { return true; };
+  virtual bool InitSensor( void ) { return false; };
   virtual double SetTime( double dtime ) { return dtime; };   // in sec
   double getSetTime( void ) { return setTime; };   // actual set time
-
   virtual bool isSFluo( void ) { return false; };
+
+  bool hasMaxIntTime( void ) { return HasMaxIntTime; };
+  double maxIntTime( void ) { return MaxIntTime; };
+  void setMaxIntTime( double t ) { MaxIntTime = t; HasMaxIntTime = true; };
 
   // 測定値の大きさが計測時間に比例するかしないか。true ならする
   void setMeasIntegral( bool f ) { measIntegral = f; };

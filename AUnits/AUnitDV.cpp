@@ -6,8 +6,8 @@
 AUnitDV::AUnitDV( void )
 {
   points = 0;
-  HasMaxIntTime = false;
-  MaxIntTime = 1000000;   // $B==J,Bg$-$$(B
+  //  HasMaxIntTime = false;
+  //  MaxIntTime = 1000000;   // $B==J,Bg$-$$(B
 }
 
 void AUnitDV::init0( void )
@@ -128,8 +128,12 @@ bool AUnitDV::QEnd( void )
 double AUnitDV::_SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%W2=$G$-$J$$(B
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
-  if ( dtime > 1.0 ) dtime = 1.0;
-  if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
+  if ( HasMaxIntTime ) {
+    if ( dtime > MaxIntTime )
+      dtime = MaxIntTime;
+  } else {
+    if ( dtime > 1.0 ) dtime = 1.0;
+  }
   setTime = dtime;
 
   qDebug() << "setting time in DV " << dtime << setTime;
@@ -140,8 +144,12 @@ double AUnitDV::_SetTime( double dtime ) // in sec // $B$3$N4X?t$O!"J#?t%9%F%C%
 double AUnitDV2::_SetTime( double dtime )
 {
   if ( dtime < 0.0001 ) dtime = 0.0001;
-  if ( dtime > 1.0 ) dtime = 1.0;
-  if (( HasMaxIntTime )&&( dtime > MaxIntTime )) { dtime = MaxIntTime; };
+  if ( HasMaxIntTime ) {
+    if ( dtime > MaxIntTime )
+      dtime = MaxIntTime;
+  } else {
+    if ( dtime > 1.0 ) dtime = 1.0;
+  }
 
   busy2On( Dev, "SetAperture" );
   s->SendCMD2( Uid, DevCh, "SetAperture", QString( "%1" ).arg( dtime ) );
