@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Apr 28 19:23:47 2015 +0900\n"\
+                "    Block Meas is ready\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Apr 28 17:42:40 2015 +0900\n"\
                 "    working on the slow EIB problem.   DV/DV3 are changed\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
                 "    a bug is fixed, which happens when the qGetData returns no datas\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Mar 9 16:13:21 2015 +0900\n"\
-                "    a bug which happens when I0 is less than setting value is fixed\n"\
 		"\n"\
                 ""
 #endif

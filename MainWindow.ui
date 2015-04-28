@@ -3071,6 +3071,9 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
                </item>
                <item>
                 <widget class="QRadioButton" name="MeasBlockB">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;While the &amp;quot;Block Meas.&amp;quot; is checked, the XAFS measurement is blocked at the start position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="text">
                   <string>Block Meas.</string>
                  </property>
