@@ -111,6 +111,9 @@ const MsgTyp MsgT[] = {
   { "@GoMaxRel", GOMAXREL },
   { "@ShutterOff", SHUTTEROFF },
 
+  { "Start", RMT_START },
+  { "Stop", RMT_STOP },
+
   { "_EvRangeMax", EvRANGEMAX },
   { "_EvRangeMaxOff", EvRANGEMAXOFF },
 

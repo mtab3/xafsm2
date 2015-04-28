@@ -25,6 +25,7 @@ class AUnitDV : public ASensor
   virtual double _SetTime( double dtime );
   bool GetValue0( void ) { return _GetValue0(); };
   virtual bool _GetValue0( void ) { return false; };
+  virtual double recordFactor( void ) { return 1.0e6; };
 
   int Points( void ) { return points; };
 
@@ -73,6 +74,7 @@ class AUnitDV3 : public AUnitDV
 
   bool _GetValue0( void );
   double _SetTime( double dtime );
+  double recordFactor( void ) { return 1.0; };
 
 private slots:
   void SetIsBusyByMsg( SMsg msg );

@@ -52,6 +52,7 @@
 #include "MonInfo.h"
 #include "SetUpSFluo.h"
 #include "enums.h"
+#include "AUnits/AUnitRemote.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -122,6 +123,7 @@ private:
   int DefaultUnit;
   QString LocalizedName( QString name );
   Alarms *alarms;
+  AUnitRemote *remote;
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );

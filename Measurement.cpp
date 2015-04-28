@@ -59,14 +59,18 @@ void MainWindow::MeasSequence( void )
 			  u->any2keV( SBLKUnit, SBlockStartAsDisp[ SBlocks ] ), 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
+    break;
   case 1:
-    if ( mMeasUnits.init() == false ) {  // true :: initializing
-      MeasR = 0;    // Measurement Repeat count
-      mMeasUnits.clearStage();
-      MeasStage = 2;
-    }
+    // init() == true :: initializing
+    if ( mMeasUnits.init() )
+      break;
+    MeasR = 0;    // Measurement Repeat count
+    mMeasUnits.clearStage();
+    MeasStage = 2;
     break;
   case 2:
+    if ( MeasBlockB->isChecked() )
+      break;
     MeasB = 0;    // Measurement Block count
     MeasP = 0;    // Measurement point count
     statusbar->showMessage( tr( "Writing Header." ), 2000 );

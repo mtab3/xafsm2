@@ -55,7 +55,7 @@ class ASensor : public AUnit0
   virtual double GetDark( double dtime )
   { return ( measIntegral ) ? Dark * dtime : Dark; };
   virtual double convert2perTime( double val, double time )
-  { return ( measIntegral ) ? val / time : val; };
+  { return ( measIntegral ) ? val / time : val; qDebug() << "time" << time; };
   // 電圧計や電流計の様に、計測時間が長くなっても
   // 測定結果の信頼性は上がるが、値そのものは計測時間に直接依存しないタイプの
   // 計測器は再定義の必要あり
@@ -68,6 +68,8 @@ class ASensor : public AUnit0
   // になるはず
   // もしくは、そのタイプのユニットの初期化の中で setMeasIntegral( false );
   // すれば良い
+  virtual double recordFactor( void ) { return 1.0; };
+  // 測定値をファイルに書き出す際、recordFactor 倍して記録される
   
   /* AutoRange 可能なデバイスでは true */
   virtual bool GetRange( void ) { return false; };

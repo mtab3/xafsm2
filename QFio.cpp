@@ -161,13 +161,15 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
     valsEnc.clear();
   }
 
+  QVector<double> recordFactor;
   QVector<QStringList> vals;
   QVector<double> dark;
   int num = 100000000;
+  qDebug() << "QXafsDwellTime " << QXafsDwellTime;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
     dark << mMeasUnits.at(i)->GetDark( QXafsDwellTime );
-    /* q34410a だけならこれでいいけど、他の計測器を使うようになったらダメ */
+    recordFactor << mMeasUnits.at(i)->recordFactor();
     // setDark( val ), getDark( void ) をやめて
     // SetDark( val, time ), GetDark( time ) として、
     // AUnit 側で、測定値と測定時間から「Dark」を計算し(SetDark)、
@@ -206,6 +208,10 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
     return;
   }
   
+  qDebug() << "nums "
+	   << vals[0].count() << vals[1].count() << valsEnc.count()
+	   << vals[0][0].toInt() << vals[1][0].toInt() << valsEnc[0].toInt();
+
   NewLogMsg( tr( "QXafs data points [%1]." )
              .arg( num ) );
 
@@ -244,7 +250,8 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
     for ( int j = 0; j < Us; j++ ) {
       // buf2.sprintf( " %9.6f", vals[j][i+1].toDouble() - dark[j] );  // 8.7 --> 9.6
       // Only for QXAFS with DMM. NCT counter is NOT considered!
-      buf2.sprintf( " %9.0f", ( vals[j][i+1].toDouble() - dark[j] ) * 10e6 );
+      buf2.sprintf( " %9.0f", ( vals[j][i+1].toDouble() - dark[j] ) * recordFactor[j] );
+      // recordFactor は DMM の時は 1.0e6 他は 1.0
       buf += buf2;
     }
     out << buf << endl;
@@ -269,12 +276,14 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
     valsEnc.clear();
   }
 
+  QVector<double> recordFactor;
   QVector<QStringList> vals;
   QVector<double> dark;
   int num = 100000000;
   for ( int i = 0; i < Us; i++ ) {
     vals << mMeasUnits.at(i)->values();
     dark << mMeasUnits.at(i)->GetDark( QXafsDwellTime );
+    recordFactor << mMeasUnits.at(i)->recordFactor();
     if ( vals[i].count() > 0 ) {
       if ( num > vals[i][0].toInt() )
 	num = vals[i][0].toInt();

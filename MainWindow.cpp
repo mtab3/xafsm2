@@ -93,6 +93,9 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   
   setupLogArea();     // ログに対する書き出しがある可能性があるので最初にイニシャライズ
   ReadDef( DefFileName );
+  remote = new AUnitRemote;
+  connect( remote, SIGNAL( setMeasBlockF( bool ) ), MeasBlockB, SLOT( setChecked( bool ) ), Qt:: UniqueConnection );
+  
   selmc = new SelMC2( mccd );
   setWindowTitle( XAFSTitle );
   s = new Stars;      // モータ類のイニシャライズの前に Stars の準備はしておく
@@ -296,6 +299,7 @@ void MainWindow::Initialize( void )
 {
   InitAndIdentifyMotors();
   InitAndIdentifySensors();
+  remote->Initialize( s );
   if ( ! AllInited ) {
     AllInited = true;
     connect( SelThEncorder, SIGNAL( toggled( bool ) ), this, SLOT( ShowCurThPos() ),
@@ -595,3 +599,4 @@ void MainWindow::alarmOff( void )
 {
   ViewTab->setStyleSheet( "" );
 }
+

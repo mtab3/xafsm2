@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja_JP">
+<TS version="2.0" language="ja_JP">
 <context>
     <name>AUnit</name>
     <message>
@@ -316,19 +316,19 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>Measured</source>
-        <translation type="vanished">XAFS測定</translation>
+        <translation>XAFS測定</translation>
     </message>
     <message>
         <source>Scaned</source>
-        <translation type="vanished">スキャン</translation>
+        <translation>スキャン</translation>
     </message>
     <message>
         <source>Monitored</source>
-        <translation type="vanished">モニタ</translation>
+        <translation>モニタ</translation>
     </message>
     <message>
         <source>MCA</source>
-        <translation type="vanished">MCA(SSD)</translation>
+        <translation>MCA(SSD)</translation>
     </message>
     <message>
         <source>Can not open the file %1.</source>
@@ -348,7 +348,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>S2D</source>
-        <translation type="vanished">二次元スキャン</translation>
+        <translation>二次元スキャン</translation>
     </message>
 </context>
 <context>
@@ -484,43 +484,43 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>View 1</source>
-        <translation type="vanished">View1</translation>
+        <translation>View1</translation>
     </message>
     <message>
         <source>View 2</source>
-        <translation type="vanished">View2</translation>
+        <translation>View2</translation>
     </message>
     <message>
         <source>View 3</source>
-        <translation type="vanished">View3</translation>
+        <translation>View3</translation>
     </message>
     <message>
         <source>View 4</source>
-        <translation type="vanished">View4</translation>
+        <translation>View4</translation>
     </message>
     <message>
         <source>View5</source>
-        <translation type="vanished">View5</translation>
+        <translation>View5</translation>
     </message>
     <message>
         <source>View6</source>
-        <translation type="vanished">View6</translation>
+        <translation>View6</translation>
     </message>
     <message>
         <source>View7</source>
-        <translation type="vanished">View7</translation>
+        <translation>View7</translation>
     </message>
     <message>
         <source>View8</source>
-        <translation type="vanished">View8</translation>
+        <translation>View8</translation>
     </message>
     <message>
         <source>View9</source>
-        <translation type="vanished">View9</translation>
+        <translation>View9</translation>
     </message>
     <message>
         <source>View10</source>
-        <translation type="vanished">View10</translation>
+        <translation>View10</translation>
     </message>
     <message>
         <source>Select an Atom</source>
@@ -1449,7 +1449,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Close View</source>
-        <translation type="vanished">View を閉じる</translation>
+        <translation>View を閉じる</translation>
     </message>
     <message>
         <source>Log / Record</source>
@@ -1533,7 +1533,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>No Scree is available!</source>
-        <translation type="vanished">使用可能な描画領域(View)がありません</translation>
+        <translation>使用可能な描画領域(View)がありません</translation>
     </message>
     <message>
         <source>Start Measurement!</source>
@@ -2495,7 +2495,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Start Scan</source>
-        <translation type="vanished">スキャン開始</translation>
+        <translation>スキャン開始</translation>
     </message>
     <message>
         <source>Cannot open [%1]</source>
@@ -2731,11 +2731,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Can not save MCA spectra for 2D scan.</source>
-        <translation type="vanished">2DスキャンしたMCAスペクトルをセーブできませんでした。</translation>
+        <translation>2DスキャンしたMCAスペクトルをセーブできませんでした。</translation>
     </message>
     <message>
         <source>No file name was selected</source>
-        <translation type="vanished">ファイル名が選択されていません。</translation>
+        <translation>ファイル名が選択されていません。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Record MCA spectra obtained at each step of the XAFS measurement is saved in separated files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2770,11 +2770,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Data Root</source>
-        <translation type="vanished">データルート</translation>
+        <translation>データルート</translation>
     </message>
     <message>
         <source>Pop Up</source>
-        <translation type="vanished">独立</translation>
+        <translation>独立</translation>
     </message>
     <message>
         <source>Auto Set All</source>
@@ -2900,23 +2900,23 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>D-XAFS</source>
-        <translation type="vanished">XAFS表示</translation>
+        <translation>XAFS表示</translation>
     </message>
     <message>
         <source>D-SCAN</source>
-        <translation type="vanished">スキャン表示</translation>
+        <translation>スキャン表示</translation>
     </message>
     <message>
         <source>D-MON.</source>
-        <translation type="vanished">モニタ表示</translation>
+        <translation>モニタ表示</translation>
     </message>
     <message>
         <source>D-MCA</source>
-        <translation type="vanished">MCA表示</translation>
+        <translation>MCA表示</translation>
     </message>
     <message>
         <source>D-S2D</source>
-        <translation type="vanished">2次元スキャン表示</translation>
+        <translation>2次元スキャン表示</translation>
     </message>
     <message>
         <source>２D scan</source>
@@ -2928,7 +2928,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>ï¼D scan</source>
-        <translation type="vanished">2次元スキャン</translation>
+        <translation>2次元スキャン</translation>
     </message>
     <message>
         <source>Peak Fit</source>
@@ -2936,7 +2936,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとピークフィットが行われます。</translation>
+        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとピークフィットが行われます。</translation>
     </message>
     <message>
         <source>Clr. Peaks</source>
@@ -2968,7 +2968,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change.  Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
+        <translation>通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
 フィッティングが不安定な場合、「制動係数」を小さくすると良いかもしれません。
 これを非常に小さくする(例えば0.1以下にする)時はは「最大ループ」値を大きくして下さい。
 「最大ループ=10/制動係数」が目安です。</translation>
@@ -2979,7 +2979,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
+        <translation>通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
 フィッティングが不安定な場合、「制動係数」を小さくすると良いかもしれません。
 これを非常に小さくする(例えば0.1以下にする)時はは「最大ループ」値を大きくして下さい。
 「最大ループ=10/制動係数」が目安です。</translation>
@@ -3002,7 +3002,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>40</source>
-        <translation type="vanished">40</translation>
+        <translation>40</translation>
     </message>
     <message>
         <source>Moving Average</source>
@@ -3054,15 +3054,15 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>SCAN</source>
-        <translation type="vanished">スキャン</translation>
+        <translation>スキャン</translation>
     </message>
     <message>
         <source>MON.</source>
-        <translation type="vanished">モニタ</translation>
+        <translation>モニタ</translation>
     </message>
     <message>
         <source>Wriging MCA File : [%1]</source>
-        <translation type="vanished">MCAファイル書出中 : [%1]</translation>
+        <translation>MCAファイル書出中 : [%1]</translation>
     </message>
     <message>
         <source>Scan Start</source>
@@ -3163,6 +3163,34 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>ROI cannot be change while XAFS or S2D measurements</source>
         <translation>XAFSやマッピング測定中はROIを変更できません。</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;While the &amp;quot;Block Meas.&amp;quot; is checked, the XAFS measurement is blocked at the start position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>「ブロック」がチェックされていると、分光器が測定開始地点まで移動した時点で測定がブロックされ、チェックが外れると進行します。</translation>
+    </message>
+    <message>
+        <source>Block Meas.</source>
+        <translation>ブロック</translation>
+    </message>
+    <message>
+        <source>Too long acquisition time per point for [%1]. Decrease acquisition time or Increase data points.</source>
+        <translation>一点あたりの測定時間[%1]が長すぎます。総測定時間を短くするか、測定点数を増やして下さい。</translation>
+    </message>
+    <message>
+        <source>Although the &apos;Additional&apos; button is checked, the monitoring process is running.</source>
+        <translation>「追加」ボタンが押されていますが、「モニタ」動作中のため指定の検出器は使えません。</translation>
+    </message>
+    <message>
+        <source>The monitoring sensors might used for scanning, as &apos;Additonal&apos; button is checked.</source>
+        <translation>「追加」ボタンが押されているため、「モニタ」の対象になっている検出器は「スキャン」に使われています。</translation>
+    </message>
+    <message>
+        <source>A::Undefined Unit type [%1]</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>B::Undefined Unit type [%1]</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -4154,6 +4182,10 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Save:</source>
         <translation>保存ファイル:</translation>
+    </message>
+    <message>
+        <source>/Users/tabuchi/Desktop/prog/XafsM2/mcaTest.dat</source>
+        <translation></translation>
     </message>
     <message>
         <source>Select</source>

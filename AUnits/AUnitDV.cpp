@@ -46,6 +46,7 @@ void AUnitDV3::init000( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
+  setMeasIntegral( true );  // 測定値の大きさは計測時間に比例しない
 }
 
 bool AUnitDV::InitSensor( void )
@@ -164,7 +165,7 @@ double AUnitDV3::_SetTime( double dtime )
   long int ltime = dtime * 1e6;
   s->SendCMD2( Uid, Dev, "SetTimerPreset", QString( "%1" ).arg( ltime ) );
   setTime = dtime;
-
+  qDebug() << "setTime " << Uid << dtime << setTime;
   return setTime;
 }
 
