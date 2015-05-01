@@ -21,6 +21,14 @@
                 "    nothing\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri May 1 19:44:34 2015 +0900\n"\
+                "    For DV : messages from stars are identified by the condition that 'msg.ToCh() == Uid' in SetCurPos.   The way might be used for all of the messages for all devices\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Apr 28 20:07:22 2015 +0900\n"\
+                "    LION\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Apr 28 19:23:47 2015 +0900\n"\
                 "    Block Meas is ready\n"\
 		"\n"\
@@ -41,8 +49,25 @@
                 "    working on DV\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+<<<<<<< HEAD
                 "Date        : Fri Apr 24 14:42:40 2015 +0900\n"\
                 "    merged with origin/newMwSSD2\n"\
+=======
+                "Date        : Fri Apr 24 14:38:18 2015 +0900\n"\
+                "    max limit of dwell time for QXAFS can be set for each devices in XAFSM.def\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Apr 10 12:54:04 2015 +0900\n"\
+                "    the Dark proble is solved\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 20:17:17 2015 +0900\n"\
+                "    Dark measurement is ok for Qct08\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Apr 9 18:49:17 2015 +0900\n"\
+                "    new DV3\n"\
+>>>>>>> master
 		"\n"\
                 ""
 #endif

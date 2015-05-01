@@ -14,6 +14,8 @@ void AUnitCNT::init0( void )
   connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
   s->SendCMD2( "Init", Dev, "SetStopMode", "T" );
+
+  Type2 = "TYPE2-CNT";
   
   init00();
 }

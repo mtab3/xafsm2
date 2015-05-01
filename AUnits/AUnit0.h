@@ -24,6 +24,7 @@ class AUnit0 : public QObject
 
   QString GType;        // Motor, Sensor
   QString Type;         // PM, PZ, ENC, ...
+  QString Type2;        // defined by code (not by def file)
   QString Uid;          // Uniq ID
   QString ID;           // MainTh, StageX, General, ...
   QString Name;         // Displayed name
@@ -78,6 +79,7 @@ public:
   Stars *getStars( void ) { return s; };
   QString gType( void ) { return GType; };        // Motor, Sensor
   QString type( void ) { return Type; };          // PM, PZ, ENC, ...
+  QString type2( void ) { return Type2; };
   QString uid( void ) { return Uid; };            // Uniq Uid
   QString uid2( void ) { return Uid2; };         /* return Uid2; */  // 2nd Uid
   QString id( void ) { return ID; };              // MainTh, StageX, General, ...

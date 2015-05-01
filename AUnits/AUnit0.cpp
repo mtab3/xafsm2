@@ -12,6 +12,7 @@ AUnit0::AUnit0( QObject *parent ) : QObject( parent )
   
   GType = "";
   Type = "";
+  Type2 = "";
   ID = "";
   Uid = "";
   Name = "";
