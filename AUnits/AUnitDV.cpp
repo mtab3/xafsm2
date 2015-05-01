@@ -43,15 +43,13 @@ void AUnitDV2::init00( void )
 
 void AUnitDV3::init000( void )
 {
-  setMeasIntegral( false );  // 計測時間に比例して値が大きくなるタイプの
-                        // 計測器(カウンタ、SSD)がデフォルト
   connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  setMeasIntegral( true );  // 測定値の大きさは計測時間に比例しない
+  setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
 }
 
 bool AUnitDV::InitSensor( void )
