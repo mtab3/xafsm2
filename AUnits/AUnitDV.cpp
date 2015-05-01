@@ -5,6 +5,7 @@
 
 AUnitDV::AUnitDV( void )
 {
+  setTime = 1;
   points = 0;
   //  HasMaxIntTime = false;
   //  MaxIntTime = 1000000;   // $B==J,Bg$-$$(B
@@ -15,6 +16,8 @@ void AUnitDV::init0( void )
   setMeasIntegral( false );  // $BB,DjCM$NBg$-$5$O7WB,;~4V$KHfNc$7$J$$(B
   connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
+
+  Type2 = "TYPE2-DV-family";
 
   init00();
 }
@@ -40,6 +43,8 @@ void AUnitDV2::init00( void )
 
 void AUnitDV3::init000( void )
 {
+  setMeasIntegral( false );  // $B7WB,;~4V$KHfNc$7$FCM$,Bg$-$/$J$k%?%$%W$N(B
+                        // $B7WB,4o(B($B%+%&%s%?!"(BSSD)$B$,%G%U%)%k%H(B
   connect( s, SIGNAL( AnsSetTimerPreset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsCounterReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
@@ -260,4 +265,21 @@ bool AUnitDV3::_GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%
   }
 
   return rv;
+}
+
+void AUnitDV3::SetCurPos( SMsg msg )    // DV3 $B$NLa$jCM$O(B cps ( count $B$G$O$J$$(B )
+{
+  QString buf;
+
+  if ( ( msg.ToCh() == Uid ) && ( msg.Msgt() == GETVALUE ) ) {
+    double val;
+    if ( msg.Vals().count() > 0 )
+      val = msg.Vals()[0].toDouble();
+    else
+      val = 0;
+    Value = QString::number( val / ( ( setTime == 0 ) ? 1 : setTime ) );
+    qDebug() << "in DV3 returnning normalized val " << Value << measIntegral << Type << Uid << setTime << Name << Type2;
+    emit NewValue( Value );
+    busy2Off( Dev );
+  }
 }

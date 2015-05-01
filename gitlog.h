@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Apr 28 20:07:22 2015 +0900\n"\
+                "    LION\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Apr 28 19:23:47 2015 +0900\n"\
                 "    Block Meas is ready\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Apr 9 17:22:48 2015 +0900\n"\
                 "    add DV3 for Q-XAFS using qct08\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Apr 9 11:52:34 2015 +0900\n"\
-                "    a bug is fixed, which happens when the qGetData returns no datas\n"\
 		"\n"\
                 ""
 #endif

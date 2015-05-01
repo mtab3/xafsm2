@@ -363,6 +363,13 @@ void MainWindow::ReadDef( QString fname )
       }
     }
   }
+
+#if 0
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    qDebug() << i << ASensors[i]->uid() << ASensors[i]->name();
+  }
+#endif
+  
 }
 
 AUnit0 *MainWindow::NewNewUnit( QString type )

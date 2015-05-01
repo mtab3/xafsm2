@@ -78,6 +78,7 @@ class AUnitDV3 : public AUnitDV
 
 private slots:
   void SetIsBusyByMsg( SMsg msg );
+  void SetCurPos( SMsg msg );    // DV3 の戻り値は cps ( count ではない )
 };
 
 #endif

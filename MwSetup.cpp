@@ -1112,6 +1112,7 @@ void MainWindow::Monitor( void )
 	  NewLogMsg( msg );
 	  return;
 	}
+	qDebug() << "mon " << i << monLines[i]->currentIndex() << ass[i]->uid() << ass[i]->name();
 	mMonUnits.addUnit( ass[i] );
 	// 注意 !!
 	// mMonUnits の unit 番号と、ass, MonSels, MonDevs, MonVals の番号はずれる。
@@ -1127,6 +1128,9 @@ void MainWindow::Monitor( void )
     }
     mMonUnits.setDwellTimes( DwellT20->text().toDouble() );
     mMonUnits.setDwellTime();
+    for ( int i = 0; i < mMonUnits.count(); i++ ) {
+      qDebug() << "mon2 " << mMonUnits.at(i)->uid() << mMonUnits.at(i)->name();
+    }
 
     QString User;
     for ( int i = 0; i < mMonUnits.count(); i++ ) {
