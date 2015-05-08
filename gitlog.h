@@ -5,6 +5,18 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri May 8 12:59:47 2015 +0900\n"\
+                "    SendCMD is called only in AUnits. The From-ch is set to Uid.\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri May 8 12:28:32 2015 +0900\n"\
+                "    Now, all of the messages to the drivers connecting Stars are sent via the AUnit.   When a message is sent to Stars via an AUnit, the from-ch is always set as Uid\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu May 7 17:11:56 2015 +0900\n"\
+                "    before changing 'From() == DevCh' to 'ToCh() == Uid'\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri May 1 20:02:14 2015 +0900\n"\
                 "    merged with master\n"\
 		"\n"\
@@ -31,18 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Apr 28 20:07:22 2015 +0900\n"\
                 "    LION\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Apr 28 20:06:28 2015 +0900\n"\
-                "    nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Apr 28 19:23:47 2015 +0900\n"\
-                "    Block Meas is ready\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Apr 28 17:42:40 2015 +0900\n"\
-                "    working on the slow EIB problem.   DV/DV3 are changed\n"\
 		"\n"\
                 ""
 #endif

@@ -89,12 +89,14 @@ void AUnitSFluo::init0( void )
   s->SendCMD2( Uid, DevCh, "IsBusy" );
   s->SendCMD2( Uid, Dev, "RunStop" );
 
+  qDebug() << "init SFluo" << Uid;
   connectingDLink = false;          // new
   s->SendCMD2( Uid, Dev, "GetDataLinkCh" );
 }
 
 void AUnitSFluo::ReactGetDataLinkCh( SMsg msg )
 {
+  qDebug() << "get data link ch " << msg.From() << msg.ToCh() << Uid;
   if ( msg.From() == Dev ) {
     if ( msg.Vals().count() == 2 ) {
       busy2Off( Dev );
@@ -174,7 +176,6 @@ bool AUnitSFluo::GetValue( void )
   busy2On( Dev, "GetValue" );
   // 変則 : この IsBusy2 は @GetMCAs Ok: を受けても消さない
   //        data-link 経由で完全なデータをもらった時に消す
-  //    s->SendCMD2( Uid, Dev, "GetValues" );    // new mcas
   s->SendCMD2( Uid, Dev, "GetMCAs" );
 
   return false;
@@ -289,6 +290,8 @@ void AUnitSFluo::setBufSize( void )
 {
   AChBufSize = XMAPHEAD + mcaLength * 4;
   AllChBufSize = AChBufSize * SSDChs;
+  qDebug() << "set buf size" << AChBufSize << AllChBufSize << Uid;
+  qDebug() << XMAPHEAD << mcaLength << mcaLength * 4 << SSDChs;
 }
 
 void AUnitSFluo::setChs( int chs )
@@ -549,8 +552,6 @@ void AUnitSFluo::receiveMCAs( void )
 {
   quint32 bytes0, bytes;
 
-  qDebug() << "McaLength" << mcaLength << AChBufSize << AllChBufSize;
-  
   bytes0 = dLink->bytesAvailable();
   // 今届いた分を全部読んでもバッファサイズより小さいなら
   if ( dLinkCount + bytes0 <= /* XMAPBUFSIZE */ (quint32)AllChBufSize )
@@ -560,6 +561,8 @@ void AUnitSFluo::receiveMCAs( void )
 
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
   dLinkCount += bytes;
+
+  qDebug() << Uid << "McaLength" << mcaLength << AChBufSize << AllChBufSize << dLinkCount << bytes;
 
   if ( dLinkCount >= /* XMAPBUFSIZE */ AllChBufSize ) {
     busy2Off( Dev );
