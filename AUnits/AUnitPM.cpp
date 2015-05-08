@@ -9,7 +9,7 @@ AUnitPM::AUnitPM( void )
 
 void AUnitPM::init0( void )
 {
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
 
   connect( s, SIGNAL(AnsSetHighSpeed( SMsg )), this, SLOT(ClrBusy( SMsg )),
 	   Qt::UniqueConnection );

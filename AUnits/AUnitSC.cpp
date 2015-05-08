@@ -7,7 +7,7 @@ AUnitSC::AUnitSC( void )
 
 void AUnitSC::init0( void )
 {
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
 void AUnitSC::SetValue( double v )

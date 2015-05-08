@@ -71,19 +71,19 @@ void AUnit0::Initialize( Stars *S )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", "System", "flgon", Dev );
-  s->SendCMD2( "Init", "System", "flgon", DevCh );
-  
+  s->SendCMD2( Uid, "System", "flgon", Dev );
+  s->SendCMD2( Uid, "System", "flgon", DevCh );
+
   init();   // 各ユニットに固有の処理
 
   if ( ID == "THETA" ) {
     AskIsBusy();
     GetValue();
   }
-  if ( ID == "TotalF" ) {
+  if ( Type == "SSD" ) {
     connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALength( SMsg ) ),
 	     Qt::UniqueConnection );
-    s->SendCMD2( "SetUpMCA", Dev, "GetMCALength" );
+    s->SendCMD2( Uid, Dev, "GetMCALength" );
   }
   if ( ID == "ENCTH" ) {
     GetValue();
@@ -126,6 +126,7 @@ void AUnit0::busy2Off( QString drv )
 void AUnit0::SetIsBusyByMsg( SMsg msg )
 {
   if ( ( msg.From() == DevCh )    // Dev -> DevCh 2015.02.13
+  //  if ( ( msg.ToCh() == Uid )          // 2015.05.07
        && ( ( msg.Msgt() == ISBUSY ) || ( msg.Msgt() == EvISBUSY ) ) ) {
     IsBusy = ( msg.Val().toInt() == 1 );
     if ( IsBusy )
@@ -157,6 +158,7 @@ bool AUnit0::GetValue( void )
 
 void AUnit0::ClrBusy( SMsg msg )
 {
+  //  if ( msg.ToCh() == Uid )  // イベントを受ける可能性があるのでこのチェックは入れられない
   if ( ( msg.From() == DevCh ) || ( msg.From() == Dev ) ) {
     busy2Off( Dev );
   }
@@ -172,6 +174,7 @@ void AUnit0::SetCurPos( SMsg msg )
   QString buf;
 
   if ( ( msg.From() == DevCh )
+  //  if ( ( msg.ToCh() == Uid )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
             || ( msg.Msgt() == READ ) ) ) {
     Value = msg.Vals().at( 0 );   // 値並びの場合は先頭の値

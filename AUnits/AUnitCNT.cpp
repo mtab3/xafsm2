@@ -13,7 +13,7 @@ void AUnitCNT::init0( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", Dev, "SetStopMode", "T" );
+  s->SendCMD2( Uid, Dev, "SetStopMode", "T" );
 
   Type2 = "TYPE2-CNT";
   
@@ -22,12 +22,12 @@ void AUnitCNT::init0( void )
 
 void AUnitCNT::init00( void )
 {
-  s->SendCMD2( "Init", Dev, "IsBusy" );
+  s->SendCMD2( Uid, Dev, "IsBusy" );
 }
 
 void AUnitCNT2::init00( void )
 {
-  s->SendCMD2( "Init", Dev, "IsBusy" );
+  s->SendCMD2( Uid, Dev, "IsBusy" );
 
   connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
@@ -65,7 +65,7 @@ bool AUnitCNT2::_InitSensor( void )
   switch( LocalStage ) {
   case 0:
     busy2On( Dev2, "InitSensor-c0" );
-    s->SendCMD2( "Scan", DevCh2, "Reset", "" );
+    s->SendCMD2( Uid, DevCh2, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
@@ -73,15 +73,15 @@ bool AUnitCNT2::_InitSensor( void )
     busy2On( Dev2, "InitSensor-c1" );
     if ( autoRange ) {
       if ( Type2 == "PAM" )
-	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "1" );
+	s->SendCMD2( Uid, DevCh2, "SetAutoRangeEnable", "1" );
       if ( Type2 == "PAM2" )
-	s->SendCMD2( "Scan", Dev2, "SetAutoRangeEnable " + Ch2, "1" );
+	s->SendCMD2( Uid, Dev2, "SetAutoRangeEnable " + Ch2, "1" );
       LocalStage = 3;
     } else {
       if ( Type2 == "PAM" )
-	s->SendCMD2( "Scan", DevCh2, "SetAutoRangeEnable", "0" );
+	s->SendCMD2( Uid, DevCh2, "SetAutoRangeEnable", "0" );
       if ( Type2 == "PAM2" )
-	s->SendCMD2( "Scan", Dev2, "SetAutoRangeEnable " + Ch2, "0" );
+	s->SendCMD2( Uid, Dev2, "SetAutoRangeEnable " + Ch2, "0" );
       LocalStage = 2;
     }
     rv = true;
@@ -89,12 +89,12 @@ bool AUnitCNT2::_InitSensor( void )
   case 2:
     busy2On( Dev2, "InitSensor-c2" );
     if ( Type2 == "PAM" ) {
-      s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
+      s->SendCMD2( Uid, DevCh2, "SetRange", QString( "2E%1" ).arg( SelectedRange ) );
       LocalStage++;
       rv = true;
     }
     if ( Type2 == "PAM2" ) {
-      s->SendCMD2( "Scan", Dev2, "SetRange " + Ch2,
+      s->SendCMD2( Uid, Dev2, "SetRange " + Ch2,
 		   QString( "2E%1" ).arg( SelectedRange ) );
       LocalStage+=2;     // PAM2 の時は、LocalStage == 3 をとばす
       rv = false;
@@ -102,7 +102,7 @@ bool AUnitCNT2::_InitSensor( void )
     break;
   case 3:
     busy2On( Dev2, "InitSensor-c3" );
-    s->SendCMD2( "Scan", DevCh2, "SetZeroCheckEnable", "0" );
+    s->SendCMD2( Uid, DevCh2, "SetZeroCheckEnable", "0" );
     rv = false;
     LocalStage++;
     break;
@@ -277,10 +277,10 @@ void AUnitCNT2::SetRange( int range )
   // keithley ( PAM/PAM2 )なのでそれ用の処理をしておく
   QString Type2 = The2ndDev->type();
   if ( Type2 == "PAM" ) {
-    s->SendCMD2( "Scan", DevCh2, "SetRange", QString( "2E%1" ).arg( range ) );
+    s->SendCMD2( Uid, DevCh2, "SetRange", QString( "2E%1" ).arg( range ) );
   }
   if ( Type2 == "PAM2" ) {
-    s->SendCMD2( "Scan", Dev2, "SetRange " + Ch2,
+    s->SendCMD2( Uid, Dev2, "SetRange " + Ch2,
 		 QString( "2E%1" ).arg( range ) );
   }
   SelectedRange = range;

@@ -12,7 +12,7 @@ void AUnitLSR::init0( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL(EvReportInjection( SMsg )), this, SLOT(OnReportInjection( SMsg )),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", Dev, "flgon", Ch );
+  s->SendCMD2( Uid, Dev, "flgon", Ch );
 }
 
 void AUnitLSR::OnReportCurrent( SMsg msg )

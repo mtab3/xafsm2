@@ -164,7 +164,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void setROIs( void );
 
 public slots:
-  void getMCASettings( int ch );
+  void GetMCASettings( int ch );
   void setAllROIs( void );
 
  signals:

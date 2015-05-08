@@ -13,7 +13,7 @@ AUnitAIOo::AUnitAIOo( void )
 
 void AUnitAIOi::init0( void )
 {
-  s->SendCMD2( "Init", Dev, "IsBusy" );
+  s->SendCMD2( Uid, Dev, "IsBusy" );
 }
 
 void AUnitAIOo::init0( void )
@@ -25,8 +25,8 @@ void AUnitAIOo::init0( void )
   connect( s, SIGNAL( AnsShutterOff( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  s->SendCMD2( "Init", DevCh, "Init" );
-  s->SendCMD2( "Init", Dev, "IsBusy" );
+  s->SendCMD2( Uid, DevCh, "Init" );
+  s->SendCMD2( Uid, Dev, "IsBusy" );
 }
 
 void AUnitAIOi::SetIsBusyByMsg( SMsg msg )
