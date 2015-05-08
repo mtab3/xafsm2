@@ -84,11 +84,11 @@ void AUnitXMAP::init0( void )
 	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
-  s->SendCMD2( "Init", Dev, "RunStop" );
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
+  s->SendCMD2( Uid, Dev, "RunStop" );
 
   connectingDLink = false;          // new
-  s->SendCMD2( "Init", Dev, "GetDataLinkCh" );
+  s->SendCMD2( Uid, Dev, "GetDataLinkCh" );
 }
 
 void AUnitXMAP::ReactGetDataLinkCh( SMsg msg )
@@ -132,13 +132,13 @@ bool AUnitXMAP::InitSensor( void )
   switch( LocalStage ) {
   case 0:
     busy2On( Dev, "InitSensor-c0" );
-    s->SendCMD2( "Init", Dev, "RunStop" );
+    s->SendCMD2( Uid, Dev, "RunStop" );
     LocalStage++;
     rv = true;
     break;
   case 1:
     busy2On( Dev, "InitSensor-c1" );
-    s->SendCMD2( "Init", Dev, "SetPresetType", SSDPresetType );
+    s->SendCMD2( Uid, Dev, "SetPresetType", SSDPresetType );
     LocalStage++;
     rv = true;
     break;
@@ -148,7 +148,7 @@ bool AUnitXMAP::InitSensor( void )
     for ( int i = 1; i < chs(); i++ ) {
       ROIs += " " + ROIStart[i] + " " + ROIEnd[i];
     }
-    s->SendCMD2( "Init", Dev, "SetROIs", ROIs );
+    s->SendCMD2( Uid, Dev, "SetROIs", ROIs );
     LocalStage++;
     rv = false;
     break;
@@ -401,7 +401,7 @@ void AUnitXMAP::SetLowLimit( int ch, int llpix )
 {
   if ( ch < chs() ) {
     //    MCALowLimit[ ch ] = llpix;
-    s->SendCMD2( "SSDSetting", Dev,
+    s->SendCMD2( Uid, Dev,
 		 QString( "SetLLimit %1 %2" ).arg( ch ).arg( llpix ) );
   } else {
     qDebug() << "Setting LowLimit the ch " << ch << "is too big";
@@ -458,6 +458,23 @@ void AUnitXMAP::setGain( int ch, double gain )
 {
   s->SendCMD2( Uid, Dev, QString( "SetPreAMPGain %1 %2" ).arg( ch ).arg( gain ) );
 }
+
+void AUnitXMAP::readGain( int ch )
+{
+  s->SendCMD2( Uid, Dev, QString( "GetPreAMPGain %1" ).arg( ch ) );
+}
+
+void AUnitXMAP::getMCASettings( int ch )
+{
+  s->SendCMD2( Uid, Dev, "GetPeakingTime", QString::number( ch ) );
+  s->SendCMD2( Uid, Dev, "GetThreshold", QString::number( ch ) );
+  s->SendCMD2( Uid, Dev, "GetCalibration", QString::number( ch ) );
+  s->SendCMD2( Uid, Dev, "GetDynamicRange", QString::number( ch ) );
+  s->SendCMD2( Uid, Dev, "GetPreAMPGain", QString::number( ch ) );
+
+  GetMCAs();
+}
+
 
 void AUnitXMAP::ReceiveValues( SMsg msg )
 {

@@ -378,8 +378,11 @@ void MainWindow::newCalibration( void )
       // gain の設定は何故か逆
       SFluo->setGain( MCACh->value(), GainInput->text().toDouble() / ratio );
       // 設定したゲインの読み出し
-      s->SendCMD2( "SetUpMCA", SFluo->dev(),
+      SFluo->readGain( MCACh->value() );
+#if 0
+      s->SendCMD2( "SetUpMCA", SFluo->dev(),   /* not be used */
 		   "GetPreAMPGain", QString::number( MCACh->value() ) );
+#endif
     }
   }
 }
@@ -635,18 +638,20 @@ void MainWindow::SelSSDs( int ch )
   }
 }
 
-void MainWindow::getMCASettings( int ch )
-{
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetThreshold", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetCalibration", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetDynamicRange", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPreAMPGain", QString::number( ch ) );
+/*
+ *void MainWindow::getMCASettings( int ch )
+ *{
+ *  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPeakingTime", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetThreshold", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetCalibration", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetDynamicRange", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetPreAMPGain", QString::number( ch ) );
+ *
+ *  SFluo->GetMCAs();
+ *}
+ */
 
-  SFluo->GetMCAs();
-}
-
-void MainWindow::getMCALen( SMsg msg )  // 初期化の時に一回しか呼ばれないと信じる
+void MainWindow::getMCALen( SMsg /* msg */ )  // 初期化の時に一回しか呼ばれないと信じる
 {
   if ( MwSSDGotMCALen )
     return;
@@ -720,7 +725,8 @@ void MainWindow::MCAChSelected( int i )
 
   emit NewMCACh( cMCACh );
 
-  getMCASettings( cMCACh );
+  if ( SFluo != NULL )
+    SFluo->getMCASettings( cMCACh );
   ROIStartInput->setText( ROIStart[ cMCACh ] );
   ROIEndInput->setText( ROIEnd[ cMCACh ] );
   if ( cMCAView != NULL ) {

@@ -461,7 +461,14 @@ void MainWindow::QXafsMeasSequence( void )
     qDebug() << "Big Tune";
     if ( MStabOk && MPSet.TuneAtEachStep ) {
       if ( MPSet.TuneESAbs ) {
-	s->SendCMD2( "TuneAtEP", MStabDrv,
+	if ( MPSet.TuneESQuick ) {
+	  MMStab->GoMaxAbsQ( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps,
+			     MPSet.TuneESQuickTime );
+	} else {
+	  MMStab->GoMaxAbs( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps );
+	}
+#if 0
+	s->SendCMD2( "TuneAtEP", MStabDrv,   // not be used
 		     QString( "GoMaxAbs %1 %2 %3 %4 %5" )
 		     .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
 		     .arg( MPSet.TuneESStart )
@@ -469,14 +476,22 @@ void MainWindow::QXafsMeasSequence( void )
 		     .arg( MPSet.TuneESSteps )
 		     .arg( ( MPSet.TuneESQuick )
 			   ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
+#endif
       } else {
-	s->SendCMD2( "TuneAtEP", MStabDrv,
+	if ( MPSet.TuneESQuick ) {
+	  MMStab->GoMaxRelQ( MPSet.TuneESStart, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
+	} else {
+	  MMStab->GoMaxRel( MPSet.TuneESStart, MPSet.TuneESSteps );
+	}
+#if 0
+	s->SendCMD2( "TuneAtEP", MStabDrv,   // not be used
 		     QString( "GoMaxRel %1 %2 %3 %4" )
 		     .arg( ( MPSet.TuneESQuick ) ? 1 : 0 )
 		     .arg( MPSet.TuneESStart )
 		     .arg( MPSet.TuneESSteps )
 		     .arg( ( MPSet.TuneESQuick )
 			   ? QString::number( MPSet.TuneESQuickTime ) : "" ) );
+#endif
       }
     }
     EncMainTh->GetValue();

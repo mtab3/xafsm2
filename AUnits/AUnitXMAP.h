@@ -90,6 +90,8 @@ class AUnitXMAP : public ASensor
   XMAPHead getAMCAHead( int ch );
   
   void setGain( int ch, double gain );
+  void readGain( int ch );
+  void getMCASettings( int ch );
   void setROIs( QString *roistart, QString *roiend )
   { ROIStart = roistart; ROIEnd = roiend; };
 

@@ -721,7 +721,7 @@ private slots:
   void showDynamicRange( SMsg msg );
   void showPreAMPGain( SMsg msg );
   void getMCALen( SMsg msg );
-  void getMCASettings( int ch );
+  //  void getMCASettings( int ch );
   void newROIStart( const QString &newv );
   void newROIEnd( const QString &newv );
   void showCurrentValues( int, int );

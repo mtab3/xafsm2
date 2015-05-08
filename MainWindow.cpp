@@ -313,22 +313,26 @@ void MainWindow::Initialize( void )
   resize( 1, 1 );
   SendListNodes();
   if ( SFluo != NULL ) {
-    getMCASettings( MCACh->text().toInt() );
-    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetMCALength" );
+    SFluo->getMCASettings( MCACh->text().toInt() );
+    // 今は MCA Length は定義ファイルで指定
+    //    s->SendCMD2( "SetUpMCA", SFluo->dev(), "GetMCALength" );
     for ( int i = 0; i < MCAGains.count(); i++ ) {
       SFluo->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
     }
     //    setPreAMPGains();
   }
+#if 0  // 各 Unit(Driver)の Initialize でやる
   for ( int i = 0; i < DriverList.count(); i++ ) {
-    s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
+    s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) ); // not be used
   }
+#endif
   pmConds->Initialize();
 }
 
+// これは個別のUnit(Driver)とは関係なく、Stars server と XafsM2 の間のやり取りなのでここで OK
 void MainWindow::SendListNodes( void )
 {
-  s->SendCMD2( "Initialize", "System", "listnodes" );
+  s->SendCMD2( "Initialize", "System", "listnodes" );  // OK to be here
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )

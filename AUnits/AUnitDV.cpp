@@ -60,7 +60,7 @@ bool AUnitDV::InitSensor( void )
 bool AUnitDV::_InitSensor( void )
 {
   busy2On( Dev, "InitSensor-c0" );
-  s->SendCMD2( "Scan", DevCh, "Reset", "" );
+  s->SendCMD2( Uid, DevCh, "Reset", "" );
   return false;
 }
 
@@ -71,13 +71,13 @@ bool AUnitDV2::_InitSensor( void )
   switch( LocalStage ) {
   case 0:
     busy2On( Dev, "InitSensor-c0" );
-    s->SendCMD2( "Scan", DevCh, "Reset", "" );
+    s->SendCMD2( Uid, DevCh, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
   case 1:
     busy2On( Dev, "InitSensor-c1" );
-    s->SendCMD2( "Scan", DevCh, "SetAutoZero", "OFF" );
+    s->SendCMD2( Uid, DevCh, "SetAutoZero", "OFF" );
     LocalStage++;
     rv = false;
     break;

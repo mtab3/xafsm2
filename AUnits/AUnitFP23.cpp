@@ -8,12 +8,12 @@ AUnitFP23::AUnitFP23( void )
 void AUnitFP23::init0( void )
 {
   setMeasIntegral( false );  // 測定値の大きさは計測時間に比例しない
-  s->SendCMD2( "Init", Dev, "flgon", Ch );
-  s->SendCMD2( "Init", "System", "flgon", Dev );
+  s->SendCMD2( Uid, Dev, "flgon", Ch );
+  s->SendCMD2( Uid, "System", "flgon", Dev );
 
   connect( s, SIGNAL( EvReportValue(SMsg) ), this, SLOT( OnReportValue(SMsg) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
 void AUnitFP23::OnReportValue( SMsg msg )

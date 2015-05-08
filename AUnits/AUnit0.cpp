@@ -67,19 +67,19 @@ void AUnit0::Initialize( Stars *S )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsRead( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", "System", "flgon", Dev );
-  s->SendCMD2( "Init", "System", "flgon", DevCh );
-  
+  s->SendCMD2( Uid, "System", "flgon", Dev );
+  s->SendCMD2( Uid, "System", "flgon", DevCh );
+
   init();   // 各ユニットに固有の処理
 
   if ( ID == "THETA" ) {
     AskIsBusy();
     GetValue();
   }
-  if ( ID == "TotalF" ) {
+  if ( Type == "SSD" ) {
     connect( s, SIGNAL( AnsGetMCALength( SMsg ) ), this, SLOT( getMCALength( SMsg ) ),
 	     Qt::UniqueConnection );
-    s->SendCMD2( "SetUpMCA", Dev, "GetMCALength" );
+    s->SendCMD2( Uid, Dev, "GetMCALength" );
   }
   if ( ID == "ENCTH" ) {
     GetValue();
