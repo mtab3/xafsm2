@@ -309,9 +309,10 @@ void MainWindow::Initialize( void )
   }
   resize( 1, 1 );
   SendListNodes();
+
   for ( int i = 0; i < SFluos.count(); i++ ) {
-    SSFluos[i]->getMCASettings( SSFluos[i]->mcaCh() );
-    s->SendCMD2( "SetUpMCA", SFluos[i]->dev(), "GetMCALength" );
+    SSFluos[i]->GetMCASettings( SSFluos[i]->mcaCh() );
+    //    s->SendCMD2( "SetUpMCA", SFluos[i]->dev(), "GetMCALength" );
   }
   for ( int i = 0; i < MCAGains.count(); i++ ) {
     SFluos[ MCAGains[i]->dNo ]->setGain( MCAGains[i]->ch, MCAGains[i]->gain );

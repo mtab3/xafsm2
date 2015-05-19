@@ -492,19 +492,25 @@ void SetUpSFluo::SelSSDs( int ch )
 }
 #endif
 
-void SetUpSFluo::getMCASettings( int ch )
+void SetUpSFluo::GetMCASettings( int ch )
 {
-  if ( s == NULL )
-    return;
-  
-  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetPeakingTime", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetThreshold", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetCalibration", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetDynamicRange", QString::number( ch ) );
-  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetPreAMPGain", QString::number( ch ) );
-  
-  SFluo0->GetMCAs();
+  SFluo0->getMCASettings( ch );
 }
+/*
+ *void SetUpSFluo::getMCASettings( int ch )
+ *{
+ *  if ( s == NULL )
+ *    return;
+ *  
+ *  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetPeakingTime", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetThreshold", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetCalibration", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetDynamicRange", QString::number( ch ) );
+ *  s->SendCMD2( "SetUpMCA", SFluo0->dev(), "GetPreAMPGain", QString::number( ch ) );
+ *  
+ *  SFluo0->GetMCAs();
+ *}
+ */
 
 void SetUpSFluo::setROILen( void )
 {
@@ -576,7 +582,7 @@ void SetUpSFluo::MCAChSelected( int i )
   if ( i >= MaxChs ) { MCACh->setValue( 0 ); i = 0; }
   cMCACh = i;
 
-  getMCASettings( cMCACh );
+  SFluo0->getMCASettings( cMCACh );
   ROIStartInput->setText( ROIStart[ cMCACh ] );
   ROIEndInput->setText( ROIEnd[ cMCACh ] );
 
@@ -875,7 +881,8 @@ void SetUpSFluo::newCalibration( void )
   // gain の設定は何故か逆
   SFluo0->setGain( MCACh->text().toInt(), GainInput->text().toDouble() / ratio );
   // 設定したゲインの読み出し
-  s->SendCMD2( "SetUpMCA", SFluo0->dev(),
-	       "GetPreAMPGain", QString::number( MCACh->text().toInt() ) );
+  SFluo0->readGain( MCACh->text().toInt() );
+  //  s->SendCMD2( "SetUpMCA", SFluo0->dev(),
+  //	       "GetPreAMPGain", QString::number( MCACh->text().toInt() ) );
 }
 
