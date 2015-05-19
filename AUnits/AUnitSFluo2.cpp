@@ -7,7 +7,7 @@ void AUnitSFluo2::init0( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsSetROIs( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", "System", "flgon", DevCh );
+  s->SendCMD2( Uid, "System", "flgon", DevCh );
 }
 
 double AUnitSFluo2::stat( STATELM i )

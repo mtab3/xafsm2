@@ -18,6 +18,6 @@ void AUnitPZ::init0( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsShutterOff( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", DevCh, "Init" );
+  s->SendCMD2( Uid, DevCh, "Init" );
 
 }

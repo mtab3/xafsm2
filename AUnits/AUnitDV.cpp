@@ -5,6 +5,7 @@
 
 AUnitDV::AUnitDV( void )
 {
+  setTime = 1;
   points = 0;
   //  HasMaxIntTime = false;
   //  MaxIntTime = 1000000;   // $B==J,Bg$-$$(B
@@ -15,6 +16,8 @@ void AUnitDV::init0( void )
   setMeasIntegral( false );  // $BB,DjCM$NBg$-$5$O7WB,;~4V$KHfNc$7$J$$(B
   connect( s, SIGNAL( AnsReset( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
+
+  Type2 = "TYPE2-DV-family";
 
   init00();
 }
@@ -46,7 +49,7 @@ void AUnitDV3::init000( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsCountStart( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  setMeasIntegral( true );  // $BB,DjCM$NBg$-$5$O7WB,;~4V$KHfNc$7$J$$(B
+  setMeasIntegral( false );  // $BB,DjCM$NBg$-$5$O7WB,;~4V$KHfNc$7$J$$(B
 }
 
 bool AUnitDV::InitSensor( void )
@@ -57,7 +60,7 @@ bool AUnitDV::InitSensor( void )
 bool AUnitDV::_InitSensor( void )
 {
   busy2On( Dev, "InitSensor-c0" );
-  s->SendCMD2( "Scan", DevCh, "Reset", "" );
+  s->SendCMD2( Uid, DevCh, "Reset", "" );
   return false;
 }
 
@@ -68,13 +71,13 @@ bool AUnitDV2::_InitSensor( void )
   switch( LocalStage ) {
   case 0:
     busy2On( Dev, "InitSensor-c0" );
-    s->SendCMD2( "Scan", DevCh, "Reset", "" );
+    s->SendCMD2( Uid, DevCh, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
   case 1:
     busy2On( Dev, "InitSensor-c1" );
-    s->SendCMD2( "Scan", DevCh, "SetAutoZero", "OFF" );
+    s->SendCMD2( Uid, DevCh, "SetAutoZero", "OFF" );
     LocalStage++;
     rv = false;
     break;
@@ -262,4 +265,21 @@ bool AUnitDV3::_GetValue0( void )  // $BCMFI$_=P$7%3%^%s%I$NA0$K2?$+I,MW$J%?%$%
   }
 
   return rv;
+}
+
+void AUnitDV3::SetCurPos( SMsg msg )    // DV3 $B$NLa$jCM$O(B cps ( count $B$G$O$J$$(B )
+{
+  QString buf;
+
+  if ( ( msg.ToCh() == Uid ) && ( msg.Msgt() == GETVALUE ) ) {
+    double val;
+    if ( msg.Vals().count() > 0 )
+      val = msg.Vals()[0].toDouble();
+    else
+      val = 0;
+    Value = QString::number( val / ( ( setTime == 0 ) ? 1 : setTime ) );
+    qDebug() << "in DV3 returnning normalized val " << Value << measIntegral << Type << Uid << setTime << Name << Type2;
+    emit NewValue( Value );
+    busy2Off( Dev );
+  }
 }

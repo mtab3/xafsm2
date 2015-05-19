@@ -316,15 +316,18 @@ void MainWindow::Initialize( void )
   for ( int i = 0; i < MCAGains.count(); i++ ) {
     SFluos[ MCAGains[i]->dNo ]->setGain( MCAGains[i]->ch, MCAGains[i]->gain );
   }
+#if 0  // 各 Unit(Driver)の Initialize でやる
   for ( int i = 0; i < DriverList.count(); i++ ) {
-    s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) );
+    s->SendCMD2( "Initialize", "System", "flgon", DriverList.at(i) ); // not be used
   }
+#endif
   pmConds->Initialize();
 }
 
+// これは個別のUnit(Driver)とは関係なく、Stars server と XafsM2 の間のやり取りなのでここで OK
 void MainWindow::SendListNodes( void )
 {
-  s->SendCMD2( "Initialize", "System", "listnodes" );
+  s->SendCMD2( "Initialize", "System", "listnodes" );  // OK to be here
 }
 
 void MainWindow::ShowMessageOnSBar( QString msg, int time )

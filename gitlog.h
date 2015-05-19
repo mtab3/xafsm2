@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Apr 28 20:37:51 2015 +0900\n"\
+                "    lion\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Apr 28 20:24:56 2015 +0900\n"\
                 "    merged with master\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Apr 27 18:29:50 2015 +0900\n"\
                 "    working on DV\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Apr 24 14:42:40 2015 +0900\n"\
-                "    merged with origin/newMwSSD2\n"\
 		"\n"\
                 ""
 #endif

@@ -21,7 +21,7 @@ void AMotor::init( void )
   connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  s->SendCMD2( "Init", DevCh, "GetValue" );
+  s->SendCMD2( Uid, DevCh, "GetValue" );
 
   init0();  // 更に個別のユニットの初期化を行うための仮想関数
 }

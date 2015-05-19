@@ -19,8 +19,8 @@ void AUnitENC::init00( void )
 {
   //  connect( s, SIGNAL( EvChangedValue( SMsg ) ), this, SLOT( SetCurPos( SMsg ) ),
   //	   Qt::UniqueConnection );
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
-  s->SendCMD2( "Init", DevCh, "GetValue" );
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
+  s->SendCMD2( Uid, DevCh, "GetValue" );
 }
 
 void AUnitENC2::init00( void )
@@ -51,7 +51,7 @@ bool AUnitENC2::_InitSensor( void )
 
   if ( Type == "ENC2" ) {
     busy2On( Dev, "InitSensor-c0" );
-    s->SendCMD2( "Init", DevCh, "GetValue" );
+    s->SendCMD2( Uid, DevCh, "GetValue" );
     LocalStage++;
     rv = false;
   }

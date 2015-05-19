@@ -814,10 +814,8 @@ void MainWindow::SetStdXAFSBLKs( void )
       BLKpoints[i]->setText( buf );
 
     buf.sprintf( "% 5.2f", 1.0 );
-    BLKdwell[0]->setText( buf );
-    BLKdwell[1]->setText( buf );
-    BLKdwell[2]->setText( buf );
-    BLKdwell[3]->setText( buf );
+    for ( int i = 0; i < 4; i++ )
+      BLKdwell[i]->setText( buf );
     buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 4; i < MaxBLKs; i++ )
       BLKdwell[i]->setText( buf );
@@ -858,6 +856,7 @@ void MainWindow::SetStdXANESBLKs( void )
     buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 1; i < MaxBLKs; i++ )
       BLKdwell[i]->setText( buf );
+    
   } else {
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.20 ) );
     BLKstart[0]->setText( buf );
@@ -885,6 +884,15 @@ void MainWindow::SetStdXANESBLKs( void )
     buf.sprintf( "% 4d", 0 );
     for ( int i = 3; i < MaxBLKs; i++ )
       BLKpoints[i]->setText( buf );
+
+    buf.sprintf( "% 5.2f", 1.0 );
+    for ( int i = 0; i < 3; i++ )
+      BLKdwell[i]->setText( buf );
+    buf.sprintf( "% 5.2f", 0.0 );
+    for ( int i = 3; i < MaxBLKs; i++ )
+      BLKdwell[i]->setText( buf );
+    
+    ChangeBLKs( 3 );
   }
   ShowBLKs();
 

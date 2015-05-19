@@ -20,7 +20,7 @@ void AUnitPAM::init0( void )
 
 void AUnitPAM::init00( void )
 {
-  s->SendCMD2( "Init", DevCh, "IsBusy" );
+  s->SendCMD2( Uid, DevCh, "IsBusy" );
 }
 
 void AUnitPAM2::init00( void )    // PAM と PAM2 で違ってる
@@ -28,7 +28,7 @@ void AUnitPAM2::init00( void )    // PAM と PAM2 で違ってる
   connect( s, SIGNAL( AnsRead( SMsg ) ),this, SLOT( RcvAnsGetValueOfDriver( SMsg ) ),
 	   Qt::UniqueConnection );
 
-  s->SendCMD2( "Init", Dev, "IsBusy" );
+  s->SendCMD2( Uid, Dev, "IsBusy" );
 }
 
 bool AUnitPAM::InitSensor( void )
@@ -40,25 +40,25 @@ bool AUnitPAM::InitSensor( void )
   switch( LocalStage ) {
   case 0:
     busy2On( Dev, "InitSensor-c0" );
-    s->SendCMD2( "Scan", dev, "Reset", "" );
+    s->SendCMD2( Uid, dev, "Reset", "" );
     LocalStage++;
     rv = true;
     break;
   case 1:
     busy2On( Dev, "InitSensor-c1" );
     if ( Type == "PAM" ) 
-      s->SendCMD2( "Scan", dev, "SetAutoRangeEnable", "1" );
+      s->SendCMD2( Uid, dev, "SetAutoRangeEnable", "1" );
     if ( Type == "PAM2" ) 
-      s->SendCMD2( "Scan", dev, "SetAutoRangeEnable " + Ch, "1" );
+      s->SendCMD2( Uid, dev, "SetAutoRangeEnable " + Ch, "1" );
     LocalStage++;
     rv = true;
     break;
   case 2:
     busy2On( Dev, "InitSensor-c2" );
     if ( Type == "PAM" )
-      s->SendCMD2( "Scan", dev, "SetDataFormatElements", "READ" );
+      s->SendCMD2( Uid, dev, "SetDataFormatElements", "READ" );
     if ( Type == "PAM2" )
-      s->SendCMD2( "Scan", dev, "SetDataFormatElements", "CURR1,CURR2" );
+      s->SendCMD2( Uid, dev, "SetDataFormatElements", "CURR1,CURR2" );
     
     if ( Type == "PAM" ) {
       LocalStage++;
@@ -70,7 +70,7 @@ bool AUnitPAM::InitSensor( void )
     break;
   case 3:
     busy2On( Dev, "InitSensor-c3" );
-    s->SendCMD2( "Scan", dev, "SetZeroCheckEnable", "0" );
+    s->SendCMD2( Uid, dev, "SetZeroCheckEnable", "0" );
     rv = false;
     LocalStage++;
     break;
@@ -146,10 +146,10 @@ void AUnitPAM::SetRange( int range )
 
 void AUnitPAM::_SetRange( int range )
 {
-  s->SendCMD2( "Scan", DevCh, "SetRange", QString( "2E%1" ).arg( range ) );
+  s->SendCMD2( Uid, DevCh, "SetRange", QString( "2E%1" ).arg( range ) );
 }
 
 void AUnitPAM2::_SetRange( int range )
 {
-  s->SendCMD2( "Scan", Dev, "SetRange " + Ch, QString( "2E%1" ).arg( range ) );
+  s->SendCMD2( Uid, Dev, "SetRange " + Ch, QString( "2E%1" ).arg( range ) );
 }
