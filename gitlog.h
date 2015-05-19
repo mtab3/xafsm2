@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri May 8 12:28:32 2015 +0900\n"\
+                "    Now, all of the messages to the drivers connecting Stars are sent via the AUnit.   When a message is sent to Stars via an AUnit, the from-ch is always set as Uid\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 7 17:11:56 2015 +0900\n"\
                 "    before changing 'From() == DevCh' to 'ToCh() == Uid'\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Apr 24 14:38:18 2015 +0900\n"\
                 "    max limit of dwell time for QXAFS can be set for each devices in XAFSM.def\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Apr 10 12:54:04 2015 +0900\n"\
-                "    the Dark proble is solved\n"\
 		"\n"\
                 ""
 #endif
