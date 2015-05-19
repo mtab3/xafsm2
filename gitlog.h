@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "master" )
+#define BRANCH_NAME ( "QXafs4" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue May 19 14:05:26 2015 +0900\n"\
+                "    fix the Std-XANES-Block-parameter\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri May 8 12:28:32 2015 +0900\n"\
                 "    Now, all of the messages to the drivers connecting Stars are sent via the AUnit.   When a message is sent to Stars via an AUnit, the from-ch is always set as Uid\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Apr 27 18:29:50 2015 +0900\n"\
                 "    working on DV\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Apr 24 14:38:18 2015 +0900\n"\
-                "    max limit of dwell time for QXAFS can be set for each devices in XAFSM.def\n"\
 		"\n"\
                 ""
 #endif

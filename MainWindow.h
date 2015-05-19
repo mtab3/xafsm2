@@ -535,6 +535,7 @@ private:
   QStringList QXafsOk, NXafsOk, CScanOk;
   bool isQXafsModeAvailable;
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
+  int SaveSelectedAux1, SaveSelectedAux2;
   bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;

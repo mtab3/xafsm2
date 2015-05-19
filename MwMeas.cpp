@@ -1501,11 +1501,10 @@ void MainWindow::StartMeasurement( void )
     ClearXViewScreenForMeas( MeasView );
     if ( QXafsMode->isChecked() ) {
       MeasView->SetQXafsMode( true );
-      if ( ! UseAux1->isChecked() ) {
-	MeasView->SetGroupLines( 3 );
-      } else {
-	MeasView->SetGroupLines( 5 );
-      }
+      int lines = 3;
+      lines += ( UseAux1->isChecked()) ? 2 : 0;
+      lines += ( UseAux2->isChecked()) ? 2 : 0;
+      MeasView->SetGroupLines( lines );
     } else {
       MeasView->SetQXafsMode( false );
     }
