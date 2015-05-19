@@ -546,7 +546,9 @@ private:
   bool isQXafsModeAvailable;
   int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
   QVector<bool> SaveUseSFluos;
+  int SaveSelectedAux1, SaveSelectedAux2;
   bool SaveUseAux1, SaveUseAux2;
+
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
   double RunUpRate, RunUpTime, QXafsDwellTime;

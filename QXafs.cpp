@@ -78,6 +78,8 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SaveSelectedI0 = SelectI0->currentIndex();
     SaveSelectedI1 = SelectI1->currentIndex();
+    SaveSelectedAux1 = SelectAux1->currentIndex();
+    SaveSelectedAux2 = SelectAux2->currentIndex();
     SetUpSensorComboBoxes();
 
     for ( int i = 0; i < I0Sensors.count(); i++ ) {
@@ -140,7 +142,7 @@ void MainWindow::ToggleQXafsMode( bool )
     for ( int i = 0; i < UseSFluos.count(); i++ )  // OK
       UseSFluos[i]->setEnabled( false );           // OK
     UseAux1->setEnabled( true );       // QXafs で使えることにする
-    UseAux2->setEnabled( false );      // やっぱこっちは使えないまま
+    UseAux2->setEnabled( true );      // やっぱこっちは使えないまま -> 使えることにする
 
     SetNewRPTLimit();
 
@@ -174,8 +176,12 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SelectI0->setCurrentIndex( SaveSelectedI0 );
     SelectI1->setCurrentIndex( SaveSelectedI1 );
+
     for ( int i = 0; i < UseSFluos.count(); i++ )   // OK
       UseSFluos[i]->setChecked( SaveUseSFluos[i] ); // OK
+
+    SelectAux1->setCurrentIndex( SaveSelectedAux1 );
+    SelectAux2->setCurrentIndex( SaveSelectedAux2 );
     UseAux1->setChecked( SaveUseAux1 );
     UseAux2->setChecked( SaveUseAux1 );
     for ( int i = 0; i < UseSFluos.count(); i++ )   // OK
@@ -753,8 +759,8 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
   double upp = MMainTh->upp();
   double deg2;
   double upp2 = 0;
-  double E, I0, I00, I1, I2;
-  I2 = 0;
+  double E, I0, I00, I1, I2, I3;
+  I3 = I2 = 0;
 
   if ( Enc2 != NULL ) {
     upp2 = Enc2->upp();
@@ -793,6 +799,8 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     I1 = vals[1][i+1].toDouble() - dark[1];
     if ( Us > 2 )
       I2 = vals[2][i+1].toDouble() - dark[2];
+    if ( Us > 3 )
+      I3 = vals[3][i+1].toDouble() - dark[3];
     L = g * Ls;
 
     // I0
@@ -818,6 +826,31 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
 	  MeasView->NewPoint( L+4, E, log( fabs( I00/I2 ) ) );
 	else 
 	  MeasView->NewPoint( L+4, E, 0 );
+      }
+    }
+
+    // Aux2
+    if ( Us > 3 ) {
+      int dMode = ModeA2->currentIndex();
+      MeasView->NewPoint( L+5, E, I3 );
+      if ( dMode == 0 ) {
+	if ( fabs( I0 ) < 1e-10 ) I0 = 1e-10;
+	MeasView->NewPoint( L+6, E, log( fabs( I3/I0 ) ) );
+      } else {
+	switch( dMode ) {
+	case 1: I00 = I0; break;
+	case 2: I00 = I0; I3*=-1; break;
+	case 3: I00 = I1; break;
+	case 4: I00 = I1; I3*=-1; break;
+	case 5: I00 = I2; break;
+	case 6: I00 = I2; I3*=-1; break;
+	default: I00 = I0;
+	}
+	if ( fabs( I3 ) < 1e-10 ) I3 = 1e-10;
+	if ( I00/I3 > 0 )
+	  MeasView->NewPoint( L+6, E, log( fabs( I00/I3 ) ) );
+	else 
+	  MeasView->NewPoint( L+6, E, 0 );
       }
     }
   }
