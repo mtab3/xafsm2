@@ -7,16 +7,15 @@ void MainWindow::setupChangerArea( void )
   for ( int i = 0; i < Changers.count(); i++ ) {
     for ( int j = 0; j < AMotors.count(); j++ ) {
       if ( Changers[i]->unitID1() == AMotors[j]->uid() ) {
-	Changers[i]->setUnit1( AMotors[j] );
-	//	qDebug() << "Changer " << i << "unit1 " << AMotors[j]->getName();
+        Changers[i]->setUnit1( AMotors[j] );
       }
       if ( Changers[i]->unitID2() == AMotors[j]->uid() ) {
-	Changers[i]->setUnit2( AMotors[j] );
-	//	qDebug() << "Changer " << i << "unit2 " << AMotors[j]->getName();
+        Changers[i]->setUnit2( AMotors[j] );
       }
     }
     ChangerSelect->addItem( Changers[i]->name() );
   }
+
   if ( Changers.count() > 0 ) {
     AutoModeButton->setEnabled( true );
     ChangerGo->setEnabled( true );
@@ -29,6 +28,7 @@ void MainWindow::setupChangerArea( void )
     SetChangerCenter->setEnabled( false );
     DatumChanger->setEnabled( false );
   }
+
   connect( ChangerSelect, SIGNAL( currentIndexChanged( int ) ),
 	   this, SLOT( NewChangerSelected( int ) ),
 	   Qt::UniqueConnection );
@@ -74,7 +74,7 @@ void MainWindow::AutoMeasurement( void )
     MeasA = 0;
     // AutoModeParams.remove( 0 );
     moveToTarget( Changers[ ChangerSelect->currentIndex() ],
-		  AutoModeParams[ MeasA ].num,
+                  AutoModeParams[ MeasA ].num,
                   AutoModeParams[ MeasA ].dx,
                   AutoModeParams[ MeasA ].dz );
   }
@@ -140,7 +140,7 @@ void MainWindow::moveToTarget( Changer *changer, int target, double dx, double d
                    + dx / c1->upp() * changer->dir1();
   int targetz = c2->u2p( changer->spacing2() * iz * changer->dir2() )
                    + dz / c2->upp() * changer->dir2();
-  DFName00 = QString("_%1").arg( (int)MeasA, 4, 10, QChar( '0' ) );
+  DFName00 = QString("_%1").arg( MeasA, 3, 10, QChar( '0' ) );
 
   AutoModeComment = QString( "Sample No. %1 +%2[mm] +%3[mm]" )
     .arg( target ).arg( dx ).arg( dz );

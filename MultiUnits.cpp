@@ -208,7 +208,7 @@ bool MUnits::getValue0( void )
 {
   bool ff = false;
 
-  qDebug() << "mUnits getValue0 " << PUnits.count();
+  // qDebug() << "mUnits getValue0 " << PUnits.count();
   for ( int i = 0; i < PUnits.count(); i++ ) {
     ff |= PUnits.at(i)->au->GetValue0();
   }
@@ -237,7 +237,7 @@ bool MUnits::getValue( void )
       ff |= PUnits.at(i)->au->GetValue();
   }
   for ( int i = 0; i < Units.count(); i++ ) {
-    qDebug() << "mGetValue " << i << Units.at(i)->au->uid() << Units.at(i)->au->name() << Units.at(i)->au->type() << Units.at(i)->au->type2();
+    // qDebug() << "mGetValue " << i << Units.at(i)->au->uid() << Units.at(i)->au->name() << Units.at(i)->au->type() << Units.at(i)->au->type2();
     if ( Units.at(i)->au->type() != "PAM2" )
       ff |= Units.at(i)->au->GetValue();
   }

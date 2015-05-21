@@ -1629,7 +1629,7 @@ void MainWindow::SetupMPSet( MeasPSet *aSet )
     aSet->mUnits.addUnit( mMeasUnits.at(i) );
   }
   aSet->fname = EditDFName->text();
-  aSet->fname00 = DFName00;
+  // aSet->fname00 = DFName00;
 
   for ( int i = 0; i < aSet->i0s.count(); i++ ) {
     if ( aSet->i0s[i] != NULL ) {

@@ -9,7 +9,7 @@ struct MeasPSet {
 
   MUnits mUnits;
   QString fname;
-  QString fname00;
+  // QString fname00;
   bool isI1;
   bool isSFluo;
   int totalPoints;
