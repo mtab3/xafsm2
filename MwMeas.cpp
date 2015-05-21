@@ -644,7 +644,7 @@ void MainWindow::SetStdEXAFSBLKs( void )
     for ( int i = 2; i < MaxBLKs+1; i++ )
       BLKstart[i]->setText( buf );
     
-    buf.sprintf( "% 4d", 600 );
+    buf.sprintf( "% 4d", 4666 );
     BLKpoints[0]->setText( buf );
     buf.sprintf( "% 4d", 0 );
     for ( int i = 1; i < MaxBLKs; i++ )
@@ -720,7 +720,7 @@ void MainWindow::SetStdXAFSBLKs( void )
     for ( int i = 0; i < MaxBLKs; i++ )
       BLKstep[i]->setText( buf );
 
-    buf.sprintf( "% 4d", 600 );
+    buf.sprintf( "% 4d", 4667 );
     BLKpoints[0]->setText( buf );
     buf.sprintf( "% 4d", 0 );
     for ( int i = 1; i < MaxBLKs; i++ )
@@ -785,7 +785,7 @@ void MainWindow::SetStdXANESBLKs( void )
     BLKstart[0]->setText( buf );
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.07 ) );
     BLKstart[1]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, 0.0 ) );
     for ( int i = 2; i < MaxBLKs+1; i++ )
       BLKstart[i]->setText( buf );
 
@@ -793,7 +793,7 @@ void MainWindow::SetStdXANESBLKs( void )
     for ( int i = 0; i < MaxBLKs; i++ )
       BLKstep[i]->setText( buf );
 
-    buf.sprintf( "% 4d", 1000 );
+    buf.sprintf( "% 4d", 333 );
     BLKpoints[0]->setText( buf );
     
     buf.sprintf( "% 5.2f", 1.0 );
@@ -803,11 +803,11 @@ void MainWindow::SetStdXANESBLKs( void )
       BLKdwell[i]->setText( buf );
     
   } else {
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.20 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.30 ) );
     BLKstart[0]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.03 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg - 0.04 ) );
     BLKstart[1]->setText( buf );
-    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.07 ) );
+    buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.05 ) );
     BLKstart[2]->setText( buf );
     buf.sprintf( UnitName[ BLKUnit ].form, u->keV2any( BLKUnit, Eg + 0.30 ) );
     BLKstart[3]->setText( buf );
@@ -820,11 +820,11 @@ void MainWindow::SetStdXANESBLKs( void )
     for ( int i = 0; i < MaxBLKs; i++ )
       BLKstep[i]->setText( buf );
     
-    buf.sprintf( "% 4d", 17 );
+    buf.sprintf( "% 4d", 40 );
     BLKpoints[0]->setText( buf );
     buf.sprintf( "% 4d", 300 );
     BLKpoints[1]->setText( buf );
-    buf.sprintf( "% 4d", 23 );
+    buf.sprintf( "% 4d", 25 );
     BLKpoints[2]->setText( buf );
     buf.sprintf( "% 4d", 0 );
     for ( int i = 3; i < MaxBLKs; i++ )
