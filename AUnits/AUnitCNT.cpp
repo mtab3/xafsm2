@@ -13,8 +13,10 @@ void AUnitCNT::init0( void )
 	   Qt::UniqueConnection );
   connect( s, SIGNAL( AnsStop( SMsg ) ), this, SLOT( ClrBusy( SMsg ) ),
 	   Qt::UniqueConnection );
-  s->SendCMD2( Uid, Dev, "SetStopMode", "T" );
 
+  s->SendCMD2( Uid, Dev, "Stop" );
+  s->SendCMD2( Uid, Dev, "SetStopMode", "T" );
+  
   Type2 = "TYPE2-CNT";
   
   init00();
