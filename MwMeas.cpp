@@ -1524,7 +1524,8 @@ void MainWindow::StartMeasurement( void )
                .arg( SelectedCurPosDeg( XENC ) )
                .arg( u->deg2keV(SelectedCurPosDeg( XPM ) ) )
                .arg( SelectedCurPosDeg( XPM ) ) );
-    InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
+    // InitialKeV = u->deg2keV( SelectedCurPosDeg( XPM ) ); // 戻る場所はパスモータの現在位置
+    InitialKeV = u->deg2keV( SelectedCurPosDeg( XENC ) ); // 戻る場所はエンコーダの現在位置
 
     /*************************************************************************/
     /*************************************************************************/
