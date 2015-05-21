@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "QXafs4" )
+#define BRANCH_NAME ( "QCt08" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue May 19 15:14:19 2015 +0900\n"\
+                "    QXafs measurment can do with 4 sensors(with Aux2)\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue May 19 14:05:26 2015 +0900\n"\
                 "    fix the Std-XANES-Block-parameter\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Apr 27 18:56:15 2015 +0900\n"\
                 "    FP23 problem is solved. but for CC-10, it has not been checked\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Apr 27 18:29:50 2015 +0900\n"\
-                "    working on DV\n"\
 		"\n"\
                 ""
 #endif
