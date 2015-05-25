@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "QCt08" )
+#define BRANCH_NAME ( "master" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu May 21 20:47:06 2015 +0900\n"\
+                "    The problem on the StopMode selection for qct08 was solved\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue May 19 15:14:19 2015 +0900\n"\
                 "    QXafs measurment can do with 4 sensors(with Aux2)\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Apr 28 17:42:40 2015 +0900\n"\
                 "    working on the slow EIB problem.   DV/DV3 are changed\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Apr 27 18:56:15 2015 +0900\n"\
-                "    FP23 problem is solved. but for CC-10, it has not been checked\n"\
 		"\n"\
                 ""
 #endif

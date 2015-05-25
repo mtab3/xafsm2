@@ -169,6 +169,7 @@ void AUnit0::SetCurPos( SMsg msg )
 {
   QString buf;
 
+  qDebug() << "SetCurPos : " << msg.From() << DevCh;
   if ( ( msg.From() == DevCh )
   //  if ( ( msg.ToCh() == Uid )
        && ( ( msg.Msgt() == GETVALUE ) || ( msg.Msgt() == EvCHANGEDVALUE )
