@@ -1366,9 +1366,9 @@ void MainWindow::StartMeasurement( void )
 	if ( as->hasMaxIntTime() ) {
 	  if ( as->maxIntTime() < dtime ) {
 	    statusbar
-	    ->showMessage( tr( "Too long acquisition time per point for [%1]. "
+	    ->showMessage( tr( "Too long acquisition time per point (%1>%2) for [%3]. "
 			       "Decrease acquisition time or Increase data points." )
-			   .arg( as->name() ),
+			   .arg(dtime).arg(as->maxIntTime()).arg( as->name() ),
 			   2000 );
 	    return;
 	  }
