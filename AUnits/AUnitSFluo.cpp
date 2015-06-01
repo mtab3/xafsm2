@@ -562,7 +562,7 @@ void AUnitSFluo::receiveMCAs( void )
   bytes = dLinkStream->readRawData( MCAs0 + dLinkCount, bytes );
   dLinkCount += bytes;
 
-  qDebug() << Uid << "McaLength" << mcaLength << AChBufSize << AllChBufSize << dLinkCount << bytes;
+  //  qDebug() << Uid << "McaLength" << mcaLength << AChBufSize << AllChBufSize << dLinkCount << bytes;
 
   if ( dLinkCount >= /* XMAPBUFSIZE */ AllChBufSize ) {
     busy2Off( Dev );

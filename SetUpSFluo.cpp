@@ -88,9 +88,16 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   SELBs1->setTitle( tr( "Select a SSD channel (MCA spectrum)" ) );
   SELBs1->setExcl( true );
   SELBs1->setType( SSD19CH );   // デフォルトは 19ch SSD 型
+#if 0  
   if ( SFluo0->chs() == 7 )
     SELBs1->setType( SDD7CH );
-
+#endif
+  qDebug() << "SetupSetupSFluo : DType = " << DType;
+  if ( DType == "DType19Ch" )
+    SELBs1->setType( SSD19CH );
+  if ( DType == "DType7Ch" )
+    SELBs1->setType( SDD7CH );
+  
   MCAData = mcaView->setMCAdataPointer( SFluo0->length() );
   for ( int i = 0; i < SFluo0->length(); i++ ) MCAData[i] = 0;
   
@@ -101,8 +108,15 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 
   SELBs2->setTitle( tr( "Select SSD channels (XAFS meas.)" ) );
   SELBs2->setType( SSD19CH );   // デフォルトは 19ch SSD 型
+#if 0
   if ( SFluo0->chs() == 7 )
     SELBs2->setType( SDD7CH );
+#endif
+  if ( DType == "DType19Ch" )
+    SELBs2->setType( SSD19CH );
+  if ( DType == "DType7Ch" )
+    SELBs2->setType( SDD7CH );
+  SELBs2->setExcl( false );
   
   connect( s, SIGNAL( AnsGetPeakingTime( SMsg ) ),
 	   this, SLOT( showPeakingTime( SMsg ) ),

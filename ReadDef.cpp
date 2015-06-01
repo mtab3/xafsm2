@@ -124,6 +124,7 @@ void MainWindow::ReadDef( QString fname )
 	    if ( item.toInt() > 0 ) ((AUnitSFluo*)NewUnit)->setLength( item.toInt() );
 	    next = nextItem( next, item );
 	    if ( item.toDouble() > 0 )  newSSFluo->setMaxMCAEnergy( item.toDouble() );
+	    next = nextItem( next, item ); newSSFluo->setDType( item );
 	    next = nextItem( next, item );
 	    if ( item != "" ) newSSFluo->setK2PFile( item );
 	    next = nextItem( next, item );

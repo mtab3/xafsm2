@@ -27,6 +27,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   QString llFile;
   QString pagFile;
   AUnitSFluo *SFluo0;
+  QString DType;
   Stars *s;
   PeriodicTable *PT2;
   FluoDBase *fdbase;
@@ -62,6 +63,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
  public:
   SetUpSFluo( QWidget *p = NULL );
 
+  void setDType( QString dtype ) { DType = dtype; };
   void setUpMCAView( MCAView *view );
   void setK2PFile( QString name ) { k2pFile = name; };
   void setLLFile( QString name ) { llFile = name; };
