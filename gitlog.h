@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jun 1 20:29:40 2015 +0900\n"\
+                "    working with SDD\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue May 19 15:51:37 2015 +0900\n"\
                 "    merged with master\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 7 17:11:56 2015 +0900\n"\
                 "    before changing 'From() == DevCh' to 'ToCh() == Uid'\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri May 1 20:02:14 2015 +0900\n"\
-                "    merged with master\n"\
 		"\n"\
                 ""
 #endif

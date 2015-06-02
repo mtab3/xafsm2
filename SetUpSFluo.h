@@ -35,13 +35,14 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   KeV2Pix *k2p;
   QVector<QStringList> *FSTATMsgs;
   QVector<MCAPeak> *MCAPeaks;       // MCAView からコピー
-   
+
   bool inMCAMeas;
   //  bool validMCAData;
   MCASTARTRESUME StartResume;
   bool MCAClearRequest;
   int MCAStage;
   QTimer *MCATimer;
+  bool hvControllable;
 
   quint32 *MCAData;
   int cMCACh;
@@ -117,7 +118,8 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void setDirectory( QString root ) { if ( MCAFSel != NULL ) MCAFSel->setDirectory( root ); };
   void setMaxMCAEnergy( double e ) { MaxMCAEnergy = e; };
   QString K2PFile( void ) { return k2pFile; };
-  
+  void setHVControllable( bool f ) { hvControllable = f; };
+					     
  private slots:
   void newMaxMCAEnergy( void );
   void newMaxLoop( void );
@@ -164,6 +166,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void nowFitStat( QString &stat );
   void newCalibration( void );
   void setROIs( void );
+  void showHVStat( int stat );
 
 public slots:
   void GetMCASettings( int ch );

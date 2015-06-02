@@ -16,7 +16,8 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   k2p = new KeV2Pix;
   MCATimer = new QTimer;
   fdbase = NULL;
-
+  hvControllable = false;
+  
   // setUpMCAView( mcaView );
 
   MCAClearRequest = false;
@@ -258,6 +259,30 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 	   Qt::UniqueConnection );
   connect( ROIsetAll, SIGNAL( clicked() ), this, SLOT( setAllROIs() ),
 	   Qt::UniqueConnection );
+
+  if ( hvControllable ) {
+    HVOn->setHidden( false );
+    connect( SFluo0, SIGNAL( HVStat( int ) ), this, SLOT( showHVStat( int ) ), Qt::UniqueConnection );
+    SFluo0->askHVStat();
+  } else {
+    HVOn->setHidden( true );
+  }
+}
+
+static QString HV_OFF_STATE       = "background-color: rgb( 220, 255, 220 )";
+static QString HV_TRANSIENT_STATE = "background-color: rgb( 240, 235, 200 )";
+static QString HV_ON_STATE        = "background-color: rgb( 250, 255, 210 )";
+static QString HV_UNKNOWN_STATE   = "background-color: rgb( 200, 200, 200 )";
+
+void SetUpSFluo::showHVStat( int stat )
+{
+  switch( stat ) {
+  case 0: HVOn->setStyleSheet( HV_OFF_STATE ); break;
+  case 1: HVOn->setStyleSheet( HV_TRANSIENT_STATE ); break;
+  case 2: HVOn->setStyleSheet( HV_ON_STATE ); break;
+  default:
+    HVOn->setStyleSheet( HV_UNKNOWN_STATE ); break;
+  }
 }
 
 void SetUpSFluo::newMaxMCAEnergy( void )

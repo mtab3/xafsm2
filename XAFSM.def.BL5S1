@@ -425,9 +425,9 @@ SENSOR PAM "S005" "I01" "Keithley 6485-2" "m6485drv-2" "" "mA" NO ""
 #     NO                : If the sensor has a parente (group leader) or not. YES or NO
 #     ""                : The identifier of the parent (group reader)
 
-SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006" 19 2014 20.0 DType19Ch KeV2MCApix.txt "" ""
+SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006" 19 2014 20.0 DType19Ch KeV2MCApix.txt "" "" NO
 # SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006"
-#                         19 2014 20.0 KeV2MCApix.txt SSDLowLimits.txt SSDPreAMPGain.txt
+#                    19 2014 20.0 KeV2MCApix.txt SSDLowLimits.txt SSDPreAMPGain.txt NO
 
 # The parameters following the identifire 'SENSOR' are
 #   SSD     : Unit type SSD : MCA base devices like SSD or SDD
@@ -441,6 +441,13 @@ SENSOR SSD  "S006" "TotalF"  "SSD(19ch)" "QtXmapSSD"   "" "count" YES "S006" 19 
 #    YES         : If the sensor has a parent (group leader) or not.
 #                : It should be 'YES' or 'NO'
 #    "S006"      : The identifire of the paretnt.
+#    19          : Number of actually installed channels 
+#    2014        : MCA pixel length
+#    20.0        : Highest Energy
+#    KeV2MCAPix    : File name which keeps the table to translate from pix to KeV
+#    SSDLowLimits  : File name which keeps the LLD pix numbers for each ch
+#    SSDPreAMPGain : File name which keeps the gains of pre-amp which should be set
+#    NO          : Declare if the driver can controll the HV or not.
 
 SENSOR SSDP "S007" "SingleF" "SSD-ch00"  "QtXmapSSD"  "0" "count" YES "S006"
 SENSOR SSDP "S008" "SingleF" "SSD-ch01"  "QtXmapSSD"  "1" "count" YES "S006"
@@ -629,7 +636,7 @@ SENSOR EPIC "S060" "GENERAL" "BPM V12" "epicsbridge_caget" "S_BPM_V_12_AVG_MON" 
 SENSOR EPIC "S061" "GENERAL" "BPM H13" "epicsbridge_caget" "S_BPM_H_13_AVG_MON" "mm" NO ""
 SENSOR EPIC "S062" "GENERAL" "BPM V13" "epicsbridge_caget" "S_BPM_V_13_AVG_MON" "mm" NO ""
 
-SENSOR SSD  "S090" "TotalF"  "SDD(7ch)" "QtTechAPSDD" "" "count" YES "S090" 4 4096 20.0 DType7Ch KeV2MCApix.txt "" ""
+SENSOR SSD  "S090" "TotalF"  "SDD(7ch)" "QtTechAPSDD" "" "count" YES "S090" 4 4096 20.0 DType7Ch KeV2MCApix.txt "" "" YES
 
 SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
 

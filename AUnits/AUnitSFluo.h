@@ -113,6 +113,7 @@ class AUnitSFluo : public ASensor
   double stat( int ch, STATELM i );
   bool GetValue( void );
   bool Close( void );
+  void askHVStat( void );
   
  public slots:
   void SetIsBusyByMsg( SMsg msg );
@@ -129,6 +130,7 @@ class AUnitSFluo : public ASensor
   void ReceivedNewMCALiveTime( int i );
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
+  void HVStat( int stat );
 };
 
 #endif

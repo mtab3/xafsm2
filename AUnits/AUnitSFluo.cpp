@@ -604,3 +604,7 @@ void AUnitSFluo::receiveMCAs( void )
   }
 }
 
+void AUnitSFluo::askHVStat( void )
+{
+  
+}

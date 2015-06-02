@@ -131,6 +131,8 @@ void MainWindow::ReadDef( QString fname )
 	    if ( item != "" ) newSSFluo->setLLFile( item );
 	    next = nextItem( next, item );
 	    if ( item != "" ) newSSFluo->setPAGFile( item );
+	    next = nextItem( next, item );
+	    if ( item != "" ) newSSFluo->setHVControllable( item.toUpper() == "YES" );
 	    newSSFluo->setUpMCAView( newSSFluo->McaView() );
 	    SSFluos << newSSFluo;
 	    SFluos << (AUnitSFluo*)NewUnit;
