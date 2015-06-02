@@ -85,9 +85,13 @@ void AUnitSFluo::init0( void )
   connect( s, SIGNAL( AnsGetDataLinkCh( SMsg ) ),
 	   this, SLOT( ReactGetDataLinkCh( SMsg ) ),
 	   Qt::UniqueConnection );
-
+  connect( s, SIGNAL( AnsHVStat2( SMsg ) ), this, SLOT( ReactHVStat( SMsg ) ),
+	   Qt::UniqueConnection );
+  connect( s, SIGNAL( EvChangedHVStat( SMsg ) ), this, SLOT( ReactEvChangedHVStat( SMsg ) ), Qt::UniqueConnection );
+  
   s->SendCMD2( Uid, DevCh, "IsBusy" );
   s->SendCMD2( Uid, Dev, "RunStop" );
+  s->SendCMD2( Uid, Dev, "HVStat2" );
 
   qDebug() << "init SFluo" << Uid;
   connectingDLink = false;          // new
@@ -604,7 +608,36 @@ void AUnitSFluo::receiveMCAs( void )
   }
 }
 
+void AUnitSFluo::HVOn( bool f )
+{
+  if ( f ) {
+    s->SendCMD2( Uid, Dev, "HVStart" );
+  } else {
+    s->SendCMD2( Uid, Dev, "HVStop" );
+  }
+}
+
 void AUnitSFluo::askHVStat( void )
 {
-  
+  if ( s != NULL ) {
+    s->SendCMD2( Uid, Dev, "HVStat2" );
+  }
+}
+
+void AUnitSFluo::ReactHVStat( SMsg msg )
+{
+  if ( msg.ToCh() == Uid ) {
+    if ( msg.Vals().count() > 0 ) {
+      emit NewHVStat( msg.Vals()[0].toInt() );
+    }
+  }
+}
+
+void AUnitSFluo::ReactEvChangedHVStat( SMsg msg )
+{
+  if ( msg.From() == Dev ) {   // これは To == Uid にはできない
+    if ( msg.Vals().count() > 0 ) {
+      emit NewHVStat( msg.Vals()[0].toInt() );
+    }
+  }
 }

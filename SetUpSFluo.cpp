@@ -17,6 +17,7 @@ SetUpSFluo::SetUpSFluo( QWidget *p ) : QWidget( p )
   MCATimer = new QTimer;
   fdbase = NULL;
   hvControllable = false;
+  hvOn = false;
   
   // setUpMCAView( mcaView );
 
@@ -262,27 +263,45 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
 
   if ( hvControllable ) {
     HVOn->setHidden( false );
-    connect( SFluo0, SIGNAL( HVStat( int ) ), this, SLOT( showHVStat( int ) ), Qt::UniqueConnection );
-    SFluo0->askHVStat();
+    connect( HVOn, SIGNAL( clicked() ), this, SLOT( clickedHVOn() ), Qt::UniqueConnection );
+    connect( SFluo0, SIGNAL( NewHVStat( int ) ), this, SLOT( showHVStat( int ) ), Qt::UniqueConnection );
+    showHVStat( -1 );
   } else {
     HVOn->setHidden( true );
   }
 }
 
-static QString HV_OFF_STATE       = "background-color: rgb( 220, 255, 220 )";
-static QString HV_TRANSIENT_STATE = "background-color: rgb( 240, 235, 200 )";
-static QString HV_ON_STATE        = "background-color: rgb( 250, 255, 210 )";
-static QString HV_UNKNOWN_STATE   = "background-color: rgb( 200, 200, 200 )";
+static QString HV_OFF_STATE       = "background-color: rgb( 200, 255, 200 )";
+static QString HV_TRANSIENT_STATE = "background-color: rgb( 250, 210, 180 )";
+static QString HV_ON_STATE        = "background-color: rgb( 255, 255, 180 )";
+static QString HV_UNKNOWN_STATE   = "background-color: rgb( 190, 190, 190 )";
 
 void SetUpSFluo::showHVStat( int stat )
 {
   switch( stat ) {
-  case 0: HVOn->setStyleSheet( HV_OFF_STATE ); break;
-  case 1: HVOn->setStyleSheet( HV_TRANSIENT_STATE ); break;
-  case 2: HVOn->setStyleSheet( HV_ON_STATE ); break;
+  case 0:
+    HVOn->setStyleSheet( HV_OFF_STATE );
+    HVOn->setText( tr( "HV Off" ) );
+    hvOn = false;
+    break;
+  case 1:
+    HVOn->setStyleSheet( HV_TRANSIENT_STATE );
+    HVOn->setText( tr( "Moving" ) );
+    break;
+  case 2: HVOn->setStyleSheet( HV_ON_STATE );
+    HVOn->setText( tr( "HV On" ) );
+    hvOn = true;
+    break;
   default:
-    HVOn->setStyleSheet( HV_UNKNOWN_STATE ); break;
+    HVOn->setStyleSheet( HV_UNKNOWN_STATE );
+    break;
   }
+}
+
+void SetUpSFluo::clickedHVOn( void )
+{
+  SFluo0->HVOn( !hvOn );
+  showHVStat( 1 );       // とにかく「遷移中」の表示にしておく
 }
 
 void SetUpSFluo::newMaxMCAEnergy( void )

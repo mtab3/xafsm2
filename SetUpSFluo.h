@@ -43,6 +43,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   int MCAStage;
   QTimer *MCATimer;
   bool hvControllable;
+  bool hvOn;
 
   quint32 *MCAData;
   int cMCACh;
@@ -167,6 +168,7 @@ class SetUpSFluo : public QWidget, private Ui::SetUpSFluo
   void newCalibration( void );
   void setROIs( void );
   void showHVStat( int stat );
+  void clickedHVOn( void );
 
 public slots:
   void GetMCASettings( int ch );

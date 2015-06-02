@@ -83,6 +83,9 @@ enum MSGTYPE {
   GETDATALINKCH,
   GETMCAS,
 
+  // MCA SDD
+  HVSTAT2,
+  
   // ortec974
   // RESET,          //  already is
   SETMODE,
@@ -133,6 +136,7 @@ enum MSGTYPE {
   EvREPORTCURRENT,
   EvREPORTINJECTION,
   EvREPORTVALUE,
+  EvCHANGEDHVSTAT,
   NOTMSG,
 };
 

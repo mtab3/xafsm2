@@ -378,7 +378,9 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit AnsGoMaxRel( smsg ); break;
 	case SHUTTEROFF:
 	  emit AnsShutterOff( smsg ); break;
-
+	case HVSTAT2:
+	  emit AnsHVStat2( smsg ); break;
+	  
 	case RMT_START:
 	  emit AskStart( smsg ); break;
 	case RMT_STOP:
@@ -408,8 +410,10 @@ void Stars::ReceiveMessageFromStars( void )
 	  emit EvRangeMax( smsg ); break;
 	case EvRANGEMAXOFF: 
 	  emit EvRangeMaxOff( smsg ); break;
-    case EvREPORTVALUE:
-      emit EvReportValue( smsg ); break;
+	case EvREPORTVALUE:
+	  emit EvReportValue( smsg ); break;
+	case EvCHANGEDHVSTAT:
+	  emit EvChangedHVStat( smsg ); break;
 	default: 
 	  break;
 	}

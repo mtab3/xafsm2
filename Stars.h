@@ -137,6 +137,8 @@ signals:
   void AnsSetMode( SMsg msg );
   void AnsSetCountPreset( SMsg msg );
 
+  void AnsHVStat2( SMsg msg );
+
   void AnsSetAperture( SMsg msg );
   void AnsSetTriggerDelay( SMsg msg );
   void AnsSetSamplingSource( SMsg msg );
@@ -172,6 +174,7 @@ signals:
   void EvReportValue( SMsg msg );
   void EvRangeMax( SMsg msg );
   void EvRangeMaxOff( SMsg msg );
+  void EvChangedHVStat( SMsg msg );
 };
 
 #endif

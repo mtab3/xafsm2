@@ -113,6 +113,8 @@ class AUnitSFluo : public ASensor
   double stat( int ch, STATELM i );
   bool GetValue( void );
   bool Close( void );
+
+  void HVOn( bool f );
   void askHVStat( void );
   
  public slots:
@@ -123,6 +125,9 @@ class AUnitSFluo : public ASensor
   void ReactGetLiveTime( SMsg msg );
   void ReactGetDataLinkCh( SMsg msg );
   void ReceiveValues( SMsg msg );
+  void ReactHVStat( SMsg msg );
+  void ReactEvChangedHVStat( SMsg msg );
+
   void receiveMCAs( void );
 
  signals:
@@ -130,7 +135,7 @@ class AUnitSFluo : public ASensor
   void ReceivedNewMCALiveTime( int i );
   void DataLinkServerIsReady( QString host, qint16 port );
   void NewMCAsAvailable( char *MCAs );
-  void HVStat( int stat );
+  void NewHVStat( int stat );
 };
 
 #endif

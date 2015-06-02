@@ -80,6 +80,8 @@ const MsgTyp MsgT[] = {
   { "@GetMCA", GETMCA },
   { "@GetStatistics", GETSTATISTICS },
 
+  { "@HVStat2", HVSTAT2 },
+  
   { "@SetMode", SETMODE },
   { "@SetCountPreset", SETCOUNTPRESET },
 
@@ -121,6 +123,7 @@ const MsgTyp MsgT[] = {
   { "_Disconnected", EvDISCONNECTED },
   { "_ChangedValue", EvCHANGEDVALUE },
   { "_ChangedIsBusy", EvISBUSY },
+  { "_ChangedHVStat", EvCHANGEDHVSTAT },
 
   { "_ReportCurrent", EvREPORTCURRENT },
   { "_IsBusy", EvREPORTINJECTION },
