@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jun 2 15:40:28 2015 +0900\n"\
+                "    HV unit of AUnitSFluo can be controlled via SetUpSFluo\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jun 2 11:45:39 2015 +0900\n"\
                 "    working on SDD, SetUpSFluo, and AUnitSFluo\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri May 8 12:59:47 2015 +0900\n"\
                 "    SendCMD is called only in AUnits. The From-ch is set to Uid.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri May 8 12:28:32 2015 +0900\n"\
-                "    Now, all of the messages to the drivers connecting Stars are sent via the AUnit.   When a message is sent to Stars via an AUnit, the from-ch is always set as Uid\n"\
 		"\n"\
                 ""
 #endif

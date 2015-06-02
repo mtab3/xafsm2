@@ -271,7 +271,7 @@ void SetUpSFluo::setupSetupSFluo( Stars *S, QVector<QStringList> *fStatMsgs )
   }
 }
 
-static QString HV_OFF_STATE       = "background-color: rgb( 200, 255, 200 )";
+static QString HV_OFF_STATE       = "background-color: rgb( 190, 190, 230 )";
 static QString HV_TRANSIENT_STATE = "background-color: rgb( 250, 210, 180 )";
 static QString HV_ON_STATE        = "background-color: rgb( 255, 255, 180 )";
 static QString HV_UNKNOWN_STATE   = "background-color: rgb( 190, 190, 190 )";
@@ -281,15 +281,15 @@ void SetUpSFluo::showHVStat( int stat )
   switch( stat ) {
   case 0:
     HVOn->setStyleSheet( HV_OFF_STATE );
-    HVOn->setText( tr( "HV Off" ) );
+    HVOn->setText( tr( "HV-On" ) );
     hvOn = false;
     break;
   case 1:
     HVOn->setStyleSheet( HV_TRANSIENT_STATE );
-    HVOn->setText( tr( "Moving" ) );
+    HVOn->setText( tr( "Trans." ) );
     break;
   case 2: HVOn->setStyleSheet( HV_ON_STATE );
-    HVOn->setText( tr( "HV On" ) );
+    HVOn->setText( tr( "HV-Off" ) );
     hvOn = true;
     break;
   default:

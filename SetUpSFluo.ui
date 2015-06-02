@@ -990,7 +990,7 @@
            </size>
           </property>
           <property name="text">
-           <string>HV Off</string>
+           <string>HV-Off</string>
           </property>
          </widget>
         </item>

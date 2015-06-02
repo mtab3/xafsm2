@@ -636,7 +636,7 @@ SENSOR EPIC "S060" "GENERAL" "BPM V12" "epicsbridge_caget" "S_BPM_V_12_AVG_MON" 
 SENSOR EPIC "S061" "GENERAL" "BPM H13" "epicsbridge_caget" "S_BPM_H_13_AVG_MON" "mm" NO ""
 SENSOR EPIC "S062" "GENERAL" "BPM V13" "epicsbridge_caget" "S_BPM_V_13_AVG_MON" "mm" NO ""
 
-SENSOR SSD  "S090" "TotalF"  "SDD(7ch)" "QtTechAPSDD" "" "count" YES "S090" 4 4096 20.0 DType7Ch KeV2MCApix.txt "" "" YES
+SENSOR SSD  "S090" "TotalF"  "SDD(7ch)" "QtTechAPSDD" "" "count" YES "S090" 4 4096 20.0 DType7Ch 150602_SDD_KeV2MCApix.txt "" "" YES
 
 SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
 
