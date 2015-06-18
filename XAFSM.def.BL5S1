@@ -358,6 +358,9 @@ SENSOR CNT "S072" "GENERAL" "I2 (qct08 2)"      "qct08-1" "ch2" "count" YES "S07
 SENSOR CNT "S073" "GENERAL" "I0 (qct08 100MHz)" "qct08-1" "ch6" "count" YES "S070"
 SENSOR CNT "S074" "GENERAL" "I1 (qct08 100MHz)" "qct08-1" "ch7" "count" YES "S070"
 
+SENSOR CNT "S082" "GENERAL" "AUX (qct08 CH5)"   "qct08-1" "ch5" "count" YES "S070"
+SENSOR CNT "S083" "GENERAL" "AUX (qct08 CH4)"   "qct08-1" "ch4" "count" YES "S070"
+
 SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "nct0802" "ch0" "count" YES "S000"
 #SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
 #
