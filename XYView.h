@@ -12,7 +12,7 @@
 #include "ChCoord.h"
 #include "ScanInfo.h"
 
-#define MAXPOINTS  ( 10000 )
+#define MAXPOINTS  ( 20000 ) // maxQXafsPoints を増やしたいので増やしてみた (元は 10000)
 #define MAXLINENO  ( 50000 ) // 0 - 19999      // I0 と I, mu があるので実質 10,000
 #define MAXGROUPLINES ( 5 )  // 最大何本の線が一つのグループになるか (I0, I, mu, A1, mu2)
 #define MAXLINES   ( 1000 )  // 内部で準備する線の数 (ほんとは 990 でいいはず)

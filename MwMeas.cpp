@@ -1239,7 +1239,16 @@ void MainWindow::StartMeasurement( void )
     }
 
     if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
-      if ( BLKpoints[0]->text().toInt() > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
+      if ( BLKpoints[0]->text().toInt() > maxQXafsPoints ) {
+	// 測定点数が maxQXafsPoints (現在デフォルトで 9990) を超えてたらダメ
+	// 制限の元になっているのは...
+	// 1) XYView : MAXPOINTS = 10000 -> 20000 に増やした
+	// 2) 測定シーケンス(QXafs.cc)やファイル操作(QFio.cc),
+	//    AUnit*.cc でデータを保持する時は StringList で持っている。
+	//    大元は SMsg.cc の中で QString.split( "\\s+" ) で作った可変長のリスト。
+	//    上限は Qt の側の上限で決まる。(少なくとも 10000 とかではないはず)
+	// 3) Stars でのデータ受け渡しサイズを
+	//     10,000点用の 160kB から 20,000点用の 320kB に増やした
         statusbar->showMessage( tr( "Measured points are too many.  "
                                     "It should be less than 9990 in QXAFS mode." ),
                                 2000 );

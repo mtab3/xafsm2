@@ -419,6 +419,7 @@ private:
   //  int BlockPoints[ MaxBLKs + 1 ];
 
   BlockInfo NXAFSBInfo, QXAFSBInfo;
+  int maxQXafsPoints;
 
   bool SMeasInDeg;
   UNIT SBLKUnit;
