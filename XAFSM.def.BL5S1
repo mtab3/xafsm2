@@ -45,7 +45,9 @@
 # For example, "Keithley 6485" can not be writtern Keithley 6485.
 #
 
-XAFSName  "XafsM2-bsd2"
+#XAFSName  "XafsM2"        // This line should be un-commented on main controll PC.
+#XAFSName  "XafsM2-bsd2"   // This line should be un-commented for testing
+XAFSName  "XafsM2-bsd"    // This line should be un-commented for testing
 XAFSKey   "XafsM2"
 XAFSTitle "XafsM2-BL5S1"
 

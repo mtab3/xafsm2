@@ -26,7 +26,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MaxMCAEnergy = 20;
   MStabOk = false;
   MStabDelegate = "";
-  maxQXafsPoints = 9990;
+  maxQXafsPoints = 20000;   // 9990
 
 #if 0
   AutoShutter->setChecked( false );  // 自動シャッターのボタンはデフォルトでは

@@ -156,7 +156,7 @@ void Stars::MakeConnection( void )
 }
 
 // Stars のバッファは現在 160kbyte
-// QXafs では 1点16byte のデータが来るので
+// QXafs では 1点16byte のデータが来るので(だいぶ余裕をみた数字)
 // 10,000点が max
 // もともとは 160000 だった。QXafs の点数を 10,000 -> 20,000 にするために変更
 #define MAX_R_BUFSIZE   ( 320000 )
