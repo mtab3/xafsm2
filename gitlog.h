@@ -5,6 +5,14 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jun 18 10:47:40 2015 +0900\n"\
+                "    adding new ct08 channels to XAFSM.def.BL5S1\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jun 2 21:22:26 2015 +0900\n"\
+                "    it is working with SDD and can controll HV of SDD\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jun 2 15:40:28 2015 +0900\n"\
                 "    HV unit of AUnitSFluo can be controlled via SetUpSFluo\n"\
 		"\n"\
@@ -35,14 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue May 19 14:05:26 2015 +0900\n"\
                 "    fix the Std-XANES-Block-parameter\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri May 8 19:41:06 2015 +0900\n"\
-                "    debugging with QtTechAPSDD\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri May 8 12:59:47 2015 +0900\n"\
-                "    SendCMD is called only in AUnits. The From-ch is set to Uid.\n"\
 		"\n"\
                 ""
 #endif

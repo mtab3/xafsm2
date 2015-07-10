@@ -34,8 +34,8 @@ void MainWindow::SetDFName( int i, int rptMax, QString ext )
       DFName = DFName0 + DFName00 + ext + buf;
     }
   } else {
-      buf.sprintf( "-%03d", i );
-      DFName = DFName0 + DFName00 + buf + ext + ".dat";
+    buf.sprintf( "-%03d", i );
+    DFName = DFName0 + DFName00 + buf + ext + ".dat";
   }
 }
 
@@ -101,25 +101,25 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
     for ( int i = 0; i < Blocks; i++ ) {
       if ( SnotN ) {
-	out << " "
-	    << QString( "%1     %2%3%4%5%6" )
-	  .arg( i+1, 5 )
-	  .arg( SBlockStartAsDisp[i], 10, 'f', 5 )
-	  .arg( SBlockStartAsDisp[i+1], 10, 'f', 5 )
-	  .arg( SBlockStepAsDisp[i], 12, 'f', 6 )
-	  .arg( SBlockDwell[i], 11, 'f', 2 )
-	  .arg( SBlockPoints[i], 10 )
-	    << endl;
+        out << " "
+            << QString( "%1     %2%3%4%5%6" )
+               .arg( i+1, 5 )
+               .arg( SBlockStartAsDisp[i], 10, 'f', 5 )
+               .arg( SBlockStartAsDisp[i+1], 10, 'f', 5 )
+            .arg( SBlockStepAsDisp[i], 12, 'f', 6 )
+            .arg( SBlockDwell[i], 11, 'f', 2 )
+            .arg( SBlockPoints[i], 10 )
+            << endl;
       } else {
-	out << " "
-	    << QString( "%1     %2%3%4%5%6" )
-	  .arg( i+1, 5 )
-	  .arg( NBlockStartAsDisp[i], 10, 'f', 5 )
-	  .arg( NBlockStartAsDisp[i+1], 10, 'f', 5 )
-	  .arg( NBlockStepAsDisp[i], 12, 'f', 6 )
-	  .arg( NBlockDwell[i], 11, 'f', 2 )
-	  .arg( NBlockPoints[i], 10 )
-	    << endl;
+        out << " "
+            << QString( "%1     %2%3%4%5%6" )
+               .arg( i+1, 5 )
+               .arg( NBlockStartAsDisp[i], 10, 'f', 5 )
+               .arg( NBlockStartAsDisp[i+1], 10, 'f', 5 )
+            .arg( NBlockStepAsDisp[i], 12, 'f', 6 )
+            .arg( NBlockDwell[i], 11, 'f', 2 )
+            .arg( NBlockPoints[i], 10 )
+            << endl;
       }
     }
   } else {
@@ -132,29 +132,29 @@ void MainWindow::WriteHeaderCore( bool SnotN )
         << "Block      Init-Eng  final-Eng     Step/eV     Time/s       Num" << endl;
     for ( int i = 0; i < Blocks; i++ ) {
       if ( SnotN ) {
-	double s = u->any2keV( SBLKUnit, SBlockStartAsDisp[i] )*1000;
-	double e = u->any2keV( SBLKUnit, SBlockStartAsDisp[i+1] )*1000;
-	out << " "
-	    << QString( "%1     %2%3%4%5%6" )
-	  .arg( i+1, 5 )
-	  .arg( s, 10, 'f', 2 )
-	  .arg( e, 10, 'f', 2 )
-	  .arg( ( e - s )/SBlockPoints[i], 12, 'f', 2 )
-	  .arg( SBlockDwell[i], 11, 'f', 2 )
-	  .arg( SBlockPoints[i], 10 )
-	    << endl;
+        double s = u->any2keV( SBLKUnit, SBlockStartAsDisp[i] )*1000;
+        double e = u->any2keV( SBLKUnit, SBlockStartAsDisp[i+1] )*1000;
+        out << " "
+            << QString( "%1     %2%3%4%5%6" )
+               .arg( i+1, 5 )
+               .arg( s, 10, 'f', 2 )
+               .arg( e, 10, 'f', 2 )
+               .arg( ( e - s )/SBlockPoints[i], 12, 'f', 2 )
+               .arg( SBlockDwell[i], 11, 'f', 2 )
+               .arg( SBlockPoints[i], 10 )
+            << endl;
       } else {
-	double s = u->any2keV( NBLKUnit, NBlockStartAsDisp[i] )*1000;
-	double e = u->any2keV( NBLKUnit, NBlockStartAsDisp[i+1] )*1000;
-	out << " "
-	    << QString( "%1     %2%3%4%5%6" )
-	  .arg( i+1, 5 )
-	  .arg( s, 10, 'f', 2 )
-	  .arg( e, 10, 'f', 2 )
-	  .arg( ( e - s )/NBlockPoints[i], 12, 'f', 2 )
-	  .arg( NBlockDwell[i], 11, 'f', 2 )
-	  .arg( NBlockPoints[i], 10 )
-	    << endl;
+        double s = u->any2keV( NBLKUnit, NBlockStartAsDisp[i] )*1000;
+        double e = u->any2keV( NBLKUnit, NBlockStartAsDisp[i+1] )*1000;
+        out << " "
+            << QString( "%1     %2%3%4%5%6" )
+               .arg( i+1, 5 )
+               .arg( s, 10, 'f', 2 )
+               .arg( e, 10, 'f', 2 )
+               .arg( ( e - s )/NBlockPoints[i], 12, 'f', 2 )
+               .arg( NBlockDwell[i], 11, 'f', 2 )
+               .arg( NBlockPoints[i], 10 )
+            << endl;
       }
     }
   }
@@ -197,7 +197,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
       WriteFLUOHeadSection( out, mMeasUnits.at(0)->GetDark( 1.0 ) );
       break;
     } else {
-    // 基本的には Lytle 検出器を想定している
+      // 基本的には Lytle 検出器を想定している
       out << QString( " ORTEC( 3)     NDCH =%1" ).arg( 1 + MeasChNo, 2 )
           << endl;
       out << "  Angle(c)  Angle(o)    time/s";
@@ -426,7 +426,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   default:
     qDebug() << "Unknown Measuremet type";
   }
-
+  
   file.close();
 }
 
@@ -598,7 +598,7 @@ void MainWindow::WriteHeaderCore2( void )
     }
     if ( ( pos = line.indexOf( "%002%" ) ) > 0 ) {
       line = line.left( pos )
-	+ QString( "%1" ).arg( ( SLS == NULL ) ? 0 : SLS->value().toDouble(), 6, 'f', 1, ' ' )
+          + QString( "%1" ).arg( ( SLS == NULL ) ? 0 : SLS->value().toDouble(), 6, 'f', 1, ' ' )
           + line.mid( pos + 5 );
     }
     AllLines << line;
@@ -643,7 +643,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       if ( MPSet.isSFluos[i] ) {
 	SaveMCADataOnMem( XafsMCAMaps[i].aPoint( MeasP, mcaSaveP ),
 			  SSFluos[i] );  // MeasA は無視
-
+	
 	if ( conds->isRecordEachMCASpectrum() ) {
 	  QDir newDir;
 	  newDir.mkpath( DFName0 + "-MCA" );
@@ -665,7 +665,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       }
     }
   }
-
+  
   SetDFName( MeasR, SelRPT->text().toInt() );
   QFile file( DFName );
   double recTh;
@@ -684,7 +684,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       recTh = SelectedCurPosDeg( EncOrPM );
     }
     buf.sprintf( "%10.6f" " %9.6f" " %9.2f",
-		 u->keV2deg( GoToKeV ), recTh, NowDwell );
+                 u->keV2deg( GoToKeV ), recTh, NowDwell );
     out << buf;
     
     // FLUO の時は、I0 は SSD データの後ろ
@@ -693,11 +693,11 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
     if ( ! MPSet.isUsingSFluo() ) {
       // I0 の値が整数かどうかで、記録時のフォーマットを変えようとしている
       if ( (int)(MeasVals[MC_I0]) == MeasVals[MC_I0] ) {
-	buf.sprintf( " %9d",                 // 整数 : %9d
-		     (int)MeasVals[ MC_I0 ] );
+        buf.sprintf( " %9d",                 // 整数 : %9d
+                     (int)MeasVals[ MC_I0 ] );
       } else {
-	buf.sprintf( " %9.6g",               // 実数 : %9.6g
-		     MeasVals[ MC_I0 ] );
+        buf.sprintf( " %9.6g",               // 実数 : %9.6g
+                     MeasVals[ MC_I0 ] );
       }
       out << buf;
     }
@@ -752,7 +752,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( ( ! isASFluoUnit( mMeasUnits.at(i) ) )&& ( mMeasUnits.at(i) != SI0 ) ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-	    - mMeasUnits.at(i)->GetDark( mMeasUnits.at(i)->getSetTime() );
+              - mMeasUnits.at(i)->GetDark( mMeasUnits.at(i)->getSetTime() );
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -767,7 +767,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
       for ( int i = 1; i < mMeasUnits.count(); i++ ) {
         if ( ! isASFluoUnit( mMeasUnits.at(i) ) ) {
           double v = mMeasUnits.at(i)->value().toDouble()
-	    - mMeasUnits.at(i)->GetDark( mMeasUnits.at(i)->getSetTime() );
+              - mMeasUnits.at(i)->GetDark( mMeasUnits.at(i)->getSetTime() );
           if ( v < 1e-10 )
             v = 0.0;
           if ( (int)(v) == v ) {
@@ -832,7 +832,7 @@ void MainWindow::RecordData( void )    // Data Body  // QXafs の時は使わな
                    GoToKeV,
                    encTh, u->deg2keV( encTh ),
                    PMTh, u->deg2keV( PMTh ),
-		   SettingMainTh );
+                   SettingMainTh );
       out << buf;
     }
     out << endl;

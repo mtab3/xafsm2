@@ -146,7 +146,7 @@ void ScanInfo::show( void )
 {
   qDebug() << "---- Stat of Scan Info ----";
   qDebug() << "valid" << valid;
-  if ( am != NULL ) qDebug() << "motor" << am->uid() << amName;
+  qDebug() << "motor" << ( ( am != NULL ) ? am->uid() : "" ) << amName;
   qDebug() << "speed" << speed;
   qDebug() << "showUnit" << showUnit;
   qDebug() << "upp" << upp;
@@ -159,5 +159,7 @@ void ScanInfo::show( void )
   qDebug() << "normalize" << normalize;
   qDebug() << "origin offset" << origin << offset;
   qDebug() << "use monitors" << UseMonitors;
+
+  qDebug() << "Additional Sensors";
   mi.show();
 }

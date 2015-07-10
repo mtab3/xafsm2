@@ -358,7 +358,7 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   }
 
   QXafsPoints = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // 測定ステップ数を再計算
-  QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * 0.9;
+  QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * INTEGRAL_INTERVAL_RATIO;
   // 1点の積分時間を Trigger パルス間隔の 90% にする
 
   RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間

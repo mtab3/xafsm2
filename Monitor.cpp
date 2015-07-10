@@ -86,7 +86,7 @@ void MainWindow::MonSequence( void )
 	
 	MonOut << (double)etime/1000;
 	for ( int i = 0; i < mMonUnits.count(); i++ ) {
-	  MonOut << "\t" << MeasVals[i];
+	  MonOut << "\t" << QString( "%1" ).arg( MeasVals[i], 11, 'f', 7 );
 	}
 	if ( SLS != NULL ) 
 	  MonOut << "\t # " << SLS->value();

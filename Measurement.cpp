@@ -16,7 +16,7 @@ void MainWindow::MeasSequence( void )
   if ( ( a1 = isBusyMotorInMeas() ) || ( a2 = mMeasUnits.isBusy() ) ) return;
   if ( MovingToNewSamplePosition ) {
     if ( Changers[ ChangerSelect->currentIndex() ]->unit1()->isBusy()
-	 || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
+         || Changers[ ChangerSelect->currentIndex() ]->unit2()->isBusy() )
       return;
     MovingToNewSamplePosition = false;
   }
@@ -27,9 +27,9 @@ void MainWindow::MeasSequence( void )
     qDebug() << "out QXAFS";
     return;
   }
-  
+
   switch( MeasStage ) {
-    /* 
+  /*
        0: 測定開始 Repeat = 0
        1: Block = 0
        2: Step = 0, setDwellTime
@@ -56,7 +56,7 @@ void MainWindow::MeasSequence( void )
     WriteInfoFile();
     mMeasUnits.clearStage();
     MeasView->SetWindow0( u->any2keV( SBLKUnit, SBlockStartAsDisp[0] ), 0,
-			  u->any2keV( SBLKUnit, SBlockStartAsDisp[ SBlocks ] ), 0 );
+        u->any2keV( SBLKUnit, SBlockStartAsDisp[ SBlocks ] ), 0 );
     statusbar->showMessage( tr( "Start Measurement!" ) );
     MeasStage = 1;
     break;
@@ -77,7 +77,7 @@ void MainWindow::MeasSequence( void )
     WriteHeader( MeasR );
     MeasStage = 3;
     // break;       MeasStage == 2 の動作はレスポンスを待つ必要なし
-  case 3: 
+  case 3:
     MeasS = 0;    // Measurement Step count in each block
     mMeasUnits.setDwellTimes( NowDwell = SBlockDwell[ MeasB ] );
     mMeasUnits.setDwellTime();
@@ -87,12 +87,12 @@ void MainWindow::MeasSequence( void )
   case 4:
     if ( !FixedPositionMode ) {
       if ( SMeasInDeg ) {
-	Delta = SBlockStartInDeg[MeasB+1] - SBlockStartInDeg[MeasB];
-	GoToKeV = u->deg2keV( Delta/SBlockPoints[MeasB]*MeasS + SBlockStartInDeg[MeasB] );
+        Delta = SBlockStartInDeg[MeasB+1] - SBlockStartInDeg[MeasB];
+        GoToKeV = u->deg2keV( Delta/SBlockPoints[MeasB]*MeasS + SBlockStartInDeg[MeasB] );
       } else {
-	Delta = SBlockStartAsDisp[MeasB+1] - SBlockStartAsDisp[MeasB];
-	GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
-			      + SBlockStartAsDisp[MeasB] );
+        Delta = SBlockStartAsDisp[MeasB+1] - SBlockStartAsDisp[MeasB];
+        GoToKeV = u->any2keV( SBLKUnit, Delta / SBlockPoints[MeasB] * MeasS
+                              + SBlockStartAsDisp[MeasB] );
       }
       MoveCurThPosKeV( GoToKeV );     // 軸の移動
     }
@@ -101,31 +101,31 @@ void MainWindow::MeasSequence( void )
       MeasStage = 41;
     } else {
       if ( mMeasUnits.isParent() )
-	MeasStage = 5;
+        MeasStage = 5;
       else
-	MeasStage = 6;
+        MeasStage = 6;
     }
     break;
   case 41:
     if ( MMStab != NULL ) {
       qDebug() << "Tune Abs " << MPSet.TuneESAbs << "Tune Quick " << MPSet.TuneESQuick;
       if ( MPSet.TuneESAbs ) {
-	if ( MPSet.TuneESQuick ) {
-	  qDebug() << "Abs Quick";
-	  MMStab->GoMaxAbsQ( MPSet.TuneESStart, MPSet.TuneESEnd,
-			     MPSet.TuneESSteps, MPSet.TuneESQuickTime );
-	} else {
-	  qDebug() << "Abs Normal";
-	  MMStab->GoMaxAbs( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps );
-	}
+        if ( MPSet.TuneESQuick ) {
+          qDebug() << "Abs Quick";
+          MMStab->GoMaxAbsQ( MPSet.TuneESStart, MPSet.TuneESEnd,
+                             MPSet.TuneESSteps, MPSet.TuneESQuickTime );
+        } else {
+          qDebug() << "Abs Normal";
+          MMStab->GoMaxAbs( MPSet.TuneESStart, MPSet.TuneESEnd, MPSet.TuneESSteps );
+        }
       } else {
-	if ( MPSet.TuneESQuick ) {
-	  qDebug() << "Rel Quick";
-	  MMStab->GoMaxRelQ( MPSet.TuneESStart, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
-	} else {
-	  qDebug() << "Rel Normal";
-	  MMStab->GoMaxRel( MPSet.TuneESStart, MPSet.TuneESSteps );
-	}
+        if ( MPSet.TuneESQuick ) {
+          qDebug() << "Rel Quick";
+          MMStab->GoMaxRelQ( MPSet.TuneESStart, MPSet.TuneESSteps, MPSet.TuneESQuickTime );
+        } else {
+          qDebug() << "Rel Normal";
+          MMStab->GoMaxRel( MPSet.TuneESStart, MPSet.TuneESSteps );
+        }
       }
     }
     if ( mMeasUnits.isParent() )
@@ -172,7 +172,7 @@ void MainWindow::MeasSequence( void )
       } else if ( MeasR < SelRPT->value()-1 ) {
         NewLogMsg( QString( tr( "Meas: Repeat %1" ) ).arg( MeasR + 1 ) );
         WriteHeader2( MeasR );
-	SaveI0inMPSet();
+        SaveI0inMPSet();
         ClearXViewScreenForMeas( MeasView );
         PlayGoOnSound();
         WriteInfoFile2();
@@ -182,6 +182,7 @@ void MainWindow::MeasSequence( void )
 	} else {
 	  CurrentRpt->setText( QString::number( MeasR + 1 ) );
 	}
+
 	for ( int i = 0; i < MPSet.isSFluos.count(); i++ ) {
 	  if ( MPSet.isSFluos[i] ) 
 	    if ( ! MCACanSaveAllOnMem ) {
@@ -194,22 +195,22 @@ void MainWindow::MeasSequence( void )
 	}
         MeasStage = 2;
       } else {               // 終了
-	clearUUnits();
-	CheckNewMeasFileName();
+        clearUUnits();
+        CheckNewMeasFileName();
         statusbar->showMessage( tr( "The Measurement has Finished" ), 4000 );
         NewLogMsg( QString( tr( "Meas: Finished" ) ) );
         WriteHeader2( MeasR );
-	SaveI0inMPSet();
+        SaveI0inMPSet();
         PlayEndingSound();
         WriteInfoFile2();
         MeasTimer->stop();
         inMeas = false;
-	MPSet.normallyFinished = true;
+        MPSet.normallyFinished = true;
         MeasStart->setText( tr( "Start" ) );
         MeasStart->setStyleSheet( NormalEXECB );
         MeasPause->setEnabled( false );
-	MeasPause->setHidden( true );
-	SignalToStars( XAFS_M_END );
+        MeasPause->setHidden( true );
+        SignalToStars( XAFS_M_END );
         onMeasFinishWorks();
       }
     }
@@ -242,12 +243,14 @@ void MainWindow::onMeasFinishWorks( void )
     MoveCurThPosKeV( InitialKeV );
     if ( AutoModeButton->isChecked() ) {
       connect( MMainTh, SIGNAL( ChangedIsBusy1( QString ) ),
-	       this, SLOT( AutoXAFSSequence() ),
-	       Qt::UniqueConnection );
+               this, SLOT( AutoXAFSSequence() ),
+               Qt::UniqueConnection );
     }
   } else {
     emit ChangerNext();
   }
+  // Clear AutoSampler tag
+  DFName00.clear();
 }
 
 bool MainWindow::isBusyMotorInMeas( void )
@@ -267,10 +270,10 @@ void MainWindow::SetDispMeasModes( void )
   MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
   MeasView->SetLLine( 1 );            //       1 番目のラインを左軸に表示
 
-  MeasView->SetLR( DLC, RIGHT_AX );                        // I0 
+  MeasView->SetLR( DLC, RIGHT_AX );                        // I0
   MeasView->SetScaleType( DLC, I0TYPE );
   MeasView->SetLineName( DLC, mMeasUnits.at( MUC )->name() );
-  MeasView->SetDG( DLC, DG++ );          // I0 は スケーリングのグループわけでは 0 
+  MeasView->SetDG( DLC, DG++ );          // I0 は スケーリングのグループわけでは 0
   DLC++;
   MUC++;
   if ( UseI1->isChecked() ) {  // I1 に対して線は 2 本
@@ -374,10 +377,10 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     DLC++;
     if ( V0 < 1e-10 ) V0 = 1e-10;
     if ( ( V = ( I0 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
-        MeasView->NewPoint( DLC, GoToKeV, log( V ) );
-      } else {
-        MeasView->NewPoint( DLC, GoToKeV, 0 );
-      }
+      MeasView->NewPoint( DLC, GoToKeV, log( V ) );
+    } else {
+      MeasView->NewPoint( DLC, GoToKeV, 0 );
+    }
     DLC++;
     MUC++;
   }
@@ -411,12 +414,12 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     if ( MeasDispMode[ MUC ] == TRANS ) {
       I00 = I0;
       if (( ModeA1->currentIndex() == 3 )||( ModeA1->currentIndex() == 4 ))
-	I00 = I1;
+        I00 = I1;
       if ( fabs( V0 ) < 1e-10 ) V0 = 1e-10;
       if ( ( V = ( I00 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
-	MeasView->NewPoint( DLC, GoToKeV, log( V ) );
+        MeasView->NewPoint( DLC, GoToKeV, log( V ) );
       } else {
-	MeasView->NewPoint( DLC, GoToKeV, 0 );
+        MeasView->NewPoint( DLC, GoToKeV, 0 );
       }
       DLC++;
     } else {  // MeasDispMode == FLUO
@@ -432,16 +435,16 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
     if ( MeasDispMode[ MUC ] == TRANS ) {
       I00 = I0;
       if (( ModeA2->currentIndex() == 3 )||( ModeA2->currentIndex() == 4 ))
-	I00 = I1;
+        I00 = I1;
       if (( ModeA2->currentIndex() == 5 )||( ModeA2->currentIndex() == 6 ))
-	I00 = A1;
+        I00 = A1;
       MeasView->NewPoint( DLC, GoToKeV, V0 );   // I の値も表示する
       DLC++;
       if ( V0 < 1e-10 ) V0 = 1e-10;
       if ( ( V = ( I00 / V0 * MeasDispPol[ MUC ] ) ) > 0 ) {
-	MeasView->NewPoint( DLC, GoToKeV, log( V ) );
+        MeasView->NewPoint( DLC, GoToKeV, log( V ) );
       } else {
-	MeasView->NewPoint( DLC, GoToKeV, 0 );
+        MeasView->NewPoint( DLC, GoToKeV, 0 );
       }
       DLC++;
     } else {  // MeasDispMode == FLUO
@@ -474,6 +477,7 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
       if ( I0 < 1e-20 )
         I0 = 1e-20;
       if ( ( isSFluo )&&( DLC == SFluoLine ) ) {
+<<<<<<< HEAD
 	DLC0 = DLC;
 	DLC++;
 	QVector<quint64> vals = SFluo->getCountsInROI();
@@ -488,10 +492,26 @@ void MainWindow::DispMeasDatas( void )  // mMeasUnits->readValue の段階でダ
 	}
 	MeasView->NewPoint( DLC0, GoToKeV, sum );
 	// ここで Val は cps にしてあるので OK
+=======
+        DLC0 = DLC;
+        DLC++;
+        QVector<quint64> vals = SFluo->getCountsInROI();
+        QVector<double> darks = SFluo->getDarkCountsInROI();
+        sum = 0;
+        for ( int j = 0; j < SFluo->chs(); j++ ) {
+          double v = ((double)vals[j] / SFluo->getSetTime() - darks[j] ) / I0;
+          if ( SSDbs2[j]->isChecked() == PBTrue ) // 和を取るのは選択された SSD だけ
+            sum += v;
+          MeasView->NewPoint( DLC, GoToKeV, v );
+          DLC++;
+        }
+        MeasView->NewPoint( DLC0, GoToKeV, sum );
+        // ここで Val は cps にしてあるので OK
+>>>>>>> stable
       } else {
-	MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
-	// ここで Val は cps にしてあるので OK
-	DLC++;
+        MeasView->NewPoint( DLC, GoToKeV, Val/I0 );
+        // ここで Val は cps にしてあるので OK
+        DLC++;
       }
     }
   }
@@ -529,7 +549,7 @@ void MainWindow::newSSDChSelection( int ch, bool f )
     if ( SSFluos[dNo]->selBs2()->isSelected(l) ) {
       y = MeasView->GetYp( SFluoDispLines[dNo] + 1 + l );
       for ( int i = 0; i < points; i++ ) {  // 合計をとりなおす
-	sum[i] += y[i];
+        sum[i] += y[i];
       }
     }
   }
