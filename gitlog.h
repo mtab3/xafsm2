@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 13 12:07:36 2015 +0900\n"\
+                "    A bug which crushed XafsM2 when S2D scan was stopped was fixed\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 28 21:22:42 2015 +0900\n"\
                 "    only checking why q-xafs can not go well with q34410a when the dtime is longer than 0.05sec, but not solved\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 7 17:11:56 2015 +0900\n"\
                 "    before changing 'From() == DevCh' to 'ToCh() == Uid'\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri May 1 20:01:08 2015 +0900\n"\
-                "    a problem, when qct08 is used for QXAFS, since the actual measurement time is different from the calculated one, the back-groud subtraction cause some err, was solved\n"\
 		"\n"\
                 ""
 #endif
