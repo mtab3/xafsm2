@@ -4,6 +4,26 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 13 11:58:34 2015 +0900\n"\
+                "    finished the merge with stable\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jul 10 17:19:13 2015 +0900\n"\
+                "    merged with stable\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 6 12:28:19 2015 +0900\n"\
+                "    fixed a bug in ScanInfo.cpp that 'am' is referred even when it is NULL\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jun 29 11:31:36 2015 +0900\n"\
+                "    The precisions of recording values up to 7\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jun 29 11:23:01 2015 +0900\n"\
+                "    nothing\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jun 18 10:47:40 2015 +0900\n"\
                 "    adding new ct08 channels to XAFSM.def.BL5S1\n"\
@@ -23,26 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jun 1 20:29:40 2015 +0900\n"\
                 "    working with SDD\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 15:51:37 2015 +0900\n"\
-                "    merged with master\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 15:14:19 2015 +0900\n"\
-                "    QXafs measurment can do with 4 sensors(with Aux2)\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 14:16:34 2015 +0900\n"\
-                "    merged with newMwSSD2 on server\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 14:13:01 2015 +0900\n"\
-                "    merged with master\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 14:05:26 2015 +0900\n"\
-                "    fix the Std-XANES-Block-parameter\n"\
 		"\n"\
                 ""
 #endif
