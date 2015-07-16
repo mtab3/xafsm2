@@ -4,6 +4,26 @@
 
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jul 16 18:14:43 2015 +0900\n"\
+                "    Merge branch 'newMwSSD2' of ssh://titan/git/Qt0/XAFS/XafsM2 into newMwSSD2\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Jul 16 18:14:39 2015 +0900\n"\
+                "    small change\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jul 14 14:49:24 2015 +0900\n"\
+                "    'Rh Pb Ag' was corrected 'Rh Pd Ag'\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 13 12:08:52 2015 +0900\n"\
+                "    fixed a bug in s2d\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 13 12:07:36 2015 +0900\n"\
+                "    A bug which crushed XafsM2 when S2D scan was stopped was fixed\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jul 13 11:58:34 2015 +0900\n"\
                 "    finished the merge with stable\n"\
@@ -23,26 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jun 29 11:23:01 2015 +0900\n"\
                 "    nothing\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jun 18 10:47:40 2015 +0900\n"\
-                "    adding new ct08 channels to XAFSM.def.BL5S1\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jun 2 21:22:26 2015 +0900\n"\
-                "    it is working with SDD and can controll HV of SDD\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jun 2 15:40:28 2015 +0900\n"\
-                "    HV unit of AUnitSFluo can be controlled via SetUpSFluo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jun 2 11:45:39 2015 +0900\n"\
-                "    working on SDD, SetUpSFluo, and AUnitSFluo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jun 1 20:29:40 2015 +0900\n"\
-                "    working with SDD\n"\
 		"\n"\
                 ""
 #endif

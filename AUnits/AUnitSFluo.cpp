@@ -531,7 +531,6 @@ void AUnitSFluo::ReceiveValues( SMsg msg )
       TotalEvents << msg.Vals().at( i + 1 + chs() * 2 ).toInt();
       ICRs        << msg.Vals().at( i + 1 + chs() * 3 ).toDouble();
     }
-    
     Values = msg.Vals();
     
     emit NewValue( Value );
@@ -603,6 +602,7 @@ void AUnitSFluo::receiveMCAs( void )
       TotalEvents << 0;
       ICRs        << getAMCAHead( i ).icr;
     }
+    qDebug() << "ICRs" << ICRs;
     emit NewMCAsAvailable( MCAs );
     emit NewValue( Value );
   }

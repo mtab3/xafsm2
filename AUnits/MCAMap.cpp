@@ -43,6 +43,7 @@ void aMCASet::writeHead( QTextStream &out, QString uid )
   out << "## Channel Status Length RealTime LiveTime ICR ROI-Start ROI-End\n";
   for ( int i = 0; i < CHs; i++ ) {
     XMAPHead head = Heads[i];
+    qDebug() << "Heads ch stat" << i << Heads[i].stat;
     out << "# " << MCACHINFO << " : "
 	<< head.ch << "\t" << head.stat << "\t" << head.len << "\t"
 	<< head.realTime << "\t" << head.liveTime << "\t" << head.icr << "\t"

@@ -5,7 +5,6 @@ void MainWindow::MeasSequence( void )
   double Delta;
   bool a1, a2;
 
-  qDebug() << "In";
   if ( inMeasDark ) return;
   if ( AskingOverwrite ) return;
   if ( NoticingHaveNotMeasDark ) return;
