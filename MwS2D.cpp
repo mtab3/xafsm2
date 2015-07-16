@@ -507,9 +507,8 @@ void MainWindow::S2DScanStart( void )
       qDebug() << "non-defined scan mode !";
       return;
     }
-    S2DI.valid = true;
     S2DBase->setS2DI( S2DI );
-
+    S2DI.valid = true;
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
@@ -646,7 +645,6 @@ void MainWindow::S2DStop0( void )
   S2DDataStat = OLD;
   S2DFileName0->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
   S2DFileName0->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
-
 }
 
 void MainWindow::S2DStop00( void )
