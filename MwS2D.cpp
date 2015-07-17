@@ -509,7 +509,6 @@ void MainWindow::S2DScanStart( void )
     }
     S2DI.valid = true;
     S2DBase->setS2DI( S2DI );
-
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
