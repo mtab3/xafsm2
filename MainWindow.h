@@ -52,6 +52,7 @@
 #include "MonInfo.h"
 #include "enums.h"
 #include "AUnits/AUnitRemote.h"
+#include "MeasMode.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -123,6 +124,10 @@ private:
   QString LocalizedName( QString name );
   Alarms *alarms;
   AUnitRemote *remote;
+  
+  QVector<MeasMode*> MeasModes;
+  void showMeasModes( void );
+  int devNo( QString uid );
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );

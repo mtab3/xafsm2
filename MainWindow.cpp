@@ -222,9 +222,48 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( Special, SIGNAL( clicked() ), this, SLOT( SpecialMove() ) );
   
   conds->setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
+  showMeasModes();
 
   s->AskStatus();
   s->MakeConnection();
+}
+
+void MainWindow::showMeasModes( void )
+{
+  for ( int i = 0; i < MeasModes.count(); i++ ) {
+    MeasMode *m = MeasModes[i];
+    if ( m->isI0() ) {
+      SelectI0->setCurrentIndex( devNo( m->DevI0() ) );
+    } 
+    if ( m->isI1() ) {
+      UseI1->setSelected( true );
+      SelectI1->setCurrentIndex( devNo( m->DevI1() ) );
+    } else {
+      UseI1->setSelected( false );
+    }
+    if ( m->isA1() ) {
+      UseAux1->setSelected( true );
+      SelectAux1->setCurrentIndex( devNo( m->DevA1() ) );
+      ModeA1->setCurrentIndex( m->DModeA1() );
+    } else {
+      UseAux1->setSelected( false );
+    }
+    if ( m->isA2() ) {
+      UseAux2->setSelected( true );
+      SelectAux2->setCurrentIndex( devNo( m->DevA2() ) );
+      ModeA2->setCurrentIndex( m->DModeA2() );
+    } else {
+      UseAux2->setSelected( false );
+    }
+  }
+}
+
+int MainWindow::devNo( QString uid )
+{
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    if ( ASensors[i]->uid() == uid ) return i;
+  }
+  return -1;
 }
 
 void MainWindow::SpecialMove( void )

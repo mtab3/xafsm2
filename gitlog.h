@@ -4,9 +4,33 @@
 
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jul 14 14:52:50 2015 +0900\n"\
+                "    Merge branch 'stable' of ssh://titan/git/Qt0/XAFS/XafsM2 into stable\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jul 14 14:52:24 2015 +0900\n"\
+                "    'Rh Pb Ag' was corrected 'Rh Pd Ag'\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 13 12:08:52 2015 +0900\n"\
+                "    fixed a bug in s2d\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jul 13 12:07:36 2015 +0900\n"\
                 "    A bug which crushed XafsM2 when S2D scan was stopped was fixed\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jul 6 12:28:19 2015 +0900\n"\
+                "    fixed a bug in ScanInfo.cpp that 'am' is referred even when it is NULL\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jun 29 11:31:36 2015 +0900\n"\
+                "    The precisions of recording values up to 7\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jun 29 11:23:01 2015 +0900\n"\
+                "    nothing\n"\
 		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 28 21:22:42 2015 +0900\n"\
@@ -19,30 +43,6 @@
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 21 22:20:55 2015 +0900\n"\
                 "    Change InitialkeV from Pulse motor value to Encoder value\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu May 21 22:14:58 2015 +0900\n"\
-                "    Fix filename in single measurement mode after using auto sampler\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu May 21 19:59:00 2015 +0900\n"\
-                "    Update Standard parameters\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 15:14:19 2015 +0900\n"\
-                "    QXafs measurment can do with 4 sensors(with Aux2)\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue May 19 14:05:26 2015 +0900\n"\
-                "    fix the Std-XANES-Block-parameter\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri May 8 12:28:32 2015 +0900\n"\
-                "    Now, all of the messages to the drivers connecting Stars are sent via the AUnit.   When a message is sent to Stars via an AUnit, the from-ch is always set as Uid\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu May 7 17:11:56 2015 +0900\n"\
-                "    before changing 'From() == DevCh' to 'ToCh() == Uid'\n"\
 		"\n"\
                 ""
 #endif
