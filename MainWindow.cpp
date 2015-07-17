@@ -219,9 +219,69 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( Special, SIGNAL( clicked() ), this, SLOT( SpecialMove() ) );
   
   conds->setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
+  showMeasModes();
 
   s->AskStatus();
   s->MakeConnection();
+}
+
+void MainWindow::showMeasModes( void )
+{
+  for ( int i = 0; i < MeasModes.count(); i++ ) {
+    MeasMode *m = MeasModes[i];
+    QPushButton *pb = new QPushButton;
+    m->setButton( pb );
+    pb->setText( LocalizedName( m->Name() ) );
+    MeasModesLayout->addWidget( pb );
+    connect( pb, SIGNAL( clicked() ), this, SLOT( changeMeasMode() ), Qt::UniqueConnection );
+  }
+}
+
+void MainWindow::changeMeasMode( void )
+{
+  for ( int i = 0; i < MeasModes.count(); i++ ) {
+    MeasMode *m = MeasModes[ i ];
+    if ( m->Button() == sender() ) {
+      if ( m->isI0() ) {
+	SelectI0->setCurrentIndex( devNo( m->DevI0() ) );
+      } 
+      if ( m->isI1() ) {
+	UseI1->setChecked( true );
+	SelectI1->setCurrentIndex( devNo( m->DevI1() ) );
+      } else {
+	UseI1->setChecked( false );
+      }
+      if ( m->isA1() ) {
+	UseAux1->setChecked( true );
+	SelectAux1->setCurrentIndex( devNo( m->DevA1() ) );
+	ModeA1->setCurrentIndex( m->DModeA1() );
+      } else {
+	UseAux1->setChecked( false );
+      }
+      if ( m->isA2() ) {
+	UseAux2->setChecked( true );
+	SelectAux2->setCurrentIndex( devNo( m->DevA2() ) );
+	ModeA2->setCurrentIndex( m->DModeA2() );
+      } else {
+	UseAux2->setChecked( false );
+      }
+      for ( int i = 0; i < UseSFluos.count(); i++ ) {
+	if ( m->isF( i ) ) {
+	  UseSFluos[i]->setChecked( true );
+	} else {
+	  UseSFluos[i]->setChecked( false );
+	}
+      }
+    }
+  }
+}
+
+int MainWindow::devNo( QString uid )
+{
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    if ( ASensors[i]->uid() == uid ) return i;
+  }
+  return -1;
 }
 
 void MainWindow::SpecialMove( void )

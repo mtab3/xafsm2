@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Tue Jul 14 14:49:24 2015 +0900\n"\
+                "    'Rh Pb Ag' was corrected 'Rh Pd Ag'\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jul 13 11:58:34 2015 +0900\n"\
                 "    finished the merge with stable\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jun 2 11:45:39 2015 +0900\n"\
                 "    working on SDD, SetUpSFluo, and AUnitSFluo\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jun 1 20:29:40 2015 +0900\n"\
-                "    working with SDD\n"\
 		"\n"\
                 ""
 #endif

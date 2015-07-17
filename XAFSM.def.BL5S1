@@ -37,6 +37,8 @@
 # 2015/03/03 delete MAX_MCA_ENERGY line
 # 2015/03/04 definition of MCAGAIN is changed
 # 2015/03/07 definition of SSD is extended
+# 2015/06/?? change definition of SSD
+# 2015/07/17 add 'MEAS_MODE' line
 
 #
 # In this definition file,
@@ -348,6 +350,23 @@ CALIB_ENGS 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 
 #  "1.5mm..."  :   The name of the pin hole.  Only for display
 
 
+
+#
+# define some default measurement modes
+#
+
+# name "TransM", using S073 as I0 and S074 as I1
+MEAS_MODE "TransM" "I0 S073" "I1 S074"
+
+# name "FluoM", using S073 as I0 and select F0
+# for 'stable' XafsM2 only F0 can be selectable as fluorescence detector
+#MEAS_MODE "FluoM"  "I0 S073" "F0"
+MEAS_MODE "FluoM(SSD)"  "I0 S073" "F0"
+MEAS_MODE "FluoM(SDD)"  "I0 S073" "F1"
+
+# name "CEYM", using S073 as I0 and S074 as A1 while the display mode is 0
+#             display mode : 0 A1/I0, 1 log(I0/I1), 2 log(-I0/I1), ...
+MEAS_MODE "CEYM"    "I0 S073" "A1 S074 0"
 
 #######################################################################
 # define Sensor units

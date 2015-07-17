@@ -53,6 +53,7 @@
 #include "SetUpSFluo.h"
 #include "enums.h"
 #include "AUnits/AUnitRemote.h"
+#include "MeasMode.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -124,6 +125,10 @@ private:
   QString LocalizedName( QString name );
   Alarms *alarms;
   AUnitRemote *remote;
+  
+  QVector<MeasMode*> MeasModes;
+  void showMeasModes( void );
+  int devNo( QString uid );
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );
@@ -608,6 +613,7 @@ private slots:
   // Main Part
   void Print( QPrinter *p );
   void newDataRoot( const QString &dataroot );
+  void changeMeasMode( void );
 
   // Auto mode
   bool ParseAutoMode( void );

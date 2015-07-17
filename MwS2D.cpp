@@ -646,7 +646,6 @@ void MainWindow::S2DStop0( void )
   S2DDataStat = OLD;
   S2DFileName0->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
   S2DFileName0->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
-
 }
 
 void MainWindow::S2DStop00( void )
