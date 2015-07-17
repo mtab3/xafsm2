@@ -1,12 +1,14 @@
 #ifndef MEASMODE_H
 #define MEASMODE_H
 
+#include <QPushButton>
 #include <QString>
 #include <QVector>
 
 class MeasMode
 {
   QString name;
+  QPushButton *pb;
   bool useI0, useI1, useA1, useA2;
   QString devI0, devI1, devA1, devA2;
   int dModeA1, dModeA2;
@@ -17,6 +19,7 @@ class MeasMode
 
   void setModeName( QString name ) { this->name = name; };
   void setMode( QString mode );
+  void setButton( QPushButton *b ) { pb = b; }
   void setI0( bool f ) { useI0 = f; };
   void setI1( bool f ) { useI1 = f; };
   void setA1( bool f ) { useA1 = f; };
@@ -24,6 +27,7 @@ class MeasMode
   void setF( int ch, bool f );
 
   QString Name( void ) { return name; };
+  QPushButton *Button( void ) { return pb; };
   bool isI0( void ) { return useI0; };
   bool isI1( void ) { return useI1; };
   bool isA1( void ) { return useA1; };

@@ -600,6 +600,7 @@ private slots:
   // Main Part
   void Print( QPrinter *p );
   void newDataRoot( const QString &dataroot );
+  void changeMeasMode( void );
 
   // Auto mode
   bool ParseAutoMode( void );

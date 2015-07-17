@@ -351,15 +351,16 @@ CALIB_ENGS 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 
 # define some default measurement modes
 #
 
-# name "Trans.", using S073 as I0 and S074 as I1
-MEAS_MODE "Trans." "I0 S073" "I1 S074"
+# name "TransM", using S073 as I0 and S074 as I1
+MEAS_MODE "TransM" "I0 S073" "I1 S074"
 
-# name "Fluo.", using S073 as I0 and select F0
-MEAS_MODE "Fluo."  "I0 S073" "F0"
+# name "FluoM", using S073 as I0 and select F0
+# for 'stable' XafsM2 only F0 can be selectable as fluorescence detector
+MEAS_MODE "FluoM"  "I0 S073" "F0"
 
-# name "CEY", using S073 as I0 and S074 as A1 while the display mode is 0
+# name "CEYM", using S073 as I0 and S074 as A1 while the display mode is 0
 #             display mode : 0 A1/I0, 1 log(I0/I1), 2 log(-I0/I1), ...
-MEAS_MODE "CEY"    "I0 S073" "A1 S074 0"
+MEAS_MODE "CEYM"    "I0 S073" "A1 S074 0"
 
 #######################################################################
 # define Sensor units

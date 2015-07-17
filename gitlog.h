@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Jul 17 16:27:30 2015 +0900\n"\
+                "    working and broken\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jul 14 14:52:50 2015 +0900\n"\
                 "    Merge branch 'stable' of ssh://titan/git/Qt0/XAFS/XafsM2 into stable\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu May 21 20:47:06 2015 +0900\n"\
                 "    The problem on the StopMode selection for qct08 was solved\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu May 21 22:20:55 2015 +0900\n"\
-                "    Change InitialkeV from Pulse motor value to Encoder value\n"\
 		"\n"\
                 ""
 #endif

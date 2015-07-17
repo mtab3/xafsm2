@@ -33,5 +33,8 @@ QString MainWindow::LocalizedName( QString name )
   
   name.replace( QString( "ax" ),        tr( "axis" ) );
 
+  name.replace( QString( "TransM" ),    tr( "Trans. Mode" ) );
+  name.replace( QString( "FluoM" ),     tr( "Fluo. Mode" ) );
+  name.replace( QString( "CEYM" ),      tr( "CEY Mode" ) );
   return name;
 }
