@@ -68,7 +68,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
   out << " " << fixS( FileIDs[ MEASDATA ], 20 ) << fixS( BLNAME, 5 ) << endl;
 
-  out << " " << fixS( DFName00, 14 ) << "  "
+  out << " " << fixS( QFileInfo( DFName0 ).fileName(), 14 ) << "  "
       << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << " - "
       << "%001%" << endl; // 置換用のマーク 001 番目 14桁終了日時 "yy.MM.dd hh:mm"
   out << " " << fixS( EditCMT->text(), 80 ) << endl;
