@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "stable" )
+#define BRANCH_NAME ( "check" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Aug 3 19:00:21 2015 +0900\n"\
+                "    a bug in S2D StepScan, the measurement time was corrected as if Continuous scan, was fixed\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jul 27 17:40:07 2015 +0900\n"\
                 "    Revival some comments in head-lines of XAFSM.def.BL5S1\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jul 13 12:08:52 2015 +0900\n"\
                 "    fixed a bug in s2d\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jul 13 12:07:36 2015 +0900\n"\
-                "    A bug which crushed XafsM2 when S2D scan was stopped was fixed\n"\
 		"\n"\
                 ""
 #endif
