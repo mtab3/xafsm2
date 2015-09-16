@@ -134,10 +134,10 @@ void MainWindow::ToggleQXafsMode( bool )
     SaveUseAux1 = UseAux1->isChecked();
     SaveUseAux2 = UseAux2->isChecked();
     Use19chSSD->setChecked( false );
-    UseAux1->setChecked( false );
+    UseAux1->setChecked( true );      // Aux2 は標準で使うことにする
     UseAux2->setChecked( false );
     Use19chSSD->setEnabled( false );
-    UseAux1->setEnabled( true );       // QXafs で使えることにする
+    UseAux1->setEnabled( true );      // QXafs で使えることにする
     UseAux2->setEnabled( true );      // やっぱこっちは使えないまま -> 使えることにする
 
     SetNewRPTLimit();

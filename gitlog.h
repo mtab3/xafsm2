@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "check" )
+#define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 16 19:07:12 2015 +0900\n"\
+                "    some debug codes\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Aug 3 19:00:21 2015 +0900\n"\
                 "    a bug in S2D StepScan, the measurement time was corrected as if Continuous scan, was fixed\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jul 14 14:52:24 2015 +0900\n"\
                 "    'Rh Pb Ag' was corrected 'Rh Pd Ag'\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Jul 13 12:08:52 2015 +0900\n"\
-                "    fixed a bug in s2d\n"\
 		"\n"\
                 ""
 #endif
