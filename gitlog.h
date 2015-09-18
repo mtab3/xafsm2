@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "stable" )
+#define BRANCH_NAME ( "QMeasModes" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Sep 18 16:48:59 2015 +0900\n"\
+                "    working on QMeasModes\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 16 19:15:50 2015 +0900\n"\
                 "    Aux1 is selected as default when the measurement mode is changed from normal to quick-xafs mode\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jul 17 16:27:30 2015 +0900\n"\
                 "    working and broken\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Tue Jul 14 14:52:50 2015 +0900\n"\
-                "    Merge branch 'stable' of ssh://titan/git/Qt0/XAFS/XafsM2 into stable\n"\
 		"\n"\
                 ""
 #endif

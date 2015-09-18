@@ -641,7 +641,7 @@ ALARM "S048" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
 #
 
 # name "TransM", using S063 as I0 and S064 as I1
-MEAS_MODE "TransM" "I0 S063" "I1 S064" "A1 S062 2"
+MEAS_MODE "TransM" "I0 S063" "I1 S064" "A1 S062 3"
 
 # name "FluoM", using S063 as I0 and select F0
 # for 'stable' XafsM2 only F0 can be selectable as fluorescence detector
@@ -652,4 +652,4 @@ MEAS_MODE "FluoM"  "I0 S063" "F0"
 MEAS_MODE "CEYM"    "I0 S063" "A1 S062 0"
 
 # name "TransM", using S068 as I0 and S069 as I1
-QMEAS_MODE "TransM" "I0 S068" "I1 S069" "A1 S065 2"
+QMEAS_MODE "TransM" "I0 S068" "I1 S069" "A1 S065 3"

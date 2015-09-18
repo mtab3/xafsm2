@@ -68,45 +68,95 @@ void MainWindow::SetNewRPTLimit( void )
   }
 }
 
+void MainWindow::saveNSelections( void )
+{
+  NSaveSelectedI0 = SelectI0->currentIndex();
+  NSaveSelectedI1 = SelectI1->currentIndex();
+  NSaveSelectedAux1 = SelectAux1->currentIndex();
+  NSaveSelectedAux2 = SelectAux2->currentIndex();
+
+  NSaveUseI1 = UseI1->isChecked();
+  NSaveUse19ChSSD = Use19chSSD->isChecked();
+  NSaveUseAux1 = UseAux1->isChecked();
+  NSaveUseAux2 = UseAux2->isChecked();
+
+  NSaveModeSelAux1 = ModeA1->currentIndex();
+  NSaveModeSelAux2 = ModeA2->currentIndex();
+}
+
+void MainWindow::recoverNSelections( void )
+{
+  SelectI0->setCurrentIndex( NSaveSelectedI0 );
+  SelectI1->setCurrentIndex( NSaveSelectedI1 );
+  SelectAux1->setCurrentIndex( NSaveSelectedAux1 );
+  SelectAux2->setCurrentIndex( NSaveSelectedAux2 );
+
+  UseI1->setChecked( NSaveUseI1 );
+  Use19chSSD->setChecked( NSaveUse19ChSSD );
+  UseAux1->setChecked( NSaveUseAux1 );
+  UseAux2->setChecked( NSaveUseAux2 );
+
+  ModeA1->setCurrentIndex( NSaveModeSelAux1 );
+  ModeA2->setCurrentIndex( NSaveModeSelAux2 );
+  
+  Use19chSSD->setEnabled( true );
+  UseAux1->setEnabled( true );      // QXafs で使えることにする
+  UseAux2->setEnabled( true );      // やっぱこっちは使えないまま -> 使えることにする
+}
+
+void MainWindow::saveQSelections( void )
+{
+  QSaveSelectedI0 = SelectI0->currentIndex();
+  QSaveSelectedI1 = SelectI1->currentIndex();
+  QSaveSelectedAux1 = SelectAux1->currentIndex();
+  QSaveSelectedAux2 = SelectAux2->currentIndex();
+
+  QSaveUseI1 = UseI1->isChecked();
+  QSaveUse19ChSSD = Use19chSSD->isChecked();
+  QSaveUseAux1 = UseAux1->isChecked();
+  QSaveUseAux2 = UseAux2->isChecked();
+
+  QSaveModeSelAux1 = ModeA1->currentIndex();
+  QSaveModeSelAux2 = ModeA2->currentIndex();
+}
+
+void MainWindow::recoverQSelections( void )
+{
+  SelectI0->setCurrentIndex( QSaveSelectedI0 );
+  SelectI1->setCurrentIndex( QSaveSelectedI1 );
+  SelectAux1->setCurrentIndex( QSaveSelectedAux1 );
+  SelectAux2->setCurrentIndex( QSaveSelectedAux2 );
+
+  UseI1->setChecked( QSaveUseI1 );
+  Use19chSSD->setChecked( QSaveUse19ChSSD );
+  UseAux1->setChecked( QSaveUseAux1 );
+  UseAux2->setChecked( QSaveUseAux2 );
+
+  ModeA1->setCurrentIndex( QSaveModeSelAux1 );
+  ModeA2->setCurrentIndex( QSaveModeSelAux2 );
+
+  Use19chSSD->setEnabled( false );
+  UseAux1->setEnabled( true );
+  UseAux2->setEnabled( true );
+}
+
 void MainWindow::ToggleQXafsMode( bool )
 {
   if ( QXafsMode->isChecked() ) {
-
     // QXAFS モード
-
     SetDXMPMC();   // 分光器リセット
 
-    SaveSelectedI0 = SelectI0->currentIndex();
-    SaveSelectedI1 = SelectI1->currentIndex();
-    SaveSelectedAux1 = SelectAux1->currentIndex();
-    SaveSelectedAux2 = SelectAux2->currentIndex();
+    saveNSelections();
     SetUpSensorComboBoxes();
+    recoverQSelections();
 
-    for ( int i = 0; i < I0Sensors.count(); i++ ) {
-      if ( I0Sensors[i]->id() == "QXAFS-I0" ) {
-	SelectI0->setCurrentIndex( i );
-	break;
-      }
-    }
-    for ( int i = 0; i < I1Sensors.count(); i++ ) {
-      if ( I1Sensors[i]->id() == "QXAFS-I1" ) {
-	SelectI1->setCurrentIndex( i );
-	break;
-      }
-    }
-    for ( int i = 0; i < I1Sensors.count(); i++ ) {
-      if ( I1Sensors[i]->id() == "QXAFS-I2" ) {
-	SelectAux1->setCurrentIndex( i );
-	break;
-      }
-    }
     // ブロックパラメータのセーブを行う前に、
     // 現在のパラメータの妥当性を確認しておく
     NBlockPisValid = ( CheckBlockRange() && ( ( TP > 0 ) && ( TT0 > 0 ) ) );
 
     // ノーマルのブロックパラメータのセーブ
-    SaveNowBlocks = SelBLKs->value();
-    NXAFSBInfo.Blocks = SaveNowBlocks;
+    NSaveNowBlocks = SelBLKs->value();
+    NXAFSBInfo.Blocks = NSaveNowBlocks;
     NXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
     SelBLKUnit->setCurrentIndex( (int)(QXAFSBInfo.Unit) );
     int i;
@@ -130,24 +180,17 @@ void MainWindow::ToggleQXafsMode( bool )
     HideBLKs( true );
     QConditionBox->setHidden( false );
 
-    SaveUse19ChSSD = Use19chSSD->isChecked();
-    SaveUseAux1 = UseAux1->isChecked();
-    SaveUseAux2 = UseAux2->isChecked();
-    Use19chSSD->setChecked( false );
-    UseAux1->setChecked( true );      // Aux2 は標準で使うことにする
-    UseAux2->setChecked( false );
-    Use19chSSD->setEnabled( false );
-    UseAux1->setEnabled( true );      // QXafs で使えることにする
-    UseAux2->setEnabled( true );      // やっぱこっちは使えないまま -> 使えることにする
-
     SetNewRPTLimit();
 
   } else {
 
     // NORML XAFS モード
-
+    saveQSelections();
+    SetUpSensorComboBoxes();
+    recoverNSelections();
+    
     SelBLKs->setEnabled( true );
-    ChangeBLKs( SaveNowBlocks );
+    ChangeBLKs( NSaveNowBlocks );
     QXAFSBInfo.Blocks = SelBLKs->value();
     QXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
     SelBLKUnit->setCurrentIndex( (int)(NXAFSBInfo.Unit) );
@@ -168,18 +211,6 @@ void MainWindow::ToggleQXafsMode( bool )
 
     HideBLKs( false );
     QConditionBox->setHidden( true );
-    SetUpSensorComboBoxes();
-
-    SelectI0->setCurrentIndex( SaveSelectedI0 );
-    SelectI1->setCurrentIndex( SaveSelectedI1 );
-    SelectAux1->setCurrentIndex( SaveSelectedAux1 );
-    SelectAux2->setCurrentIndex( SaveSelectedAux2 );
-    Use19chSSD->setChecked( SaveUse19ChSSD );
-    UseAux1->setChecked( SaveUseAux1 );
-    UseAux2->setChecked( SaveUseAux2 );
-    Use19chSSD->setEnabled( true );
-    UseAux1->setEnabled( true );
-    UseAux2->setEnabled( true );
 
     SetNewRPTLimit();
   }

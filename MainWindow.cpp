@@ -271,28 +271,34 @@ void MainWindow::setUpMeasModes( void )
 
 void MainWindow::changeMeasMode( void )
 {
-  for ( int i = 0; i < MeasModes.count(); i++ ) {
-    MeasMode *m = MeasModes[ i ];
+  QVector<MeasMode*> *mms;
+  if ( QXafsMode->isChecked() ) {
+    mms = &QMeasModes;
+  } else {
+    mms = &MeasModes;
+  }
+  for ( int i = 0; i < mms->count(); i++ ) {
+    MeasMode *m = (*mms)[ i ];
     if ( m->Button() == sender() ) {
       if ( m->isI0() ) {
-	SelectI0->setCurrentIndex( devNo( m->DevI0() ) );
+	SelectI0->setCurrentIndex( devNo( I0Sensors, m->DevI0() ) );
       } 
       if ( m->isI1() ) {
 	UseI1->setChecked( true );
-	SelectI1->setCurrentIndex( devNo( m->DevI1() ) );
+	SelectI1->setCurrentIndex( devNo( I1Sensors, m->DevI1() ) );
       } else {
 	UseI1->setChecked( false );
       }
       if ( m->isA1() ) {
 	UseAux1->setChecked( true );
-	SelectAux1->setCurrentIndex( devNo( m->DevA1() ) );
+	SelectAux1->setCurrentIndex( devNo( A1Sensors, m->DevA1() ) );
 	ModeA1->setCurrentIndex( m->DModeA1() );
       } else {
 	UseAux1->setChecked( false );
       }
       if ( m->isA2() ) {
 	UseAux2->setChecked( true );
-	SelectAux2->setCurrentIndex( devNo( m->DevA2() ) );
+	SelectAux2->setCurrentIndex( devNo( A2Sensors, m->DevA2() ) );
 	ModeA2->setCurrentIndex( m->DModeA2() );
       } else {
 	UseAux2->setChecked( false );
@@ -306,11 +312,15 @@ void MainWindow::changeMeasMode( void )
   }
 }
 
-int MainWindow::devNo( QString uid )
+int MainWindow::devNo( QVector<ASensor*> &Sensors, QString uid )
 {
-  for ( int i = 0; i < ASensors.count(); i++ ) {
-    if ( ASensors[i]->uid() == uid ) return i;
+  for ( int i = 0; i < Sensors.count(); i++ ) {
+    qDebug() << Sensors[i]->uid() << uid;
+    if ( Sensors[i]->uid() == uid ) {
+      return i;
+    }
   }
+
   return -1;
 }
 
