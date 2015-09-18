@@ -176,13 +176,14 @@ void MainWindow::ToggleQXafsMode( bool )
     SelectAux2->setCurrentIndex( SaveSelectedAux2 );
     Use19chSSD->setChecked( SaveUse19ChSSD );
     UseAux1->setChecked( SaveUseAux1 );
-    UseAux2->setChecked( SaveUseAux1 );
+    UseAux2->setChecked( SaveUseAux2 );
     Use19chSSD->setEnabled( true );
     UseAux1->setEnabled( true );
     UseAux2->setEnabled( true );
 
     SetNewRPTLimit();
   }
+  showMeasModes();
 }
 
 void MainWindow::HideBLKs( bool f )

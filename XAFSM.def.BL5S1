@@ -37,6 +37,7 @@
 # 2015/06/?? change definition of SSD
 # 2015/07/17 add 'MEAS_MODE' line
 # 2015/07/16 add several axes for Mirror in hutch
+# 2015/09/18 add 'QMEAS_MODE' line
 
 #
 # In this definition file,
@@ -649,3 +650,6 @@ MEAS_MODE "FluoM"  "I0 S063" "F0"
 # name "CEYM", using S063 as I0 and S062 as A1 while the display mode is 0
 #             display mode : 0 A1/I0, 1 log(I0/I1), 2 log(-I0/I1), ...
 MEAS_MODE "CEYM"    "I0 S063" "A1 S062 0"
+
+# name "TransM", using S068 as I0 and S069 as I1
+QMEAS_MODE "TransM" "I0 S068" "I1 S069" "A1 S065 2"

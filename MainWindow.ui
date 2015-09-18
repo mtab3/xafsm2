@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>874</width>
-    <height>1028</height>
+    <height>1036</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1995,7 +1995,7 @@
               </widget>
              </item>
              <item row="0" column="0">
-              <layout class="QHBoxLayout" name="MeasModesLayout">
+              <layout class="QHBoxLayout" name="MeasModesLayout0">
                <item>
                 <widget class="QLabel" name="label_136">
                  <property name="sizePolicy">
@@ -2017,6 +2017,12 @@
                   <string>Meas. Modes</string>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="NMeasModesBox" native="true"/>
+               </item>
+               <item>
+                <widget class="QWidget" name="QMeasModesBox" native="true"/>
                </item>
               </layout>
              </item>

@@ -327,6 +327,18 @@ void MainWindow::ReadDef( QString fname )
 	  }
 	  MeasModes << m;
 	}
+      } else if ( item == "QMEAS_MODE" ) {
+	MeasMode *m = new MeasMode;
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  m->setModeName( item );
+	  next = nextItem( next, item );
+	  while( item != "" ) {
+	    m->setMode( item );
+	    next = nextItem( next, item );
+	  }
+	  QMeasModes << m;
+	}
       } else {
         qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

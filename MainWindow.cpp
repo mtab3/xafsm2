@@ -222,6 +222,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( Special, SIGNAL( clicked() ), this, SLOT( SpecialMove() ) );
   
   conds->setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
+  setUpMeasModes();
   showMeasModes();
 
   s->AskStatus();
@@ -230,12 +231,40 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
 
 void MainWindow::showMeasModes( void )
 {
+  if ( QXafsMode->isChecked() ) {
+    QMeasModesBox->setHidden( false );
+    NMeasModesBox->setHidden( true );
+  } else {
+    QMeasModesBox->setHidden( true );
+    NMeasModesBox->setHidden( false );
+  }
+}
+
+void MainWindow::setUpMeasModes( void )
+{
+  QHBoxLayout *hbL1 = new QHBoxLayout;
+  hbL1->setContentsMargins( 0, 0, 0, 0 );
+  hbL1->setSpacing( 0 );
+  NMeasModesBox->setLayout( hbL1 );
   for ( int i = 0; i < MeasModes.count(); i++ ) {
     MeasMode *m = MeasModes[i];
     QPushButton *pb = new QPushButton;
     m->setButton( pb );
     pb->setText( LocalizedName( m->Name() ) );
-    MeasModesLayout->addWidget( pb );
+    hbL1->addWidget( pb );
+    connect( pb, SIGNAL( clicked() ), this, SLOT( changeMeasMode() ), Qt::UniqueConnection );
+  }
+
+  QHBoxLayout *hbL2 = new QHBoxLayout;
+  hbL2->setContentsMargins( 0, 0, 0, 0 );
+  hbL2->setSpacing( 0 );
+  QMeasModesBox->setLayout( hbL2 );
+  for ( int i = 0; i < QMeasModes.count(); i++ ) {
+    MeasMode *m = QMeasModes[i];
+    QPushButton *pb = new QPushButton;
+    m->setButton( pb );
+    pb->setText( LocalizedName( m->Name() ) );
+    hbL2->addWidget( pb );
     connect( pb, SIGNAL( clicked() ), this, SLOT( changeMeasMode() ), Qt::UniqueConnection );
   }
 }

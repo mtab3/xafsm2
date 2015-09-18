@@ -126,6 +126,8 @@ private:
   AUnitRemote *remote;
   
   QVector<MeasMode*> MeasModes;
+  QVector<MeasMode*> QMeasModes;
+  void setUpMeasModes( void );
   void showMeasModes( void );
   int devNo( QString uid );
 
