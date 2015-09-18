@@ -633,7 +633,8 @@ void MainWindow::SetupS2DParams( void )
     pps = S2DI.unit[0]->highestSpeed();
   }
   S2DI.pps = pps;
-  S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->upp() / pps;
+  if ( S2DI.ScanMode != STEP )
+    S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->upp() / pps;
 }
 
 void MainWindow::S2DStop0( void )

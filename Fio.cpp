@@ -68,7 +68,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
 
   out << " " << fixS( FileIDs[ MEASDATA ], 20 ) << fixS( BLNAME, 5 ) << endl;
 
-  out << " " << fixS( DFName, 14 ) << "  "
+  out << " " << fixS( QFileInfo( DFName0 ).fileName(), 14 ) << "  "
       << QDateTime::currentDateTime().toString("yy.MM.dd hh:mm") << " - "
       << "%001%" << endl; // 置換用のマーク 001 番目 14桁終了日時 "yy.MM.dd hh:mm"
   out << " " << fixS( EditCMT->text(), 80 ) << endl;
@@ -93,7 +93,7 @@ void MainWindow::WriteHeaderCore( bool SnotN )
   if ( Unit == DEG ) {
     out << " "
         << QString( "Param file : %1  angle axis (1)    Block = %2" )
-           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 5 ) << endl;
+           .arg( fixS( "DUMMYNAME.prm", 14 ) ).arg( Blocks, 4 ) << endl;
     out << endl;
 
     out << " "
