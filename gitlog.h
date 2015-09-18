@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "QMeasModes" )
+#define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Sep 18 22:02:57 2015 +0900\n"\
+                "    QMEAS_MODE is ready\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Sep 18 16:48:59 2015 +0900\n"\
                 "    working on QMeasModes\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Jul 17 17:12:04 2015 +0900\n"\
                 "    It may work\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jul 17 16:27:30 2015 +0900\n"\
-                "    working and broken\n"\
 		"\n"\
                 ""
 #endif
