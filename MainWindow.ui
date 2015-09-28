@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>874</width>
-    <height>1036</height>
+    <height>1044</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -4187,13 +4187,13 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QLabel" name="label_51">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Dwell T.</string>
+                  <string>Dwell T. [sec]</string>
                  </property>
                 </widget>
                </item>
@@ -4216,6 +4216,32 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                  <property name="text">
                   <string>0.1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_58">
+                 <property name="text">
+                  <string>Interval T.[sec]</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="MonIntT">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4277,12 +4303,6 @@ Though, other parameters are fixed at the value on starting.</string>
                 <spacer name="verticalSpacer_14">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
                  </property>
                 </spacer>
                </item>
@@ -4372,8 +4392,8 @@ Though, other parameters are fixed at the value on starting.</string>
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>290</width>
-                     <height>155</height>
+                     <width>308</width>
+                     <height>154</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">

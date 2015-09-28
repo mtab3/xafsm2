@@ -2,8 +2,12 @@
 #define GITLOG_H
 
 
-#define BRANCH_NAME ( "stable" )
+#define BRANCH_NAME ( "mon" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Sep 18 22:04:06 2015 +0900\n"\
+                "    Meaged with QMeasModes\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Sep 18 22:02:57 2015 +0900\n"\
                 "    QMEAS_MODE is ready\n"\
@@ -39,10 +43,6 @@
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jul 21 11:28:00 2015 +0900\n"\
                 "    Update XAFSM.def.BL5S1 for MEAS_MODE\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jul 17 17:12:04 2015 +0900\n"\
-                "    It may work\n"\
 		"\n"\
                 ""
 #endif
