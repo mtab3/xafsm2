@@ -648,6 +648,8 @@ void MainWindow::ChangeBLKUnit( int unit )
 
 void MainWindow::ChangeBLKs( int newBLKs )
 {
+  if ( newBLKs >= BLKstart.count() )
+    return;
   if ( SelBLKs->value() != newBLKs ) {
     SelBLKs->setValue( newBLKs );
   }

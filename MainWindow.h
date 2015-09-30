@@ -825,6 +825,7 @@ private slots:
   void MonSequence( void );
   void MCASequence( void );
   void MeasDarkSequence( void );
+  void setLastETime( int let );
 
   void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype, QString dir );

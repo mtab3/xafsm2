@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 30 17:22:57 2015 +0900\n"\
+                "    fix a bug in MEAS_MODEs.  NSaveNowBlocks was used without initialization\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 30 17:22:11 2015 +0900\n"\
                 "    fix a bug in MEAS_MODEs.  NSaveNowBlocks was used without initialization\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 23 19:41:55 2015 +0900\n"\
                 "    Fix writeheadercore on filename\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jul 23 14:59:00 2015 +0900\n"\
-                "    Fix file header format\n"\
 		"\n"\
                 ""
 #endif
