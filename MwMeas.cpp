@@ -648,7 +648,6 @@ void MainWindow::ChangeBLKUnit( int unit )
 
 void MainWindow::ChangeBLKs( int newBLKs )
 {
-  qDebug() << "blks " << newBLKs;
   if ( newBLKs >= BLKstart.count() )
     return;
   if ( SelBLKs->value() != newBLKs ) {

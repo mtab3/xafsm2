@@ -67,7 +67,8 @@ void MainWindow::MonSequence( void )
     MonitorView->NewPointR( etime = MonTime.elapsed(),
 			    MeasVals, mMonUnits.count() );
     MonitorView->update();
-
+    lastETime = etime;
+    
     if ( conds->isRecordAllSSDChs() ) {
       if ( SFluo != NULL ) {
 	QFile f( "ssd.dat" );

@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "mon" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 30 17:20:12 2015 +0900\n"\
+                "    fix a bug in MEAS_MODEs\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 30 16:33:52 2015 +0900\n"\
                 "    it may work but not tested\n"\
@@ -39,10 +43,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Jul 27 17:40:07 2015 +0900\n"\
                 "    Revival some comments in head-lines of XAFSM.def.BL5S1\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jul 23 19:41:55 2015 +0900\n"\
-                "    Fix writeheadercore on filename\n"\
 		"\n"\
                 ""
 #endif
