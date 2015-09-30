@@ -3,10 +3,26 @@
 #include <QFile>
 #include <QTextStream>
 
+static int lastETime = -1;
+
+void MainWindow::setLastETime( int let )
+{
+  lastETime = let;
+}
+
 void MainWindow::MonSequence( void )
 {
   if ( mMonUnits.isBusy() )
     return;
+  
+  double monInt = MonIntT->text().toDouble();
+  if (( MonStage == 5 )&&(  monInt > 0 )) {  // インターバル時間の指定があるばあい
+    if ( lastETime > 0 ) {  // 前回の計測から指定の時間経っていなければ
+                            // 次の計測ステージ(5)に進まない
+      if ( (double)( MonTime.elapsed() - lastETime ) / 1000. < monInt )
+	return;
+    }
+  }
 
   switch( MonStage ) {
     /* 

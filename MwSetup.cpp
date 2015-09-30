@@ -1197,6 +1197,7 @@ void MainWindow::Monitor( void )
       UUnits.addAnUnit( MONITOR_ID, mMonUnits.at(i) );
     }
 
+    setLastETime( -1 );
     inMonitor = true;
     MinPause = false;
     MonStage = 0;   // 計測のサイクル
