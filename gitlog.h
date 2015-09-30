@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "mon" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 30 16:33:52 2015 +0900\n"\
+                "    it may work but not tested\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Sep 28 19:34:26 2015 +0900\n"\
                 "    working\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jul 23 19:41:55 2015 +0900\n"\
                 "    Fix writeheadercore on filename\n"\
-		"\n"\
-                "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Jul 23 14:59:00 2015 +0900\n"\
-                "    Fix file header format\n"\
 		"\n"\
                 ""
 #endif
