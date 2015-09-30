@@ -332,7 +332,8 @@ void MainWindow::initialSelectionOfSensors( void )
       }
     }
   }
-  
+
+  NSaveNowBlocks = 4;
   NSaveModeSelAux1 = 3;
   NSaveModeSelAux2 = 1;
   NSaveUseI1 = true;
@@ -340,6 +341,7 @@ void MainWindow::initialSelectionOfSensors( void )
   NSaveUseAux1 = true;
   NSaveUseAux2 = false;
 
+  QSaveNowBlocks = 1;
   QSaveModeSelAux1 = 3;
   QSaveModeSelAux2 = 1;
   QSaveUseI1 = true;
