@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "newMwSSD2" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Sep 18 17:29:43 2015 +0900\n"\
+                "    working\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Sep 18 15:04:03 2015 +0900\n"\
                 "    merged with stable\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : H. Asakura <h.asakura@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Jul 21 11:28:00 2015 +0900\n"\
                 "    Update XAFSM.def.BL5S1 for MEAS_MODE\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Jul 17 17:29:46 2015 +0900\n"\
-                "    merged with origin/newMwSSD2\n"\
 		"\n"\
                 ""
 #endif

@@ -365,18 +365,18 @@ CALIB_ENGS 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 
 # define some default measurement modes
 #
 
-# name "TransM", using S073 as I0 and S074 as I1
-MEAS_MODE "TransM" "I0 S073" "I1 S074"
+# name "TransM", using S063 as I0 and S074 as I1
+MEAS_MODE "TransM" "I0 S063" "I1 S064" "A1 S062 1"
 
-# name "FluoM", using S073 as I0 and select F0
+# name "FluoM", using S063 as I0 and select F0
 # for 'stable' XafsM2 only F0 can be selectable as fluorescence detector
-#MEAS_MODE "FluoM"  "I0 S073" "F0"
-MEAS_MODE "FluoM(SSD)"  "I0 S073" "F0"
-MEAS_MODE "FluoM(SDD)"  "I0 S073" "F1"
+#MEAS_MODE "FluoM"  "I0 S063" "F0"
+MEAS_MODE "FluoM(SSD)"  "I0 S063" "F0"
+MEAS_MODE "FluoM(SDD)"  "I0 S063" "F1"
 
 # name "CEYM", using S073 as I0 and S074 as A1 while the display mode is 0
 #             display mode : 0 A1/I0, 1 log(I0/I1), 2 log(-I0/I1), ...
-MEAS_MODE "CEYM"    "I0 S073" "A1 S074 0"
+MEAS_MODE "CEYM"    "I0 S063" "A1 S064 0" 
 
 #######################################################################
 # define Sensor units
@@ -390,6 +390,8 @@ SENSOR CNT "S061" "GENERAL" "I1 (qct08 1)"      "qct08-1" "ch1" "count" YES "S06
 SENSOR CNT "S082" "GENERAL" "AUX (qct08 CH3)"   "qct08-1" "ch3" "count" YES "S070"
 SENSOR CNT "S083" "GENERAL" "AUX (qct08 CH4)"   "qct08-1" "ch4" "count" YES "S070"
 SENSOR CNT "S084" "GENERAL" "AUX (qct08 CH5)"   "qct08-1" "ch5" "count" YES "S070"
+
+SENSOR CNT "S085" "GENERAL" "AUX (qct08 7+6+5+4)" "qct08-1" "ch8" "count" YES "S070"
 
 SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "nct0802" "ch0" "count" YES "S000"
 #SENSOR CNT "S000" "GENERAL" "Counter 0 (I0)" "simmotor" "SNScnt0" "count" YES "S000"
@@ -675,7 +677,7 @@ SENSOR EPIC "S059" "GENERAL" "Undulator Gap"     "epicsbridge_caget" "WS_S_UND_G
 
 SENSOR SSD  "S090" "TotalF"  "SDD(7ch)" "QtTechAPSDD" "" "count" YES "S090" 4 4096 20.0 DType7Ch 150602_SDD_KeV2MCApix.txt "" "" YES
 
-SENSOR AIOi "S063" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
+SENSOR AIOi "S099" "GENERAL" "AlarmTest" "Debugger" "" "mV" NO ""
 
 SENSOR DV3 "S075" "GENERAL" "I0 (Qct08)"        "qct08-1" "ch0" "count" YES "S075" 100.0
 SENSOR DV3 "S076" "GENERAL" "I1 (Qct08)"        "qct08-1" "ch1" "count" YES "S075" 100.0
@@ -696,12 +698,12 @@ ALARM "S048" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
 #
 
 # name "TransM", using S063 as I0 and S064 as I1
-MEAS_MODE "TransM" "I0 S063" "I1 S064" "A1 S062 2"
+#MEAS_MODE "TransM" "I0 S063" "I1 S064" "A1 S062 2"
 
 # name "FluoM", using S063 as I0 and select F0
 # for 'stable' XafsM2 only F0 can be selectable as fluorescence detector
-MEAS_MODE "FluoM"  "I0 S063" "F0"
+#MEAS_MODE "FluoM"  "I0 S063" "F0"
 
 # name "CEYM", using S063 as I0 and S062 as A1 while the display mode is 0
 #             display mode : 0 A1/I0, 1 log(I0/I1), 2 log(-I0/I1), ...
-MEAS_MODE "CEYM"    "I0 S063" "A1 S062 0"
+#MEAS_MODE "CEYM"    "I0 S063" "A1 S062 0"
