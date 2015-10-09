@@ -1246,7 +1246,7 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
-      statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
+      statusbar->showMessage( tr( "Meas cannot Start (1): (%1) is disabled" )
 			      .arg( MMainTh->name() ), 2000 );
     }
     if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
@@ -1267,7 +1267,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
       if ( inMCAMeas ) {
-        QString msg = tr( "Meas cannot Start : in MCA measurement" );
+        QString msg = tr( "Meas cannot Start (2): in MCA measurement" );
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
         return;
@@ -1445,7 +1445,7 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-        QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->name() );
+        QString msg = tr( "Meas cannot Start (3): (%1) is disabled" ).arg( as->name() );
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
         return;

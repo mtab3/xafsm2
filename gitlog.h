@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Sep 30 19:23:25 2015 +0900\n"\
+                "    It made sure that mon-interval works with real qct08\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 30 17:36:52 2015 +0900\n"\
                 "    merged with mon-interval\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Sep 18 22:02:57 2015 +0900\n"\
                 "    QMEAS_MODE is ready\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Sep 18 16:48:59 2015 +0900\n"\
-                "    working on QMeasModes\n"\
 		"\n"\
                 ""
 #endif
