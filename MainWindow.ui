@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>874</width>
-    <height>1028</height>
+    <height>1044</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -652,7 +652,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -850,7 +850,7 @@
              <property name="verticalSpacing">
               <number>0</number>
              </property>
-             <item row="0" column="0">
+             <item row="1" column="0">
               <layout class="QGridLayout" name="gridLayout_27">
                <property name="horizontalSpacing">
                 <number>1</number>
@@ -858,7 +858,14 @@
                <property name="verticalSpacing">
                 <number>2</number>
                </property>
-               <item row="4" column="0">
+               <item row="5" column="1">
+                <widget class="QLineEdit" name="BLKs03">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0">
                 <widget class="QLabel" name="BLKL03">
                  <property name="text">
                   <string>3</string>
@@ -868,14 +875,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QLineEdit" name="BLKs03">
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(255, 255, 255);</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="2">
+               <item row="5" column="2">
                 <widget class="QLineEdit" name="BLKstep03">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -885,14 +885,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="4">
+               <item row="1" column="4">
                 <widget class="QComboBox" name="SelBLKUnit">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(235, 235, 235);</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="3">
+               <item row="1" column="3">
                 <widget class="QSpinBox" name="SelBLKs">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -908,7 +908,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="2">
+               <item row="1" column="2">
                 <widget class="QLabel" name="label_69">
                  <property name="text">
                   <string>Blocks: </string>
@@ -918,7 +918,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="1" column="4">
+               <item row="2" column="4">
                 <widget class="QLabel" name="LDwellOrMeasureTime">
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normally the dwell-inputs indicate dwell-times for each measurement step,&lt;/p&gt;&lt;p&gt;but in the Q-XAFS mode, it indicates total measurement time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -928,7 +928,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="2" column="4">
+               <item row="3" column="4">
                 <widget class="QLineEdit" name="BLKdwell01">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -938,7 +938,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="3" column="4">
+               <item row="4" column="4">
                 <widget class="QLineEdit" name="BLKdwell02">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -948,7 +948,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="4" column="4">
+               <item row="5" column="4">
                 <widget class="QLineEdit" name="BLKdwell03">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -958,7 +958,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="5" column="4">
+               <item row="6" column="4">
                 <widget class="QLineEdit" name="BLKdwell04">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -968,7 +968,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="6" column="4">
+               <item row="7" column="4">
                 <widget class="QLineEdit" name="BLKdwell05">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -978,7 +978,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="8" column="4">
+               <item row="9" column="4">
                 <widget class="QLineEdit" name="BLKdwell06">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -988,7 +988,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="11" column="4">
+               <item row="12" column="4">
                 <widget class="QLineEdit" name="DwellAll">
                  <property name="toolTip">
                   <string>Set all dwell times at once</string>
@@ -1001,21 +1001,21 @@
                  </property>
                 </widget>
                </item>
-               <item row="9" column="1">
+               <item row="10" column="1">
                 <widget class="QLineEdit" name="BLKs07">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1">
+               <item row="3" column="1">
                 <widget class="QLineEdit" name="BLKs01">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
+               <item row="3" column="0">
                 <widget class="QLabel" name="BLKL01">
                  <property name="autoFillBackground">
                   <bool>false</bool>
@@ -1034,7 +1034,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="2" column="2">
+               <item row="3" column="2">
                 <widget class="QLineEdit" name="BLKstep01">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1044,7 +1044,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
+               <item row="4" column="0">
                 <widget class="QLabel" name="BLKL02">
                  <property name="text">
                   <string>2</string>
@@ -1054,14 +1054,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="3" column="1">
+               <item row="4" column="1">
                 <widget class="QLineEdit" name="BLKs02">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="2">
+               <item row="4" column="2">
                 <widget class="QLineEdit" name="BLKstep02">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1071,7 +1071,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="11" column="3">
+               <item row="12" column="3">
                 <widget class="QLabel" name="BLKLAll">
                  <property name="text">
                   <string>All: </string>
@@ -1081,7 +1081,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="2" column="3">
+               <item row="3" column="3">
                 <widget class="QLineEdit" name="BLKpoints01">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1091,7 +1091,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="3" column="3">
+               <item row="4" column="3">
                 <widget class="QLineEdit" name="BLKpoints02">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1101,7 +1101,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="4" column="3">
+               <item row="5" column="3">
                 <widget class="QLineEdit" name="BLKpoints03">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1111,7 +1111,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="5" column="3">
+               <item row="6" column="3">
                 <widget class="QLineEdit" name="BLKpoints04">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1121,7 +1121,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="6" column="3">
+               <item row="7" column="3">
                 <widget class="QLineEdit" name="BLKpoints05">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1131,7 +1131,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="8" column="3">
+               <item row="9" column="3">
                 <widget class="QLineEdit" name="BLKpoints06">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1141,7 +1141,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="5" column="0">
+               <item row="6" column="0">
                 <widget class="QLabel" name="BLKL04">
                  <property name="text">
                   <string>4</string>
@@ -1151,14 +1151,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="5" column="1">
+               <item row="6" column="1">
                 <widget class="QLineEdit" name="BLKs04">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="5" column="2">
+               <item row="6" column="2">
                 <widget class="QLineEdit" name="BLKstep04">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1168,7 +1168,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="6" column="0">
+               <item row="7" column="0">
                 <widget class="QLabel" name="BLKL05">
                  <property name="text">
                   <string>5</string>
@@ -1178,14 +1178,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="6" column="1">
+               <item row="7" column="1">
                 <widget class="QLineEdit" name="BLKs05">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="6" column="2">
+               <item row="7" column="2">
                 <widget class="QLineEdit" name="BLKstep05">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1195,7 +1195,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="8" column="2">
+               <item row="9" column="2">
                 <widget class="QLineEdit" name="BLKstep06">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1205,14 +1205,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="8" column="1">
+               <item row="9" column="1">
                 <widget class="QLineEdit" name="BLKs06">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="8" column="0">
+               <item row="9" column="0">
                 <widget class="QLabel" name="BLKL06">
                  <property name="text">
                   <string>6</string>
@@ -1222,7 +1222,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="11" column="0">
+               <item row="12" column="0">
                 <widget class="QLabel" name="BLKL09">
                  <property name="text">
                   <string>9</string>
@@ -1232,14 +1232,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="11" column="1">
+               <item row="12" column="1">
                 <widget class="QLineEdit" name="BLKs09">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="1">
+               <item row="2" column="1">
                 <widget class="QLabel" name="LStartPoint">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -1258,7 +1258,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="1" column="2">
+               <item row="2" column="2">
                 <widget class="QLabel" name="LStepOrEndPoint">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -1277,7 +1277,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="1" column="3">
+               <item row="2" column="3">
                 <widget class="QLabel" name="LSteps">
                  <property name="maximumSize">
                   <size>
@@ -1290,7 +1290,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="9" column="2">
+               <item row="10" column="2">
                 <widget class="QLineEdit" name="BLKstep07">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1300,7 +1300,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="9" column="4">
+               <item row="10" column="4">
                 <widget class="QLineEdit" name="BLKdwell07">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1310,7 +1310,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="9" column="3">
+               <item row="10" column="3">
                 <widget class="QLineEdit" name="BLKpoints07">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1320,14 +1320,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="10" column="1">
+               <item row="11" column="1">
                 <widget class="QLineEdit" name="BLKs08">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="10" column="2">
+               <item row="11" column="2">
                 <widget class="QLineEdit" name="BLKstep08">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1337,7 +1337,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="10" column="3">
+               <item row="11" column="3">
                 <widget class="QLineEdit" name="BLKpoints08">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -1347,7 +1347,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="10" column="4">
+               <item row="11" column="4">
                 <widget class="QLineEdit" name="BLKdwell08">
                  <property name="minimumSize">
                   <size>
@@ -1363,7 +1363,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="9" column="0">
+               <item row="10" column="0">
                 <widget class="QLabel" name="BLKL07">
                  <property name="text">
                   <string>7</string>
@@ -1373,7 +1373,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="10" column="0">
+               <item row="11" column="0">
                 <widget class="QLabel" name="BLKL08">
                  <property name="text">
                   <string>8</string>
@@ -1383,7 +1383,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
+               <item row="1" column="1">
                 <widget class="QLabel" name="label_8">
                  <property name="styleSheet">
                   <string notr="true">background-color: rgb(255, 230,190);</string>
@@ -1399,9 +1399,16 @@
                  </property>
                 </widget>
                </item>
+               <item row="0" column="1" colspan="4">
+                <widget class="Line" name="line_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
-             <item row="2" column="0">
+             <item row="3" column="0">
               <spacer name="verticalSpacer_8">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -1417,7 +1424,7 @@
                </property>
               </spacer>
              </item>
-             <item row="1" column="0">
+             <item row="2" column="0">
               <layout class="QGridLayout" name="gridLayout_8">
                <property name="spacing">
                 <number>1</number>
@@ -1552,7 +1559,7 @@
                </item>
               </layout>
              </item>
-             <item row="3" column="0">
+             <item row="4" column="0">
               <widget class="QFrame" name="QConditionBox">
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -1986,6 +1993,38 @@
                 </item>
                </layout>
               </widget>
+             </item>
+             <item row="0" column="0">
+              <layout class="QHBoxLayout" name="MeasModesLayout0">
+               <item>
+                <widget class="QLabel" name="label_136">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 230,190);</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <property name="text">
+                  <string>Meas. Modes</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="NMeasModesBox" native="true"/>
+               </item>
+               <item>
+                <widget class="QWidget" name="QMeasModesBox" native="true"/>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
@@ -4148,13 +4187,13 @@ Though, other parameters are fixed at the value on starting.</string>
                <item>
                 <widget class="QLabel" name="label_51">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Dwell T.</string>
+                  <string>Dwell T. [sec]</string>
                  </property>
                 </widget>
                </item>
@@ -4177,6 +4216,32 @@ Though, other parameters are fixed at the value on starting.</string>
                  </property>
                  <property name="text">
                   <string>0.1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_58">
+                 <property name="text">
+                  <string>Interval T.[sec]</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="MonIntT">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4238,12 +4303,6 @@ Though, other parameters are fixed at the value on starting.</string>
                 <spacer name="verticalSpacer_14">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
                  </property>
                 </spacer>
                </item>
@@ -4334,7 +4393,7 @@ Though, other parameters are fixed at the value on starting.</string>
                      <x>0</x>
                      <y>0</y>
                      <width>308</width>
-                     <height>158</height>
+                     <height>154</height>
                     </rect>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_69">

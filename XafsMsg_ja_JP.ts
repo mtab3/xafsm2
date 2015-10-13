@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>AUnit</name>
     <message>
         <source> TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11] </source>
-        <translation>TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11]</translation>
+        <translation type="vanished">TP[%1] ID[%2] NM[%3] DR[%4] Ch[%5] DC[%6]  UT[%7] PU[%8] CT[%9] MaV[%10] MiV[%11]</translation>
     </message>
 </context>
 <context>
@@ -316,19 +316,19 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>Measured</source>
-        <translation>XAFS測定</translation>
+        <translation type="vanished">XAFS測定</translation>
     </message>
     <message>
         <source>Scaned</source>
-        <translation>スキャン</translation>
+        <translation type="vanished">スキャン</translation>
     </message>
     <message>
         <source>Monitored</source>
-        <translation>モニタ</translation>
+        <translation type="vanished">モニタ</translation>
     </message>
     <message>
         <source>MCA</source>
-        <translation>MCA(SSD)</translation>
+        <translation type="vanished">MCA(SSD)</translation>
     </message>
     <message>
         <source>Can not open the file %1.</source>
@@ -348,7 +348,7 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>S2D</source>
-        <translation>二次元スキャン</translation>
+        <translation type="vanished">二次元スキャン</translation>
     </message>
 </context>
 <context>
@@ -484,43 +484,43 @@ The original point will be changed as the angle calculated from the pulse will b
     </message>
     <message>
         <source>View 1</source>
-        <translation>View1</translation>
+        <translation type="vanished">View1</translation>
     </message>
     <message>
         <source>View 2</source>
-        <translation>View2</translation>
+        <translation type="vanished">View2</translation>
     </message>
     <message>
         <source>View 3</source>
-        <translation>View3</translation>
+        <translation type="vanished">View3</translation>
     </message>
     <message>
         <source>View 4</source>
-        <translation>View4</translation>
+        <translation type="vanished">View4</translation>
     </message>
     <message>
         <source>View5</source>
-        <translation>View5</translation>
+        <translation type="vanished">View5</translation>
     </message>
     <message>
         <source>View6</source>
-        <translation>View6</translation>
+        <translation type="vanished">View6</translation>
     </message>
     <message>
         <source>View7</source>
-        <translation>View7</translation>
+        <translation type="vanished">View7</translation>
     </message>
     <message>
         <source>View8</source>
-        <translation>View8</translation>
+        <translation type="vanished">View8</translation>
     </message>
     <message>
         <source>View9</source>
-        <translation>View9</translation>
+        <translation type="vanished">View9</translation>
     </message>
     <message>
         <source>View10</source>
-        <translation>View10</translation>
+        <translation type="vanished">View10</translation>
     </message>
     <message>
         <source>Select an Atom</source>
@@ -1449,7 +1449,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Close View</source>
-        <translation>View を閉じる</translation>
+        <translation type="vanished">View を閉じる</translation>
     </message>
     <message>
         <source>Log / Record</source>
@@ -1533,7 +1533,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>No Scree is available!</source>
-        <translation>使用可能な描画領域(View)がありません</translation>
+        <translation type="vanished">使用可能な描画領域(View)がありません</translation>
     </message>
     <message>
         <source>Start Measurement!</source>
@@ -1906,7 +1906,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>::Undefined Unit type [%1]</source>
-        <translation>::Undefined Unit type [%1]</translation>
+        <translation type="vanished">::Undefined Unit type [%1]</translation>
     </message>
     <message>
         <source>Undefined Key word [%1]</source>
@@ -2495,7 +2495,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Start Scan</source>
-        <translation>スキャン開始</translation>
+        <translation type="vanished">スキャン開始</translation>
     </message>
     <message>
         <source>Cannot open [%1]</source>
@@ -2731,11 +2731,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Can not save MCA spectra for 2D scan.</source>
-        <translation>2DスキャンしたMCAスペクトルをセーブできませんでした。</translation>
+        <translation type="vanished">2DスキャンしたMCAスペクトルをセーブできませんでした。</translation>
     </message>
     <message>
         <source>No file name was selected</source>
-        <translation>ファイル名が選択されていません。</translation>
+        <translation type="vanished">ファイル名が選択されていません。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Record MCA spectra obtained at each step of the XAFS measurement is saved in separated files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2770,11 +2770,11 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>Data Root</source>
-        <translation>データルート</translation>
+        <translation type="vanished">データルート</translation>
     </message>
     <message>
         <source>Pop Up</source>
-        <translation>独立</translation>
+        <translation type="vanished">独立</translation>
     </message>
     <message>
         <source>Auto Set All</source>
@@ -2900,23 +2900,23 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>D-XAFS</source>
-        <translation>XAFS表示</translation>
+        <translation type="vanished">XAFS表示</translation>
     </message>
     <message>
         <source>D-SCAN</source>
-        <translation>スキャン表示</translation>
+        <translation type="vanished">スキャン表示</translation>
     </message>
     <message>
         <source>D-MON.</source>
-        <translation>モニタ表示</translation>
+        <translation type="vanished">モニタ表示</translation>
     </message>
     <message>
         <source>D-MCA</source>
-        <translation>MCA表示</translation>
+        <translation type="vanished">MCA表示</translation>
     </message>
     <message>
         <source>D-S2D</source>
-        <translation>2次元スキャン表示</translation>
+        <translation type="vanished">2次元スキャン表示</translation>
     </message>
     <message>
         <source>２D scan</source>
@@ -2928,7 +2928,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>ï¼D scan</source>
-        <translation>2次元スキャン</translation>
+        <translation type="vanished">2次元スキャン</translation>
     </message>
     <message>
         <source>Peak Fit</source>
@@ -2936,7 +2936,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとピークフィットが行われます。</translation>
+        <translation type="vanished">ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとピークフィットが行われます。</translation>
     </message>
     <message>
         <source>Clr. Peaks</source>
@@ -2968,7 +2968,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change.  Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
+        <translation type="vanished">通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
 フィッティングが不安定な場合、「制動係数」を小さくすると良いかもしれません。
 これを非常に小さくする(例えば0.1以下にする)時はは「最大ループ」値を大きくして下さい。
 「最大ループ=10/制動係数」が目安です。</translation>
@@ -2979,7 +2979,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40 and &apos;Damp. Fact.&apos; is 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
+        <translation type="vanished">通常変更しないで下さい。「最大ループ」のデフォルト値は 40、「制動係数」のデフォルト値は 0.5 です。
 フィッティングが不安定な場合、「制動係数」を小さくすると良いかもしれません。
 これを非常に小さくする(例えば0.1以下にする)時はは「最大ループ」値を大きくして下さい。
 「最大ループ=10/制動係数」が目安です。</translation>
@@ -3006,7 +3006,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>40</source>
-        <translation>40</translation>
+        <translation type="vanished">40</translation>
     </message>
     <message>
         <source>1e-6</source>
@@ -3062,15 +3062,15 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>SCAN</source>
-        <translation>スキャン</translation>
+        <translation type="vanished">スキャン</translation>
     </message>
     <message>
         <source>MON.</source>
-        <translation>モニタ</translation>
+        <translation type="vanished">モニタ</translation>
     </message>
     <message>
         <source>Wriging MCA File : [%1]</source>
-        <translation>MCAファイル書出中 : [%1]</translation>
+        <translation type="vanished">MCAファイル書出中 : [%1]</translation>
     </message>
     <message>
         <source>Scan Start</source>
@@ -3126,7 +3126,7 @@ Aio64が連続チューニングモードになっている場合機能しませ
     </message>
     <message>
         <source>Too long acquisition time per point for [%1]. Decrease acquisition time or Increase data points.</source>
-        <translation>一点あたりの測定時間[%1]が長すぎます。総測定時間を短くするか、測定点数を増やして下さい。</translation>
+        <translation type="vanished">一点あたりの測定時間[%1]が長すぎます。総測定時間を短くするか、測定点数を増やして下さい。</translation>
     </message>
     <message>
         <source>Although the &apos;Additional&apos; button is checked, the monitoring process is running.</source>
@@ -3143,6 +3143,26 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>B::Undefined Unit type [%1]</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Meas. Modes</source>
+        <translation>測定モード</translation>
+    </message>
+    <message>
+        <source>Trans. Mode</source>
+        <translation>透過法</translation>
+    </message>
+    <message>
+        <source>Fluo. Mode</source>
+        <translation>蛍光法</translation>
+    </message>
+    <message>
+        <source>CEY Mode</source>
+        <translation>転換電子</translation>
+    </message>
+    <message>
+        <source>Too long acquisition time per point (%1&gt;%2) for [%3]. Decrease acquisition time or Increase data points.</source>
+        <translation>計測器%3 の1点あたりの計測時間が長過ぎます(%1&gt;%2)。計測時間を短くするか、測定点数を増やして下さい。</translation>
     </message>
 </context>
 <context>
@@ -3901,335 +3921,315 @@ Aio64が連続チューニングモードになっている場合機能しませ
 <context>
     <name>SelectCh</name>
     <message>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>3</source>
-        <translation>3</translation>
+        <translation type="vanished">3</translation>
     </message>
     <message>
         <source>0</source>
-        <translation>0</translation>
+        <translation type="vanished">0</translation>
     </message>
     <message>
         <source>4</source>
-        <translation>4</translation>
+        <translation type="vanished">4</translation>
     </message>
     <message>
         <source>5</source>
-        <translation>5</translation>
+        <translation type="vanished">5</translation>
     </message>
     <message>
         <source>6</source>
-        <translation>6</translation>
+        <translation type="vanished">6</translation>
     </message>
     <message>
         <source>7</source>
-        <translation>7</translation>
+        <translation type="vanished">7</translation>
     </message>
     <message>
         <source>8</source>
-        <translation>8</translation>
+        <translation type="vanished">8</translation>
     </message>
     <message>
         <source>9</source>
-        <translation>9</translation>
+        <translation type="vanished">9</translation>
     </message>
     <message>
         <source>10</source>
-        <translation>10</translation>
+        <translation type="vanished">10</translation>
     </message>
     <message>
         <source>11</source>
-        <translation>11</translation>
+        <translation type="vanished">11</translation>
     </message>
     <message>
         <source>12</source>
-        <translation>12</translation>
+        <translation type="vanished">12</translation>
     </message>
     <message>
         <source>13</source>
-        <translation>13</translation>
+        <translation type="vanished">13</translation>
     </message>
     <message>
         <source>14</source>
-        <translation>14</translation>
+        <translation type="vanished">14</translation>
     </message>
     <message>
         <source>15</source>
-        <translation>15</translation>
+        <translation type="vanished">15</translation>
     </message>
     <message>
         <source>16</source>
-        <translation>16</translation>
+        <translation type="vanished">16</translation>
     </message>
     <message>
         <source>1</source>
-        <translation>1</translation>
+        <translation type="vanished">1</translation>
     </message>
     <message>
         <source>17</source>
-        <translation>17</translation>
+        <translation type="vanished">17</translation>
     </message>
     <message>
         <source>18</source>
-        <translation>18</translation>
+        <translation type="vanished">18</translation>
     </message>
     <message>
         <source>2</source>
-        <translation>2</translation>
+        <translation type="vanished">2</translation>
     </message>
     <message>
         <source>Select SSD channels (XAFS meas.)</source>
-        <translation>複数SSD選択(積算/本測定対象)</translation>
+        <translation type="vanished">複数SSD選択(積算/本測定対象)</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation>下流</translation>
+        <translation type="vanished">下流</translation>
     </message>
     <message>
         <source>Stream</source>
-        <translation> </translation>
+        <translation type="vanished"> </translation>
     </message>
     <message>
         <source>Up</source>
-        <translation>上流</translation>
+        <translation type="vanished">上流</translation>
     </message>
 </context>
 <context>
     <name>SetUpSFluo</name>
     <message>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>  Preset:</source>
-        <translation>  プリセット: </translation>
+        <translation type="vanished">  プリセット: </translation>
     </message>
     <message>
         <source>Real</source>
-        <translation>リアル</translation>
+        <translation type="vanished">リアル</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>ライブ</translation>
+        <translation type="vanished">ライブ</translation>
     </message>
     <message>
         <source>sec</source>
-        <translation>秒</translation>
+        <translation type="vanished">秒</translation>
     </message>
     <message>
         <source>Integration</source>
-        <translation>積算</translation>
+        <translation type="vanished">積算</translation>
     </message>
     <message>
         <source>Peak. T.</source>
-        <translation>ピーキング時間</translation>
+        <translation type="vanished">ピーキング時間</translation>
     </message>
     <message>
         <source>u-sec</source>
-        <translation>μs</translation>
+        <translation type="vanished">μs</translation>
     </message>
     <message>
         <source>Thresh.</source>
-        <translation>閾値</translation>
+        <translation type="vanished">閾値</translation>
     </message>
     <message>
         <source>eV       Calib.</source>
-        <translation>eV      較正</translation>
+        <translation type="vanished">eV      較正</translation>
     </message>
     <message>
         <source>eV</source>
-        <translation>eV</translation>
+        <translation type="vanished">eV</translation>
     </message>
     <message>
         <source>Dyn. Range</source>
-        <translation>ダイナミックレンジ</translation>
+        <translation type="vanished">ダイナミックレンジ</translation>
     </message>
     <message>
         <source>eV        Gain</source>
-        <translation>eV       ゲイン</translation>
+        <translation type="vanished">eV       ゲイン</translation>
     </message>
     <message>
         <source>mV/keV</source>
-        <translation>mV/keV</translation>
+        <translation type="vanished">mV/keV</translation>
     </message>
     <message>
         <source>ROI  Start</source>
-        <translation>積分始点</translation>
+        <translation type="vanished">積分始点</translation>
     </message>
     <message>
         <source>      ROI end</source>
-        <translation>     積分終点</translation>
+        <translation type="vanished">     積分終点</translation>
     </message>
     <message>
         <source>Set All</source>
-        <translation>Set All</translation>
+        <translation type="vanished">Set All</translation>
     </message>
     <message>
         <source>At Cursor</source>
-        <translation>カーソル点</translation>
+        <translation type="vanished">カーソル点</translation>
     </message>
     <message>
         <source>         In ROI</source>
-        <translation>       積分値</translation>
+        <translation type="vanished">       積分値</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation>パラメータ</translation>
+        <translation type="vanished">パラメータ</translation>
     </message>
     <message>
         <source>Auto Set All</source>
-        <translation>自動Set All</translation>
+        <translation type="vanished">自動Set All</translation>
     </message>
     <message>
         <source>Set Up a SSD Channel</source>
-        <translation>SSDの各チャンネルの設定</translation>
+        <translation type="vanished">SSDの各チャンネルの設定</translation>
     </message>
     <message>
         <source>SSD No.</source>
-        <translation>SSD チャンネル</translation>
+        <translation type="vanished">SSD チャンネル</translation>
     </message>
     <message>
         <source>Log  </source>
-        <translation>Log </translation>
+        <translation type="vanished">Log </translation>
     </message>
     <message>
         <source>SSD Start</source>
-        <translation>SSD計測開始</translation>
+        <translation type="vanished">SSD計測開始</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>クリア</translation>
+        <translation type="vanished">クリア</translation>
     </message>
     <message>
         <source>Disp. Elm. Names</source>
-        <translation>元素名表示</translation>
+        <translation type="vanished">元素名表示</translation>
     </message>
     <message>
         <source>Select Elms.</source>
-        <translation>表示元素選択</translation>
+        <translation type="vanished">表示元素選択</translation>
     </message>
     <message>
         <source>Show Always</source>
-        <translation>選択した元素を常に表示</translation>
+        <translation type="vanished">選択した元素を常に表示</translation>
     </message>
     <message>
         <source>Show Energy</source>
-        <translation>エネルギー表示</translation>
+        <translation type="vanished">エネルギー表示</translation>
     </message>
     <message>
         <source>Disp. Elm.</source>
-        <translation>元素表示</translation>
+        <translation type="vanished">元素表示</translation>
     </message>
     <message>
         <source>Save:</source>
-        <translation>保存ファイル:</translation>
-    </message>
-    <message>
-        <source>/Users/tabuchi/Desktop/prog/XafsM2/mcaTest.dat</source>
-        <translation></translation>
+        <translation type="vanished">保存ファイル:</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>選択</translation>
+        <translation type="vanished">選択</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>保存</translation>
+        <translation type="vanished">保存</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By clicking the right mouse button, you can place pointers which suggest peak positions,&lt;/p&gt;&lt;p&gt;and the peak-fitting starts with them in the ROI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとROIの範囲内でピークフィットが行われます。</translation>
+        <translation type="vanished">ピークがあると予想される位置(複数点可)でマウスの右ボタンを押すとROIの範囲内でピークフィットが行われます。</translation>
     </message>
     <message>
         <source>Clr. Peaks</source>
-        <translation>ピーククリア</translation>
+        <translation type="vanished">ピーククリア</translation>
     </message>
     <message>
         <source>  Peak List: </source>
-        <translation>ピークリスト</translation>
+        <translation type="vanished">ピークリスト</translation>
     </message>
     <message>
         <source>Calibrate as: </source>
-        <translation>較正:</translation>
+        <translation type="vanished">較正:</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typically, it should be 0.5.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通常、0.5。大きくするとピークを見つけにくくなり、小さくするとノイズなども誤ってピークと判断しやすくなる。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通常、0.5。大きくするとピークを見つけにくくなり、小さくするとノイズなども誤ってピークと判断しやすくなる。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>[keV] </source>
-        <translation>[keV]</translation>
+        <translation type="vanished">[keV]</translation>
     </message>
     <message>
         <source>ReFit</source>
-        <translation>再フィット</translation>
+        <translation type="vanished">再フィット</translation>
     </message>
     <message>
         <source>Show Smoothed</source>
-        <translation>平滑化表示</translation>
+        <translation type="vanished">平滑化表示</translation>
     </message>
     <message>
         <source>Fit to raw</source>
-        <translation>生データにフィット</translation>
+        <translation type="vanished">生データにフィット</translation>
     </message>
     <message>
         <source>Find Max</source>
-        <translation>ピーク探索</translation>
+        <translation type="vanished">ピーク探索</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show differential curve of the MCA spectrum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;微分スペクトルを表示するかどうかの選択&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Show Diff.</source>
-        <translation>微分表示</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usually don&apos;t change. Default of &apos;Max Loop&apos; is 40, &apos;Damp. Fact.&apos; is 0.5, and &apos;Prec.&apos; is 1e-6.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation type="vanished">微分表示</translation>
     </message>
     <message>
         <source>Max Loop</source>
-        <translation>最大ループ</translation>
+        <translation type="vanished">最大ループ</translation>
     </message>
     <message>
         <source>1000</source>
-        <translation>1000</translation>
+        <translation type="vanished">1000</translation>
     </message>
     <message>
         <source>Damp. Fact.</source>
-        <translation>制動係数</translation>
+        <translation type="vanished">制動係数</translation>
     </message>
     <message>
         <source>0.5</source>
-        <translation>0.5</translation>
+        <translation type="vanished">0.5</translation>
     </message>
     <message>
         <source>RF</source>
-        <translation>残差</translation>
+        <translation type="vanished">残差</translation>
     </message>
     <message>
         <source>0.05</source>
-        <translation>0.05</translation>
+        <translation type="vanished">0.05</translation>
     </message>
     <message>
         <source>RFCR</source>
-        <translation>変化率</translation>
-    </message>
-    <message>
-        <source>1e-6</source>
-        <translation></translation>
+        <translation type="vanished">変化率</translation>
     </message>
     <message>
         <source>Max MCA Energy </source>
-        <translation>MCA最大エネルギー</translation>
+        <translation type="vanished">MCA最大エネルギー</translation>
     </message>
     <message>
         <source>keV</source>
-        <translation>keV</translation>
+        <translation type="vanished">keV</translation>
     </message>
 </context>
 <context>

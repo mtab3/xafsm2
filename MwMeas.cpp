@@ -106,9 +106,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   MakeSureOfRangeSelect->addButton( tr( "OK" ), QMessageBox::AcceptRole );
   MakeSureOfRangeSelect->setWindowTitle( tr( "Have you seleced ?" ) );
   MakeSureOfRangeSelect->setDefaultButton( tmpB );
-
-  SetUpSensorComboBoxes();
-
+  
   ModeA1->addItem( "A1/I0" );
   ModeA1->addItem( "log(I0/A1)" );
   ModeA1->addItem( "log(-I0/A1)" );
@@ -122,6 +120,11 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   ModeA2->addItem( "log(-I1/A2)" );
   ModeA2->addItem( "log(A1/A2)" );
   ModeA2->addItem( "log(-A1/A2)" );
+
+  SetUpSensorComboBoxes();
+  initialSelectionOfSensors();
+  recoverQSelections();
+  ToggleQXafsMode( true );   // the "true" is dummy
 
   I0Range->setEnabled( false );
   I1Range->setEnabled( false );
@@ -302,6 +305,51 @@ void MainWindow::ShowMeasFileStatus( QString fname )
   }
 }
 
+void MainWindow::initialSelectionOfSensors( void )
+{
+  NSaveSelectedI0 = NSaveSelectedI1 = NSaveSelectedAux1 = NSaveSelectedAux2 = 0;
+  QSaveSelectedI0 = QSaveSelectedI1 = QSaveSelectedAux1 = QSaveSelectedAux2 = 0;
+  int ncount = 0;
+  int qcount = 0;
+
+  for ( int i = 0; i < ASensors.count(); i++ ) {
+    for ( int j = 0; j < NXafsOk.count(); j++ ) {
+      if ( ASensors[i]->type() == NXafsOk[j] ) {
+	if ( ASensors[i]->id() == "I0" ) NSaveSelectedI0 = ncount;
+	if ( ASensors[i]->id() == "I1" ) NSaveSelectedI1 = ncount;
+	if ( ASensors[i]->id() == "I2" ) NSaveSelectedAux1 = ncount;
+	if ( ASensors[i]->id() == "I3" ) NSaveSelectedAux2 = ncount;
+	ncount++;
+      }
+    }
+    for ( int j = 0; j < QXafsOk.count(); j++ ) {
+      if ( ASensors[i]->type() == QXafsOk[j] ) {
+	if ( ASensors[i]->id() == "QXAFS-I0" ) QSaveSelectedI0 = qcount;
+	if ( ASensors[i]->id() == "QXAFS-I1" ) QSaveSelectedI1 = qcount;
+	if ( ASensors[i]->id() == "QXAFS-I2" ) QSaveSelectedAux1 = qcount;
+	if ( ASensors[i]->id() == "QXAFS-I3" ) QSaveSelectedAux2 = qcount;
+	qcount++;
+      }
+    }
+  }
+
+  NSaveNowBlocks = 4;
+  NSaveModeSelAux1 = 3;
+  NSaveModeSelAux2 = 1;
+  NSaveUseI1 = true;
+  NSaveUse19ChSSD = false;
+  NSaveUseAux1 = true;
+  NSaveUseAux2 = false;
+
+  QSaveNowBlocks = 1;
+  QSaveModeSelAux1 = 3;
+  QSaveModeSelAux2 = 1;
+  QSaveUseI1 = true;
+  QSaveUse19ChSSD = false;
+  QSaveUseAux1 = true;
+  QSaveUseAux2 = false;
+}
+
 void MainWindow::SetUpSensorComboBoxes( void )
 {
   bool findQXafsI0, findQXafsI1;
@@ -348,19 +396,10 @@ void MainWindow::SetUpSensorComboBoxes( void )
       if ( ASensors.at(i) != SFluo ) {
 	SelectAux2->addItem( name );   A2Sensors << ASensors[i];
       }
-      
-      if ( ASensors[i]->id() == "I0" )
-	SelectI0->setCurrentIndex( SelectI0->count() - 1 );
-      if ( ASensors[i]->id() == "I1" )
-	SelectI1->setCurrentIndex( SelectI1->count() - 1 );
-      if ( ASensors[i]->id() == "Aux1" )
-	SelectAux1->setCurrentIndex( SelectAux1->count() - 1 );
-      if ( ASensors[i]->id() == "Aux2" )
-	SelectAux2->setCurrentIndex( SelectAux2->count() - 1 );
     }
   }
 
-  UseI1->setChecked( true );
+  //  UseI1->setChecked( true );
   if ( (!findQXafsI0)||(!findQXafsI1) ) {
     isQXafsModeAvailable = false;
     if ( ! isQXafsModeAvailable ) {
@@ -609,6 +648,8 @@ void MainWindow::ChangeBLKUnit( int unit )
 
 void MainWindow::ChangeBLKs( int newBLKs )
 {
+  if ( newBLKs >= BLKstart.count() )
+    return;
   if ( SelBLKs->value() != newBLKs ) {
     SelBLKs->setValue( newBLKs );
   }
@@ -1205,7 +1246,7 @@ void MainWindow::StartMeasurement( void )
       return;
     }
     if ( ! MMainTh->isEnable() ) {   // 分光器の制御系が繋がってなかったらダメ
-      statusbar->showMessage( tr( "Meas cannot Start : (%1) is disabled" )
+      statusbar->showMessage( tr( "Meas cannot Start (1): (%1) is disabled" )
 			      .arg( MMainTh->name() ), 2000 );
     }
     if ( ! CheckBlockRange() ) {  // ブロック指定のエネルギーレンジが範囲外だったらダメ
@@ -1226,7 +1267,7 @@ void MainWindow::StartMeasurement( void )
     }
     if ( Use19chSSD->isChecked() ) {   // 19ch 使うときは MCA の測定中はダメ
       if ( inMCAMeas ) {
-        QString msg = tr( "Meas cannot Start : in MCA measurement" );
+        QString msg = tr( "Meas cannot Start (2): in MCA measurement" );
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
         return;
@@ -1415,7 +1456,7 @@ void MainWindow::StartMeasurement( void )
 	return;
       }
       if ( ! as->isEnable() ) { // 指定されたセンサーが Stars 経由で生きていないとダメ
-        QString msg = tr( "Meas cannot Start : (%1) is disabled" ).arg( as->name() );
+        QString msg = tr( "Meas cannot Start (3): (%1) is disabled" ).arg( as->name() );
         statusbar->showMessage( msg, 2000 );
         NewLogMsg( msg );
         return;

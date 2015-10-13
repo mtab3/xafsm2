@@ -520,11 +520,13 @@ void MainWindow::S2DScanStart( void )
       return;
     }
     S2DI.valid = true;
-    qDebug() << "S2DI " << S2DI.valid;
     S2DTimer->start( 10 );
   } else {
     S2DStop0();
-    cMCAViewC->setDeletable( true );
+    if ( S2DI.isSFluo ) {
+      if ( cMCAViewC != NULL )
+	cMCAViewC->setDeletable( true );
+    }
   }
 }
 
@@ -645,7 +647,8 @@ void MainWindow::SetupS2DParams( void )
     pps = S2DI.unit[0]->highestSpeed();
   }
   S2DI.pps = pps;
-  S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->upp() / pps;
+  if ( S2DI.ScanMode != STEP )
+    S2DI.Dwell = fabs( S2DI.sx[0] - S2DI.ex[0] ) / S2DI.unit[0]->upp() / pps;
 }
 
 void MainWindow::S2DStop0( void )
@@ -657,7 +660,6 @@ void MainWindow::S2DStop0( void )
   S2DDataStat = OLD;
   S2DFileName0->setStyleSheet( FSTATCOLORS[ ScanDataStat ][ ScanNameStat ] );
   S2DFileName0->setToolTip( FSTATMsgs[ ScanDataStat ][ ScanNameStat ] );
-
 }
 
 void MainWindow::S2DStop00( void )

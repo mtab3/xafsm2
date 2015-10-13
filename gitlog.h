@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Mon Jun 29 22:52:31 2015 +0900\n"\
+                "    The QXAFS measurement of 20,000 data points was OK with new qct08\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Jun 18 13:52:19 2015 +0900\n"\
                 "    it may ok for QXafs with up to 20,000 points by changing the value of maxQXafsPoints.  Practically, the value should be less than 19990 or so, for safety.\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri May 8 12:28:32 2015 +0900\n"\
                 "    Now, all of the messages to the drivers connecting Stars are sent via the AUnit.   When a message is sent to Stars via an AUnit, the from-ch is always set as Uid\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu May 7 17:11:56 2015 +0900\n"\
-                "    before changing 'From() == DevCh' to 'ToCh() == Uid'\n"\
 		"\n"\
                 ""
 #endif

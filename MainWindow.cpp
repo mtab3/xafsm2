@@ -223,9 +223,106 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   connect( Special, SIGNAL( clicked() ), this, SLOT( SpecialMove() ) );
   
   conds->setupDataRoot();      // 他のファイルダイアログが全部 new されていないとダメ !
+  setUpMeasModes();
+  showMeasModes();
 
   s->AskStatus();
   s->MakeConnection();
+}
+
+void MainWindow::showMeasModes( void )
+{
+  if ( QXafsMode->isChecked() ) {
+    QMeasModesBox->setHidden( false );
+    NMeasModesBox->setHidden( true );
+  } else {
+    QMeasModesBox->setHidden( true );
+    NMeasModesBox->setHidden( false );
+  }
+}
+
+void MainWindow::setUpMeasModes( void )
+{
+  QHBoxLayout *hbL1 = new QHBoxLayout;
+  hbL1->setContentsMargins( 0, 0, 0, 0 );
+  hbL1->setSpacing( 0 );
+  NMeasModesBox->setLayout( hbL1 );
+  for ( int i = 0; i < MeasModes.count(); i++ ) {
+    MeasMode *m = MeasModes[i];
+    QPushButton *pb = new QPushButton;
+    m->setButton( pb );
+    pb->setText( LocalizedName( m->Name() ) );
+    hbL1->addWidget( pb );
+    connect( pb, SIGNAL( clicked() ), this, SLOT( changeMeasMode() ), Qt::UniqueConnection );
+  }
+
+  QHBoxLayout *hbL2 = new QHBoxLayout;
+  hbL2->setContentsMargins( 0, 0, 0, 0 );
+  hbL2->setSpacing( 0 );
+  QMeasModesBox->setLayout( hbL2 );
+  for ( int i = 0; i < QMeasModes.count(); i++ ) {
+    MeasMode *m = QMeasModes[i];
+    QPushButton *pb = new QPushButton;
+    m->setButton( pb );
+    pb->setText( LocalizedName( m->Name() ) );
+    hbL2->addWidget( pb );
+    connect( pb, SIGNAL( clicked() ), this, SLOT( changeMeasMode() ), Qt::UniqueConnection );
+  }
+}
+
+void MainWindow::changeMeasMode( void )
+{
+  QVector<MeasMode*> *mms;
+  if ( QXafsMode->isChecked() ) {
+    mms = &QMeasModes;
+  } else {
+    mms = &MeasModes;
+  }
+  for ( int i = 0; i < mms->count(); i++ ) {
+    MeasMode *m = (*mms)[ i ];
+    if ( m->Button() == sender() ) {
+      if ( m->isI0() ) {
+	SelectI0->setCurrentIndex( devNo( I0Sensors, m->DevI0() ) );
+      } 
+      if ( m->isI1() ) {
+	UseI1->setChecked( true );
+	SelectI1->setCurrentIndex( devNo( I1Sensors, m->DevI1() ) );
+      } else {
+	UseI1->setChecked( false );
+      }
+      if ( m->isA1() ) {
+	UseAux1->setChecked( true );
+	SelectAux1->setCurrentIndex( devNo( A1Sensors, m->DevA1() ) );
+	ModeA1->setCurrentIndex( m->DModeA1() );
+      } else {
+	UseAux1->setChecked( false );
+      }
+      if ( m->isA2() ) {
+	UseAux2->setChecked( true );
+	SelectAux2->setCurrentIndex( devNo( A2Sensors, m->DevA2() ) );
+	ModeA2->setCurrentIndex( m->DModeA2() );
+      } else {
+	UseAux2->setChecked( false );
+      }
+      if ( m->isF( 0 ) ) {
+	Use19chSSD->setChecked( true );
+      } else {
+	Use19chSSD->setChecked( false );
+      }
+    }
+  }
+}
+
+int MainWindow::devNo( QVector<ASensor*> &Sensors, QString uid )
+{
+  for ( int i = 0; i < Sensors.count(); i++ ) {
+    qDebug() << Sensors[i]->uid() << uid;
+    if ( Sensors[i]->uid() == uid ) {
+      return i;
+    }
+  }
+
+  return -1;
 }
 
 void MainWindow::SpecialMove( void )

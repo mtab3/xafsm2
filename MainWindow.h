@@ -52,6 +52,7 @@
 #include "MonInfo.h"
 #include "enums.h"
 #include "AUnits/AUnitRemote.h"
+#include "MeasMode.h"
 
 #define MEAS_ID "XAFS Measurement"
 #define GOMOTOR_ID "Motor Motion"
@@ -123,6 +124,17 @@ private:
   QString LocalizedName( QString name );
   Alarms *alarms;
   AUnitRemote *remote;
+  
+  QVector<MeasMode*> MeasModes;
+  QVector<MeasMode*> QMeasModes;
+  void initialSelectionOfSensors( void );
+  void saveNSelections( void );
+  void saveQSelections( void );
+  void recoverNSelections( void );
+  void recoverQSelections( void );
+  void setUpMeasModes( void );
+  void showMeasModes( void );
+  int devNo( QVector<ASensor*> &Sensors, QString uid );
 
   MeasPSet MPSet;
   void SetupMPSet( MeasPSet *aSet );
@@ -535,9 +547,17 @@ private:
   // QXAFS
   QStringList QXafsOk, NXafsOk, CScanOk;
   bool isQXafsModeAvailable;
-  int SaveNowBlocks, SaveSelectedI0, SaveSelectedI1;
-  int SaveSelectedAux1, SaveSelectedAux2;
-  bool SaveUse19ChSSD, SaveUseAux1, SaveUseAux2;
+
+  int NSaveNowBlocks;
+  int NSaveSelectedI0, NSaveSelectedI1, NSaveSelectedAux1, NSaveSelectedAux2;
+  int NSaveModeSelAux1, NSaveModeSelAux2;
+  bool NSaveUseI1, NSaveUse19ChSSD, NSaveUseAux1, NSaveUseAux2;
+
+  int QSaveNowBlocks;
+  int QSaveSelectedI0, QSaveSelectedI1, QSaveSelectedAux1, QSaveSelectedAux2;
+  int QSaveModeSelAux1, QSaveModeSelAux2;
+  bool QSaveUseI1, QSaveUse19ChSSD, QSaveUseAux1, QSaveUseAux2;
+
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
   int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
   double RunUpRate, RunUpTime, QXafsDwellTime;
@@ -596,6 +616,7 @@ private slots:
   // Main Part
   void Print( QPrinter *p );
   void newDataRoot( const QString &dataroot );
+  void changeMeasMode( void );
 
   // Auto mode
   bool ParseAutoMode( void );
@@ -805,6 +826,7 @@ private slots:
   void MonSequence( void );
   void MCASequence( void );
   void MeasDarkSequence( void );
+  void setLastETime( int let );
 
   void TryToNoticeCurrentView( void );
   void TryToGiveNewView( DATATYPE dtype, QString dir );

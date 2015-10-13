@@ -276,7 +276,6 @@ void AUnitDV3::SetCurPos( SMsg msg )    // DV3 $B$NLa$jCM$O(B cps ( count $B$
     else
       val = 0;
     Value = QString::number( val / ( ( setTime == 0 ) ? 1 : setTime ) );
-    qDebug() << "in DV3 returnning normalized val " << Value << measIntegral << Type << Uid << setTime << Name << Type2;
     emit NewValue( Value );
     busy2Off( Dev );
   }

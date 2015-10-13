@@ -23,18 +23,16 @@ void MainWindow::S2DStepScanSequence( void )
   // ファイルの上書きチェックが完了していなければ入ってこない
   if ( ! S2DFileCheckIsReady )
     return;
-
   // モータ駆動中は入ってこない (とりあえずステップのことだけ考える)
   for ( int i = 0; i < S2DI.motors; i++ ) {
     if ( S2DI.used[i] && S2DI.unit[i]->isBusy0() )
       return;
   }
-
   // センサー busy でも入ってこない
   if ( mS2DUnits.isBusy() ) {
     return;
   }
-  
+
   switch( S2DStage ) {
   case 0:
     // 検出器初期化

@@ -32,6 +32,8 @@
 # 2014/06/18 a sensor FP23 is supported
 # 2014/11/11 add 'SAVE_EACH_MCA_SPECTRUM' line
 
+# 2015/07/17 add 'MEAS_MODE' line
+
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
 # though, it cause no difference use or not use the "" basically.
@@ -623,3 +625,19 @@ SENSOR AIOi "S056" "GENERAL" "ALARM Simulator" "Debugger" "" "mV" NO ""
 ALARM "S056" "_EvRangeMax 0" "_EvRangeMaxOff 0" "I0 Range Over"
 ALARM "S056" "_EvRangeMax 1" "_EvRangeMaxOff 1" "I1 Range Over"
 ALARM "S056" "_EvRangeMax 2" "_EvRangeMaxOff 2" "I2 Range Over"
+
+
+#
+# define some default measurement modes
+#
+
+# name "TransM", using S063 as I0 and S064 as I1
+MEAS_MODE "TransM" "I0 S063" "I1 S064" "A1 S062 2"
+
+# name "FluoM", using S063 as I0 and select F0
+# for 'stable' XafsM2 only F0 can be selectable as fluorescence detector
+MEAS_MODE "FluoM"  "I0 S063" "F0"
+
+# name "CEYM", using S063 as I0 and S062 as A1 while the display mode is 0
+#             display mode : 0 A1/I0, 1 log(I0/I1), 2 log(-I0/I1), ...
+MEAS_MODE "CEYM"    "I0 S063" "A1 S062 0"
