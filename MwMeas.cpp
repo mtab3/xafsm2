@@ -1293,7 +1293,8 @@ void MainWindow::StartMeasurement( void )
 	// 3) Stars でのデータ受け渡しサイズは
 	//     10,000点用の 160kB から 20,000点用の 320kB 以上にする。(結構余裕をみたサイズ)
         statusbar->showMessage( tr( "Measured points are too many.  "
-                                    "It should be less than 9990 in QXAFS mode." ),
+                                    "It should be less than %1 in QXAFS mode." )
+				.arg( maxQXafsPoints ),
                                 2000 );
         return;
       }
