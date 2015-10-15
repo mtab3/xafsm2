@@ -100,8 +100,8 @@ void MainWindow::recoverNSelections( void )
   ModeA2->setCurrentIndex( NSaveModeSelAux2 );
   
   Use19chSSD->setEnabled( true );
-  UseAux1->setEnabled( true );      // QXafs で使えることにする
-  UseAux2->setEnabled( true );      // やっぱこっちは使えないまま -> 使えることにする
+  UseAux1->setEnabled( true );
+  UseAux2->setEnabled( true );
 }
 
 void MainWindow::saveQSelections( void )
@@ -142,8 +142,8 @@ void MainWindow::recoverQSelections( void )
 
 void MainWindow::ToggleQXafsMode( bool )
 {
-  if ( QXafsMode->isChecked() ) {
-    // QXAFS モード
+  if ( QXafsMode->isChecked() ) {     // QXAFS モード
+
     SetDXMPMC();   // 分光器リセット
 
     saveNSelections();
@@ -182,9 +182,8 @@ void MainWindow::ToggleQXafsMode( bool )
 
     SetNewRPTLimit();
 
-  } else {
+  } else {      // NORML XAFS モード
 
-    // NORML XAFS モード
     saveQSelections();
     SetUpSensorComboBoxes();
     recoverNSelections();
@@ -233,10 +232,14 @@ void MainWindow::HideBLKs( bool f )
   }
 }
 
+#if 0
+#define MIN_INTERVAL  ( 2e-5 )
 #define MIN_INTEGRAL  ( 1e-4 )     // この数字は q34410a の属性として .def ファイルに
                                    // 書かれているべき。後でそのように変える。
-#define INTEGRAL_INTERVAL_RATIO  ( 0.9 )
 #define MIN_INTERVAL  ( MIN_INTEGRAL / INTEGRAL_INTERVAL_RATIO )
+#endif
+
+#define INTEGRAL_INTERVAL_RATIO  ( 0.9 )
 
 void MainWindow::CheckQXafsParams( void )
 {
@@ -244,39 +247,75 @@ void MainWindow::CheckQXafsParams( void )
     return;
 
   QString buf;
-  double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[0]->text().toDouble() ) );
-  double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[1]->text().toDouble() ) );
+  // sdeg:始点(角度)、edeg:終点(角度)、dtime:測定時間 を GUI から取得
+  double sP = BLKstart[0]->text().toDouble();
+  double eP = BLKstart[1]->text().toDouble();
+  double sKeV = u->any2keV( BLKUnit, sP );
+  double eKeV = u->any2keV( BLKUnit, eP );
+  double sdeg = u->keV2deg( sKeV );
+  double edeg = u->keV2deg( eKeV );
   double dtime = BLKdwell[0]->text().toDouble();
 
+  // HSpeed:上記を達成するのに必要なθの速度 (pulse/s) // global
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->upp() );
+  // MinTimeSpeed:加減速時間を考慮に入れて、同じ範囲を最小時間でスキャンする為の速度 (pulse/s)
   double MinTimeSpeed = sqrt( fabs( edeg - sdeg ) / MMainTh->upp()
 			       / ( 2. * RunUpRate / 1000. ) );
 
+  // 「時間最小」が指定されていて HSpeed が MinTimeSpeed を超えていた場合は
+  //  HSpeed を MinTimeSpeed に改める
+  //  (最高速度が早すぎると、加減速時間が余計にかかってかえって全体の時間が長くなる時がある)
   if ( QMinTime->isChecked() ) {
     if (( HSpeed > MinTimeSpeed )||( HSpeed < 0 ))
       HSpeed = MinTimeSpeed;
   }
+  //  HSpeed が MaxHSpeed(出して良い最高速度)より大きい場合は
+  //  HSpeed を MaxHSpeed に改める
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 ))
     HSpeed = MaxHSpeed;
 
-  DispQSpeedInPPS->setText( QString::number( HSpeed ) );
-  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->upp() ) );
-  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp();
+  // 上記の手続きで決めたスキャン速度(HSpeed)を GUI に表示しておく
+  DispQSpeedInPPS->setText( QString::number( HSpeed ) );    // pulse/sec
+  DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->upp() ) );  // deg/sec
 
-  if ( ( WidthInPuls / BLKpoints[0]->text().toInt() / HSpeed ) < MIN_INTERVAL ) {
+  // WidthInPulse : スキャンする角度範囲は、パルス数で言うと何パルス分になるか
+  double WidthInPulse = fabs( edeg - sdeg ) / MMainTh->upp();
+
+  // 極めて特殊ケース
+  // 測定しようとしているエネルギー範囲(の幅)をパルスで表した(なんパルス分のスキャンか)数字より
+  // 指定された測定点数の方が多い場合 WidthInPulse / Points < 1 になるので、
+  // パルス単位でトリガをかけて測定を行うことができなくなる。
+  // その場合には、測定点数を測定範囲のパルス数まで減らす(全パルスでトリガがかかる)
+  int Points = BLKpoints[0]->text().toInt();
+  if (  Points > WidthInPulse ) {
+    Points = WidthInPulse;
+  }
+  
+  // 指定された点数分の測定を行うとき、一点あたりのパルス送りと時間
+  int IntervalInPulse = ceil( WidthInPulse / Points );
+  double IntervalInSec = (double)IntervalInPulse / HSpeed;
+
+  // 一点あたりの時間が、可能な最低時間より短くなるなら
+  // 一点あたりの時間を最低値にとり直し、対応する一点あたりのパルス数と、総点数を再計算
+  if ( IntervalInSec < QMinIntervalTime ) {
     // PM16C が出す Trigger は 10us 幅にするので
-    // Interval の時間は念の為 20us とる。
-    // それよりも短くなるなら、インターバルを変更
-    int Interval = MIN_INTERVAL * HSpeed;      
-    BLKpoints[0]->setText( QString::number( (int)( WidthInPuls / Interval ) ) );
+    // これが制限になる場合、QMinIntervalTime は念の為 20us に設定されているはず。
+    IntervalInSec = QMinIntervalTime;
+    IntervalInPulse = IntervalInSec * HSpeed;
   }
-  if ( BLKpoints[0]->text().toInt() > WidthInPuls ) {
-    BLKpoints[0]->setText( QString::number( WidthInPuls ) );
-    BLKstep[0]->setText( QString::number( fabs( edeg - sdeg ) / WidthInPuls ) );
+
+  // 実際の点数を表示し直しておく
+  if ( IntervalInPulse != 0 ) {
+    Points = ceil( WidthInPulse / IntervalInPulse );
+  } else {
+    Points = 0;
   }
-  dtime = WidthInPuls / HSpeed;
+  BLKpoints[0]->setText( QString::number( Points ) );
+
+  // 計測にかかる時間の再計算と表示
+  dtime = WidthInPulse / HSpeed;
   BLKdwell[0]->setText( QString::number( dtime ) );
-  ShowQTime( dtime, WidthInPuls );
+  ShowQTime( dtime, WidthInPulse );
 
   ShowDeltaAtRefPoint();
 }
@@ -368,13 +407,13 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
     QXafsInterval = 1;
 
 //  if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
-  if ( ( (double)QXafsInterval / HSpeed ) < MIN_INTERVAL ) {
+  if ( ( (double)QXafsInterval / HSpeed ) < QMinIntervalTime ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
     // ----> 20us ではだめ。a34410a の、最短積分時間は 100us
     //       Interval の 90% を積分時間に設定するので
     //       Interval は最低 100/0.9 = 111.1111.... 必要
-    QXafsInterval = MIN_INTERVAL * HSpeed;   // これより短くなるなら、インターバルを変更
+    QXafsInterval = QMinIntervalTime * HSpeed;   // これより短くなるなら、インターバルを変更
     SBlockPoints[0] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
     statusbar
       ->showMessage( tr( "Selected Points were too many!  It was changed to be %1" )

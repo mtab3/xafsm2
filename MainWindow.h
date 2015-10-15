@@ -432,6 +432,7 @@ private:
 
   BlockInfo NXAFSBInfo, QXAFSBInfo;
   int maxQXafsPoints;
+  double QMinIntervalTime;
 
   bool SMeasInDeg;
   UNIT SBLKUnit;
