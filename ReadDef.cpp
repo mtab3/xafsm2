@@ -339,6 +339,14 @@ void MainWindow::ReadDef( QString fname )
 	  }
 	  QMeasModes << m;
 	}
+      } else if ( item == "QXAFS_MIN_INTERVAL" ) {
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  if ( item.toDouble() > 0 ) {
+	    QMinIntervalTime = item.toDouble();
+	    qDebug() << "Q Min Int Time " << QMinIntervalTime;
+	  }
+	}
       } else {
         qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

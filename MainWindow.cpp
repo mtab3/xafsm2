@@ -27,6 +27,7 @@ MainWindow::MainWindow( QString myname ) : QMainWindow()
   MStabOk = false;
   MStabDelegate = "";
   maxQXafsPoints = 20000;   // 9990
+  QMinIntervalTime = 2.0e-4;  // only for 34410a
 
 #if 0
   AutoShutter->setChecked( false );  // 自動シャッターのボタンはデフォルトでは
