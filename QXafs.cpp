@@ -258,10 +258,14 @@ void MainWindow::CheckQXafsParams( void )
 
   // HSpeed:上記を達成するのに必要なθの速度 (pulse/s) // global
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->upp() );
+  // PM16C に設定できるモータのスピード は整数なので HSpeed も整数
+  // 従って、上記の計算結果のスピードが 1pps を切る場合には HSpeed が 0 になってしまう。
+  if ( HSpeed < 1 )
+    HSpeed = 1;
+
   // MinTimeSpeed:加減速時間を考慮に入れて、同じ範囲を最小時間でスキャンする為の速度 (pulse/s)
   double MinTimeSpeed = sqrt( fabs( edeg - sdeg ) / MMainTh->upp()
 			       / ( 2. * RunUpRate / 1000. ) );
-
   // 「時間最小」が指定されていて HSpeed が MinTimeSpeed を超えていた場合は
   //  HSpeed を MinTimeSpeed に改める
   //  (最高速度が早すぎると、加減速時間が余計にかかってかえって全体の時間が長くなる時がある)
@@ -273,6 +277,7 @@ void MainWindow::CheckQXafsParams( void )
   //  HSpeed を MaxHSpeed に改める
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 ))
     HSpeed = MaxHSpeed;
+  qDebug() << "QXafs calced HSpeed" << HSpeed;
 
   // 上記の手続きで決めたスキャン速度(HSpeed)を GUI に表示しておく
   DispQSpeedInPPS->setText( QString::number( HSpeed ) );    // pulse/sec
@@ -286,34 +291,40 @@ void MainWindow::CheckQXafsParams( void )
   // 指定された測定点数の方が多い場合 WidthInPulse / Points < 1 になるので、
   // パルス単位でトリガをかけて測定を行うことができなくなる。
   // その場合には、測定点数を測定範囲のパルス数まで減らす(全パルスでトリガがかかる)
-  int Points = BLKpoints[0]->text().toInt();
-  if (  Points > WidthInPulse ) {
-    Points = WidthInPulse;
+  QPoints = BLKpoints[0]->text().toInt();
+  if (  QPoints > WidthInPulse ) {
+    QPoints = WidthInPulse;
   }
   
   // 指定された点数分の測定を行うとき、一点あたりのパルス送りと時間
-  int IntervalInPulse = ceil( WidthInPulse / Points );
-  double IntervalInSec = (double)IntervalInPulse / HSpeed;
+  QIntervalInPulse = ceil( WidthInPulse / QPoints );
+  QIntervalInSec = (double)QIntervalInPulse / HSpeed;
 
   // 一点あたりの時間が、可能な最低時間より短くなるなら
   // 一点あたりの時間を最低値にとり直し、対応する一点あたりのパルス数と、総点数を再計算
-  if ( IntervalInSec < QMinIntervalTime ) {
+  if ( QIntervalInSec < QMinIntervalTime ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // これが制限になる場合、QMinIntervalTime は念の為 20us に設定されているはず。
-    IntervalInSec = QMinIntervalTime;
-    IntervalInPulse = IntervalInSec * HSpeed;
+    QIntervalInSec = QMinIntervalTime;
+    QIntervalInPulse = QIntervalInSec * HSpeed;
   }
+  // 計測トリガを出すインターバルが 1pulse より小さくなってしまうようなら
+  // 1 pulse にしておく。
+  if ( QIntervalInPulse < 1 ) {
+    QIntervalInPulse = 1;
+  }
+  qDebug() << "QXafs calced Interval" << HSpeed;
 
   // 実際の点数を表示し直しておく
-  if ( IntervalInPulse != 0 ) {
-    Points = ceil( WidthInPulse / IntervalInPulse );
+  if ( QIntervalInPulse != 0 ) {
+    QPoints = ceil( WidthInPulse / QIntervalInPulse );
   } else {
-    Points = 0;
+    QPoints = 0;
   }
-  BLKpoints[0]->setText( QString::number( Points ) );
+  BLKpoints[0]->setText( QString::number( QPoints ) );
 
   // 計測にかかる時間の再計算と表示
-  dtime = WidthInPulse / HSpeed;
+  dtime = WidthInPulse / HSpeed;   // <<---- これは嘘だ !!!!
   BLKdwell[0]->setText( QString::number( dtime ) );
   ShowQTime( dtime, WidthInPulse );
 
@@ -382,31 +393,37 @@ void MainWindow::ShowQTime( double dtime, double WidthInPuls )
 }
 
 void MainWindow::GetPM16CParamsForQXAFS( void )
-// 本当は入力時にも計算できる内容だが、
-// 確実を期すため測定直前に "Saved" パラメータを使って計算する
+// QXafs 測定開始時に CheckQXafsParams を通るので
+// そこで計算されるようなパラメータはここでは信じて良い
 {
-  double sdeg = SBlockStartInDeg[0];
-  double edeg = SBlockStartInDeg[1];
-  int points = abs( SBlockPoints[0] );
+  double sdeg = SBlockStartInDeg[0];   // 角度単位での始点
+  double edeg = SBlockStartInDeg[1];   // 確度単位での終点
+#if 0
+  int points = abs( SBlockPoints[0] ); // 測定点数 (CheckQXafsParams で補正済みのはず)
   double dtime = SBlockDwell[0];
-
-  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp();
+#endif
+  
+#if 0  // HSpeed をここで計算してはダメ (CheckQXafsParamas で計算済)
+  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp();　// パルス単位での測定範囲幅
   HSpeed = WidthInPuls / dtime;
   if (( HSpeed > MaxHSpeed )||( HSpeed < 0 )) {
     HSpeed = MaxHSpeed;                           // PM16C に設定する H のスピード
   }
   DispQSpeedInPPS->setText( QString::number( HSpeed ) );
   DispQSpeedInDPS->setText( QString::number( HSpeed * MMainTh->upp() ) );
-
-  QXafsSP0 = sdeg / MMainTh->upp() + MMainTh->getCenter();  // 測定範囲の始点
-  QXafsEP0 = edeg / MMainTh->upp() + MMainTh->getCenter();  // 測定範囲の終点
+#endif
+  qDebug() << "QXafs exec HSpeed" << HSpeed;
+  
+  QXafsSP0 = sdeg / MMainTh->upp() + MMainTh->getCenter();  // 測定範囲の始点(pulse)
+  QXafsEP0 = edeg / MMainTh->upp() + MMainTh->getCenter();  // 測定範囲の終点(pulse)
+#if 0  // QInterval は再計算しなくていい
   if ( abs( QXafsSP0 - QXafsEP0 ) > points )
     QXafsInterval = (int)(abs( QXafsSP0 - QXafsEP0 ) / points);
   // Trigger パルスを出す間隔
   else 
     QXafsInterval = 1;
 
-//  if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
+  // if ( (double)QXafsInterval / HSpeed < 2e-5 ) {
   if ( ( (double)QXafsInterval / HSpeed ) < QMinIntervalTime ) {
     // PM16C が出す Trigger は 10us 幅にするので
     // Interval の時間は念の為 20us とる。
@@ -419,9 +436,13 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
       ->showMessage( tr( "Selected Points were too many!  It was changed to be %1" )
 		     .arg( SBlockPoints[0] ), 3000 );
   }
+#endif
+  qDebug() << "QXafs exec Interval" << QIntervalInPulse;
 
+#if 0  // QPoints も再計算しなくていい
   QXafsPoints = abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval;    // 測定ステップ数を再計算
-  QXafsDwellTime = ( (double)QXafsInterval / HSpeed ) * INTEGRAL_INTERVAL_RATIO;
+#endif
+  QXafsDwellTime = QIntervalInSec * INTEGRAL_INTERVAL_RATIO;
   // 1点の積分時間を Trigger パルス間隔の 90% にする
 
   RunUpTime = ( HSpeed - LowSpeed ) * RunUpRate / 1000;  // HSpeed までの加速にかかる時間
@@ -442,11 +463,12 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   DebugBuf = QString( "QXafs Measure Range [ %1 [ %2 %3 ] %4 ], RunUpRate %5" )
     .arg( QXafsSP ).arg( QXafsSP0 ).arg( QXafsEP0 ).arg( QXafsEP ).arg( RunUpRate )
     + QString( " Interval and Points %1 %2" )
-    .arg( QXafsInterval ).arg( QXafsPoints )
+    .arg( QIntervalInPulse ).arg( QPoints )
     + QString( " Dwell Time %1" ).arg( QXafsDwellTime );
   NewLogMsg( DebugBuf );
 
-  ShowQTime( dtime, WidthInPuls );
+  double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp(); // パルス単位での測定範囲幅
+  ShowQTime( SBlockDwell[0], WidthInPuls );
 }
 
 
@@ -597,7 +619,7 @@ void MainWindow::QXafsMeasSequence( void )
     }
     CurrentPnt->setText( tr( "Fwd" ) );
     MMainTh->SetHighSpeed( HSpeed );
-    MMainTh->SetUpToGenerageTriggerSignal( QXafsSP0, QXafsEP0, QXafsInterval );
+    MMainTh->SetUpToGenerageTriggerSignal( QXafsSP0, QXafsEP0, QIntervalInPulse );
     MeasStage++;
     break;
   case 6:
@@ -652,7 +674,7 @@ void MainWindow::QXafsMeasSequence( void )
       break;
     mMeasUnits.clearStage();
     if ( QMeasOnBackward->isChecked() ) {   // 戻りも測定する
-      MMainTh->SetUpToGenerageTriggerSignal( QXafsEP0, QXafsSP0, QXafsInterval );
+      MMainTh->SetUpToGenerageTriggerSignal( QXafsEP0, QXafsSP0, QIntervalInPulse );
       CurrentPnt->setText( tr( "Bwd" ) );
       MeasStage = 10;
     } else {
@@ -814,7 +836,7 @@ void MainWindow::DispQSpectrum( int g )  // ダーク補正どうする？
     return;
 
   int p = QXafsSP0;
-  int d = QXafsInterval;
+  int d = QIntervalInPulse;
   int c = MMainTh->getCenter();
   double upp = MMainTh->upp();
   double deg2;

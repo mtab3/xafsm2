@@ -560,7 +560,10 @@ private:
   bool QSaveUseI1, QSaveUse19ChSSD, QSaveUseAux1, QSaveUseAux2;
 
   int OrigHSpeed, HSpeed, MaxHSpeed, LowSpeed;
-  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP, QXafsInterval, QXafsPoints;
+  int QXafsSP0, QXafsSP, QXafsEP0, QXafsEP;
+  int QIntervalInPulse;
+  double QIntervalInSec;
+  int QPoints;
   double RunUpRate, RunUpTime, QXafsDwellTime;
   QString EncValue0, Enc2Value0;
   bool QIntervalBlock1, QIntervalBlock2;

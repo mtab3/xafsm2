@@ -1600,6 +1600,10 @@ void MainWindow::StartMeasurement( void )
     }
 
     SetDispMeasModes();
+    // QXafs の時は直前に HSpeed や Interval の計算をやり直しておく
+    // (この後で CpBlock2SBlock() を呼ぶので計算し直した結果と整合する結果が SBlocks に残る)
+    if ( QXafsMode->isChecked() )
+      CheckQXafsParams();
     CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
     SetupMPSet( &MPSet ); // これ以降に return してはいけない
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();
