@@ -4,6 +4,11 @@
 
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Oct 21 17:40:26 2015 +0900\n"\
+                "    GetPM16CParamsForQXAFS is updated as CheckQXafsParams in QXafs.cpp\n"\
+"    !!! But not tested at all !!!\n"\
+		"\n"\
                 "Author      : M. Tabuchi <tabuchi@dimos3.nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Oct 19 17:26:31 2015 +0900\n"\
                 "    nothing\n"\
@@ -59,10 +64,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 30 19:23:25 2015 +0900\n"\
                 "    It made sure that mon-interval works with real qct08\n"\
-		"\n"\
-                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Sep 30 17:36:52 2015 +0900\n"\
-                "    merged with mon-interval\n"\
 		"\n"\
                 ""
 #endif

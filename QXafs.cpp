@@ -256,6 +256,8 @@ void MainWindow::CheckQXafsParams( void )
   double edeg = u->keV2deg( eKeV );
   double dtime = BLKdwell[0]->text().toDouble();
 
+  if ( dtime <= 0 )
+    dtime = 1e-3;
   // HSpeed:上記を達成するのに必要なθの速度 (pulse/s) // global
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->upp() );
   // PM16C に設定できるモータのスピード は整数なので HSpeed も整数
@@ -313,7 +315,7 @@ void MainWindow::CheckQXafsParams( void )
   if ( QIntervalInPulse < 1 ) {
     QIntervalInPulse = 1;
   }
-  qDebug() << "QXafs calced Interval" << HSpeed;
+  qDebug() << "QXafs calced Interval" << QIntervalInPulse;
 
   // 実際の点数を表示し直しておく
   if ( QIntervalInPulse != 0 ) {
@@ -322,6 +324,11 @@ void MainWindow::CheckQXafsParams( void )
     QPoints = 0;
   }
   BLKpoints[0]->setText( QString::number( QPoints ) );
+  double width = fabs( BLKstart[1]->text().toDouble() - BLKstart[0]->text().toDouble() );
+  if ( QPoints > 0 ) 
+    BLKstep[0]->setText( QString::number( width / QPoints ) );
+  else 
+    BLKstep[0]->setText( QString::number( 0 ) );
 
   // 計測にかかる時間の再計算と表示
   dtime = WidthInPulse / HSpeed;   // <<---- これは嘘だ !!!!

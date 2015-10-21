@@ -648,6 +648,7 @@ private slots:
   void AddNewDTh1TunePoint( void );
 
   void ChangeBLKparams( void );
+  void ChangeBLKstep( void );
   void ChangeBLKpoints( void );
 
   //  double CurrentAngle( void );

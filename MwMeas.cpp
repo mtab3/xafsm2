@@ -160,7 +160,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	     Qt::UniqueConnection );
   }
   for ( int i = 0; i < BLKstep.count(); i++ ) {
-    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
+    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()),
 	     Qt::UniqueConnection );
     connect( BLKdwell[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
 	     Qt::UniqueConnection );
@@ -734,12 +734,11 @@ void MainWindow::SetStdEXAFSBLKs( void )
     
     ChangeBLKs( 4 );
   }
-  ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
     CheckQXafsParams();     // dwell は最小時間にセットされる
-    ShowBLKs();
   }
+  ShowBLKs();
 }
 
 void MainWindow::SetStdXAFSBLKs( void )
@@ -767,7 +766,7 @@ void MainWindow::SetStdXAFSBLKs( void )
     for ( int i = 1; i < MaxBLKs; i++ )
       BLKpoints[i]->setText( buf );
 
-    // dwell の設定は後
+    // dwell の設定は後 // とりあえず 0 表示
     buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 1; i < MaxBLKs; i++ )
       BLKdwell[i]->setText( buf );
@@ -808,12 +807,11 @@ void MainWindow::SetStdXAFSBLKs( void )
     
     ChangeBLKs( 4 );
   }
-  ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
     CheckQXafsParams();       // dwell が可能な最短にセットされる
-    ShowBLKs();
   }
+  ShowBLKs();
 }
 
 void MainWindow::SetStdXANESBLKs( void )
@@ -880,12 +878,11 @@ void MainWindow::SetStdXANESBLKs( void )
     
     ChangeBLKs( 3 );
   }
-  ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
     CheckQXafsParams();   // dwell が最短時間にセットされる
-    ShowBLKs();
   }
+  ShowBLKs();
 }
 
 void MainWindow::ShowBLKs( void )
@@ -988,6 +985,15 @@ void MainWindow::ChangeBLKparams( void )
 {
   if ( QXafsMode->isChecked() ) CheckQXafsParams();
   ShowBLKs();
+}
+
+void MainWindow::ChangeBLKstep( void )
+{
+  ShowBLKs();
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();
+    ShowBLKs();
+  }
 }
 
 void MainWindow::ChangeBLKpoints( void )
