@@ -1055,7 +1055,7 @@ Though, other parameters are fixed at the value on starting.</source>
     </message>
     <message>
         <source>Dwell T.</source>
-        <translation>計測時間</translation>
+        <translation type="vanished">計測時間</translation>
     </message>
     <message>
         <source>Select</source>
@@ -1625,11 +1625,11 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Meas cannot Start : (%1) is disabled</source>
-        <translation>(%1) が使用できないため測定を開始できません。</translation>
+        <translation type="vanished">(%1) が使用できないため測定を開始できません。</translation>
     </message>
     <message>
         <source>Meas cannot Start : in MCA measurement</source>
-        <translation>MCA 測定中のため XAFS 測定を開始できません</translation>
+        <translation type="vanished">MCA 測定中のため XAFS 測定を開始できません</translation>
     </message>
     <message>
         <source>Measured points are too many.  It should be less than 9990 in QXAFS mode.</source>
@@ -2399,7 +2399,7 @@ Have you selected the range in &apos;Setup Condition&apos;</source>
     </message>
     <message>
         <source>sec   Backward</source>
-        <translation>秒   復測定前</translation>
+        <translation>秒   戻り測定前</translation>
     </message>
     <message>
         <source>Identical sensor [%1:%2,%3:%4]is used as different inputs, like I0 and I1.</source>
@@ -3163,6 +3163,82 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>Too long acquisition time per point (%1&gt;%2) for [%3]. Decrease acquisition time or Increase data points.</source>
         <translation>計測器%3 の1点あたりの計測時間が長過ぎます(%1&gt;%2)。計測時間を短くするか、測定点数を増やして下さい。</translation>
+    </message>
+    <message>
+        <source>Dwell T. [sec]</source>
+        <translation>計測時間[秒]</translation>
+    </message>
+    <message>
+        <source>Interval T.[sec]</source>
+        <translation>インターバル[秒]</translation>
+    </message>
+    <message>
+        <source>Sum</source>
+        <translation>合算</translation>
+    </message>
+    <message>
+        <source>Meas cannot Start (1): (%1) is disabled</source>
+        <translation>(%1)がdisableなので測定が開始できません(1)</translation>
+    </message>
+    <message>
+        <source>Meas cannot Start (2): in MCA measurement</source>
+        <translation>MCAスペクトル測定中のため測定が開始できません(2)</translation>
+    </message>
+    <message>
+        <source>Meas cannot Start (3): (%1) is disabled</source>
+        <translation>(%1)がdisableのため測定が開始できません(3)</translation>
+    </message>
+    <message>
+        <source>CC-10</source>
+        <translation>真空度(CC-10)</translation>
+    </message>
+    <message>
+        <source>FP23</source>
+        <translation>温度(FP23)</translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation>垂直</translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation>水平</translation>
+    </message>
+    <message>
+        <source>EncorderTh</source>
+        <translation type="vanished">θ(エンコーダ)</translation>
+    </message>
+    <message>
+        <source>RingCurrentMonitor</source>
+        <translation>リング電流</translation>
+    </message>
+    <message>
+        <source>InjectionMonitor</source>
+        <translation>入射モニタ</translation>
+    </message>
+    <message>
+        <source>CurrentViaEpics</source>
+        <translation>リング電流(epics)</translation>
+    </message>
+    <message>
+        <source>UndulatorGap</source>
+        <translation>アンジュレータ ギャップ</translation>
+    </message>
+    <message>
+        <source>EncoderTh</source>
+        <translation>θ(エンコーダ)</translation>
+    </message>
+    <message>
+        <source>WaveMonToCTRLdTh1</source>
+        <translation>正弦波モニタ(⊿θ1制御)</translation>
+    </message>
+    <message>
+        <source>I0MonToCTRLdTh1</source>
+        <translation>I0モニタ(⊿θ1制御)</translation>
+    </message>
+    <message>
+        <source>EncoderTh2</source>
+        <translation>θ(エンコーダ2)</translation>
     </message>
 </context>
 <context>

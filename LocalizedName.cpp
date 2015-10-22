@@ -17,6 +17,7 @@ QString MainWindow::LocalizedName( QString name )
   name.replace( QString( "open" ),      tr( "open" ) );
   name.replace( QString( "move" ),      tr( "move" ) );
   name.replace( QString( "Counter" ),   tr( "Counter" ) );
+  name.replace( QString( "Sum" ),       tr( "Sum" ) );
 
   name.replace( QString( "MinH" ),      tr( "MinH" ) );
   name.replace( QString( "min Z" ),     tr( "miZ" ) );
@@ -36,5 +37,21 @@ QString MainWindow::LocalizedName( QString name )
   name.replace( QString( "TransM" ),    tr( "Trans. Mode" ) );
   name.replace( QString( "FluoM" ),     tr( "Fluo. Mode" ) );
   name.replace( QString( "CEYM" ),      tr( "CEY Mode" ) );
+
+  name.replace( QString( "CC-10" ),     tr( "CC-10" ) );
+  name.replace( QString( "FP23" ),      tr( "FP23"  ) );
+  name.replace( QString( "Vertical" ),        tr( "Vertical" ) );
+  name.replace( QString( "Horizontal" ),      tr( "Horizontal" ) );
+
+  
+  name.replace( QString( "Encoder Th2" ),          tr( "EncoderTh2" ) );
+  name.replace( QString( "Encoder Th" ),           tr( "EncoderTh" ) );
+  name.replace( QString( "Ring Current Monitor" ),  tr( "RingCurrentMonitor" ) );
+  name.replace( QString( "Injection Monitor" ),     tr( "InjectionMonitor" ) );
+  name.replace( QString( "Current via epics" ),     tr( "CurrentViaEpics" ) );
+  name.replace( QString( "Undulator Gap" ),   tr( "UndulatorGap" ) );
+  name.replace( QString( "Wave mon. to ctrl. dTh1" ),   tr( "WaveMonToCTRLdTh1" ) );
+  name.replace( QString( "I0 mon. to ctrl. dTh1" ),   tr( "I0MonToCTRLdTh1" ) );
+
   return name;
 }
