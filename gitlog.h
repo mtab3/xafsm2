@@ -5,6 +5,11 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Oct 21 19:48:30 2015 +0900\n"\
+                "    GetPM16CParamsForQXAFS was checked and modified as CheckQXafsParams has alerady been.  As the result, the displayed parameters is getting much robust.   It means the displayed parameters are actually used for the QXAFS measurements without changing.\n"\
+"    This version has been tested with simmotor but not in real environment.\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Oct 21 17:40:26 2015 +0900\n"\
                 "    GetPM16CParamsForQXAFS is updated as CheckQXafsParams in QXafs.cpp\n"\
 "    !!! But not tested at all !!!\n"\
@@ -60,10 +65,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Oct 9 21:23:21 2015 +0900\n"\
                 "    modified XAFSM.def.BL5S1\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Sep 30 19:23:25 2015 +0900\n"\
-                "    It made sure that mon-interval works with real qct08\n"\
 		"\n"\
                 ""
 #endif

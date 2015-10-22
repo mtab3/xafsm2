@@ -256,8 +256,8 @@ void MainWindow::CheckQXafsParams( void )
   double edeg = u->keV2deg( eKeV );
   double dtime = BLKdwell[0]->text().toDouble();
 
-  if ( dtime <= 0 )
-    dtime = 1e-3;
+  if ( dtime <= 0 ) // dtime は 0 あるいは 負であってはならない。もしそうなってたら
+    dtime = 1e-3;   // 十分小さな数字(1msec)に置き換えておく
   // HSpeed:上記を達成するのに必要なθの速度 (pulse/s) // global
   HSpeed = fabs( ( edeg - sdeg ) / dtime / MMainTh->upp() );
   // PM16C に設定できるモータのスピード は整数なので HSpeed も整数
@@ -331,7 +331,9 @@ void MainWindow::CheckQXafsParams( void )
     BLKstep[0]->setText( QString::number( 0 ) );
 
   // 計測にかかる時間の再計算と表示
-  dtime = WidthInPulse / HSpeed;   // <<---- これは嘘だ !!!!
+  dtime = WidthInPulse / HSpeed;
+  // dtime は測定しようとする範囲をスキャンするのに必要な時間
+  // 計測のトータルでは、これに RunUp, RunDown など前後の時間が必要になってくる
   BLKdwell[0]->setText( QString::number( dtime ) );
   ShowQTime( dtime, WidthInPulse );
 

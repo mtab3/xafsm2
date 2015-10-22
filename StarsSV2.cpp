@@ -8,11 +8,8 @@ StarsSV2::StarsSV2() : QFrame()
 {
   setupUi( this );
 
-  StarsSVA->addItem( "192.168.51.200" );
-  StarsSVA->addItem( "133.6.107.214" );
   StarsSVA->addItem( "localhost" );
   StarsSVP->addItem( "6057" );
-  StarsSVP->addItem( "6058" );
 
   connect( StarsSVA, SIGNAL( currentIndexChanged( const QString & ) ),
 	   this, SIGNAL( SSVNewAddress( const QString & ) ),
