@@ -34,6 +34,7 @@
 
 # 2015/07/17 add 'MEAS_MODE' line
 # 2015/10/15 add 'QXAFS_MIN_INTERVAL' line
+# 2015/10/23 add 'QXAFS_MAX_POINTS' line
 
 # In this definition file,
 # for any item, you can use "" (double quotation marks) as you want,
@@ -107,6 +108,14 @@ QXAFSMODE 1 6000 15000 100 0.1
 #
 QXAFS_MIN_INTERVAL    2e-5        #
 #QXAFS_MIN_INTERVAL    1.2e-4     #
+
+#
+# QXAFS_MAX_POINTS : Define maximum measurement points for QXafs
+#
+# The number must be less than 20,000 (hard corded limits are in the source codes)
+#
+QXAFS_MAX_POINTS      19990
+#QXAFS_MAX_POINTS      9990
 
 #
 # Detectors which can be used for Q-Xafs : QXAFSOK

@@ -347,6 +347,14 @@ void MainWindow::ReadDef( QString fname )
 	    qDebug() << "Q Min Int Time " << QMinIntervalTime;
 	  }
 	}
+      } else if ( item == "QXAFS_MAX_POINTS" ) {
+	next = nextItem( next, item );
+	if ( item != "" ) {
+	  if (( item.toInt() > 0 )&&( item.toInt() < 20000 )) {
+	    maxQXafsPoints = item.toInt();
+	    qDebug() << "Q Max Points " << maxQXafsPoints;
+	  }
+	}
       } else {
         qDebug() << tr( "Undefined Key word [%1]" ).arg( item );
       }

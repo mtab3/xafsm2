@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Oct 22 16:25:53 2015 +0900\n"\
+                "    adding some documentation\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Oct 21 19:48:30 2015 +0900\n"\
                 "    GetPM16CParamsForQXAFS was checked and modified as CheckQXafsParams has alerady been.  As the result, the displayed parameters is getting much robust.   It means the displayed parameters are actually used for the QXAFS measurements without changing.\n"\
 "    This version has been tested with simmotor but not in real environment.\n"\
@@ -61,10 +65,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Tue Oct 13 17:17:18 2015 +0900\n"\
                 "    merged with current stable\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Oct 9 21:23:21 2015 +0900\n"\
-                "    modified XAFSM.def.BL5S1\n"\
 		"\n"\
                 ""
 #endif
