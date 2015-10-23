@@ -111,6 +111,8 @@ QXAFSMODE 1 1000 3000 100 1.0
 # Since the minimum integral time is 1e-4 and the duty ratio must be less than 0.9,
 # QXAFS_MIN_INTERVAL should be longer than 1.2e-4 when QXAFS with 34410a.
 #
+# default : 2.0e-4
+#
 QXAFS_MIN_INTERVAL    2e-5        #
 #QXAFS_MIN_INTERVAL    1.2e-4     #
 
@@ -118,6 +120,7 @@ QXAFS_MIN_INTERVAL    2e-5        #
 # QXAFS_MAX_POINTS : Define maximum measurement points for QXafs
 #
 # The number must be less than 20,000 (hard corded limits are in the source codes)
+# default : 9990
 #
 QXAFS_MAX_POINTS      19990
 #QXAFS_MAX_POINTS      9990
