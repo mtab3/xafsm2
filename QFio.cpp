@@ -73,8 +73,8 @@ void MainWindow::MakeDelegateFile( void )
   out << "#" << " Motion end point   : " << QXafsEP << endl;
   out << "#" << " Pulse start point  : " << QXafsSP0 << endl;
   out << "#" << " Pulse stop point   : " << QXafsEP0 << endl;
-  out << "#" << " Pulse interval     : " << QXafsInterval << endl;
-  out << "#" << " Pulse number       : " << QXafsPoints << endl;
+  out << "#" << " Pulse interval     : " << QIntervalInPulse << endl;
+  out << "#" << " Pulse number       : " << QPoints << endl;
   out << "#" << " Pulse dwell time   : " << QXafsDwellTime << endl;
   out << "#" << " Run Up Time        : " << RunUpTime << endl;
   out << "#" << endl;
@@ -205,7 +205,7 @@ void MainWindow::WriteQBody1( DIRECTION /* dir */ ) // こっちは本当に dir
   QTextStream out( &file );
 
   int p = QXafsSP0;
-  int d = QXafsInterval;
+  int d = QIntervalInPulse;
   int c = MMainTh->getCenter();
   double upp = MMainTh->upp();
   double encV0 = EncValue0.toDouble();
@@ -288,7 +288,7 @@ void MainWindow::WriteQBody2( DIRECTION /* dir */ )
   QTextStream out( &file );
 
   int p = QXafsSP0;
-  int d = QXafsInterval;
+  int d = QIntervalInPulse;
   int c = MMainTh->getCenter();
   double upp = MMainTh->upp();
   double deg, deg2;

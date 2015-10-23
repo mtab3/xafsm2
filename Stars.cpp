@@ -155,6 +155,12 @@ void Stars::MakeConnection( void )
   }
 }
 
+// Stars のバッファは現在 160kbyte
+// QXafs では 1点16byte のデータが来るので(だいぶ余裕をみた数字)
+// 10,000点が max
+// もともとは 160000 だった。QXafs の点数を 10,000 -> 20,000 にするために変更
+#define MAX_R_BUFSIZE   ( 320000 )
+
 void Stars::ReceiveMessageFromStars( void )
 {
   SMsg smsg;
@@ -164,9 +170,7 @@ void Stars::ReceiveMessageFromStars( void )
 
   switch( ConnectionStage ) {
   case CSTAGE0: 
-    RBuf = ss->readLine( 160000 ); // Stars のバッファは現在 160kbyte
-                                   // QXafs では 1点16byte のデータが来るので
-                                   // 10,000点が max
+    RBuf = ss->readLine( 4000 ); 
     RBuf = RBuf.simplified();
     WBuf = tr( "%1 %2\n" ).arg( MyNameOnStars ).arg( GetKey( RBuf.toInt() ) );
     ConnectionStage = CSTAGE1;
@@ -188,8 +192,10 @@ void Stars::ReceiveMessageFromStars( void )
     break;
   case CSTAGEEND:
     while( ss->canReadLine() ) {
-      RBuf = ss->readLine( 160000 );
+      RBuf = ss->readLine( MAX_R_BUFSIZE );
       // 160000 / 8000 = 20  dummy MCA でも 1チャンネルの数字が 20byte 以下なら大丈夫
+      // いまは 320000 にしたので
+      // 320000 / 8000 = 40  で MCA は楽勝
       RBuf = RBuf.simplified();
       
       switch( smsg.ParseMsg( RBuf ) ) {

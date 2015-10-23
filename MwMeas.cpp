@@ -160,7 +160,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 	     Qt::UniqueConnection );
   }
   for ( int i = 0; i < BLKstep.count(); i++ ) {
-    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
+    connect( BLKstep[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKstep()),
 	     Qt::UniqueConnection );
     connect( BLKdwell[i], SIGNAL( editingFinished() ), this, SLOT(ChangeBLKparams()),
 	     Qt::UniqueConnection );
@@ -734,12 +734,11 @@ void MainWindow::SetStdEXAFSBLKs( void )
     
     ChangeBLKs( 4 );
   }
-  ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
     CheckQXafsParams();     // dwell は最小時間にセットされる
-    ShowBLKs();
   }
+  ShowBLKs();
 }
 
 void MainWindow::SetStdXAFSBLKs( void )
@@ -767,7 +766,7 @@ void MainWindow::SetStdXAFSBLKs( void )
     for ( int i = 1; i < MaxBLKs; i++ )
       BLKpoints[i]->setText( buf );
 
-    // dwell の設定は後
+    // dwell の設定は後 // とりあえず 0 表示
     buf.sprintf( "% 5.2f", 0.0 );
     for ( int i = 1; i < MaxBLKs; i++ )
       BLKdwell[i]->setText( buf );
@@ -808,12 +807,11 @@ void MainWindow::SetStdXAFSBLKs( void )
     
     ChangeBLKs( 4 );
   }
-  ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
     CheckQXafsParams();       // dwell が可能な最短にセットされる
-    ShowBLKs();
   }
+  ShowBLKs();
 }
 
 void MainWindow::SetStdXANESBLKs( void )
@@ -880,12 +878,11 @@ void MainWindow::SetStdXANESBLKs( void )
     
     ChangeBLKs( 3 );
   }
-  ShowBLKs();
 
   if ( QXafsMode->isChecked() ) {
     CheckQXafsParams();   // dwell が最短時間にセットされる
-    ShowBLKs();
   }
+  ShowBLKs();
 }
 
 void MainWindow::ShowBLKs( void )
@@ -988,6 +985,15 @@ void MainWindow::ChangeBLKparams( void )
 {
   if ( QXafsMode->isChecked() ) CheckQXafsParams();
   ShowBLKs();
+}
+
+void MainWindow::ChangeBLKstep( void )
+{
+  ShowBLKs();
+  if ( QXafsMode->isChecked() ) {
+    CheckQXafsParams();
+    ShowBLKs();
+  }
 }
 
 void MainWindow::ChangeBLKpoints( void )
@@ -1280,9 +1286,21 @@ void MainWindow::StartMeasurement( void )
     }
 
     if ( QXafsMode->isChecked() ) {     // QXafs モードの時の追加チェック
-      if ( BLKpoints[0]->text().toInt() > 9990 ) {    // 測定点数が 9990 を超えてたらダメ
+      if ( BLKpoints[0]->text().toInt() > maxQXafsPoints ) {
+	// 測定点数が maxQXafsPoints (現在デフォルトで 9990) を超えてたらダメ
+	// 制限の元になっているのは...
+	// 0) qct08 は、55,000点までOK (のバージョンあり)
+	// 1) XYView : MAXPOINTS = 10,000 -> 20,000 に増やした
+	//    これを超えたデータが来ても、単に表示しないだけ。
+	// 2) 測定シーケンス(QXafs.cc)やファイル操作(QFio.cc),
+	//    AUnit*.cc でデータを保持する時は StringList で持っている。
+	//    大元は SMsg.cc の中で QString.split( "\\s+" ) で作った可変長のリスト。
+	//    上限は Qt の側の上限で決まる。(少なくとも 10,000 とかではないはず)
+	// 3) Stars でのデータ受け渡しサイズは
+	//     10,000点用の 160kB から 20,000点用の 320kB 以上にする。(結構余裕をみたサイズ)
         statusbar->showMessage( tr( "Measured points are too many.  "
-                                    "It should be less than 9990 in QXAFS mode." ),
+                                    "It should be less than %1 in QXAFS mode." )
+				.arg( maxQXafsPoints ),
                                 2000 );
         return;
       }
@@ -1588,6 +1606,10 @@ void MainWindow::StartMeasurement( void )
     }
 
     SetDispMeasModes();
+    // QXafs の時は直前に HSpeed や Interval の計算をやり直しておく
+    // (この後で CpBlock2SBlock() を呼ぶので計算し直した結果と整合する結果が SBlocks に残る)
+    if ( QXafsMode->isChecked() )
+      CheckQXafsParams();
     CpBlock2SBlock();    // QXafs の時でも使う  // これ以降に return してはいけない
     SetupMPSet( &MPSet ); // これ以降に return してはいけない
     SvSaveQDataAsStepScan = SaveQDataAsStepScan->isChecked();

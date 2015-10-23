@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Oct 23 12:24:25 2015 +0900\n"\
+                "    changed UI default\n"\
+		"\n"\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Oct 22 17:59:18 2015 +0900\n"\
                 "    LION\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Sep 30 16:33:52 2015 +0900\n"\
                 "    it may work but not tested\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Sep 28 19:34:26 2015 +0900\n"\
-                "    working\n"\
 		"\n"\
                 ""
 #endif
