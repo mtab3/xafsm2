@@ -36,6 +36,8 @@ void S2DView::setRange( double Sx, double Sy, double Dx, double Dy, int ix, int 
   dx = Dx;
   dy = Dy;
 
+  lastIx = lastIy = showIx = showIy = 0;
+
   ex = sx + dx * ix;
   ey = sy + dy * iy;
   if ( sx > ex ) { maxx = sx; minx = ex; } else { maxx = ex; minx = sx; }
@@ -109,7 +111,7 @@ void S2DView::Draw( QPainter *p )
 
   int w = width();
   int h = height();
-
+  
   int LM = w * 0.25;        // 画面を描くときの基準になる定数を幾つか決めておく
   if ( LM > 180 ) LM = 250;
   int RM = w * 0.05;
@@ -166,6 +168,8 @@ void S2DView::Draw( QPainter *p )
   else
     cc.SetRealY( maxy, miny );
 
+  qDebug() << "s2d a";
+  
   p->fillRect( 0, 0, w, h, White );
   p->setPen( GridC );
   p->drawRect( cc.r2sx( minx ), cc.r2sy( maxy ),
@@ -190,6 +194,8 @@ void S2DView::Draw( QPainter *p )
   emit newAutoZmax( maxz );
   emit newAutoZmin( minz );
 
+  qDebug() << "s2d b";
+  
   double rx1, rx2, ry1, ry2;
   double ssx, ssy, sdx, sdy;
   //  bool inRange = false;
@@ -212,6 +218,8 @@ void S2DView::Draw( QPainter *p )
 	p->fillRect( x0, y0, xd, yd, Grey );
     }
   }
+
+  qDebug() << "s2d c";
   
   p->setPen( QColor( 0, 0, 0 ) );
   // 格子
@@ -234,6 +242,8 @@ void S2DView::Draw( QPainter *p )
   p1.setColor( QColor( 0, 0, 0 ) );
   p->setPen( p1 );
 
+  qDebug() << "s2d d";
+  
   // 軸反転した時のレイアウトの向きの補正用
   int xdir = ( invXf ) ? -1 : 1;
   int ydir = ( invYf ) ? -1 : 1;
@@ -251,6 +261,8 @@ void S2DView::Draw( QPainter *p )
 		 cc.r2sx( maxx )+TicL * xdir, cc.r2sy( sy + dy * ( iy + 0.5 ) ) );
   }
 
+  qDebug() << "s2d e";
+  
   // 軸反転した時のレイアウトの補正用
   int xbase = cc.r2sx( ( invXf ) ? minx : maxx ) + 5;
   int ybase = cc.r2sy( ( invYf ) ? maxy : miny ) + 5;
@@ -273,6 +285,8 @@ void S2DView::Draw( QPainter *p )
   cc.DrawText( p, rec, F1, Qt::AlignLeft | Qt::AlignVCenter, SCALESIZE,
 	       QString::number( sy + dy * ( maxiy - 0.5 ) ) );
 
+  qDebug() << "s2d f" << lastIx << lastIy << showIx << showIy;
+
   QStringList Infos;
   Infos << tr( "Measured : (%1, %2)" )    // 現在の測定位置表示
     .arg( sx + dx * ( lastIx + 0.5 ) ).arg( sy + dy * lastIy );
@@ -291,8 +305,12 @@ void S2DView::Draw( QPainter *p )
     .arg( ( minz < 0.9e300 ) ?
 	  QString::number( minz ) : QString( "--" ) );
 
+  qDebug() << "s2d g";
+
   rec = QRectF( 10, 10, LM-20, dVW );
   cc.DrawTexts( p, rec, 0, dVW2, F1, Qt::AlignLeft | Qt::AlignVCenter, FIXSIZE, Infos );
+
+  qDebug() << "s2d h";
 }
 
 void S2DView::mouseMoveEvent( QMouseEvent *e )
