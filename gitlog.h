@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Thu Oct 22 17:59:18 2015 +0900\n"\
+                "    LION\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Oct 9 21:23:21 2015 +0900\n"\
                 "    modified XAFSM.def.BL5S1\n"\
 		"\n"\
@@ -39,10 +43,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Mon Sep 28 19:34:26 2015 +0900\n"\
                 "    working\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Sep 18 22:04:06 2015 +0900\n"\
-                "    Meaged with QMeasModes\n"\
 		"\n"\
                 ""
 #endif
