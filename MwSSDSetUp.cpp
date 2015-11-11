@@ -498,10 +498,14 @@ void MainWindow::setAllROIs( void )
   int ch = MCACh->text().toInt();
   double startE = XMAPk2p->p2E( ch, ROIStart[ ch ].toDouble() );
   double endE = XMAPk2p->p2E( ch, ROIEnd[ ch ].toDouble() );
-
+  NewLogMsg( QString( "Set all ROI from %1 to %2 [keV]" ).arg( startE ).arg( endE ) );
+  
   for ( int i = 0; i < SFluo->chs(); i++ ) {
     ROIStart[ i ] = QString::number( XMAPk2p->E2p( i, startE ) );
     ROIEnd[ i ] = QString::number( XMAPk2p->E2p( i, endE ) );
+    NewLogMsg( QString( "  ROI Ch[%1] from %1 to %2 pix" )
+	       .arg( i )
+	       .arg( ROIStart[i] ).arg( ROIEnd[i] ) );
   }
   ReCalcXAFSWithMCA();
   ReCalcS2DMap();
@@ -667,6 +671,9 @@ void MainWindow::getMCALen( SMsg /* msg */ )  // 初期化の時に一回しか�
   for ( int i = 0; i < SFluo->chs(); i++ ) {
     ROIStart[i] = "0";
     ROIEnd[i] = QString::number( SFluo->length() - 1 );
+    NewLogMsg( QString( "  ROI Ch[%1] from %1 to %2 pix" )
+	       .arg( i )
+	       .arg( ROIStart[i] ).arg( ROIEnd[i] ) );
   }
   int ch = MCACh->text().toInt();
   ROIStartInput->setText( ROIStart[ ch ] );
@@ -679,6 +686,8 @@ void MainWindow::newROIStart( const QString &newv )
 {
   if ( !inMeas ) {
     ROIStart[ MCACh->text().toInt() ] = newv;
+    NewLogMsg( QString( "  ROI Start Ch[%1] = %2 pix" )
+	       .arg( MCACh->text().toInt() ).arg( newv ) );
     if ( cMCAView != NULL ) {
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       cMCAView->update();
@@ -699,6 +708,8 @@ void MainWindow::newROIEnd( const QString &newv )
 {
   if ( !inMeas ) {
     ROIEnd[ MCACh->text().toInt() ] = newv;
+    NewLogMsg( QString( "  ROI End Ch[%1] = %2 pix" )
+	       .arg( MCACh->text().toInt() ).arg( newv ) );
     if ( cMCAView != NULL ) {
       cMCAView->setROI( ROIStartInput->text().toInt(), ROIEndInput->text().toInt() );
       cMCAView->update();

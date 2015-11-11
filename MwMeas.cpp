@@ -1488,8 +1488,8 @@ void MainWindow::StartMeasurement( void )
 	    .arg( j )
 	    .arg( mMeasUnits.at(j)->name() );
 	  statusbar->showMessage( msg, 2000 );
-            NewLogMsg( msg );
-            return;
+	  NewLogMsg( msg );
+	  return;
 	}
       }
     }
