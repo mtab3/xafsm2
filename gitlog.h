@@ -4,6 +4,10 @@
 
 #define BRANCH_NAME ( "RecROI" )
 #define GITLOGS ""\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Nov 11 17:19:00 2015 +0900\n"\
+                "    record the change of the ROI to the log file\n"\
+		"\n"\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Oct 23 16:49:28 2015 +0900\n"\
                 "    廣友さんが発見したパタンの 2次元スキャンの不具合解消\n"\
@@ -67,10 +71,6 @@
                 "Date        : Wed Oct 21 17:40:26 2015 +0900\n"\
                 "    GetPM16CParamsForQXAFS is updated as CheckQXafsParams in QXafs.cpp\n"\
 "    !!! But not tested at all !!!\n"\
-		"\n"\
-                "Author      : M. Tabuchi <tabuchi@dimos3.nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Mon Oct 19 17:26:31 2015 +0900\n"\
-                "    nothing\n"\
 		"\n"\
                 ""
 #endif

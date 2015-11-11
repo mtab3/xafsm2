@@ -503,7 +503,7 @@ void MainWindow::setAllROIs( void )
   for ( int i = 0; i < SFluo->chs(); i++ ) {
     ROIStart[ i ] = QString::number( XMAPk2p->E2p( i, startE ) );
     ROIEnd[ i ] = QString::number( XMAPk2p->E2p( i, endE ) );
-    NewLogMsg( QString( "  ROI Ch[%1] from %1 to %2 pix" )
+    NewLogMsg( QString( "  ROI Ch[%1] from %2 to %3 pix" )
 	       .arg( i )
 	       .arg( ROIStart[i] ).arg( ROIEnd[i] ) );
   }
@@ -671,7 +671,7 @@ void MainWindow::getMCALen( SMsg /* msg */ )  // 初期化の時に一回しか�
   for ( int i = 0; i < SFluo->chs(); i++ ) {
     ROIStart[i] = "0";
     ROIEnd[i] = QString::number( SFluo->length() - 1 );
-    NewLogMsg( QString( "  ROI Ch[%1] from %1 to %2 pix" )
+    NewLogMsg( QString( "  ROI Ch[%1] from %2 to %3 pix" )
 	       .arg( i )
 	       .arg( ROIStart[i] ).arg( ROIEnd[i] ) );
   }
