@@ -229,15 +229,17 @@ void MainWindow::CheckQXafsParams( void )
   if ( ! QXafsMode->isChecked() )
     return;
 
+  int BBase = 0;
+  
   QString buf;
   // sdeg:始点(角度)、edeg:終点(角度)、dtime:測定時間 を GUI から取得
-  double sP = BLKstart[0]->text().toDouble();
-  double eP = BLKstart[1]->text().toDouble();
+  double sP = BLKstart[ BBase ]->text().toDouble();
+  double eP = BLKstart[ BBase + 1 ]->text().toDouble();
   double sKeV = u->any2keV( BLKUnit, sP );
   double eKeV = u->any2keV( BLKUnit, eP );
   double sdeg = u->keV2deg( sKeV );
   double edeg = u->keV2deg( eKeV );
-  double dtime = BLKdwell[0]->text().toDouble();
+  double dtime = BLKdwell[ BBase ]->text().toDouble();
 
   if ( dtime <= 0 ) // dtime は 0 あるいは 負であってはならない。もしそうなってたら
     dtime = 1e-3;   // 十分小さな数字(1msec)に置き換えておく
@@ -276,7 +278,7 @@ void MainWindow::CheckQXafsParams( void )
   // 指定された測定点数の方が多い場合 WidthInPulse / Points < 1 になるので、
   // パルス単位でトリガをかけて測定を行うことができなくなる。
   // その場合には、測定点数を測定範囲のパルス数まで減らす(全パルスでトリガがかかる)
-  QPoints = BLKpoints[0]->text().toInt();
+  QPoints = BLKpoints[ BBase ]->text().toInt();
   if (  QPoints > WidthInPulse ) {
     QPoints = WidthInPulse;
   }
@@ -306,18 +308,19 @@ void MainWindow::CheckQXafsParams( void )
   } else {
     QPoints = 0;
   }
-  BLKpoints[0]->setText( QString::number( QPoints ) );
-  double width = fabs( BLKstart[1]->text().toDouble() - BLKstart[0]->text().toDouble() );
+  BLKpoints[ BBase ]->setText( QString::number( QPoints ) );
+  double width = fabs( BLKstart[ BBase + 1]->text().toDouble()
+		       - BLKstart[ BBase ]->text().toDouble() );
   if ( QPoints > 0 ) 
-    BLKstep[0]->setText( QString::number( width / QPoints ) );
+    BLKstep[ BBase ]->setText( QString::number( width / QPoints ) );
   else 
-    BLKstep[0]->setText( QString::number( 0 ) );
+    BLKstep[ BBase ]->setText( QString::number( 0 ) );
 
   // 計測にかかる時間の再計算と表示
   dtime = WidthInPulse / HSpeed;
   // dtime は測定しようとする範囲をスキャンするのに必要な時間
   // 計測のトータルでは、これに RunUp, RunDown など前後の時間が必要になってくる
-  BLKdwell[0]->setText( QString::number( dtime ) );
+  BLKdwell[ BBase ]->setText( QString::number( dtime ) );
   ShowQTime( dtime, WidthInPulse );
 
   ShowDeltaAtRefPoint();
@@ -325,10 +328,12 @@ void MainWindow::CheckQXafsParams( void )
 
 void MainWindow::ShowDeltaAtRefPoint( void )
 {
+  int BBase = 0;
+  
   double rpEV = QRefPoint->text().toDouble() / 1000.;
-  double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKs01->text().toDouble() ) );
-  double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKs02->text().toDouble() ) );
-  double ddeg = fabs( edeg - sdeg ) / BLKpoints01->text().toInt();
+  double sdeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[BBase]->text().toDouble() ) );
+  double edeg = u->keV2deg( u->any2keV( BLKUnit, BLKstart[BBase+1]->text().toDouble() ) );
+  double ddeg = fabs( edeg - sdeg ) / BLKpoints[BBase]->text().toInt();
   double dpEV2 = fabs( u->deg2keV( u->keV2deg( rpEV ) + ddeg ) - rpEV ) * 1000;
   QDeltaAtRefPoint->setText( QString( "%1" ).arg( dpEV2, 5, 'f', 3 ) );
 }
@@ -388,11 +393,13 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
 // QXafs 測定開始時に CheckQXafsParams を通るので
 // そこで計算されるようなパラメータはここでは信じて良い
 {
-  double sdeg = SBlockStartInDeg[0];   // 角度単位での始点
-  double edeg = SBlockStartInDeg[1];   // 確度単位での終点
+  int BBase = 0;
+  
+  double sdeg = SBlockStartInDeg[ BBase ];   // 角度単位での始点
+  double edeg = SBlockStartInDeg[ BBase + 1 ];   // 確度単位での終点
 #if 0
-  int points = abs( SBlockPoints[0] ); // 測定点数 (CheckQXafsParams で補正済みのはず)
-  double dtime = SBlockDwell[0];
+  int points = abs( SBlockPoints[ BBase ] ); // 測定点数 (CheckQXafsParams で補正済みのはず)
+  double dtime = SBlockDwell[ BBase ];
 #endif
   
 #if 0  // HSpeed をここで計算してはダメ (CheckQXafsParamas で計算済)
@@ -423,10 +430,10 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
     //       Interval の 90% を積分時間に設定するので
     //       Interval は最低 100/0.9 = 111.1111.... 必要
     QXafsInterval = QMinIntervalTime * HSpeed;   // これより短くなるなら、インターバルを変更
-    SBlockPoints[0] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
+    SBlockPoints[ BBase ] = (int)(abs( QXafsSP0 - QXafsEP0 ) / QXafsInterval);
     statusbar
       ->showMessage( tr( "Selected Points were too many!  It was changed to be %1" )
-		     .arg( SBlockPoints[0] ), 3000 );
+		     .arg( SBlockPoints[ BBase ] ), 3000 );
   }
 #endif
   qDebug() << "QXafs exec Interval" << QIntervalInPulse;
@@ -460,12 +467,13 @@ void MainWindow::GetPM16CParamsForQXAFS( void )
   NewLogMsg( DebugBuf );
 
   double WidthInPuls = fabs( edeg - sdeg ) / MMainTh->upp(); // パルス単位での測定範囲幅
-  ShowQTime( SBlockDwell[0], WidthInPuls );
+  ShowQTime( SBlockDwell[ BBase ], WidthInPuls );
 }
 
 
 void MainWindow::QXafsMeasSequence( void )
 {
+  int BBase = 0;
   int g;
   double t1, t2;
 
@@ -492,8 +500,8 @@ void MainWindow::QXafsMeasSequence( void )
     mMeasUnits.clearStage();
     MeasView->SetRLine( 0 );            // まず、0 番目のラインを右軸に表示
     MeasView->SetLLine( 2 );            //       2 番目のラインを左軸に表示
-    MeasView->SetWindow0( u->deg2keV( SBlockStartInDeg[0] ), 0,
-			  u->deg2keV( SBlockStartInDeg[ SBlocks ] ), 0 );
+    MeasView->SetWindow0( u->deg2keV( SBlockStartInDeg[ BBase ] ), 0,
+			  u->deg2keV( SBlockStartInDeg[ BBase + 1 ] ), 0 );
     MMainTh->SetSpeed( HIGH );
     MMainTh->SetHighSpeed( OrigHSpeed );
     //    EncMainTh->GetValue();

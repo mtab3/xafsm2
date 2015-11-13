@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Nov 13 18:01:36 2015 +0900\n"\
+                "    set-up input fields of the block-params are ready\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Nov 13 14:58:27 2015 +0900\n"\
                 "    Merge remote-tracking branch 'origin/stable' into stable\n"\
 		"\n"\
@@ -55,10 +59,6 @@
 "          画面上に「最後の測定位置のデータ」「マウスがあった位置のデータ」を表示するため\n"\
 "          data[10][10] とか data[8][8] とかにアクセスしようとして、\n"\
 "          範囲外のデータアクセスで落ちる。(data の範囲は data[0-5][0-5] になってるので)\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Fri Oct 23 15:25:06 2015 +0900\n"\
-                "    additional documentation in XAFSM0.def and XAFSM.def.BL5S1\n"\
 		"\n"\
                 ""
 #endif

@@ -130,6 +130,7 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
   initialSelectionOfSensors();
   recoverQSelections();
   ToggleQXafsMode( true );   // the "true" is dummy
+  ChangeBLKs( NXAFSBInfo.Blocks );
 
   I0Range->setEnabled( false );
   I1Range->setEnabled( false );

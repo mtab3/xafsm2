@@ -43,6 +43,8 @@ void MainWindow::SetDFName2( int rpt, DIRECTION dir, int type )
 
 void MainWindow::MakeDelegateFile( void )
 {
+  int BBase = 0;
+  
   QFile file( DFName0 + ".dat" );
   if ( !file.open( QIODevice::WriteOnly | QIODevice::Text ) )
     return;
@@ -52,15 +54,15 @@ void MainWindow::MakeDelegateFile( void )
 
   out << "#" << FileIDs[ QXAFSBASEDATA ] << endl;
   out << "#" << " Unit      : " << UnitName[ SBLKUnit ].name;
-  out << "#" << " Start     : " << SBlockStartAsDisp[0] << endl;
-  out << "#" << " End       : " << SBlockStartAsDisp[1] << endl;
+  out << "#" << " Start     : " << SBlockStartAsDisp[ BBase ] << endl;
+  out << "#" << " End       : " << SBlockStartAsDisp[ BBase + 1 ] << endl;
   out << "#" << " Dir       : " << ( (QMeasOnBackward->isChecked())
 				     ? "Both(Forward and Backward" : "Single(Forward)" )
                                 << endl;
-  out << "#" << " Points    : " << SBlockPoints[0] << endl;
+  out << "#" << " Points    : " << SBlockPoints[ BBase ] << endl;
   out << "#" << " MeasTime  : " << QString::number( QXafsDwellTime, 'f', 10 )
                                 << "[s]" << endl;
-  out << "#" << " SweepTime : " << SBlockDwell[0] << "[s]" << endl;
+  out << "#" << " SweepTime : " << SBlockDwell[ BBase ] << "[s]" << endl;
   out << "#" << " Repeats   : " << SelRPT->value() << "[cycles]" << endl;
   out << "#" << " Date      : " << QDateTime::currentDateTime()
                                      .toString("yy.MM.dd hh:mm") << endl;
@@ -84,15 +86,17 @@ void MainWindow::MakeDelegateFile( void )
 
 void MainWindow::WriteQHeader( int rpt, DIRECTION dir )
 {
+  int BBase = 0;
+  
   // 通常のQXAFSのデータファイル
   SetDFName2( rpt, dir, 0 );   // Generate a file name with repitation number
 
-  double sblkdwell = SBlockDwell[0];
-  SBlockDwell[0] = QXafsDwellTime;
+  double sblkdwell = SBlockDwell[ BBase ];
+  SBlockDwell[ BBase ] = QXafsDwellTime;
 
   WriteHeaderCore( true );
 
-  SBlockDwell[0] = sblkdwell;
+  SBlockDwell[ BBase ] = sblkdwell;
 
   // Step Scan 型のファイル
   if ( SvSaveQDataAsStepScan ) {
