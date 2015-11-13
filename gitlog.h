@@ -5,6 +5,18 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Nov 11 18:03:38 2015 +0900\n"\
+                "    merged with RecROI\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Nov 11 18:02:46 2015 +0900\n"\
+                "    the change of the ROI records in Log file and displaied in log-tag as well\n"\
+		"\n"\
+                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Wed Nov 11 17:19:00 2015 +0900\n"\
+                "    record the change of the ROI to the log file\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Nov 4 11:24:21 2015 +0900\n"\
                 "    new ?\n"\
 		"\n"\
@@ -57,20 +69,6 @@
                 "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Thu Oct 22 17:59:18 2015 +0900\n"\
                 "    LION\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Oct 22 16:25:53 2015 +0900\n"\
-                "    adding some documentation\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Oct 21 19:48:30 2015 +0900\n"\
-                "    GetPM16CParamsForQXAFS was checked and modified as CheckQXafsParams has alerady been.  As the result, the displayed parameters is getting much robust.   It means the displayed parameters are actually used for the QXAFS measurements without changing.\n"\
-"    This version has been tested with simmotor but not in real environment.\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Wed Oct 21 17:40:26 2015 +0900\n"\
-                "    GetPM16CParamsForQXAFS is updated as CheckQXafsParams in QXafs.cpp\n"\
-"    !!! But not tested at all !!!\n"\
 		"\n"\
                 ""
 #endif

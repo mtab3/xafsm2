@@ -1240,6 +1240,13 @@ void MainWindow::StartMeasurement( void )
     SFluoLine = -1;
     isSFluo = isSI1 = false;
 
+    if ( inMeasDark ) {
+      // バックグラウンド/ダーク計測中は測定開始できない
+      statusbar->showMessage( tr( "The process to measure backgound is going on!" ),
+			      2000 );
+      return;
+    }
+    
     QString User;
     if ( ( User = UUnits.user( MMainTh ) ) != "" ) {
       // 分光器が他のことに使われたらダメ
