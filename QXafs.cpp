@@ -143,7 +143,6 @@ void MainWindow::recoverQSelections( void )
 void MainWindow::ToggleQXafsMode( bool )
 {
   if ( QXafsMode->isChecked() ) {     // QXAFS モード
-
     SetDXMPMC();   // 分光器リセット
 
     saveNSelections();
@@ -155,8 +154,7 @@ void MainWindow::ToggleQXafsMode( bool )
     NBlockPisValid = ( CheckBlockRange() && ( ( TP > 0 ) && ( TT0 > 0 ) ) );
 
     // ノーマルのブロックパラメータのセーブ
-    NSaveNowBlocks = SelBLKs->value();
-    NXAFSBInfo.Blocks = NSaveNowBlocks;
+    NXAFSBInfo.Blocks = SelBLKs->value();
     NXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
     SelBLKUnit->setCurrentIndex( (int)(QXAFSBInfo.Unit) );
     int i;
@@ -175,9 +173,10 @@ void MainWindow::ToggleQXafsMode( bool )
     ShowTotal();    // ブロックパラメータを変えた後に、合計点数の再計算と表示
 
     CheckQXafsParams();
-    ChangeBLKs( 1 );
-    SelBLKs->setEnabled( false );
-    HideBLKs( true );
+    ChangeBLKs( QXAFSBInfo.Blocks );
+    //    SelBLKs->setEnabled( false );
+    SelBLKs->setEnabled( true );
+    DisableBLKs();
     QConditionBox->setHidden( false );
 
     SetNewRPTLimit();
@@ -189,8 +188,8 @@ void MainWindow::ToggleQXafsMode( bool )
     recoverNSelections();
     
     SelBLKs->setEnabled( true );
-    ChangeBLKs( NSaveNowBlocks );
     QXAFSBInfo.Blocks = SelBLKs->value();
+    ChangeBLKs( NXAFSBInfo.Blocks );
     QXAFSBInfo.Unit = (UNIT)(SelBLKUnit->currentIndex());
     SelBLKUnit->setCurrentIndex( (int)(NXAFSBInfo.Unit) );
     int i;
@@ -208,28 +207,12 @@ void MainWindow::ToggleQXafsMode( bool )
     BLKstart[ i ]->setText( NXAFSBInfo.Block[ i ].start );
     ShowTotal();    // ブロックパラメータを変えた後に、合計点数の再計算と表示
 
-    HideBLKs( false );
+    DisableBLKs();
     QConditionBox->setHidden( true );
 
     SetNewRPTLimit();
   }
   showMeasModes();
-}
-
-void MainWindow::HideBLKs( bool f )
-{
-  for ( int i = 2; i < BLKstart.count(); i++ ) {
-    BLKstart[i]->setHidden( f );
-  }
-  for ( int i = 1; i < BLKstep.count(); i++ ) {
-    BLKstep[i]->setHidden( f );
-    BLKdwell[i]->setHidden( f );
-    BLKpoints[i]->setHidden( f );
-  }
-  DwellAll->setHidden( f );
-  for ( int i = 2; i < BLKlabels.count(); i++ ) {
-    BLKlabels[i]->setHidden( f );
-  }
 }
 
 #if 0

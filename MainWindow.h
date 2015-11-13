@@ -549,12 +549,12 @@ private:
   QStringList QXafsOk, NXafsOk, CScanOk;
   bool isQXafsModeAvailable;
 
-  int NSaveNowBlocks;
+  //  int NSaveNowBlocks;
   int NSaveSelectedI0, NSaveSelectedI1, NSaveSelectedAux1, NSaveSelectedAux2;
   int NSaveModeSelAux1, NSaveModeSelAux2;
   bool NSaveUseI1, NSaveUse19ChSSD, NSaveUseAux1, NSaveUseAux2;
 
-  int QSaveNowBlocks;
+  //  int QSaveNowBlocks;
   int QSaveSelectedI0, QSaveSelectedI1, QSaveSelectedAux1, QSaveSelectedAux2;
   int QSaveModeSelAux1, QSaveModeSelAux2;
   bool QSaveUseI1, QSaveUse19ChSSD, QSaveUseAux1, QSaveUseAux2;
@@ -579,7 +579,7 @@ private:
 
   void ShowQXafsProgress( void );
   void setupQXafsMode( void );
-  void HideBLKs( bool f );
+  void DisableBLKs( void );
   void GetPM16CParamsForQXAFS( void );
   //  void SetUpMainThToGenerageTriggerSignal( int sp, int ep );
 

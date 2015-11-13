@@ -32,9 +32,14 @@ void MainWindow::setupMeasArea( void )   /* 測定エリア */
 
   BLKUnit = (UNIT)DefaultUnit;
   NXAFSBInfo.Unit = BLKUnit;
+  NXAFSBInfo.Blocks = 4;
   QXAFSBInfo.Unit = BLKUnit;
+  QXAFSBInfo.Blocks = 1;
   //  ClearBLKs();
-  ChangeBLKs( 4 );
+  // 直後に「Normal mode」にトグルして、
+  // その時の Blocks を「Quick mode」のブロック数として記録するので
+  // ここで設定されている Block 数は、Quick mode のデフォルトの数字でないとダメ
+  ChangeBLKs( QXAFSBInfo.Blocks );
   for ( int i = 0; i < UNITS; i++ ) {
     SelBLKUnit->addItem( UnitName[i].name );
   }
@@ -333,7 +338,7 @@ void MainWindow::initialSelectionOfSensors( void )
     }
   }
 
-  NSaveNowBlocks = 4;
+  //  NSaveNowBlocks = 4;
   NSaveModeSelAux1 = 3;
   NSaveModeSelAux2 = 1;
   NSaveUseI1 = true;
@@ -341,7 +346,7 @@ void MainWindow::initialSelectionOfSensors( void )
   NSaveUseAux1 = true;
   NSaveUseAux2 = false;
 
-  QSaveNowBlocks = 1;
+  //  QSaveNowBlocks = 1;
   QSaveModeSelAux1 = 3;
   QSaveModeSelAux2 = 1;
   QSaveUseI1 = true;
@@ -648,27 +653,77 @@ void MainWindow::ChangeBLKUnit( int unit )
 
 void MainWindow::ChangeBLKs( int newBLKs )
 {
-  if ( newBLKs >= BLKstart.count() )
-    return;
-  if ( SelBLKs->value() != newBLKs ) {
-    SelBLKs->setValue( newBLKs );
+  if ( QXafsMode->isChecked() ) {
+    if ( newBLKs * 2 > BLKstart.count() ) {
+      newBLKs = BLKstart.count() / 2;
+    }
+  } else {
+    if ( newBLKs >= BLKstart.count() ) {
+      newBLKs = BLKstart.count() - 1;
+    }
   }
+  SelBLKs->setValue( newBLKs );
   Blocks = newBLKs;
-  BLKstart[0]->setEnabled( true );
-  for ( int i = 0; i < Blocks; i++ ) {
-    BLKstart[i+1]->setEnabled( true );
-    BLKstep[i]->setEnabled( true );
-    BLKdwell[i]->setEnabled( true );
-    BLKpoints[i]->setEnabled( true );
-  }
-  for ( int i = Blocks; i < MaxBLKs; i++ ) {
-    BLKstart[i+1]->setEnabled( false );
-    BLKstep[i]->setEnabled( false );
-    BLKdwell[i]->setEnabled( false );
-    BLKpoints[i]->setEnabled( false );
-  }
+  DisableBLKs();
   ShowBLKs();
 }
+
+void MainWindow::DisableBLKs( void )
+{
+  int i;
+  int blocks = SelBLKs->value();
+  if ( QXafsMode->isChecked() ) {
+    for ( i = 0; i <  blocks; i++ ) {
+      BLKlabels[i*2]->setText( QString::number( i + 1 ) );
+      BLKlabels[i*2]->setHidden( false );
+      BLKstart[i*2]->setHidden( false );
+      BLKstep[i*2]->setHidden( false );
+      BLKpoints[i*2]->setHidden( false );
+      BLKdwell[i*2]->setHidden( false );
+
+      BLKlabels[i*2+1]->setText( " " );
+      BLKlabels[i*2+1]->setHidden( false );
+      BLKstart[i*2+1]->setHidden( false );
+      BLKstep[i*2+1]->setHidden( true );
+      BLKpoints[i*2+1]->setHidden( true );
+      BLKdwell[i*2+1]->setHidden( true );
+    }
+    for ( i = blocks * 2; i < BLKstep.count(); i++ ) {
+      BLKlabels[i]->setHidden( true );
+      BLKstart[i]->setHidden( true );
+      BLKstep[i]->setHidden( true );
+      BLKpoints[i]->setHidden( true );
+      BLKdwell[i]->setHidden( true );
+    }
+    BLKlabels[i]->setHidden( true );
+    BLKstart[i]->setHidden( true );
+    DwellAll->setHidden( true );
+  } else {
+    for ( i = 0; i < blocks; i++ ) {
+      BLKlabels[i]->setText( QString::number( i + 1 ) );
+      BLKlabels[i]->setHidden( false );
+      BLKstart[i]->setHidden( false );
+      BLKstep[i]->setHidden( false );
+      BLKdwell[i]->setHidden( false );
+      BLKpoints[i]->setHidden( false );
+    }
+    for ( i = blocks; i < BLKstep.count(); i++ ) {
+      BLKlabels[i]->setHidden( true );
+      BLKstart[i]->setHidden( true );
+      BLKstep[i]->setHidden( true );
+      BLKdwell[i]->setHidden( true );
+      BLKpoints[i]->setHidden( true );
+    }
+    BLKlabels[i]->setHidden( true );
+    BLKstart[i]->setHidden( true );
+
+    BLKlabels[blocks]->setHidden( true );
+    BLKstart[blocks]->setHidden( false );
+    DwellAll->setHidden( false );
+  }
+}
+
+
 
 void MainWindow::SetStdEXAFSBLKs( void )
 {
