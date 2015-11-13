@@ -5,6 +5,10 @@
 #define BRANCH_NAME ( "stable" )
 #define GITLOGS ""\
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
+                "Date        : Fri Nov 13 14:55:12 2015 +0900\n"\
+                "    ¥À¡¼¥¯¬ÄêÃæ¤Ï XAFS ¬Äê¤򳫻ϤǤ­¤ʤ¤¤褦¤ˤ¹¤롣\n"\
+		"\n"\
+                "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Wed Nov 11 18:03:38 2015 +0900\n"\
                 "    merged with RecROI\n"\
 		"\n"\
@@ -65,10 +69,6 @@
                 "Author      : Masao TABUCHI <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
                 "Date        : Fri Oct 23 12:24:25 2015 +0900\n"\
                 "    changed UI default\n"\
-		"\n"\
-                "Author      : M. Tabuchi <m.tabuchi@nusr.nagoya-u.ac.jp>\n"\
-                "Date        : Thu Oct 22 17:59:18 2015 +0900\n"\
-                "    LION\n"\
 		"\n"\
                 ""
 #endif

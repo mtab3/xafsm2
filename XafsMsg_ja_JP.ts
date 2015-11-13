@@ -1633,7 +1633,7 @@ When it is displayed as &quot;Shutter Open!, check the shutter is opend and push
     </message>
     <message>
         <source>Measured points are too many.  It should be less than 9990 in QXAFS mode.</source>
-        <translation>測定点数が多過ぎます。QXAFSモードでの上限は9900点です。</translation>
+        <translation type="vanished">測定点数が多過ぎます。QXAFSモードでの上限は9900点です。</translation>
     </message>
     <message>
         <source>Measured points are too many.  It should be less than 9990.</source>
@@ -3239,6 +3239,14 @@ Aio64が連続チューニングモードになっている場合機能しませ
     <message>
         <source>EncoderTh2</source>
         <translation>θ(エンコーダ2)</translation>
+    </message>
+    <message>
+        <source>The process to measure backgound is going on!</source>
+        <translation>バックグラウンドの計測中です!</translation>
+    </message>
+    <message>
+        <source>Measured points are too many.  It should be less than %1 in QXAFS mode.</source>
+        <translation>測定点の数が多すぎます。QXAFSモードでは測定点数は %1 以下にして下さい。</translation>
     </message>
 </context>
 <context>
